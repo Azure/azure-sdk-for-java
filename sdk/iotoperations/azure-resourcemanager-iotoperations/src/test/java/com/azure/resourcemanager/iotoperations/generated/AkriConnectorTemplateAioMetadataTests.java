@@ -12,18 +12,18 @@ public final class AkriConnectorTemplateAioMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplateAioMetadata model
-            = BinaryData.fromString("{\"aioMinVersion\":\"rmbzo\",\"aioMaxVersion\":\"kixrj\"}")
+            = BinaryData.fromString("{\"aioMinVersion\":\"vwxqibyqunyo\",\"aioMaxVersion\":\"wlmdjrkv\"}")
                 .toObject(AkriConnectorTemplateAioMetadata.class);
-        Assertions.assertEquals("rmbzo", model.aioMinVersion());
-        Assertions.assertEquals("kixrj", model.aioMaxVersion());
+        Assertions.assertEquals("vwxqibyqunyo", model.aioMinVersion());
+        Assertions.assertEquals("wlmdjrkv", model.aioMaxVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplateAioMetadata model
-            = new AkriConnectorTemplateAioMetadata().withAioMinVersion("rmbzo").withAioMaxVersion("kixrj");
+            = new AkriConnectorTemplateAioMetadata().withAioMinVersion("vwxqibyqunyo").withAioMaxVersion("wlmdjrkv");
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateAioMetadata.class);
-        Assertions.assertEquals("rmbzo", model.aioMinVersion());
-        Assertions.assertEquals("kixrj", model.aioMaxVersion());
+        Assertions.assertEquals("vwxqibyqunyo", model.aioMinVersion());
+        Assertions.assertEquals("wlmdjrkv", model.aioMaxVersion());
     }
 }

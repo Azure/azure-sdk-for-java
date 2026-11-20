@@ -23,7 +23,7 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"wjmy\",\"provisioningState\":\"Canceled\"},\"location\":\"slswtm\",\"tags\":{\"yqsemwa\":\"iofz\",\"tshhszhedp\":\"n\",\"k\":\"vwiwubmwmbesld\"},\"id\":\"wtppjflcxogaoko\",\"name\":\"z\",\"type\":\"nsikvmkqzeqqkdl\"}";
+            = "{\"properties\":{\"description\":\"oibjudpfrxtrthz\",\"provisioningState\":\"Succeeded\"},\"location\":\"dwkqbrq\",\"tags\":{\"tiirqtdqoa\":\"axhexiilivp\"},\"id\":\"oruzfgsquyfxrxx\",\"name\":\"eptra\",\"type\":\"xje\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,17 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageMover response = manager.storageMovers()
-            .define("hqlkthumaqo")
-            .withRegion("y")
-            .withExistingResourceGroup("ynduha")
-            .withTags(mapOf("mdnbbglzpswiy", "olpsslqlf", "mnvdfzn", "mcwyhzdxssadb"))
-            .withDescription("ycduier")
+            .define("lr")
+            .withRegion("wdmjsjqbjhhyx")
+            .withExistingResourceGroup("eqidbqfatpx")
+            .withTags(mapOf("duhpk", "lyc", "hky", "kgymareqnajxqug", "sofwqmzqalkrmnji", "ubeddg", "yxbaaabjyvayf",
+                "pxacqqudfn"))
+            .withDescription("jmoadsuv")
             .create();
 
-        Assertions.assertEquals("slswtm", response.location());
-        Assertions.assertEquals("iofz", response.tags().get("yqsemwa"));
-        Assertions.assertEquals("wjmy", response.description());
+        Assertions.assertEquals("dwkqbrq", response.location());
+        Assertions.assertEquals("axhexiilivp", response.tags().get("tiirqtdqoa"));
+        Assertions.assertEquals("oibjudpfrxtrthz", response.description());
     }
 
     // Use "Map.of" if available

@@ -271,6 +271,12 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
      */
     private Boolean enableOutboundOnlyNodeTypes;
 
+    /*
+     * Determines whether to skip the assignment of the managed network security group (SF-NSG) to the cluster subnet
+     * when using a bring-your-own virtual network (BYOVNET) configuration. The default value is false.
+     */
+    private Boolean skipManagedNsgAssignment;
+
     /**
      * Creates an instance of ManagedClusterProperties class.
      */
@@ -1123,6 +1129,30 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the skipManagedNsgAssignment property: Determines whether to skip the assignment of the managed network
+     * security group (SF-NSG) to the cluster subnet when using a bring-your-own virtual network (BYOVNET)
+     * configuration. The default value is false.
+     * 
+     * @return the skipManagedNsgAssignment value.
+     */
+    public Boolean skipManagedNsgAssignment() {
+        return this.skipManagedNsgAssignment;
+    }
+
+    /**
+     * Set the skipManagedNsgAssignment property: Determines whether to skip the assignment of the managed network
+     * security group (SF-NSG) to the cluster subnet when using a bring-your-own virtual network (BYOVNET)
+     * configuration. The default value is false.
+     * 
+     * @param skipManagedNsgAssignment the skipManagedNsgAssignment value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withSkipManagedNsgAssignment(Boolean skipManagedNsgAssignment) {
+        this.skipManagedNsgAssignment = skipManagedNsgAssignment;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -1174,6 +1204,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeNumberField("allocatedOutboundPorts", this.allocatedOutboundPorts);
         jsonWriter.writeStringField("VMImage", this.vmImage);
         jsonWriter.writeBooleanField("enableOutboundOnlyNodeTypes", this.enableOutboundOnlyNodeTypes);
+        jsonWriter.writeBooleanField("skipManagedNsgAssignment", this.skipManagedNsgAssignment);
         return jsonWriter.writeEndObject();
     }
 
@@ -1305,6 +1336,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                     deserializedManagedClusterProperties.vmImage = reader.getString();
                 } else if ("enableOutboundOnlyNodeTypes".equals(fieldName)) {
                     deserializedManagedClusterProperties.enableOutboundOnlyNodeTypes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("skipManagedNsgAssignment".equals(fieldName)) {
+                    deserializedManagedClusterProperties.skipManagedNsgAssignment
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,15 +10,95 @@
 
 ### Other Changes
 
-## 1.2.0-beta.1 (Unreleased)
+## 2.1.1 (2026-11-02)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+
+## 2.0.4 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+
+## 2.0.3 (2026-08-28)
 
 ### Bugs Fixed
 
+- Fixed request URLs when using custom endpoints.
+
+## 2.0.2 (2026-08-18)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
+## 2.0.1 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
+
+## 2.0.0 (2026-06-06)
+
+### Features Added
+
+- GA release of the Azure AI Translator API 2026-06-06, including translations using LLM models, adaptive custom translation, tone variant translations, and gender-specific translations.
+- Added `TranslationTone` and `TranslationGender` enum types for strongly-typed tone and gender options on `TranslationTarget`.
+
+### Breaking Changes
+
+- `TranslationTarget.setTone` and `TranslationTarget.setGender` now accept `TranslationTone` and `TranslationGender` enums instead of `String`.
+- Removed `grade` property from `TranslationTarget`.
+- Renamed count properties on `TranslationText` for clarity to `getSourceCharacterCount()`, `getInstructionTokenCount()`, `getSourceTokenCount()`, `getResponseTokenCount()`, and `getTargetTokenCount()`; wire format unchanged.
+
+
+## 1.1.9 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+
+## 1.1.8 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 2.0.0-beta.1 (2026-01-08)
+
+### Features Added
+
+- Added support for the Azure AI Translator API 2025-10-01-preview, including translations using LLM models, adaptive custom translation, tone variant translations, and gender-specific translations.
+- Added `TranslationTarget` class for configuring translation options.
+
+### Breaking Changes
+
+- Added `Models` property to `GetSupportedLanguagesResult` to include the list of LLM models available for translations.
+- Changed the name of `TargetLanguage` property to `Language` in `TranslationText`.
+- Changed the name of `Confidence` property to `Score` in `DetectedLanguage`.
+- Removed `SourceText` and `Transliteration` properties in translation responses.
+- Dictionary, sentence boundaries and text alignments features have been deprecated and relevant classes and properties have been removed.
 
 ## 1.1.7 (2025-10-27)
 

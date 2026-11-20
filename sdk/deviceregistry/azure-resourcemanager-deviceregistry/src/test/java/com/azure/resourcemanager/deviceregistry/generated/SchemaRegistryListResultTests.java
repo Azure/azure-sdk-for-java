@@ -13,16 +13,15 @@ public final class SchemaRegistryListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"alzxwhcan\",\"namespace\":\"ymo\",\"displayName\":\"hlwigdivbkbxg\",\"description\":\"fajuwas\",\"storageAccountContainerUrl\":\"vdaeyyguxakjsq\",\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"zkgimsid\",\"tenantId\":\"sicddyvv\",\"type\":\"SystemAssigned\"},\"location\":\"gfmo\",\"tags\":{\"hnakzyb\":\"hpqgatjeaahhvj\"},\"id\":\"jjidjk\",\"name\":\"yxkyxvx\",\"type\":\"vblbjednljlageua\"},{\"properties\":{\"uuid\":\"unsmjbnkpp\",\"namespace\":\"ynenlsvxeizz\",\"displayName\":\"klnsrmffey\",\"description\":\"ckt\",\"storageAccountContainerUrl\":\"iymerteeammxqi\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"ddrtkgdojb\",\"tenantId\":\"vavrefdees\",\"type\":\"SystemAssigned\"},\"location\":\"uij\",\"tags\":{\"wprtu\":\"xs\"},\"id\":\"wsawddjibabxvi\",\"name\":\"itvtzeexavo\",\"type\":\"tfgle\"},{\"properties\":{\"uuid\":\"dqbwpypqtgsfja\",\"namespace\":\"b\",\"displayName\":\"hhxud\",\"description\":\"vodhtn\",\"storageAccountContainerUrl\":\"irudh\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"ckdlpag\",\"tenantId\":\"cxfailcfxwmdboxd\",\"type\":\"SystemAssigned\"},\"location\":\"ft\",\"tags\":{\"knh\":\"obrjlnacgcc\"},\"id\":\"kizvytn\",\"name\":\"zvulj\",\"type\":\"aaeranokqgukk\"}],\"nextLink\":\"nvbroylaxx\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"e\",\"namespace\":\"owcluqo\",\"displayName\":\"kqvgqouw\",\"description\":\"zmpjwyiv\",\"storageAccountContainerUrl\":\"ikf\",\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"fsphuagrttikt\",\"tenantId\":\"sqczkvyklxubyj\",\"type\":\"None\"},\"location\":\"mmfblcqcuubgqib\",\"tags\":{\"hrmooi\":\"lmetttwgdslqxi\"},\"id\":\"qseypxiutcxa\",\"name\":\"zhyrpeto\",\"type\":\"e\"},{\"properties\":{\"uuid\":\"xslhvnhlabrqnkk\",\"namespace\":\"jcjbt\",\"displayName\":\"aehvvibrxjjstoq\",\"description\":\"it\",\"storageAccountContainerUrl\":\"kxzt\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"lftidgfcwqmpim\",\"tenantId\":\"xzhemjyh\",\"type\":\"SystemAssigned\"},\"location\":\"jswtwkozzwc\",\"tags\":{\"j\":\"bawpfajnjwltlwt\"},\"id\":\"uktalhsnvkcdmxz\",\"name\":\"poaimlnwiaaomyl\",\"type\":\"eazulcs\"}],\"nextLink\":\"hwwn\"}")
             .toObject(SchemaRegistryListResult.class);
-        Assertions.assertEquals("gfmo", model.value().get(0).location());
-        Assertions.assertEquals("hpqgatjeaahhvj", model.value().get(0).tags().get("hnakzyb"));
-        Assertions.assertEquals("ymo", model.value().get(0).properties().namespace());
-        Assertions.assertEquals("hlwigdivbkbxg", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("fajuwas", model.value().get(0).properties().description());
-        Assertions.assertEquals("vdaeyyguxakjsq", model.value().get(0).properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED,
-            model.value().get(0).identity().type());
-        Assertions.assertEquals("nvbroylaxx", model.nextLink());
+        Assertions.assertEquals("mmfblcqcuubgqib", model.value().get(0).location());
+        Assertions.assertEquals("lmetttwgdslqxi", model.value().get(0).tags().get("hrmooi"));
+        Assertions.assertEquals("owcluqo", model.value().get(0).properties().namespace());
+        Assertions.assertEquals("kqvgqouw", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("zmpjwyiv", model.value().get(0).properties().description());
+        Assertions.assertEquals("ikf", model.value().get(0).properties().storageAccountContainerUrl());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals("hwwn", model.nextLink());
     }
 }

@@ -28,6 +28,23 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
     private String name;
 
     /*
+     * The total member upgrade failures within the group.
+     */
+    private Integer failureCount;
+
+    /*
+     * The max number of member upgrade failures allowed within this group, resolved from the
+     * UpdateStrategy.UpdateGroup.maxAllowedFailures value.
+     */
+    private Integer maxAllowedFailures;
+
+    /*
+     * The max number of upgrades that can run concurrently in this group, resolved from the
+     * UpdateStrategy.UpdateGroup.maxConcurrency value. If no value was provided, this value defaults to "1".
+     */
+    private Integer maxConcurrency;
+
+    /*
      * The list of member this UpdateGroup updates.
      */
     private List<MemberUpdateStatus> members;
@@ -64,6 +81,35 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
      */
     public String name() {
         return this.name;
+    }
+
+    /**
+     * Get the failureCount property: The total member upgrade failures within the group.
+     * 
+     * @return the failureCount value.
+     */
+    public Integer failureCount() {
+        return this.failureCount;
+    }
+
+    /**
+     * Get the maxAllowedFailures property: The max number of member upgrade failures allowed within this group,
+     * resolved from the UpdateStrategy.UpdateGroup.maxAllowedFailures value.
+     * 
+     * @return the maxAllowedFailures value.
+     */
+    public Integer maxAllowedFailures() {
+        return this.maxAllowedFailures;
+    }
+
+    /**
+     * Get the maxConcurrency property: The max number of upgrades that can run concurrently in this group, resolved
+     * from the UpdateStrategy.UpdateGroup.maxConcurrency value. If no value was provided, this value defaults to "1".
+     * 
+     * @return the maxConcurrency value.
+     */
+    public Integer maxConcurrency() {
+        return this.maxConcurrency;
     }
 
     /**
@@ -121,6 +167,12 @@ public final class UpdateGroupStatus implements JsonSerializable<UpdateGroupStat
                     deserializedUpdateGroupStatus.status = UpdateStatus.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedUpdateGroupStatus.name = reader.getString();
+                } else if ("failureCount".equals(fieldName)) {
+                    deserializedUpdateGroupStatus.failureCount = reader.getNullable(JsonReader::getInt);
+                } else if ("maxAllowedFailures".equals(fieldName)) {
+                    deserializedUpdateGroupStatus.maxAllowedFailures = reader.getNullable(JsonReader::getInt);
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedUpdateGroupStatus.maxConcurrency = reader.getNullable(JsonReader::getInt);
                 } else if ("members".equals(fieldName)) {
                     List<MemberUpdateStatus> members
                         = reader.readArray(reader1 -> MemberUpdateStatus.fromJson(reader1));

@@ -11,7 +11,7 @@ public final class ImageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"rwzoxxjtfelluwf\",\"releaseDisplayName\":\"it\",\"releaseNotes\":\"np\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"jkjlxofpdvhpfx\",\"ypininm\",\"yhuybbkpod\"]},\"id\":\"ooginuvamih\",\"name\":\"ognarxzxtheotus\",\"type\":\"vyevcciqi\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"b\",\"releaseDisplayName\":\"s\",\"releaseNotes\":\"msmjqulngsntn\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"zgcwrw\",\"lxxwrljdouskc\",\"vkocrcjdkwtn\"],\"updateProperties\":{\"systemReboot\":\"NotRequired\",\"securityUpdates\":\"njbiksqrglssain\",\"osVersion\":\"p\",\"agentVersion\":\"wnzlljfmppeeb\",\"featureUpdates\":\"mgxsab\"}},\"id\":\"qduujitcjczdz\",\"name\":\"vndhkrwpdapp\",\"type\":\"sbdkvwr\"}")
             .toObject(ImageInner.class);
     }
 }

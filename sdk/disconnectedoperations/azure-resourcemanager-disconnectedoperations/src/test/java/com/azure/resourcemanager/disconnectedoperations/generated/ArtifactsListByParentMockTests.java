@@ -21,7 +21,7 @@ public final class ArtifactsListByParentMockTests {
     @Test
     public void testListByParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"artifactOrder\":1264549438,\"title\":\"jnpg\",\"description\":\"cftadeh\",\"size\":7028050140215699790},\"id\":\"fsoppusuesnzw\",\"name\":\"ej\",\"type\":\"avo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"artifactOrder\":945771375,\"title\":\"trcvpnazzmh\",\"description\":\"runmp\",\"size\":79694980854382594},\"id\":\"hrbnlankxmyskpbh\",\"name\":\"nbtkcxywnytnr\",\"type\":\"yn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ArtifactsListByParentMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Artifact> response
-            = manager.artifacts().listByParent("hb", "xhejjzzvdud", "wdslfhotwmcy", com.azure.core.util.Context.NONE);
+            = manager.artifacts().listByParent("rgvtqag", "buynhijggm", "bfs", com.azure.core.util.Context.NONE);
 
     }
 }

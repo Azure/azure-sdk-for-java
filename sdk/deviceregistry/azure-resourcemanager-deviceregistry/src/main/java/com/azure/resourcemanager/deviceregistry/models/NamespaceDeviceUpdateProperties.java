@@ -160,8 +160,13 @@ public final class NamespaceDeviceUpdateProperties implements JsonSerializable<N
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operatingSystemVersion", this.operatingSystemVersion);
         jsonWriter.writeJsonField("endpoints", this.endpoints);
-        jsonWriter.writeMapField("attributes", this.attributes,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeJsonField("policy", this.policy);
         jsonWriter.writeBooleanField("enabled", this.enabled);
         return jsonWriter.writeEndObject();

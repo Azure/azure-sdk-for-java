@@ -15,23 +15,28 @@ public final class ChaosExperimentStepTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosExperimentStep model = BinaryData.fromString(
-            "{\"name\":\"zoqftiyqzrnkcqvy\",\"branches\":[{\"name\":\"whzlsicohoq\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"wvl\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"yav\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"hheunmmqhgyx\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"konocu\"}]}]}")
+            "{\"name\":\"hwankixzbinjepu\",\"branches\":[{\"name\":\"mryw\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"zoqftiyqzrnkcqvy\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"lwh\"}]},{\"name\":\"lsicohoqqnwv\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"yav\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"hheunmmqhgyx\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"konocu\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"oklyaxuconuq\"}]}]}")
             .toObject(ChaosExperimentStep.class);
-        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.name());
-        Assertions.assertEquals("whzlsicohoq", model.branches().get(0).name());
-        Assertions.assertEquals("wvl", model.branches().get(0).actions().get(0).name());
+        Assertions.assertEquals("hwankixzbinjepu", model.name());
+        Assertions.assertEquals("mryw", model.branches().get(0).name());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.branches().get(0).actions().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChaosExperimentStep model = new ChaosExperimentStep().withName("zoqftiyqzrnkcqvy")
-            .withBranches(Arrays.asList(new ChaosExperimentBranch().withName("whzlsicohoq")
-                .withActions(Arrays.asList(new ChaosExperimentAction().withName("wvl"),
-                    new ChaosExperimentAction().withName("yav"), new ChaosExperimentAction().withName("hheunmmqhgyx"),
-                    new ChaosExperimentAction().withName("konocu")))));
+        ChaosExperimentStep model = new ChaosExperimentStep().withName("hwankixzbinjepu")
+            .withBranches(Arrays.asList(
+                new ChaosExperimentBranch().withName("mryw")
+                    .withActions(Arrays.asList(new ChaosExperimentAction().withName("zoqftiyqzrnkcqvy"),
+                        new ChaosExperimentAction().withName("lwh"))),
+                new ChaosExperimentBranch().withName("lsicohoqqnwv")
+                    .withActions(Arrays.asList(new ChaosExperimentAction().withName("yav"),
+                        new ChaosExperimentAction().withName("hheunmmqhgyx"),
+                        new ChaosExperimentAction().withName("konocu"),
+                        new ChaosExperimentAction().withName("oklyaxuconuq")))));
         model = BinaryData.fromObject(model).toObject(ChaosExperimentStep.class);
-        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.name());
-        Assertions.assertEquals("whzlsicohoq", model.branches().get(0).name());
-        Assertions.assertEquals("wvl", model.branches().get(0).actions().get(0).name());
+        Assertions.assertEquals("hwankixzbinjepu", model.name());
+        Assertions.assertEquals("mryw", model.branches().get(0).name());
+        Assertions.assertEquals("zoqftiyqzrnkcqvy", model.branches().get(0).actions().get(0).name());
     }
 }

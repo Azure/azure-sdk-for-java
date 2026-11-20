@@ -72,7 +72,7 @@ public class ContainerRegistryCredentialPolicyTests {
             };
 
         AtomicReference<HttpPipelineCallContext> contextReference = new AtomicReference<>();
-        new HttpPipelineBuilder().policies((httpPipelineCallContext, httpPipelineNextPolicy) -> {
+        new HttpPipelineBuilder().policies((httpPipelineCallContext, ignored) -> {
             contextReference.set(httpPipelineCallContext);
             return Mono.empty();
         }).httpClient(ignored -> Mono.empty()).build().sendSync(REQUEST, Context.NONE);
@@ -112,7 +112,7 @@ public class ContainerRegistryCredentialPolicyTests {
         };
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(policy).httpClient(request -> Mono.just(successResponse)).build();
+            = new HttpPipelineBuilder().policies(policy).httpClient(ignored -> Mono.just(successResponse)).build();
 
         SyncAsyncExtension.execute(() -> pipeline.sendSync(REQUEST, Context.NONE), () -> pipeline.send(REQUEST));
 
@@ -121,7 +121,7 @@ public class ContainerRegistryCredentialPolicyTests {
         assertEquals(0, syncCallCount.get());
 
         HttpPipeline pipeline2 = new HttpPipelineBuilder().policies(policy)
-            .httpClient(request -> Mono.just(unauthorizedHttpResponseWithoutHeader))
+            .httpClient(ignored -> Mono.just(unauthorizedHttpResponseWithoutHeader))
             .build();
 
         SyncAsyncExtension.execute(() -> pipeline2.sendSync(REQUEST, Context.NONE), () -> pipeline2.send(REQUEST));

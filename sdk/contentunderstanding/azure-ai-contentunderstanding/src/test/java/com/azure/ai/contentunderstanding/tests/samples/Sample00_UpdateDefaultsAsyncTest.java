@@ -1,0 +1,92 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.ContentUnderstandingDefaults;
+import org.junit.jupiter.api.Test;
+
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Async test class demonstrating how to configure and manage default settings for Content Understanding service.
+ * This test shows:
+ * 1. Getting current default configuration asynchronously
+ * 2. Updating default configuration with model deployments asynchronously
+ * 3. Verifying the updated configuration
+ */
+public class Sample00_UpdateDefaultsAsyncTest extends ContentUnderstandingClientTestBase {
+
+    @Test
+    public void testUpdateDefaultsAsync() {
+        // BEGIN:ContentUnderstandingGetDefaultsAsync
+        // Step 1: Get current defaults to see what's configured
+        System.out.println("Getting current default configuration...");
+        ContentUnderstandingDefaults currentDefaults = contentUnderstandingAsyncClient.getDefaults().block();
+        System.out.println("Current defaults retrieved successfully.");
+        System.out.println("Current model deployments: " + currentDefaults.getModelDeployments());
+        // END:ContentUnderstandingGetDefaultsAsync
+
+        // BEGIN:Assertion_ContentUnderstandingGetDefaultsAsync
+        assertNotNull(currentDefaults, "Current defaults should not be null");
+        assertNotNull(currentDefaults.getModelDeployments(), "Model deployments should not be null");
+        // END:Assertion_ContentUnderstandingGetDefaultsAsync
+
+        // Step 2: Configure model deployments from environment variables
+        // These map model names to your deployed model names in Azure AI Foundry
+        System.out.println("\nConfiguring model deployments from environment variables...");
+
+        Map<String, String> modelDeployments = getModelProfile().getDefaultModelDeployments();
+
+        System.out.println("Model deployments to configure:");
+        for (Map.Entry<String, String> deployment : modelDeployments.entrySet()) {
+            System.out.println("  " + deployment.getKey() + " -> " + deployment.getValue());
+        }
+
+        // BEGIN:ContentUnderstandingUpdateDefaultsAsync
+        // Step 3: Update defaults with the new configuration
+        System.out.println("\nUpdating default configuration...");
+
+        // Update defaults with the configuration using the typed convenience method
+        ContentUnderstandingDefaults updatedConfig
+            = contentUnderstandingAsyncClient.updateDefaults(modelDeployments).block();
+        System.out.println("Defaults updated successfully.");
+        System.out.println("Updated model deployments: " + updatedConfig.getModelDeployments());
+        // END:ContentUnderstandingUpdateDefaultsAsync
+
+        // BEGIN:Assertion_ContentUnderstandingUpdateDefaultsAsync
+        assertNotNull(updatedConfig, "Updated config should not be null");
+        assertNotNull(updatedConfig.getModelDeployments(), "Updated model deployments should not be null");
+        assertFalse(updatedConfig.getModelDeployments().isEmpty(), "Updated model deployments should not be empty");
+        // END:Assertion_ContentUnderstandingUpdateDefaultsAsync
+
+        // BEGIN:ContentUnderstandingVerifyDefaultsAsync
+        // Step 4: Verify the updated configuration
+        System.out.println("\nVerifying updated configuration...");
+        ContentUnderstandingDefaults updatedDefaults = contentUnderstandingAsyncClient.getDefaults().block();
+        System.out.println("Updated defaults verified successfully.");
+        System.out.println("Updated model deployments: " + updatedDefaults.getModelDeployments());
+        // END:ContentUnderstandingVerifyDefaultsAsync
+
+        // BEGIN:Assertion_ContentUnderstandingVerifyDefaultsAsync
+        assertNotNull(updatedDefaults, "Verified defaults should not be null");
+        assertNotNull(updatedDefaults.getModelDeployments(), "Verified model deployments should not be null");
+        assertFalse(updatedDefaults.getModelDeployments().isEmpty(), "Verified model deployments should not be empty");
+
+        for (Map.Entry<String, String> deployment : modelDeployments.entrySet()) {
+            assertTrue(updatedDefaults.getModelDeployments().containsKey(deployment.getKey()),
+                "Model deployments should contain " + deployment.getKey());
+            assertEquals(deployment.getValue(), updatedDefaults.getModelDeployments().get(deployment.getKey()),
+                deployment.getKey() + " deployment should match configured value");
+        }
+        // END:Assertion_ContentUnderstandingVerifyDefaultsAsync
+
+        System.out.println("\nConfiguration management completed.");
+    }
+
+}

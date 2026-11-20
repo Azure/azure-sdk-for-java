@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The properties of Azure Storage SMB file share endpoint.
@@ -29,6 +30,27 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
      * The name of the Azure Storage file share.
      */
     private String fileShareName;
+
+    /*
+     * Opt-in flag enabling this endpoint to be used as one side of a cross-tenant
+     * data transfer pair. When set to true, RBAC for the endpoint's managed
+     * identity is granted on the customer's storage account so that authorization
+     * can be performed entirely in the tenant where this endpoint lives. Defaults
+     * to false. Can be updated via PATCH.
+     */
+    private Boolean enableCrossTenantTransfer;
+
+    /*
+     * Full ARM resource IDs of partner-tenant storage accounts that are allowed
+     * to be the other side of a cross-tenant data transfer pair with this
+     * endpoint. For a source endpoint this lists allowed target storage accounts;
+     * for a target endpoint this lists allowed source storage accounts.
+     * The full list is replaced on PATCH (omit an entry to remove it; include
+     * an entry to add it). Mutual presence in both endpoints' allow lists is
+     * re-validated at every job run start, so removing an entry blocks future
+     * runs that reference the removed storage account.
+     */
+    private List<String> allowedStorageAccounts;
 
     /**
      * Creates an instance of AzureStorageSmbFileShareEndpointProperties class.
@@ -87,6 +109,72 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
     }
 
     /**
+     * Get the enableCrossTenantTransfer property: Opt-in flag enabling this endpoint to be used as one side of a
+     * cross-tenant
+     * data transfer pair. When set to true, RBAC for the endpoint's managed
+     * identity is granted on the customer's storage account so that authorization
+     * can be performed entirely in the tenant where this endpoint lives. Defaults
+     * to false. Can be updated via PATCH.
+     * 
+     * @return the enableCrossTenantTransfer value.
+     */
+    public Boolean enableCrossTenantTransfer() {
+        return this.enableCrossTenantTransfer;
+    }
+
+    /**
+     * Set the enableCrossTenantTransfer property: Opt-in flag enabling this endpoint to be used as one side of a
+     * cross-tenant
+     * data transfer pair. When set to true, RBAC for the endpoint's managed
+     * identity is granted on the customer's storage account so that authorization
+     * can be performed entirely in the tenant where this endpoint lives. Defaults
+     * to false. Can be updated via PATCH.
+     * 
+     * @param enableCrossTenantTransfer the enableCrossTenantTransfer value to set.
+     * @return the AzureStorageSmbFileShareEndpointProperties object itself.
+     */
+    public AzureStorageSmbFileShareEndpointProperties withEnableCrossTenantTransfer(Boolean enableCrossTenantTransfer) {
+        this.enableCrossTenantTransfer = enableCrossTenantTransfer;
+        return this;
+    }
+
+    /**
+     * Get the allowedStorageAccounts property: Full ARM resource IDs of partner-tenant storage accounts that are
+     * allowed
+     * to be the other side of a cross-tenant data transfer pair with this
+     * endpoint. For a source endpoint this lists allowed target storage accounts;
+     * for a target endpoint this lists allowed source storage accounts.
+     * The full list is replaced on PATCH (omit an entry to remove it; include
+     * an entry to add it). Mutual presence in both endpoints' allow lists is
+     * re-validated at every job run start, so removing an entry blocks future
+     * runs that reference the removed storage account.
+     * 
+     * @return the allowedStorageAccounts value.
+     */
+    public List<String> allowedStorageAccounts() {
+        return this.allowedStorageAccounts;
+    }
+
+    /**
+     * Set the allowedStorageAccounts property: Full ARM resource IDs of partner-tenant storage accounts that are
+     * allowed
+     * to be the other side of a cross-tenant data transfer pair with this
+     * endpoint. For a source endpoint this lists allowed target storage accounts;
+     * for a target endpoint this lists allowed source storage accounts.
+     * The full list is replaced on PATCH (omit an entry to remove it; include
+     * an entry to add it). Mutual presence in both endpoints' allow lists is
+     * re-validated at every job run start, so removing an entry blocks future
+     * runs that reference the removed storage account.
+     * 
+     * @param allowedStorageAccounts the allowedStorageAccounts value to set.
+     * @return the AzureStorageSmbFileShareEndpointProperties object itself.
+     */
+    public AzureStorageSmbFileShareEndpointProperties withAllowedStorageAccounts(List<String> allowedStorageAccounts) {
+        this.allowedStorageAccounts = allowedStorageAccounts;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -99,12 +187,25 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
      * {@inheritDoc}
      */
     @Override
+    public AzureStorageSmbFileShareEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("storageAccountResourceId", this.storageAccountResourceId);
         jsonWriter.writeStringField("fileShareName", this.fileShareName);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeBooleanField("enableCrossTenantTransfer", this.enableCrossTenantTransfer);
+        jsonWriter.writeArrayField("allowedStorageAccounts", this.allowedStorageAccounts,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -127,6 +228,9 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
 
                 if ("description".equals(fieldName)) {
                     deserializedAzureStorageSmbFileShareEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureStorageSmbFileShareEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));
@@ -138,6 +242,13 @@ public final class AzureStorageSmbFileShareEndpointProperties extends EndpointBa
                 } else if ("endpointType".equals(fieldName)) {
                     deserializedAzureStorageSmbFileShareEndpointProperties.endpointType
                         = EndpointType.fromString(reader.getString());
+                } else if ("enableCrossTenantTransfer".equals(fieldName)) {
+                    deserializedAzureStorageSmbFileShareEndpointProperties.enableCrossTenantTransfer
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowedStorageAccounts".equals(fieldName)) {
+                    List<String> allowedStorageAccounts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureStorageSmbFileShareEndpointProperties.allowedStorageAccounts
+                        = allowedStorageAccounts;
                 } else {
                     reader.skipChildren();
                 }

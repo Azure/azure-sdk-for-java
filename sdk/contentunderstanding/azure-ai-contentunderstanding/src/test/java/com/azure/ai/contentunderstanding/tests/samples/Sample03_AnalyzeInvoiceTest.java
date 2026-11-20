@@ -1,0 +1,333 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentArrayField;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
+import com.azure.ai.contentunderstanding.models.ContentSpan;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.ContentObjectField;
+import com.azure.ai.contentunderstanding.models.ContentNumberField;
+import com.azure.ai.contentunderstanding.models.ContentStringField;
+import com.azure.ai.contentunderstanding.models.DocumentSource;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
+import com.azure.core.util.polling.SyncPoller;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Sample demonstrating how to analyze invoices using Content Understanding service.
+ * This sample shows:
+ * 1. Analyzing an invoice document
+ * 2. Extracting structured invoice fields
+ * 3. Accessing nested object fields (TotalAmount)
+ * 4. Accessing array fields (LineItems)
+ * 5. Working with field confidence and source information
+ */
+public class Sample03_AnalyzeInvoiceTest extends ContentUnderstandingClientTestBase {
+
+    @Test
+    public void testAnalyzeInvoice() {
+
+        // BEGIN:ContentUnderstandingAnalyzeInvoice
+        // Using a publicly accessible sample file from Azure-Samples GitHub repository
+        String invoiceUrl
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
+
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(invoiceUrl);
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
+        setPlaybackSyncPollerPollInterval(operation);
+
+        AnalysisResult result = operation.getFinalResult();
+        // END:ContentUnderstandingAnalyzeInvoice
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoice
+        assertNotNull(invoiceUrl, "Invoice URL should not be null");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        System.out.println("Analysis operation properties verified");
+
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result should contain contents");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertEquals(1, result.getContents().size(), "Invoice should have exactly one content element");
+        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+        // END:Assertion_ContentUnderstandingAnalyzeInvoice
+
+        // BEGIN:ContentUnderstandingAnalyzeInvoiceUsage
+        // Get usage details from the operation status
+        UsageDetails usage = operation.waitForCompletion().getValue().getUsage();
+        if (usage != null) {
+            System.out.println("\nUsage Details:");
+            if (usage.getDocumentPagesStandard() != null) {
+                System.out.println("  Document pages (standard): " + usage.getDocumentPagesStandard());
+            }
+            if (usage.getContextualizationTokens() != null) {
+                System.out.println("  Contextualization tokens: " + usage.getContextualizationTokens());
+            }
+            Map<String, Integer> tokens = usage.getTokens();
+            if (tokens != null && !tokens.isEmpty()) {
+                System.out.println("  Model tokens:");
+                for (Map.Entry<String, Integer> entry : tokens.entrySet()) {
+                    System.out.println("    " + entry.getKey() + ": " + entry.getValue());
+                }
+            }
+        }
+        // END:ContentUnderstandingAnalyzeInvoiceUsage
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeInvoiceUsage
+        assertNotNull(usage, "Usage details should not be null");
+        assertNotNull(usage.getDocumentPagesStandard(), "Document pages (standard) should not be null");
+        assertTrue(usage.getDocumentPagesStandard() > 0, "Document pages (standard) should be positive");
+        assertNotNull(usage.getTokens(), "Tokens should not be null");
+        assertTrue(!usage.getTokens().isEmpty(), "Tokens should not be empty");
+        System.out.println("Usage details validated successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeInvoiceUsage
+
+        // BEGIN:ContentUnderstandingExtractInvoiceFields
+        // Get the document content (invoices are documents)
+        AnalysisContent firstContent = result.getContents().get(0);
+        if (firstContent instanceof DocumentContent) {
+            DocumentContent documentContent = (DocumentContent) firstContent;
+
+            // Print document unit information
+            // The unit indicates the measurement system used for coordinates in the source field
+            System.out.println("Document unit: "
+                + (documentContent.getUnit() != null ? documentContent.getUnit().toString() : "unknown"));
+            System.out.println(
+                "Pages: " + documentContent.getStartPageNumber() + " to " + documentContent.getEndPageNumber());
+            System.out.println();
+
+            // Extract simple string fields using getValue() convenience method
+            // getValue() returns the typed value regardless of field type
+            // (ContentStringField, ContentNumberField, ContentDateField, etc.)
+            ContentField customerNameField
+                = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
+            ContentField invoiceDateField
+                = documentContent.getFields() != null ? documentContent.getFields().get("InvoiceDate") : null;
+
+            // Use getValue() instead of casting to specific types
+            // Note: getValue() returns the actual typed value - String, Number, LocalDate, etc.
+            String customerName = customerNameField != null ? (String) customerNameField.getValue() : null;
+            // InvoiceDate is a ContentDateField, so getValue() returns LocalDate - convert to String for display
+            Object invoiceDateValue = invoiceDateField != null ? invoiceDateField.getValue() : null;
+            String invoiceDate = invoiceDateValue != null ? invoiceDateValue.toString() : null;
+
+            System.out.println("Customer Name: " + (customerName != null ? customerName : "(None)"));
+            if (customerNameField != null) {
+                System.out.println("  Confidence: " + (customerNameField.getConfidence() != null
+                    ? String.format("%.2f", customerNameField.getConfidence())
+                    : "N/A"));
+                List<ContentSource> sources = customerNameField.getSources();
+                if (sources != null) {
+                    for (ContentSource src : sources) {
+                        if (src instanceof DocumentSource) {
+                            DocumentSource docSrc = (DocumentSource) src;
+                            System.out.println("  Source: page " + docSrc.getPageNumber() + ", polygon "
+                                + docSrc.getPolygon() + ", bounding box " + docSrc.getBoundingBox());
+                        }
+                    }
+                }
+                List<ContentSpan> spans = customerNameField.getSpans();
+                if (spans != null && !spans.isEmpty()) {
+                    ContentSpan span = spans.get(0);
+                    System.out
+                        .println("  Position in markdown: offset=" + span.getOffset() + ", length=" + span.getLength());
+                }
+            }
+
+            System.out.println("Invoice Date: " + (invoiceDate != null ? invoiceDate : "(None)"));
+            if (invoiceDateField != null) {
+                System.out.println("  Confidence: " + (invoiceDateField.getConfidence() != null
+                    ? String.format("%.2f", invoiceDateField.getConfidence())
+                    : "N/A"));
+                System.out.println(
+                    "  Source: " + (invoiceDateField.getSources() != null ? invoiceDateField.getSources() : "N/A"));
+                List<ContentSpan> spans = invoiceDateField.getSpans();
+                if (spans != null && !spans.isEmpty()) {
+                    ContentSpan span = spans.get(0);
+                    System.out
+                        .println("  Position in markdown: offset=" + span.getOffset() + ", length=" + span.getLength());
+                }
+            }
+
+            // Extract object fields (nested structures) using getFieldOrDefault() convenience method
+            // getFieldOrDefault() returns null if the field doesn't exist (safe access pattern)
+            ContentField totalAmountField
+                = documentContent.getFields() != null ? documentContent.getFields().get("TotalAmount") : null;
+            if (totalAmountField instanceof ContentObjectField) {
+                ContentObjectField totalAmountObj = (ContentObjectField) totalAmountField;
+
+                // Use getFieldOrDefault() for safe nested field access
+                ContentField amountField = totalAmountObj.getFieldOrDefault("Amount");
+                ContentField currencyField = totalAmountObj.getFieldOrDefault("CurrencyCode");
+
+                // Use getValue() instead of type-specific getters
+                Double amount = amountField != null ? (Double) amountField.getValue() : null;
+                String currency = currencyField != null ? (String) currencyField.getValue() : null;
+
+                System.out.println("Total: " + (currency != null ? currency : "$")
+                    + (amount != null ? String.format("%.2f", amount) : "(None)"));
+                if (totalAmountObj.getConfidence() != null) {
+                    System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
+                }
+                if (totalAmountObj.getSources() != null && !totalAmountObj.getSources().isEmpty()) {
+                    System.out.println("  Source: " + totalAmountObj.getSources());
+                }
+            }
+
+            // Extract array fields (collections like line items) using size() and get() convenience methods
+            ContentField lineItemsField
+                = documentContent.getFields() != null ? documentContent.getFields().get("LineItems") : null;
+            if (lineItemsField instanceof ContentArrayField) {
+                ContentArrayField lineItems = (ContentArrayField) lineItemsField;
+                // Use size() convenience method instead of getValueArray().size()
+                System.out.println("Line Items (" + lineItems.size() + "):");
+                for (int i = 0; i < lineItems.size(); i++) {
+                    // Use get(index) convenience method instead of getValueArray().get(i)
+                    ContentField itemField = lineItems.get(i);
+                    if (itemField instanceof ContentObjectField) {
+                        ContentObjectField item = (ContentObjectField) itemField;
+                        // Use getFieldOrDefault() for safe nested access
+                        ContentField descField = item.getFieldOrDefault("Description");
+                        ContentField qtyField = item.getFieldOrDefault("Quantity");
+
+                        // Use getValue() instead of type-specific getters
+                        String description = descField != null ? (String) descField.getValue() : null;
+                        Double quantity = qtyField != null ? (Double) qtyField.getValue() : null;
+
+                        System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A")
+                            + " (Qty: " + (quantity != null ? String.valueOf(quantity) : "N/A") + ")");
+                        if (item.getConfidence() != null) {
+                            System.out.println("    Confidence: " + String.format("%.2f", item.getConfidence()));
+                        }
+                    }
+                }
+            }
+        }
+        // END:ContentUnderstandingExtractInvoiceFields
+
+        // BEGIN:Assertion_ContentUnderstandingExtractInvoiceFields
+        AnalysisContent content = result.getContents().get(0);
+        assertNotNull(content, "Content should not be null");
+        assertTrue(content instanceof DocumentContent, "Content should be of type DocumentContent");
+
+        if (content instanceof DocumentContent) {
+            DocumentContent docContent = (DocumentContent) content;
+
+            // Verify basic document properties
+            assertTrue(docContent.getStartPageNumber() >= 1, "Start page should be >= 1");
+            assertTrue(docContent.getEndPageNumber() >= docContent.getStartPageNumber(),
+                "End page should be >= start page");
+            int totalPages = docContent.getEndPageNumber() - docContent.getStartPageNumber() + 1;
+            assertTrue(totalPages > 0, "Total pages should be positive");
+            assertInvoiceFields(docContent);
+            System.out.println("Document has " + totalPages + " page(s) from " + docContent.getStartPageNumber()
+                + " to " + docContent.getEndPageNumber());
+
+            System.out.println("All invoice fields validated successfully");
+        } else {
+            // This should not happen given the assertTrue above, but handle it for completeness
+            fail("Content type validation failed: expected DocumentContent but got "
+                + (content != null ? content.getClass().getSimpleName() : "null"));
+        }
+        // END:Assertion_ContentUnderstandingExtractInvoiceFields
+
+        // BEGIN:ContentUnderstandingInvoiceToLlmInput
+        // The fields above can also be packaged into a single LLM-ready text block.
+        // toLlmInput renders all extracted fields as YAML front matter followed by
+        // the markdown body, so an LLM can consume both structured data and document text
+        // in one shot. For advanced options, see Sample_Advanced_ToLlmInput.
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println(llmText);
+        // END:ContentUnderstandingInvoiceToLlmInput
+
+        // BEGIN:Assertion_ContentUnderstandingInvoiceToLlmInput
+        assertNotNull(llmText, "LLM input text should not be null");
+        assertTrue(llmText.startsWith("---\n"));
+        assertTrue(llmText.contains("mimeType: application/pdf"));
+        assertTrue(llmText.contains("fields:"));
+        System.out.println("Invoice LLM input text generated (" + llmText.length() + " characters)");
+        // END:Assertion_ContentUnderstandingInvoiceToLlmInput
+    }
+
+    static void assertInvoiceFields(DocumentContent document) {
+        assertNotNull(document.getFields(), "Document fields should not be null");
+
+        ContentField customerName = document.getFields().get("CustomerName");
+        assertTrue(customerName instanceof ContentStringField, "CustomerName should be a string field");
+        String customerNameValue = ((ContentStringField) customerName).getValue();
+        assertNotNull(customerNameValue, "CustomerName should not be null");
+        assertFalse(customerNameValue.trim().isEmpty(), "CustomerName should not be empty");
+        assertFieldGrounding(customerName, "CustomerName");
+
+        ContentField invoiceDate = document.getFields().get("InvoiceDate");
+        assertNotNull(invoiceDate, "InvoiceDate field should exist");
+        assertNotNull(invoiceDate.getValue(), "InvoiceDate value should not be null");
+        assertFieldGrounding(invoiceDate, "InvoiceDate");
+
+        ContentField totalAmount = document.getFields().get("TotalAmount");
+        assertTrue(totalAmount instanceof ContentObjectField, "TotalAmount should be an object field");
+        ContentObjectField totalAmountObject = (ContentObjectField) totalAmount;
+        ContentField amount = totalAmountObject.getFieldOrDefault("Amount");
+        assertTrue(amount instanceof ContentNumberField, "TotalAmount.Amount should be a number field");
+        assertNotNull(((ContentNumberField) amount).getValue(), "TotalAmount.Amount should not be null");
+        ContentField currency = totalAmountObject.getFieldOrDefault("CurrencyCode");
+        assertTrue(currency instanceof ContentStringField, "TotalAmount.CurrencyCode should be a string field");
+        String currencyValue = ((ContentStringField) currency).getValue();
+        assertNotNull(currencyValue, "CurrencyCode should not be null");
+        assertEquals(3, currencyValue.length(), "CurrencyCode should contain three characters");
+
+        ContentField lineItems = document.getFields().get("LineItems");
+        assertTrue(lineItems instanceof ContentArrayField, "LineItems should be an array field");
+        ContentArrayField lineItemsArray = (ContentArrayField) lineItems;
+        assertTrue(lineItemsArray.size() > 0, "LineItems should contain at least one item");
+        for (int index = 0; index < lineItemsArray.size(); index++) {
+            assertTrue(lineItemsArray.get(index) instanceof ContentObjectField,
+                "Each line item should be an object field");
+            ContentField description
+                = ((ContentObjectField) lineItemsArray.get(index)).getFieldOrDefault("Description");
+            assertTrue(description instanceof ContentStringField,
+                "Each line item should contain a string Description field");
+            String descriptionValue = ((ContentStringField) description).getValue();
+            assertNotNull(descriptionValue, "Line item Description should not be null");
+            assertFalse(descriptionValue.trim().isEmpty(), "Line item Description should not be empty");
+        }
+    }
+
+    private static void assertFieldGrounding(ContentField field, String fieldName) {
+        assertNotNull(field.getSpans(), fieldName + " spans should not be null");
+        assertFalse(field.getSpans().isEmpty(), fieldName + " should have at least one span");
+        field.getSpans().forEach(span -> {
+            assertTrue(span.getOffset() >= 0, fieldName + " span offset should be non-negative");
+            assertTrue(span.getLength() > 0, fieldName + " span length should be positive");
+        });
+        if (field.getSources() != null && !field.getSources().isEmpty()) {
+            assertTrue(field.getSources().get(0) instanceof DocumentSource,
+                fieldName + " source should be a DocumentSource");
+            DocumentSource source = (DocumentSource) field.getSources().get(0);
+            assertTrue(source.getPageNumber() >= 1, fieldName + " source page should be positive");
+            assertNotNull(source.getPolygon(), fieldName + " source polygon should not be null");
+            assertEquals(4, source.getPolygon().size(), fieldName + " source polygon should have four points");
+        }
+    }
+}

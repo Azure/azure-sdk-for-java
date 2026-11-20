@@ -12,7 +12,17 @@
 - [CreateOrUpdate](#disconnectedoperations_createorupdate)
 - [Delete](#disconnectedoperations_delete)
 - [GetByResourceGroup](#disconnectedoperations_getbyresourcegroup)
+- [List](#disconnectedoperations_list)
+- [ListByResourceGroup](#disconnectedoperations_listbyresourcegroup)
 - [ListDeploymentManifest](#disconnectedoperations_listdeploymentmanifest)
+- [Update](#disconnectedoperations_update)
+
+## HardwareSettings
+
+- [CreateOrUpdate](#hardwaresettings_createorupdate)
+- [Delete](#hardwaresettings_delete)
+- [Get](#hardwaresettings_get)
+- [ListByParent](#hardwaresettings_listbyparent)
 
 ## Images
 
@@ -27,7 +37,7 @@
  */
 public final class ArtifactsGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Artifacts_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Artifacts_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Artifacts_Get.
@@ -51,7 +61,7 @@ public final class ArtifactsGetSamples {
  */
 public final class ArtifactsListByParentSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Artifact_ListByParent_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Artifact_ListByParent_MaximumSet_Gen.json
      */
     /**
      * Sample code: Artifacts_ListByParent.
@@ -75,7 +85,7 @@ public final class ArtifactsListByParentSamples {
  */
 public final class ArtifactsListDownloadUriSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Artifact_ListDownloadUri_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Artifact_ListDownloadUri_MaximumSet_Gen.json
      */
     /**
      * Sample code: Artifacts_ListDownloadUri.
@@ -94,8 +104,14 @@ public final class ArtifactsListDownloadUriSamples {
 ### DisconnectedOperations_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.disconnectedoperations.models.AutoRenew;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlanStatus;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlans;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingConfiguration;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingPeriod;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperationProperties;
+import com.azure.resourcemanager.disconnectedoperations.models.PricingModel;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -104,7 +120,7 @@ import java.util.Map;
  */
 public final class DisconnectedOperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DisconnectedOperations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DisconnectedOperations_CreateOrUpdate.
@@ -118,7 +134,11 @@ public final class DisconnectedOperationsCreateOrUpdateSamples {
             .withRegion("eastus")
             .withExistingResourceGroup("rgdisconnectedOperations")
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withProperties(new DisconnectedOperationProperties().withConnectionIntent(ConnectionIntent.DISCONNECTED))
+            .withProperties(new DisconnectedOperationProperties().withConnectionIntent(ConnectionIntent.DISCONNECTED)
+                .withBillingConfiguration(new BillingConfiguration().withAutoRenew(AutoRenew.ENABLED)
+                    .withCurrent(new BillingPeriod().withCores(12).withPricingModel(PricingModel.TRIAL)))
+                .withBenefitPlans(new BenefitPlans().withAzureHybridWindowsServerBenefit(BenefitPlanStatus.ENABLED)
+                    .withWindowsServerVmCount(5)))
             .create();
     }
 
@@ -144,7 +164,7 @@ public final class DisconnectedOperationsCreateOrUpdateSamples {
  */
 public final class DisconnectedOperationsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DisconnectedOperations_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DisconnectedOperations_Delete.
@@ -167,7 +187,7 @@ public final class DisconnectedOperationsDeleteSamples {
  */
 public final class DisconnectedOperationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DisconnectedOperations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DisconnectedOperations_Get.
@@ -183,6 +203,51 @@ public final class DisconnectedOperationsGetByResourceGroupSamples {
 }
 ```
 
+### DisconnectedOperations_List
+
+```java
+/**
+ * Samples for DisconnectedOperations List.
+ */
+public final class DisconnectedOperationsListSamples {
+    /*
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DisconnectedOperations_ListBySubscription.
+     * 
+     * @param manager Entry point to DisconnectedOperationsManager.
+     */
+    public static void disconnectedOperationsListBySubscription(
+        com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager manager) {
+        manager.disconnectedOperations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DisconnectedOperations_ListByResourceGroup
+
+```java
+/**
+ * Samples for DisconnectedOperations ListByResourceGroup.
+ */
+public final class DisconnectedOperationsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DisconnectedOperations_ListByResourceGroup.
+     * 
+     * @param manager Entry point to DisconnectedOperationsManager.
+     */
+    public static void disconnectedOperationsListByResourceGroup(
+        com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager manager) {
+        manager.disconnectedOperations()
+            .listByResourceGroup("rgdisconnectedoperations", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### DisconnectedOperations_ListDeploymentManifest
 
 ```java
@@ -191,7 +256,7 @@ public final class DisconnectedOperationsGetByResourceGroupSamples {
  */
 public final class DisconnectedOperationsListDeploymentManifestSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DisconnectedOperations_ListDeploymentManifest_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_ListDeploymentManifest_MaximumSet_Gen.json
      */
     /**
      * Sample code: DisconnectedOperations_ListDeploymentManifest.
@@ -207,6 +272,161 @@ public final class DisconnectedOperationsListDeploymentManifestSamples {
 }
 ```
 
+### DisconnectedOperations_Update
+
+```java
+import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
+import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperation;
+import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperationUpdateProperties;
+import com.azure.resourcemanager.disconnectedoperations.models.RegistrationStatus;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DisconnectedOperations Update.
+ */
+public final class DisconnectedOperationsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DisconnectedOperations_Update.
+     * 
+     * @param manager Entry point to DisconnectedOperationsManager.
+     */
+    public static void disconnectedOperationsUpdate(
+        com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager manager) {
+        DisconnectedOperation resource = manager.disconnectedOperations()
+            .getByResourceGroupWithResponse("rgdisconnectedoperations", "demo-resource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key2", "fakeTokenPlaceholder"))
+            .withProperties(new DisconnectedOperationUpdateProperties().withConnectionIntent(ConnectionIntent.CONNECTED)
+                .withRegistrationStatus(RegistrationStatus.REGISTERED)
+                .withDeviceVersion("2.0.0"))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### HardwareSettings_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.disconnectedoperations.models.HardwareSettingProperties;
+
+/**
+ * Samples for HardwareSettings CreateOrUpdate.
+ */
+public final class HardwareSettingsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-15/HardwareSettings_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: HardwareSettings_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to DisconnectedOperationsManager.
+     */
+    public static void hardwareSettingsCreateOrUpdateMaximumSet(
+        com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager manager) {
+        manager.hardwareSettings()
+            .define("default")
+            .withExistingDisconnectedOperation("rgdisconnectedOperations", "demo-resource")
+            .withProperties(new HardwareSettingProperties().withTotalCores(200)
+                .withDiskSpaceInGb(1024)
+                .withMemoryInGb(64)
+                .withOem("Contoso")
+                .withHardwareSku("MC-760")
+                .withNodes(3)
+                .withVersionAtRegistration("2411.2")
+                .withSolutionBuilderExtension("xyz")
+                .withDeviceId("663ee8a3-4ea8-48ec-8810-b1f8b86cb270"))
+            .create();
+    }
+}
+```
+
+### HardwareSettings_Delete
+
+```java
+/**
+ * Samples for HardwareSettings Delete.
+ */
+public final class HardwareSettingsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-15/HardwareSettings_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: HardwareSettings_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to DisconnectedOperationsManager.
+     */
+    public static void hardwareSettingsDeleteMaximumSet(
+        com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager manager) {
+        manager.hardwareSettings()
+            .delete("rgdisconnectedOperations", "demo-resource", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HardwareSettings_Get
+
+```java
+/**
+ * Samples for HardwareSettings Get.
+ */
+public final class HardwareSettingsGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-15/HardwareSettings_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: HardwareSettings_Get_MaximumSet.
+     * 
+     * @param manager Entry point to DisconnectedOperationsManager.
+     */
+    public static void hardwareSettingsGetMaximumSet(
+        com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager manager) {
+        manager.hardwareSettings()
+            .getWithResponse("rgdisconnectedOperations", "demo-resource", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### HardwareSettings_ListByParent
+
+```java
+/**
+ * Samples for HardwareSettings ListByParent.
+ */
+public final class HardwareSettingsListByParentSamples {
+    /*
+     * x-ms-original-file: 2026-03-15/HardwareSettings_ListByParent_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: HardwareSettings_ListByParent_MaximumSet.
+     * 
+     * @param manager Entry point to DisconnectedOperationsManager.
+     */
+    public static void hardwareSettingsListByParentMaximumSet(
+        com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager manager) {
+        manager.hardwareSettings()
+            .listByParent("rgdisconnectedOperations", "demo-resource", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Images_Get
 
 ```java
@@ -215,7 +435,7 @@ public final class DisconnectedOperationsListDeploymentManifestSamples {
  */
 public final class ImagesGetSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Images_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Images_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Images_Get.
@@ -238,7 +458,7 @@ public final class ImagesGetSamples {
  */
 public final class ImagesListByDisconnectedOperationSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Images_ListByDisconnectedOperation_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Images_ListByDisconnectedOperation_MaximumSet_Gen.json
      */
     /**
      * Sample code: Images_ListByDisconnectedOperation.
@@ -262,7 +482,7 @@ public final class ImagesListByDisconnectedOperationSamples {
  */
 public final class ImagesListDownloadUriSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Images_ListDownloadUri_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Images_ListDownloadUri_MaximumSet_Gen.json
      */
     /**
      * Sample code: Images_ListDownloadUri.

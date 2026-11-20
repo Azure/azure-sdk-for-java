@@ -7,8 +7,10 @@ package com.azure.resourcemanager.iotoperations.generated;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateAioMetadata;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDeviceInboundEndpointType;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDiagnostics;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateExecAction;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateManagedConfiguration;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateProperties;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateReadinessProbe;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateRuntimeImageConfiguration;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateRuntimeImageConfigurationSettings;
 import com.azure.resourcemanager.iotoperations.models.AkriConnectorsContainerRegistry;
@@ -30,7 +32,7 @@ import java.util.Arrays;
  */
 public final class AkriConnectorTemplateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnectorTemplate_CreateOrUpdate_MaximumSet.
@@ -49,6 +51,14 @@ public final class AkriConnectorTemplateCreateOrUpdateSamples {
                     .withManagedConfigurationSettings(new AkriConnectorTemplateRuntimeImageConfiguration()
                         .withImageConfigurationSettings(new AkriConnectorTemplateRuntimeImageConfigurationSettings()
                             .withImageName("akri-connectors/rest")
+                            .withReadinessProbe(new AkriConnectorTemplateReadinessProbe()
+                                .withExec(new AkriConnectorTemplateExecAction()
+                                    .withCommand(Arrays.asList("cat", "/tmp/ready")))
+                                .withFailureThreshold(3)
+                                .withInitialDelaySeconds(5)
+                                .withPeriodSeconds(10)
+                                .withSuccessThreshold(1)
+                                .withTimeoutSeconds(2))
                             .withRegistrySettings(new AkriConnectorsContainerRegistry().withContainerRegistrySettings(
                                 new AkriConnectorsContainerRegistrySettings().withRegistry("akribuilds.azurecr.io")))
                             .withTagDigestSettings(new AkriConnectorsTag().withTag("0.5.0-20250825.4")))))

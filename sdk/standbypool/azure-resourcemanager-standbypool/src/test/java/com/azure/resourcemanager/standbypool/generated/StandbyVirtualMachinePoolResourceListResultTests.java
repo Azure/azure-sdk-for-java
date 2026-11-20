@@ -13,16 +13,20 @@ public final class StandbyVirtualMachinePoolResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachinePoolResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":6994648788334081274,\"minReadyCapacity\":1638654012680876058},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"dfdosygexp\",\"provisioningState\":\"Canceled\"},\"location\":\"khmsbz\",\"tags\":{\"hqtrgqjbpf\":\"rzevdphlxaol\",\"tfell\":\"fsinzgvfcjrwzoxx\",\"lxofpdvhpfxxypin\":\"wfzitonpeqfpjk\"},\"id\":\"nmayhuybb\",\"name\":\"podepoo\",\"type\":\"inuvamiheogn\"}],\"nextLink\":\"xzxtheo\"}")
+            "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":4549495200602183852,\"minReadyCapacity\":8491583829652762372,\"postProvisioningDelay\":\"ctazakljlahbcryf\",\"dynamicSizing\":{\"enabled\":false}},\"virtualMachineState\":\"Hibernated\",\"attachedVirtualMachineScaleSetId\":\"ygexpaojakhmsb\",\"provisioningState\":\"Failed\"},\"location\":\"rzevdphlxaol\",\"tags\":{\"jbp\":\"trg\",\"jrwzox\":\"zfsinzgvf\",\"felluwfzitonpe\":\"j\",\"vhpfxxypininmay\":\"fpjkjlxofp\"},\"id\":\"uybbkpodep\",\"name\":\"oginuvamiheognar\",\"type\":\"zxtheotusivyevcc\"}],\"nextLink\":\"ihnhun\"}")
             .toObject(StandbyVirtualMachinePoolResourceListResult.class);
-        Assertions.assertEquals("khmsbz", model.value().get(0).location());
-        Assertions.assertEquals("rzevdphlxaol", model.value().get(0).tags().get("hqtrgqjbpf"));
-        Assertions.assertEquals(6994648788334081274L,
+        Assertions.assertEquals("rzevdphlxaol", model.value().get(0).location());
+        Assertions.assertEquals("trg", model.value().get(0).tags().get("jbp"));
+        Assertions.assertEquals(4549495200602183852L,
             model.value().get(0).properties().elasticityProfile().maxReadyCapacity());
-        Assertions.assertEquals(1638654012680876058L,
+        Assertions.assertEquals(8491583829652762372L,
             model.value().get(0).properties().elasticityProfile().minReadyCapacity());
-        Assertions.assertEquals(VirtualMachineState.RUNNING, model.value().get(0).properties().virtualMachineState());
-        Assertions.assertEquals("dfdosygexp", model.value().get(0).properties().attachedVirtualMachineScaleSetId());
-        Assertions.assertEquals("xzxtheo", model.nextLink());
+        Assertions.assertEquals("ctazakljlahbcryf",
+            model.value().get(0).properties().elasticityProfile().postProvisioningDelay());
+        Assertions.assertFalse(model.value().get(0).properties().elasticityProfile().dynamicSizing().enabled());
+        Assertions.assertEquals(VirtualMachineState.HIBERNATED,
+            model.value().get(0).properties().virtualMachineState());
+        Assertions.assertEquals("ygexpaojakhmsb", model.value().get(0).properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("ihnhun", model.nextLink());
     }
 }

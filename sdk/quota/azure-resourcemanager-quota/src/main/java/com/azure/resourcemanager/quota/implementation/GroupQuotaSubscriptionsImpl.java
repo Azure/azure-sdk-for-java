@@ -31,12 +31,8 @@ public final class GroupQuotaSubscriptionsImpl implements GroupQuotaSubscription
         Context context) {
         Response<GroupQuotaSubscriptionIdInner> inner
             = this.serviceClient().getWithResponse(managementGroupId, groupQuotaName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GroupQuotaSubscriptionIdImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GroupQuotaSubscriptionIdImpl(inner.getValue(), this.manager()));
     }
 
     public GroupQuotaSubscriptionId get(String managementGroupId, String groupQuotaName) {

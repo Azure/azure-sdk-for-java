@@ -9,7 +9,7 @@ package com.azure.resourcemanager.chaos.generated;
  */
 public final class ExperimentsCancelSamples {
     /*
-     * x-ms-original-file: 2025-01-01/Experiments_Cancel.json
+     * x-ms-original-file: 2026-11-01/Experiments_Cancel.json
      */
     /**
      * Sample code: Cancel a running Experiment.

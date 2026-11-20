@@ -11,7 +11,7 @@ public final class ScriptCmdletInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptCmdletInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"qnzarrwl\",\"timeout\":\"uijfqk\",\"audience\":\"Automation\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"pubjibw\",\"description\":\"f\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"Int\",\"name\":\"vksgplsaknynfsy\",\"description\":\"jphuopxodlqi\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}]},\"id\":\"ihleos\",\"name\":\"swsrms\",\"type\":\"yzrpzbchckqqzq\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"nnqvsa\",\"timeout\":\"qntorudsgsahmkyc\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Int\",\"name\":\"taeburuvdm\",\"description\":\"s\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}]},\"id\":\"b\",\"name\":\"q\",\"type\":\"efkifr\"}")
             .toObject(ScriptCmdletInner.class);
     }
 }

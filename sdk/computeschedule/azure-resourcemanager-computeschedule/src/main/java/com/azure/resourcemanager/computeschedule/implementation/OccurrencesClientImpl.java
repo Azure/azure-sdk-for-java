@@ -616,7 +616,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -625,7 +625,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> delayWithResponseAsync(String resourceGroupName,
@@ -640,7 +641,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -649,7 +650,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> delayWithResponse(String resourceGroupName, String scheduledActionName,
@@ -662,7 +664,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -672,7 +674,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the response from scheduled action resource requests, which contains the status of each resource along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> delayWithResponse(String resourceGroupName, String scheduledActionName,
@@ -685,7 +688,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -694,7 +697,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the response from scheduled action resource requests, which
+     * contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private
@@ -709,7 +713,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -718,7 +722,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
+     * contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -732,7 +737,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -742,7 +747,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the response from scheduled action resource requests, which
+     * contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
@@ -758,7 +764,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -767,7 +773,8 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response from scheduled action resource requests, which contains the status of each resource on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecurringActionsResourceOperationResultInner> delayAsync(String resourceGroupName,
@@ -777,7 +784,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -786,7 +793,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecurringActionsResourceOperationResultInner delay(String resourceGroupName, String scheduledActionName,
@@ -795,7 +802,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
     }
 
     /**
-     * A long-running resource action.
+     * The delay operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scheduledActionName The name of the ScheduledAction.
@@ -805,7 +812,7 @@ public final class OccurrencesClientImpl implements OccurrencesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response from scheduled action resource requests, which contains the status of each resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecurringActionsResourceOperationResultInner delay(String resourceGroupName, String scheduledActionName,

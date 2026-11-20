@@ -238,8 +238,13 @@ public final class QueryOptions implements JsonSerializable<QueryOptions> {
         jsonWriter.writeStringField("keywords", this.keywords);
         jsonWriter.writeNumberField("limit", this.limit);
         jsonWriter.writeStringField("continuationToken", this.continuationToken);
-        jsonWriter.writeArrayField("orderby", this.orderby,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeArrayField("orderby", this.orderby, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         if (this.filter != null) {
             jsonWriter.writeFieldName("filter");
             this.filter.writeTo(jsonWriter);

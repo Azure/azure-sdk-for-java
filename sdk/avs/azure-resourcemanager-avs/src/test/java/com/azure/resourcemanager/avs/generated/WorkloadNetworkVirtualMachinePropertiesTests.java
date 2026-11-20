@@ -12,8 +12,8 @@ public final class WorkloadNetworkVirtualMachinePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVirtualMachineProperties model = BinaryData
-            .fromString("{\"provisioningState\":\"Building\",\"displayName\":\"jcivmmg\",\"vmType\":\"EDGE\"}")
+            .fromString("{\"provisioningState\":\"Canceled\",\"displayName\":\"kwrrwo\",\"vmType\":\"EDGE\"}")
             .toObject(WorkloadNetworkVirtualMachineProperties.class);
-        Assertions.assertEquals("jcivmmg", model.displayName());
+        Assertions.assertEquals("kwrrwo", model.displayName());
     }
 }

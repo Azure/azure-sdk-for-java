@@ -12,8 +12,8 @@ public final class DeletedVaultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedVaultList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"vaultId\":\"nbacfi\",\"vaultDeletionTime\":\"2021-03-09T02:14:27Z\",\"purgeAt\":\"2021-03-20T17:28:20Z\"},\"id\":\"etqgtzxdpnq\",\"name\":\"qqwx\",\"type\":\"jfeallnwsub\"},{\"properties\":{\"vaultId\":\"jampmngnzscxaqw\",\"vaultDeletionTime\":\"2021-10-06T06:26:18Z\",\"purgeAt\":\"2021-04-26T00:03:43Z\"},\"id\":\"onq\",\"name\":\"pkvlrxn\",\"type\":\"ea\"}],\"nextLink\":\"ipheoflokeyyien\"}")
+            "{\"value\":[{\"properties\":{\"vaultId\":\"atkpnp\",\"vaultDeletionTime\":\"2021-11-18T04:15:49Z\",\"purgeAt\":\"2021-05-09T09:45:07Z\"},\"id\":\"czwtruwiqzbqjv\",\"name\":\"ovm\",\"type\":\"okacspk\"}],\"nextLink\":\"hzdobpxjmflbvvnc\"}")
             .toObject(DeletedVaultList.class);
-        Assertions.assertEquals("ipheoflokeyyien", model.nextLink());
+        Assertions.assertEquals("hzdobpxjmflbvvnc", model.nextLink());
     }
 }

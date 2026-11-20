@@ -12,7 +12,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -36,9 +35,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     private String url;
 
     /*
-     * The current state of the Compute Node. The Spot/Low-priority Compute Node has been preempted. Tasks which were
-     * running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes
-     * available.
+     * The current state of the Compute Node.
      */
     @Generated
     private BatchNodeState state;
@@ -99,7 +96,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * but not Job Preparation, Job Release or Start Tasks.
      */
     @Generated
-    private Integer totalTasksRun;
+    private int totalTasksRun;
 
     /*
      * The total number of currently running Job Tasks on the Compute Node. This includes Job Manager Tasks and normal
@@ -127,7 +124,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * this Compute Node since it was assigned to the Pool.
      */
     @Generated
-    private List<BatchTaskInfo> recentTasks;
+    private List<BatchTaskDetails> recentTasks;
 
     /*
      * The Task specified to run on the Compute Node as it joins the Pool.
@@ -139,19 +136,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * Runtime information about the execution of the StartTask on the Compute Node.
      */
     @Generated
-    private BatchStartTaskInfo startTaskInfo;
-
-    /*
-     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     */
-    @Generated
-    private List<BatchCertificateReference> certificateReferences;
+    private BatchStartTaskDetails startTaskInfo;
 
     /*
      * The list of errors that are currently being encountered by the Compute Node.
@@ -176,13 +161,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * Information about the Compute Node agent version and the time the Compute Node upgraded to a new version.
      */
     @Generated
-    private BatchNodeAgentInfo nodeAgentInfo;
-
-    /*
-     * Info about the current state of the virtual machine.
-     */
-    @Generated
-    private VirtualMachineInfo virtualMachineInfo;
+    private BatchNodeAgentDetails nodeAgentInfo;
 
     /**
      * Creates an instance of BatchNode class.
@@ -214,9 +193,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     }
 
     /**
-     * Get the state property: The current state of the Compute Node. The Spot/Low-priority Compute Node has been
-     * preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another
-     * Compute Node becomes available.
+     * Get the state property: The current state of the Compute Node.
      *
      * @return the state value.
      */
@@ -312,7 +289,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * @return the totalTasksRun value.
      */
     @Generated
-    public Integer getTotalTasksRun() {
+    public int getTotalTasksRun() {
         return this.totalTasksRun;
     }
 
@@ -358,7 +335,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * @return the recentTasks value.
      */
     @Generated
-    public List<BatchTaskInfo> getRecentTasks() {
+    public List<BatchTaskDetails> getRecentTasks() {
         return this.recentTasks;
     }
 
@@ -378,25 +355,8 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * @return the startTaskInfo value.
      */
     @Generated
-    public BatchStartTaskInfo getStartTaskInfo() {
+    public BatchStartTaskDetails getStartTaskInfo() {
         return this.startTaskInfo;
-    }
-
-    /**
-     * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
-     * specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @return the certificateReferences value.
-     */
-    @Generated
-    public List<BatchCertificateReference> getCertificateReferences() {
-        return this.certificateReferences;
     }
 
     /**
@@ -437,18 +397,8 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * @return the nodeAgentInfo value.
      */
     @Generated
-    public BatchNodeAgentInfo getNodeAgentInfo() {
+    public BatchNodeAgentDetails getNodeAgentInfo() {
         return this.nodeAgentInfo;
-    }
-
-    /**
-     * Get the virtualMachineInfo property: Info about the current state of the virtual machine.
-     *
-     * @return the virtualMachineInfo value.
-     */
-    @Generated
-    public VirtualMachineInfo getVirtualMachineInfo() {
-        return this.virtualMachineInfo;
     }
 
     /**
@@ -458,36 +408,6 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("url", this.url);
-        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
-        jsonWriter.writeStringField("schedulingState",
-            this.schedulingState == null ? null : this.schedulingState.toString());
-        jsonWriter.writeStringField("stateTransitionTime",
-            this.stateTransitionTime == null
-                ? null
-                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stateTransitionTime));
-        jsonWriter.writeStringField("lastBootTime",
-            this.lastBootTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastBootTime));
-        jsonWriter.writeStringField("allocationTime",
-            this.allocationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.allocationTime));
-        jsonWriter.writeStringField("ipAddress", this.ipAddress);
-        jsonWriter.writeStringField("affinityId", this.affinityId);
-        jsonWriter.writeStringField("vmSize", this.vmSize);
-        jsonWriter.writeNumberField("totalTasksRun", this.totalTasksRun);
-        jsonWriter.writeNumberField("runningTasksCount", this.runningTasksCount);
-        jsonWriter.writeNumberField("runningTaskSlotsCount", this.runningTaskSlotsCount);
-        jsonWriter.writeNumberField("totalTasksSucceeded", this.totalTasksSucceeded);
-        jsonWriter.writeArrayField("recentTasks", this.recentTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("startTask", this.startTask);
-        jsonWriter.writeJsonField("startTaskInfo", this.startTaskInfo);
-        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
-            (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeBooleanField("isDedicated", this.isDedicated);
-        jsonWriter.writeJsonField("endpointConfiguration", this.endpointConfiguration);
-        jsonWriter.writeJsonField("nodeAgentInfo", this.nodeAgentInfo);
-        jsonWriter.writeJsonField("virtualMachineInfo", this.virtualMachineInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -497,6 +417,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of BatchNode if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchNode.
      */
     @Generated
@@ -512,8 +433,6 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                     deserializedBatchNode.url = reader.getString();
                 } else if ("state".equals(fieldName)) {
                     deserializedBatchNode.state = BatchNodeState.fromString(reader.getString());
-                } else if ("schedulingState".equals(fieldName)) {
-                    deserializedBatchNode.schedulingState = SchedulingState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
                     deserializedBatchNode.stateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -525,12 +444,18 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("ipAddress".equals(fieldName)) {
                     deserializedBatchNode.ipAddress = reader.getString();
+                } else if ("ipv6Address".equals(fieldName)) {
+                    deserializedBatchNode.ipv6Address = reader.getString();
                 } else if ("affinityId".equals(fieldName)) {
                     deserializedBatchNode.affinityId = reader.getString();
                 } else if ("vmSize".equals(fieldName)) {
                     deserializedBatchNode.vmSize = reader.getString();
                 } else if ("totalTasksRun".equals(fieldName)) {
-                    deserializedBatchNode.totalTasksRun = reader.getNullable(JsonReader::getInt);
+                    deserializedBatchNode.totalTasksRun = reader.getInt();
+                } else if ("virtualMachineInfo".equals(fieldName)) {
+                    deserializedBatchNode.virtualMachineDetails = VirtualMachineDetails.fromJson(reader);
+                } else if ("schedulingState".equals(fieldName)) {
+                    deserializedBatchNode.schedulingState = SchedulingState.fromString(reader.getString());
                 } else if ("runningTasksCount".equals(fieldName)) {
                     deserializedBatchNode.runningTasksCount = reader.getNullable(JsonReader::getInt);
                 } else if ("runningTaskSlotsCount".equals(fieldName)) {
@@ -538,16 +463,13 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                 } else if ("totalTasksSucceeded".equals(fieldName)) {
                     deserializedBatchNode.totalTasksSucceeded = reader.getNullable(JsonReader::getInt);
                 } else if ("recentTasks".equals(fieldName)) {
-                    List<BatchTaskInfo> recentTasks = reader.readArray(reader1 -> BatchTaskInfo.fromJson(reader1));
+                    List<BatchTaskDetails> recentTasks
+                        = reader.readArray(reader1 -> BatchTaskDetails.fromJson(reader1));
                     deserializedBatchNode.recentTasks = recentTasks;
                 } else if ("startTask".equals(fieldName)) {
                     deserializedBatchNode.startTask = BatchStartTask.fromJson(reader);
                 } else if ("startTaskInfo".equals(fieldName)) {
-                    deserializedBatchNode.startTaskInfo = BatchStartTaskInfo.fromJson(reader);
-                } else if ("certificateReferences".equals(fieldName)) {
-                    List<BatchCertificateReference> certificateReferences
-                        = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
-                    deserializedBatchNode.certificateReferences = certificateReferences;
+                    deserializedBatchNode.startTaskInfo = BatchStartTaskDetails.fromJson(reader);
                 } else if ("errors".equals(fieldName)) {
                     List<BatchNodeError> errors = reader.readArray(reader1 -> BatchNodeError.fromJson(reader1));
                     deserializedBatchNode.errors = errors;
@@ -556,14 +478,50 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                 } else if ("endpointConfiguration".equals(fieldName)) {
                     deserializedBatchNode.endpointConfiguration = BatchNodeEndpointConfiguration.fromJson(reader);
                 } else if ("nodeAgentInfo".equals(fieldName)) {
-                    deserializedBatchNode.nodeAgentInfo = BatchNodeAgentInfo.fromJson(reader);
-                } else if ("virtualMachineInfo".equals(fieldName)) {
-                    deserializedBatchNode.virtualMachineInfo = VirtualMachineInfo.fromJson(reader);
+                    deserializedBatchNode.nodeAgentInfo = BatchNodeAgentDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedBatchNode;
         });
+    }
+
+    /*
+     * The IPv6 address that other Nodes can use to communicate with this Compute Node. Every Compute Node that is added
+     * to a Pool is assigned a unique IP address. Whenever a Compute Node is removed from a Pool, all of its local files
+     * are deleted, and the IP address is reclaimed and could be reused for new Compute Nodes. This property will not be
+     * present if the Pool is not configured for IPv6.
+     */
+    @Generated
+    private String ipv6Address;
+
+    /**
+     * Get the ipv6Address property: The IPv6 address that other Nodes can use to communicate with this Compute Node.
+     * Every Compute Node that is added to a Pool is assigned a unique IP address. Whenever a Compute Node is removed
+     * from a Pool, all of its local files are deleted, and the IP address is reclaimed and could be reused for new
+     * Compute Nodes. This property will not be present if the Pool is not configured for IPv6.
+     *
+     * @return the ipv6Address value.
+     */
+    @Generated
+    public String getIpv6Address() {
+        return this.ipv6Address;
+    }
+
+    /*
+     * Info about the current state of the virtual machine.
+     */
+    @Generated
+    private VirtualMachineDetails virtualMachineDetails;
+
+    /**
+     * Get the virtualMachineDetails property: Info about the current state of the virtual machine.
+     *
+     * @return the virtualMachineDetails value.
+     */
+    @Generated
+    public VirtualMachineDetails getVirtualMachineDetails() {
+        return this.virtualMachineDetails;
     }
 }

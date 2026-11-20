@@ -16,19 +16,19 @@ public final class UpdateDomainRequestParametersTests {
     public void testDeserialize() throws Exception {
         UpdateDomainRequestParameters model = BinaryData
             .fromString(
-                "{\"properties\":{\"userEngagementTracking\":\"Enabled\"},\"tags\":{\"zxibqeoj\":\"ocjjxhvpmouexh\"}}")
+                "{\"properties\":{\"userEngagementTracking\":\"Enabled\"},\"tags\":{\"uhrhcffcyddgl\":\"npzaoq\"}}")
             .toObject(UpdateDomainRequestParameters.class);
-        Assertions.assertEquals("ocjjxhvpmouexh", model.tags().get("zxibqeoj"));
+        Assertions.assertEquals("npzaoq", model.tags().get("uhrhcffcyddgl"));
         Assertions.assertEquals(UserEngagementTracking.ENABLED, model.userEngagementTracking());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateDomainRequestParameters model
-            = new UpdateDomainRequestParameters().withTags(mapOf("zxibqeoj", "ocjjxhvpmouexh"))
+            = new UpdateDomainRequestParameters().withTags(mapOf("uhrhcffcyddgl", "npzaoq"))
                 .withUserEngagementTracking(UserEngagementTracking.ENABLED);
         model = BinaryData.fromObject(model).toObject(UpdateDomainRequestParameters.class);
-        Assertions.assertEquals("ocjjxhvpmouexh", model.tags().get("zxibqeoj"));
+        Assertions.assertEquals("npzaoq", model.tags().get("uhrhcffcyddgl"));
         Assertions.assertEquals(UserEngagementTracking.ENABLED, model.userEngagementTracking());
     }
 

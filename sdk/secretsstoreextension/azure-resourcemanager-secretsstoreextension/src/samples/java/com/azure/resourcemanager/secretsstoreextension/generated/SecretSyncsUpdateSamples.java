@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class SecretSyncsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_Update.

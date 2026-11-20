@@ -234,8 +234,8 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDistributionPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("distributionPolicyId") String distributionPolicyId, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({ 204 })
@@ -245,8 +245,8 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDistributionPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("distributionPolicyId") String distributionPolicyId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("distributionPolicyId") String distributionPolicyId, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/routing/classificationPolicies/{classificationPolicyId}")
         @ExpectedResponses({ 200, 201 })
@@ -324,8 +324,8 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteClassificationPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("classificationPolicyId") String classificationPolicyId, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/routing/classificationPolicies/{classificationPolicyId}")
         @ExpectedResponses({ 204 })
@@ -335,8 +335,8 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteClassificationPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("classificationPolicyId") String classificationPolicyId, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @PathParam("classificationPolicyId") String classificationPolicyId, RequestOptions requestOptions,
+            Context context);
 
         @Patch("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({ 200, 201 })
@@ -410,7 +410,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteExceptionPolicy(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/routing/exceptionPolicies/{exceptionPolicyId}")
         @ExpectedResponses({ 204 })
@@ -420,7 +420,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteExceptionPolicySync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("exceptionPolicyId") String exceptionPolicyId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Patch("/routing/queues/{queueId}")
         @ExpectedResponses({ 200, 201 })
@@ -494,7 +494,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteQueue(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/routing/queues/{queueId}")
         @ExpectedResponses({ 204 })
@@ -504,7 +504,7 @@ public final class JobRouterAdministrationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteQueueSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -637,6 +637,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param distributionPolicyId Id of a distribution policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -707,6 +715,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param distributionPolicyId Id of a distribution policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -746,6 +762,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -783,6 +807,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      * 
      * @param distributionPolicyId Id of a distribution policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1032,9 +1064,8 @@ public final class JobRouterAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDistributionPolicyWithResponseAsync(String distributionPolicyId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteDistributionPolicy(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), distributionPolicyId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), distributionPolicyId, requestOptions, context));
     }
 
     /**
@@ -1051,9 +1082,8 @@ public final class JobRouterAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDistributionPolicyWithResponse(String distributionPolicyId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteDistributionPolicySync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            distributionPolicyId, accept, requestOptions, Context.NONE);
+            distributionPolicyId, requestOptions, Context.NONE);
     }
 
     /**
@@ -1119,6 +1149,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      * 
      * @param classificationPolicyId Id of a classification policy.
      * @param resource The resource instance.
@@ -1204,6 +1242,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param classificationPolicyId Id of a classification policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1250,6 +1296,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1294,6 +1348,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      * 
      * @param classificationPolicyId Id of a classification policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1571,9 +1633,8 @@ public final class JobRouterAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationPolicyWithResponseAsync(String classificationPolicyId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteClassificationPolicy(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), classificationPolicyId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), classificationPolicyId, requestOptions, context));
     }
 
     /**
@@ -1590,9 +1651,8 @@ public final class JobRouterAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationPolicyWithResponse(String classificationPolicyId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteClassificationPolicySync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            classificationPolicyId, accept, requestOptions, Context.NONE);
+            classificationPolicyId, requestOptions, Context.NONE);
     }
 
     /**
@@ -1658,6 +1718,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      * 
      * @param exceptionPolicyId Id of an exception policy.
      * @param resource The resource instance.
@@ -1743,6 +1811,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param exceptionPolicyId Id of an exception policy.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1789,6 +1865,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1833,6 +1917,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      * 
      * @param exceptionPolicyId Id of an exception policy.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2110,9 +2202,8 @@ public final class JobRouterAdministrationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteExceptionPolicyWithResponseAsync(String exceptionPolicyId,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteExceptionPolicy(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), exceptionPolicyId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), exceptionPolicyId, requestOptions, context));
     }
 
     /**
@@ -2128,9 +2219,8 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteExceptionPolicyWithResponse(String exceptionPolicyId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.deleteExceptionPolicySync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            exceptionPolicyId, accept, requestOptions, Context.NONE);
+            exceptionPolicyId, requestOptions, Context.NONE);
     }
 
     /**
@@ -2178,6 +2268,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      * 
      * @param queueId Id of a queue.
      * @param resource The resource instance.
@@ -2244,6 +2342,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param queueId Id of a queue.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2281,6 +2387,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
+     * 
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2315,6 +2429,14 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The entity tag for the response.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The last modified timestamp.</td></tr>
+     * </table>
      * 
      * @param queueId Id of a queue.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2554,9 +2676,8 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponseAsync(String queueId, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteQueue(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), queueId, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), queueId, requestOptions, context));
     }
 
     /**
@@ -2572,8 +2693,7 @@ public final class JobRouterAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteQueueSync(this.getEndpoint(), this.getServiceVersion().getVersion(), queueId, accept,
+        return service.deleteQueueSync(this.getEndpoint(), this.getServiceVersion().getVersion(), queueId,
             requestOptions, Context.NONE);
     }
 
@@ -2935,20 +3055,26 @@ public final class JobRouterAdministrationClientImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

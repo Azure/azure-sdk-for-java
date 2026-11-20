@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.durabletask.models.PublicNetworkAccess;
 import com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuUpdate;
@@ -15,21 +16,24 @@ public final class SchedulerPropertiesUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerPropertiesUpdate model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"endpoint\":\"wfndiodjpsl\",\"ipAllowlist\":[\"dpvwryoqpsoaccta\",\"akl\"],\"sku\":{\"name\":\"Consumption\",\"capacity\":276706615,\"redundancyState\":\"None\"}}")
+            "{\"provisioningState\":\"Accepted\",\"endpoint\":\"nermcl\",\"ipAllowlist\":[\"phoxus\",\"rpabg\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":593857578,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Disabled\"}")
             .toObject(SchedulerPropertiesUpdate.class);
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.ipAllowlist().get(0));
-        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.sku().name());
-        Assertions.assertEquals(276706615, model.sku().capacity());
+        Assertions.assertEquals("phoxus", model.ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.sku().name());
+        Assertions.assertEquals(593857578, model.sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchedulerPropertiesUpdate model
-            = new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("dpvwryoqpsoaccta", "akl"))
-                .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.CONSUMPTION).withCapacity(276706615));
+            = new SchedulerPropertiesUpdate().withIpAllowlist(Arrays.asList("phoxus", "rpabg"))
+                .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.DEDICATED).withCapacity(593857578))
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(SchedulerPropertiesUpdate.class);
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.ipAllowlist().get(0));
-        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.sku().name());
-        Assertions.assertEquals(276706615, model.sku().capacity());
+        Assertions.assertEquals("phoxus", model.ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.DEDICATED, model.sku().name());
+        Assertions.assertEquals(593857578, model.sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 }

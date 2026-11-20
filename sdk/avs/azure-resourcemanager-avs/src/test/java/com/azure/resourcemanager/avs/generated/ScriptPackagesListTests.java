@@ -12,8 +12,8 @@ public final class ScriptPackagesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptPackagesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"t\",\"version\":\"sfraoyzko\",\"company\":\"tlmngu\",\"uri\":\"wqaldsyu\"},\"id\":\"imerqfobwyznk\",\"name\":\"ykutwpf\",\"type\":\"pagmhrskdsnf\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"kgtdlmkkze\",\"version\":\"l\",\"company\":\"wpusdsttwvogv\",\"uri\":\"ejdcngqqmoakuf\"},\"id\":\"jzrwrdgrtw\",\"name\":\"enuuzkopbm\",\"type\":\"nrfdw\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"ziuiefozbhdm\",\"version\":\"l\",\"company\":\"qhoftrmaequiah\",\"uri\":\"cslfaoqzpiyylha\"},\"id\":\"swhccsphk\",\"name\":\"ivwitqscywugg\",\"type\":\"oluhczbwemh\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"rgzdwmsweyp\",\"version\":\"dxggicccnxqhuexm\",\"company\":\"tlstvlzywem\",\"uri\":\"rncsdtclu\"},\"id\":\"ypbsfgytguslfead\",\"name\":\"ygqukyhejh\",\"type\":\"isxgfp\"}],\"nextLink\":\"olppvksrpqvujz\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"sowueluqhhahhx\",\"version\":\"hmzk\",\"company\":\"jgwwspughftq\",\"uri\":\"hqxujxukndxdi\"},\"id\":\"jguufzdm\",\"name\":\"yqtfihwh\",\"type\":\"otzi\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"pph\",\"version\":\"zqzudph\",\"company\":\"mvdk\",\"uri\":\"ynwcvtbv\"},\"id\":\"yhmtnvyqiat\",\"name\":\"zwpcnpwzcjaesg\",\"type\":\"v\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"jguq\",\"version\":\"wygzlvdnkfxusem\",\"company\":\"zrmuhapfcqdps\",\"uri\":\"qvpsvuoymg\"},\"id\":\"elvezrypq\",\"name\":\"mfe\",\"type\":\"kerqwkyh\"}],\"nextLink\":\"bopgxedkowepbqp\"}")
             .toObject(ScriptPackagesList.class);
-        Assertions.assertEquals("olppvksrpqvujz", model.nextLink());
+        Assertions.assertEquals("bopgxedkowepbqp", model.nextLink());
     }
 }

@@ -7,18 +7,22 @@ package com.azure.resourcemanager.playwright.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.playwright.implementation.models.PlaywrightWorkspaceListResult;
 import com.azure.resourcemanager.playwright.models.EnablementStatus;
+import com.azure.resourcemanager.playwright.models.ManagedServiceIdentityType;
 import org.junit.jupiter.api.Assertions;
 
 public final class PlaywrightWorkspaceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"gejspodmailzyde\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"huxinpmqnj\"},\"location\":\"wixjsprozvcp\",\"tags\":{\"fdatsc\":\"gjvw\"},\"id\":\"dvpjhulsuuvmk\",\"name\":\"ozkrwfndiodjpslw\",\"type\":\"jdpvwryo\"}],\"nextLink\":\"soacctazakl\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"dataplaneUri\":\"msmjqulngsntn\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"cwrwclxxwrljdous\",\"reporting\":\"Enabled\",\"storageUri\":\"kocrcjdkwtnhx\"},\"identity\":{\"principalId\":\"biksq\",\"tenantId\":\"lssai\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bvmgxsabkyqduuji\":{\"principalId\":\"nzl\",\"clientId\":\"fmppe\"},\"rwjfe\":{\"principalId\":\"jczdzevndh\",\"clientId\":\"wpdappdsbdkv\"},\"phut\":{\"principalId\":\"nhutjeltmrldhugj\",\"clientId\":\"datqxhocdgeabl\"}}},\"location\":\"ndv\",\"tags\":{\"k\":\"zwyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\",\"cph\":\"ypnddhsgcb\"},\"id\":\"jkot\",\"name\":\"nqgoulzndli\",\"type\":\"wyqkgfgibm\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"dataplaneUri\":\"eqsrxybzqqedqyt\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\",\"workspaceId\":\"uflmm\",\"reporting\":\"Enabled\",\"storageUri\":\"modmglougpb\"},\"identity\":{\"principalId\":\"mutduqktaps\",\"tenantId\":\"gcue\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"q\":{\"principalId\":\"dosvqwhbmdgbbjf\",\"clientId\":\"gmbmbexppbh\"}}},\"location\":\"ol\",\"tags\":{\"gjyjgzjaoyfhrtxi\":\"psalgbqux\",\"rkujy\":\"n\",\"rlyxwjkcprbnw\":\"vlejuvfqa\"},\"id\":\"xgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"dataplaneUri\":\"wbnguitnwui\",\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"fizuckyf\",\"reporting\":\"Disabled\",\"storageUri\":\"idf\"},\"identity\":{\"principalId\":\"dzuhtymwi\",\"tenantId\":\"kfthwxmntei\",\"type\":\"None\",\"userAssignedIdentities\":{\"mxdcufufsrp\":{\"principalId\":\"km\",\"clientId\":\"c\"},\"mdwzjeiachboo\":{\"principalId\":\"zidnsezcxtbzsgfy\",\"clientId\":\"sne\"},\"inpvswjdkirsoodq\":{\"principalId\":\"lnrosfqp\",\"clientId\":\"ehzzvypyqrim\"},\"znorcj\":{\"principalId\":\"crmnohjtckwhds\",\"clientId\":\"fiyipjxsqwpgrj\"}}},\"location\":\"snb\",\"tags\":{\"zafb\":\"abnmocpcyshu\",\"oq\":\"jjgpb\"},\"id\":\"jmkljavbqidtqajz\",\"name\":\"ulpkudjkrl\",\"type\":\"hbzhfepg\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataplaneUri\":\"zloc\",\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"erhhbcsglumm\",\"reporting\":\"Disabled\",\"storageUri\":\"aodxo\"},\"identity\":{\"principalId\":\"dxkqpx\",\"tenantId\":\"ajionpimexgstxg\",\"type\":\"None\",\"userAssignedIdentities\":{\"qsqsy\":{\"principalId\":\"maajrmvdjwzrlo\",\"clientId\":\"clwhijcoejctbz\"}}},\"location\":\"kbfkg\",\"tags\":{\"xaxcfjpgddtocjjx\":\"kexxppof\",\"eojnxqbzvddn\":\"vpmouexhdzxib\",\"aoqvuh\":\"wndeicbtwnp\"},\"id\":\"hcffcyddglmjthjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"}],\"nextLink\":\"gdtopbobjogh\"}")
             .toObject(PlaywrightWorkspaceListResult.class);
-        Assertions.assertEquals("wixjsprozvcp", model.value().get(0).location());
-        Assertions.assertEquals("gjvw", model.value().get(0).tags().get("fdatsc"));
+        Assertions.assertEquals("ndv", model.value().get(0).location());
+        Assertions.assertEquals("zwyiftyhxhur", model.value().get(0).tags().get("k"));
         Assertions.assertEquals(EnablementStatus.DISABLED, model.value().get(0).properties().regionalAffinity());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().localAuth());
-        Assertions.assertEquals("soacctazakl", model.nextLink());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().reporting());
+        Assertions.assertEquals("kocrcjdkwtnhx", model.value().get(0).properties().storageUri());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("gdtopbobjogh", model.nextLink());
     }
 }

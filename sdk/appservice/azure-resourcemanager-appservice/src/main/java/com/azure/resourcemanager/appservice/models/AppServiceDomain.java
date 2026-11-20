@@ -23,7 +23,10 @@ import reactor.core.publisher.Mono;
  *
  * <p>Domains in Azure are purchased from 3rd party domain providers. By calling {@link Creatable#create()} or {@link
  * Creatable#createAsync()} you agree to the agreements listed in {@link AppServiceDomains#listAgreements(String)}.
+ *
+ * @deprecated Use azure-resourcemanager-domainregistration lib.
  */
+@Deprecated
 @Fluent
 public interface AppServiceDomain extends GroupableResource<AppServiceManager, DomainInner>, HasName,
     Refreshable<AppServiceDomain>, Updatable<AppServiceDomain.Update> {

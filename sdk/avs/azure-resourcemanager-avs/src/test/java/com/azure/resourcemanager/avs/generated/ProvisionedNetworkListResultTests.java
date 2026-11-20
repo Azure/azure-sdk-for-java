@@ -12,8 +12,8 @@ public final class ProvisionedNetworkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisionedNetworkListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"addressPrefix\":\"ygmi\",\"networkType\":\"hcxUplink\"},\"id\":\"zdnds\",\"name\":\"gnayqigynduh\",\"type\":\"vhqlkthumaqo\"}],\"nextLink\":\"gycdu\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"eqidbqfatpx\",\"networkType\":\"esxManagement\"},\"id\":\"cyjmoadsuvarmy\",\"name\":\"dmjsjqb\",\"type\":\"hhyxxrw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"uhpkxkgymar\",\"networkType\":\"esxReplication\"},\"id\":\"jxqugjhky\",\"name\":\"ubeddg\",\"type\":\"sofwqmzqalkrmnji\"},{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"q\",\"networkType\":\"hcxUplink\"},\"id\":\"nbyxbaaabjyv\",\"name\":\"yffimrzrtuzqogs\",\"type\":\"xnevfdnwn\"}],\"nextLink\":\"ewzsyyceuzsoib\"}")
             .toObject(ProvisionedNetworkListResult.class);
-        Assertions.assertEquals("gycdu", model.nextLink());
+        Assertions.assertEquals("ewzsyyceuzsoib", model.nextLink());
     }
 }

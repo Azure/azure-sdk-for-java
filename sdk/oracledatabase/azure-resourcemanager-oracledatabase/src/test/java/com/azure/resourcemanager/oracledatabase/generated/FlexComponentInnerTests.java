@@ -11,7 +11,7 @@ public final class FlexComponentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FlexComponentInner model = BinaryData.fromString(
-            "{\"properties\":{\"minimumCoreCount\":712320662,\"availableCoreCount\":270818491,\"availableDbStorageInGbs\":2069063654,\"runtimeMinimumCoreCount\":2131974737,\"shape\":\"cx\",\"availableMemoryInGbs\":1392453410,\"availableLocalStorageInGbs\":469495787,\"computeModel\":\"ofbshr\",\"hardwareType\":\"COMPUTE\",\"descriptionSummary\":\"uswdv\"},\"id\":\"ybycnunvj\",\"name\":\"rtkfawnopq\",\"type\":\"ikyzirtxdy\"}")
+            "{\"properties\":{\"minimumCoreCount\":1795826446,\"availableCoreCount\":1558509810,\"availableDbStorageInGbs\":1325865791,\"runtimeMinimumCoreCount\":1621588970,\"shape\":\"tgk\",\"availableMemoryInGbs\":864818876,\"availableLocalStorageInGbs\":1139587975,\"computeModel\":\"eclze\",\"hardwareType\":\"CELL\",\"descriptionSummary\":\"vh\"},\"id\":\"h\",\"name\":\"lodqkdlwwqfbu\",\"type\":\"lkxt\"}")
             .toObject(FlexComponentInner.class);
     }
 }

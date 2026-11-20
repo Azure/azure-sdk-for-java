@@ -63,18 +63,15 @@ public final class AuthenticationSettingImpl
     public AuthenticationSetting create() {
         this.innerObject = serviceManager.serviceClient()
             .getAuthenticationSettings()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName,
-                this.innerModel(), Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AuthenticationSetting create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAuthenticationSettings()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName,
-                this.innerModel(), context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(), context);
         return this;
     }
 
@@ -91,18 +88,15 @@ public final class AuthenticationSettingImpl
     public AuthenticationSetting apply() {
         this.innerObject = serviceManager.serviceClient()
             .getAuthenticationSettings()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName,
-                this.innerModel(), Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public AuthenticationSetting apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getAuthenticationSettings()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, authenticationSettingName,
-                this.innerModel(), context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, authenticationSettingName, this.innerModel(), context);
         return this;
     }
 
@@ -110,10 +104,15 @@ public final class AuthenticationSettingImpl
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.authenticationSettingName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authenticationsettings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
+            "healthModelName");
+        this.authenticationSettingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}",
+            "authenticationSettingName");
     }
 
     public AuthenticationSetting refresh() {

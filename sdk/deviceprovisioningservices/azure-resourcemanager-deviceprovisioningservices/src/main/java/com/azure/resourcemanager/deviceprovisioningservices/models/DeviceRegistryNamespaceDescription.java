@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Description of the Device Registry namespace that is linked to the provisioning service.
  */
-@Fluent
+@Immutable
 public final class DeviceRegistryNamespaceDescription implements JsonSerializable<DeviceRegistryNamespaceDescription> {
     /*
      * The ARM resource ID of the Device Registry namespace.
@@ -32,10 +32,30 @@ public final class DeviceRegistryNamespaceDescription implements JsonSerializabl
      */
     private String selectedUserAssignedIdentityResourceId;
 
+    /*
+     * Unique identifier of the linked Device Registry namespace.
+     */
+    private String namespaceUuid;
+
+    /*
+     * The data plane address of the linked Azure Device Registry namespace.
+     */
+    private String dataAddress;
+
+    /*
+     * Azure location of the linked Device Registry namespace.
+     */
+    private String location;
+
+    /*
+     * The linking state of this namespace.
+     */
+    private LinkingState linkingState;
+
     /**
      * Creates an instance of DeviceRegistryNamespaceDescription class.
      */
-    public DeviceRegistryNamespaceDescription() {
+    private DeviceRegistryNamespaceDescription() {
     }
 
     /**
@@ -45,17 +65,6 @@ public final class DeviceRegistryNamespaceDescription implements JsonSerializabl
      */
     public String resourceId() {
         return this.resourceId;
-    }
-
-    /**
-     * Set the resourceId property: The ARM resource ID of the Device Registry namespace.
-     * 
-     * @param resourceId the resourceId value to set.
-     * @return the DeviceRegistryNamespaceDescription object itself.
-     */
-    public DeviceRegistryNamespaceDescription withResourceId(String resourceId) {
-        this.resourceId = resourceId;
-        return this;
     }
 
     /**
@@ -69,19 +78,6 @@ public final class DeviceRegistryNamespaceDescription implements JsonSerializabl
     }
 
     /**
-     * Set the authenticationType property: Device Registry Namespace MI authentication type: UserAssigned,
-     * SystemAssigned.
-     * 
-     * @param authenticationType the authenticationType value to set.
-     * @return the DeviceRegistryNamespaceDescription object itself.
-     */
-    public DeviceRegistryNamespaceDescription
-        withAuthenticationType(DeviceRegistryNamespaceAuthenticationType authenticationType) {
-        this.authenticationType = authenticationType;
-        return this;
-    }
-
-    /**
      * Get the selectedUserAssignedIdentityResourceId property: The selected user-assigned identity resource Id
      * associated with Device Registry namespace. This is required when authenticationType is UserAssigned.
      * 
@@ -92,16 +88,39 @@ public final class DeviceRegistryNamespaceDescription implements JsonSerializabl
     }
 
     /**
-     * Set the selectedUserAssignedIdentityResourceId property: The selected user-assigned identity resource Id
-     * associated with Device Registry namespace. This is required when authenticationType is UserAssigned.
+     * Get the namespaceUuid property: Unique identifier of the linked Device Registry namespace.
      * 
-     * @param selectedUserAssignedIdentityResourceId the selectedUserAssignedIdentityResourceId value to set.
-     * @return the DeviceRegistryNamespaceDescription object itself.
+     * @return the namespaceUuid value.
      */
-    public DeviceRegistryNamespaceDescription
-        withSelectedUserAssignedIdentityResourceId(String selectedUserAssignedIdentityResourceId) {
-        this.selectedUserAssignedIdentityResourceId = selectedUserAssignedIdentityResourceId;
-        return this;
+    public String namespaceUuid() {
+        return this.namespaceUuid;
+    }
+
+    /**
+     * Get the dataAddress property: The data plane address of the linked Azure Device Registry namespace.
+     * 
+     * @return the dataAddress value.
+     */
+    public String dataAddress() {
+        return this.dataAddress;
+    }
+
+    /**
+     * Get the location property: Azure location of the linked Device Registry namespace.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the linkingState property: The linking state of this namespace.
+     * 
+     * @return the linkingState value.
+     */
+    public LinkingState linkingState() {
+        return this.linkingState;
     }
 
     /**
@@ -115,6 +134,10 @@ public final class DeviceRegistryNamespaceDescription implements JsonSerializabl
             this.authenticationType == null ? null : this.authenticationType.toString());
         jsonWriter.writeStringField("selectedUserAssignedIdentityResourceId",
             this.selectedUserAssignedIdentityResourceId);
+        jsonWriter.writeStringField("namespaceUuid", this.namespaceUuid);
+        jsonWriter.writeStringField("dataAddress", this.dataAddress);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("linkingState", this.linkingState == null ? null : this.linkingState.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -143,6 +166,15 @@ public final class DeviceRegistryNamespaceDescription implements JsonSerializabl
                 } else if ("selectedUserAssignedIdentityResourceId".equals(fieldName)) {
                     deserializedDeviceRegistryNamespaceDescription.selectedUserAssignedIdentityResourceId
                         = reader.getString();
+                } else if ("namespaceUuid".equals(fieldName)) {
+                    deserializedDeviceRegistryNamespaceDescription.namespaceUuid = reader.getString();
+                } else if ("dataAddress".equals(fieldName)) {
+                    deserializedDeviceRegistryNamespaceDescription.dataAddress = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeviceRegistryNamespaceDescription.location = reader.getString();
+                } else if ("linkingState".equals(fieldName)) {
+                    deserializedDeviceRegistryNamespaceDescription.linkingState
+                        = LinkingState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

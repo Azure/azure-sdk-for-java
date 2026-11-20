@@ -47,12 +47,8 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
         String localRulestackName, Context context) {
         Response<LocalRulestackResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, localRulestackName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new LocalRulestackResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LocalRulestackResourceImpl(inner.getValue(), this.manager()));
     }
 
     public LocalRulestackResource getByResourceGroup(String resourceGroupName, String localRulestackName) {
@@ -106,12 +102,8 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
         Context context) {
         Response<ChangelogInner> inner
             = this.serviceClient().getChangeLogWithResponse(resourceGroupName, localRulestackName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ChangelogImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ChangelogImpl(inner.getValue(), this.manager()));
     }
 
     public Changelog getChangeLog(String resourceGroupName, String localRulestackName) {
@@ -127,12 +119,8 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
         String email, Context context) {
         Response<SupportInfoInner> inner
             = this.serviceClient().getSupportInfoWithResponse(resourceGroupName, localRulestackName, email, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SupportInfoImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SupportInfoImpl(inner.getValue(), this.manager()));
     }
 
     public SupportInfo getSupportInfo(String resourceGroupName, String localRulestackName) {
@@ -148,12 +136,8 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
         String localRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top, Context context) {
         Response<AdvSecurityObjectListResponseInner> inner = this.serviceClient()
             .listAdvancedSecurityObjectsWithResponse(resourceGroupName, localRulestackName, type, skip, top, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AdvSecurityObjectListResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AdvSecurityObjectListResponseImpl(inner.getValue(), this.manager()));
     }
 
     public AdvSecurityObjectListResponse listAdvancedSecurityObjects(String resourceGroupName,
@@ -193,12 +177,8 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
         String localRulestackName, Context context) {
         Response<ListFirewallsResponseInner> inner
             = this.serviceClient().listFirewallsWithResponse(resourceGroupName, localRulestackName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ListFirewallsResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ListFirewallsResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ListFirewallsResponse listFirewalls(String resourceGroupName, String localRulestackName) {
@@ -228,12 +208,8 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
         String localRulestackName, SecurityServicesTypeEnum type, String skip, Integer top, Context context) {
         Response<SecurityServicesResponseInner> inner = this.serviceClient()
             .listSecurityServicesWithResponse(resourceGroupName, localRulestackName, type, skip, top, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SecurityServicesResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SecurityServicesResponseImpl(inner.getValue(), this.manager()));
     }
 
     public SecurityServicesResponse listSecurityServices(String resourceGroupName, String localRulestackName,
@@ -256,12 +232,16 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public LocalRulestackResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "localRulestackName");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
@@ -270,12 +250,16 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public Response<LocalRulestackResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "localRulestackName");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
@@ -284,12 +268,16 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "localRulestackName");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
@@ -298,12 +286,16 @@ public final class LocalRulestacksImpl implements LocalRulestacks {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String localRulestackName = ResourceManagerUtils.getValueFromIdByName(id, "localRulestacks");
+        String localRulestackName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}",
+            "localRulestackName");
         if (localRulestackName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));

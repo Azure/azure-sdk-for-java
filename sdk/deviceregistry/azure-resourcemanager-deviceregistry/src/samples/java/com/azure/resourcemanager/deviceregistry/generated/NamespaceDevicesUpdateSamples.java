@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/Update_NamespaceDevice.json
+     * x-ms-original-file: 2026-03-01-preview/Update_NamespaceDevice.json
      */
     /**
      * Sample code: Update_NamespaceDevices.
@@ -33,10 +33,10 @@ public final class NamespaceDevicesUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(new NamespaceDeviceUpdateProperties()
-                .withEndpoints(new MessagingEndpoints()
-                    .withOutbound(new OutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
-                            .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
+                .withEndpoints(
+                    new MessagingEndpoints().withOutbound(new OutboundEndpoints().withAssigned(mapOf("iothubEndpoint",
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IotHubs")
+                            .withAddress("https://iothub-for-dps.azure-devices.net")))))
                 .withAttributes(mapOf("deviceType", BinaryData.fromBytes("sensor".getBytes(StandardCharsets.UTF_8)),
                     "deviceOwner", BinaryData.fromBytes("IT".getBytes(StandardCharsets.UTF_8)), "deviceCategory",
                     BinaryData.fromBytes("16".getBytes(StandardCharsets.UTF_8))))

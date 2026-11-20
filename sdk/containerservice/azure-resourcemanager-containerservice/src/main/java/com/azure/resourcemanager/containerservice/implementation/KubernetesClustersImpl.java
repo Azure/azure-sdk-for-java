@@ -98,7 +98,7 @@ public class KubernetesClustersImpl extends
     public Set<String> listKubernetesVersions(Region region) {
         TreeSet<String> kubernetesVersions = new TreeSet<>();
         OrchestratorVersionProfileListResultInner inner
-            = this.manager().serviceClient().getContainerServices().listOrchestrators(region.name());
+            = this.manager().orchestratorClient().getContainerServices().listOrchestrators(region.name());
 
         if (inner != null && inner.orchestrators() != null && inner.orchestrators().size() > 0) {
             for (OrchestratorVersionProfile orchestrator : inner.orchestrators()) {
@@ -114,7 +114,7 @@ public class KubernetesClustersImpl extends
     @Override
     public Mono<Set<String>> listKubernetesVersionsAsync(Region region) {
         return this.manager()
-            .serviceClient()
+            .orchestratorClient()
             .getContainerServices()
             .listOrchestratorsAsync(region.name())
             .map(inner -> {
@@ -140,7 +140,7 @@ public class KubernetesClustersImpl extends
     public PagedFlux<OrchestratorVersionProfile> listOrchestratorsAsync(Region region,
         ContainerServiceResourceTypes resourceTypes) {
         return new PagedFlux<>(() -> this.manager()
-            .serviceClient()
+            .orchestratorClient()
             .getContainerServices()
             .listOrchestratorsWithResponseAsync(region.name(), resourceTypes.toString())
             .map(response -> new PagedResponseBase<Void, OrchestratorVersionProfile>(response.getRequest(),

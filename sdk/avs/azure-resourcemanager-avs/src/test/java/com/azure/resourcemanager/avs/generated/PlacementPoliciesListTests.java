@@ -13,10 +13,10 @@ public final class PlacementPoliciesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlacementPoliciesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"j\",\"provisioningState\":\"Canceled\"},\"id\":\"ok\",\"name\":\"jljyoxgv\",\"type\":\"ltbgsncghkj\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"bijhtxfvgxbf\",\"provisioningState\":\"Deleting\"},\"id\":\"eh\",\"name\":\"pvecxgodeb\",\"type\":\"qkkrb\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"riwflzlfb\",\"provisioningState\":\"Building\"},\"id\":\"zycispn\",\"name\":\"zahmgkbrpyydhibn\",\"type\":\"qqkpikadrg\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"n\",\"provisioningState\":\"Canceled\"},\"id\":\"hijggme\",\"name\":\"fsiarbutr\",\"type\":\"vpnazzm\"}],\"nextLink\":\"runmp\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"ewgdrjervn\",\"provisioningState\":\"Canceled\"},\"id\":\"pehindoygm\",\"name\":\"fthnzdn\",\"type\":\"sl\"}],\"nextLink\":\"ayqigynduhav\"}")
             .toObject(PlacementPoliciesList.class);
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.value().get(0).properties().state());
-        Assertions.assertEquals("j", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("runmp", model.nextLink());
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.value().get(0).properties().state());
+        Assertions.assertEquals("ewgdrjervn", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("ayqigynduhav", model.nextLink());
     }
 }

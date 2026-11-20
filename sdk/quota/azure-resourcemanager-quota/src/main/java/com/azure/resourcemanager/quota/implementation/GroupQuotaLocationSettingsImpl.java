@@ -30,12 +30,8 @@ public final class GroupQuotaLocationSettingsImpl implements GroupQuotaLocationS
         String resourceProviderName, String location, Context context) {
         Response<GroupQuotasEnforcementStatusInner> inner = this.serviceClient()
             .getWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GroupQuotasEnforcementStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GroupQuotasEnforcementStatusImpl(inner.getValue(), this.manager()));
     }
 
     public GroupQuotasEnforcementStatus get(String managementGroupId, String groupQuotaName,

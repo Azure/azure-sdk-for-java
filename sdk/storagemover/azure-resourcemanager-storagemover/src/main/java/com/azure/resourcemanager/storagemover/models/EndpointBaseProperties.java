@@ -27,6 +27,11 @@ public class EndpointBaseProperties implements JsonSerializable<EndpointBaseProp
     private String description;
 
     /*
+     * The Endpoint resource kind source or target.
+     */
+    private EndpointKind endpointKind;
+
+    /*
      * The provisioning state of this resource.
      */
     private ProvisioningState provisioningState;
@@ -67,6 +72,26 @@ public class EndpointBaseProperties implements JsonSerializable<EndpointBaseProp
     }
 
     /**
+     * Get the endpointKind property: The Endpoint resource kind source or target.
+     * 
+     * @return the endpointKind value.
+     */
+    public EndpointKind endpointKind() {
+        return this.endpointKind;
+    }
+
+    /**
+     * Set the endpointKind property: The Endpoint resource kind source or target.
+     * 
+     * @param endpointKind the endpointKind value to set.
+     * @return the EndpointBaseProperties object itself.
+     */
+    public EndpointBaseProperties withEndpointKind(EndpointKind endpointKind) {
+        this.endpointKind = endpointKind;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of this resource.
      * 
      * @return the provisioningState value.
@@ -94,6 +119,7 @@ public class EndpointBaseProperties implements JsonSerializable<EndpointBaseProp
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("endpointKind", this.endpointKind == null ? null : this.endpointKind.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -125,6 +151,8 @@ public class EndpointBaseProperties implements JsonSerializable<EndpointBaseProp
                     return AzureStorageBlobContainerEndpointProperties.fromJson(readerToUse.reset());
                 } else if ("NfsMount".equals(discriminatorValue)) {
                     return NfsMountEndpointProperties.fromJson(readerToUse.reset());
+                } else if ("S3WithHMAC".equals(discriminatorValue)) {
+                    return S3WithHmacEndpointProperties.fromJson(readerToUse.reset());
                 } else if ("AzureStorageSmbFileShare".equals(discriminatorValue)) {
                     return AzureStorageSmbFileShareEndpointProperties.fromJson(readerToUse.reset());
                 } else if ("SmbMount".equals(discriminatorValue)) {
@@ -151,6 +179,8 @@ public class EndpointBaseProperties implements JsonSerializable<EndpointBaseProp
                     deserializedEndpointBaseProperties.endpointType = EndpointType.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedEndpointBaseProperties.description = reader.getString();
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedEndpointBaseProperties.endpointKind = EndpointKind.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedEndpointBaseProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

@@ -75,7 +75,7 @@ public interface ExascaleDbNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return exascaleDbNode action response.
      */
     DbActionResponse action(String resourceGroupName, String exadbVmClusterName, String exascaleDbNodeName,
         DbNodeAction body);
@@ -91,7 +91,7 @@ public interface ExascaleDbNodes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return exascaleDbNode action response.
      */
     DbActionResponse action(String resourceGroupName, String exadbVmClusterName, String exascaleDbNodeName,
         DbNodeAction body, Context context);

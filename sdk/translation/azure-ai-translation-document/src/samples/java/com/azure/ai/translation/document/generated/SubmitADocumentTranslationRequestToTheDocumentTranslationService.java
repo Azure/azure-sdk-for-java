@@ -6,6 +6,7 @@ package com.azure.ai.translation.document.generated;
 
 import com.azure.ai.translation.document.DocumentTranslationClient;
 import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
+import com.azure.ai.translation.document.models.BatchOptions;
 import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.StorageInputType;
@@ -34,15 +35,16 @@ public class SubmitADocumentTranslationRequestToTheDocumentTranslationService {
                     .setStorageSource(TranslationStorageSource.AZURE_BLOB),
                 Arrays.asList(
                     new TranslationTarget("https://myblob.blob.core.windows.net/destinationContainer1", "fr")
-                        .setCategory("general")
+                        .setDeploymentName("gpt-4o-mini")
                         .setGlossaries(Arrays.asList(new TranslationGlossary(
                             "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf", "XLIFF")
                                 .setStorageSource(TranslationStorageSource.AZURE_BLOB)))
                         .setStorageSource(TranslationStorageSource.AZURE_BLOB),
                     new TranslationTarget("https://myblob.blob.core.windows.net/destinationContainer2", "es")
-                        .setCategory("general")
+                        .setDeploymentName("gpt-4o-mini")
                         .setStorageSource(TranslationStorageSource.AZURE_BLOB)))
-                            .setStorageType(StorageInputType.FOLDER))));
+                            .setStorageType(StorageInputType.FOLDER)))
+                                .setOptions(new BatchOptions().setTranslateTextWithinImage(true)));
         // END:com.azure.ai.translation.document.generated.translation.submit-a-document-translation-request-to-the-document-translation-service
     }
 }

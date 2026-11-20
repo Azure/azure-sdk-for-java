@@ -35,6 +35,11 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
      */
     private AzureKeyVaultSmbCredentials credentials;
 
+    /*
+     * Source type to differentiate SMBMount and FSX-SMB endpoints. Default is SMBMount.
+     */
+    private SmbMountSourceType sourceType;
+
     /**
      * Creates an instance of SmbMountEndpointProperties class.
      */
@@ -114,6 +119,26 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
     }
 
     /**
+     * Get the sourceType property: Source type to differentiate SMBMount and FSX-SMB endpoints. Default is SMBMount.
+     * 
+     * @return the sourceType value.
+     */
+    public SmbMountSourceType sourceType() {
+        return this.sourceType;
+    }
+
+    /**
+     * Set the sourceType property: Source type to differentiate SMBMount and FSX-SMB endpoints. Default is SMBMount.
+     * 
+     * @param sourceType the sourceType value to set.
+     * @return the SmbMountEndpointProperties object itself.
+     */
+    public SmbMountEndpointProperties withSourceType(SmbMountSourceType sourceType) {
+        this.sourceType = sourceType;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -126,13 +151,24 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
      * {@inheritDoc}
      */
     @Override
+    public SmbMountEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("host", this.host);
         jsonWriter.writeStringField("shareName", this.shareName);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
         jsonWriter.writeJsonField("credentials", this.credentials);
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -154,6 +190,9 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
 
                 if ("description".equals(fieldName)) {
                     deserializedSmbMountEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSmbMountEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));
@@ -165,6 +204,9 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
                     deserializedSmbMountEndpointProperties.endpointType = EndpointType.fromString(reader.getString());
                 } else if ("credentials".equals(fieldName)) {
                     deserializedSmbMountEndpointProperties.credentials = AzureKeyVaultSmbCredentials.fromJson(reader);
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties.sourceType
+                        = SmbMountSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

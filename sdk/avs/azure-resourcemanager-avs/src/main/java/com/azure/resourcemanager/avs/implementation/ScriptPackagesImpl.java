@@ -42,12 +42,8 @@ public final class ScriptPackagesImpl implements ScriptPackages {
         String scriptPackageName, Context context) {
         Response<ScriptPackageInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, scriptPackageName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ScriptPackageImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ScriptPackageImpl(inner.getValue(), this.manager()));
     }
 
     public ScriptPackage get(String resourceGroupName, String privateCloudName, String scriptPackageName) {

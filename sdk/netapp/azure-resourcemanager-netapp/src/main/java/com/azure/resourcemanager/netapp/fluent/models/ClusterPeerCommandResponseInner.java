@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponseProperties;
 import java.io.IOException;
 
 /**
@@ -17,10 +18,9 @@ import java.io.IOException;
 @Immutable
 public final class ClusterPeerCommandResponseInner implements JsonSerializable<ClusterPeerCommandResponseInner> {
     /*
-     * A command that needs to be run on the external ONTAP to accept cluster peering. Will only be present if
-     * <code>clusterPeeringStatus</code> is <code>pending</code>
+     * Represents the properties of the cluster peer command response.
      */
-    private String peerAcceptCommand;
+    private ClusterPeerCommandResponseProperties properties;
 
     /**
      * Creates an instance of ClusterPeerCommandResponseInner class.
@@ -29,14 +29,12 @@ public final class ClusterPeerCommandResponseInner implements JsonSerializable<C
     }
 
     /**
-     * Get the peerAcceptCommand property: A command that needs to be run on the external ONTAP to accept cluster
-     * peering. Will only be present if &lt;code&gt;clusterPeeringStatus&lt;/code&gt; is
-     * &lt;code&gt;pending&lt;/code&gt;.
+     * Get the properties property: Represents the properties of the cluster peer command response.
      * 
-     * @return the peerAcceptCommand value.
+     * @return the properties value.
      */
-    public String peerAcceptCommand() {
-        return this.peerAcceptCommand;
+    public ClusterPeerCommandResponseProperties properties() {
+        return this.properties;
     }
 
     /**
@@ -45,6 +43,9 @@ public final class ClusterPeerCommandResponseInner implements JsonSerializable<C
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 
     /**
@@ -53,7 +54,7 @@ public final class ClusterPeerCommandResponseInner implements JsonSerializable<C
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("peerAcceptCommand", this.peerAcceptCommand);
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -73,8 +74,9 @@ public final class ClusterPeerCommandResponseInner implements JsonSerializable<C
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("peerAcceptCommand".equals(fieldName)) {
-                    deserializedClusterPeerCommandResponseInner.peerAcceptCommand = reader.getString();
+                if ("properties".equals(fieldName)) {
+                    deserializedClusterPeerCommandResponseInner.properties
+                        = ClusterPeerCommandResponseProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

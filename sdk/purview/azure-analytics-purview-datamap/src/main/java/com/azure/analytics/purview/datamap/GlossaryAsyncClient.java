@@ -4768,6 +4768,16 @@ public final class GlossaryAsyncClient {
         };
 
     @Generated
+    private static final TypeReference<List<AtlasGlossaryCategory>> TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_CATEGORY
+        = new TypeReference<List<AtlasGlossaryCategory>>() {
+        };
+
+    @Generated
+    private static final TypeReference<Map<String, List<AtlasRelatedCategoryHeader>>> TYPE_REFERENCE_MAP_STRING_LIST_ATLAS_RELATED_CATEGORY_HEADER
+        = new TypeReference<Map<String, List<AtlasRelatedCategoryHeader>>>() {
+        };
+
+    @Generated
     private static final TypeReference<List<AtlasRelatedTermHeader>> TYPE_REFERENCE_LIST_ATLAS_RELATED_TERM_HEADER
         = new TypeReference<List<AtlasRelatedTermHeader>>() {
         };
@@ -4778,18 +4788,8 @@ public final class GlossaryAsyncClient {
         };
 
     @Generated
-    private static final TypeReference<Map<String, List<AtlasRelatedCategoryHeader>>> TYPE_REFERENCE_MAP_STRING_LIST_ATLAS_RELATED_CATEGORY_HEADER
-        = new TypeReference<Map<String, List<AtlasRelatedCategoryHeader>>>() {
-        };
-
-    @Generated
     private static final TypeReference<List<AtlasRelatedObjectId>> TYPE_REFERENCE_LIST_ATLAS_RELATED_OBJECT_ID
         = new TypeReference<List<AtlasRelatedObjectId>>() {
-        };
-
-    @Generated
-    private static final TypeReference<List<AtlasGlossaryCategory>> TYPE_REFERENCE_LIST_ATLAS_GLOSSARY_CATEGORY
-        = new TypeReference<List<AtlasGlossaryCategory>>() {
         };
 
     @Generated

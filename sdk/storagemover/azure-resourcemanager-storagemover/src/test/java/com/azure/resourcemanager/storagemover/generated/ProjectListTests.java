@@ -12,8 +12,8 @@ public final class ProjectListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"vjsllrmvvdfw\",\"provisioningState\":\"Deleting\"},\"id\":\"n\",\"name\":\"ulexxbczwtr\",\"type\":\"wiqzbqjvsovmyo\"}],\"nextLink\":\"cspkwlhzdobpxjmf\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"vyifqrvkdvjsl\",\"provisioningState\":\"Succeeded\"},\"id\":\"vdfwatkpn\",\"name\":\"ulexxbczwtr\",\"type\":\"wiqzbqjvsovmyo\"},{\"properties\":{\"description\":\"spkwlhzdobpxjm\",\"provisioningState\":\"Failed\"},\"id\":\"vnchrkcci\",\"name\":\"wzjuqk\",\"type\":\"rsa\"}],\"nextLink\":\"wkuofoskghsauu\"}")
             .toObject(ProjectList.class);
-        Assertions.assertEquals("cspkwlhzdobpxjmf", model.nextLink());
+        Assertions.assertEquals("wkuofoskghsauu", model.nextLink());
     }
 }

@@ -32,12 +32,8 @@ public final class DnsResolverPolicyVirtualNetworkLinksImpl implements DnsResolv
         Response<DnsResolverPolicyVirtualNetworkLinkInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DnsResolverPolicyVirtualNetworkLinkImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DnsResolverPolicyVirtualNetworkLinkImpl(inner.getValue(), this.manager()));
     }
 
     public DnsResolverPolicyVirtualNetworkLink get(String resourceGroupName, String dnsResolverPolicyName,
@@ -80,18 +76,23 @@ public final class DnsResolverPolicyVirtualNetworkLinksImpl implements DnsResolv
     }
 
     public DnsResolverPolicyVirtualNetworkLink getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverPolicies");
+        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyName");
         if (dnsResolverPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverPolicies'.", id)));
         }
-        String dnsResolverPolicyVirtualNetworkLinkName
-            = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkLinks");
+        String dnsResolverPolicyVirtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyVirtualNetworkLinkName");
         if (dnsResolverPolicyVirtualNetworkLinkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
@@ -103,18 +104,23 @@ public final class DnsResolverPolicyVirtualNetworkLinksImpl implements DnsResolv
     }
 
     public Response<DnsResolverPolicyVirtualNetworkLink> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverPolicies");
+        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyName");
         if (dnsResolverPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverPolicies'.", id)));
         }
-        String dnsResolverPolicyVirtualNetworkLinkName
-            = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkLinks");
+        String dnsResolverPolicyVirtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyVirtualNetworkLinkName");
         if (dnsResolverPolicyVirtualNetworkLinkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
@@ -124,18 +130,23 @@ public final class DnsResolverPolicyVirtualNetworkLinksImpl implements DnsResolv
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverPolicies");
+        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyName");
         if (dnsResolverPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverPolicies'.", id)));
         }
-        String dnsResolverPolicyVirtualNetworkLinkName
-            = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkLinks");
+        String dnsResolverPolicyVirtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyVirtualNetworkLinkName");
         if (dnsResolverPolicyVirtualNetworkLinkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));
@@ -146,18 +157,23 @@ public final class DnsResolverPolicyVirtualNetworkLinksImpl implements DnsResolv
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverPolicies");
+        String dnsResolverPolicyName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyName");
         if (dnsResolverPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverPolicies'.", id)));
         }
-        String dnsResolverPolicyVirtualNetworkLinkName
-            = ResourceManagerUtils.getValueFromIdByName(id, "virtualNetworkLinks");
+        String dnsResolverPolicyVirtualNetworkLinkName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}",
+            "dnsResolverPolicyVirtualNetworkLinkName");
         if (dnsResolverPolicyVirtualNetworkLinkName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworkLinks'.", id)));

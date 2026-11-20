@@ -4,53 +4,73 @@
 
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Sku name of the Cloud HSM Cluster.
  */
-public enum CloudHsmClusterSkuName {
+public final class CloudHsmClusterSkuName extends ExpandableStringEnum<CloudHsmClusterSkuName> {
     /**
-     * Enum value Standard_B1.
+     * Standard_B1 SKU.
      */
-    STANDARD_B1("Standard_B1"),
+    public static final CloudHsmClusterSkuName STANDARD_B1 = fromString("Standard_B1");
 
     /**
-     * Enum value Standard B10.
+     * Standard B10 SKU.
      */
-    STANDARD_B10("Standard B10");
+    public static final CloudHsmClusterSkuName STANDARD_B10 = fromString("Standard B10");
 
     /**
-     * The actual serialized value for a CloudHsmClusterSkuName instance.
+     * Standard_B1v2 SKU.
      */
-    private final String value;
-
-    CloudHsmClusterSkuName(String value) {
-        this.value = value;
-    }
+    public static final CloudHsmClusterSkuName STANDARD_B1V2 = fromString("Standard_B1v2");
 
     /**
-     * Parses a serialized value to a CloudHsmClusterSkuName instance.
+     * Standard_B5v2 SKU.
+     */
+    public static final CloudHsmClusterSkuName STANDARD_B5V2 = fromString("Standard_B5v2");
+
+    /**
+     * Standard_B10v2 SKU.
+     */
+    public static final CloudHsmClusterSkuName STANDARD_B10V2 = fromString("Standard_B10v2");
+
+    /**
+     * Standard_B15v2 SKU.
+     */
+    public static final CloudHsmClusterSkuName STANDARD_B15V2 = fromString("Standard_B15v2");
+
+    /**
+     * Standard_B20v2 SKU.
+     */
+    public static final CloudHsmClusterSkuName STANDARD_B20V2 = fromString("Standard_B20v2");
+
+    /**
+     * Creates a new instance of CloudHsmClusterSkuName value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed CloudHsmClusterSkuName object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static CloudHsmClusterSkuName fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        CloudHsmClusterSkuName[] items = CloudHsmClusterSkuName.values();
-        for (CloudHsmClusterSkuName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public CloudHsmClusterSkuName() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a CloudHsmClusterSkuName from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding CloudHsmClusterSkuName.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static CloudHsmClusterSkuName fromString(String name) {
+        return fromString(name, CloudHsmClusterSkuName.class);
+    }
+
+    /**
+     * Gets known CloudHsmClusterSkuName values.
+     * 
+     * @return known CloudHsmClusterSkuName values.
+     */
+    public static Collection<CloudHsmClusterSkuName> values() {
+        return values(CloudHsmClusterSkuName.class);
     }
 }

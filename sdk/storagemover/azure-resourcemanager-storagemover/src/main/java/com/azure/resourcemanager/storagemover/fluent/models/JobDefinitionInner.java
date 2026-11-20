@@ -11,11 +11,15 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
 import com.azure.resourcemanager.storagemover.models.JobDefinitionPropertiesSourceTargetMap;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.JobType;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * The Job Definition resource.
@@ -373,6 +377,233 @@ public final class JobDefinitionInner extends ProxyResource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the connections property: List of connections associated to this job.
+     * 
+     * @return the connections value.
+     */
+    public List<String> connections() {
+        return this.innerProperties() == null ? null : this.innerProperties().connections();
+    }
+
+    /**
+     * Set the connections property: List of connections associated to this job.
+     * 
+     * @param connections the connections value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withConnections(List<String> connections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withConnections(connections);
+        return this;
+    }
+
+    /**
+     * Get the schedule property: Schedule information for the Job Definition.
+     * 
+     * @return the schedule value.
+     */
+    public ScheduleInfo schedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().schedule();
+    }
+
+    /**
+     * Set the schedule property: Schedule information for the Job Definition.
+     * 
+     * @param schedule the schedule value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withSchedule(ScheduleInfo schedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withSchedule(schedule);
+        return this;
+    }
+
+    /**
+     * Get the dataIntegrityValidation property: The checksum validation mode for the job definition.
+     * 
+     * @return the dataIntegrityValidation value.
+     */
+    public DataIntegrityValidation dataIntegrityValidation() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataIntegrityValidation();
+    }
+
+    /**
+     * Set the dataIntegrityValidation property: The checksum validation mode for the job definition.
+     * 
+     * @param dataIntegrityValidation the dataIntegrityValidation value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withDataIntegrityValidation(dataIntegrityValidation);
+        return this;
+    }
+
+    /**
+     * Get the preservePermissions property: Boolean to preserve permissions or not.
+     * 
+     * @return the preservePermissions value.
+     */
+    public Boolean preservePermissions() {
+        return this.innerProperties() == null ? null : this.innerProperties().preservePermissions();
+    }
+
+    /**
+     * Set the preservePermissions property: Boolean to preserve permissions or not.
+     * 
+     * @param preservePermissions the preservePermissions value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withPreservePermissions(Boolean preservePermissions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withPreservePermissions(preservePermissions);
+        return this;
+    }
+
+    /**
+     * Get the isCrossTenantJob property: Indicates that this Job Definition is a cross-tenant job where the
+     * counterpart endpoint resides in a different Azure AD tenant. When true,
+     * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+     * provided. Defaults to false. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @return the isCrossTenantJob value.
+     */
+    public Boolean isCrossTenantJob() {
+        return this.innerProperties() == null ? null : this.innerProperties().isCrossTenantJob();
+    }
+
+    /**
+     * Set the isCrossTenantJob property: Indicates that this Job Definition is a cross-tenant job where the
+     * counterpart endpoint resides in a different Azure AD tenant. When true,
+     * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+     * provided. Defaults to false. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @param isCrossTenantJob the isCrossTenantJob value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withIsCrossTenantJob(Boolean isCrossTenantJob) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withIsCrossTenantJob(isCrossTenantJob);
+        return this;
+    }
+
+    /**
+     * Get the crossTenantEndpointTenantId property: The Azure AD tenant ID of the cross-tenant source endpoint.
+     * Required when
+     * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @return the crossTenantEndpointTenantId value.
+     */
+    public String crossTenantEndpointTenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().crossTenantEndpointTenantId();
+    }
+
+    /**
+     * Set the crossTenantEndpointTenantId property: The Azure AD tenant ID of the cross-tenant source endpoint.
+     * Required when
+     * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @param crossTenantEndpointTenantId the crossTenantEndpointTenantId value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withCrossTenantEndpointTenantId(String crossTenantEndpointTenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withCrossTenantEndpointTenantId(crossTenantEndpointTenantId);
+        return this;
+    }
+
+    /**
+     * Get the crossTenantEndpointResourceId property: Full ARM resource ID of the cross-tenant (foreign) endpoint. On
+     * the
+     * source-tenant copy this is the TARGET endpoint; on the
+     * target-tenant copy this is the SOURCE endpoint.
+     * 
+     * @return the crossTenantEndpointResourceId value.
+     */
+    public String crossTenantEndpointResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().crossTenantEndpointResourceId();
+    }
+
+    /**
+     * Set the crossTenantEndpointResourceId property: Full ARM resource ID of the cross-tenant (foreign) endpoint. On
+     * the
+     * source-tenant copy this is the TARGET endpoint; on the
+     * target-tenant copy this is the SOURCE endpoint.
+     * 
+     * @param crossTenantEndpointResourceId the crossTenantEndpointResourceId value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withCrossTenantEndpointResourceId(String crossTenantEndpointResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withCrossTenantEndpointResourceId(crossTenantEndpointResourceId);
+        return this;
+    }
+
+    /**
+     * Get the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @return the syncMode value.
+     */
+    public String syncMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().syncMode();
+    }
+
+    /**
+     * Set the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @param syncMode the syncMode value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withSyncMode(String syncMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withSyncMode(syncMode);
+        return this;
+    }
+
+    /**
+     * Get the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @return the moverSyncedUntil value.
+     */
+    public OffsetDateTime moverSyncedUntil() {
+        return this.innerProperties() == null ? null : this.innerProperties().moverSyncedUntil();
+    }
+
+    /**
+     * Set the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @param moverSyncedUntil the moverSyncedUntil value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withMoverSyncedUntil(OffsetDateTime moverSyncedUntil) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withMoverSyncedUntil(moverSyncedUntil);
+        return this;
     }
 
     /**

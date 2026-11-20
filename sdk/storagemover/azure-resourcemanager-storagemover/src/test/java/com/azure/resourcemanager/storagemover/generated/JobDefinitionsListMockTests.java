@@ -12,8 +12,11 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagemover.StorageMoverManager;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
+import com.azure.resourcemanager.storagemover.models.Frequency;
 import com.azure.resourcemanager.storagemover.models.JobDefinition;
 import com.azure.resourcemanager.storagemover.models.JobType;
+import com.azure.resourcemanager.storagemover.models.Minute;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +27,7 @@ public final class JobDefinitionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"fltkacjv\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"lfoakg\",\"sourceResourceId\":\"fpagaowpulp\",\"sourceSubpath\":\"lyls\",\"targetName\":\"xkqjnsjervt\",\"targetResourceId\":\"gxsds\",\"targetSubpath\":\"e\",\"latestJobRunName\":\"sbzkf\",\"latestJobRunResourceId\":\"eyvpnqicvinvkj\",\"latestJobRunStatus\":\"Succeeded\",\"agentName\":\"rbuukzclewyhmlwp\",\"agentResourceId\":\"tzpofncckwyfzq\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Deleting\"},\"id\":\"qa\",\"name\":\"zfeqztppri\",\"type\":\"lxorjaltolmncws\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"nbsazejjoqkag\",\"jobType\":\"OnPremToCloud\",\"copyMode\":\"Mirror\",\"sourceName\":\"ttaugzxnfaazp\",\"sourceResourceId\":\"tnkdmkqj\",\"sourceSubpath\":\"wuenvr\",\"targetName\":\"pyouaibrebqaays\",\"targetResourceId\":\"ixqtn\",\"targetSubpath\":\"tezlwff\",\"latestJobRunName\":\"akpjpqqmtedlt\",\"latestJobRunResourceId\":\"jihy\",\"latestJobRunStatus\":\"Started\",\"agentName\":\"hvwauyqncy\",\"agentResourceId\":\"p\",\"sourceTargetMap\":{\"value\":[{\"sourceEndpoint\":{},\"targetEndpoint\":{}}]},\"provisioningState\":\"Deleting\",\"connections\":[\"wx\",\"upev\"],\"schedule\":{\"frequency\":\"Weekly\",\"isActive\":true,\"executionTime\":{\"hour\":1386174682,\"minute\":30},\"startDate\":\"2021-09-07T00:16:30Z\",\"daysOfWeek\":[\"pelmcuvhixbjxyf\",\"n\"],\"daysOfMonth\":[1461211866],\"cronExpression\":\"o\",\"endDate\":\"2021-03-11T06:14Z\",\"repeatInterval\":\"p\"},\"dataIntegrityValidation\":\"SaveVerifyFileMD5\",\"preservePermissions\":false,\"isCrossTenantJob\":true,\"crossTenantEndpointTenantId\":\"jrywvtylbfpnc\",\"crossTenantEndpointResourceId\":\"doiwi\",\"syncMode\":\"htywubxcbihwq\",\"moverSyncedUntil\":\"2021-06-27T00:09:55Z\"},\"id\":\"ntwjch\",\"name\":\"dgoihxumwctondzj\",\"type\":\"uu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +37,37 @@ public final class JobDefinitionsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<JobDefinition> response
-            = manager.jobDefinitions().list("emmsbvdkc", "odtji", "fw", com.azure.core.util.Context.NONE);
+            = manager.jobDefinitions().list("lcrpw", "xeznoi", "brnjwmw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fltkacjv", response.iterator().next().description());
+        Assertions.assertEquals("nbsazejjoqkag", response.iterator().next().description());
         Assertions.assertEquals(JobType.ON_PREM_TO_CLOUD, response.iterator().next().jobType());
         Assertions.assertEquals(CopyMode.MIRROR, response.iterator().next().copyMode());
-        Assertions.assertEquals("lfoakg", response.iterator().next().sourceName());
-        Assertions.assertEquals("lyls", response.iterator().next().sourceSubpath());
-        Assertions.assertEquals("xkqjnsjervt", response.iterator().next().targetName());
-        Assertions.assertEquals("e", response.iterator().next().targetSubpath());
-        Assertions.assertEquals("rbuukzclewyhmlwp", response.iterator().next().agentName());
+        Assertions.assertEquals("ttaugzxnfaazp", response.iterator().next().sourceName());
+        Assertions.assertEquals("wuenvr", response.iterator().next().sourceSubpath());
+        Assertions.assertEquals("pyouaibrebqaays", response.iterator().next().targetName());
+        Assertions.assertEquals("tezlwff", response.iterator().next().targetSubpath());
+        Assertions.assertEquals("hvwauyqncy", response.iterator().next().agentName());
+        Assertions.assertEquals("wx", response.iterator().next().connections().get(0));
+        Assertions.assertEquals(Frequency.WEEKLY, response.iterator().next().schedule().frequency());
+        Assertions.assertTrue(response.iterator().next().schedule().isActive());
+        Assertions.assertEquals(1386174682, response.iterator().next().schedule().executionTime().hour());
+        Assertions.assertEquals(Minute.THREE_ZERO, response.iterator().next().schedule().executionTime().minute());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-07T00:16:30Z"),
+            response.iterator().next().schedule().startDate());
+        Assertions.assertEquals("pelmcuvhixbjxyf", response.iterator().next().schedule().daysOfWeek().get(0));
+        Assertions.assertEquals(1461211866, response.iterator().next().schedule().daysOfMonth().get(0));
+        Assertions.assertEquals("o", response.iterator().next().schedule().cronExpression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-11T06:14Z"),
+            response.iterator().next().schedule().endDate());
+        Assertions.assertEquals("p", response.iterator().next().schedule().repeatInterval());
+        Assertions.assertEquals(DataIntegrityValidation.SAVE_VERIFY_FILE_MD5,
+            response.iterator().next().dataIntegrityValidation());
+        Assertions.assertFalse(response.iterator().next().preservePermissions());
+        Assertions.assertTrue(response.iterator().next().isCrossTenantJob());
+        Assertions.assertEquals("jrywvtylbfpnc", response.iterator().next().crossTenantEndpointTenantId());
+        Assertions.assertEquals("doiwi", response.iterator().next().crossTenantEndpointResourceId());
+        Assertions.assertEquals("htywubxcbihwq", response.iterator().next().syncMode());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T00:09:55Z"),
+            response.iterator().next().moverSyncedUntil());
     }
 }

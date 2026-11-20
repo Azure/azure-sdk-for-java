@@ -31,12 +31,8 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
         String azureKeyVaultSecretProviderClassName, Context context) {
         Response<AzureKeyVaultSecretProviderClassInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, azureKeyVaultSecretProviderClassName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AzureKeyVaultSecretProviderClassImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AzureKeyVaultSecretProviderClassImpl(inner.getValue(), this.manager()));
     }
 
     public AzureKeyVaultSecretProviderClass getByResourceGroup(String resourceGroupName,
@@ -86,13 +82,16 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
     }
 
     public AzureKeyVaultSecretProviderClass getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureKeyVaultSecretProviderClassName
-            = ResourceManagerUtils.getValueFromIdByName(id, "azureKeyVaultSecretProviderClasses");
+        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "azureKeyVaultSecretProviderClassName");
         if (azureKeyVaultSecretProviderClassName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'azureKeyVaultSecretProviderClasses'.", id)));
@@ -103,13 +102,16 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
     }
 
     public Response<AzureKeyVaultSecretProviderClass> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureKeyVaultSecretProviderClassName
-            = ResourceManagerUtils.getValueFromIdByName(id, "azureKeyVaultSecretProviderClasses");
+        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "azureKeyVaultSecretProviderClassName");
         if (azureKeyVaultSecretProviderClassName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'azureKeyVaultSecretProviderClasses'.", id)));
@@ -118,13 +120,16 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureKeyVaultSecretProviderClassName
-            = ResourceManagerUtils.getValueFromIdByName(id, "azureKeyVaultSecretProviderClasses");
+        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "azureKeyVaultSecretProviderClassName");
         if (azureKeyVaultSecretProviderClassName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'azureKeyVaultSecretProviderClasses'.", id)));
@@ -133,13 +138,16 @@ public final class AzureKeyVaultSecretProviderClassesImpl implements AzureKeyVau
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String azureKeyVaultSecretProviderClassName
-            = ResourceManagerUtils.getValueFromIdByName(id, "azureKeyVaultSecretProviderClasses");
+        String azureKeyVaultSecretProviderClassName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SecretSyncController/azureKeyVaultSecretProviderClasses/{azureKeyVaultSecretProviderClassName}",
+            "azureKeyVaultSecretProviderClassName");
         if (azureKeyVaultSecretProviderClassName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'azureKeyVaultSecretProviderClasses'.", id)));

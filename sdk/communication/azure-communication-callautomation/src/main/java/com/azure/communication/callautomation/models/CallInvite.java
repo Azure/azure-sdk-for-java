@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.TeamsExtensionUserIdentifier;
@@ -52,7 +53,7 @@ public final class CallInvite {
     public CallInvite(MicrosoftTeamsUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
     }
 
     /**
@@ -62,7 +63,17 @@ public final class CallInvite {
     public CallInvite(TeamsExtensionUserIdentifier targetIdentity) {
         this.targetParticipant = targetIdentity;
         this.sourceCallerIdNumber = null;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
+    }
+
+    /**
+     * Create a CallInvite object with MicrosoftTeamsAppIdentifier
+     * @param targetIdentity Target's MicrosoftTeamsAppIdentifier
+     */
+    public CallInvite(MicrosoftTeamsAppIdentifier targetIdentity) {
+        this.targetParticipant = targetIdentity;
+        this.sourceCallerIdNumber = null;
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>(), null);
     }
 
     /**

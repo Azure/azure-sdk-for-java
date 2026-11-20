@@ -21,7 +21,7 @@ public final class CredentialsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\"},\"location\":\"fpubcpzgpxti\",\"tags\":{\"qjxgpnrhgovfgp\":\"knidib\"},\"id\":\"kqmhhaowjr\",\"name\":\"zvuporqzdfuydz\",\"type\":\"kfvxcnq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"ajquhuxylrjvmtyg\",\"tags\":{\"spshckfkyjp\":\"zyos\",\"pssdfppyogtie\":\"sp\",\"zkc\":\"ujtv\"},\"id\":\"yxrxmunj\",\"name\":\"xvglnkvxlxp\",\"type\":\"glqivbgkcv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,11 @@ public final class CredentialsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Credential response
-            = manager.credentials().getWithResponse("bgkc", "khpzvuqdflv", com.azure.core.util.Context.NONE).getValue();
+        Credential response = manager.credentials()
+            .getWithResponse("amowaziynknlqwzd", "piwhxqs", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("fpubcpzgpxti", response.location());
-        Assertions.assertEquals("knidib", response.tags().get("qjxgpnrhgovfgp"));
+        Assertions.assertEquals("ajquhuxylrjvmtyg", response.location());
+        Assertions.assertEquals("zyos", response.tags().get("spshckfkyjp"));
     }
 }

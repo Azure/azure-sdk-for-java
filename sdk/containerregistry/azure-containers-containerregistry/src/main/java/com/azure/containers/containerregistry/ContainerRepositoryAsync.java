@@ -30,7 +30,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -135,7 +134,7 @@ public final class ContainerRepositoryAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
-        return withContext(context -> deleteWithResponse(context));
+        return withContext(this::deleteWithResponse);
     }
 
     private Mono<Response<Void>> deleteWithResponse(Context context) {
@@ -237,7 +236,7 @@ public final class ContainerRepositoryAsync {
     public PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order) {
         return new PagedFlux<>(
             (pageSize) -> withContext(context -> listManifestPropertiesSinglePageAsync(pageSize, order, context)),
-            (token, pageSize) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
+            (token, ignored) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
     }
 
     private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize,
@@ -282,7 +281,7 @@ public final class ContainerRepositoryAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse() {
-        return withContext(context -> this.getPropertiesWithResponse(context));
+        return withContext(this::getPropertiesWithResponse);
     }
 
     private Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {

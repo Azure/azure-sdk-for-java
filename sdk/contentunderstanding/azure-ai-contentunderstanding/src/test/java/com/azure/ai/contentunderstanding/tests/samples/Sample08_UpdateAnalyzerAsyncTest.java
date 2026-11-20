@@ -1,0 +1,162 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Async sample demonstrating how to update an existing analyzer.
+ * This sample shows:
+ * 1. Creating an analyzer
+ * 2. Updating analyzer description
+ * 3. Updating analyzer tags
+ * 4. Preserving analyzer properties omitted from the merge update
+ */
+public class Sample08_UpdateAnalyzerAsyncTest extends ContentUnderstandingClientTestBase {
+
+    private String analyzerId;
+
+    @BeforeEach
+    public void setup() {
+        // Create an analyzer for testing
+        analyzerId = testResourceNamer.randomName("update_test_analyzer_", 50);
+
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        ContentFieldDefinition titleDef = new ContentFieldDefinition();
+        titleDef.setType(ContentFieldType.STRING);
+        titleDef.setMethod(GenerationMethod.EXTRACT);
+        titleDef.setDescription("Document title");
+        fields.put("title", titleDef);
+
+        ContentFieldSchema fieldSchema = new ContentFieldSchema();
+        fieldSchema.setName("basic_schema");
+        fieldSchema.setDescription("Basic document schema");
+        fieldSchema.setFields(fields);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", getModelProfile().getCompletionModel());
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "tag1_initial_value");
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Original analyzer for update testing")
+            .setConfig(new ContentAnalyzerConfig().setOcrEnabled(true).setLayoutEnabled(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models)
+            .setTags(tags);
+
+        ContentAnalyzer createdAnalyzer = setPlaybackPollerFluxPollInterval(
+            contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer))
+                .last()
+                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                    "Analyzer creation"))
+                .block();
+        assertNotNull(createdAnalyzer);
+        System.out.println("Test analyzer created: " + analyzerId);
+    }
+
+    @AfterEach
+    public void cleanup() {
+        if (analyzerId != null) {
+            try {
+                contentUnderstandingAsyncClient.deleteAnalyzer(analyzerId).block();
+                System.out.println("Test analyzer deleted: " + analyzerId);
+            } catch (Exception e) {
+                // Ignore cleanup errors
+            }
+        }
+    }
+
+    @Test
+    public void testUpdateAnalyzerAsync() {
+        // BEGIN:ContentUnderstandingUpdateAnalyzerAsync
+        // Get the current analyzer
+        ContentAnalyzer currentAnalyzer = contentUnderstandingAsyncClient.getAnalyzer(analyzerId).block();
+        System.out.println("Current description: " + currentAnalyzer.getDescription());
+
+        assertEquals("Original analyzer for update testing", currentAnalyzer.getDescription());
+        assertEquals("prebuilt-document", currentAnalyzer.getBaseAnalyzerId());
+        assertNotNull(currentAnalyzer.getConfig());
+        assertEquals(Boolean.TRUE, currentAnalyzer.getConfig().isOcrEnabled());
+        assertEquals(Boolean.TRUE, currentAnalyzer.getConfig().isLayoutEnabled());
+        assertNotNull(currentAnalyzer.getModels());
+        assertEquals(getModelProfile().getCompletionModel(), currentAnalyzer.getModels().get("completion"));
+        assertNotNull(currentAnalyzer.getTags());
+        assertEquals(1, currentAnalyzer.getTags().size());
+        assertEquals("tag1_initial_value", currentAnalyzer.getTags().get("tag1"));
+
+        Map<String, String> updatedTags = new HashMap<>();
+        updatedTags.put("tag1", "tag1_updated_value");
+        updatedTags.put("tag3", "tag3_value");
+        ContentAnalyzer updatedAnalyzer = new ContentAnalyzer().setBaseAnalyzerId(currentAnalyzer.getBaseAnalyzerId())
+            .setDescription("Updated analyzer description")
+            .setTags(updatedTags);
+
+        contentUnderstandingAsyncClient.updateAnalyzer(analyzerId, updatedAnalyzer).block();
+        ContentAnalyzer result = contentUnderstandingAsyncClient.getAnalyzer(analyzerId).block();
+
+        System.out.println("Analyzer updated successfully!");
+        System.out.println("New description: " + result.getDescription());
+        // END:ContentUnderstandingUpdateAnalyzerAsync
+
+        // BEGIN:Assertion_ContentUnderstandingUpdateAnalyzerAsync
+        assertNotNull(result, "Updated analyzer should not be null");
+        assertEquals(analyzerId, result.getAnalyzerId(), "Analyzer ID should match");
+        assertEquals("Updated analyzer description", result.getDescription(), "Description should be updated");
+        assertNotEquals(currentAnalyzer.getDescription(), result.getDescription(),
+            "Description should differ from its initial value");
+        assertEquals(currentAnalyzer.getBaseAnalyzerId(), result.getBaseAnalyzerId(),
+            "Base analyzer ID should be preserved");
+        System.out.println("Analyzer description verified");
+
+        assertNotNull(result.getConfig(), "Analyzer config should be preserved");
+        assertEquals(currentAnalyzer.getConfig().isOcrEnabled(), result.getConfig().isOcrEnabled(),
+            "OCR configuration should be preserved");
+        assertEquals(currentAnalyzer.getConfig().isLayoutEnabled(), result.getConfig().isLayoutEnabled(),
+            "Layout configuration should be preserved");
+        assertNotNull(result.getModels(), "Models should be preserved");
+        assertEquals(currentAnalyzer.getModels().get("completion"), result.getModels().get("completion"),
+            "Completion model should be preserved");
+        assertNotNull(result.getFieldSchema(), "Field schema should not be null");
+        assertEquals(2, result.getTags().size(), "Should have 2 tags after update");
+        assertEquals("tag1_updated_value", result.getTags().get("tag1"), "tag1 should be updated");
+        assertEquals("tag3_value", result.getTags().get("tag3"), "tag3 should be added");
+        assertEquals("basic_schema", result.getFieldSchema().getName(), "Field schema should be preserved");
+        assertEquals(1, result.getFieldSchema().getFields().size(), "Field schema should retain its original field");
+        assertTrue(result.getFieldSchema().getFields().containsKey("title"), "Should retain title field");
+        System.out.println("Analyzer update contract verified");
+
+        System.out.println("All analyzer update properties validated successfully");
+        // END:Assertion_ContentUnderstandingUpdateAnalyzerAsync
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+}

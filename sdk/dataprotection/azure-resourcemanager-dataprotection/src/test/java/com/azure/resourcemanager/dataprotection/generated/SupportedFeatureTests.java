@@ -13,10 +13,10 @@ public final class SupportedFeatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedFeature model = BinaryData.fromString(
-            "{\"featureName\":\"hw\",\"supportStatus\":\"Invalid\",\"exposureControlledFeatures\":[\"wey\",\"qdunvmnnrwrbior\",\"talywjhhgdnhxms\"]}")
+            "{\"featureName\":\"uziycsl\",\"supportStatus\":\"GenerallyAvailable\",\"exposureControlledFeatures\":[\"ztcktyh\",\"tqedcgzulwm\",\"rqzz\",\"rjvpglydzgkrvqee\"]}")
             .toObject(SupportedFeature.class);
-        Assertions.assertEquals("hw", model.featureName());
-        Assertions.assertEquals(FeatureSupportStatus.INVALID, model.supportStatus());
-        Assertions.assertEquals("wey", model.exposureControlledFeatures().get(0));
+        Assertions.assertEquals("uziycsl", model.featureName());
+        Assertions.assertEquals(FeatureSupportStatus.GENERALLY_AVAILABLE, model.supportStatus());
+        Assertions.assertEquals("ztcktyh", model.exposureControlledFeatures().get(0));
     }
 }

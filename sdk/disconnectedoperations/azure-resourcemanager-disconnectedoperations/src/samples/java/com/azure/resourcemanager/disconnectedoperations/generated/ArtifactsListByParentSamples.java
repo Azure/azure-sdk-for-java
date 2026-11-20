@@ -9,7 +9,7 @@ package com.azure.resourcemanager.disconnectedoperations.generated;
  */
 public final class ArtifactsListByParentSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/Artifact_ListByParent_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/Artifact_ListByParent_MaximumSet_Gen.json
      */
     /**
      * Sample code: Artifacts_ListByParent.

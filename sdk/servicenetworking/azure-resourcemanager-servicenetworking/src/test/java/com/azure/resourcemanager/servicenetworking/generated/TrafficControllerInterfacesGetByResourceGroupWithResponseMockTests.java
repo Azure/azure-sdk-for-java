@@ -21,7 +21,7 @@ public final class TrafficControllerInterfacesGetByResourceGroupWithResponseMock
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurationEndpoints\":[\"vwiwubmwmbesld\",\"k\",\"wtppjflcxogaoko\",\"z\"],\"frontends\":[{\"id\":\"ikvmkqzeqqk\"},{\"id\":\"l\"},{\"id\":\"fzxmhhvhgureodkw\"},{\"id\":\"bdagxt\"}],\"associations\":[{\"id\":\"dxbx\"},{\"id\":\"akbogqxndlkzgxh\"}],\"securityPolicies\":[{\"id\":\"plbpodxun\"},{\"id\":\"bebxmubyyntwl\"},{\"id\":\"bqtkoievseotgqr\"},{\"id\":\"ltmuwlauwzizx\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"gcj\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"u\"}},\"provisioningState\":\"Canceled\"},\"location\":\"pbttdum\",\"tags\":{\"hjpglkf\":\"pxebmnzbt\"},\"id\":\"ohdneuel\",\"name\":\"phsdyhto\",\"type\":\"fikdowwqu\"}";
+            = "{\"properties\":{\"configurationEndpoints\":[\"jwosytxitcskfck\",\"qumiek\"],\"frontends\":[{\"id\":\"zikhl\"},{\"id\":\"fjhdg\"},{\"id\":\"gge\"}],\"associations\":[{\"id\":\"nyga\"},{\"id\":\"qidbqfatpxllrxcy\"},{\"id\":\"moadsuvarmy\"}],\"securityPolicies\":[{\"id\":\"jsjqbjhhyx\"},{\"id\":\"rw\"}],\"privateEndpointConnections\":[{\"id\":\"oduhp\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"gymare\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"ajxq\"}},\"provisioningState\":\"Failed\"},\"location\":\"ky\",\"tags\":{\"mzqa\":\"eddgssofw\",\"nbyxbaaabjyv\":\"krmnjijpxacqqud\",\"xnevfdnwn\":\"yffimrzrtuzqogs\"},\"id\":\"mewzsyyc\",\"name\":\"uzsoi\",\"type\":\"judpfrxt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,14 @@ public final class TrafficControllerInterfacesGetByResourceGroupWithResponseMock
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TrafficController response = manager.trafficControllerInterfaces()
-            .getByResourceGroupWithResponse("emwabnet", "hhszh", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("sphyoulpjrvxa", "l", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pbttdum", response.location());
-        Assertions.assertEquals("pxebmnzbt", response.tags().get("hjpglkf"));
-        Assertions.assertEquals("gcj", response.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("u",
+        Assertions.assertEquals("ky", response.location());
+        Assertions.assertEquals("eddgssofw", response.tags().get("mzqa"));
+        Assertions.assertEquals("gymare",
+            response.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("ajxq",
             response.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 }

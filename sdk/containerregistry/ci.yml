@@ -12,11 +12,13 @@ trigger:
       - sdk/containerregistry/azure-containers-containerregistry/
       - sdk/containerregistry/azure-containers-containerregistry-perf/
       - sdk/containerregistry/azure-resourcemanager-containerregistry/
+      - sdk/containerregistry/azure-resourcemanager-containerregistry-tasks/
     exclude:
       - sdk/containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
       - sdk/containerregistry/azure-resourcemanager-containerregistry/pom.xml
+      - sdk/containerregistry/azure-resourcemanager-containerregistry-tasks/pom.xml
 
 pr:
   branches:
@@ -31,25 +33,31 @@ pr:
       - sdk/containerregistry/azure-containers-containerregistry/
       - sdk/containerregistry/azure-containers-containerregistry-perf/
       - sdk/containerregistry/azure-resourcemanager-containerregistry/
+      - sdk/containerregistry/azure-resourcemanager-containerregistry-tasks/
     exclude:
       - sdk/containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry/pom.xml
       - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
       - sdk/containerregistry/azure-resourcemanager-containerregistry/pom.xml
+      - sdk/containerregistry/azure-resourcemanager-containerregistry-tasks/pom.xml
 
 parameters:
-- name: release_dependsonlivetests
-  displayName: 'Release depends on live tests'
-  type: boolean
-  default: true
-- name: release_azurecontainerscontainerregistry
-  displayName: 'azure-containers-containerregistry'
-  type: boolean
-  default: true
-- name: release_azureresourcemanagercontainerregistry
-  displayName: 'azure-resourcemanager-containerregistry'
-  type: boolean
-  default: false
+  - name: release_dependsonlivetests
+    displayName: Release depends on live tests
+    type: boolean
+    default: true
+  - name: release_azurecontainerscontainerregistry
+    displayName: azure-containers-containerregistry
+    type: boolean
+    default: true
+  - name: release_azureresourcemanagercontainerregistry
+    displayName: azure-resourcemanager-containerregistry
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagercontainerregistrytasks
+    displayName: azure-resourcemanager-containerregistry-tasks
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -64,9 +72,12 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercontainerregistry
         releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerregistry }}
+      - name: azure-resourcemanager-containerregistry-tasks
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerregistrytasks
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerregistrytasks }}
     AdditionalModules:
       - name: azure-containers-containerregistry-perf
         groupId: com.azure
-        # required by the above perf library
       - name: perf-test-core
         groupId: com.azure

@@ -9,14 +9,14 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PrivateEndpointConnectionGet.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PrivateEndpointConnectionGet.json
      */
     /**
-     * Sample code: Get a private endpoint connection on a Mongo Cluster resource.
+     * Sample code: Get a private endpoint connection on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void getAPrivateEndpointConnectionOnAMongoClusterResource(
+    public static void getAPrivateEndpointConnectionOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .getWithResponse("TestGroup", "myMongoCluster", "pecTest.5d393f64-ef64-46d0-9959-308321c44ac0",

@@ -14,7 +14,6 @@ import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.utils.SharedExecutorService;
 
 /**
  * The Managed Identity Client offers authentication support for Managed Identity authentication flow.
@@ -90,8 +89,6 @@ public class ManagedIdentityClient extends ClientBase {
 
         if (clientOptions.getExecutorService() != null) {
             miBuilder.executorService(clientOptions.getExecutorService());
-        } else {
-            miBuilder.executorService(SharedExecutorService.getInstance());
         }
 
         return miBuilder.build();

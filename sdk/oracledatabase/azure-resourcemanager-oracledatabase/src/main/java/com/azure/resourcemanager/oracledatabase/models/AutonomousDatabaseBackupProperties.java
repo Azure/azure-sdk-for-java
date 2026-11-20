@@ -98,6 +98,11 @@ public final class AutonomousDatabaseBackupProperties implements JsonSerializabl
      */
     private AzureResourceProvisioningState provisioningState;
 
+    /*
+     * The destination where this backup is stored.
+     */
+    private BackupDestinationType backupDestination;
+
     /**
      * Creates an instance of AutonomousDatabaseBackupProperties class.
      */
@@ -272,6 +277,15 @@ public final class AutonomousDatabaseBackupProperties implements JsonSerializabl
     }
 
     /**
+     * Get the backupDestination property: The destination where this backup is stored.
+     * 
+     * @return the backupDestination value.
+     */
+    public BackupDestinationType backupDestination() {
+        return this.backupDestination;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -339,6 +353,9 @@ public final class AutonomousDatabaseBackupProperties implements JsonSerializabl
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAutonomousDatabaseBackupProperties.provisioningState
                         = AzureResourceProvisioningState.fromString(reader.getString());
+                } else if ("backupDestination".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.backupDestination
+                        = BackupDestinationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

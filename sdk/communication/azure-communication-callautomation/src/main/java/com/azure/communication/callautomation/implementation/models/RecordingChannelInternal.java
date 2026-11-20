@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The channel type of call recording.
+ * Defines the channel type of call recording.
  */
 public final class RecordingChannelInternal extends ExpandableStringEnum<RecordingChannelInternal> {
     /**

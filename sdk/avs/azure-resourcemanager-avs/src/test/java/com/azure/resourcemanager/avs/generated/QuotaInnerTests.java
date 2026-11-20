@@ -11,7 +11,7 @@ public final class QuotaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaInner model = BinaryData.fromString(
-            "{\"hostsRemaining\":{\"fbebrjcxer\":498059759,\"wutttxfvjrbi\":1121109847,\"hxepcyvahfnlj\":709039667},\"quotaEnabled\":\"Enabled\"}")
+            "{\"hostsRemaining\":{\"ycispnqzahmgkb\":1728715445,\"yydhibnuqqk\":1556572818,\"kadrgvt\":500953055},\"quotaEnabled\":\"Enabled\"}")
             .toObject(QuotaInner.class);
     }
 }

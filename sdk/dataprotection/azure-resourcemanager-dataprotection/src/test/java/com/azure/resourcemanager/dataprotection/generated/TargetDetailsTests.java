@@ -13,24 +13,24 @@ public final class TargetDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetDetails model = BinaryData.fromString(
-            "{\"filePrefix\":\"kdwzbaiuebbaumny\",\"restoreTargetLocationType\":\"AzureFiles\",\"url\":\"ped\",\"targetResourceArmId\":\"jn\"}")
+            "{\"filePrefix\":\"melmqkrha\",\"restoreTargetLocationType\":\"Invalid\",\"url\":\"ljuahaquhcdh\",\"targetResourceArmId\":\"ualaexqpvfadmw\"}")
             .toObject(TargetDetails.class);
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.filePrefix());
-        Assertions.assertEquals(RestoreTargetLocationType.AZURE_FILES, model.restoreTargetLocationType());
-        Assertions.assertEquals("ped", model.url());
-        Assertions.assertEquals("jn", model.targetResourceArmId());
+        Assertions.assertEquals("melmqkrha", model.filePrefix());
+        Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
+        Assertions.assertEquals("ljuahaquhcdh", model.url());
+        Assertions.assertEquals("ualaexqpvfadmw", model.targetResourceArmId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDetails model = new TargetDetails().withFilePrefix("kdwzbaiuebbaumny")
-            .withRestoreTargetLocationType(RestoreTargetLocationType.AZURE_FILES)
-            .withUrl("ped")
-            .withTargetResourceArmId("jn");
+        TargetDetails model = new TargetDetails().withFilePrefix("melmqkrha")
+            .withRestoreTargetLocationType(RestoreTargetLocationType.INVALID)
+            .withUrl("ljuahaquhcdh")
+            .withTargetResourceArmId("ualaexqpvfadmw");
         model = BinaryData.fromObject(model).toObject(TargetDetails.class);
-        Assertions.assertEquals("kdwzbaiuebbaumny", model.filePrefix());
-        Assertions.assertEquals(RestoreTargetLocationType.AZURE_FILES, model.restoreTargetLocationType());
-        Assertions.assertEquals("ped", model.url());
-        Assertions.assertEquals("jn", model.targetResourceArmId());
+        Assertions.assertEquals("melmqkrha", model.filePrefix());
+        Assertions.assertEquals(RestoreTargetLocationType.INVALID, model.restoreTargetLocationType());
+        Assertions.assertEquals("ljuahaquhcdh", model.url());
+        Assertions.assertEquals("ualaexqpvfadmw", model.targetResourceArmId());
     }
 }

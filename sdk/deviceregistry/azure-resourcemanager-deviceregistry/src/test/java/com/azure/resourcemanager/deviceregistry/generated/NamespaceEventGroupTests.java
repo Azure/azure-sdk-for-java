@@ -15,45 +15,57 @@ public final class NamespaceEventGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceEventGroup model = BinaryData.fromString(
-            "{\"name\":\"pgylg\",\"dataSource\":\"itxmedjvcslynqww\",\"eventGroupConfiguration\":\"wzz\",\"defaultDestinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"trmgucnapkte\",\"events\":[{\"name\":\"lwptfdy\",\"dataSource\":\"fqbuaceopzf\",\"eventConfiguration\":\"hhuao\",\"destinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"qeqxo\"},{\"name\":\"z\",\"dataSource\":\"hzxct\",\"eventConfiguration\":\"gbkdmoizpos\",\"destinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"cfbu\"}]}")
+            "{\"name\":\"joya\",\"dataSource\":\"slyjpkiid\",\"eventGroupConfiguration\":\"exznelixhnr\",\"defaultDestinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"lhbnxkna\",\"events\":[{\"name\":\"lp\",\"dataSource\":\"gdtpnapnyiro\",\"eventConfiguration\":\"hpigv\",\"destinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"gqgitxmedjvcsl\"},{\"name\":\"n\",\"dataSource\":\"wncwzzhxgktrmg\",\"eventConfiguration\":\"napkteoellw\",\"destinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"ygpfqb\"},{\"name\":\"ac\",\"dataSource\":\"pzfqrhhuaoppp\",\"eventConfiguration\":\"eqx\",\"destinations\":[{\"target\":\"EventDestination\"}],\"typeRef\":\"ahzxctobgbk\"},{\"name\":\"moizpos\",\"dataSource\":\"grcfb\",\"eventConfiguration\":\"rmfqjhhkxbpvj\",\"destinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"xxjyngudivkrtsw\"}]}")
             .toObject(NamespaceEventGroup.class);
-        Assertions.assertEquals("pgylg", model.name());
-        Assertions.assertEquals("itxmedjvcslynqww", model.dataSource());
-        Assertions.assertEquals("wzz", model.eventGroupConfiguration());
-        Assertions.assertEquals("trmgucnapkte", model.typeRef());
-        Assertions.assertEquals("lwptfdy", model.events().get(0).name());
-        Assertions.assertEquals("fqbuaceopzf", model.events().get(0).dataSource());
-        Assertions.assertEquals("hhuao", model.events().get(0).eventConfiguration());
-        Assertions.assertEquals("qeqxo", model.events().get(0).typeRef());
+        Assertions.assertEquals("joya", model.name());
+        Assertions.assertEquals("slyjpkiid", model.dataSource());
+        Assertions.assertEquals("exznelixhnr", model.eventGroupConfiguration());
+        Assertions.assertEquals("lhbnxkna", model.typeRef());
+        Assertions.assertEquals("lp", model.events().get(0).name());
+        Assertions.assertEquals("gdtpnapnyiro", model.events().get(0).dataSource());
+        Assertions.assertEquals("hpigv", model.events().get(0).eventConfiguration());
+        Assertions.assertEquals("gqgitxmedjvcsl", model.events().get(0).typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceEventGroup model = new NamespaceEventGroup().withName("pgylg")
-            .withDataSource("itxmedjvcslynqww")
-            .withEventGroupConfiguration("wzz")
-            .withDefaultDestinations(Arrays.asList(new EventDestination(), new EventDestination(),
-                new EventDestination(), new EventDestination()))
-            .withTypeRef("trmgucnapkte")
+        NamespaceEventGroup model = new NamespaceEventGroup().withName("joya")
+            .withDataSource("slyjpkiid")
+            .withEventGroupConfiguration("exznelixhnr")
+            .withDefaultDestinations(
+                Arrays.asList(new EventDestination(), new EventDestination(), new EventDestination()))
+            .withTypeRef("lhbnxkna")
             .withEvents(Arrays.asList(
-                new NamespaceEvent().withName("lwptfdy")
-                    .withDataSource("fqbuaceopzf")
-                    .withEventConfiguration("hhuao")
+                new NamespaceEvent().withName("lp")
+                    .withDataSource("gdtpnapnyiro")
+                    .withEventConfiguration("hpigv")
+                    .withDestinations(Arrays.asList(new EventDestination(), new EventDestination(),
+                        new EventDestination(), new EventDestination()))
+                    .withTypeRef("gqgitxmedjvcsl"),
+                new NamespaceEvent().withName("n")
+                    .withDataSource("wncwzzhxgktrmg")
+                    .withEventConfiguration("napkteoellw")
+                    .withDestinations(Arrays.asList(new EventDestination(), new EventDestination(),
+                        new EventDestination(), new EventDestination()))
+                    .withTypeRef("ygpfqb"),
+                new NamespaceEvent().withName("ac")
+                    .withDataSource("pzfqrhhuaoppp")
+                    .withEventConfiguration("eqx")
+                    .withDestinations(Arrays.asList(new EventDestination()))
+                    .withTypeRef("ahzxctobgbk"),
+                new NamespaceEvent().withName("moizpos")
+                    .withDataSource("grcfb")
+                    .withEventConfiguration("rmfqjhhkxbpvj")
                     .withDestinations(Arrays.asList(new EventDestination(), new EventDestination()))
-                    .withTypeRef("qeqxo"),
-                new NamespaceEvent().withName("z")
-                    .withDataSource("hzxct")
-                    .withEventConfiguration("gbkdmoizpos")
-                    .withDestinations(Arrays.asList(new EventDestination(), new EventDestination()))
-                    .withTypeRef("cfbu")));
+                    .withTypeRef("xxjyngudivkrtsw")));
         model = BinaryData.fromObject(model).toObject(NamespaceEventGroup.class);
-        Assertions.assertEquals("pgylg", model.name());
-        Assertions.assertEquals("itxmedjvcslynqww", model.dataSource());
-        Assertions.assertEquals("wzz", model.eventGroupConfiguration());
-        Assertions.assertEquals("trmgucnapkte", model.typeRef());
-        Assertions.assertEquals("lwptfdy", model.events().get(0).name());
-        Assertions.assertEquals("fqbuaceopzf", model.events().get(0).dataSource());
-        Assertions.assertEquals("hhuao", model.events().get(0).eventConfiguration());
-        Assertions.assertEquals("qeqxo", model.events().get(0).typeRef());
+        Assertions.assertEquals("joya", model.name());
+        Assertions.assertEquals("slyjpkiid", model.dataSource());
+        Assertions.assertEquals("exznelixhnr", model.eventGroupConfiguration());
+        Assertions.assertEquals("lhbnxkna", model.typeRef());
+        Assertions.assertEquals("lp", model.events().get(0).name());
+        Assertions.assertEquals("gdtpnapnyiro", model.events().get(0).dataSource());
+        Assertions.assertEquals("hpigv", model.events().get(0).eventConfiguration());
+        Assertions.assertEquals("gqgitxmedjvcsl", model.events().get(0).typeRef());
     }
 }

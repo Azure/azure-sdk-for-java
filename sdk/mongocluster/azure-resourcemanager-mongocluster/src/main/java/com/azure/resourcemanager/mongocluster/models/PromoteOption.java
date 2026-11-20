@@ -18,6 +18,12 @@ public final class PromoteOption extends ExpandableStringEnum<PromoteOption> {
     public static final PromoteOption FORCED = fromString("Forced");
 
     /**
+     * Promote option waits for the replica to be caught up to the primary before promoting, guaranteeing no data loss
+     * during the promotion.
+     */
+    public static final PromoteOption PLANNED = fromString("Planned");
+
+    /**
      * Creates a new instance of PromoteOption value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

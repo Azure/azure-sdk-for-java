@@ -4,6 +4,20 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.pollers.JobDeletePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobDisablePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobEnablePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobScheduleDeletePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobScheduleTerminatePollerAsync;
+import com.azure.compute.batch.implementation.pollers.JobTerminatePollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeDeallocatePollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeRebootPollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeReimagePollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeRemovePollerAsync;
+import com.azure.compute.batch.implementation.pollers.NodeStartPollerAsync;
+import com.azure.compute.batch.implementation.pollers.PoolDeletePollerAsync;
+import com.azure.compute.batch.implementation.pollers.PoolResizePollerAsync;
+import com.azure.compute.batch.implementation.pollers.PoolStopResizePollerAsync;
 import com.azure.compute.batch.implementation.task.AsyncClientTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
@@ -11,12 +25,6 @@ import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
 import com.azure.compute.batch.models.BatchApplicationGetOptions;
 import com.azure.compute.batch.models.BatchApplicationsListOptions;
-import com.azure.compute.batch.models.BatchCertificate;
-import com.azure.compute.batch.models.BatchCertificateCancelDeletionOptions;
-import com.azure.compute.batch.models.BatchCertificateCreateOptions;
-import com.azure.compute.batch.models.BatchCertificateDeleteOptions;
-import com.azure.compute.batch.models.BatchCertificateGetOptions;
-import com.azure.compute.batch.models.BatchCertificatesListOptions;
 import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
 import com.azure.compute.batch.models.BatchErrorException;
 import com.azure.compute.batch.models.BatchFileProperties;
@@ -54,7 +62,6 @@ import com.azure.compute.batch.models.BatchJobsListOptions;
 import com.azure.compute.batch.models.BatchNode;
 import com.azure.compute.batch.models.BatchNodeDeallocateOptions;
 import com.azure.compute.batch.models.BatchNodeDeallocateParameters;
-import com.azure.compute.batch.models.BatchNodeDisableSchedulingParameters;
 import com.azure.compute.batch.models.BatchNodeExtensionGetOptions;
 import com.azure.compute.batch.models.BatchNodeExtensionsListOptions;
 import com.azure.compute.batch.models.BatchNodeFile;
@@ -72,6 +79,7 @@ import com.azure.compute.batch.models.BatchNodeRemoteLoginSettings;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettingsGetOptions;
 import com.azure.compute.batch.models.BatchNodeRemoveParameters;
 import com.azure.compute.batch.models.BatchNodeSchedulingDisableOptions;
+import com.azure.compute.batch.models.BatchNodeSchedulingDisableParameters;
 import com.azure.compute.batch.models.BatchNodeSchedulingEnableOptions;
 import com.azure.compute.batch.models.BatchNodeStartOptions;
 import com.azure.compute.batch.models.BatchNodeUserCreateOptions;
@@ -83,12 +91,12 @@ import com.azure.compute.batch.models.BatchNodeVMExtension;
 import com.azure.compute.batch.models.BatchNodesListOptions;
 import com.azure.compute.batch.models.BatchNodesRemoveOptions;
 import com.azure.compute.batch.models.BatchPool;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableOptions;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableParameters;
 import com.azure.compute.batch.models.BatchPoolCreateOptions;
 import com.azure.compute.batch.models.BatchPoolCreateParameters;
 import com.azure.compute.batch.models.BatchPoolDeleteOptions;
 import com.azure.compute.batch.models.BatchPoolDisableAutoScaleOptions;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleOptions;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleOptions;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolExistsOptions;
@@ -149,7 +157,6 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -179,7 +186,7 @@ public final class BatchAsyncClient {
      * Adds multiple tasks to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
+     * @param taskList A collection of {@link BatchTaskCreateParameters tasks} to add.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -208,7 +215,7 @@ public final class BatchAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createTasks(String jobId, Collection<BatchTaskCreateParameters> taskList,
+    public Mono<Void> createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
         BatchTaskBulkCreateOptions batchTaskBulkCreateOptions) {
         return Mono.create(sink -> {
             TaskSubmitter taskSubmitter = new AsyncClientTaskSubmitter(this);
@@ -296,6 +303,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -412,7 +436,15 @@ public final class BatchAsyncClient {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -433,6 +465,13 @@ public final class BatchAsyncClient {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -465,17 +504,20 @@ public final class BatchAsyncClient {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -486,9 +528,6 @@ public final class BatchAsyncClient {
      *         }
      *     }
      *     resizeTimeout: Duration (Optional)
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -521,8 +560,17 @@ public final class BatchAsyncClient {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -568,17 +616,6 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -587,6 +624,7 @@ public final class BatchAsyncClient {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -642,7 +680,6 @@ public final class BatchAsyncClient {
      *             }
      *         }
      *     ]
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -664,6 +701,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -677,7 +732,7 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
+     * Lists all of the Pools in the specified Account.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -702,17 +757,17 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -733,7 +788,15 @@ public final class BatchAsyncClient {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -754,6 +817,13 @@ public final class BatchAsyncClient {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -786,17 +856,20 @@ public final class BatchAsyncClient {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -819,11 +892,8 @@ public final class BatchAsyncClient {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -867,8 +937,17 @@ public final class BatchAsyncClient {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -914,17 +993,6 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -933,6 +1001,7 @@ public final class BatchAsyncClient {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -1023,8 +1092,6 @@ public final class BatchAsyncClient {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -1103,15 +1170,26 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.deletePoolWithResponseAsync(poolId, requestOptions);
     }
 
@@ -1155,6 +1233,23 @@ public final class BatchAsyncClient {
      * boolean
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1209,17 +1304,17 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -1240,7 +1335,15 @@ public final class BatchAsyncClient {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -1261,6 +1364,13 @@ public final class BatchAsyncClient {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -1293,17 +1403,20 @@ public final class BatchAsyncClient {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -1326,11 +1439,8 @@ public final class BatchAsyncClient {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -1374,8 +1484,17 @@ public final class BatchAsyncClient {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -1421,17 +1540,6 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -1440,6 +1548,7 @@ public final class BatchAsyncClient {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -1530,8 +1639,6 @@ public final class BatchAsyncClient {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -1553,6 +1660,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1659,17 +1783,6 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -1702,7 +1815,15 @@ public final class BatchAsyncClient {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -1716,6 +1837,13 @@ public final class BatchAsyncClient {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -1748,17 +1876,20 @@ public final class BatchAsyncClient {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
      *             encryptionAtHost: Boolean (Optional)
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -1768,9 +1899,9 @@ public final class BatchAsyncClient {
      *             id: String (Required)
      *         }
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     networkConfiguration (Optional): {
@@ -1799,14 +1930,20 @@ public final class BatchAsyncClient {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
      *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
+     *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
-     *     }
-     *     resourceTags (Optional): {
-     *         String: String (Required)
      *     }
      *     userAccounts (Optional): [
      *          (Optional){
@@ -1876,6 +2013,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -1900,6 +2055,23 @@ public final class BatchAsyncClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1962,6 +2134,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
@@ -2021,6 +2211,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
@@ -2081,7 +2289,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2093,15 +2301,33 @@ public final class BatchAsyncClient {
      * }
      * </pre>
      *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> resizePoolWithResponse(String poolId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.resizePoolWithResponseAsync(poolId, parameters, requestOptions);
     }
 
@@ -2146,15 +2372,31 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.stopPoolResizeWithResponseAsync(poolId, requestOptions);
     }
 
@@ -2226,17 +2468,6 @@ public final class BatchAsyncClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Required): [
-     *          (Required){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -2249,10 +2480,27 @@ public final class BatchAsyncClient {
      *             value: String (Required)
      *         }
      *     ]
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -2305,7 +2553,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2318,15 +2566,33 @@ public final class BatchAsyncClient {
      * }
      * </pre>
      *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> removeNodesWithResponse(String poolId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.removeNodesWithResponseAsync(poolId, parameters, requestOptions);
     }
 
@@ -2486,15 +2752,26 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -2540,15 +2817,15 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -2640,11 +2917,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -2708,7 +2980,15 @@ public final class BatchAsyncClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -2722,6 +3002,13 @@ public final class BatchAsyncClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -2754,17 +3041,20 @@ public final class BatchAsyncClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -2776,10 +3066,10 @@ public final class BatchAsyncClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -2812,8 +3102,17 @@ public final class BatchAsyncClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -2831,17 +3130,6 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -2898,7 +3186,6 @@ public final class BatchAsyncClient {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -2965,6 +3252,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3055,7 +3359,15 @@ public final class BatchAsyncClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -3076,6 +3388,13 @@ public final class BatchAsyncClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -3108,17 +3427,20 @@ public final class BatchAsyncClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -3130,10 +3452,10 @@ public final class BatchAsyncClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -3166,8 +3488,17 @@ public final class BatchAsyncClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -3213,17 +3544,6 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -3283,7 +3603,6 @@ public final class BatchAsyncClient {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -3316,6 +3635,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -3371,15 +3708,15 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -3471,11 +3808,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -3539,7 +3871,15 @@ public final class BatchAsyncClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -3553,6 +3893,13 @@ public final class BatchAsyncClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -3585,17 +3932,20 @@ public final class BatchAsyncClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -3607,10 +3957,10 @@ public final class BatchAsyncClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -3643,8 +3993,17 @@ public final class BatchAsyncClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -3662,17 +4021,6 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -3729,7 +4077,6 @@ public final class BatchAsyncClient {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -3796,6 +4143,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -3852,7 +4217,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3861,15 +4226,33 @@ public final class BatchAsyncClient {
      * }
      * </pre>
      *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     *
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<Void>> disableJobWithResponse(String jobId, BinaryData parameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.disableJobWithResponseAsync(jobId, parameters, requestOptions);
     }
 
@@ -3913,15 +4296,31 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.enableJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -3970,7 +4369,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3979,14 +4378,31 @@ public final class BatchAsyncClient {
      * }
      * </pre>
      *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobWithResponseAsync(jobId, requestOptions);
     }
 
@@ -4108,11 +4524,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -4176,7 +4587,15 @@ public final class BatchAsyncClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -4190,6 +4609,13 @@ public final class BatchAsyncClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -4222,17 +4648,20 @@ public final class BatchAsyncClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -4244,10 +4673,10 @@ public final class BatchAsyncClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -4280,8 +4709,17 @@ public final class BatchAsyncClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -4299,17 +4737,6 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -4366,7 +4793,6 @@ public final class BatchAsyncClient {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -4400,6 +4826,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4438,15 +4882,15 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -4538,11 +4982,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -4606,7 +5045,15 @@ public final class BatchAsyncClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -4620,6 +5067,13 @@ public final class BatchAsyncClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -4652,17 +5106,20 @@ public final class BatchAsyncClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -4674,10 +5131,10 @@ public final class BatchAsyncClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -4710,8 +5167,17 @@ public final class BatchAsyncClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -4729,17 +5195,6 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -4796,7 +5251,6 @@ public final class BatchAsyncClient {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -4900,15 +5354,15 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -5000,11 +5454,6 @@ public final class BatchAsyncClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -5068,7 +5517,15 @@ public final class BatchAsyncClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -5082,6 +5539,13 @@ public final class BatchAsyncClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -5114,17 +5578,20 @@ public final class BatchAsyncClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
      *                         encryptionAtHost: Boolean (Optional)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -5136,10 +5603,10 @@ public final class BatchAsyncClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -5172,8 +5639,17 @@ public final class BatchAsyncClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -5191,17 +5667,6 @@ public final class BatchAsyncClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -5258,7 +5723,6 @@ public final class BatchAsyncClient {
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -5464,6 +5928,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5478,243 +5959,6 @@ public final class BatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getJobTaskCountsWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.getJobTaskCountsWithResponseAsync(jobId, requestOptions);
-    }
-
-    /**
-     * Creates a Certificate to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param certificate The Certificate to be created.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions) {
-        return this.serviceClient.createCertificateWithResponseAsync(certificate, requestOptions);
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
-     * maximum of 1000
-     * applications can be returned.</td></tr>
-     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
-     * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listCertificates(RequestOptions requestOptions) {
-        return this.serviceClient.listCertificatesAsync(requestOptions);
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * If you try to delete a Certificate that is being used by a Pool or Compute
-     * Node, the status of the Certificate changes to deleteFailed. If you decide that
-     * you want to continue using the Certificate, you can use this operation to set
-     * the status of the Certificate back to active. If you intend to delete the
-     * Certificate, you do not need to run this operation after the deletion failed.
-     * You must make sure that the Certificate is not being used by any resources, and
-     * then you can try again to delete the Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        return this.serviceClient.cancelCertificateDeletionWithResponseAsync(thumbprintAlgorithm, thumbprint,
-            requestOptions);
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteCertificateWithResponseAsync(thumbprintAlgorithm, thumbprint, requestOptions);
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: byte[] (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @return information about the specified Certificate along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getCertificateWithResponseAsync(thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
     /**
@@ -5757,6 +6001,23 @@ public final class BatchAsyncClient {
      * boolean
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5810,15 +6071,26 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobScheduleWithResponseAsync(jobScheduleId, requestOptions);
     }
 
@@ -5864,14 +6136,14 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -5978,11 +6250,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6046,7 +6313,15 @@ public final class BatchAsyncClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -6060,6 +6335,13 @@ public final class BatchAsyncClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -6092,17 +6374,20 @@ public final class BatchAsyncClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -6114,10 +6399,10 @@ public final class BatchAsyncClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -6150,8 +6435,17 @@ public final class BatchAsyncClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -6169,17 +6463,6 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -6236,7 +6519,6 @@ public final class BatchAsyncClient {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -6262,7 +6544,7 @@ public final class BatchAsyncClient {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -6292,6 +6574,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6453,11 +6752,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6521,7 +6815,15 @@ public final class BatchAsyncClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -6535,6 +6837,13 @@ public final class BatchAsyncClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -6567,17 +6876,20 @@ public final class BatchAsyncClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -6589,10 +6901,10 @@ public final class BatchAsyncClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -6625,8 +6937,17 @@ public final class BatchAsyncClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -6644,17 +6965,6 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -6711,7 +7021,6 @@ public final class BatchAsyncClient {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -6743,6 +7052,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -6801,14 +7128,14 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -6915,11 +7242,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6983,7 +7305,15 @@ public final class BatchAsyncClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -6997,6 +7327,13 @@ public final class BatchAsyncClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -7029,17 +7366,20 @@ public final class BatchAsyncClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -7051,10 +7391,10 @@ public final class BatchAsyncClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -7087,8 +7427,17 @@ public final class BatchAsyncClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -7106,17 +7455,6 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -7173,7 +7511,6 @@ public final class BatchAsyncClient {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -7199,7 +7536,7 @@ public final class BatchAsyncClient {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -7229,6 +7566,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
@@ -7278,6 +7633,23 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7323,6 +7695,23 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7370,15 +7759,31 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobScheduleWithResponseAsync(jobScheduleId, requestOptions);
     }
 
@@ -7504,11 +7909,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -7572,7 +7972,15 @@ public final class BatchAsyncClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -7586,6 +7994,13 @@ public final class BatchAsyncClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -7618,17 +8033,20 @@ public final class BatchAsyncClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -7640,10 +8058,10 @@ public final class BatchAsyncClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -7676,8 +8094,17 @@ public final class BatchAsyncClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -7695,17 +8122,6 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -7762,7 +8178,6 @@ public final class BatchAsyncClient {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -7794,6 +8209,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7832,14 +8265,14 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -7946,11 +8379,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -8014,7 +8442,15 @@ public final class BatchAsyncClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -8028,6 +8464,13 @@ public final class BatchAsyncClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -8060,17 +8503,20 @@ public final class BatchAsyncClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
      *                             encryptionAtHost: Boolean (Optional)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -8082,10 +8528,10 @@ public final class BatchAsyncClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -8118,8 +8564,17 @@ public final class BatchAsyncClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -8137,17 +8592,6 @@ public final class BatchAsyncClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -8204,7 +8648,6 @@ public final class BatchAsyncClient {
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -8230,7 +8673,7 @@ public final class BatchAsyncClient {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -8412,14 +8855,27 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -8463,12 +8919,12 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -8490,11 +8946,11 @@ public final class BatchAsyncClient {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -8639,11 +9095,6 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
@@ -8813,11 +9264,6 @@ public final class BatchAsyncClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *         }
      *     ]
      * }
@@ -8854,6 +9300,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
@@ -8908,6 +9371,18 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
@@ -8967,12 +9442,12 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -8994,11 +9469,11 @@ public final class BatchAsyncClient {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -9143,14 +9618,27 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -9205,12 +9693,12 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -9232,11 +9720,11 @@ public final class BatchAsyncClient {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -9381,14 +9869,27 @@ public final class BatchAsyncClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -9511,6 +10012,23 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
@@ -9566,6 +10084,23 @@ public final class BatchAsyncClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
@@ -9595,6 +10130,18 @@ public final class BatchAsyncClient {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -9645,6 +10192,28 @@ public final class BatchAsyncClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -9685,6 +10254,27 @@ public final class BatchAsyncClient {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -9757,7 +10347,8 @@ public final class BatchAsyncClient {
      * Adds a user Account to the specified Compute Node.
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -9780,6 +10371,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -9799,7 +10408,9 @@ public final class BatchAsyncClient {
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -9809,19 +10420,31 @@ public final class BatchAsyncClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Mono<Response<Void>> deleteNodeUserWithResponse(String poolId, String nodeId, String username,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteNodeUserWithResponseAsync(poolId, nodeId, userName, requestOptions);
+        return this.serviceClient.deleteNodeUserWithResponseAsync(poolId, nodeId, username, requestOptions);
     }
 
     /**
@@ -9851,10 +10474,28 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -9862,9 +10503,9 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> replaceNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Mono<Response<Void>> replaceNodeUserWithResponse(String poolId, String nodeId, String username,
         BinaryData parameters, RequestOptions requestOptions) {
-        return this.serviceClient.replaceNodeUserWithResponseAsync(poolId, nodeId, userName, parameters,
+        return this.serviceClient.replaceNodeUserWithResponseAsync(poolId, nodeId, username, parameters,
             requestOptions);
     }
 
@@ -9886,17 +10527,18 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -9994,17 +10636,6 @@ public final class BatchAsyncClient {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -10031,7 +10662,7 @@ public final class BatchAsyncClient {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -10047,6 +10678,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
@@ -10083,7 +10731,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10092,15 +10740,32 @@ public final class BatchAsyncClient {
      * }
      * </pre>
      *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.rebootNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10117,6 +10782,23 @@ public final class BatchAsyncClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -10124,9 +10806,8 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.startNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10154,7 +10835,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10163,15 +10844,32 @@ public final class BatchAsyncClient {
      * }
      * </pre>
      *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.reimageNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10197,7 +10895,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -10206,15 +10904,33 @@ public final class BatchAsyncClient {
      * }
      * </pre>
      *
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
+     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deallocateNodeWithResponse(String poolId, String nodeId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deallocateNodeWithResponseAsync(poolId, nodeId, requestOptions);
     }
 
@@ -10249,6 +10965,24 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -10277,6 +11011,23 @@ public final class BatchAsyncClient {
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
@@ -10294,8 +11045,9 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -10310,11 +11062,30 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
+     *     ipv6RemoteLoginIPAddress: String (Optional)
+     *     ipv6RemoteLoginPort: Integer (Optional)
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -10322,9 +11093,9 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10375,6 +11146,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
@@ -10416,17 +11204,18 @@ public final class BatchAsyncClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -10524,17 +11313,6 @@ public final class BatchAsyncClient {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -10561,7 +11339,7 @@ public final class BatchAsyncClient {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -10643,6 +11421,23 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -10745,6 +11540,18 @@ public final class BatchAsyncClient {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -10795,6 +11602,28 @@ public final class BatchAsyncClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -10835,6 +11664,27 @@ public final class BatchAsyncClient {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -10922,9 +11772,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listApplications(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchApplication>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -10984,9 +11841,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listPoolUsageMetrics(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolUsageMetrics>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -10999,7 +11863,7 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
+     * Lists all of the Pools in the specified Account.
      *
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11012,9 +11876,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listPools(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchPool>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -11076,10 +11947,11 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Pool. The poller provides
-     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchPool, Void> beginDeletePool(String poolId) {
+    public PollerFlux<BatchPool, BatchPool> beginDeletePool(String poolId) {
         RequestOptions requestOptions = new RequestOptions();
         PoolDeletePollerAsync poller = new PoolDeletePollerAsync(this, poolId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -11103,13 +11975,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for poolExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11245,9 +12117,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchSupportedImage>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -11275,9 +12154,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listPoolNodeCounts(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolNodeCounts>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -11332,10 +12218,10 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
-     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId) {
+    public PollerFlux<BatchJob, BatchJob> beginDeleteJob(String jobId) {
         RequestOptions requestOptions = new RequestOptions();
         JobDeletePollerAsync poller = new JobDeletePollerAsync(this, jobId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -11496,9 +12382,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -11525,9 +12418,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobsFromSchedule(jobScheduleId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -11563,9 +12463,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobPreparationAndReleaseTaskStatus(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJobPreparationAndReleaseTaskStatus>(
                 pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -11604,155 +12511,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Creates a Certificate to the specified Account.
-     *
-     * @param certificate The Certificate to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createCertificate(BatchCertificate certificate) {
-        // Generated convenience method for createCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createCertificateWithResponse(BinaryData.fromObject(certificate), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     *
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchCertificate> listCertificates() {
-        // Generated convenience method for listCertificates
-        RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listCertificates(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchCertificate>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * If you try to delete a Certificate that is being used by a Pool or Compute
-     * Node, the status of the Certificate changes to deleteFailed. If you decide that
-     * you want to continue using the Certificate, you can use this operation to set
-     * the status of the Certificate back to active. If you intend to delete the
-     * Certificate, you do not need to run this operation after the deletion failed.
-     * You must make sure that the Certificate is not being used by any resources, and
-     * then you can try again to delete the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint) {
-        // Generated convenience method for cancelCertificateDeletionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint) {
-        // Generated convenience method for deleteCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link PollerFlux} that polls the deletion of the Certificate. The poller provides
-     * {@link BatchCertificate} instances during polling and returns {@code null} upon successful deletion.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchCertificate, Void> beginDeleteCertificate(String thumbprintAlgorithm, String thumbprint) {
-        RequestOptions requestOptions = new RequestOptions();
-        CertificateDeletePollerAsync poller
-            = new CertificateDeletePollerAsync(this, thumbprintAlgorithm, thumbprint, requestOptions);
-        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
-            poller.getCancelOperation(), poller.getFetchResultOperation());
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Certificate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint) {
-        // Generated convenience method for getCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class));
-    }
-
-    /**
      * Checks the specified Job Schedule exists.
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
@@ -11769,13 +12527,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for jobScheduleExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11848,10 +12606,11 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
-     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId) {
+    public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId) {
         RequestOptions requestOptions = new RequestOptions();
         JobScheduleDeletePollerAsync poller = new JobScheduleDeletePollerAsync(this, jobScheduleId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -11988,9 +12747,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobSchedules(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJobSchedule>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12021,9 +12787,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTasks(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchTask>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12159,9 +12932,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSubTasks(jobId, taskId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchSubtask>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12278,11 +13058,11 @@ public final class BatchAsyncClient {
     public Mono<BatchFileProperties> getTaskFileProperties(String jobId, String taskId, String filePath,
         BatchTaskFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12294,7 +13074,7 @@ public final class BatchAsyncClient {
         }
         // Map the response headers of getTaskFilePropertiesWithResponse to BatchFileProperties
         return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions)
-            .map(response -> new BatchFileProperties(response.getHeaders()));
+            .map(response -> BatchFileProperties.fromHeaders(response.getHeaders()));
     }
 
     /**
@@ -12314,7 +13094,7 @@ public final class BatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchFileProperties> getTaskFileProperties(String jobId, String taskId, String filePath) {
         return getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions())
-            .map(response -> new BatchFileProperties(response.getHeaders()));
+            .map(response -> BatchFileProperties.fromHeaders(response.getHeaders()));
     }
 
     /**
@@ -12335,9 +13115,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTaskFiles(jobId, taskId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNodeFile>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12352,11 +13139,13 @@ public final class BatchAsyncClient {
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12364,10 +13153,10 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName) {
+    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String username) {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -12606,8 +13395,9 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -12616,8 +13406,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node on successful completion of {@link Mono}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -12644,9 +13434,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listNodes(poolId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNode>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12694,9 +13491,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listNodeExtensions(poolId, nodeId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchNodeVMExtension>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -12765,11 +13569,11 @@ public final class BatchAsyncClient {
     public Mono<BatchFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath,
         BatchNodeFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12781,7 +13585,7 @@ public final class BatchAsyncClient {
         }
         // Map the response headers of getNodeFilePropertiesWithResponse to NodeFileProperties
         return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions)
-            .map(response -> new BatchFileProperties(response.getHeaders()));
+            .map(response -> BatchFileProperties.fromHeaders(response.getHeaders()));
     }
 
     /**
@@ -12801,7 +13605,7 @@ public final class BatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath) {
         return getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions())
-            .map(response -> new BatchFileProperties(response.getHeaders()));
+            .map(response -> BatchFileProperties.fromHeaders(response.getHeaders()));
     }
 
     /**
@@ -12822,9 +13626,16 @@ public final class BatchAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listNodeFiles(poolId, nodeId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNodeFile>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12856,19 +13667,26 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchApplication> listApplications(BatchApplicationsListOptions options) {
         // Generated convenience method for listApplications
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listApplications(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchApplication>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -12903,9 +13721,9 @@ public final class BatchAsyncClient {
     public Mono<BatchApplication> getApplication(String applicationId, BatchApplicationGetOptions options) {
         // Generated convenience method for getApplicationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getApplicationWithResponse(applicationId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchApplication.class));
@@ -12933,13 +13751,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics(BatchPoolUsageMetricsListOptions options) {
         // Generated convenience method for listPoolUsageMetrics
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         OffsetDateTime startTime = options == null ? null : options.getStartTime();
-        OffsetDateTime endtime = options == null ? null : options.getEndtime();
+        OffsetDateTime endTime = options == null ? null : options.getEndTime();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -12947,17 +13765,24 @@ public final class BatchAsyncClient {
         if (startTime != null) {
             requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
         }
-        if (endtime != null) {
-            requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
+        if (endTime != null) {
+            requestOptions.addQueryParam("endtime", String.valueOf(endTime), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listPoolUsageMetrics(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolUsageMetrics>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -12970,7 +13795,7 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
+     * Lists all of the Pools in the specified Account.
      *
      * @param options Optional parameters for List Pools operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -12983,13 +13808,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPool> listPools(BatchPoolsListOptions options) {
         // Generated convenience method for listPools
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13013,9 +13838,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listPools(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchPool>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -13055,13 +13887,13 @@ public final class BatchAsyncClient {
     Mono<Void> deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13103,19 +13935,20 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Pool. The poller provides
-     * {@link BatchPool} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchPool, Void> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
+    public PollerFlux<BatchPool, BatchPool> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13152,15 +13985,15 @@ public final class BatchAsyncClient {
     public Mono<BatchPool> getPool(String poolId, BatchPoolGetOptions options, RequestConditions requestConditions) {
         // Generated convenience method for getPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -13218,13 +14051,13 @@ public final class BatchAsyncClient {
     Mono<Void> stopPoolResize(String poolId, BatchPoolResizeStopOptions options, RequestConditions requestConditions) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13267,13 +14100,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchPool, BatchPool> beginStopPoolResize(String poolId, BatchPoolResizeStopOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13308,11 +14141,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchSupportedImage> listSupportedImages(SupportedBatchImagesListOptions options) {
         // Generated convenience method for listSupportedImages
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13322,9 +14155,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSupportedImages(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchSupportedImage>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -13352,11 +14192,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPoolNodeCounts> listPoolNodeCounts(BatchPoolNodeCountsListOptions options) {
         // Generated convenience method for listPoolNodeCounts
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13366,9 +14206,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listPoolNodeCounts(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchPoolNodeCounts>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -13405,14 +14252,14 @@ public final class BatchAsyncClient {
     Mono<Void> deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13453,20 +14300,20 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job. The poller provides
-     * {@link BatchJob} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJob, Void> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
+    public PollerFlux<BatchJob, BatchJob> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13506,15 +14353,15 @@ public final class BatchAsyncClient {
     public Mono<BatchJob> getJob(String jobId, BatchJobGetOptions options, RequestConditions requestConditions) {
         // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -13570,13 +14417,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for replaceJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13618,13 +14465,13 @@ public final class BatchAsyncClient {
     Mono<Void> enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13667,13 +14514,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchJob, BatchJob> beginEnableJob(String jobId, BatchJobEnableOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13717,15 +14564,15 @@ public final class BatchAsyncClient {
     Mono<Void> terminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -13774,15 +14621,15 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchJob, BatchJob> beginTerminateJob(String jobId, BatchJobTerminateOptions options,
         RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -13823,13 +14670,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJob> listJobs(BatchJobsListOptions options) {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13853,9 +14700,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -13881,13 +14735,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJob> listJobsFromSchedule(String jobScheduleId, BatchJobsFromScheduleListOptions options) {
         // Generated convenience method for listJobsFromSchedule
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13911,9 +14765,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobsFromSchedule(jobScheduleId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -13949,12 +14810,12 @@ public final class BatchAsyncClient {
         BatchJobPreparationAndReleaseTaskStatusListOptions options) {
         // Generated convenience method for listJobPreparationAndReleaseTaskStatus
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -13971,9 +14832,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobPreparationAndReleaseTaskStatus(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJobPreparationAndReleaseTaskStatus>(
                 pagedResponse.getRequest(), pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -14008,219 +14876,12 @@ public final class BatchAsyncClient {
     public Mono<BatchTaskCountsResult> getJobTaskCounts(String jobId, BatchJobTaskCountsGetOptions options) {
         // Generated convenience method for getJobTaskCountsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getJobTaskCountsWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchTaskCountsResult.class));
-    }
-
-    /**
-     * Creates a Certificate to the specified Account.
-     *
-     * @param certificate The Certificate to be created.
-     * @param options Optional parameters for Create Certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createCertificate(BatchCertificate certificate, BatchCertificateCreateOptions options) {
-        // Generated convenience method for createCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return createCertificateWithResponse(BinaryData.fromObject(certificate), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     *
-     * @param options Optional parameters for List Certificates operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchCertificate> listCertificates(BatchCertificatesListOptions options) {
-        // Generated convenience method for listCertificates
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listCertificates(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchCertificate>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue()
-                    .stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * If you try to delete a Certificate that is being used by a Pool or Compute
-     * Node, the status of the Certificate changes to deleteFailed. If you decide that
-     * you want to continue using the Certificate, you can use this operation to set
-     * the status of the Certificate back to active. If you intend to delete the
-     * Certificate, you do not need to run this operation after the deletion failed.
-     * You must make sure that the Certificate is not being used by any resources, and
-     * then you can try again to delete the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param options Optional parameters for Cancel Certificate Deletion operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint,
-        BatchCertificateCancelDeletionOptions options) {
-        // Generated convenience method for cancelCertificateDeletionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param options Optional parameters for Delete Certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint, BatchCertificateDeleteOptions options) {
-        // Generated convenience method for deleteCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        return deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param options Optional parameters for Delete Certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link PollerFlux} that polls the deletion of the Certificate. The poller provides
-     * {@link BatchCertificate} instances during polling and returns {@code null} upon successful deletion.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchCertificate, Void> beginDeleteCertificate(String thumbprintAlgorithm, String thumbprint,
-        BatchCertificateDeleteOptions options) {
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        CertificateDeletePollerAsync poller
-            = new CertificateDeletePollerAsync(this, thumbprintAlgorithm, thumbprint, requestOptions);
-        return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
-            poller.getCancelOperation(), poller.getFetchResultOperation());
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
-     * @param options Optional parameters for Get Certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Certificate on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchCertificate> getCertificate(String thumbprintAlgorithm, String thumbprint,
-        BatchCertificateGetOptions options) {
-        // Generated convenience method for getCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BatchCertificate.class));
     }
 
     /**
@@ -14246,14 +14907,14 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -14291,20 +14952,21 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link PollerFlux} that polls the deletion of the Job Schedule. The poller provides
-     * {@link BatchJobSchedule} instances during polling and returns {@code null} upon successful deletion.
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchJobSchedule, Void> beginDeleteJobSchedule(String jobScheduleId,
+    public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId,
         BatchJobScheduleDeleteOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -14345,15 +15007,15 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for getJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14411,13 +15073,13 @@ public final class BatchAsyncClient {
         BatchJobScheduleReplaceOptions options, RequestConditions requestConditions) {
         // Generated convenience method for replaceJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14456,13 +15118,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14498,13 +15160,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for enableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14540,14 +15202,14 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -14586,14 +15248,14 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId,
         BatchJobScheduleTerminateOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -14632,13 +15294,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJobSchedule> listJobSchedules(BatchJobSchedulesListOptions options) {
         // Generated convenience method for listJobSchedules
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14662,9 +15324,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobSchedules(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchJobSchedule>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -14694,13 +15363,13 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchTask> listTasks(String jobId, BatchTasksListOptions options) {
         // Generated convenience method for listTasks
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -14724,9 +15393,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTasks(jobId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchTask>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -14769,9 +15445,9 @@ public final class BatchAsyncClient {
         BatchTaskCollectionCreateOptions options) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -14802,13 +15478,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for deleteTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14852,15 +15528,15 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14913,13 +15589,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for replaceTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14958,10 +15634,10 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchSubtask> listSubTasks(String jobId, String taskId, BatchSubTasksListOptions options) {
         // Generated convenience method for listSubTasks
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14972,9 +15648,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSubTasks(jobId, taskId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchSubtask>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -15007,13 +15690,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15059,13 +15742,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for reactivateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15101,10 +15784,10 @@ public final class BatchAsyncClient {
     public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath, BatchTaskFileDeleteOptions options) {
         // Generated convenience method for deleteTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
@@ -15129,12 +15812,12 @@ public final class BatchAsyncClient {
     public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath, BatchTaskFileGetOptions options) {
         // Generated convenience method for getTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15167,12 +15850,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNodeFile> listTaskFiles(String jobId, String taskId, BatchTaskFilesListOptions options) {
         // Generated convenience method for listTaskFiles
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15185,9 +15868,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTaskFiles(jobId, taskId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNodeFile>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -15202,11 +15892,13 @@ public final class BatchAsyncClient {
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param options Optional parameters for Delete Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -15215,15 +15907,15 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName,
+    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String username,
         BatchNodeUserDeleteOptions options) {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
-        return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -15242,10 +15934,10 @@ public final class BatchAsyncClient {
     public Mono<BatchNode> getNode(String poolId, String nodeId, BatchNodeGetOptions options) {
         // Generated convenience method for getNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -15276,10 +15968,10 @@ public final class BatchAsyncClient {
     Mono<Void> rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15306,10 +15998,10 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchNode, BatchNode> beginRebootNode(String poolId, String nodeId,
         BatchNodeRebootOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15337,9 +16029,9 @@ public final class BatchAsyncClient {
     Mono<Void> startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return startNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15362,9 +16054,9 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchNode, BatchNode> beginStartNode(String poolId, String nodeId,
         BatchNodeStartOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         NodeStartPollerAsync poller = new NodeStartPollerAsync(this, poolId, nodeId, requestOptions);
         return PollerFlux.create(Duration.ofSeconds(5), poller.getActivationOperation(), poller.getPollOperation(),
@@ -15391,10 +16083,10 @@ public final class BatchAsyncClient {
     Mono<Void> reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeReimageParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15424,10 +16116,10 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchNode, BatchNode> beginReimageNode(String poolId, String nodeId,
         BatchNodeReimageOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeReimageParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15455,10 +16147,10 @@ public final class BatchAsyncClient {
     Mono<Void> deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15485,10 +16177,10 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId,
         BatchNodeDeallocateOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15517,10 +16209,10 @@ public final class BatchAsyncClient {
     public Mono<Void> disableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingDisableOptions options) {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeDisableSchedulingParameters parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        BatchNodeSchedulingDisableParameters parameters = options == null ? null : options.getParameters();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15547,9 +16239,9 @@ public final class BatchAsyncClient {
     public Mono<Void> enableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingEnableOptions options) {
         // Generated convenience method for enableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15557,8 +16249,9 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -15568,8 +16261,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node on successful completion of {@link Mono}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -15577,9 +16270,9 @@ public final class BatchAsyncClient {
         BatchNodeRemoteLoginSettingsGetOptions options) {
         // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchNodeRemoteLoginSettings.class));
@@ -15600,12 +16293,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNode> listNodes(String poolId, BatchNodesListOptions options) {
         // Generated convenience method for listNodes
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15622,9 +16315,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listNodes(poolId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNode>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -15653,10 +16353,10 @@ public final class BatchAsyncClient {
         BatchNodeExtensionGetOptions options) {
         // Generated convenience method for getNodeExtensionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -15686,11 +16386,11 @@ public final class BatchAsyncClient {
         BatchNodeExtensionsListOptions options) {
         // Generated convenience method for listNodeExtensions
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15704,9 +16404,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listNodeExtensions(poolId, nodeId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, BatchNodeVMExtension>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -15736,10 +16443,10 @@ public final class BatchAsyncClient {
         BatchNodeFileDeleteOptions options) {
         // Generated convenience method for deleteNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
@@ -15765,12 +16472,12 @@ public final class BatchAsyncClient {
         BatchNodeFileGetOptions options) {
         // Generated convenience method for getNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15803,12 +16510,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNodeFile> listNodeFiles(String poolId, String nodeId, BatchNodeFilesListOptions options) {
         // Generated convenience method for listNodeFiles
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15821,9 +16528,16 @@ public final class BatchAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listNodeFiles(poolId, nodeId, requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            Flux<PagedResponse<BinaryData>> flux;
+            if (pageSizeParam == null) {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage().take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            } else {
+                flux = (continuationTokenParam == null)
+                    ? pagedFluxResponse.byPage(pageSizeParam).take(1)
+                    : pagedFluxResponse.byPage(continuationTokenParam, pageSizeParam).take(1);
+            }
             return flux.map(pagedResponse -> new PagedResponseBase<Void, BatchNodeFile>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -15853,9 +16567,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createPool(BatchPoolCreateParameters pool, BatchPoolCreateOptions options) {
         // Generated convenience method for createPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15903,13 +16617,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for updatePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15976,13 +16690,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16027,13 +16741,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchPool, BatchPool> beginResizePool(String poolId, BatchPoolResizeParameters parameters,
         BatchPoolResizeOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16129,9 +16843,9 @@ public final class BatchAsyncClient {
         BatchPoolPropertiesReplaceOptions options) {
         // Generated convenience method for replacePoolPropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -16182,13 +16896,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16231,13 +16945,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchPool, BatchPool> beginRemoveNodes(String poolId, BatchNodeRemoveParameters parameters,
         BatchNodesRemoveOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16328,13 +17042,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for updateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16402,13 +17116,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16455,13 +17169,13 @@ public final class BatchAsyncClient {
     public PollerFlux<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters,
         BatchJobDisableOptions options, RequestConditions requestConditions) {
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16564,9 +17278,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createJob(BatchJobCreateParameters job, BatchJobCreateOptions options) {
         // Generated convenience method for createJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createJobWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -16622,13 +17336,13 @@ public final class BatchAsyncClient {
         BatchJobScheduleUpdateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for updateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16689,9 +17403,9 @@ public final class BatchAsyncClient {
         BatchJobScheduleCreateOptions options) {
         // Generated convenience method for createJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -16735,9 +17449,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createTask(String jobId, BatchTaskCreateParameters task, BatchTaskCreateOptions options) {
         // Generated convenience method for createTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -16768,7 +17482,8 @@ public final class BatchAsyncClient {
      * Adds a user Account to the specified Compute Node.
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -16785,9 +17500,9 @@ public final class BatchAsyncClient {
         BatchNodeUserCreateOptions options) {
         // Generated convenience method for createNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -16797,7 +17512,8 @@ public final class BatchAsyncClient {
      * Adds a user Account to the specified Compute Node.
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -16826,7 +17542,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @param options Optional parameters for Replace Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -16836,15 +17552,15 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName,
+    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String username,
         BatchNodeUserUpdateParameters parameters, BatchNodeUserReplaceOptions options) {
         // Generated convenience method for replaceNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
-        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(parameters), requestOptions)
+        return replaceNodeUserWithResponse(poolId, nodeId, username, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -16858,7 +17574,7 @@ public final class BatchAsyncClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
+     * @param username The name of the user Account to update.
      * @param parameters The options to use for updating the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BatchErrorException thrown if the request is rejected by server.
@@ -16867,11 +17583,11 @@ public final class BatchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName,
+    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String username,
         BatchNodeUserUpdateParameters parameters) {
         // Generated convenience method for replaceNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(parameters), requestOptions)
+        return replaceNodeUserWithResponse(poolId, nodeId, username, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -16901,9 +17617,9 @@ public final class BatchAsyncClient {
         UploadBatchServiceLogsParameters parameters, BatchNodeLogsUploadOptions options) {
         // Generated convenience method for uploadNodeLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -16941,32 +17657,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
      *
      * This API is primarily for validating an autoscale formula, as it simply returns
@@ -16994,57 +17684,6 @@ public final class BatchAsyncClient {
     }
 
     /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
-     * @param options Optional parameters for Enable Pool AutoScale operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws BatchErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters parameters,
-        BatchPoolEnableAutoScaleOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
      *
      * This API is primarily for validating an autoscale formula, as it simply returns
@@ -17068,9 +17707,9 @@ public final class BatchAsyncClient {
         BatchPoolEvaluateAutoScaleOptions options) {
         // Generated convenience method for evaluatePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -17092,10 +17731,87 @@ public final class BatchAsyncClient {
     public Mono<Void> disablePoolAutoScale(String poolId, BatchPoolDisableAutoScaleOptions options) {
         // Generated convenience method for disablePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return disablePoolAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @param options Optional parameters for Enable Pool AutoScale operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters,
+        BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 }

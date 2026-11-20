@@ -9,7 +9,7 @@ package com.azure.resourcemanager.playwright.generated;
  */
 public final class PlaywrightWorkspacesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaces_ListBySubscription.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_ListBySubscription.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_ListBySubscription.

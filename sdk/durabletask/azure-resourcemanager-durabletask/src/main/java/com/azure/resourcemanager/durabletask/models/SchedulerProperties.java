@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.durabletask.fluent.models.PrivateEndpointConnectionInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -36,6 +37,16 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
      * SKU of the durable task scheduler
      */
     private SchedulerSku sku;
+
+    /*
+     * Allow or disallow public network access to durable task scheduler
+     */
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * The private endpoints exposed by this resource
+     */
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * Creates an instance of SchedulerProperties class.
@@ -102,6 +113,35 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
     }
 
     /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to durable task scheduler.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to durable task scheduler.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SchedulerProperties object itself.
+     */
+    public SchedulerProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The private endpoints exposed by this resource.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -109,6 +149,8 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("ipAllowlist", this.ipAllowlist, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -138,6 +180,13 @@ public final class SchedulerProperties implements JsonSerializable<SchedulerProp
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("endpoint".equals(fieldName)) {
                     deserializedSchedulerProperties.endpoint = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedSchedulerProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedSchedulerProperties.privateEndpointConnections = privateEndpointConnections;
                 } else {
                     reader.skipChildren();
                 }

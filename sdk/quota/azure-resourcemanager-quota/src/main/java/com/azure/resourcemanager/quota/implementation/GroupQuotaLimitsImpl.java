@@ -30,12 +30,8 @@ public final class GroupQuotaLimitsImpl implements GroupQuotaLimits {
         String resourceProviderName, String location, Context context) {
         Response<GroupQuotaLimitListInner> inner = this.serviceClient()
             .listWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GroupQuotaLimitListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GroupQuotaLimitListImpl(inner.getValue(), this.manager()));
     }
 
     public GroupQuotaLimitList list(String managementGroupId, String groupQuotaName, String resourceProviderName,

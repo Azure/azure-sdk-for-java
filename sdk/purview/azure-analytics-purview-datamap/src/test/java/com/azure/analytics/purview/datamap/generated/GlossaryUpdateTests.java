@@ -47,7 +47,7 @@ public final class GlossaryUpdateTests extends DataMapClientTestBase {
                         .setRelationGuid("9385640b-e6be-437d-a6b9-62d11c14a189")
                         .setTermGuid("952c7ba4-4c89-42d8-a05a-7d2161be7008")))
                 .setUsage("Example Glossary"),
-            null);
+            (Boolean) null);
 
         // response assertion
         Assertions.assertNotNull(response);

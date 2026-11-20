@@ -48,12 +48,8 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
         String autonomousdatabasename, Context context) {
         Response<AutonomousDatabaseInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, autonomousdatabasename, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AutonomousDatabaseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AutonomousDatabaseImpl(inner.getValue(), this.manager()));
     }
 
     public AutonomousDatabase getByResourceGroup(String resourceGroupName, String autonomousdatabasename) {
@@ -130,12 +126,8 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
         String autonomousdatabasename, GenerateAutonomousDatabaseWalletDetails body, Context context) {
         Response<AutonomousDatabaseWalletFileInner> inner
             = this.serviceClient().generateWalletWithResponse(resourceGroupName, autonomousdatabasename, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AutonomousDatabaseWalletFileImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AutonomousDatabaseWalletFileImpl(inner.getValue(), this.manager()));
     }
 
     public AutonomousDatabaseWalletFile generateWallet(String resourceGroupName, String autonomousdatabasename,
@@ -232,12 +224,16 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public AutonomousDatabase getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByName(id, "autonomousDatabases");
+        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "autonomousdatabasename");
         if (autonomousdatabasename == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
@@ -246,12 +242,16 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public Response<AutonomousDatabase> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByName(id, "autonomousDatabases");
+        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "autonomousdatabasename");
         if (autonomousdatabasename == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
@@ -260,12 +260,16 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByName(id, "autonomousDatabases");
+        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "autonomousdatabasename");
         if (autonomousdatabasename == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));
@@ -274,12 +278,16 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByName(id, "autonomousDatabases");
+        String autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "autonomousdatabasename");
         if (autonomousdatabasename == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'autonomousDatabases'.", id)));

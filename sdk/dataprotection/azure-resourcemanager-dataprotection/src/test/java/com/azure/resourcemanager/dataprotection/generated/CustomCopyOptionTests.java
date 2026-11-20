@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomCopyOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomCopyOption model = BinaryData.fromString("{\"objectType\":\"CustomCopyOption\",\"duration\":\"uem\"}")
-            .toObject(CustomCopyOption.class);
-        Assertions.assertEquals("uem", model.duration());
+        CustomCopyOption model
+            = BinaryData.fromString("{\"objectType\":\"CustomCopyOption\",\"duration\":\"evxccedcp\"}")
+                .toObject(CustomCopyOption.class);
+        Assertions.assertEquals("evxccedcp", model.duration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomCopyOption model = new CustomCopyOption().withDuration("uem");
+        CustomCopyOption model = new CustomCopyOption().withDuration("evxccedcp");
         model = BinaryData.fromObject(model).toObject(CustomCopyOption.class);
-        Assertions.assertEquals("uem", model.duration());
+        Assertions.assertEquals("evxccedcp", model.duration());
     }
 }

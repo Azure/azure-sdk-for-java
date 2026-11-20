@@ -1,0 +1,135 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+/**
+ * Sample demonstrating how to update an existing analyzer asynchronously.
+ * This sample shows:
+ * 1. Creating an analyzer
+ * 2. Updating analyzer description
+ * 3. Updating analyzer tags
+ * 4. Preserving analyzer properties omitted from the merge update
+ */
+public class Sample08_UpdateAnalyzerAsync {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample08Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample08Async.buildClient
+
+        // Create an analyzer for testing
+    String analyzerId = "update_test_analyzer_" + System.currentTimeMillis();
+        System.out.println("Creating test analyzer '" + analyzerId + "'...");
+
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        ContentFieldDefinition titleDef = new ContentFieldDefinition();
+        titleDef.setType(ContentFieldType.STRING);
+        titleDef.setMethod(GenerationMethod.EXTRACT);
+        titleDef.setDescription("Document title");
+        fields.put("title", titleDef);
+
+        ContentFieldSchema fieldSchema = new ContentFieldSchema();
+        fieldSchema.setName("basic_schema");
+        fieldSchema.setDescription("Basic document schema");
+        fieldSchema.setFields(fields);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "tag1_initial_value");
+
+        ContentAnalyzer analyzer = new ContentAnalyzer()
+            .setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Original analyzer for update testing")
+            .setTags(tags)
+            .setConfig(new ContentAnalyzerConfig()
+                .setOcrEnabled(true)
+                .setLayoutEnabled(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
+
+        String finalAnalyzerId = analyzerId; // For use in lambda
+
+        Mono<ContentAnalyzer> createdAnalyzer = client.beginCreateAnalyzer(analyzerId, analyzer, true)
+            .last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Analyzer creation"));
+
+        runWithCleanup(createdAnalyzer, ignored -> client.getAnalyzer(finalAnalyzerId).doOnNext(currentAnalyzer -> {
+            System.out.println("Test analyzer created: " + finalAnalyzerId);
+            // BEGIN:ContentUnderstandingUpdateAnalyzerAsync
+            System.out.println("\nCurrent description: " + currentAnalyzer.getDescription());
+        }).flatMap(currentAnalyzer -> {
+            Map<String, String> updatedTags = new HashMap<>();
+            updatedTags.put("tag1", "tag1_updated_value");
+            updatedTags.put("tag3", "tag3_value");
+
+            ContentAnalyzer updatedAnalyzer = new ContentAnalyzer()
+                .setBaseAnalyzerId(currentAnalyzer.getBaseAnalyzerId())
+                .setDescription("Updated analyzer description")
+                .setTags(updatedTags);
+
+            return client.updateAnalyzer(finalAnalyzerId, updatedAnalyzer).then(client.getAnalyzer(finalAnalyzerId));
+        }).doOnNext(result -> {
+            System.out.println("Analyzer updated successfully!");
+            System.out.println("New description: " + result.getDescription());
+            System.out.println("Updated tags: " + result.getTags());
+            // END:ContentUnderstandingUpdateAnalyzerAsync
+        }).then(), ignored -> deleteAnalyzer(client, finalAnalyzerId)).block();
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono.error(
+                new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    static <T> Mono<Void> runWithCleanup(Mono<T> resource, Function<T, Mono<Void>> operation,
+        Function<T, Mono<Void>> cleanup) {
+        return Mono.usingWhen(resource, operation, cleanup, (value, error) -> cleanup.apply(value), cleanup);
+    }
+
+    private static Mono<Void> deleteAnalyzer(ContentUnderstandingAsyncClient client, String analyzerId) {
+        return Mono.defer(() -> {
+            System.out.println("\nCleaning up: deleting test analyzer '" + analyzerId + "'...");
+            return client.deleteAnalyzer(analyzerId)
+                .doOnSuccess(ignored -> System.out.println("Test analyzer deleted successfully."));
+        });
+    }
+}

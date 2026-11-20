@@ -6,27 +6,38 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.resourcemanager.dataprotection.models.AKSVolumeTypes;
 import com.azure.resourcemanager.dataprotection.models.AdlsBlobBackupDatasourceParameters;
+import com.azure.resourcemanager.dataprotection.models.AdlsBlobBackupDatasourceParametersForAutoProtection;
 import com.azure.resourcemanager.dataprotection.models.AzureOperationalStoreParameters;
 import com.azure.resourcemanager.dataprotection.models.BackupInstance;
+import com.azure.resourcemanager.dataprotection.models.BackupSolutionType;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupAutoProtectionRule;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupDatasourceParametersForAutoProtection;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupPatternType;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupRuleBasedAutoProtectionSettings;
+import com.azure.resourcemanager.dataprotection.models.BlobBackupRuleMode;
 import com.azure.resourcemanager.dataprotection.models.DataStoreTypes;
 import com.azure.resourcemanager.dataprotection.models.Datasource;
 import com.azure.resourcemanager.dataprotection.models.DatasourceSet;
+import com.azure.resourcemanager.dataprotection.models.GenericBackupDatasourceParameters;
 import com.azure.resourcemanager.dataprotection.models.IdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.KubernetesClusterBackupDatasourceParameters;
 import com.azure.resourcemanager.dataprotection.models.PolicyInfo;
 import com.azure.resourcemanager.dataprotection.models.PolicyParameters;
+import com.azure.resourcemanager.dataprotection.models.PostgreSqlFlexibleServerBackupDatasourceParameters;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreBasedAuthCredentials;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreResource;
 import com.azure.resourcemanager.dataprotection.models.SecretStoreType;
 import com.azure.resourcemanager.dataprotection.models.ValidationType;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for BackupInstances CreateOrUpdate.
  */
 public final class BackupInstancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/PutBackupInstance.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance.json
      */
     /**
      * Sample code: Create BackupInstance.
@@ -67,13 +78,56 @@ public final class BackupInstancesCreateOrUpdateSamples {
                 .withValidationType(ValidationType.SHALLOW_VALIDATION)
                 .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(false)
                     .withUserAssignedIdentityArmUrl(
-                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourcegroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
+                        "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"))
                 .withObjectType("BackupInstance"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstanceWithGenericParameters.json
+     */
+    /**
+     * Sample code: Create BackupInstance with GenericBackupDatasourceParameters.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithGenericBackupDatasourceParameters(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("esan-volgroup-bi")
+            .withExistingBackupVault("ESAN-ECYBVTRG", "ESANVault")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withProperties(new BackupInstance().withFriendlyName("esan-volgroup-bi")
+                .withDataSourceInfo(new Datasource().withDatasourceType("Microsoft.ElasticSan/elasticSans/volumeGroups")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/97cda027-4279-4cde-b4ff-19afa0021d87/resourceGroups/ESAN-ECYBVTRG/providers/Microsoft.ElasticSan/elasticSans/ecy-bvt-adhoc/volumeGroups/esan-volgroup")
+                    .withResourceLocation("eastus2euap")
+                    .withResourceName("esan-volgroup-bi")
+                    .withResourceType("Microsoft.ElasticSan/elasticSans/volumeGroups")
+                    .withResourceUri("SampleresourceUri123"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.ElasticSan/elasticSans/volumeGroups")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/97cda027-4279-4cde-b4ff-19afa0021d87/resourceGroups/ESAN-ECYBVTRG/providers/Microsoft.ElasticSan/elasticSans/ecy-bvt-adhoc")
+                    .withResourceLocation("eastus2euap")
+                    .withResourceType("Microsoft.ElasticSan/elasticSans"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/97cda027-4279-4cde-b4ff-19afa0021d87/resourceGroups/ESAN-ECYBVTRG/providers/Microsoft.DataProtection/backupVaults/ESANVault/backupPolicies/BVTPolicy")
+                    .withPolicyParameters(new PolicyParameters()
+                        .withDataStoreParametersList(Arrays.asList(new AzureOperationalStoreParameters()
+                            .withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
+                            .withResourceGroupId(
+                                "/subscriptions/97cda027-4279-4cde-b4ff-19afa0021d87/resourceGroups/ESAN-ECYBVTRG")))
+                        .withBackupDatasourceParametersList(Arrays.asList(new GenericBackupDatasourceParameters()
+                            .withResourceSelectors(Arrays.asList("vol1", "vol2", "vol3"))))))
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
      */
     /**
      * Sample code: Create BackupInstance With ADLSBlobBackupDatasourceParameters.
@@ -115,7 +169,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Create BackupInstance to perform critical operation With MUA.
@@ -152,7 +206,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
                             .withResourceGroupId(
                                 "/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/viveksipgtest")))))
                 .withResourceGuardOperationRequests(Arrays.asList(
-                    "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourcegroups/ankurResourceGuard1/providers/Microsoft.DataProtection/resourceGuards/ResourceGuard38-1/dppModifyPolicy/default"))
+                    "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourceGroups/ankurResourceGuard1/providers/Microsoft.DataProtection/resourceGuards/ResourceGuard38-1/dppModifyPolicy/default"))
                 .withDatasourceAuthCredentials(new SecretStoreBasedAuthCredentials().withSecretStoreResource(
                     new SecretStoreResource().withUri("https://samplevault.vault.azure.net/secrets/credentials")
                         .withSecretStoreType(SecretStoreType.AZURE_KEY_VAULT)))
@@ -162,8 +216,60 @@ public final class BackupInstancesCreateOrUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
+     */
+    /**
+     * Sample code: Create BackupInstance With BlobBackupAutoProtection.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithBlobBackupAutoProtection(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("blobstorageaccount-blobstorageaccount-2a76f8a-c176-4f7d-819e-95157e2b0071")
+            .withExistingBackupVault("blobrg", "blobvault")
+            .withProperties(new BackupInstance().withFriendlyName("blobstorageaccount\\blobbackupinstance")
+                .withDataSourceInfo(new Datasource()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/blobServices")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("blobstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/blobServices")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("blobstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupPolicies/blobpolicy")
+                    .withPolicyParameters(new PolicyParameters().withBackupDatasourceParametersList(
+                        Arrays.asList(new BlobBackupDatasourceParametersForAutoProtection().withAutoProtectionSettings(
+                            new BlobBackupRuleBasedAutoProtectionSettings().withEnabled(true)
+                                .withRules(Arrays.asList(
+                                    new BlobBackupAutoProtectionRule().withObjectType("BlobBackupAutoProtectionRule")
+                                        .withMode(BlobBackupRuleMode.EXCLUDE)
+                                        .withType(BlobBackupPatternType.PREFIX)
+                                        .withPattern("temp-"),
+                                    new BlobBackupAutoProtectionRule().withObjectType("BlobBackupAutoProtectionRule")
+                                        .withMode(BlobBackupRuleMode.EXCLUDE)
+                                        .withType(BlobBackupPatternType.PREFIX)
+                                        .withPattern("test-"))))))))
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    /*
      * x-ms-original-file:
-     * 2025-07-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
+     * 2026-07-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
      */
     /**
      * Sample code: Create BackupInstance With KubernetesClusterBackupDatasourceParameters.
@@ -196,7 +302,7 @@ public final class BackupInstancesCreateOrUpdateSamples {
                     .withResourceUri(
                         "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/aksrg/providers/Microsoft.ContainerService/managedClusters/akscluster"))
                 .withPolicyInfo(new PolicyInfo().withPolicyId(
-                    "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourcegroups/aksrg/providers/Microsoft.DataProtection/BackupVaults/aksvault/backupPolicies/akspolicy")
+                    "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/aksrg/providers/Microsoft.DataProtection/BackupVaults/aksvault/backupPolicies/akspolicy")
                     .withPolicyParameters(new PolicyParameters()
                         .withDataStoreParametersList(Arrays.asList(
                             new AzureOperationalStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
@@ -214,5 +320,112 @@ public final class BackupInstancesCreateOrUpdateSamples {
                                 .withLabelSelectors(Arrays.asList())))))
                 .withObjectType("BackupInstance"))
             .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
+     */
+    /**
+     * Sample code: Create BackupInstance With ADLSBlobBackupAutoProtection.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithADLSBlobBackupAutoProtection(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("adlsstorageaccount-adlsstorageaccount-3a76f8a-c176-4f7d-819e-95157e2b0071")
+            .withExistingBackupVault("adlsrg", "adlsvault")
+            .withProperties(new BackupInstance().withFriendlyName("adlsstorageaccount\\adlsbackupinstance")
+                .withDataSourceInfo(new Datasource()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/adlsBlobServices")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("adlsstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.Storage/storageAccounts/adlsBlobServices")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount")
+                    .withResourceLocation("centraluseuap")
+                    .withResourceName("adlsstorageaccount")
+                    .withResourceType("microsoft.storage/storageAccounts")
+                    .withResourceUri(
+                        "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy")
+                    .withPolicyParameters(new PolicyParameters().withBackupDatasourceParametersList(Arrays
+                        .asList(new AdlsBlobBackupDatasourceParametersForAutoProtection().withAutoProtectionSettings(
+                            new BlobBackupRuleBasedAutoProtectionSettings().withEnabled(true)
+                                .withRules(Arrays.asList(
+                                    new BlobBackupAutoProtectionRule().withObjectType("BlobBackupAutoProtectionRule")
+                                        .withMode(BlobBackupRuleMode.EXCLUDE)
+                                        .withType(BlobBackupPatternType.PREFIX)
+                                        .withPattern("temp-"),
+                                    new BlobBackupAutoProtectionRule().withObjectType("BlobBackupAutoProtectionRule")
+                                        .withMode(BlobBackupRuleMode.EXCLUDE)
+                                        .withType(BlobBackupPatternType.PREFIX)
+                                        .withPattern("test-"))))))))
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2026-07-01/BackupInstanceOperations/PutBackupInstance_PostgreSqlFlexibleServerBackupDatasourceParameters.json
+     */
+    /**
+     * Sample code: Create BackupInstance With PostgreSqlFlexibleServerBackupDatasourceParameters.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void createBackupInstanceWithPostgreSqlFlexibleServerBackupDatasourceParameters(
+        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances()
+            .define("pgflexbi")
+            .withExistingBackupVault("pgflexrg", "pgflexvault")
+            .withProperties(new BackupInstance().withFriendlyName("pgflexbi")
+                .withDataSourceInfo(new Datasource().withDatasourceType("Microsoft.DBforPostgreSQL/flexibleServers")
+                    .withObjectType("Datasource")
+                    .withResourceId(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver")
+                    .withResourceLocation("eastus2euap")
+                    .withResourceName("pgflexserver")
+                    .withResourceType("Microsoft.DBforPostgreSQL/flexibleServers")
+                    .withResourceUri(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"))
+                .withDataSourceSetInfo(new DatasourceSet()
+                    .withDatasourceType("Microsoft.DBforPostgreSQL/flexibleServers")
+                    .withObjectType("DatasourceSet")
+                    .withResourceId(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver")
+                    .withResourceLocation("eastus2euap")
+                    .withResourceName("pgflexserver")
+                    .withResourceType("Microsoft.DBforPostgreSQL/flexibleServers")
+                    .withResourceUri(
+                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgflexserver"))
+                .withPolicyInfo(new PolicyInfo().withPolicyId(
+                    "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/pgflexrg/providers/Microsoft.DataProtection/BackupVaults/pgflexvault/backupPolicies/pgflexpolicy")
+                    .withPolicyParameters(new PolicyParameters().withBackupDatasourceParametersList(
+                        Arrays.asList(new PostgreSqlFlexibleServerBackupDatasourceParameters()
+                            .withBackupSolutionType(BackupSolutionType.PHYSICAL_BACKUP)))))
+                .withObjectType("BackupInstance"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

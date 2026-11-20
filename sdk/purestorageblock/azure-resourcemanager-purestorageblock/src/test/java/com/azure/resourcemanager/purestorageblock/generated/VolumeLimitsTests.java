@@ -12,9 +12,9 @@ public final class VolumeLimitsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeLimits model
-            = BinaryData.fromString("{\"provisionedSize\":{\"min\":4526568806695806079,\"max\":918544931908903685}}")
+            = BinaryData.fromString("{\"provisionedSize\":{\"min\":427909718246627778,\"max\":6452586290893910496}}")
                 .toObject(VolumeLimits.class);
-        Assertions.assertEquals(4526568806695806079L, model.provisionedSize().min());
-        Assertions.assertEquals(918544931908903685L, model.provisionedSize().max());
+        Assertions.assertEquals(427909718246627778L, model.provisionedSize().min());
+        Assertions.assertEquals(6452586290893910496L, model.provisionedSize().max());
     }
 }

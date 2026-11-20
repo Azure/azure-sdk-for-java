@@ -13,4 +13,5 @@ module com.azure.resourcemanager.dns {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.dns.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.dns.models to com.azure.core;
+    opens com.azure.resourcemanager.dns.implementation.models to com.azure.core;
 }

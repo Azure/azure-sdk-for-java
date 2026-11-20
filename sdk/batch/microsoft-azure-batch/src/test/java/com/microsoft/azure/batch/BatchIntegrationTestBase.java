@@ -4,6 +4,8 @@
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.recording.InterceptorManager;
+import com.microsoft.azure.batch.recording.TestMode;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.azure.core.util.Configuration;
 import com.microsoft.azure.AzureEnvironment;
@@ -13,9 +15,6 @@ import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.batch.auth.BatchApplicationTokenCredentials;
 import com.microsoft.azure.batch.auth.BatchCredentials;
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
-import com.microsoft.azure.management.resources.core.InterceptorManager;
-import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.core.TestBase.TestMode;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -35,12 +34,11 @@ import com.microsoft.rest.interceptors.LoggingInterceptor;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import okhttp3.OkHttpClient;
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +71,7 @@ public class BatchIntegrationTestBase {
     }
 
 
-    private static TestBase.TestMode testMode = null;
+    private static TestMode testMode = null;
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
     protected static String alternativePlaybackUri = null;
@@ -84,14 +82,14 @@ public class BatchIntegrationTestBase {
             Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
-                testMode = TestBase.TestMode.RECORD;
+                testMode = TestMode.RECORD;
             } else if (azureTestMode.equalsIgnoreCase("Playback")) {
-                testMode = TestBase.TestMode.PLAYBACK;
+                testMode = TestMode.PLAYBACK;
             } else {
                 throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
             }
         } else {
-            testMode = TestBase.TestMode.PLAYBACK;
+            testMode = TestMode.PLAYBACK;
         }
     }
 
@@ -115,7 +113,7 @@ public class BatchIntegrationTestBase {
                 throw new RuntimeException("Can't init test mode.");
             }
         }
-        return testMode == TestBase.TestMode.PLAYBACK;
+        return testMode == TestMode.PLAYBACK;
     }
 
     static boolean isRecordMode() {
@@ -128,7 +126,7 @@ public class BatchIntegrationTestBase {
         System.out.println(String.format("\n***\n*** [%s:%s] - %s\n***\n", name, id, what));
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() throws IOException {
         logger = Logger.getLogger("BatchIntegrationTestBase");
         printThreadInfo("beforeclass");
@@ -136,8 +134,7 @@ public class BatchIntegrationTestBase {
         initPlaybackUri();
     }
 
-    @Rule
-    public TestName testName = new TestName();
+    private String testName;
 
     protected InterceptorManager interceptorManager = null;
 
@@ -155,7 +152,7 @@ public class BatchIntegrationTestBase {
     void createClientWithInterceptor(AuthMode mode) throws IOException {
         BatchCredentials credentials;
 
-        interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
+        interceptorManager = InterceptorManager.create(testName, testMode);
         interceptorManager.addTextReplacementRule("https.*?(sig=[^&]+)", "sig=fakeSig");
         RestClient restClient;
 
@@ -229,14 +226,15 @@ public class BatchIntegrationTestBase {
                 null);
     }
 
-    @Before
-    public void beforeMethod() throws Exception {
-        printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
+    @BeforeEach
+    public void beforeMethod(TestInfo testInfo) throws Exception {
+        testName = testInfo.getTestMethod().get().getName();
+        printThreadInfo(String.format("%s: %s", "beforeTest", testName));
         createClientWithInterceptor(AuthMode.AAD);
     }
 
 
-    @After
+    @AfterEach
     public void afterMethod() throws IOException {
         interceptorManager.finalizeInterceptor();
     }
@@ -332,7 +330,7 @@ public class BatchIntegrationTestBase {
 //            elapsedTime = (new Date()).getTime() - startTime;
 //        }
 //
-//        Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+//        Assertions.assertTrue(steady, "The pool did not reach a steady state in the allotted time");
 //
 //        return batchClient.poolOperations().getPool(poolId);
 //    }
@@ -417,7 +415,7 @@ public class BatchIntegrationTestBase {
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
-        Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+        Assertions.assertTrue(steady, "The pool did not reach a steady state in the allotted time");
 
         return batchClient.poolOperations().getPool(poolId);
     }

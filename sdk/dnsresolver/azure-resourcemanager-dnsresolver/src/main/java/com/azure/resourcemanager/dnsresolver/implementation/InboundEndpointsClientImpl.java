@@ -424,7 +424,7 @@ public final class InboundEndpointsClientImpl implements InboundEndpointsClient 
      * @return the {@link SyncPoller} for polling of describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsResolverName, String inboundEndpointName, InboundEndpointInner parameters,
         String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsResolverName,
@@ -710,7 +710,7 @@ public final class InboundEndpointsClientImpl implements InboundEndpointsClient 
      * @return the {@link SyncPoller} for polling of describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginUpdate(String resourceGroupName,
+    private SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginUpdate(String resourceGroupName,
         String dnsResolverName, String inboundEndpointName, InboundEndpointPatch parameters, String ifMatch) {
         Response<BinaryData> response
             = updateWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, parameters, ifMatch);
@@ -968,7 +968,7 @@ public final class InboundEndpointsClientImpl implements InboundEndpointsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
         String inboundEndpointName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, ifMatch);

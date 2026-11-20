@@ -12,22 +12,22 @@ public final class RegistryEndpointUserAssignedManagedIdentitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryEndpointUserAssignedManagedIdentitySettings model = BinaryData
-            .fromString("{\"clientId\":\"ncsdtclusiyp\",\"scope\":\"fgytguslfeadcyg\",\"tenantId\":\"ukyhejhzis\"}")
+            .fromString("{\"clientId\":\"gsfraoyzkoow\",\"scope\":\"mnguxawqaldsyu\",\"tenantId\":\"ximerqfobwyznk\"}")
             .toObject(RegistryEndpointUserAssignedManagedIdentitySettings.class);
-        Assertions.assertEquals("ncsdtclusiyp", model.clientId());
-        Assertions.assertEquals("fgytguslfeadcyg", model.scope());
-        Assertions.assertEquals("ukyhejhzis", model.tenantId());
+        Assertions.assertEquals("gsfraoyzkoow", model.clientId());
+        Assertions.assertEquals("mnguxawqaldsyu", model.scope());
+        Assertions.assertEquals("ximerqfobwyznk", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegistryEndpointUserAssignedManagedIdentitySettings model
-            = new RegistryEndpointUserAssignedManagedIdentitySettings().withClientId("ncsdtclusiyp")
-                .withScope("fgytguslfeadcyg")
-                .withTenantId("ukyhejhzis");
+            = new RegistryEndpointUserAssignedManagedIdentitySettings().withClientId("gsfraoyzkoow")
+                .withScope("mnguxawqaldsyu")
+                .withTenantId("ximerqfobwyznk");
         model = BinaryData.fromObject(model).toObject(RegistryEndpointUserAssignedManagedIdentitySettings.class);
-        Assertions.assertEquals("ncsdtclusiyp", model.clientId());
-        Assertions.assertEquals("fgytguslfeadcyg", model.scope());
-        Assertions.assertEquals("ukyhejhzis", model.tenantId());
+        Assertions.assertEquals("gsfraoyzkoow", model.clientId());
+        Assertions.assertEquals("mnguxawqaldsyu", model.scope());
+        Assertions.assertEquals("ximerqfobwyznk", model.tenantId());
     }
 }

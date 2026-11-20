@@ -1,0 +1,267 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentCategoryDefinition;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentContentSegment;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Sample demonstrating how to create a classifier analyzer.
+ *
+ * This sample shows how to create a classifier that categorizes documents into predefined
+ * custom categories using ContentCategories. Classifiers are useful for:
+ * - Content organization: Organize large document collections by type through categorization
+ * - Data routing (optional): Route data to specific custom analyzers based on category
+ * - Multi-document processing: Process files containing multiple document types by automatically
+ *   segmenting them
+ *
+ * <p>A classifier can perform classification and routed content extraction in one analysis call. This sample uses a
+ * document classifier, but classifiers can also be based on audio, video, or image analyzers.</p>
+ *
+ * Classifiers use custom categories defined in ContentCategories. Each category has a Description
+ * that helps the AI model understand what documents belong to that category. You can define up to
+ * 200 category names and descriptions. You can include an "other" category to handle unmatched
+ * content; otherwise, all files are forced to be classified into one of your defined categories.
+ *
+ * The EnableSegment property in the analyzer configuration controls whether multi-document files
+ * are split into segments:
+ * - EnableSegment = false: Classifies the entire file as a single category (classify only)
+ * - EnableSegment = true: Automatically splits the file into segments by category (classify and segment)
+ *
+ * <p>The included sample file contains an invoice on page 1, a bank statement on pages 2-3, and a loan application
+ * on page 4; segmentation should return one segment for each document type. This sample deletes its classifier for
+ * cleanup, while production applications typically create a classifier once and reuse it.</p>
+ */
+public class Sample05_CreateClassifierAsync {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample05Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample05Async.buildClient
+
+        // BEGIN:ContentUnderstandingCreateClassifierAsync
+        // Generate a unique classifier analyzer ID
+        String analyzerId = "document_classifier_" + System.currentTimeMillis();
+
+        System.out.println("Creating classifier analyzer '" + analyzerId + "'...");
+
+        // Define content categories for classification
+        // Each category has a description that helps the AI model understand what documents belong to it
+        Map<String, ContentCategoryDefinition> categories = new HashMap<>();
+
+        categories.put("Loan_Application",
+            new ContentCategoryDefinition()
+                .setDescription("Documents submitted by individuals or businesses to request funding, "
+                    + "typically including personal or business details, financial history, loan amount, "
+                    + "purpose, and supporting documentation."));
+
+        categories.put("Invoice",
+            new ContentCategoryDefinition()
+                .setDescription("Billing documents issued by sellers or service providers to request payment "
+                    + "for goods or services, detailing items, prices, taxes, totals, and payment terms.")
+                .setAnalyzerId("prebuilt-invoice")); // Route Invoice segments for field extraction
+
+        categories.put("Bank_Statement",
+            new ContentCategoryDefinition()
+                .setDescription("Official statements issued by banks that summarize account activity over a period, "
+                    + "including deposits, withdrawals, fees, and balances."));
+
+        // Create analyzer configuration with content categories
+        ContentAnalyzerConfig config = new ContentAnalyzerConfig().setReturnDetails(true)
+            .setSegmentEnabled(true) // Enable automatic segmentation by category
+            .setContentCategories(categories);
+
+        // Create the classifier analyzer
+        // Note: models are specified using model names, not deployment names
+        String completionModel = SampleModelConfiguration.getCompletionModel();
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", completionModel);
+
+        ContentAnalyzer classifier = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Custom classifier for financial document categorization")
+            .setConfig(config)
+            .setModels(models);
+
+        // Create the classifier
+        PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> operation
+            = client.beginCreateAnalyzer(analyzerId, classifier);
+
+        String finalAnalyzerId = analyzerId; // For use in lambda
+
+        Mono<ContentAnalyzer> createdAnalyzer = operation.last()
+            .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(), pollResponse.getFinalResult(),
+                "Classifier creation"));
+
+        Mono.usingWhen(createdAnalyzer, result -> Mono.fromRunnable(() -> {
+            System.out.println("Classifier '" + finalAnalyzerId + "' created successfully!");
+
+            if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) {
+                System.out.println("  Description: " + result.getDescription());
+            }
+
+            if (result.getConfig() != null && result.getConfig().getContentCategories() != null) {
+                System.out.println("  Categories (" + result.getConfig().getContentCategories().size() + "):");
+                result.getConfig().getContentCategories().forEach((categoryName, categoryDef) -> {
+                    System.out.println("    - " + categoryName);
+                    if (categoryDef.getDescription() != null) {
+                        // Truncate long descriptions for display
+                        String desc = categoryDef.getDescription();
+                        if (desc.length() > 60) {
+                            desc = desc.substring(0, 57) + "...";
+                        }
+                        System.out.println("      Description: " + desc);
+                    }
+                });
+            }
+
+            if (result.getConfig() != null && result.getConfig().isSegmentEnabled() != null) {
+                System.out.println("  Segmentation enabled: " + result.getConfig().isSegmentEnabled());
+            }
+        }).then(Mono.fromRunnable(() -> {
+            // Analyze a document with the classifier, then convert to LLM input
+            System.out.println("\nAnalyzing document with classifier '" + finalAnalyzerId + "'...");
+        })).then(Mono.defer(() -> {
+            try {
+                byte[] fileBytes = Files.readAllBytes(Paths.get("src/samples/resources/mixed_financial_docs.pdf"));
+                PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> analyzeOp
+                    = client.beginAnalyzeBinary(finalAnalyzerId, BinaryData.fromBytes(fileBytes));
+                return analyzeOp.last()
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "Classifier analysis"));
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        })).doOnNext(analyzeResult -> {
+            if (analyzeResult.getContents() != null && !analyzeResult.getContents().isEmpty()) {
+                DocumentContent doc = (DocumentContent) analyzeResult.getContents().get(0);
+                if (doc.getSegments() != null && !doc.getSegments().isEmpty()) {
+                    System.out.println("Found " + doc.getSegments().size() + " segment(s):");
+                    for (DocumentContentSegment seg : doc.getSegments()) {
+                        System.out
+                            .println("  Category: " + (seg.getCategory() != null ? seg.getCategory() : "(unknown)"));
+                    }
+                }
+            }
+
+            String llmText = LlmInputHelper.toLlmInput(analyzeResult);
+            System.out.println("\n============================================================");
+            System.out.println("CLASSIFICATION RESULT AS LLM INPUT");
+            System.out.println("============================================================");
+            System.out.println(llmText);
+        }), ignored -> deleteAnalyzer(client, finalAnalyzerId),
+            (ignored, error) -> deleteAnalyzer(client, finalAnalyzerId),
+            ignored -> deleteAnalyzer(client, finalAnalyzerId)).doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            }).then(analyzeCategoryAsync(client, completionModel)).block();
+        // END:ContentUnderstandingCreateClassifierAsync
+    }
+
+    private static Mono<Void> analyzeCategoryAsync(ContentUnderstandingAsyncClient client, String completionModel) {
+        String analyzerId = "document_classifier_no_segment_" + System.currentTimeMillis();
+
+        Map<String, ContentCategoryDefinition> categories = new HashMap<>();
+        categories.put("Invoice", new ContentCategoryDefinition()
+            .setDescription("Billing documents issued by sellers or service providers to request payment for goods "
+                + "or services."));
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", completionModel);
+
+        ContentAnalyzer classifier = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Custom classifier for financial document categorization without segmentation")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true)
+                .setSegmentEnabled(false)
+                .setContentCategories(categories))
+            .setModels(models);
+
+        Mono<ContentAnalyzer> createdAnalyzer = client.beginCreateAnalyzer(analyzerId, classifier).last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "No-segment classifier creation"));
+
+        return Mono.usingWhen(createdAnalyzer, ignored -> Mono.defer(() -> {
+            try {
+                byte[] fileBytes = Files.readAllBytes(Paths.get("src/samples/resources/mixed_financial_docs.pdf"));
+                return client.beginAnalyzeBinary(analyzerId, BinaryData.fromBytes(fileBytes)).last()
+                    .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                        "No-segment classifier analysis"));
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        }).doOnNext(result -> {
+            // BEGIN:ContentUnderstandingAnalyzeCategoryAsync
+            DocumentContent content = (DocumentContent) result.getContents().get(0);
+            System.out.println("\nClassification without segmentation:");
+            System.out.println("Pages: " + content.getStartPageNumber() + "-" + content.getEndPageNumber());
+            if (content.getSegments() != null) {
+                for (DocumentContentSegment segment : content.getSegments()) {
+                    System.out.println("  Category: " + segment.getCategory());
+                    System.out.println(
+                        "  Pages: " + segment.getStartPageNumber() + "-" + segment.getEndPageNumber());
+                }
+            }
+            // END:ContentUnderstandingAnalyzeCategoryAsync
+            System.out.println(LlmInputHelper.toLlmInput(result));
+        }).then(), ignored -> deleteAnalyzer(client, analyzerId),
+            (ignored, error) -> deleteAnalyzer(client, analyzerId), ignored -> deleteAnalyzer(client, analyzerId));
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono.error(
+                new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")))
+            .doOnNext(ignored -> System.out.println(operationName + " completed successfully"));
+    }
+
+    private static Mono<Void> deleteAnalyzer(ContentUnderstandingAsyncClient client, String analyzerId) {
+        return Mono.defer(() -> {
+            System.out.println("\nCleaning up: deleting classifier analyzer '" + analyzerId + "'...");
+            return observeDeletion(client.deleteAnalyzer(analyzerId), analyzerId);
+        });
+    }
+
+    static Mono<Void> observeDeletion(Mono<Void> deletion, String analyzerId) {
+        return deletion.doOnSuccess(
+            ignored -> System.out.println("Classifier analyzer '" + analyzerId + "' deleted successfully."));
+    }
+}

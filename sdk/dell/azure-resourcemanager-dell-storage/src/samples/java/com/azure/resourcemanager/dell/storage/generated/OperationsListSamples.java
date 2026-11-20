@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dell.storage.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-21-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -21,7 +21,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-21-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-21/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.

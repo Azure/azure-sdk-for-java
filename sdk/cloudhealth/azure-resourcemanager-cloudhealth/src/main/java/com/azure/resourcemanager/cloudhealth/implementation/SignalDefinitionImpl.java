@@ -63,18 +63,14 @@ public final class SignalDefinitionImpl
     public SignalDefinition create() {
         this.innerObject = serviceManager.serviceClient()
             .getSignalDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SignalDefinition create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSignalDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), context);
         return this;
     }
 
@@ -91,18 +87,14 @@ public final class SignalDefinitionImpl
     public SignalDefinition apply() {
         this.innerObject = serviceManager.serviceClient()
             .getSignalDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SignalDefinition apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getSignalDefinitions()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, signalDefinitionName, this.innerModel(), context);
         return this;
     }
 
@@ -110,9 +102,15 @@ public final class SignalDefinitionImpl
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.signalDefinitionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signaldefinitions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "healthModelName");
+        this.signalDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}",
+            "signalDefinitionName");
     }
 
     public SignalDefinition refresh() {

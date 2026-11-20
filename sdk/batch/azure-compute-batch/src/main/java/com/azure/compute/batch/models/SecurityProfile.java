@@ -84,6 +84,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("encryptionAtHost", this.encryptionAtHost);
+        jsonWriter.writeJsonField("proxyAgentSettings", this.proxyAgentSettings);
         jsonWriter.writeStringField("securityType", this.securityType == null ? null : this.securityType.toString());
         jsonWriter.writeJsonField("uefiSettings", this.uefiSettings);
         return jsonWriter.writeEndObject();
@@ -106,6 +107,8 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
                 reader.nextToken();
                 if ("encryptionAtHost".equals(fieldName)) {
                     deserializedSecurityProfile.encryptionAtHost = reader.getNullable(JsonReader::getBoolean);
+                } else if ("proxyAgentSettings".equals(fieldName)) {
+                    deserializedSecurityProfile.proxyAgentSettings = ProxyAgentSettings.fromJson(reader);
                 } else if ("securityType".equals(fieldName)) {
                     deserializedSecurityProfile.securityType = SecurityTypes.fromString(reader.getString());
                 } else if ("uefiSettings".equals(fieldName)) {
@@ -164,6 +167,34 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
     @Generated
     public SecurityProfile setUefiSettings(BatchUefiSettings uefiSettings) {
         this.uefiSettings = uefiSettings;
+        return this;
+    }
+
+    /*
+     * Specifies ProxyAgent settings while creating the virtual machine.
+     */
+    @Generated
+    private ProxyAgentSettings proxyAgentSettings;
+
+    /**
+     * Get the proxyAgentSettings property: Specifies ProxyAgent settings while creating the virtual machine.
+     *
+     * @return the proxyAgentSettings value.
+     */
+    @Generated
+    public ProxyAgentSettings getProxyAgentSettings() {
+        return this.proxyAgentSettings;
+    }
+
+    /**
+     * Set the proxyAgentSettings property: Specifies ProxyAgent settings while creating the virtual machine.
+     *
+     * @param proxyAgentSettings the proxyAgentSettings value to set.
+     * @return the SecurityProfile object itself.
+     */
+    @Generated
+    public SecurityProfile setProxyAgentSettings(ProxyAgentSettings proxyAgentSettings) {
+        this.proxyAgentSettings = proxyAgentSettings;
         return this;
     }
 }

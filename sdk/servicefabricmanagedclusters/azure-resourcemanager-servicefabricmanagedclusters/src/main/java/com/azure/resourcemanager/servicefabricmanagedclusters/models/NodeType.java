@@ -484,6 +484,31 @@ public interface NodeType {
     Boolean isOutboundOnly();
 
     /**
+     * Gets the enableResilientEphemeralOsDisk property: Specifies whether the node type should use a resilient
+     * ephemeral OS disk when using a supported SKU size. A resilient ephemeral OS disk provides improved reliability
+     * for ephemeral OS disks by enabling full caching.
+     * 
+     * @return the enableResilientEphemeralOsDisk value.
+     */
+    Boolean enableResilientEphemeralOsDisk();
+
+    /**
+     * Gets the scaleInPolicy property: Specifies the scale in policy for the node type, which will be used when scale
+     * in happens on the cluster. If not specified, the default is Default which means the platform will decide which
+     * nodes to remove during scale in.
+     * 
+     * @return the scaleInPolicy value.
+     */
+    ScaleInPolicy scaleInPolicy();
+
+    /**
+     * Gets the proxyAgentSettings property: Specifies the settings for the proxy agent on the node type.
+     * 
+     * @return the proxyAgentSettings value.
+     */
+    ProxyAgentSettings proxyAgentSettings();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -554,7 +579,9 @@ public interface NodeType {
             DefinitionStages.WithNatGatewayId, DefinitionStages.WithNatConfigurations, DefinitionStages.WithVmImagePlan,
             DefinitionStages.WithServiceArtifactReferenceId, DefinitionStages.WithDscpConfigurationId,
             DefinitionStages.WithAdditionalNetworkInterfaceConfigurations, DefinitionStages.WithComputerNamePrefix,
-            DefinitionStages.WithVmApplications, DefinitionStages.WithZoneBalance, DefinitionStages.WithIsOutboundOnly {
+            DefinitionStages.WithVmApplications, DefinitionStages.WithZoneBalance, DefinitionStages.WithIsOutboundOnly,
+            DefinitionStages.WithEnableResilientEphemeralOsDisk, DefinitionStages.WithScaleInPolicy,
+            DefinitionStages.WithProxyAgentSettings {
             /**
              * Executes the create request.
              * 
@@ -1390,6 +1417,53 @@ public interface NodeType {
              * @return the next definition stage.
              */
             WithCreate withIsOutboundOnly(Boolean isOutboundOnly);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify enableResilientEphemeralOsDisk.
+         */
+        interface WithEnableResilientEphemeralOsDisk {
+            /**
+             * Specifies the enableResilientEphemeralOsDisk property: Specifies whether the node type should use a
+             * resilient ephemeral OS disk when using a supported SKU size. A resilient ephemeral OS disk provides
+             * improved reliability for ephemeral OS disks by enabling full caching..
+             * 
+             * @param enableResilientEphemeralOsDisk Specifies whether the node type should use a resilient ephemeral OS
+             * disk when using a supported SKU size. A resilient ephemeral OS disk provides improved reliability for
+             * ephemeral OS disks by enabling full caching.
+             * @return the next definition stage.
+             */
+            WithCreate withEnableResilientEphemeralOsDisk(Boolean enableResilientEphemeralOsDisk);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify scaleInPolicy.
+         */
+        interface WithScaleInPolicy {
+            /**
+             * Specifies the scaleInPolicy property: Specifies the scale in policy for the node type, which will be used
+             * when scale in happens on the cluster. If not specified, the default is Default which means the platform
+             * will decide which nodes to remove during scale in..
+             * 
+             * @param scaleInPolicy Specifies the scale in policy for the node type, which will be used when scale in
+             * happens on the cluster. If not specified, the default is Default which means the platform will decide
+             * which nodes to remove during scale in.
+             * @return the next definition stage.
+             */
+            WithCreate withScaleInPolicy(ScaleInPolicy scaleInPolicy);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify proxyAgentSettings.
+         */
+        interface WithProxyAgentSettings {
+            /**
+             * Specifies the proxyAgentSettings property: Specifies the settings for the proxy agent on the node type..
+             * 
+             * @param proxyAgentSettings Specifies the settings for the proxy agent on the node type.
+             * @return the next definition stage.
+             */
+            WithCreate withProxyAgentSettings(ProxyAgentSettings proxyAgentSettings);
         }
     }
 

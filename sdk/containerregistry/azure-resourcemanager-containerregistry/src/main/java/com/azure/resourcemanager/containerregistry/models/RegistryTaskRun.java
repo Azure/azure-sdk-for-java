@@ -10,8 +10,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An immutable client-side representation of an Azure RegistryDockerTaskRunRequest registry task run request. */
-@Fluent()
+/**
+ * An immutable client-side representation of an Azure RegistryDockerTaskRunRequest registry task run request.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
+ */
+@Deprecated
+@Fluent
 public interface RegistryTaskRun extends HasInnerModel<RunInner>, Refreshable<RegistryTaskRun> {
     /**
      * Gets the name of the resource group.

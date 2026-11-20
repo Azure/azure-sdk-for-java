@@ -25,11 +25,15 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mongodbatlas.fluent.MongoDBAtlasManagementClient;
+import com.azure.resourcemanager.mongodbatlas.implementation.ClustersImpl;
 import com.azure.resourcemanager.mongodbatlas.implementation.MongoDBAtlasManagementClientBuilder;
 import com.azure.resourcemanager.mongodbatlas.implementation.OperationsImpl;
 import com.azure.resourcemanager.mongodbatlas.implementation.OrganizationsImpl;
+import com.azure.resourcemanager.mongodbatlas.implementation.ProjectsImpl;
+import com.azure.resourcemanager.mongodbatlas.models.Clusters;
 import com.azure.resourcemanager.mongodbatlas.models.Operations;
 import com.azure.resourcemanager.mongodbatlas.models.Organizations;
+import com.azure.resourcemanager.mongodbatlas.models.Projects;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -45,6 +49,10 @@ public final class MongoDBAtlasManager {
     private Operations operations;
 
     private Organizations organizations;
+
+    private Projects projects;
+
+    private Clusters clusters;
 
     private final MongoDBAtlasManagementClient clientObject;
 
@@ -283,6 +291,30 @@ public final class MongoDBAtlasManager {
             this.organizations = new OrganizationsImpl(clientObject.getOrganizations(), this);
         }
         return organizations;
+    }
+
+    /**
+     * Gets the resource collection API of Projects. It manages Project.
+     * 
+     * @return Resource collection API of Projects.
+     */
+    public Projects projects() {
+        if (this.projects == null) {
+            this.projects = new ProjectsImpl(clientObject.getProjects(), this);
+        }
+        return projects;
+    }
+
+    /**
+     * Gets the resource collection API of Clusters. It manages Cluster.
+     * 
+     * @return Resource collection API of Clusters.
+     */
+    public Clusters clusters() {
+        if (this.clusters == null) {
+            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
+        }
+        return clusters;
     }
 
     /**

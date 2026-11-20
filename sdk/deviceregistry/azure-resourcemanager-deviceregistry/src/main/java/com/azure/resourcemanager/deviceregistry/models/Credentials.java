@@ -142,7 +142,7 @@ public interface Credentials {
     PagedIterable<Credential> listByResourceGroup(String resourceGroupName, String namespaceName, Context context);
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.
@@ -153,7 +153,7 @@ public interface Credentials {
     void synchronize(String resourceGroupName, String namespaceName);
 
     /**
-     * A long-running resource action.
+     * The synchronize operation.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param namespaceName The name of the namespace.

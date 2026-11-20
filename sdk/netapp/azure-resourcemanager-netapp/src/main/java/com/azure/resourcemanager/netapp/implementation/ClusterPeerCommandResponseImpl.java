@@ -6,6 +6,7 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
+import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponseProperties;
 
 public final class ClusterPeerCommandResponseImpl implements ClusterPeerCommandResponse {
     private ClusterPeerCommandResponseInner innerObject;
@@ -18,8 +19,8 @@ public final class ClusterPeerCommandResponseImpl implements ClusterPeerCommandR
         this.serviceManager = serviceManager;
     }
 
-    public String peerAcceptCommand() {
-        return this.innerModel().peerAcceptCommand();
+    public ClusterPeerCommandResponseProperties properties() {
+        return this.innerModel().properties();
     }
 
     public ClusterPeerCommandResponseInner innerModel() {

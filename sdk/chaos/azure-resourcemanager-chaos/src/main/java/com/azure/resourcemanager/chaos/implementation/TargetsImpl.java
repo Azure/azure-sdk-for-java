@@ -31,12 +31,8 @@ public final class TargetsImpl implements Targets {
         Response<TargetInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
                 targetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TargetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TargetImpl(inner.getValue(), this.manager()));
     }
 
     public Target get(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
@@ -56,12 +52,8 @@ public final class TargetsImpl implements Targets {
         Response<TargetInner> inner = this.serviceClient()
             .createOrUpdateWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType,
                 parentResourceName, targetName, resource, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TargetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TargetImpl(inner.getValue(), this.manager()));
     }
 
     public Target createOrUpdate(String resourceGroupName, String parentProviderNamespace, String parentResourceType,

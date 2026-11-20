@@ -8,7 +8,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cloudhealth.fluent.models.RelationshipInner;
 import java.time.OffsetDateTime;
 
@@ -56,15 +58,32 @@ public interface RelationshipsClient {
      * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
      * concatenation of parentEntityName and childEntityName can be used as the name.
      * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a relationship (aka edge) between two entities in a health model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RelationshipInner>, RelationshipInner> beginCreateOrUpdate(String resourceGroupName,
+        String healthModelName, String relationshipName, RelationshipInner resource);
+
+    /**
+     * Create a Relationship.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
+     * concatenation of parentEntityName and childEntityName can be used as the name.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a relationship (aka edge) between two entities in a health model along with {@link Response}.
+     * @return the {@link SyncPoller} for polling of a relationship (aka edge) between two entities in a health model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RelationshipInner> createOrUpdateWithResponse(String resourceGroupName, String healthModelName,
-        String relationshipName, RelationshipInner resource, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RelationshipInner>, RelationshipInner> beginCreateOrUpdate(String resourceGroupName,
+        String healthModelName, String relationshipName, RelationshipInner resource, Context context);
 
     /**
      * Create a Relationship.
@@ -84,6 +103,40 @@ public interface RelationshipsClient {
         RelationshipInner resource);
 
     /**
+     * Create a Relationship.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
+     * concatenation of parentEntityName and childEntityName can be used as the name.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a relationship (aka edge) between two entities in a health model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RelationshipInner createOrUpdate(String resourceGroupName, String healthModelName, String relationshipName,
+        RelationshipInner resource, Context context);
+
+    /**
+     * Delete a Relationship.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
+     * concatenation of parentEntityName and childEntityName can be used as the name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
+        String relationshipName);
+
+    /**
      * Delete a Relationship.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -94,11 +147,11 @@ public interface RelationshipsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String healthModelName, String relationshipName,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String healthModelName,
+        String relationshipName, Context context);
 
     /**
      * Delete a Relationship.
@@ -113,6 +166,21 @@ public interface RelationshipsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String healthModelName, String relationshipName);
+
+    /**
+     * Delete a Relationship.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param healthModelName Name of health model resource.
+     * @param relationshipName Name of the relationship. Must be unique within a health model. For example, a
+     * concatenation of parentEntityName and childEntityName can be used as the name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String healthModelName, String relationshipName, Context context);
 
     /**
      * List Relationship resources by HealthModel.

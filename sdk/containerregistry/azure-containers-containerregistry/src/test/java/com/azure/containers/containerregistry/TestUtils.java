@@ -15,6 +15,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -26,6 +27,7 @@ import com.azure.resourcemanager.containerregistry.models.ImportSource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
@@ -66,6 +68,7 @@ public class TestUtils {
     public static final String REGISTRY_ENDPOINT_PLAYBACK = "https://REDACTED";
     public static final String REGISTRY_NAME_PLAYBACK = "REDACTED";
     public static final int HTTP_STATUS_CODE_202 = 202;
+    public static final TestMode TEST_MODE = initializeTestMode();
 
     public static final ManifestMediaType OCI_INDEX_MEDIA_TYPE
         = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
@@ -88,8 +91,8 @@ public class TestUtils {
         return true;
     }
 
-    static TokenCredential getCredentialByAuthority(TestMode testMode, String authority) {
-        switch (testMode) {
+    static TokenCredential getCredentialByAuthority(String authority) {
+        switch (TestUtils.TEST_MODE) {
             case LIVE:
                 return new AzurePowerShellCredentialBuilder().build();
 
@@ -138,16 +141,15 @@ public class TestUtils {
         }
     }
 
-    static void importImage(TestMode mode, String registryName, String repository, List<String> tags, String endpoint)
-        throws InterruptedException {
-        if (mode == TestMode.PLAYBACK) {
+    static void importImage(String registryName, String repository, List<String> tags, String endpoint) {
+        if (TestUtils.TEST_MODE == TestMode.PLAYBACK) {
             return;
         }
 
         String authority = getAuthority(endpoint);
 
-        TokenCredential credential = getCredentialByAuthority(mode, authority);
-        tags = tags.stream().map(tag -> String.format("%1$s:%2$s", repository, tag)).collect(Collectors.toList());
+        TokenCredential credential = getCredentialByAuthority(authority);
+        tags = tags.stream().map(tag -> repository + ":" + tag).collect(Collectors.toList());
         AzureProfile profile = getAzureProfile(authority);
 
         ContainerRegistryManager manager = ContainerRegistryManager.authenticate(credential, profile);
@@ -163,11 +165,19 @@ public class TestUtils {
                             .withTargetTags(tags));
                 return;
             } catch (Exception ex) {
-                Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+                sleep();
             }
         } while (++index < 3);
 
-        Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+        sleep();
+    }
+
+    private static void sleep() {
+        try {
+            Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private static OciImageManifest createManifest() {
@@ -186,5 +196,21 @@ public class TestUtils {
 
         manifest.setLayers(layers);
         return manifest;
+    }
+
+    private static TestMode initializeTestMode() {
+        ClientLogger logger = new ClientLogger(TestUtils.class);
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        if (azureTestMode != null) {
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException var3) {
+                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
+                return TestMode.PLAYBACK;
+            }
+        } else {
+            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
+            return TestMode.PLAYBACK;
+        }
     }
 }

@@ -12,8 +12,8 @@ public final class ArtifactListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArtifactListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"artifactOrder\":923544052,\"title\":\"p\",\"description\":\"sbdkvwr\",\"size\":8221264234996912047},\"id\":\"snhu\",\"name\":\"je\",\"type\":\"tmrldhugjzzdatq\"},{\"properties\":{\"provisioningState\":\"Failed\",\"artifactOrder\":419960561,\"title\":\"geablgphuticndvk\",\"description\":\"ozwyiftyhxhuro\",\"size\":2402259301927489199},\"id\":\"olniwpwcukjf\",\"name\":\"giawx\",\"type\":\"lryplwckbasyy\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"artifactOrder\":1475325470,\"title\":\"sgcbac\",\"description\":\"hejkotynqgou\",\"size\":5579537665296255842},\"id\":\"i\",\"name\":\"wyqkgfgibm\",\"type\":\"dgak\"}],\"nextLink\":\"s\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"artifactOrder\":707974932,\"title\":\"fpfpsalgbquxigj\",\"description\":\"jgzjaoyfhrtx\",\"size\":1026697425330169103},\"id\":\"kujysvlejuvfq\",\"name\":\"wrlyxwjkcprb\",\"type\":\"wbxgjvt\"}],\"nextLink\":\"p\"}")
             .toObject(ArtifactListResult.class);
-        Assertions.assertEquals("s", model.nextLink());
+        Assertions.assertEquals("p", model.nextLink());
     }
 }

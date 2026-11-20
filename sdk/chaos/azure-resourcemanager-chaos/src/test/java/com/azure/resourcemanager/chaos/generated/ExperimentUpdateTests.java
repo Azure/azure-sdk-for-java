@@ -17,21 +17,21 @@ public final class ExperimentUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExperimentUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"arbu\":\"bfs\"},\"identity\":{\"principalId\":\"vpnazzm\",\"tenantId\":\"runmp\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qidybyx\":{\"principalId\":\"hrbnlankxmyskpbh\",\"clientId\":\"btkcxywnytnrsyn\"},\"hsucoc\":{\"principalId\":\"fclhaaxdbabphlwr\",\"clientId\":\"fkts\"},\"uedck\":{\"principalId\":\"yyazttbt\",\"clientId\":\"rq\"}}}}")
+            "{\"tags\":{\"nbtkcxywnytnr\":\"pbh\"},\"identity\":{\"principalId\":\"lqidyby\",\"tenantId\":\"zfcl\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ocmnyyazttbtwwrq\":{\"principalId\":\"babphlwrqlfk\",\"clientId\":\"thsu\"},\"hqwa\":{\"principalId\":\"edckzywbiexzfey\",\"clientId\":\"axibxujw\"},\"d\":{\"principalId\":\"uzyoxaep\",\"clientId\":\"zjancuxr\"}}}}")
             .toObject(ExperimentUpdate.class);
-        Assertions.assertEquals("bfs", model.tags().get("arbu"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("pbh", model.tags().get("nbtkcxywnytnr"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentUpdate model = new ExperimentUpdate().withTags(mapOf("arbu", "bfs"))
-            .withIdentity(new ResourceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("qidybyx", new UserAssignedIdentity(), "hsucoc",
-                    new UserAssignedIdentity(), "uedck", new UserAssignedIdentity())));
+        ExperimentUpdate model = new ExperimentUpdate().withTags(mapOf("nbtkcxywnytnr", "pbh"))
+            .withIdentity(new ResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ocmnyyazttbtwwrq", new UserAssignedIdentity(), "hqwa",
+                    new UserAssignedIdentity(), "d", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(ExperimentUpdate.class);
-        Assertions.assertEquals("bfs", model.tags().get("arbu"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("pbh", model.tags().get("nbtkcxywnytnr"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

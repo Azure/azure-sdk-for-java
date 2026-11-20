@@ -9,7 +9,7 @@ package com.azure.resourcemanager.secretsstoreextension.generated;
  */
 public final class SecretSyncsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_ListByResourceGroup.

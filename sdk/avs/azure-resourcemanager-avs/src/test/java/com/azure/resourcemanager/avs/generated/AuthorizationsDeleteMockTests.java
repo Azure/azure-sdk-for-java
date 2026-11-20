@@ -27,7 +27,8 @@ public final class AuthorizationsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.authorizations().delete("cbslhhx", "db", "vodhtn", com.azure.core.util.Context.NONE);
+        manager.authorizations()
+            .delete("mochpprprsnmok", "yzejnhlbk", "bzpcpiljhahzvec", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
+import com.azure.resourcemanager.containerservicefleet.models.DayOfWeek;
 import com.azure.resourcemanager.containerservicefleet.models.Gate;
 import com.azure.resourcemanager.containerservicefleet.models.GateState;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
@@ -25,7 +26,7 @@ public final class GatesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"gllqwjy\",\"gateType\":\"Approval\",\"target\":{\"id\":\"jayvblmhv\",\"updateRunProperties\":{\"name\":\"uhbxvvy\",\"stage\":\"s\",\"group\":\"byrqufeg\",\"timing\":\"Before\"}},\"state\":\"Pending\"},\"eTag\":\"zfbn\",\"id\":\"mctlpdngitv\",\"name\":\"bmhrixkwmyijejv\",\"type\":\"grhbpn\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"dhohsdtmcdzsuf\",\"gateType\":\"ScheduledStart\",\"scheduledStartProperties\":{\"startDay\":\"Friday\",\"startTime\":\"xbzlmc\",\"utcOffset\":\"uapcvhdbevwqqxe\",\"absoluteStartTime\":\"2021-10-13T15:46:58Z\"},\"target\":{\"id\":\"onqzinkfkbgbzbow\",\"updateRunProperties\":{\"name\":\"qocl\",\"stage\":\"ygvkzqkjj\",\"group\":\"kbzefezrxcczurt\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"q\",\"id\":\"kwv\",\"name\":\"gnzvdfbzdixzm\",\"type\":\"pnodawopqhe\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +35,16 @@ public final class GatesListByFleetMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Gate> response = manager.gates().listByFleet("ggjioolvr", "x", com.azure.core.util.Context.NONE);
+        PagedIterable<Gate> response = manager.gates()
+            .listByFleet("jtotpvopvpbd", "zq", "qqihedsvqwthmk", 649222469, "bcysih", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gllqwjy", response.iterator().next().displayName());
-        Assertions.assertEquals(GateType.APPROVAL, response.iterator().next().gateType());
-        Assertions.assertEquals("jayvblmhv", response.iterator().next().target().id());
+        Assertions.assertEquals("dhohsdtmcdzsuf", response.iterator().next().displayName());
+        Assertions.assertEquals(GateType.SCHEDULED_START, response.iterator().next().gateType());
+        Assertions.assertEquals(DayOfWeek.FRIDAY, response.iterator().next().scheduledStartProperties().startDay());
+        Assertions.assertEquals("xbzlmc", response.iterator().next().scheduledStartProperties().startTime());
+        Assertions.assertEquals("uapcvhdbevwqqxe", response.iterator().next().scheduledStartProperties().utcOffset());
+        Assertions.assertEquals("onqzinkfkbgbzbow", response.iterator().next().target().id());
         Assertions.assertEquals(Timing.BEFORE, response.iterator().next().target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.PENDING, response.iterator().next().state());
+        Assertions.assertEquals(GateState.COMPLETED, response.iterator().next().state());
     }
 }

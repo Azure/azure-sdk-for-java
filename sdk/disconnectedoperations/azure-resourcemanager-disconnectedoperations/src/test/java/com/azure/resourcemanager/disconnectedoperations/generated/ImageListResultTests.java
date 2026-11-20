@@ -12,8 +12,8 @@ public final class ImageListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"releaseVersion\":\"q\",\"releaseDisplayName\":\"uhivyqniw\",\"releaseNotes\":\"ybrk\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"mjgr\",\"fwvuk\",\"gaudcc\"]},\"id\":\"h\",\"name\":\"jcny\",\"type\":\"j\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"htnapczwlokjyem\",\"releaseDisplayName\":\"kvnipjoxz\",\"releaseNotes\":\"nchgej\",\"releaseType\":\"Update\",\"compatibleVersions\":[\"mailzydehojw\",\"ahuxinpm\",\"njaqwixjspro\",\"vcputegj\"]},\"id\":\"mfdatscmdvpj\",\"name\":\"u\",\"type\":\"suuv\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"zkrwfn\",\"releaseDisplayName\":\"iodjp\",\"releaseNotes\":\"lwejdpv\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"qpsoacctazak\",\"j\"]},\"id\":\"hbcryffdfdosyge\",\"name\":\"paojakhmsbzjh\",\"type\":\"rzevdphlxaol\"}],\"nextLink\":\"qtrgqjbpfzfsinzg\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"f\",\"releaseDisplayName\":\"jrwzox\",\"releaseNotes\":\"j\",\"releaseType\":\"Update\",\"compatibleVersions\":[\"luwfzitonpeqfpjk\",\"lxofpdvhpfxxypin\",\"nmayhuybb\",\"podepoo\"],\"updateProperties\":{\"systemReboot\":\"NotRequired\",\"securityUpdates\":\"uvamiheognarxzxt\",\"osVersion\":\"eotusivyevc\",\"agentVersion\":\"iqihn\",\"featureUpdates\":\"un\"}},\"id\":\"wjzrnfygxgisp\",\"name\":\"mvtzfkufub\",\"type\":\"jofxqe\"}],\"nextLink\":\"jaeq\"}")
             .toObject(ImageListResult.class);
-        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.nextLink());
+        Assertions.assertEquals("jaeq", model.nextLink());
     }
 }

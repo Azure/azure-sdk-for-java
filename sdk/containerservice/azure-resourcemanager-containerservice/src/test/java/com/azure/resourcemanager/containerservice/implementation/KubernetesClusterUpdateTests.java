@@ -73,7 +73,7 @@ public class KubernetesClusterUpdateTests extends ContainerServiceManagementTest
 
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(aksName)
-            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withSystemAssignedManagedServiceIdentity()

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class PlaywrightWorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaces_CreateOrUpdate.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_CreateOrUpdate.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_CreateOrUpdate.
@@ -29,7 +29,9 @@ public final class PlaywrightWorkspacesCreateOrUpdateSamples {
             .withExistingResourceGroup("dummyrg")
             .withTags(mapOf("Team", "Dev Exp"))
             .withProperties(new PlaywrightWorkspaceProperties().withRegionalAffinity(EnablementStatus.ENABLED)
-                .withLocalAuth(EnablementStatus.ENABLED))
+                .withLocalAuth(EnablementStatus.ENABLED)
+                .withReporting(EnablementStatus.ENABLED)
+                .withStorageUri("https://examplestorageaccount.blob.core.windows.net"))
             .create();
     }
 

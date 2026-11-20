@@ -16,5 +16,6 @@ module com.azure.resourcemanager.containerinstance {
 
     // open packages specifically for azure core
     opens com.azure.resourcemanager.containerinstance.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.containerinstance.implementation.models to com.azure.core;
     opens com.azure.resourcemanager.containerinstance.models to com.azure.core;
 }

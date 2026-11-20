@@ -1,58 +1,52 @@
 # Code snippets and samples
 
 
-## AutonomousDatabaseBackups
-
-- [ListByAutonomousDatabase](#autonomousdatabasebackups_listbyautonomousdatabase)
-- [Update](#autonomousdatabasebackups_update)
-
 ## AutonomousDatabases
 
 - [Action](#autonomousdatabases_action)
-- [ChangeDisasterRecoveryConfiguration](#autonomousdatabases_changedisasterrecoveryconfiguration)
-- [Failover](#autonomousdatabases_failover)
-- [GenerateWallet](#autonomousdatabases_generatewallet)
-- [ListByResourceGroup](#autonomousdatabases_listbyresourcegroup)
-- [Restore](#autonomousdatabases_restore)
-- [Shrink](#autonomousdatabases_shrink)
-- [Switchover](#autonomousdatabases_switchover)
-- [Update](#autonomousdatabases_update)
 
 ## CloudExadataInfrastructures
 
-- [AddStorageCapacity](#cloudexadatainfrastructures_addstoragecapacity)
 - [ConfigureExascale](#cloudexadatainfrastructures_configureexascale)
 
-## CloudVmClusters
+## DatabaseEditions
 
-- [AddVms](#cloudvmclusters_addvms)
-- [ListPrivateIpAddresses](#cloudvmclusters_listprivateipaddresses)
-- [RemoveVms](#cloudvmclusters_removevms)
+- [Get](#databaseeditions_get)
+- [ListByLocation](#databaseeditions_listbylocation)
 
-## DbNodes
+## DatabaseSystemShapeResources
 
-- [Action](#dbnodes_action)
-- [ListByCloudVmCluster](#dbnodes_listbycloudvmcluster)
+- [Get](#databasesystemshaperesources_get)
+- [ListByLocation](#databasesystemshaperesources_listbylocation)
 
-## DbServers
+## DbSystems
 
-- [ListByCloudExadataInfrastructure](#dbservers_listbycloudexadatainfrastructure)
-
-## DbSystemShapes
-
-- [ListByLocation](#dbsystemshapes_listbylocation)
+- [CreateOrUpdate](#dbsystems_createorupdate)
+- [Delete](#dbsystems_delete)
+- [GetByResourceGroup](#dbsystems_getbyresourcegroup)
+- [List](#dbsystems_list)
+- [ListByResourceGroup](#dbsystems_listbyresourcegroup)
+- [Update](#dbsystems_update)
 
 ## DbVersions
 
+- [Get](#dbversions_get)
 - [ListByLocation](#dbversions_listbylocation)
 
 ## ExadbVmClusters
 
+- [CreateOrUpdate](#exadbvmclusters_createorupdate)
+- [Delete](#exadbvmclusters_delete)
+- [GetByResourceGroup](#exadbvmclusters_getbyresourcegroup)
+- [List](#exadbvmclusters_list)
+- [ListByResourceGroup](#exadbvmclusters_listbyresourcegroup)
 - [RemoveVms](#exadbvmclusters_removevms)
+- [Update](#exadbvmclusters_update)
 
 ## ExascaleDbNodes
 
 - [Action](#exascaledbnodes_action)
+- [Get](#exascaledbnodes_get)
 - [ListByParent](#exascaledbnodes_listbyparent)
 
 ## ExascaleDbStorageVaults
@@ -78,90 +72,49 @@
 
 - [ListByLocation](#giversions_listbylocation)
 
-## Operations
+## GoldenGateConnections
 
-- [List](#operations_list)
+- [AssignDeployment](#goldengateconnections_assigndeployment)
+- [CreateOrUpdate](#goldengateconnections_createorupdate)
+- [Delete](#goldengateconnections_delete)
+- [GetAssignedDeployment](#goldengateconnections_getassigneddeployment)
+- [GetByResourceGroup](#goldengateconnections_getbyresourcegroup)
+- [List](#goldengateconnections_list)
+- [ListAssignedDeploymentsByParent](#goldengateconnections_listassigneddeploymentsbyparent)
+- [ListByResourceGroup](#goldengateconnections_listbyresourcegroup)
+- [UnassignDeployment](#goldengateconnections_unassigndeployment)
+- [Update](#goldengateconnections_update)
 
-## OracleSubscriptions
+## GoldenGateDeployments
 
-- [AddAzureSubscriptions](#oraclesubscriptions_addazuresubscriptions)
-- [ListActivationLinks](#oraclesubscriptions_listactivationlinks)
-- [ListCloudAccountDetails](#oraclesubscriptions_listcloudaccountdetails)
-- [ListSaasSubscriptionDetails](#oraclesubscriptions_listsaassubscriptiondetails)
-- [Update](#oraclesubscriptions_update)
+- [AssignConnection](#goldengatedeployments_assignconnection)
+- [CreateOrUpdate](#goldengatedeployments_createorupdate)
+- [Delete](#goldengatedeployments_delete)
+- [GetAssignedConnection](#goldengatedeployments_getassignedconnection)
+- [GetByResourceGroup](#goldengatedeployments_getbyresourcegroup)
+- [List](#goldengatedeployments_list)
+- [ListAssignedConnectionsByParent](#goldengatedeployments_listassignedconnectionsbyparent)
+- [ListByResourceGroup](#goldengatedeployments_listbyresourcegroup)
+- [UnassignConnection](#goldengatedeployments_unassignconnection)
+- [Update](#goldengatedeployments_update)
 
-## VirtualNetworkAddresses
+## NetworkAnchors
 
-- [ListByCloudVmCluster](#virtualnetworkaddresses_listbycloudvmcluster)
-### AutonomousDatabaseBackups_ListByAutonomousDatabase
+- [CreateOrUpdate](#networkanchors_createorupdate)
+- [Delete](#networkanchors_delete)
+- [GetByResourceGroup](#networkanchors_getbyresourcegroup)
+- [List](#networkanchors_list)
+- [ListByResourceGroup](#networkanchors_listbyresourcegroup)
+- [Update](#networkanchors_update)
 
-```java
-/**
- * Samples for AutonomousDatabaseBackups ListByAutonomousDatabase.
- */
-public final class AutonomousDatabaseBackupsListByAutonomousDatabaseSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabaseBackup_listByParent.json
-     */
-    /**
-     * Sample code: AutonomousDatabaseBackups_ListByAutonomousDatabase.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void autonomousDatabaseBackupsListByAutonomousDatabase(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabaseBackups()
-            .listByAutonomousDatabase("rg000", "databasedb1", com.azure.core.util.Context.NONE);
-    }
-}
-```
+## ResourceAnchors
 
-### AutonomousDatabaseBackups_Update
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackup;
-import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackupUpdateProperties;
-
-/**
- * Samples for AutonomousDatabaseBackups Update.
- */
-public final class AutonomousDatabaseBackupsUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabaseBackups_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Patch Autonomous Database Backup. - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void patchAutonomousDatabaseBackupGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        AutonomousDatabaseBackup resource = manager.autonomousDatabaseBackups()
-            .getWithResponse("rgopenapi", "databasedb1", "1711644130", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new AutonomousDatabaseBackupUpdateProperties().withRetentionPeriodInDays(90))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabaseBackup_patch.json
-     */
-    /**
-     * Sample code: AutonomousDatabaseBackups_Update.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        autonomousDatabaseBackupsUpdate(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        AutonomousDatabaseBackup resource = manager.autonomousDatabaseBackups()
-            .getWithResponse("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
-    }
-}
-```
-
+- [CreateOrUpdate](#resourceanchors_createorupdate)
+- [Delete](#resourceanchors_delete)
+- [GetByResourceGroup](#resourceanchors_getbyresourcegroup)
+- [List](#resourceanchors_list)
+- [ListByResourceGroup](#resourceanchors_listbyresourcegroup)
+- [Update](#resourceanchors_update)
 ### AutonomousDatabases_Action
 
 ```java
@@ -173,411 +126,340 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseLifecyc
  */
 public final class AutonomousDatabasesActionSamples {
     /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_Action_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/AutonomousDatabases_Action_MaximumSet_Gen.json
      */
     /**
-     * Sample code: AutonomousDatabases_Action_MaximumSet.
+     * Sample code: AutonomousDatabases_Action_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        autonomousDatabasesActionMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+    public static void autonomousDatabasesActionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.autonomousDatabases()
-            .action("rgopenapi", "databasedb1",
+            .action("rgopenapi", "resource1",
                 new AutonomousDatabaseLifecycleAction().withAction(AutonomousDatabaseLifecycleActionEnum.START),
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### AutonomousDatabases_ChangeDisasterRecoveryConfiguration
+### CloudExadataInfrastructures_ConfigureExascale
 
 ```java
-import com.azure.resourcemanager.oracledatabase.models.DisasterRecoveryConfigurationDetails;
-import com.azure.resourcemanager.oracledatabase.models.DisasterRecoveryType;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.oracledatabase.models.ConfigureExascaleCloudExadataInfrastructureDetails;
 
 /**
- * Samples for AutonomousDatabases ChangeDisasterRecoveryConfiguration.
+ * Samples for CloudExadataInfrastructures ConfigureExascale.
  */
-public final class AutonomousDatabasesChangeDisasterRecoveryConfigurationSamples {
+public final class CloudExadataInfrastructuresConfigureExascaleSamples {
     /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_ChangeDisasterRecoveryConfiguration_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/CloudExadataInfrastructures_ConfigureExascale_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Perform ChangeDisasterRecoveryConfiguration action on Autonomous Database - generated by
-     * [MaximumSet] rule.
+     * Sample code: CloudExadataInfrastructures_ConfigureExascale_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void performChangeDisasterRecoveryConfigurationActionOnAutonomousDatabaseGeneratedByMaximumSetRule(
+    public static void cloudExadataInfrastructuresConfigureExascaleMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .changeDisasterRecoveryConfiguration("rgopenapi", "databasedb1",
-                new DisasterRecoveryConfigurationDetails().withDisasterRecoveryType(DisasterRecoveryType.ADG)
-                    .withTimeSnapshotStandbyEnabledTill(OffsetDateTime.parse("2025-08-01T04:32:58.725Z"))
-                    .withIsSnapshotStandby(true)
-                    .withIsReplicateAutomaticBackups(true),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabase_changeDisasterRecoveryConfiguration.json
-     */
-    /**
-     * Sample code: AutonomousDatabases_ChangeDisasterRecoveryConfiguration.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void autonomousDatabasesChangeDisasterRecoveryConfiguration(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .changeDisasterRecoveryConfiguration("rg000", "databasedb1",
-                new DisasterRecoveryConfigurationDetails().withDisasterRecoveryType(DisasterRecoveryType.ADG)
-                    .withIsReplicateAutomaticBackups(false),
+        manager.cloudExadataInfrastructures()
+            .configureExascale("rgopenapi", "resource1",
+                new ConfigureExascaleCloudExadataInfrastructureDetails().withTotalStorageInGbs(14),
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### AutonomousDatabases_Failover
+### DatabaseEditions_Get
 
 ```java
-import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
-
 /**
- * Samples for AutonomousDatabases Failover.
+ * Samples for DatabaseEditions Get.
  */
-public final class AutonomousDatabasesFailoverSamples {
+public final class DatabaseEditionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabase_failover.json
+     * x-ms-original-file: 2026-06-01/DatabaseEditions_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: AutonomousDatabases_Failover.
+     * Sample code: DatabaseEditions_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        autonomousDatabasesFailover(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .failover("rg000", "databasedb1", new PeerDbDetails().withPeerDbId("peerDbId"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_Failover_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Perform failover action on Autonomous Database - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void performFailoverActionOnAutonomousDatabaseGeneratedByMaximumSetRule(
+    public static void databaseEditionsGetMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .failover("rgopenapi", "databasedb1*",
-                new PeerDbDetails().withPeerDbId("peerDbId")
-                    .withPeerDbOcid("yozpqyefqhirkybmzwgoidyl")
-                    .withPeerDbLocation("cxlzbzbfzi"),
+        manager.databaseEditions().getWithResponse("eastus", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DatabaseEditions_ListByLocation
+
+```java
+/**
+ * Samples for DatabaseEditions ListByLocation.
+ */
+public final class DatabaseEditionsListByLocationSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/DatabaseEditions_ListByLocation_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DatabaseEditions_ListByLocation_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void databaseEditionsListByLocationMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.databaseEditions().listByLocation("eastus", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DatabaseSystemShapeResources_Get
+
+```java
+/**
+ * Samples for DatabaseSystemShapeResources Get.
+ */
+public final class DatabaseSystemShapeResourcesGetSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/DatabaseSystemShapeResources_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DatabaseSystemShapeResources_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void databaseSystemShapeResourcesGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.databaseSystemShapeResources().getWithResponse("eastus", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DatabaseSystemShapeResources_ListByLocation
+
+```java
+/**
+ * Samples for DatabaseSystemShapeResources ListByLocation.
+ */
+public final class DatabaseSystemShapeResourcesListByLocationSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/DatabaseSystemShapeResources_ListByLocation_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DatabaseSystemShapeResources_ListByLocation_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void databaseSystemShapeResourcesListByLocationMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.databaseSystemShapeResources()
+            .listByLocation("eastus", "example", "bxkklcsc", "njeq", "example", "example",
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### AutonomousDatabases_GenerateWallet
+### DbSystems_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.oracledatabase.models.GenerateAutonomousDatabaseWalletDetails;
-import com.azure.resourcemanager.oracledatabase.models.GenerateType;
-
-/**
- * Samples for AutonomousDatabases GenerateWallet.
- */
-public final class AutonomousDatabasesGenerateWalletSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_GenerateWallet_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Generate wallet action on Autonomous Database - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void generateWalletActionOnAutonomousDatabaseGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .generateWalletWithResponse("rgopenapi", "databasedb1",
-                new GenerateAutonomousDatabaseWalletDetails().withGenerateType(GenerateType.SINGLE)
-                    .withIsRegional(true)
-                    .withPassword("fakeTokenPlaceholder"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabase_generateWallet.json
-     */
-    /**
-     * Sample code: AutonomousDatabases_generateWallet.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        autonomousDatabasesGenerateWallet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .generateWalletWithResponse("rg000", "databasedb1",
-                new GenerateAutonomousDatabaseWalletDetails().withGenerateType(GenerateType.SINGLE)
-                    .withIsRegional(false)
-                    .withPassword("fakeTokenPlaceholder"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AutonomousDatabases_ListByResourceGroup
-
-```java
-/**
- * Samples for AutonomousDatabases ListByResourceGroup.
- */
-public final class AutonomousDatabasesListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabase_listByResourceGroup.json
-     */
-    /**
-     * Sample code: AutonomousDatabases_listByResourceGroup.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        autonomousDatabasesListByResourceGroup(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases().listByResourceGroup("rg000", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_ListByResourceGroup_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: List Autonomous Database by resource group - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listAutonomousDatabaseByResourceGroupGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_ListByResourceGroup_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: List Autonomous Database by resource group - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listAutonomousDatabaseByResourceGroupGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AutonomousDatabases_Restore
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails;
-import java.time.OffsetDateTime;
-
-/**
- * Samples for AutonomousDatabases Restore.
- */
-public final class AutonomousDatabasesRestoreSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabase_restore.json
-     */
-    /**
-     * Sample code: AutonomousDatabases_Restore.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        autonomousDatabasesRestore(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .restore("rg000", "databasedb1",
-                new RestoreAutonomousDatabaseDetails().withTimestamp(OffsetDateTime.parse("2024-04-23T00:00:00.000Z")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_Restore_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Perform restore action on Autonomous Database - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void performRestoreActionOnAutonomousDatabaseGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .restore("rgopenapi", "database1",
-                new RestoreAutonomousDatabaseDetails().withTimestamp(OffsetDateTime.parse("2024-04-23T00:00:00.000Z")),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AutonomousDatabases_Shrink
-
-```java
-/**
- * Samples for AutonomousDatabases Shrink.
- */
-public final class AutonomousDatabasesShrinkSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_Shrink_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Perform shrink action on Autonomous Database - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void performShrinkActionOnAutonomousDatabaseGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases().shrink("rgopenapi", "database1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AutonomousDatabases_Switchover
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
-
-/**
- * Samples for AutonomousDatabases Switchover.
- */
-public final class AutonomousDatabasesSwitchoverSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_Switchover_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Perform switchover action on Autonomous Database - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void performSwitchoverActionOnAutonomousDatabaseGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .switchover("rgopenapi", "databasedb1",
-                new PeerDbDetails().withPeerDbId("peerDbId")
-                    .withPeerDbOcid("yozpqyefqhirkybmzwgoidyl")
-                    .withPeerDbLocation("cxlzbzbfzi"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabase_switchover.json
-     */
-    /**
-     * Sample code: AutonomousDatabases_Switchover.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        autonomousDatabasesSwitchover(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.autonomousDatabases()
-            .switchover("rg000", "databasedb1", new PeerDbDetails().withPeerDbId("peerDbId"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AutonomousDatabases_Update
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabase;
-import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdateProperties;
-import com.azure.resourcemanager.oracledatabase.models.AutonomousMaintenanceScheduleType;
-import com.azure.resourcemanager.oracledatabase.models.CustomerContact;
-import com.azure.resourcemanager.oracledatabase.models.DatabaseEditionType;
-import com.azure.resourcemanager.oracledatabase.models.DayOfWeekName;
-import com.azure.resourcemanager.oracledatabase.models.DayOfWeekUpdate;
+import com.azure.resourcemanager.oracledatabase.models.ComputeModel;
+import com.azure.resourcemanager.oracledatabase.models.DataCollectionOptions;
+import com.azure.resourcemanager.oracledatabase.models.DbSystemDatabaseEditionType;
+import com.azure.resourcemanager.oracledatabase.models.DbSystemOptions;
+import com.azure.resourcemanager.oracledatabase.models.DbSystemProperties;
+import com.azure.resourcemanager.oracledatabase.models.DiskRedundancyType;
 import com.azure.resourcemanager.oracledatabase.models.LicenseModel;
-import com.azure.resourcemanager.oracledatabase.models.LongTermBackUpScheduleDetails;
-import com.azure.resourcemanager.oracledatabase.models.OpenModeType;
-import com.azure.resourcemanager.oracledatabase.models.PermissionLevelType;
-import com.azure.resourcemanager.oracledatabase.models.RepeatCadenceType;
-import com.azure.resourcemanager.oracledatabase.models.RoleType;
-import com.azure.resourcemanager.oracledatabase.models.ScheduledOperationsTypeUpdate;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.oracledatabase.models.StorageManagementType;
+import com.azure.resourcemanager.oracledatabase.models.StorageVolumePerformanceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for AutonomousDatabases Update.
+ * Samples for DbSystems CreateOrUpdate.
  */
-public final class AutonomousDatabasesUpdateSamples {
+public final class DbSystemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/autonomousDatabase_patch.json
+     * x-ms-original-file: 2026-06-01/DbSystems_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: AutonomousDatabases_update.
+     * Sample code: DbSystems_CreateOrUpdate_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        autonomousDatabasesUpdate(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        AutonomousDatabase resource = manager.autonomousDatabases()
-            .getByResourceGroupWithResponse("rg000", "databasedb1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
+    public static void dbSystemsCreateOrUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.dbSystems()
+            .define("resource1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rgopenapi")
+            .withTags(mapOf("key1855", "fakeTokenPlaceholder"))
+            .withProperties(new DbSystemProperties().withResourceAnchorId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resourceAnchors/anchor1")
+                .withNetworkAnchorId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/networkAnchors/networkanchor1")
+                .withClusterName("puw")
+                .withDisplayName("resource1")
+                .withInitialDataStorageSizeInGb(40)
+                .withDbSystemOptions(new DbSystemOptions().withStorageManagement(StorageManagementType.LVM))
+                .withDiskRedundancy(DiskRedundancyType.HIGH)
+                .withDomainV2("l")
+                .withHostname("b")
+                .withLicenseModelV2(LicenseModel.LICENSE_INCLUDED)
+                .withNodeCount(11)
+                .withShape("example")
+                .withSshPublicKeys(Arrays.asList("example"))
+                .withStorageVolumePerformanceMode(StorageVolumePerformanceMode.BALANCED)
+                .withTimeZone("2026-06-01T00:00:00Z")
+                .withComputeModel(ComputeModel.ECPU)
+                .withComputeCount(10)
+                .withDataCollectionOptions(new DataCollectionOptions().withIsDiagnosticsEventsEnabled(true)
+                    .withIsHealthMonitoringEnabled(true)
+                    .withIsIncidentLogsEnabled(true))
+                .withCharacterSet("example")
+                .withNcharacterSet("fkdieg")
+                .withDatabaseEdition(DbSystemDatabaseEditionType.STANDARD_EDITION)
+                .withAdminPassword("fakeTokenPlaceholder")
+                .withDbVersion("example")
+                .withPdbName("resource1"))
+            .withZones(Arrays.asList("example"))
+            .create();
     }
 
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### DbSystems_Delete
+
+```java
+/**
+ * Samples for DbSystems Delete.
+ */
+public final class DbSystemsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/AutonomousDatabases_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/DbSystems_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Patch Autonomous Database - generated by [MaximumSet] rule.
+     * Sample code: DbSystems_Delete_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void patchAutonomousDatabaseGeneratedByMaximumSetRule(
+    public static void dbSystemsDeleteMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        AutonomousDatabase resource = manager.autonomousDatabases()
-            .getByResourceGroupWithResponse("rgopenapi", "databasedb1", com.azure.core.util.Context.NONE)
+        manager.dbSystems().delete("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DbSystems_GetByResourceGroup
+
+```java
+/**
+ * Samples for DbSystems GetByResourceGroup.
+ */
+public final class DbSystemsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/DbSystems_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DbSystems_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void dbSystemsGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.dbSystems().getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DbSystems_List
+
+```java
+/**
+ * Samples for DbSystems List.
+ */
+public final class DbSystemsListSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/DbSystems_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DbSystems_ListBySubscription_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void dbSystemsListBySubscriptionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.dbSystems().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DbSystems_ListByResourceGroup
+
+```java
+/**
+ * Samples for DbSystems ListByResourceGroup.
+ */
+public final class DbSystemsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/DbSystems_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DbSystems_ListByResourceGroup_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void dbSystemsListByResourceGroupMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.dbSystems().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DbSystems_Update
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.DbSystem;
+import com.azure.resourcemanager.oracledatabase.models.DbSystemSourceType;
+import com.azure.resourcemanager.oracledatabase.models.DbSystemUpdateProperties;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for DbSystems Update.
+ */
+public final class DbSystemsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/DbSystems_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DbSystems_Update_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void dbSystemsUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        DbSystem resource = manager.dbSystems()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key9827", "fakeTokenPlaceholder"))
-            .withProperties(new AutonomousDatabaseUpdateProperties().withAdminPassword("fakeTokenPlaceholder")
-                .withAutonomousMaintenanceScheduleType(AutonomousMaintenanceScheduleType.EARLY)
-                .withComputeCount(56.1D)
-                .withCpuCoreCount(45)
-                .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("dummyemail@microsoft.com")))
-                .withDataStorageSizeInTbs(133)
-                .withDataStorageSizeInGbs(175271)
-                .withDisplayName("lrdrjpyyvufnxdzpwvlkmfukpstrjftdxcejcxtnqhxqbhvtzeiokllnspotsqeggddxkjjtf")
-                .withIsAutoScalingEnabled(true)
-                .withIsAutoScalingForStorageEnabled(true)
-                .withPeerDbId("qmpfwtvpfvbgmulethqznsyyjlpxmyfqfanrymzqsgraavtmlqqbexpzguyqybngoupbshlzpxv")
-                .withIsLocalDataGuardEnabled(true)
-                .withIsMtlsConnectionRequired(true)
-                .withLicenseModel(LicenseModel.LICENSE_INCLUDED)
-                .withScheduledOperationsList(Arrays.asList(new ScheduledOperationsTypeUpdate()
-                    .withDayOfWeek(new DayOfWeekUpdate().withName(DayOfWeekName.MONDAY))
-                    .withScheduledStartTime("lwwvkazgmfremfwhckfb")
-                    .withScheduledStopTime("hjwagzxijpiaogulmnmbuqakpqxhkjvaypjqnvbvtjddc")))
-                .withDatabaseEdition(DatabaseEditionType.STANDARD_EDITION)
-                .withLongTermBackupSchedule(
-                    new LongTermBackUpScheduleDetails().withRepeatCadence(RepeatCadenceType.ONE_TIME)
-                        .withTimeOfBackup(OffsetDateTime.parse("2025-08-01T04:32:58.715Z"))
-                        .withRetentionPeriodInDays(188)
-                        .withIsDisabled(true))
-                .withLocalAdgAutoFailoverMaxDataLossLimit(212)
-                .withOpenMode(OpenModeType.READ_ONLY)
-                .withPermissionLevel(PermissionLevelType.RESTRICTED)
-                .withRole(RoleType.PRIMARY)
-                .withBackupRetentionPeriodInDays(12)
-                .withWhitelistedIps(Arrays.asList(
-                    "kfierlppwurtqrhfxwgfgrnqtmvraignzwsddwmpdijeveuevuoejfmbjvpnlrmmdflilxcwkkzvdofctsdjfxrrrwctihhnchtrouauesqbmlcqhzwnppnhrtitecenlfyshassvajukbwxudhlwixkvkgsessvshcwmleoqujeemwenhwlsccbcjnnviugzgylsxkssalqoicatcvkahogdvweymhdxboyqwhaxuzlmrdbvgbnnetobkbwygcsflzanwknlybvvzgjzjirpfrksbxwgllgfxwdflcisvxpkjecpgdaxccqkzxofedkrawvhzeabmunpykwd")))
+            .withTags(mapOf("key7827", "fakeTokenPlaceholder"))
+            .withZones(Arrays.asList("example"))
+            .withProperties(new DbSystemUpdateProperties().withSource(DbSystemSourceType.NONE))
             .apply();
     }
 
@@ -595,422 +477,24 @@ public final class AutonomousDatabasesUpdateSamples {
 }
 ```
 
-### CloudExadataInfrastructures_AddStorageCapacity
+### DbVersions_Get
 
 ```java
 /**
- * Samples for CloudExadataInfrastructures AddStorageCapacity.
+ * Samples for DbVersions Get.
  */
-public final class CloudExadataInfrastructuresAddStorageCapacitySamples {
+public final class DbVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/CloudExadataInfrastructures_AddStorageCapacity_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/DbVersions_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Perform add storage capacity on exadata infra - generated by [MaximumSet] rule.
+     * Sample code: DbVersions_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void performAddStorageCapacityOnExadataInfraGeneratedByMaximumSetRule(
+    public static void dbVersionsGetMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudExadataInfrastructures()
-            .addStorageCapacity("rgopenapi", "Replace this value with a string matching RegExp .*",
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/CloudExadataInfrastructures_AddStorageCapacity_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Perform add storage capacity on exadata infra - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void performAddStorageCapacityOnExadataInfraGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudExadataInfrastructures()
-            .addStorageCapacity("rgopenapi", "Replace this value with a string matching RegExp .*",
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/exaInfra_addStorageCapacity.json
-     */
-    /**
-     * Sample code: CloudExadataInfrastructures_addStorageCapacity.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void cloudExadataInfrastructuresAddStorageCapacity(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudExadataInfrastructures().addStorageCapacity("rg000", "infra1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### CloudExadataInfrastructures_ConfigureExascale
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.ConfigureExascaleCloudExadataInfrastructureDetails;
-
-/**
- * Samples for CloudExadataInfrastructures ConfigureExascale.
- */
-public final class CloudExadataInfrastructuresConfigureExascaleSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/CloudExadataInfrastructures_ConfigureExascale_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: CloudExadataInfrastructures_ConfigureExascale_MaximumSet_Gen - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void cloudExadataInfrastructuresConfigureExascaleMaximumSetGenGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudExadataInfrastructures()
-            .configureExascale("rgopenapi", "Replace this value with a string matching RegExp .*",
-                new ConfigureExascaleCloudExadataInfrastructureDetails().withTotalStorageInGbs(19),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/CloudExadataInfrastructures_ConfigureExascale_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: CloudExadataInfrastructures_ConfigureExascale_MaximumSet_Gen - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void cloudExadataInfrastructuresConfigureExascaleMaximumSetGenGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudExadataInfrastructures()
-            .configureExascale("rgopenapi", "Replace this value with a string matching RegExp .*",
-                new ConfigureExascaleCloudExadataInfrastructureDetails().withTotalStorageInGbs(19),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### CloudVmClusters_AddVms
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.AddRemoveDbNode;
-import java.util.Arrays;
-
-/**
- * Samples for CloudVmClusters AddVms.
- */
-public final class CloudVmClustersAddVmsSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/CloudVmClusters_AddVms_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Add VMs to VM Cluster - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void addVMsToVMClusterGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .addVms("rgopenapi", "cloudvmcluster1",
-                new AddRemoveDbNode().withDbServers(Arrays.asList("ocid1..aaaa", "ocid1..aaaaaa")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/vmClusters_addVms.json
-     */
-    /**
-     * Sample code: CloudVmClusters_addVms.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void cloudVmClustersAddVms(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .addVms("rg000", "cluster1",
-                new AddRemoveDbNode().withDbServers(Arrays.asList("ocid1..aaaa", "ocid1..aaaaaa")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/CloudVmClusters_AddVms_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Add VMs to VM Cluster - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void addVMsToVMClusterGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .addVms("rgopenapi", "cloudvmcluster1",
-                new AddRemoveDbNode().withDbServers(Arrays.asList("ocid1..aaaa", "ocid1..aaaaaa")),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### CloudVmClusters_ListPrivateIpAddresses
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.PrivateIpAddressesFilter;
-
-/**
- * Samples for CloudVmClusters ListPrivateIpAddresses.
- */
-public final class CloudVmClustersListPrivateIpAddressesSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/vmClusters_listPrivateIpAddresses.json
-     */
-    /**
-     * Sample code: CloudVmClusters_listPrivateIpAddresses.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        cloudVmClustersListPrivateIpAddresses(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .listPrivateIpAddressesWithResponse("rg000", "cluster1",
-                new PrivateIpAddressesFilter().withSubnetId("ocid1..aaaaaa").withVnicId("ocid1..aaaaa"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/CloudVmClusters_ListPrivateIpAddresses_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: List Private IP Addresses for VM Cluster - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listPrivateIPAddressesForVMClusterGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .listPrivateIpAddressesWithResponse("rgopenapi", "cloudvmcluster1",
-                new PrivateIpAddressesFilter().withSubnetId("ocid1..aaaaaa").withVnicId("ocid1..aaaaa"),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/CloudVmClusters_ListPrivateIpAddresses_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: List Private IP Addresses for VM Cluster - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listPrivateIPAddressesForVMClusterGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .listPrivateIpAddressesWithResponse("rgopenapi", "cloudvmcluster1",
-                new PrivateIpAddressesFilter().withSubnetId("ocid1..aaaaaa").withVnicId("ocid1..aaaaa"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### CloudVmClusters_RemoveVms
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.AddRemoveDbNode;
-import java.util.Arrays;
-
-/**
- * Samples for CloudVmClusters RemoveVms.
- */
-public final class CloudVmClustersRemoveVmsSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/CloudVmClusters_RemoveVms_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Remove VMs from VM Cluster - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void removeVMsFromVMClusterGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .removeVms("rgopenapi", "cloudvmcluster1",
-                new AddRemoveDbNode().withDbServers(Arrays.asList("ocid1..aaaa", "ocid1..aaaaaa")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/CloudVmClusters_RemoveVms_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Remove VMs from VM Cluster - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void removeVMsFromVMClusterGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .removeVms("rgopenapi", "cloudvmcluster1",
-                new AddRemoveDbNode().withDbServers(Arrays.asList("ocid1..aaaa", "ocid1..aaaaaa")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/vmClusters_removeVms.json
-     */
-    /**
-     * Sample code: CloudVmClusters_removeVms.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        cloudVmClustersRemoveVms(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.cloudVmClusters()
-            .removeVms("rg000", "cluster1", new AddRemoveDbNode().withDbServers(Arrays.asList("ocid1..aaaa")),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### DbNodes_Action
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.DbNodeAction;
-import com.azure.resourcemanager.oracledatabase.models.DbNodeActionEnum;
-
-/**
- * Samples for DbNodes Action.
- */
-public final class DbNodesActionSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/DbNodes_Action_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: VM actions on DbNodes of VM Cluster - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void vmActionsOnDbNodesOfVMClusterGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.dbNodes()
-            .action("rgopenapi", "cloudvmcluster1", "adfedefeewwevkieviect",
-                new DbNodeAction().withAction(DbNodeActionEnum.START), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/dbNodes_action.json
-     */
-    /**
-     * Sample code: DbNodes_Action.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void dbNodesAction(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.dbNodes()
-            .action("rg000", "cluster1", "ocid1....aaaaaa", new DbNodeAction().withAction(DbNodeActionEnum.START),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/DbNodes_Action_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: VM actions on DbNodes of VM Cluster - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void vmActionsOnDbNodesOfVMClusterGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.dbNodes()
-            .action("rgopenapi", "cloudvmcluster1", "abciderewdidsereq",
-                new DbNodeAction().withAction(DbNodeActionEnum.START), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### DbNodes_ListByCloudVmCluster
-
-```java
-/**
- * Samples for DbNodes ListByCloudVmCluster.
- */
-public final class DbNodesListByCloudVmClusterSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/dbNodes_listByParent.json
-     */
-    /**
-     * Sample code: DbNodes_listByCloudVmCluster.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        dbNodesListByCloudVmCluster(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.dbNodes().listByCloudVmCluster("rg000", "cluster1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### DbServers_ListByCloudExadataInfrastructure
-
-```java
-/**
- * Samples for DbServers ListByCloudExadataInfrastructure.
- */
-public final class DbServersListByCloudExadataInfrastructureSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/dbServers_listByParent.json
-     */
-    /**
-     * Sample code: DbServers_listByCloudExadataInfrastructure.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void dbServersListByCloudExadataInfrastructure(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.dbServers().listByCloudExadataInfrastructure("rg000", "infra1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### DbSystemShapes_ListByLocation
-
-```java
-/**
- * Samples for DbSystemShapes ListByLocation.
- */
-public final class DbSystemShapesListByLocationSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/DbSystemShapes_ListByLocation_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: List DbSystemShapes by location - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listDbSystemShapesByLocationGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.dbSystemShapes().listByLocation("eastus", null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/DbSystemShapes_ListByLocation_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: List DbSystemShapes by location - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listDbSystemShapesByLocationGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.dbSystemShapes().listByLocation("eastus", "ymedsvqavemtixp", null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/dbSystemShapes_listByLocation.json
-     */
-    /**
-     * Sample code: DbSystemShapes_listByLocation.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        dbSystemShapesListByLocation(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.dbSystemShapes().listByLocation("eastus", null, null, com.azure.core.util.Context.NONE);
+        manager.dbVersions().getWithResponse("eastus", "resource1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1027,20 +511,189 @@ import com.azure.resourcemanager.oracledatabase.models.StorageManagementType;
  */
 public final class DbVersionsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/DbVersions_ListByLocation_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/DbVersions_ListByLocation_MaximumSet_Gen.json
      */
     /**
-     * Sample code: DbVersions_ListByLocation_MaximumSet.
+     * Sample code: DbVersions_ListByLocation_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        dbVersionsListByLocationMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+    public static void dbVersionsListByLocationMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.dbVersions()
             .listByLocation("eastus", BaseDbSystemShapes.VMSTANDARD_X86,
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Oracle.Database/dbSystems/dbsystem1",
-                StorageManagementType.LVM, true, true, ShapeFamilyType.VIRTUAL_MACHINE,
-                com.azure.core.util.Context.NONE);
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/dbSystems/db1",
+                StorageManagementType.LVM, true, true, ShapeFamilyType.EXADATA, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExadbVmClusters_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.DataCollectionOptions;
+import com.azure.resourcemanager.oracledatabase.models.ExadbVmClusterProperties;
+import com.azure.resourcemanager.oracledatabase.models.ExadbVmClusterStorageDetails;
+import com.azure.resourcemanager.oracledatabase.models.LicenseModel;
+import com.azure.resourcemanager.oracledatabase.models.NsgCidr;
+import com.azure.resourcemanager.oracledatabase.models.PortRange;
+import com.azure.resourcemanager.oracledatabase.models.ShapeAttribute;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ExadbVmClusters CreateOrUpdate.
+ */
+public final class ExadbVmClustersCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ExadbVmClusters_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ExadbVmClusters_CreateOrUpdate_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void exadbVmClustersCreateOrUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.exadbVmClusters()
+            .define("resource1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rgopenapi")
+            .withTags(mapOf("key9568", "fakeTokenPlaceholder"))
+            .withProperties(new ExadbVmClusterProperties().withClusterName("lnmm")
+                .withBackupSubnetCidr("example")
+                .withVnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
+                .withDataCollectionOptions(new DataCollectionOptions().withIsDiagnosticsEventsEnabled(true)
+                    .withIsHealthMonitoringEnabled(true)
+                    .withIsIncidentLogsEnabled(true))
+                .withDisplayName("resource1")
+                .withDomain("tzc")
+                .withEnabledEcpuCount(0)
+                .withExascaleDbStorageVaultId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/exascaleDbStorageVaults/vault1")
+                .withGridImageOcid("ocid1.autonomousdatabase.oc1..aaaaa3klq")
+                .withHostname("resource1")
+                .withLicenseModel(LicenseModel.LICENSE_INCLUDED)
+                .withNodeCount(5)
+                .withNsgCidrs(Arrays.asList(new NsgCidr().withSource("10.0.0.0/16")
+                    .withDestinationPortRange(new PortRange().withMin(1520).withMax(1522))))
+                .withPrivateZoneOcid("ocid1.autonomousdatabase.oc1..aaaaa3klq")
+                .withScanListenerPortTcp(29)
+                .withScanListenerPortTcpSsl(6)
+                .withShape("kwxhzzn")
+                .withSshPublicKeys(Arrays.asList("ocw"))
+                .withSystemVersion("example")
+                .withTimeZone("2026-06-01T00:00:00Z")
+                .withTotalEcpuCount(33)
+                .withVmFileSystemStorage(new ExadbVmClusterStorageDetails().withTotalSizeInGbs(27))
+                .withShapeAttribute(ShapeAttribute.SMART_STORAGE))
+            .withZones(Arrays.asList("uwwf"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ExadbVmClusters_Delete
+
+```java
+/**
+ * Samples for ExadbVmClusters Delete.
+ */
+public final class ExadbVmClustersDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ExadbVmClusters_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ExadbVmClusters_Delete_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void exadbVmClustersDeleteMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.exadbVmClusters().delete("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExadbVmClusters_GetByResourceGroup
+
+```java
+/**
+ * Samples for ExadbVmClusters GetByResourceGroup.
+ */
+public final class ExadbVmClustersGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ExadbVmClusters_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ExadbVmClusters_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void exadbVmClustersGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.exadbVmClusters()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExadbVmClusters_List
+
+```java
+/**
+ * Samples for ExadbVmClusters List.
+ */
+public final class ExadbVmClustersListSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ExadbVmClusters_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ExadbVmClusters_ListBySubscription_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void exadbVmClustersListBySubscriptionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.exadbVmClusters().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExadbVmClusters_ListByResourceGroup
+
+```java
+/**
+ * Samples for ExadbVmClusters ListByResourceGroup.
+ */
+public final class ExadbVmClustersListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ExadbVmClusters_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ExadbVmClusters_ListByResourceGroup_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void exadbVmClustersListByResourceGroupMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.exadbVmClusters().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1057,37 +710,67 @@ import java.util.Arrays;
  */
 public final class ExadbVmClustersRemoveVmsSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExadbVmClusters_RemoveVms_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExadbVmClusters_RemoveVms_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExadbVmClusters_RemoveVms_MaximumSet.
+     * Sample code: ExadbVmClusters_RemoveVms_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        exadbVmClustersRemoveVmsMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exadbVmClusters()
-            .removeVms("rgopenapi", "exadbVmClusterName1", new RemoveVirtualMachineFromExadbVmClusterDetails()
-                .withDbNodes(Arrays.asList(new DbNodeDetails().withDbNodeId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/dbNodeName"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/ExadbVmClusters_RemoveVms_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ExadbVmClusters_RemoveVms_MaximumSet - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void exadbVmClustersRemoveVmsMaximumSetGeneratedByMinimumSetRule(
+    public static void exadbVmClustersRemoveVmsMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.exadbVmClusters()
-            .removeVms("rgopenapi", "vmCluster1", new RemoveVirtualMachineFromExadbVmClusterDetails()
+            .removeVms("rgopenapi", "resource1", new RemoveVirtualMachineFromExadbVmClusterDetails()
                 .withDbNodes(Arrays.asList(new DbNodeDetails().withDbNodeId(
-                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/dbNodeName"))),
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/exadbVmClusters/vmcluster1/dbNodes/node1"))),
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ExadbVmClusters_Update
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.ExadbVmCluster;
+import com.azure.resourcemanager.oracledatabase.models.ExadbVmClusterUpdateProperties;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ExadbVmClusters Update.
+ */
+public final class ExadbVmClustersUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ExadbVmClusters_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ExadbVmClusters_Update_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void exadbVmClustersUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        ExadbVmCluster resource = manager.exadbVmClusters()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1801", "fakeTokenPlaceholder"))
+            .withZones(Arrays.asList("example"))
+            .withProperties(new ExadbVmClusterUpdateProperties().withNodeCount(12))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -1103,33 +786,41 @@ import com.azure.resourcemanager.oracledatabase.models.DbNodeActionEnum;
  */
 public final class ExascaleDbNodesActionSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbNodes_Action_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbNodes_Action_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbNodes_Action_MaximumSet.
+     * Sample code: ExascaleDbNodes_Action_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        exascaleDbNodesActionMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+    public static void exascaleDbNodesActionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.exascaleDbNodes()
-            .action("rgopenapi", "exadbvmcluster1", "exascaledbnode1",
-                new DbNodeAction().withAction(DbNodeActionEnum.START), com.azure.core.util.Context.NONE);
+            .action("rgopenapi", "resource1", "resource1", new DbNodeAction().withAction(DbNodeActionEnum.START),
+                com.azure.core.util.Context.NONE);
     }
+}
+```
 
+### ExascaleDbNodes_Get
+
+```java
+/**
+ * Samples for ExascaleDbNodes Get.
+ */
+public final class ExascaleDbNodesGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbNodes_Action_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbNodes_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbNodes_Action_MinimumSet.
+     * Sample code: ExascaleDbNodes_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        exascaleDbNodesActionMinimumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+    public static void exascaleDbNodesGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.exascaleDbNodes()
-            .action("rgopenapi", "exadbvmcluster1", "exascaledbnode1",
-                new DbNodeAction().withAction(DbNodeActionEnum.START), com.azure.core.util.Context.NONE);
+            .getWithResponse("rgopenapi", "resource1", "resource1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1142,29 +833,16 @@ public final class ExascaleDbNodesActionSamples {
  */
 public final class ExascaleDbNodesListByParentSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbNodes_ListByParent_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbNodes_ListByParent_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbNodes_ListByParent_MaximumSet.
+     * Sample code: ExascaleDbNodes_ListByParent_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        exascaleDbNodesListByParentMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbNodes().listByParent("rgopenapi", "vmcluster", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbNodes_ListByParent_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ExascaleDbNodes_ListByParent_MaximumSet - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void exascaleDbNodesListByParentMaximumSetGeneratedByMinimumSetRule(
+    public static void exascaleDbNodesListByParentMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbNodes().listByParent("rgopenapi", "vmcluster", com.azure.core.util.Context.NONE);
+        manager.exascaleDbNodes().listByParent("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1183,44 +861,30 @@ import java.util.Map;
  */
 public final class ExascaleDbStorageVaultsCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Create_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbStorageVaults_Create_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbStorageVaults_Create_MaximumSet - generated by [MinimumSet] rule.
+     * Sample code: ExascaleDbStorageVaults_Create_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void exascaleDbStorageVaultsCreateMaximumSetGeneratedByMinimumSetRule(
+    public static void exascaleDbStorageVaultsCreateMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.exascaleDbStorageVaults()
-            .define("storagevault1")
-            .withRegion("odxgtv")
+            .define("resource1")
+            .withRegion("eastus")
             .withExistingResourceGroup("rgopenapi")
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Create_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: ExascaleDbStorageVaults_Create_MaximumSet.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void exascaleDbStorageVaultsCreateMaximumSet(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbStorageVaults()
-            .define("storagevault1")
-            .withRegion("zuoudqbvlxerpjtlfooyqlb")
-            .withExistingResourceGroup("rgopenapi")
-            .withTags(mapOf("key4521", "fakeTokenPlaceholder"))
+            .withTags(mapOf("key4308", "fakeTokenPlaceholder"))
             .withProperties(new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(0)
-                .withDescription(
-                    "kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey")
-                .withDisplayName("storagevault1")
-                .withHighCapacityDatabaseStorageInput(new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1))
-                .withTimeZone("hyjcftlal"))
-            .withZones(Arrays.asList("npqjhyekyumfybqas"))
+                .withDescription("example")
+                .withDisplayName("resource1")
+                .withHighCapacityDatabaseStorageInput(new ExascaleDbStorageInputDetails().withTotalSizeInGbs(24))
+                .withTimeZone("2026-06-01T00:00:00Z")
+                .withExadataInfrastructureId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudExadataInfrastructures/infra1")
+                .withIsAutoscaleEnabled(true)
+                .withAutoscaleLimitInGbs(10))
+            .withZones(Arrays.asList("zsw"))
             .create();
     }
 
@@ -1246,29 +910,16 @@ public final class ExascaleDbStorageVaultsCreateSamples {
  */
 public final class ExascaleDbStorageVaultsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbStorageVaults_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbStorageVaults_Delete_MaximumSet.
+     * Sample code: ExascaleDbStorageVaults_Delete_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void exascaleDbStorageVaultsDeleteMaximumSet(
+    public static void exascaleDbStorageVaultsDeleteMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbStorageVaults().delete("rgopenapi", "storagevault1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Delete_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ExascaleDbStorageVaults_Delete_MinimumSet.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void exascaleDbStorageVaultsDeleteMinimumSet(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbStorageVaults().delete("rgopenapi", "storagevault1", com.azure.core.util.Context.NONE);
+        manager.exascaleDbStorageVaults().delete("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1281,31 +932,17 @@ public final class ExascaleDbStorageVaultsDeleteSamples {
  */
 public final class ExascaleDbStorageVaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbStorageVaults_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbStorageVaults_Get_MaximumSet.
+     * Sample code: ExascaleDbStorageVaults_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        exascaleDbStorageVaultsGetMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbStorageVaults()
-            .getByResourceGroupWithResponse("rgopenapi", "storagevault1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Get_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ExascaleDbStorageVaults_Get_MaximumSet - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void exascaleDbStorageVaultsGetMaximumSetGeneratedByMinimumSetRule(
+    public static void exascaleDbStorageVaultsGetMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.exascaleDbStorageVaults()
-            .getByResourceGroupWithResponse("rgopenapi", "storagevault1", com.azure.core.util.Context.NONE);
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1318,27 +955,14 @@ public final class ExascaleDbStorageVaultsGetByResourceGroupSamples {
  */
 public final class ExascaleDbStorageVaultsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbStorageVaults_ListBySubscription_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbStorageVaults_ListBySubscription_MaximumSet - generated by [MinimumSet] rule.
+     * Sample code: ExascaleDbStorageVaults_ListBySubscription_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void exascaleDbStorageVaultsListBySubscriptionMaximumSetGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbStorageVaults().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_ListBySubscription_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: ExascaleDbStorageVaults_ListBySubscription_MaximumSet.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void exascaleDbStorageVaultsListBySubscriptionMaximumSet(
+    public static void exascaleDbStorageVaultsListBySubscriptionMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.exascaleDbStorageVaults().list(com.azure.core.util.Context.NONE);
     }
@@ -1353,27 +977,14 @@ public final class ExascaleDbStorageVaultsListSamples {
  */
 public final class ExascaleDbStorageVaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbStorageVaults_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbStorageVaults_ListByResourceGroup_MaximumSet.
+     * Sample code: ExascaleDbStorageVaults_ListByResourceGroup_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void exascaleDbStorageVaultsListByResourceGroupMaximumSet(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.exascaleDbStorageVaults().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_ListByResourceGroup_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ExascaleDbStorageVaults_ListByResourceGroup_MaximumSet - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void exascaleDbStorageVaultsListByResourceGroupMaximumSetGeneratedByMinimumSetRule(
+    public static void exascaleDbStorageVaultsListByResourceGroupMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.exascaleDbStorageVaults().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
     }
@@ -1392,35 +1003,19 @@ import java.util.Map;
  */
 public final class ExascaleDbStorageVaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/ExascaleDbStorageVaults_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ExascaleDbStorageVaults_Update_MaximumSet.
+     * Sample code: ExascaleDbStorageVaults_Update_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void exascaleDbStorageVaultsUpdateMaximumSet(
+    public static void exascaleDbStorageVaultsUpdateMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         ExascaleDbStorageVault resource = manager.exascaleDbStorageVaults()
-            .getByResourceGroupWithResponse("rgopenapi", "storagevault1", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("key6486", "fakeTokenPlaceholder")).apply();
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/ExascaleDbStorageVaults_Update_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: ExascaleDbStorageVaults_Update_MaximumSet - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void exascaleDbStorageVaultsUpdateMaximumSetGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        ExascaleDbStorageVault resource = manager.exascaleDbStorageVaults()
-            .getByResourceGroupWithResponse("rgopenapi", "storagevault1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
+        resource.update().withTags(mapOf("key4191", "fakeTokenPlaceholder")).apply();
     }
 
     // Use "Map.of" if available
@@ -1445,16 +1040,16 @@ public final class ExascaleDbStorageVaultsUpdateSamples {
  */
 public final class FlexComponentsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FlexComponents_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/FlexComponents_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: FlexComponents_Get_MaximumSet.
+     * Sample code: FlexComponents_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        flexComponentsGetMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.flexComponents().getWithResponse("eastus", "flexname1", com.azure.core.util.Context.NONE);
+    public static void flexComponentsGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.flexComponents().getWithResponse("eastus", "resource1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1469,29 +1064,16 @@ import com.azure.resourcemanager.oracledatabase.models.SystemShapes;
  */
 public final class FlexComponentsListByParentSamples {
     /*
-     * x-ms-original-file: 2025-09-01/FlexComponents_ListByParent_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/FlexComponents_ListByParent_MaximumSet_Gen.json
      */
     /**
-     * Sample code: FlexComponents_ListByParent_MaximumSet.
+     * Sample code: FlexComponents_ListByParent_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        flexComponentsListByParentMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.flexComponents().listByParent("eastus", SystemShapes.EXADATA_X9M, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/FlexComponents_ListByParent_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: FlexComponents_ListByParent_MaximumSet - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void flexComponentsListByParentMaximumSetGeneratedByMinimumSetRule(
+    public static void flexComponentsListByParentMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.flexComponents().listByParent("eastus", null, com.azure.core.util.Context.NONE);
+        manager.flexComponents().listByParent("eastus", SystemShapes.EXADATA_X9M, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1504,17 +1086,16 @@ public final class FlexComponentsListByParentSamples {
  */
 public final class GiMinorVersionsGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GiMinorVersions_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/GiMinorVersions_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: GiMinorVersions_Get_MaximumSet.
+     * Sample code: GiMinorVersions_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        giMinorVersionsGetMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.giMinorVersions()
-            .getWithResponse("eastus", "19.0.0.0", "minorversion", com.azure.core.util.Context.NONE);
+    public static void giMinorVersionsGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.giMinorVersions().getWithResponse("eastus", "resource1", "resource1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1522,6 +1103,7 @@ public final class GiMinorVersionsGetSamples {
 ### GiMinorVersions_ListByParent
 
 ```java
+import com.azure.resourcemanager.oracledatabase.models.GiMinorVersionSortOrder;
 import com.azure.resourcemanager.oracledatabase.models.ShapeFamily;
 
 /**
@@ -1529,31 +1111,18 @@ import com.azure.resourcemanager.oracledatabase.models.ShapeFamily;
  */
 public final class GiMinorVersionsListByParentSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GiMinorVersions_ListByParent_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/GiMinorVersions_ListByParent_MaximumSet_Gen.json
      */
     /**
-     * Sample code: GiMinorVersions_ListByParent_MaximumSet.
+     * Sample code: GiMinorVersions_ListByParent_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        giMinorVersionsListByParentMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.giMinorVersions()
-            .listByParent("eastus", "name1", ShapeFamily.EXADATA, "zone1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/GiMinorVersions_ListByParent_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: GiMinorVersions_ListByParent_MaximumSet - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void giMinorVersionsListByParentMaximumSetGeneratedByMinimumSetRule(
+    public static void giMinorVersionsListByParentMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.giMinorVersions()
-            .listByParent("eastus", "giMinorVersionName", null, null, com.azure.core.util.Context.NONE);
+            .listByParent("eastus", "resource1", ShapeFamily.EXADATA, "o", "example", true, GiMinorVersionSortOrder.ASC,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1568,362 +1137,1052 @@ import com.azure.resourcemanager.oracledatabase.models.SystemShapes;
  */
 public final class GiVersionsListByLocationSamples {
     /*
-     * x-ms-original-file: 2025-09-01/GiVersions_ListByLocation_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-06-01/GiVersions_ListByLocation_MaximumSet_Gen.json
      */
     /**
-     * Sample code: GiVersions_ListByLocation_MinimumSet.
+     * Sample code: GiVersions_ListByLocation_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void
-        giVersionsListByLocationMinimumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.giVersions().listByLocation("eastus", null, null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/GiVersions_ListByLocation_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: GiVersions_ListByLocation_MaximumSet.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        giVersionsListByLocationMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+    public static void giVersionsListByLocationMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.giVersions()
-            .listByLocation("eastus", SystemShapes.EXADATA_X9M, "hpzuyaemum", null, com.azure.core.util.Context.NONE);
+            .listByLocation("eastus", SystemShapes.EXADATA_X9M, "example", "bmr", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Operations_List
+### GoldenGateConnections_AssignDeployment
 
 ```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/Operations_List_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: List Operations - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listOperationsGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/operations_list.json
-     */
-    /**
-     * Sample code: Operations_list.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void operationsList(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/Operations_List_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: List Operations - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listOperationsGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OracleSubscriptions_AddAzureSubscriptions
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.AzureSubscriptions;
-import java.util.Arrays;
+import com.azure.resourcemanager.oracledatabase.models.AssignUnassignDeployment;
 
 /**
- * Samples for OracleSubscriptions AddAzureSubscriptions.
+ * Samples for GoldenGateConnections AssignDeployment.
  */
-public final class OracleSubscriptionsAddAzureSubscriptionsSamples {
+public final class GoldenGateConnectionsAssignDeploymentSamples {
     /*
-     * x-ms-original-file: 2025-09-01/oracleSubscriptions_addAzureSubscriptions.json
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_AssignDeployment_MaximumSet_Gen.json
      */
     /**
-     * Sample code: OracleSubscriptions_addAzureSubscriptions.
+     * Sample code: GoldenGateConnections_AssignDeployment_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void oracleSubscriptionsAddAzureSubscriptions(
+    public static void goldenGateConnectionsAssignDeploymentMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions()
-            .addAzureSubscriptions(new AzureSubscriptions().withAzureSubscriptionIds(
-                Arrays.asList("00000000-0000-0000-0000-000000000001")), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_AddAzureSubscriptions_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Add Azure Subscriptions to the OracleSubscription - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void addAzureSubscriptionsToTheOracleSubscriptionGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions()
-            .addAzureSubscriptions(new AzureSubscriptions().withAzureSubscriptionIds(
-                Arrays.asList("00000000-0000-0000-0000-000000000001")), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_AddAzureSubscriptions_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Add Azure Subscriptions to the OracleSubscription - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void addAzureSubscriptionsToTheOracleSubscriptionGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions()
-            .addAzureSubscriptions(new AzureSubscriptions().withAzureSubscriptionIds(
-                Arrays.asList("00000000-0000-0000-0000-000000000001")), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OracleSubscriptions_ListActivationLinks
-
-```java
-/**
- * Samples for OracleSubscriptions ListActivationLinks.
- */
-public final class OracleSubscriptionsListActivationLinksSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_ListActivationLinks_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: List Activation Links for the Oracle Subscription - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listActivationLinksForTheOracleSubscriptionGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listActivationLinks(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_ListActivationLinks_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: List Activation Links for the Oracle Subscription - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listActivationLinksForTheOracleSubscriptionGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listActivationLinks(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/oracleSubscriptions_listActivationLinks.json
-     */
-    /**
-     * Sample code: OracleSubscriptions_listActivationLinks.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        oracleSubscriptionsListActivationLinks(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listActivationLinks(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OracleSubscriptions_ListCloudAccountDetails
-
-```java
-/**
- * Samples for OracleSubscriptions ListCloudAccountDetails.
- */
-public final class OracleSubscriptionsListCloudAccountDetailsSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/oracleSubscriptions_listCloudAccountDetails.json
-     */
-    /**
-     * Sample code: OracleSubscriptions_listCloudAccountDetails.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void oracleSubscriptionsListCloudAccountDetails(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listCloudAccountDetails(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_ListCloudAccountDetails_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: List Cloud Account details for the Oracle Subscription - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listCloudAccountDetailsForTheOracleSubscriptionGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listCloudAccountDetails(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_ListCloudAccountDetails_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: List Cloud Account details for the Oracle Subscription - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listCloudAccountDetailsForTheOracleSubscriptionGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listCloudAccountDetails(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OracleSubscriptions_ListSaasSubscriptionDetails
-
-```java
-/**
- * Samples for OracleSubscriptions ListSaasSubscriptionDetails.
- */
-public final class OracleSubscriptionsListSaasSubscriptionDetailsSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/oracleSubscriptions_listSaasSubscriptionDetails.json
-     */
-    /**
-     * Sample code: OracleSubscriptions_listSaasSubscriptionDetails.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void oracleSubscriptionsListSaasSubscriptionDetails(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listSaasSubscriptionDetails(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_ListSaasSubscriptionDetails_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: List Saas Subscription details for the Oracle Subscription - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listSaasSubscriptionDetailsForTheOracleSubscriptionGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listSaasSubscriptionDetails(com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_ListSaasSubscriptionDetails_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: List Saas Subscription details for the Oracle Subscription - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void listSaasSubscriptionDetailsForTheOracleSubscriptionGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().listSaasSubscriptionDetails(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### OracleSubscriptions_Update
-
-```java
-import com.azure.resourcemanager.oracledatabase.models.Intent;
-import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptionUpdate;
-import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptionUpdateProperties;
-import com.azure.resourcemanager.oracledatabase.models.PlanUpdate;
-
-/**
- * Samples for OracleSubscriptions Update.
- */
-public final class OracleSubscriptionsUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-09-01/oracleSubscriptions_patch.json
-     */
-    /**
-     * Sample code: OracleSubscriptions_update.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void
-        oracleSubscriptionsUpdate(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().update(new OracleSubscriptionUpdate(), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_Update_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: Patch Oracle Subscription - generated by [MinimumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void patchOracleSubscriptionGeneratedByMinimumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions().update(new OracleSubscriptionUpdate(), com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/OracleSubscriptions_Update_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: Patch Oracle Subscription - generated by [MaximumSet] rule.
-     * 
-     * @param manager Entry point to OracleDatabaseManager.
-     */
-    public static void patchOracleSubscriptionGeneratedByMaximumSetRule(
-        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.oracleSubscriptions()
-            .update(new OracleSubscriptionUpdate()
-                .withPlan(new PlanUpdate().withName("klnnbggrxhvvaiajvjx")
-                    .withPublisher("xvsarzadrjqergudsohjk")
-                    .withProduct("hivkczjyrimjilbmqj")
-                    .withPromotionCode("fakeTokenPlaceholder")
-                    .withVersion("ueudckjmuqpjvsmmenzyflgpa"))
-                .withProperties(new OracleSubscriptionUpdateProperties().withProductCode("fakeTokenPlaceholder")
-                    .withIntent(Intent.RETAIN)),
+        manager.goldenGateConnections()
+            .assignDeployment("rgopenapi", "resource1", new AssignUnassignDeployment().withDeploymentId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
                 com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### VirtualNetworkAddresses_ListByCloudVmCluster
+### GoldenGateConnections_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.oracledatabase.models.ConnectionBaseProperties;
+import com.azure.resourcemanager.oracledatabase.models.RoutingMethod;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Samples for VirtualNetworkAddresses ListByCloudVmCluster.
+ * Samples for GoldenGateConnections CreateOrUpdate.
  */
-public final class VirtualNetworkAddressesListByCloudVmClusterSamples {
+public final class GoldenGateConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/virtualNetworkAddresses_listByParent.json
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualNetworkAddresses_listByCloudVmCluster.
+     * Sample code: GoldenGateConnections_CreateOrUpdate_MaximumSet_Gen - generated by [MaximumSet] rule.
      * 
      * @param manager Entry point to OracleDatabaseManager.
      */
-    public static void virtualNetworkAddressesListByCloudVmCluster(
+    public static void goldenGateConnectionsCreateOrUpdateMaximumSetGenGeneratedByMaximumSetRule(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.virtualNetworkAddresses().listByCloudVmCluster("rg000", "cluster1", com.azure.core.util.Context.NONE);
+        manager.goldenGateConnections()
+            .define("resource1")
+            .withRegion("rtnrfzgdo")
+            .withExistingResourceGroup("rgopenapi")
+            .withTags(mapOf("key7255", "fakeTokenPlaceholder"))
+            .withProperties(new ConnectionBaseProperties().withDisplayName("resource1")
+                .withResourceAnchorId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resourceAnchors/anchor1")
+                .withNetworkAnchorId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/networkAnchors/networkanchor1")
+                .withRoutingMethod(RoutingMethod.SHARED_SERVICE_ENDPOINT)
+                .withVaultId("ocid1.autonomousdatabase.oc1..aaaaa3klq")
+                .withKeyId("fakeTokenPlaceholder")
+                .withDoesUseSecretIds(true))
+            .withZones(Arrays.asList("example"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### GoldenGateConnections_Delete
+
+```java
+/**
+ * Samples for GoldenGateConnections Delete.
+ */
+public final class GoldenGateConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateConnections_Delete_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateConnectionsDeleteMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateConnections().delete("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateConnections_GetAssignedDeployment
+
+```java
+/**
+ * Samples for GoldenGateConnections GetAssignedDeployment.
+ */
+public final class GoldenGateConnectionsGetAssignedDeploymentSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_GetAssignedDeployment_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateConnections_GetAssignedDeployment_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateConnectionsGetAssignedDeploymentMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateConnections()
+            .getAssignedDeploymentWithResponse("rgopenapi", "resource1", "assignment1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateConnections_GetByResourceGroup
+
+```java
+/**
+ * Samples for GoldenGateConnections GetByResourceGroup.
+ */
+public final class GoldenGateConnectionsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateConnections_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateConnectionsGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateConnections()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateConnections_List
+
+```java
+/**
+ * Samples for GoldenGateConnections List.
+ */
+public final class GoldenGateConnectionsListSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateConnections_ListBySubscription_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateConnectionsListBySubscriptionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateConnections().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateConnections_ListAssignedDeploymentsByParent
+
+```java
+/**
+ * Samples for GoldenGateConnections ListAssignedDeploymentsByParent.
+ */
+public final class GoldenGateConnectionsListAssignedDeploymentsByParentSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_ListAssignedDeploymentsByParent_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateConnections_ListAssignedDeploymentsByParent_MaximumSet_Gen - generated by [MaximumSet]
+     * rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateConnectionsListAssignedDeploymentsByParentMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateConnections()
+            .listAssignedDeploymentsByParent("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateConnections_ListByResourceGroup
+
+```java
+/**
+ * Samples for GoldenGateConnections ListByResourceGroup.
+ */
+public final class GoldenGateConnectionsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateConnections_ListByResourceGroup_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateConnectionsListByResourceGroupMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateConnections().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateConnections_UnassignDeployment
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.AssignUnassignDeployment;
+
+/**
+ * Samples for GoldenGateConnections UnassignDeployment.
+ */
+public final class GoldenGateConnectionsUnassignDeploymentSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_UnassignDeployment_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateConnections_UnassignDeployment_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateConnectionsUnassignDeploymentMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateConnections()
+            .unassignDeployment("rgopenapi", "resource1", new AssignUnassignDeployment().withDeploymentId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateConnections_Update
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.ConnectionType;
+import com.azure.resourcemanager.oracledatabase.models.GoldenGateConnection;
+import com.azure.resourcemanager.oracledatabase.models.GoldenGateConnectionUpdateProperties;
+import com.azure.resourcemanager.oracledatabase.models.RoutingMethod;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for GoldenGateConnections Update.
+ */
+public final class GoldenGateConnectionsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateConnections_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateConnections_Update_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateConnectionsUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        GoldenGateConnection resource = manager.goldenGateConnections()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key3963", "fakeTokenPlaceholder"))
+            .withZones(Arrays.asList("example"))
+            .withProperties(new GoldenGateConnectionUpdateProperties().withConnectionType(ConnectionType.GOLDEN_GATE)
+                .withDisplayName("resource1")
+                .withRoutingMethod(RoutingMethod.SHARED_SERVICE_ENDPOINT)
+                .withVaultId("ocid1.autonomousdatabase.oc1..aaaaa3klq")
+                .withKeyId("fakeTokenPlaceholder")
+                .withDoesUseSecretIds(true))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### GoldenGateDeployments_AssignConnection
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.AssignUnassignConnection;
+
+/**
+ * Samples for GoldenGateDeployments AssignConnection.
+ */
+public final class GoldenGateDeploymentsAssignConnectionSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_AssignConnection_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_AssignConnection_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsAssignConnectionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments()
+            .assignConnection("rgopenapi", "resource1", new AssignUnassignConnection().withConnectionId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateDeployments_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.BackupScheduleType;
+import com.azure.resourcemanager.oracledatabase.models.CategoryType;
+import com.azure.resourcemanager.oracledatabase.models.CredentialType;
+import com.azure.resourcemanager.oracledatabase.models.DayOfWeekName;
+import com.azure.resourcemanager.oracledatabase.models.DeploymentProperties;
+import com.azure.resourcemanager.oracledatabase.models.DeploymentType;
+import com.azure.resourcemanager.oracledatabase.models.FrequencyType;
+import com.azure.resourcemanager.oracledatabase.models.GroupToRolesMappingDetails;
+import com.azure.resourcemanager.oracledatabase.models.LicenseModel;
+import com.azure.resourcemanager.oracledatabase.models.MaintenanceConfigurationType;
+import com.azure.resourcemanager.oracledatabase.models.MaintenanceWindowType;
+import com.azure.resourcemanager.oracledatabase.models.OggDeploymentDetails;
+import com.azure.resourcemanager.oracledatabase.models.SetupType;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for GoldenGateDeployments CreateOrUpdate.
+ */
+public final class GoldenGateDeploymentsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_CreateOrUpdate_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsCreateOrUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments()
+            .define("resource1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rgopenapi")
+            .withTags(mapOf("key4445", "fakeTokenPlaceholder"))
+            .withProperties(new DeploymentProperties()
+                .withBackupSchedule(new BackupScheduleType().withBucketName("resource1")
+                    .withCompartmentId("ocid1.autonomousdatabase.oc1..aaaaa3klq")
+                    .withFrequencyBackupScheduled(FrequencyType.DAILY)
+                    .withIsMetadataOnly(true)
+                    .withNamespaceName("qif")
+                    .withTimeBackupScheduled("2026-06-01T00:00:00Z"))
+                .withCpuCoreCount(18)
+                .withDisplayName("vo")
+                .withCategory(CategoryType.DATA_REPLICATION)
+                .withDeploymentType(DeploymentType.OGG)
+                .withEnvironmentType(SetupType.PRODUCTION)
+                .withIsAutoScalingEnabled(true)
+                .withIsPublic(true)
+                .withLicenseModel(LicenseModel.LICENSE_INCLUDED)
+                .withMaintenanceConfiguration(
+                    new MaintenanceConfigurationType().withBundleReleaseUpgradePeriodInDays(21)
+                        .withInterimReleaseUpgradePeriodInDays(28)
+                        .withIsInterimReleaseAutoUpgradeEnabled(true)
+                        .withMajorReleaseUpgradePeriodInDays(5)
+                        .withSecurityPatchUpgradePeriodInDays(10))
+                .withMaintenanceWindow(
+                    new MaintenanceWindowType().withDay(DayOfWeekName.fromString("resource1")).withStartHour(25))
+                .withNetworkAnchorId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/networkAnchors/networkanchor1")
+                .withOggData(new OggDeploymentDetails().withAdminPassword("fakeTokenPlaceholder")
+                    .withAdminUsername("resource1")
+                    .withCertificate("example")
+                    .withCredentialStore(CredentialType.GOLDEN_GATE)
+                    .withDeploymentName("uzyxba")
+                    .withGroupToRolesMapping(new GroupToRolesMappingDetails().withAdministratorGroupId("example")
+                        .withOperatorGroupId("example")
+                        .withSecurityGroupId("example")
+                        .withUserGroupId("example")
+                        .withIdentityDomainId("example")
+                        .withKey("fakeTokenPlaceholder"))
+                    .withOggVersion("example")
+                    .withPasswordSecretId("fakeTokenPlaceholder"))
+                .withResourceAnchorId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resourceAnchors/anchor1")
+                .withTimeZone("2026-06-01T00:00:00Z")
+                .withVersion("zhvgen"))
+            .withZones(Arrays.asList("example"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### GoldenGateDeployments_Delete
+
+```java
+/**
+ * Samples for GoldenGateDeployments Delete.
+ */
+public final class GoldenGateDeploymentsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_Delete_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsDeleteMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments().delete("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateDeployments_GetAssignedConnection
+
+```java
+/**
+ * Samples for GoldenGateDeployments GetAssignedConnection.
+ */
+public final class GoldenGateDeploymentsGetAssignedConnectionSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_GetAssignedConnection_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_GetAssignedConnection_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsGetAssignedConnectionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments()
+            .getAssignedConnectionWithResponse("rgopenapi", "resource1", "assignment1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateDeployments_GetByResourceGroup
+
+```java
+/**
+ * Samples for GoldenGateDeployments GetByResourceGroup.
+ */
+public final class GoldenGateDeploymentsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateDeployments_List
+
+```java
+/**
+ * Samples for GoldenGateDeployments List.
+ */
+public final class GoldenGateDeploymentsListSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_ListBySubscription_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsListBySubscriptionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateDeployments_ListAssignedConnectionsByParent
+
+```java
+/**
+ * Samples for GoldenGateDeployments ListAssignedConnectionsByParent.
+ */
+public final class GoldenGateDeploymentsListAssignedConnectionsByParentSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_ListAssignedConnectionsByParent_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_ListAssignedConnectionsByParent_MaximumSet_Gen - generated by [MaximumSet]
+     * rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsListAssignedConnectionsByParentMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments()
+            .listAssignedConnectionsByParent("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateDeployments_ListByResourceGroup
+
+```java
+/**
+ * Samples for GoldenGateDeployments ListByResourceGroup.
+ */
+public final class GoldenGateDeploymentsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_ListByResourceGroup_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsListByResourceGroupMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateDeployments_UnassignConnection
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.AssignUnassignConnection;
+
+/**
+ * Samples for GoldenGateDeployments UnassignConnection.
+ */
+public final class GoldenGateDeploymentsUnassignConnectionSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_UnassignConnection_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_UnassignConnection_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsUnassignConnectionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.goldenGateDeployments()
+            .unassignConnection("rgopenapi", "resource1", new AssignUnassignConnection().withConnectionId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resources/resource1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GoldenGateDeployments_Update
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.BackupScheduleType;
+import com.azure.resourcemanager.oracledatabase.models.DayOfWeekName;
+import com.azure.resourcemanager.oracledatabase.models.FrequencyType;
+import com.azure.resourcemanager.oracledatabase.models.GoldenGateDeployment;
+import com.azure.resourcemanager.oracledatabase.models.GoldenGateDeploymentUpdateProperties;
+import com.azure.resourcemanager.oracledatabase.models.LicenseModel;
+import com.azure.resourcemanager.oracledatabase.models.MaintenanceConfigurationType;
+import com.azure.resourcemanager.oracledatabase.models.MaintenanceWindowType;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for GoldenGateDeployments Update.
+ */
+public final class GoldenGateDeploymentsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/GoldenGateDeployments_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: GoldenGateDeployments_Update_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void goldenGateDeploymentsUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        GoldenGateDeployment resource = manager.goldenGateDeployments()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key8753", "fakeTokenPlaceholder"))
+            .withZones(Arrays.asList("oipkwaadk"))
+            .withProperties(new GoldenGateDeploymentUpdateProperties()
+                .withBackupSchedule(new BackupScheduleType().withBucketName("resource1")
+                    .withCompartmentId("ocid1.autonomousdatabase.oc1..aaaaa3klq")
+                    .withFrequencyBackupScheduled(FrequencyType.DAILY)
+                    .withIsMetadataOnly(true)
+                    .withNamespaceName("qif")
+                    .withTimeBackupScheduled("2026-06-01T00:00:00Z"))
+                .withCpuCoreCount(4)
+                .withLicenseModel(LicenseModel.LICENSE_INCLUDED)
+                .withMaintenanceConfiguration(
+                    new MaintenanceConfigurationType().withBundleReleaseUpgradePeriodInDays(21)
+                        .withInterimReleaseUpgradePeriodInDays(28)
+                        .withIsInterimReleaseAutoUpgradeEnabled(true)
+                        .withMajorReleaseUpgradePeriodInDays(5)
+                        .withSecurityPatchUpgradePeriodInDays(10))
+                .withMaintenanceWindow(
+                    new MaintenanceWindowType().withDay(DayOfWeekName.fromString("resource1")).withStartHour(25)))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### NetworkAnchors_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.DnsForwardingRule;
+import com.azure.resourcemanager.oracledatabase.models.NetworkAnchorProperties;
+import com.azure.resourcemanager.oracledatabase.models.ProximityPlacementGroup;
+import com.azure.resourcemanager.oracledatabase.models.ProximityPlacementGroupEntityType;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for NetworkAnchors CreateOrUpdate.
+ */
+public final class NetworkAnchorsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/NetworkAnchors_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: NetworkAnchors_CreateOrUpdate_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void networkAnchorsCreateOrUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.networkAnchors()
+            .define("resource1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rgopenapi")
+            .withTags(mapOf("key6589", "fakeTokenPlaceholder"))
+            .withProperties(new NetworkAnchorProperties().withResourceAnchorId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/resourceAnchors/anchor1")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
+                .withOciVcnDnsLabel("example")
+                .withOciBackupCidrBlock("example")
+                .withIsOracleToAzureDnsZoneSyncEnabled(true)
+                .withIsOracleDnsListeningEndpointEnabled(true)
+                .withIsOracleDnsForwardingEndpointEnabled(true)
+                .withDnsForwardingRules(
+                    Arrays.asList(new DnsForwardingRule().withDomainNames("ghs").withForwardingIpAddress("example")))
+                .withDnsListeningEndpointAllowedCidrs("toqgyp")
+                .withProximityPlacementGroup(new ProximityPlacementGroup().withProximityPlacementGroupId("example")
+                    .withProximityAnchorId("example")
+                    .withEntityTypeIntendedToUse(ProximityPlacementGroupEntityType.CLOUD_EXADATA_INFRASTRUCTURE)))
+            .withZones(Arrays.asList("zznbkklaih"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### NetworkAnchors_Delete
+
+```java
+/**
+ * Samples for NetworkAnchors Delete.
+ */
+public final class NetworkAnchorsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/NetworkAnchors_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: NetworkAnchors_Delete_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void networkAnchorsDeleteMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.networkAnchors().delete("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkAnchors_GetByResourceGroup
+
+```java
+/**
+ * Samples for NetworkAnchors GetByResourceGroup.
+ */
+public final class NetworkAnchorsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/NetworkAnchors_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: NetworkAnchors_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void networkAnchorsGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.networkAnchors()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkAnchors_List
+
+```java
+/**
+ * Samples for NetworkAnchors List.
+ */
+public final class NetworkAnchorsListSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/NetworkAnchors_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: NetworkAnchors_ListBySubscription_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void networkAnchorsListBySubscriptionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.networkAnchors().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkAnchors_ListByResourceGroup
+
+```java
+/**
+ * Samples for NetworkAnchors ListByResourceGroup.
+ */
+public final class NetworkAnchorsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/NetworkAnchors_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: NetworkAnchors_ListByResourceGroup_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void networkAnchorsListByResourceGroupMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.networkAnchors().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### NetworkAnchors_Update
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.NetworkAnchor;
+import com.azure.resourcemanager.oracledatabase.models.NetworkAnchorUpdateProperties;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for NetworkAnchors Update.
+ */
+public final class NetworkAnchorsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/NetworkAnchors_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: NetworkAnchors_Update_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void networkAnchorsUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        NetworkAnchor resource = manager.networkAnchors()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key2518", "fakeTokenPlaceholder"))
+            .withZones(Arrays.asList("example"))
+            .withProperties(new NetworkAnchorUpdateProperties().withOciBackupCidrBlock("zll")
+                .withIsOracleToAzureDnsZoneSyncEnabled(true)
+                .withIsOracleDnsListeningEndpointEnabled(true)
+                .withIsOracleDnsForwardingEndpointEnabled(true))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ResourceAnchors_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.ResourceAnchorProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ResourceAnchors CreateOrUpdate.
+ */
+public final class ResourceAnchorsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ResourceAnchors_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ResourceAnchors_CreateOrUpdate_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void resourceAnchorsCreateOrUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.resourceAnchors()
+            .define("resource1")
+            .withRegion("qbkti")
+            .withExistingResourceGroup("rgopenapi")
+            .withTags(mapOf("key2309", "fakeTokenPlaceholder"))
+            .withProperties(new ResourceAnchorProperties())
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ResourceAnchors_Delete
+
+```java
+/**
+ * Samples for ResourceAnchors Delete.
+ */
+public final class ResourceAnchorsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ResourceAnchors_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ResourceAnchors_Delete_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void resourceAnchorsDeleteMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.resourceAnchors().delete("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceAnchors_GetByResourceGroup
+
+```java
+/**
+ * Samples for ResourceAnchors GetByResourceGroup.
+ */
+public final class ResourceAnchorsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ResourceAnchors_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ResourceAnchors_Get_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void resourceAnchorsGetMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.resourceAnchors()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceAnchors_List
+
+```java
+/**
+ * Samples for ResourceAnchors List.
+ */
+public final class ResourceAnchorsListSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ResourceAnchors_ListBySubscription_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ResourceAnchors_ListBySubscription_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void resourceAnchorsListBySubscriptionMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.resourceAnchors().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceAnchors_ListByResourceGroup
+
+```java
+/**
+ * Samples for ResourceAnchors ListByResourceGroup.
+ */
+public final class ResourceAnchorsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ResourceAnchors_ListByResourceGroup_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ResourceAnchors_ListByResourceGroup_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void resourceAnchorsListByResourceGroupMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.resourceAnchors().listByResourceGroup("rgopenapi", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ResourceAnchors_Update
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.ResourceAnchor;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ResourceAnchors Update.
+ */
+public final class ResourceAnchorsUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-06-01/ResourceAnchors_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: ResourceAnchors_Update_MaximumSet_Gen - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void resourceAnchorsUpdateMaximumSetGenGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        ResourceAnchor resource = manager.resourceAnchors()
+            .getByResourceGroupWithResponse("rgopenapi", "resource1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key7593", "fakeTokenPlaceholder")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```

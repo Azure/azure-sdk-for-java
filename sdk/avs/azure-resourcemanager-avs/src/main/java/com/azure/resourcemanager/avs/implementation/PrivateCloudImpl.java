@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner;
+import com.azure.resourcemanager.avs.fluent.models.VcfLicenseInner;
 import com.azure.resourcemanager.avs.models.AdminCredentials;
 import com.azure.resourcemanager.avs.models.AvailabilityProperties;
 import com.azure.resourcemanager.avs.models.Circuit;
@@ -24,6 +25,7 @@ import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
 import com.azure.resourcemanager.avs.models.PrivateCloudUpdate;
 import com.azure.resourcemanager.avs.models.Sku;
+import com.azure.resourcemanager.avs.models.VcfLicense;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -182,6 +184,15 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this.innerModel().dnsZoneType();
     }
 
+    public VcfLicense vcfLicense() {
+        VcfLicenseInner inner = this.innerModel().vcfLicense();
+        if (inner != null) {
+            return new VcfLicenseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -255,8 +266,12 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
     PrivateCloudImpl(PrivateCloudInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}",
+            "resourceGroupName");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}",
+            "privateCloudName");
     }
 
     public PrivateCloud refresh() {
@@ -298,6 +313,14 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
 
     public AdminCredentials listAdminCredentials() {
         return serviceManager.privateClouds().listAdminCredentials(resourceGroupName, privateCloudName);
+    }
+
+    public Response<VcfLicense> getVcfLicenseWithResponse(Context context) {
+        return serviceManager.privateClouds().getVcfLicenseWithResponse(resourceGroupName, privateCloudName, context);
+    }
+
+    public VcfLicense getVcfLicense() {
+        return serviceManager.privateClouds().getVcfLicense(resourceGroupName, privateCloudName);
     }
 
     public PrivateCloudImpl withRegion(Region location) {
@@ -438,6 +461,11 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
             this.updatePrivateCloudUpdate.withDnsZoneType(dnsZoneType);
             return this;
         }
+    }
+
+    public PrivateCloudImpl withVcfLicense(VcfLicenseInner vcfLicense) {
+        this.innerModel().withVcfLicense(vcfLicense);
+        return this;
     }
 
     private boolean isInCreateMode() {

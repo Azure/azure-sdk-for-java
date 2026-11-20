@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Parameters for creating an Azure Batch Pool.
@@ -57,19 +56,10 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * The timeout for allocation of Compute Nodes to the Pool. This timeout applies only to manual scaling; it has no
      * effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If
      * you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API
-     * directly, the HTTP status code is 400 (Bad Request).
+     * directly, the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration resizeTimeout;
-
-    /*
-     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
-     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
-     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
-     * 'UserSubscription'.
-     */
-    @Generated
-    private Map<String, String> resourceTags;
 
     /*
      * The desired number of dedicated Compute Nodes in the Pool. This property must not be specified if enableAutoScale
@@ -109,7 +99,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default
      * value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a
      * value less than 5 minutes or greater than 168 hours, the Batch service returns an error; if you are calling the
-     * REST API directly, the HTTP status code is 400 (Bad Request).
+     * REST API directly, the HTTP status code is 400 (Bad Request). The time duration is specified in ISO 8601 format.
      */
     @Generated
     private Duration autoScaleEvaluationInterval;
@@ -134,18 +124,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      */
     @Generated
     private BatchStartTask startTask;
-
-    /*
-     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     */
-    @Generated
-    private List<BatchCertificateReference> certificateReferences;
 
     /*
      * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's
@@ -191,12 +169,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      */
     @Generated
     private List<MountConfiguration> mountConfiguration;
-
-    /*
-     * The desired node communication mode for the pool. If omitted, the default value is Default.
-     */
-    @Generated
-    private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
     /*
      * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
@@ -296,7 +268,8 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * Get the resizeTimeout property: The timeout for allocation of Compute Nodes to the Pool. This timeout applies
      * only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes.
      * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error;
-     * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is
+     * specified in ISO 8601 format.
      *
      * @return the resizeTimeout value.
      */
@@ -309,7 +282,8 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * Set the resizeTimeout property: The timeout for allocation of Compute Nodes to the Pool. This timeout applies
      * only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes.
      * The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error;
-     * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration is
+     * specified in ISO 8601 format.
      *
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the BatchPoolCreateParameters object itself.
@@ -317,34 +291,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
     @Generated
     public BatchPoolCreateParameters setResizeTimeout(Duration resizeTimeout) {
         this.resizeTimeout = resizeTimeout;
-        return this;
-    }
-
-    /**
-     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @return the resourceTags value.
-     */
-    @Generated
-    public Map<String, String> getResourceTags() {
-        return this.resourceTags;
-    }
-
-    /**
-     * Set the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @param resourceTags the resourceTags value to set.
-     * @return the BatchPoolCreateParameters object itself.
-     */
-    @Generated
-    public BatchPoolCreateParameters setResourceTags(Map<String, String> resourceTags) {
-        this.resourceTags = resourceTags;
         return this;
     }
 
@@ -463,6 +409,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * according to the autoscale formula. The default value is 15 minutes. The minimum and maximum value are 5 minutes
      * and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch
      * service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The time duration is specified in ISO 8601 format.
      *
      * @return the autoScaleEvaluationInterval value.
      */
@@ -476,6 +423,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
      * according to the autoscale formula. The default value is 15 minutes. The minimum and maximum value are 5 minutes
      * and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch
      * service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The time duration is specified in ISO 8601 format.
      *
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set.
      * @return the BatchPoolCreateParameters object itself.
@@ -557,42 +505,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
     @Generated
     public BatchPoolCreateParameters setStartTask(BatchStartTask startTask) {
         this.startTask = startTask;
-        return this;
-    }
-
-    /**
-     * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
-     * specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @return the certificateReferences value.
-     */
-    @Generated
-    public List<BatchCertificateReference> getCertificateReferences() {
-        return this.certificateReferences;
-    }
-
-    /**
-     * Set the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
-     * specified Certificate store and location.
-     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
-     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
-     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
-     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
-     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
-     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
-     *
-     * @param certificateReferences the certificateReferences value to set.
-     * @return the BatchPoolCreateParameters object itself.
-     */
-    @Generated
-    public BatchPoolCreateParameters setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
-        this.certificateReferences = certificateReferences;
         return this;
     }
 
@@ -750,31 +662,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
     }
 
     /**
-     * Get the targetNodeCommunicationMode property: The desired node communication mode for the pool. If omitted, the
-     * default value is Default.
-     *
-     * @return the targetNodeCommunicationMode value.
-     */
-    @Generated
-    public BatchNodeCommunicationMode getTargetNodeCommunicationMode() {
-        return this.targetNodeCommunicationMode;
-    }
-
-    /**
-     * Set the targetNodeCommunicationMode property: The desired node communication mode for the pool. If omitted, the
-     * default value is Default.
-     *
-     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
-     * @return the BatchPoolCreateParameters object itself.
-     */
-    @Generated
-    public BatchPoolCreateParameters
-        setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
-        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
-        return this;
-    }
-
-    /**
      * Get the upgradePolicy property: The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual,
      * or rolling.
      *
@@ -810,7 +697,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
         jsonWriter.writeStringField("resizeTimeout", CoreUtils.durationToStringWithDays(this.resizeTimeout));
-        jsonWriter.writeMapField("resourceTags", this.resourceTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("targetDedicatedNodes", this.targetDedicatedNodes);
         jsonWriter.writeNumberField("targetLowPriorityNodes", this.targetLowPriorityNodes);
         jsonWriter.writeBooleanField("enableAutoScale", this.enableAutoScale);
@@ -820,8 +706,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
         jsonWriter.writeBooleanField("enableInterNodeCommunication", this.enableInterNodeCommunication);
         jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
         jsonWriter.writeJsonField("startTask", this.startTask);
-        jsonWriter.writeArrayField("certificateReferences", this.certificateReferences,
-            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("taskSlotsPerNode", this.taskSlotsPerNode);
@@ -830,8 +714,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("mountConfiguration", this.mountConfiguration,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("targetNodeCommunicationMode",
-            this.targetNodeCommunicationMode == null ? null : this.targetNodeCommunicationMode.toString());
         jsonWriter.writeJsonField("upgradePolicy", this.upgradePolicy);
         return jsonWriter.writeEndObject();
     }
@@ -853,7 +735,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
             String displayName = null;
             VirtualMachineConfiguration virtualMachineConfiguration = null;
             Duration resizeTimeout = null;
-            Map<String, String> resourceTags = null;
             Integer targetDedicatedNodes = null;
             Integer targetLowPriorityNodes = null;
             Boolean enableAutoScale = null;
@@ -862,14 +743,12 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
             Boolean enableInterNodeCommunication = null;
             NetworkConfiguration networkConfiguration = null;
             BatchStartTask startTask = null;
-            List<BatchCertificateReference> certificateReferences = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
             Integer taskSlotsPerNode = null;
             BatchTaskSchedulingPolicy taskSchedulingPolicy = null;
             List<UserAccount> userAccounts = null;
             List<BatchMetadataItem> metadata = null;
             List<MountConfiguration> mountConfiguration = null;
-            BatchNodeCommunicationMode targetNodeCommunicationMode = null;
             UpgradePolicy upgradePolicy = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -884,8 +763,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
                     virtualMachineConfiguration = VirtualMachineConfiguration.fromJson(reader);
                 } else if ("resizeTimeout".equals(fieldName)) {
                     resizeTimeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                } else if ("resourceTags".equals(fieldName)) {
-                    resourceTags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("targetDedicatedNodes".equals(fieldName)) {
                     targetDedicatedNodes = reader.getNullable(JsonReader::getInt);
                 } else if ("targetLowPriorityNodes".equals(fieldName)) {
@@ -903,8 +780,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
                     networkConfiguration = NetworkConfiguration.fromJson(reader);
                 } else if ("startTask".equals(fieldName)) {
                     startTask = BatchStartTask.fromJson(reader);
-                } else if ("certificateReferences".equals(fieldName)) {
-                    certificateReferences = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
@@ -918,8 +793,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
                     metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else if ("mountConfiguration".equals(fieldName)) {
                     mountConfiguration = reader.readArray(reader1 -> MountConfiguration.fromJson(reader1));
-                } else if ("targetNodeCommunicationMode".equals(fieldName)) {
-                    targetNodeCommunicationMode = BatchNodeCommunicationMode.fromString(reader.getString());
                 } else if ("upgradePolicy".equals(fieldName)) {
                     upgradePolicy = UpgradePolicy.fromJson(reader);
                 } else {
@@ -930,7 +803,6 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
             deserializedBatchPoolCreateParameters.displayName = displayName;
             deserializedBatchPoolCreateParameters.virtualMachineConfiguration = virtualMachineConfiguration;
             deserializedBatchPoolCreateParameters.resizeTimeout = resizeTimeout;
-            deserializedBatchPoolCreateParameters.resourceTags = resourceTags;
             deserializedBatchPoolCreateParameters.targetDedicatedNodes = targetDedicatedNodes;
             deserializedBatchPoolCreateParameters.targetLowPriorityNodes = targetLowPriorityNodes;
             deserializedBatchPoolCreateParameters.enableAutoScale = enableAutoScale;
@@ -939,14 +811,12 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
             deserializedBatchPoolCreateParameters.enableInterNodeCommunication = enableInterNodeCommunication;
             deserializedBatchPoolCreateParameters.networkConfiguration = networkConfiguration;
             deserializedBatchPoolCreateParameters.startTask = startTask;
-            deserializedBatchPoolCreateParameters.certificateReferences = certificateReferences;
             deserializedBatchPoolCreateParameters.applicationPackageReferences = applicationPackageReferences;
             deserializedBatchPoolCreateParameters.taskSlotsPerNode = taskSlotsPerNode;
             deserializedBatchPoolCreateParameters.taskSchedulingPolicy = taskSchedulingPolicy;
             deserializedBatchPoolCreateParameters.userAccounts = userAccounts;
             deserializedBatchPoolCreateParameters.metadata = metadata;
             deserializedBatchPoolCreateParameters.mountConfiguration = mountConfiguration;
-            deserializedBatchPoolCreateParameters.targetNodeCommunicationMode = targetNodeCommunicationMode;
             deserializedBatchPoolCreateParameters.upgradePolicy = upgradePolicy;
             return deserializedBatchPoolCreateParameters;
         });

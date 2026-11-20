@@ -91,7 +91,7 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
      * A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
      */
     @Generated
-    private BatchAffinityInfo affinityInfo;
+    private BatchAffinityDetails affinityInfo;
 
     /*
      * The execution constraints that apply to this Task. If you do not specify constraints, the maxTaskRetryCount is
@@ -140,17 +140,6 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
      */
     @Generated
     private List<BatchApplicationPackageReference> applicationPackageReferences;
-
-    /*
-     * The settings for an authentication token that the Task can use to perform Batch service operations. If this
-     * property is set, the Batch service provides the Task with an authentication token which can be used to
-     * authenticate Batch service operations without requiring an Account access key. The token is provided via the
-     * AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token
-     * depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job,
-     * or check the status of the Job or of other Tasks under the Job.
-     */
-    @Generated
-    private AuthenticationTokenSettings authenticationTokenSettings;
 
     /**
      * Creates an instance of BatchTaskCreateParameters class.
@@ -361,21 +350,8 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
      * @return the affinityInfo value.
      */
     @Generated
-    public BatchAffinityInfo getAffinityInfo() {
+    public BatchAffinityDetails getAffinityInfo() {
         return this.affinityInfo;
-    }
-
-    /**
-     * Set the affinityInfo property: A locality hint that can be used by the Batch service to select a Compute Node on
-     * which to start the new Task.
-     *
-     * @param affinityInfo the affinityInfo value to set.
-     * @return the BatchTaskCreateParameters object itself.
-     */
-    @Generated
-    public BatchTaskCreateParameters setAffinityInfo(BatchAffinityInfo affinityInfo) {
-        this.affinityInfo = affinityInfo;
-        return this;
     }
 
     /**
@@ -538,39 +514,6 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
     }
 
     /**
-     * Get the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
-     * perform Batch service operations. If this property is set, the Batch service provides the Task with an
-     * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
-     *
-     * @return the authenticationTokenSettings value.
-     */
-    @Generated
-    public AuthenticationTokenSettings getAuthenticationTokenSettings() {
-        return this.authenticationTokenSettings;
-    }
-
-    /**
-     * Set the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
-     * perform Batch service operations. If this property is set, the Batch service provides the Task with an
-     * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
-     *
-     * @param authenticationTokenSettings the authenticationTokenSettings value to set.
-     * @return the BatchTaskCreateParameters object itself.
-     */
-    @Generated
-    public BatchTaskCreateParameters
-        setAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
-        this.authenticationTokenSettings = authenticationTokenSettings;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -594,7 +537,6 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
         jsonWriter.writeJsonField("dependsOn", this.dependsOn);
         jsonWriter.writeArrayField("applicationPackageReferences", this.applicationPackageReferences,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("authenticationTokenSettings", this.authenticationTokenSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -618,14 +560,13 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
             List<ResourceFile> resourceFiles = null;
             List<OutputFile> outputFiles = null;
             List<EnvironmentSetting> environmentSettings = null;
-            BatchAffinityInfo affinityInfo = null;
+            BatchAffinityDetails affinityInfo = null;
             BatchTaskConstraints constraints = null;
             Integer requiredSlots = null;
             UserIdentity userIdentity = null;
             MultiInstanceSettings multiInstanceSettings = null;
             BatchTaskDependencies dependsOn = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
-            AuthenticationTokenSettings authenticationTokenSettings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -646,7 +587,7 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
                 } else if ("environmentSettings".equals(fieldName)) {
                     environmentSettings = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                 } else if ("affinityInfo".equals(fieldName)) {
-                    affinityInfo = BatchAffinityInfo.fromJson(reader);
+                    affinityInfo = BatchAffinityDetails.fromJson(reader);
                 } else if ("constraints".equals(fieldName)) {
                     constraints = BatchTaskConstraints.fromJson(reader);
                 } else if ("requiredSlots".equals(fieldName)) {
@@ -660,8 +601,6 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
-                } else if ("authenticationTokenSettings".equals(fieldName)) {
-                    authenticationTokenSettings = AuthenticationTokenSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -681,8 +620,20 @@ public final class BatchTaskCreateParameters implements JsonSerializable<BatchTa
             deserializedBatchTaskCreateParameters.multiInstanceSettings = multiInstanceSettings;
             deserializedBatchTaskCreateParameters.dependsOn = dependsOn;
             deserializedBatchTaskCreateParameters.applicationPackageReferences = applicationPackageReferences;
-            deserializedBatchTaskCreateParameters.authenticationTokenSettings = authenticationTokenSettings;
             return deserializedBatchTaskCreateParameters;
         });
+    }
+
+    /**
+     * Set the affinityInfo property: A locality hint that can be used by the Batch service to select a Compute Node on
+     * which to start the new Task.
+     *
+     * @param affinityInfo the affinityInfo value to set.
+     * @return the BatchTaskCreateParameters object itself.
+     */
+    @Generated
+    public BatchTaskCreateParameters setAffinityInfo(BatchAffinityDetails affinityInfo) {
+        this.affinityInfo = affinityInfo;
+        return this;
     }
 }

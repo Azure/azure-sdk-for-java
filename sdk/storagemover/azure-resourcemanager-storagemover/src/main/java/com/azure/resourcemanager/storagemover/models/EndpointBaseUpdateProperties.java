@@ -98,6 +98,8 @@ public class EndpointBaseUpdateProperties implements JsonSerializable<EndpointBa
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("AzureStorageBlobContainer".equals(discriminatorValue)) {
                     return AzureStorageBlobContainerEndpointUpdateProperties.fromJson(readerToUse.reset());
+                } else if ("S3WithHMAC".equals(discriminatorValue)) {
+                    return S3WithHmacEndpointUpdateProperties.fromJson(readerToUse.reset());
                 } else if ("NfsMount".equals(discriminatorValue)) {
                     return NfsMountEndpointUpdateProperties.fromJson(readerToUse.reset());
                 } else if ("AzureStorageSmbFileShare".equals(discriminatorValue)) {

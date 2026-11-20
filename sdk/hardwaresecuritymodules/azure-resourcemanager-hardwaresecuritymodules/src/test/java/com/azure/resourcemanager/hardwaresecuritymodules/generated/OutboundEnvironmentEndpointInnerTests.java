@@ -12,13 +12,13 @@ public final class OutboundEnvironmentEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointInner model = BinaryData.fromString(
-            "{\"category\":\"allatmelwuipic\",\"endpoints\":[{\"domainName\":\"z\",\"endpointDetails\":[{\"ipAddress\":\"vc\",\"port\":192957128,\"protocol\":\"hyrnxxmu\",\"description\":\"dndrdvstkwqqtche\"},{\"ipAddress\":\"mfmtdaaygdvw\",\"port\":627110889,\"protocol\":\"ohgwxrtfudxepxg\",\"description\":\"agvrvmnpkuk\"},{\"ipAddress\":\"i\",\"port\":2068705398,\"protocol\":\"xgwim\",\"description\":\"jhfjxwm\"}]},{\"domainName\":\"kkfoqr\",\"endpointDetails\":[{\"ipAddress\":\"zi\",\"port\":2032728059,\"protocol\":\"wneaiv\",\"description\":\"czelpcirel\"},{\"ipAddress\":\"eae\",\"port\":1632471353,\"protocol\":\"fatkld\",\"description\":\"bjhwuaan\"}]},{\"domainName\":\"jos\",\"endpointDetails\":[{\"ipAddress\":\"ulpjr\",\"port\":326673667,\"protocol\":\"l\",\"description\":\"imjwosyt\"},{\"ipAddress\":\"tcs\",\"port\":1365275067,\"protocol\":\"tq\",\"description\":\"iekkezz\"}]}]}")
+            "{\"category\":\"fvpdbo\",\"endpoints\":[{\"domainName\":\"zsjqlh\",\"endpointDetails\":[{\"ipAddress\":\"bdeibqipqk\",\"port\":1234217414,\"protocol\":\"ndzwmkrefa\",\"description\":\"jorwkqnyhgbij\"}]},{\"domainName\":\"ivfxzsjabibsyst\",\"endpointDetails\":[{\"ipAddress\":\"djpvkvpbjxbkz\",\"port\":396051915,\"protocol\":\"vncjabudurgk\",\"description\":\"mokzhjjklf\"},{\"ipAddress\":\"mouwqlgzrfzeey\",\"port\":32622439,\"protocol\":\"ikayuhqlbjbsybb\",\"description\":\"r\"},{\"ipAddress\":\"ldgmfpgvmpip\",\"port\":1000390440,\"protocol\":\"haq\",\"description\":\"ss\"}]},{\"domainName\":\"u\",\"endpointDetails\":[{\"ipAddress\":\"srezp\",\"port\":481709550,\"protocol\":\"euyowqkd\",\"description\":\"t\"},{\"ipAddress\":\"ib\",\"port\":1145560346,\"protocol\":\"pikpz\",\"description\":\"ejzanlfz\"}]},{\"domainName\":\"av\",\"endpointDetails\":[{\"ipAddress\":\"onok\",\"port\":988966310,\"protocol\":\"q\",\"description\":\"rgz\"},{\"ipAddress\":\"rlazszrnw\",\"port\":409653705,\"protocol\":\"dfpwpjylwbtlhfls\",\"description\":\"dhszfjv\"}]}]}")
             .toObject(OutboundEnvironmentEndpointInner.class);
-        Assertions.assertEquals("allatmelwuipic", model.category());
-        Assertions.assertEquals("z", model.endpoints().get(0).domainName());
-        Assertions.assertEquals("vc", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(192957128, model.endpoints().get(0).endpointDetails().get(0).port());
-        Assertions.assertEquals("hyrnxxmu", model.endpoints().get(0).endpointDetails().get(0).protocol());
-        Assertions.assertEquals("dndrdvstkwqqtche", model.endpoints().get(0).endpointDetails().get(0).description());
+        Assertions.assertEquals("fvpdbo", model.category());
+        Assertions.assertEquals("zsjqlh", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("bdeibqipqk", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(1234217414, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("ndzwmkrefa", model.endpoints().get(0).endpointDetails().get(0).protocol());
+        Assertions.assertEquals("jorwkqnyhgbij", model.endpoints().get(0).endpointDetails().get(0).description());
     }
 }

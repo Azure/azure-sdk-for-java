@@ -12,14 +12,14 @@ public final class DataflowGraphConnectionOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphConnectionOutput model
-            = BinaryData.fromString("{\"name\":\"aztz\"}").toObject(DataflowGraphConnectionOutput.class);
-        Assertions.assertEquals("aztz", model.name());
+            = BinaryData.fromString("{\"name\":\"dflvkg\"}").toObject(DataflowGraphConnectionOutput.class);
+        Assertions.assertEquals("dflvkg", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphConnectionOutput model = new DataflowGraphConnectionOutput().withName("aztz");
+        DataflowGraphConnectionOutput model = new DataflowGraphConnectionOutput().withName("dflvkg");
         model = BinaryData.fromObject(model).toObject(DataflowGraphConnectionOutput.class);
-        Assertions.assertEquals("aztz", model.name());
+        Assertions.assertEquals("dflvkg", model.name());
     }
 }

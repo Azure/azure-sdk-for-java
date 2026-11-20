@@ -13,24 +13,24 @@ public final class ItemPathBasedRestoreCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ItemPathBasedRestoreCriteria model = BinaryData.fromString(
-            "{\"objectType\":\"ItemPathBasedRestoreCriteria\",\"itemPath\":\"mvxi\",\"isPathRelativeToBackupItem\":true,\"subItemPathPrefix\":[\"gidyjrrf\",\"y\"],\"renameTo\":\"svexcsonpclhoco\"}")
+            "{\"objectType\":\"ItemPathBasedRestoreCriteria\",\"itemPath\":\"ifsjttgzfbishcb\",\"isPathRelativeToBackupItem\":true,\"subItemPathPrefix\":[\"deyeamdphagalpbu\",\"wgipwhono\",\"kgshwa\"],\"renameTo\":\"ixzbinjeputtmryw\"}")
             .toObject(ItemPathBasedRestoreCriteria.class);
-        Assertions.assertEquals("mvxi", model.itemPath());
+        Assertions.assertEquals("ifsjttgzfbishcb", model.itemPath());
         Assertions.assertTrue(model.isPathRelativeToBackupItem());
-        Assertions.assertEquals("gidyjrrf", model.subItemPathPrefix().get(0));
-        Assertions.assertEquals("svexcsonpclhoco", model.renameTo());
+        Assertions.assertEquals("deyeamdphagalpbu", model.subItemPathPrefix().get(0));
+        Assertions.assertEquals("ixzbinjeputtmryw", model.renameTo());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ItemPathBasedRestoreCriteria model = new ItemPathBasedRestoreCriteria().withItemPath("mvxi")
+        ItemPathBasedRestoreCriteria model = new ItemPathBasedRestoreCriteria().withItemPath("ifsjttgzfbishcb")
             .withIsPathRelativeToBackupItem(true)
-            .withSubItemPathPrefix(Arrays.asList("gidyjrrf", "y"))
-            .withRenameTo("svexcsonpclhoco");
+            .withSubItemPathPrefix(Arrays.asList("deyeamdphagalpbu", "wgipwhono", "kgshwa"))
+            .withRenameTo("ixzbinjeputtmryw");
         model = BinaryData.fromObject(model).toObject(ItemPathBasedRestoreCriteria.class);
-        Assertions.assertEquals("mvxi", model.itemPath());
+        Assertions.assertEquals("ifsjttgzfbishcb", model.itemPath());
         Assertions.assertTrue(model.isPathRelativeToBackupItem());
-        Assertions.assertEquals("gidyjrrf", model.subItemPathPrefix().get(0));
-        Assertions.assertEquals("svexcsonpclhoco", model.renameTo());
+        Assertions.assertEquals("deyeamdphagalpbu", model.subItemPathPrefix().get(0));
+        Assertions.assertEquals("ixzbinjeputtmryw", model.renameTo());
     }
 }

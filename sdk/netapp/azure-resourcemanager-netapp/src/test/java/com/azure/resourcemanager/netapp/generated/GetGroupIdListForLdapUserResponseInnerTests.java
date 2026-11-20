@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GetGroupIdListForLdapUserResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetGroupIdListForLdapUserResponseInner model
-            = BinaryData.fromString("{\"groupIdsForLdapUser\":[\"yhz\",\"xssadbzmnvdf\"]}")
-                .toObject(GetGroupIdListForLdapUserResponseInner.class);
-        Assertions.assertEquals("yhz", model.groupIdsForLdapUser().get(0));
+        GetGroupIdListForLdapUserResponseInner model = BinaryData
+            .fromString("{\"groupIdsForLdapUser\":[\"gynduha\",\"hqlkthumaqo\",\"bgycduiertgccym\",\"aolps\"]}")
+            .toObject(GetGroupIdListForLdapUserResponseInner.class);
+        Assertions.assertEquals("gynduha", model.groupIdsForLdapUser().get(0));
     }
 }

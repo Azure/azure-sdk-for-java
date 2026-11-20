@@ -1,0 +1,125 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+/**
+ * Sample demonstrating how to delete an analyzer asynchronously.
+ * This sample shows:
+ * 1. Creating a temporary analyzer
+ * 2. Verifying the analyzer exists
+ * 3. Deleting the analyzer
+ * 4. Verifying the analyzer no longer exists
+ *
+ * <p>Deleting an analyzer is permanent and only custom analyzers can be deleted.</p>
+ */
+public class Sample09_DeleteAnalyzerAsync {
+
+     public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample09Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample09Async.buildClient
+
+        // BEGIN:ContentUnderstandingDeleteAnalyzerAsync
+        // First, create a temporary analyzer to delete
+        String analyzerId = "analyzer_to_delete_" + System.currentTimeMillis();
+        System.out.println("Creating temporary analyzer '" + analyzerId + "'...");
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Simple analyzer for deletion example")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
+            .setModels(models);
+
+        String finalAnalyzerId = analyzerId; // For use in lambda
+
+        Mono<ContentAnalyzer> createdAnalyzer = client.beginCreateAnalyzer(analyzerId, analyzer, true)
+            .last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Analyzer creation"));
+
+        runWithFailureCleanup(createdAnalyzer,
+            ignored -> client.getAnalyzer(finalAnalyzerId).doOnNext(retrievedAnalyzer -> {
+                System.out.println("Temporary analyzer created: " + finalAnalyzerId);
+                System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
+            }).then(client.deleteAnalyzer(finalAnalyzerId)).doOnSuccess(ignoredDelete -> {
+                System.out.println("Analyzer deleted successfully: " + finalAnalyzerId);
+            }).then(verifyDeleted(client.getAnalyzer(finalAnalyzerId), finalAnalyzerId))
+                .then(verifyNotListed(client.listAnalyzers(), finalAnalyzerId)),
+            ignored -> client.deleteAnalyzer(finalAnalyzerId)).block();
+        // END:ContentUnderstandingDeleteAnalyzerAsync
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono.error(
+                new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    static <T> Mono<Void> runWithFailureCleanup(Mono<T> resource, Function<T, Mono<Void>> operation,
+        Function<T, Mono<Void>> cleanup) {
+        return Mono.usingWhen(resource, operation, ignored -> Mono.empty(),
+            (value, error) -> cleanup.apply(value), cleanup);
+    }
+
+    static Mono<Void> verifyDeleted(Mono<ContentAnalyzer> getAnalyzer, String analyzerId) {
+        return getAnalyzer
+            .flatMap(ignored -> Mono.<Void>error(
+                new IllegalStateException("Deleted analyzer '" + analyzerId + "' is still retrievable.")))
+            .switchIfEmpty(Mono.error(
+                new IllegalStateException("Get analyzer completed without confirming deletion for '" + analyzerId + "'.")))
+            .onErrorResume(HttpResponseException.class, exception -> {
+                int statusCode = exception.getResponse().getStatusCode();
+                if (statusCode != 404 && statusCode != 400) {
+                    return Mono.error(exception);
+                }
+                System.out.println("Confirmed: Analyzer no longer exists (status " + statusCode + ")");
+                return Mono.empty();
+            });
+    }
+
+    static Mono<Void> verifyNotListed(Flux<ContentAnalyzer> analyzers, String analyzerId) {
+        return analyzers.any(analyzer -> analyzerId.equals(analyzer.getAnalyzerId())).flatMap(found -> {
+            if (found) {
+                return Mono.error(
+                    new IllegalStateException("Deleted analyzer '" + analyzerId + "' still appears in the list."));
+            }
+            System.out.println("Confirmed: Analyzer no longer appears in the analyzer list");
+            return Mono.empty();
+        });
+    }
+}

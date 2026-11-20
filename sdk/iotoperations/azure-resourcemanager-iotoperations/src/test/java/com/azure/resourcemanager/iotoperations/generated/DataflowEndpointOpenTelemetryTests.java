@@ -16,27 +16,26 @@ public final class DataflowEndpointOpenTelemetryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointOpenTelemetry model = BinaryData.fromString(
-            "{\"host\":\"sorgj\",\"batching\":{\"latencySeconds\":1755128806,\"maxMessages\":1807196723},\"tls\":{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"lkdmtncvokotllxd\"},\"authentication\":{\"method\":\"DataflowOpenTelemetryAuthentication\"}}")
+            "{\"host\":\"vmnpkukghimdblx\",\"batching\":{\"latencySeconds\":1230098756,\"maxMessages\":1046627826},\"tls\":{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"xw\"},\"authentication\":{\"method\":\"DataflowOpenTelemetryAuthentication\"}}")
             .toObject(DataflowEndpointOpenTelemetry.class);
-        Assertions.assertEquals("sorgj", model.host());
-        Assertions.assertEquals(1755128806, model.batching().latencySeconds());
-        Assertions.assertEquals(1807196723, model.batching().maxMessages());
+        Assertions.assertEquals("vmnpkukghimdblx", model.host());
+        Assertions.assertEquals(1230098756, model.batching().latencySeconds());
+        Assertions.assertEquals(1046627826, model.batching().maxMessages());
         Assertions.assertEquals(OperationalMode.ENABLED, model.tls().mode());
-        Assertions.assertEquals("lkdmtncvokotllxd", model.tls().trustedCaCertificateConfigMapRef());
+        Assertions.assertEquals("xw", model.tls().trustedCaCertificateConfigMapRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowEndpointOpenTelemetry model = new DataflowEndpointOpenTelemetry().withHost("sorgj")
-            .withBatching(new BatchingConfiguration().withLatencySeconds(1755128806).withMaxMessages(1807196723))
-            .withTls(new TlsProperties().withMode(OperationalMode.ENABLED)
-                .withTrustedCaCertificateConfigMapRef("lkdmtncvokotllxd"))
+        DataflowEndpointOpenTelemetry model = new DataflowEndpointOpenTelemetry().withHost("vmnpkukghimdblx")
+            .withBatching(new BatchingConfiguration().withLatencySeconds(1230098756).withMaxMessages(1046627826))
+            .withTls(new TlsProperties().withMode(OperationalMode.ENABLED).withTrustedCaCertificateConfigMapRef("xw"))
             .withAuthentication(new DataflowOpenTelemetryAuthentication());
         model = BinaryData.fromObject(model).toObject(DataflowEndpointOpenTelemetry.class);
-        Assertions.assertEquals("sorgj", model.host());
-        Assertions.assertEquals(1755128806, model.batching().latencySeconds());
-        Assertions.assertEquals(1807196723, model.batching().maxMessages());
+        Assertions.assertEquals("vmnpkukghimdblx", model.host());
+        Assertions.assertEquals(1230098756, model.batching().latencySeconds());
+        Assertions.assertEquals(1046627826, model.batching().maxMessages());
         Assertions.assertEquals(OperationalMode.ENABLED, model.tls().mode());
-        Assertions.assertEquals("lkdmtncvokotllxd", model.tls().trustedCaCertificateConfigMapRef());
+        Assertions.assertEquals("xw", model.tls().trustedCaCertificateConfigMapRef());
     }
 }

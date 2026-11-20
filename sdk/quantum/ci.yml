@@ -11,7 +11,6 @@ trigger:
       - sdk/quantum/
     exclude:
       - sdk/quantum/pom.xml
-      - sdk/quantum/azure-quantum-jobs/pom.xml
       - sdk/quantum/azure-resourcemanager-quantum/pom.xml
 
 pr:
@@ -26,7 +25,6 @@ pr:
       - sdk/quantum/
     exclude:
       - sdk/quantum/pom.xml
-      - sdk/quantum/azure-quantum-jobs/pom.xml
       - sdk/quantum/azure-resourcemanager-quantum/pom.xml
 
 parameters:
@@ -35,20 +33,11 @@ parameters:
     type: boolean
     default: false
 
-  - name: release_azurequantumjobs
-    displayName: azure-quantum-jobs
-    type: boolean
-    default: true
-
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: quantum
     Artifacts:
-      - name: azure-quantum-jobs
-        groupId: com.azure
-        safeName: azurequantumjobs
-        releaseInBatch: ${{ parameters.release_azurequantumjobs }}
       - name: azure-resourcemanager-quantum
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerquantum

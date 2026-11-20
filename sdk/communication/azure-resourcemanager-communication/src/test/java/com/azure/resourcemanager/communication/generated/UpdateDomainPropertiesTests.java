@@ -13,15 +13,15 @@ public final class UpdateDomainPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateDomainProperties model
-            = BinaryData.fromString("{\"userEngagementTracking\":\"Enabled\"}").toObject(UpdateDomainProperties.class);
-        Assertions.assertEquals(UserEngagementTracking.ENABLED, model.userEngagementTracking());
+            = BinaryData.fromString("{\"userEngagementTracking\":\"Disabled\"}").toObject(UpdateDomainProperties.class);
+        Assertions.assertEquals(UserEngagementTracking.DISABLED, model.userEngagementTracking());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateDomainProperties model
-            = new UpdateDomainProperties().withUserEngagementTracking(UserEngagementTracking.ENABLED);
+            = new UpdateDomainProperties().withUserEngagementTracking(UserEngagementTracking.DISABLED);
         model = BinaryData.fromObject(model).toObject(UpdateDomainProperties.class);
-        Assertions.assertEquals(UserEngagementTracking.ENABLED, model.userEngagementTracking());
+        Assertions.assertEquals(UserEngagementTracking.DISABLED, model.userEngagementTracking());
     }
 }

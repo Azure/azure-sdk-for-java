@@ -12,19 +12,19 @@ public final class ManagedIdentityAuthenticationSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentityAuthenticationSettingProperties model = BinaryData.fromString(
-            "{\"authenticationKind\":\"ManagedIdentity\",\"managedIdentityName\":\"hslkevleggzf\",\"provisioningState\":\"Succeeded\",\"displayName\":\"mvfaxkffeiith\"}")
+            "{\"authenticationKind\":\"ManagedIdentity\",\"managedIdentityName\":\"eduugi\",\"provisioningState\":\"Canceled\",\"displayName\":\"rfbyaosvexcso\"}")
             .toObject(ManagedIdentityAuthenticationSettingProperties.class);
-        Assertions.assertEquals("mvfaxkffeiith", model.displayName());
-        Assertions.assertEquals("hslkevleggzf", model.managedIdentityName());
+        Assertions.assertEquals("rfbyaosvexcso", model.displayName());
+        Assertions.assertEquals("eduugi", model.managedIdentityName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedIdentityAuthenticationSettingProperties model
-            = new ManagedIdentityAuthenticationSettingProperties().withDisplayName("mvfaxkffeiith")
-                .withManagedIdentityName("hslkevleggzf");
+            = new ManagedIdentityAuthenticationSettingProperties().withDisplayName("rfbyaosvexcso")
+                .withManagedIdentityName("eduugi");
         model = BinaryData.fromObject(model).toObject(ManagedIdentityAuthenticationSettingProperties.class);
-        Assertions.assertEquals("mvfaxkffeiith", model.displayName());
-        Assertions.assertEquals("hslkevleggzf", model.managedIdentityName());
+        Assertions.assertEquals("rfbyaosvexcso", model.displayName());
+        Assertions.assertEquals("eduugi", model.managedIdentityName());
     }
 }

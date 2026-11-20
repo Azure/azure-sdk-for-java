@@ -9,11 +9,11 @@ import java.util.Collection;
 /** Defines the kind of external storage. */
 public final class RecordingStorageType extends ExpandableStringEnum<RecordingStorageType> {
 
-    /** Static value AzureCommunicationServices for RecordingStorageType. */
-    public static final RecordingStorageType ACS = fromString("AzureCommunicationServices");
+    /** Static value azureCommunicationServices for RecordingStorageType. */
+    public static final RecordingStorageType ACS = fromString("azureCommunicationServices");
 
-    /** Static value AzureBlobStorage for RecordingStorageType. */
-    public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
+    /** Static value azureBlobStorage for RecordingStorageType. */
+    public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("azureBlobStorage");
 
     /**
      * Creates an instance of {@link RecordingStorageType} with no string value.

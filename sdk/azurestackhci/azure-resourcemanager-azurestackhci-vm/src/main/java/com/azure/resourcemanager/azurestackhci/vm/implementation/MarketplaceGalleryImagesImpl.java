@@ -31,12 +31,8 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
         String marketplaceGalleryImageName, Context context) {
         Response<MarketplaceGalleryImageInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, marketplaceGalleryImageName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MarketplaceGalleryImageImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MarketplaceGalleryImageImpl(inner.getValue(), this.manager()));
     }
 
     public MarketplaceGalleryImage getByResourceGroup(String resourceGroupName, String marketplaceGalleryImageName) {
@@ -79,12 +75,16 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
     }
 
     public MarketplaceGalleryImage getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByName(id, "marketplaceGalleryImages");
+        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "marketplaceGalleryImageName");
         if (marketplaceGalleryImageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'marketplaceGalleryImages'.", id)));
@@ -94,12 +94,16 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
     }
 
     public Response<MarketplaceGalleryImage> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByName(id, "marketplaceGalleryImages");
+        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "marketplaceGalleryImageName");
         if (marketplaceGalleryImageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'marketplaceGalleryImages'.", id)));
@@ -108,12 +112,16 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByName(id, "marketplaceGalleryImages");
+        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "marketplaceGalleryImageName");
         if (marketplaceGalleryImageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'marketplaceGalleryImages'.", id)));
@@ -122,12 +130,16 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByName(id, "marketplaceGalleryImages");
+        String marketplaceGalleryImageName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}",
+            "marketplaceGalleryImageName");
         if (marketplaceGalleryImageName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'marketplaceGalleryImages'.", id)));

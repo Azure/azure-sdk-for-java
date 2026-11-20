@@ -28,8 +28,8 @@ public final class CapabilitiesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.capabilities()
-            .deleteWithResponse("oxciqopidoamcio", "hkh", "zxkhnzbonlwnto", "gokdwbwhks", "zcmrvexztvb",
-                "qgsfraoyzkoow", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("fotang", "fhnykzcugs", "vxwlmzqwmvtxnj", "xmcuqud", "cvclxynpdk", "gfabuiyjibuzphdu",
+                com.azure.core.util.Context.NONE);
 
     }
 }

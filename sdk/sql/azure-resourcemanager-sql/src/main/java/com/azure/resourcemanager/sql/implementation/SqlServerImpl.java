@@ -12,6 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
@@ -21,8 +22,11 @@ import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.IdentityType;
+import com.azure.resourcemanager.sql.models.PrincipalType;
 import com.azure.resourcemanager.sql.models.ResourceIdentity;
+import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ServerMetric;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolOperations;
 import com.azure.resourcemanager.sql.models.SqlEncryptionProtectorOperations;
@@ -31,18 +35,20 @@ import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlFirewallRuleOperations;
 import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SqlServerAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
 import com.azure.resourcemanager.sql.models.SqlServerKeyOperations;
 import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicyOperations;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
+import com.azure.resourcemanager.sql.models.UserIdentity;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /** Implementation for SqlServer and its parent interfaces. */
@@ -322,6 +328,12 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
+    public boolean isAzureActiveDirectoryOnlyAuthenticationEnabled() {
+        return this.innerModel().administrators() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().administrators().azureADOnlyAuthentication());
+    }
+
+    @Override
     public SqlServerAutomaticTuning getServerAutomaticTuning() {
         ServerAutomaticTuningInner serverAutomaticTuningInner
             = this.manager().serviceClient().getServerAutomaticTunings().get(this.resourceGroupName(), this.name());
@@ -355,6 +367,37 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public SqlServerImpl withAdministratorPassword(String administratorLoginPassword) {
         this.innerModel().withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
+    }
+
+    @Override
+    public SqlServerImpl withAzureActiveDirectoryOnlyAuthentication() {
+        if (this.innerModel().administrators() == null) {
+            this.innerModel()
+                .withAdministrators(
+                    new ServerExternalAdministrator().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+                        .withTenantId(UUID.fromString(this.manager().tenantId())));
+        }
+        this.innerModel().administrators().withAzureADOnlyAuthentication(true);
+        return this;
+    }
+
+    @Override
+    public SqlServerImpl withExternalActiveDirectoryAdministrator(String adminLogin, String sid,
+        PrincipalType principalType) {
+        if (this.innerModel().administrators() == null) {
+            this.innerModel()
+                .withAdministrators(
+                    new ServerExternalAdministrator().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+                        .withTenantId(UUID.fromString(this.manager().tenantId())));
+        } else {
+            this.innerModel().administrators().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY);
+        }
+        this.innerModel()
+            .administrators()
+            .withLogin(adminLogin)
+            .withSid(UUID.fromString(sid))
+            .withPrincipalType(principalType);
         return this;
     }
 
@@ -484,8 +527,48 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlServerImpl withSystemAssignedManagedServiceIdentity() {
-        this.innerModel().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
+        initIdentity(IdentityType.SYSTEM_ASSIGNED);
         return this;
+    }
+
+    @Override
+    public SqlServerImpl withPrimaryUserAssignedManagedServiceIdentity(String identityResourceId) {
+        Objects.requireNonNull(identityResourceId, "'identityResourceId' cannot be null.");
+        initIdentity(IdentityType.USER_ASSIGNED);
+        this.innerModel().identity().userAssignedIdentities().put(identityResourceId, new UserIdentity());
+        this.innerModel().withPrimaryUserAssignedIdentityId(identityResourceId);
+        return this;
+    }
+
+    /**
+     * Initializes or merges the identity on the inner model so that the requested
+     * {@code desiredType} is present. When both SYSTEM_ASSIGNED and USER_ASSIGNED
+     * are requested (in any order), the resulting type is SYSTEM_ASSIGNED_USER_ASSIGNED.
+     * Existing user-assigned identities are preserved across calls.
+     */
+    private void initIdentity(IdentityType desiredType) {
+        ResourceIdentity existing = this.innerModel().identity();
+        if (existing == null || existing.type() == null || existing.type() == IdentityType.NONE) {
+            ResourceIdentity identity = new ResourceIdentity().withType(desiredType);
+            if (desiredType == IdentityType.USER_ASSIGNED
+                || desiredType == IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED) {
+                identity.withUserAssignedIdentities(new HashMap<>());
+            }
+            this.innerModel().withIdentity(identity);
+        } else if (existing.type() == desiredType || existing.type() == IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED) {
+            // Already has the desired type (or already combined) — nothing to change.
+            if (existing.userAssignedIdentities() == null
+                && (existing.type() == IdentityType.USER_ASSIGNED
+                    || existing.type() == IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+                existing.withUserAssignedIdentities(new HashMap<>());
+            }
+        } else {
+            // One of SYSTEM_ASSIGNED + USER_ASSIGNED → combine
+            existing.withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            if (existing.userAssignedIdentities() == null) {
+                existing.withUserAssignedIdentities(new HashMap<>());
+            }
+        }
     }
 
     @Override

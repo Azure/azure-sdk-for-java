@@ -12,14 +12,14 @@ public final class SubscriptionNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionName model
-            = BinaryData.fromString("{\"subscriptionName\":\"tusivyevcciqihn\"}").toObject(SubscriptionName.class);
-        Assertions.assertEquals("tusivyevcciqihn", model.subscriptionName());
+            = BinaryData.fromString("{\"subscriptionName\":\"czmehmtzopbsp\"}").toObject(SubscriptionName.class);
+        Assertions.assertEquals("czmehmtzopbsp", model.subscriptionName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionName model = new SubscriptionName().withSubscriptionName("tusivyevcciqihn");
+        SubscriptionName model = new SubscriptionName().withSubscriptionName("czmehmtzopbsp");
         model = BinaryData.fromObject(model).toObject(SubscriptionName.class);
-        Assertions.assertEquals("tusivyevcciqihn", model.subscriptionName());
+        Assertions.assertEquals("czmehmtzopbsp", model.subscriptionName());
     }
 }

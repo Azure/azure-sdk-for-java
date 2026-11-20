@@ -14,23 +14,23 @@ public final class ExascaleDbNodeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExascaleDbNodeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"gncxykxhdj\",\"additionalDetails\":\"immbcx\",\"cpuCoreCount\":1970187431,\"dbNodeStorageSizeInGbs\":331049008,\"faultDomain\":\"rxvxcjzh\",\"hostname\":\"zxfpxtgqsc\",\"lifecycleState\":\"Updating\",\"maintenanceType\":\"t\",\"memorySizeInGbs\":1148519076,\"softwareStorageSizeInGb\":562191246,\"timeMaintenanceWindowEnd\":\"2021-06-22T03:40:10Z\",\"timeMaintenanceWindowStart\":\"2021-07-19T17:26:58Z\",\"totalCpuCoreCount\":308398935},\"id\":\"uwpijr\",\"name\":\"jcivmmg\",\"type\":\"f\"},{\"properties\":{\"ocid\":\"iwrxgkn\",\"additionalDetails\":\"vyi\",\"cpuCoreCount\":1482773915,\"dbNodeStorageSizeInGbs\":1114052241,\"faultDomain\":\"vpgshoxgsgbp\",\"hostname\":\"zdjtxvzflbqv\",\"lifecycleState\":\"Available\",\"maintenanceType\":\"lgafcqusrdve\",\"memorySizeInGbs\":203429878,\"softwareStorageSizeInGb\":89870573,\"timeMaintenanceWindowEnd\":\"2021-07-31T00:34:25Z\",\"timeMaintenanceWindowStart\":\"2021-10-25T02:19:11Z\",\"totalCpuCoreCount\":1456659976},\"id\":\"uycvuzhyrmewip\",\"name\":\"vekdxukuqgsjjxu\",\"type\":\"dxgketwzhhzjhfj\"},{\"properties\":{\"ocid\":\"vvmu\",\"additionalDetails\":\"pmuneqsx\",\"cpuCoreCount\":2036869225,\"dbNodeStorageSizeInGbs\":1810065983,\"faultDomain\":\"zjyi\",\"hostname\":\"as\",\"lifecycleState\":\"Starting\",\"maintenanceType\":\"ypoh\",\"memorySizeInGbs\":651460177,\"softwareStorageSizeInGb\":840782124,\"timeMaintenanceWindowEnd\":\"2021-06-30T16:11:27Z\",\"timeMaintenanceWindowStart\":\"2021-08-05T10:43:49Z\",\"totalCpuCoreCount\":1736197328},\"id\":\"pfoobr\",\"name\":\"ttymsjny\",\"type\":\"qdnfwqzdz\"},{\"properties\":{\"ocid\":\"ilaxhn\",\"additionalDetails\":\"qlyvijo\",\"cpuCoreCount\":316735321,\"dbNodeStorageSizeInGbs\":1057579035,\"faultDomain\":\"oyzunbixxr\",\"hostname\":\"kvcpwpgclr\",\"lifecycleState\":\"Stopped\",\"maintenanceType\":\"soxfrken\",\"memorySizeInGbs\":27132642,\"softwareStorageSizeInGb\":1600333305,\"timeMaintenanceWindowEnd\":\"2021-09-18T14:40:44Z\",\"timeMaintenanceWindowStart\":\"2021-03-30T12:42:21Z\",\"totalCpuCoreCount\":2052756160},\"id\":\"nqqs\",\"name\":\"awaoqvmmbnpqfrt\",\"type\":\"lkzmegnitgvkxl\"}],\"nextLink\":\"qdrfegcealzxwhc\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"gql\",\"additionalDetails\":\"smjqfrddgam\",\"cpuCoreCount\":534741289,\"dbNodeStorageSizeInGbs\":362279180,\"faultDomain\":\"rsjuivfcdisyir\",\"hostname\":\"zhczexrxzbujrtrh\",\"lifecycleState\":\"Available\",\"maintenanceType\":\"evkh\",\"memorySizeInGbs\":1550567255,\"softwareStorageSizeInGb\":1309315594,\"timeMaintenanceWindowEnd\":\"2021-06-06T21:09:28Z\",\"timeMaintenanceWindowStart\":\"2021-10-14T14:55:47Z\",\"totalCpuCoreCount\":1684987702},\"id\":\"qywncvjtsz\",\"name\":\"ofizehtdhgbj\",\"type\":\"vreljea\"},{\"properties\":{\"ocid\":\"rvzmlovuana\",\"additionalDetails\":\"cxlpmjerb\",\"cpuCoreCount\":1754763241,\"dbNodeStorageSizeInGbs\":394123494,\"faultDomain\":\"di\",\"hostname\":\"zsdbccxjmon\",\"lifecycleState\":\"Terminating\",\"maintenanceType\":\"w\",\"memorySizeInGbs\":2083395580,\"softwareStorageSizeInGb\":1666658010,\"timeMaintenanceWindowEnd\":\"2021-04-11T00:16:58Z\",\"timeMaintenanceWindowStart\":\"2021-04-27T03:48:36Z\",\"totalCpuCoreCount\":36862007},\"id\":\"qjctzenkeif\",\"name\":\"zhmkdasvflyh\",\"type\":\"xcudchxgsr\"},{\"properties\":{\"ocid\":\"ldforobwj\",\"additionalDetails\":\"izbfhfovvacq\",\"cpuCoreCount\":1824900926,\"dbNodeStorageSizeInGbs\":1051277152,\"faultDomain\":\"xesz\",\"hostname\":\"belawumuaslzkwr\",\"lifecycleState\":\"Available\",\"maintenanceType\":\"cqucwyhahnom\",\"memorySizeInGbs\":673323258,\"softwareStorageSizeInGb\":455828488,\"timeMaintenanceWindowEnd\":\"2021-07-16T12:14:12Z\",\"timeMaintenanceWindowStart\":\"2021-01-31T02:42:07Z\",\"totalCpuCoreCount\":643812278},\"id\":\"urut\",\"name\":\"we\",\"type\":\"xwlalniexzsrzpg\"}],\"nextLink\":\"q\"}")
             .toObject(ExascaleDbNodeListResult.class);
-        Assertions.assertEquals("gncxykxhdj", model.value().get(0).properties().ocid());
-        Assertions.assertEquals("immbcx", model.value().get(0).properties().additionalDetails());
-        Assertions.assertEquals(1970187431, model.value().get(0).properties().cpuCoreCount());
-        Assertions.assertEquals(331049008, model.value().get(0).properties().dbNodeStorageSizeInGbs());
-        Assertions.assertEquals("rxvxcjzh", model.value().get(0).properties().faultDomain());
-        Assertions.assertEquals("zxfpxtgqsc", model.value().get(0).properties().hostname());
-        Assertions.assertEquals(DbNodeProvisioningState.UPDATING, model.value().get(0).properties().lifecycleState());
-        Assertions.assertEquals("t", model.value().get(0).properties().maintenanceType());
-        Assertions.assertEquals(1148519076, model.value().get(0).properties().memorySizeInGbs());
-        Assertions.assertEquals(562191246, model.value().get(0).properties().softwareStorageSizeInGb());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T03:40:10Z"),
+        Assertions.assertEquals("gql", model.value().get(0).properties().ocid());
+        Assertions.assertEquals("smjqfrddgam", model.value().get(0).properties().additionalDetails());
+        Assertions.assertEquals(534741289, model.value().get(0).properties().cpuCoreCount());
+        Assertions.assertEquals(362279180, model.value().get(0).properties().dbNodeStorageSizeInGbs());
+        Assertions.assertEquals("rsjuivfcdisyir", model.value().get(0).properties().faultDomain());
+        Assertions.assertEquals("zhczexrxzbujrtrh", model.value().get(0).properties().hostname());
+        Assertions.assertEquals(DbNodeProvisioningState.AVAILABLE, model.value().get(0).properties().lifecycleState());
+        Assertions.assertEquals("evkh", model.value().get(0).properties().maintenanceType());
+        Assertions.assertEquals(1550567255, model.value().get(0).properties().memorySizeInGbs());
+        Assertions.assertEquals(1309315594, model.value().get(0).properties().softwareStorageSizeInGb());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-06T21:09:28Z"),
             model.value().get(0).properties().timeMaintenanceWindowEnd());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T17:26:58Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-14T14:55:47Z"),
             model.value().get(0).properties().timeMaintenanceWindowStart());
-        Assertions.assertEquals(308398935, model.value().get(0).properties().totalCpuCoreCount());
-        Assertions.assertEquals("qdrfegcealzxwhc", model.nextLink());
+        Assertions.assertEquals(1684987702, model.value().get(0).properties().totalCpuCoreCount());
+        Assertions.assertEquals("q", model.nextLink());
     }
 }

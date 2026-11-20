@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbEncryptionState;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.SmbSettings;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,21 +16,24 @@ public final class SmbSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SmbSettings model = BinaryData.fromString(
-            "{\"smbEncryption\":\"Disabled\",\"smbAccessBasedEnumerations\":\"Disabled\",\"smbNonBrowsable\":\"Disabled\"}")
+            "{\"smbEncryption\":\"Disabled\",\"smbAccessBasedEnumeration\":\"Disabled\",\"smbNonBrowsable\":\"Disabled\",\"smbOplocks\":\"Disabled\"}")
             .toObject(SmbSettings.class);
         Assertions.assertEquals(SmbEncryptionState.DISABLED, model.smbEncryption());
-        Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumerations());
+        Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumeration());
         Assertions.assertEquals(SmbNonBrowsable.DISABLED, model.smbNonBrowsable());
+        Assertions.assertEquals(SmbOplocks.DISABLED, model.smbOplocks());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SmbSettings model = new SmbSettings().withSmbEncryption(SmbEncryptionState.DISABLED)
-            .withSmbAccessBasedEnumerations(SmbAccessBasedEnumeration.DISABLED)
-            .withSmbNonBrowsable(SmbNonBrowsable.DISABLED);
+            .withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration.DISABLED)
+            .withSmbNonBrowsable(SmbNonBrowsable.DISABLED)
+            .withSmbOplocks(SmbOplocks.DISABLED);
         model = BinaryData.fromObject(model).toObject(SmbSettings.class);
         Assertions.assertEquals(SmbEncryptionState.DISABLED, model.smbEncryption());
-        Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumerations());
+        Assertions.assertEquals(SmbAccessBasedEnumeration.DISABLED, model.smbAccessBasedEnumeration());
         Assertions.assertEquals(SmbNonBrowsable.DISABLED, model.smbNonBrowsable());
+        Assertions.assertEquals(SmbOplocks.DISABLED, model.smbOplocks());
     }
 }

@@ -12,7 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,7 +20,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -48,9 +47,9 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     private RegistryArtifactAsync asyncClient;
     private RegistryArtifact client;
 
-    @BeforeEach
-    void beforeEach() throws InterruptedException {
-        importImage(getTestMode(), REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME,
+    @BeforeAll
+    public static void setupSharedResources() {
+        importImage(REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME,
             Arrays.asList(LATEST_TAG_NAME, V1_TAG_NAME, V2_TAG_NAME, V3_TAG_NAME, V4_TAG_NAME), REGISTRY_ENDPOINT);
     }
 
@@ -91,27 +90,27 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
 
         Mono<Response<ArtifactManifestProperties>> safeTestRegistyArtifacts
             = asyncClient.getManifestPropertiesWithResponse().flatMap(res -> {
-                validateManifestProperties(res, true, false);
+                validateManifestProperties(res, false);
                 return Mono.just(res);
             })
                 .flatMap(res -> getRegistryArtifactAsyncClient(httpClient, res.getValue().getDigest())
                     .getManifestPropertiesWithResponse())
                 .flatMap(res -> {
-                    validateManifestProperties(res, true, false);
+                    validateManifestProperties(res, false);
                     return Mono.just(getChildArtifactDigest(res.getValue().getRelatedArtifacts()));
                 })
                 .flatMap(res -> getRegistryArtifactAsyncClient(httpClient, res).getManifestPropertiesWithResponse());
 
         StepVerifier.create(safeTestRegistyArtifacts)
-            .assertNext(res -> validateManifestProperties(res, false, true))
+            .assertNext(res -> validateManifestProperties(res, true))
             .verifyComplete();
 
         StepVerifier.create(asyncClient.getManifestProperties())
-            .assertNext(res -> validateManifestProperties(res, true, false))
+            .assertNext(res -> validateManifestProperties(res, false))
             .verifyComplete();
 
-        validateManifestProperties(client.getManifestPropertiesWithResponse(Context.NONE), true, false);
-        validateManifestProperties(client.getManifestProperties(), true, false);
+        validateManifestProperties(client.getManifestPropertiesWithResponse(Context.NONE), false);
+        validateManifestProperties(client.getManifestProperties(), false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -136,26 +135,16 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
 
         asyncClient = getRegistryArtifactAsyncClient(httpClient, digest);
         client = getRegistryArtifactClient(httpClient, digest);
-        StepVerifier.create(asyncClient.listTagProperties())
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(tags -> {
-                validateListTags(tags);
-                return true;
-            })
+        StepVerifier.create(asyncClient.listTagProperties().collectList())
+            .assertNext(ContainerRegistryClientsTestBase::validateListTags)
             .verifyComplete();
         validateListTags(client.listTagProperties().stream().collect(Collectors.toList()));
 
         // Now do the same via tag.
         asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
         client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
-        StepVerifier.create(asyncClient.listTagProperties())
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(tags -> {
-                validateListTags(tags);
-                return true;
-            })
+        StepVerifier.create(asyncClient.listTagProperties().collectList())
+            .assertNext(ContainerRegistryClientsTestBase::validateListTags)
             .verifyComplete();
         validateListTags(client.listTagProperties().stream().collect(Collectors.toList()));
     }
@@ -167,13 +156,11 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
         client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
-        StepVerifier.create(asyncClient.listTagProperties().byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, false))
+        StepVerifier.create(asyncClient.listTagProperties().byPage(PAGESIZE_2).collectList())
+            .assertNext(pagedResList -> validateListTags(pagedResList, false))
             .verifyComplete();
 
-        validateListTags(client.listTagProperties().streamByPage().collect(Collectors.toList()), false);
+        validateListTags(client.listTagProperties().streamByPage(PAGESIZE_2).collect(Collectors.toList()), false);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -194,11 +181,9 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
         client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
-        StepVerifier
-            .create(asyncClient.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, true))
+        StepVerifier.create(
+            asyncClient.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2).collectList())
+            .assertNext(pagedResList -> validateListTags(pagedResList, true))
             .verifyComplete();
 
         validateListTags(client.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_ASCENDING, Context.NONE)
@@ -215,10 +200,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
         client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
-        StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrder.NONE).byPage(PAGESIZE_2))
-            .recordWith(ArrayList::new)
-            .thenConsumeWhile(x -> true)
-            .expectRecordedMatches(pagedResList -> validateListTags(pagedResList, false))
+        StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrder.NONE).byPage(PAGESIZE_2).collectList())
+            .assertNext(pagedResList -> validateListTags(pagedResList, false))
             .verifyComplete();
 
         validateListTags(client.listTagProperties(ArtifactTagOrder.NONE, Context.NONE)

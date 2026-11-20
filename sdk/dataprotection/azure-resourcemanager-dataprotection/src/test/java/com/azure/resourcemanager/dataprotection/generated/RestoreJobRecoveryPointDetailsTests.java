@@ -13,9 +13,9 @@ public final class RestoreJobRecoveryPointDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreJobRecoveryPointDetails model = BinaryData
-            .fromString("{\"recoveryPointID\":\"tmdvypgikdgs\",\"recoveryPointTime\":\"2021-07-11T10:33:14Z\"}")
+            .fromString("{\"recoveryPointID\":\"snrbgyefrymsgao\",\"recoveryPointTime\":\"2020-12-25T11:28:29Z\"}")
             .toObject(RestoreJobRecoveryPointDetails.class);
-        Assertions.assertEquals("tmdvypgikdgs", model.recoveryPointId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T10:33:14Z"), model.recoveryPointTime());
+        Assertions.assertEquals("snrbgyefrymsgao", model.recoveryPointId());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-25T11:28:29Z"), model.recoveryPointTime());
     }
 }

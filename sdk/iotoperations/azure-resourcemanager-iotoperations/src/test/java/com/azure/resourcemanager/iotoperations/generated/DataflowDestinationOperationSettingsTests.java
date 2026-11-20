@@ -14,19 +14,21 @@ public final class DataflowDestinationOperationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowDestinationOperationSettings model = BinaryData.fromString(
-            "{\"endpointRef\":\"xsrz\",\"dataDestination\":\"zucerscdntnev\",\"headers\":[{\"actionType\":\"DataflowDestinationHeaderAction\"}]}")
+            "{\"endpointRef\":\"odkwobd\",\"dataDestination\":\"gxtibqdxbxw\",\"headers\":[{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"},{\"actionType\":\"DataflowDestinationHeaderAction\"}]}")
             .toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("xsrz", model.endpointRef());
-        Assertions.assertEquals("zucerscdntnev", model.dataDestination());
+        Assertions.assertEquals("odkwobd", model.endpointRef());
+        Assertions.assertEquals("gxtibqdxbxw", model.dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowDestinationOperationSettings model = new DataflowDestinationOperationSettings().withEndpointRef("xsrz")
-            .withDataDestination("zucerscdntnev")
-            .withHeaders(Arrays.asList(new DataflowDestinationHeaderAction()));
+        DataflowDestinationOperationSettings model
+            = new DataflowDestinationOperationSettings().withEndpointRef("odkwobd")
+                .withDataDestination("gxtibqdxbxw")
+                .withHeaders(Arrays.asList(new DataflowDestinationHeaderAction(), new DataflowDestinationHeaderAction(),
+                    new DataflowDestinationHeaderAction(), new DataflowDestinationHeaderAction()));
         model = BinaryData.fromObject(model).toObject(DataflowDestinationOperationSettings.class);
-        Assertions.assertEquals("xsrz", model.endpointRef());
-        Assertions.assertEquals("zucerscdntnev", model.dataDestination());
+        Assertions.assertEquals("odkwobd", model.endpointRef());
+        Assertions.assertEquals("gxtibqdxbxw", model.dataDestination());
     }
 }

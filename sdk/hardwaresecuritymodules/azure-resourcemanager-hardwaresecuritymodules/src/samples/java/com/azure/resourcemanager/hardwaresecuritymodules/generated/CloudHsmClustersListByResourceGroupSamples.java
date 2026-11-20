@@ -9,7 +9,7 @@ package com.azure.resourcemanager.hardwaresecuritymodules.generated;
  */
 public final class CloudHsmClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-31/CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-12-01-preview/CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.

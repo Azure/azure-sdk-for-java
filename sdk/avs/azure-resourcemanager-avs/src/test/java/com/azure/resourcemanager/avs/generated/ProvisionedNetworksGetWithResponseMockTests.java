@@ -20,7 +20,7 @@ public final class ProvisionedNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"addressPrefix\":\"gb\",\"networkType\":\"vsan\"},\"id\":\"ahokqtobkauxofsh\",\"name\":\"phwpnulaiywzej\",\"type\":\"whslwkoj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"addressPrefix\":\"cdommpvfqaw\",\"networkType\":\"esxReplication\"},\"id\":\"rttuiaclkiexha\",\"name\":\"lfnthiqfyut\",\"type\":\"diygbpvnwswmtxky\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ProvisionedNetworksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProvisionedNetwork response = manager.provisionedNetworks()
-            .getWithResponse("hsycxhxzgaz", "taboidvmf", "hppubowsepdfgkmt", com.azure.core.util.Context.NONE)
+            .getWithResponse("pmeyyvpkpatlbijp", "gsksrfhf", "olmk", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

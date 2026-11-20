@@ -25,7 +25,7 @@ public final class AkriConnectorTemplatesListByInstanceResourceMockTests {
     @Test
     public void testListByInstanceResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"aioMetadata\":{\"aioMinVersion\":\"kdlpa\",\"aioMaxVersion\":\"rcxfailcfxwmdb\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"fgsftufqob\"}},\"deviceInboundEndpointTypes\":[{\"displayName\":\"nac\",\"endpointType\":\"cc\",\"version\":\"nhxk\"}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"tnrzvuljra\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":538617301,\"maxInflightMessages\":644888013,\"sessionExpirySeconds\":968481133,\"tls\":{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"qnvb\"}},\"connectorMetadataRef\":\"ylaxxulcdi\",\"healthState\":\"Degraded\"},\"extendedLocation\":{\"name\":\"fj\",\"type\":\"CustomLocation\"},\"id\":\"vgjrwhr\",\"name\":\"vyc\",\"type\":\"t\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"aioMetadata\":{\"aioMinVersion\":\"fhfovv\",\"aioMaxVersion\":\"qpbtuodxes\"},\"runtimeConfiguration\":{\"runtimeConfigurationType\":\"AkriConnectorTemplateRuntimeConfiguration\"},\"diagnostics\":{\"logs\":{\"level\":\"belawumuaslzkwr\"}},\"deviceInboundEndpointTypes\":[{\"displayName\":\"ycqucwyh\",\"endpointType\":\"hnomdrkywuh\",\"version\":\"vfuuru\"},{\"displayName\":\"we\",\"endpointType\":\"xwlalniexzsrzpg\",\"version\":\"q\"},{\"displayName\":\"bb\",\"endpointType\":\"wpgdak\",\"version\":\"zyvli\"}],\"mqttConnectionConfiguration\":{\"authentication\":{\"method\":\"AkriConnectorsMqttAuthentication\"},\"host\":\"kcxk\",\"protocol\":\"Mqtt\",\"keepAliveSeconds\":1123016962,\"maxInflightMessages\":866421840,\"sessionExpirySeconds\":490406344,\"tls\":{\"mode\":\"Enabled\",\"trustedCaCertificateConfigMapRef\":\"rntvlwijp\"}},\"connectorMetadataRef\":\"texoqqpwc\",\"healthState\":\"Degraded\"},\"extendedLocation\":{\"name\":\"mhruncuwm\",\"type\":\"CustomLocation\"},\"id\":\"kcdqzhlct\",\"name\":\"dunqnd\",\"type\":\"fpch\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,39 +35,38 @@ public final class AkriConnectorTemplatesListByInstanceResourceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<AkriConnectorTemplateResource> response = manager.akriConnectorTemplates()
-            .listByInstanceResource("vodhtn", "irudh", com.azure.core.util.Context.NONE);
+            .listByInstanceResource("xcudchxgsr", "oldforobw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kdlpa", response.iterator().next().properties().aioMetadata().aioMinVersion());
-        Assertions.assertEquals("rcxfailcfxwmdb",
-            response.iterator().next().properties().aioMetadata().aioMaxVersion());
-        Assertions.assertEquals("fgsftufqob", response.iterator().next().properties().diagnostics().logs().level());
-        Assertions.assertEquals("nac",
+        Assertions.assertEquals("fhfovv", response.iterator().next().properties().aioMetadata().aioMinVersion());
+        Assertions.assertEquals("qpbtuodxes", response.iterator().next().properties().aioMetadata().aioMaxVersion());
+        Assertions.assertEquals("belawumuaslzkwr",
+            response.iterator().next().properties().diagnostics().logs().level());
+        Assertions.assertEquals("ycqucwyh",
             response.iterator().next().properties().deviceInboundEndpointTypes().get(0).displayName());
-        Assertions.assertEquals("cc",
+        Assertions.assertEquals("hnomdrkywuh",
             response.iterator().next().properties().deviceInboundEndpointTypes().get(0).endpointType());
-        Assertions.assertEquals("nhxk",
+        Assertions.assertEquals("vfuuru",
             response.iterator().next().properties().deviceInboundEndpointTypes().get(0).version());
-        Assertions.assertEquals("tnrzvuljra",
-            response.iterator().next().properties().mqttConnectionConfiguration().host());
+        Assertions.assertEquals("kcxk", response.iterator().next().properties().mqttConnectionConfiguration().host());
         Assertions.assertEquals(AkriConnectorsMqttProtocolType.MQTT,
             response.iterator().next().properties().mqttConnectionConfiguration().protocol());
-        Assertions.assertEquals(538617301,
+        Assertions.assertEquals(1123016962,
             response.iterator().next().properties().mqttConnectionConfiguration().keepAliveSeconds());
-        Assertions.assertEquals(644888013,
+        Assertions.assertEquals(866421840,
             response.iterator().next().properties().mqttConnectionConfiguration().maxInflightMessages());
-        Assertions.assertEquals(968481133,
+        Assertions.assertEquals(490406344,
             response.iterator().next().properties().mqttConnectionConfiguration().sessionExpirySeconds());
         Assertions.assertEquals(OperationalMode.ENABLED,
             response.iterator().next().properties().mqttConnectionConfiguration().tls().mode());
-        Assertions.assertEquals("qnvb",
+        Assertions.assertEquals("rntvlwijp",
             response.iterator()
                 .next()
                 .properties()
                 .mqttConnectionConfiguration()
                 .tls()
                 .trustedCaCertificateConfigMapRef());
-        Assertions.assertEquals("ylaxxulcdi", response.iterator().next().properties().connectorMetadataRef());
-        Assertions.assertEquals("fj", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("texoqqpwc", response.iterator().next().properties().connectorMetadataRef());
+        Assertions.assertEquals("mhruncuwm", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
     }

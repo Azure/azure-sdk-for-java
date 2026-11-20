@@ -10,15 +10,78 @@
 
 ### Other Changes
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+
+## 1.0.32 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+
+## 1.0.31 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
+## 1.0.30 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+
+
+## 1.0.29 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+
+## 1.2.0-beta.1 (2026-03-06)
+
+Updated the client library to use API Version 2025-11-01-preview. This adds all the capabilities that were introduced until this API version.
 
 ### Features Added
 
-### Breaking Changes
+- This release adds models and enums for all the APIs supported by Azure Load Testing
+- Support for Notification Rules
+    - Added methods `createOrUpdateNotificationRule`, `getNotificationRule`, `deleteNotificationRule` and `listNotificationRules` in `LoadTestAdministrationClient` to work with Notification rules.
+- Support for Trigger
+    - Added methods `createOrUpdateTrigger`, `getTrigger`, `deleteTrigger` and `listTriggers` in `LoadTestAdministrationClient` to work with Scheduling test triggers.
+- Support for Actionable Insights
+    - Added methods `beginGenerateTestRunInsights`, `updateLatestTestRunInsights` and `getLatestTestRunInsights` in `LoadTestRunClient` to work with actionable insights.
+- Support for generating test plan recommendations
+    - Added method `beginGenerateTestPlanRecommendations` in `LoadTestAdministrationClient` which generates test plan recommendations.
+- Support for Cloning load test
+    - Added method `beginCloneTest` in `LoadTestAdministrationClient` to Clone a load test.
 
-### Bugs Fixed
+## 1.0.28 (2026-01-29)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
 
 ## 1.0.27 (2025-10-27)
 
