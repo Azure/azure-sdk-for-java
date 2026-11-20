@@ -546,15 +546,19 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     @Override
     public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
         return onEndpointActive().then(Mono.create(sink -> {
-            sendWork(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, retryOptions.getTryTimeout(),
-                deliveryState, metricsProvider));
+            RetriableWorkItem workItem = new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink,
+                retryOptions.getTryTimeout(), deliveryState, metricsProvider);
+            sink.onCancel(() -> cancelWork(workItem));
+            sendWork(workItem);
         }));
     }
 
     Mono<DeliveryState> send(ReadableBuffer buffer, int messageFormat, DeliveryState deliveryState) {
         return onEndpointActive().then(Mono.create(sink -> {
-            sendWork(new RetriableWorkItem(buffer, messageFormat, sink, retryOptions.getTryTimeout(), deliveryState,
-                metricsProvider));
+            RetriableWorkItem workItem = new RetriableWorkItem(buffer, messageFormat, sink,
+                retryOptions.getTryTimeout(), deliveryState, metricsProvider);
+            sink.onCancel(() -> cancelWork(workItem));
+            sendWork(workItem);
         }));
     }
 
@@ -569,14 +573,47 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
      * @param workItem to be processed.
      */
     private void sendWork(RetriableWorkItem workItem) {
-        final String deliveryTag = UUID.randomUUID().toString().replace("-", "");
+        final boolean shouldFail;
 
         synchronized (pendingSendLock) {
-            this.pendingSendsMap.put(deliveryTag, workItem);
-            this.pendingSendsQueue.offer(new WeightedDeliveryTag(deliveryTag, workItem.hasBeenRetried() ? 1 : 0));
+            if (workItem.isCancelled()) {
+                return;
+            }
+
+            if (isDisposed.get()) {
+                shouldFail = true;
+            } else {
+                final String deliveryTag = UUID.randomUUID().toString().replace("-", "");
+                workItem.setCurrentDeliveryTag(deliveryTag);
+                this.pendingSendsMap.put(deliveryTag, workItem);
+                this.pendingSendsQueue.offer(new WeightedDeliveryTag(deliveryTag, workItem.hasBeenRetried() ? 1 : 0));
+                shouldFail = false;
+            }
+        }
+
+        if (shouldFail) {
+            final String message = String.format("Could not complete sends because link '%s' for '%s' is closed.",
+                getLinkName(), entityPath);
+            workItem.error(new AmqpException(true, message, handler.getErrorContext(sender)), null);
+            return;
         }
 
         this.scheduleWorkOnDispatcher();
+    }
+
+    private void cancelWork(RetriableWorkItem workItem) {
+        synchronized (pendingSendLock) {
+            workItem.setCancelled();
+
+            final String deliveryTag = workItem.getCurrentDeliveryTag();
+            if (deliveryTag == null || pendingSendsMap.get(deliveryTag) != workItem) {
+                return;
+            }
+
+            pendingSendsMap.remove(deliveryTag, workItem);
+            pendingSendsQueue.removeIf(tag -> deliveryTag.equals(tag.getDeliveryTag()));
+            workItem.setCurrentDeliveryTag(null);
+        }
     }
 
     /**
@@ -602,6 +639,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 if (weightedDelivery != null) {
                     deliveryTag = weightedDelivery.getDeliveryTag();
                     workItem = this.pendingSendsMap.get(deliveryTag);
+                    if (workItem != null) {
+                        workItem.setCurrentDeliveryTag(null);
+                    }
                 } else {
                     workItem = null;
                     deliveryTag = null;
@@ -615,7 +655,10 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                         .log("sendData not found for this delivery.");
                 }
 
-                // TODO (conniey): Should we update to continue rather than break?
+                if (deliveryTag != null) {
+                    continue;
+                }
+
                 break;
             }
 
