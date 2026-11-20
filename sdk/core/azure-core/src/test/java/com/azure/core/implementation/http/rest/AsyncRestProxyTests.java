@@ -41,6 +41,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -342,6 +343,27 @@ public class AsyncRestProxyTests {
             Arguments.of(Context.NONE.addData(HttpUtils.AZURE_STREAM_RESPONSE_BODY, false)));
     }
 
+    @ParameterizedTest
+    @MethodSource("binaryDataContextSupplier")
+    public void binaryDataRequestsResponseBodyOnce(Context context) {
+        byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
+        AtomicReference<StreamingHttpResponse> httpResponse = new AtomicReference<>();
+        MockService service = createService(request -> {
+            httpResponse.set(new StreamingHttpResponse(request, ContentType.APPLICATION_OCTET_STREAM,
+                expectedBytes.length, Flux.just(ByteBuffer.wrap(expectedBytes)), new AtomicInteger()));
+            return httpResponse.get();
+        });
+
+        Response<BinaryData> response = service.getStreamingResponse(new RequestOptions(), context).block();
+
+        assertArraysEqual(expectedBytes, response.getValue().toBytes());
+        assertEquals(1, httpResponse.get().getBodyCount.get());
+    }
+
+    private static Stream<Arguments> binaryDataContextSupplier() {
+        return Stream.of(Arguments.of(Context.NONE), Arguments.of(STREAM_RESPONSE_BODY));
+    }
+
     private static MockService createService(Function<HttpRequest, HttpResponse> responseFactory) {
         HttpClient client = request -> Mono.just(responseFactory.apply(request));
         return RestProxy.create(MockService.class, new HttpPipelineBuilder().httpClient(client).build());
@@ -354,6 +376,7 @@ public class AsyncRestProxyTests {
         private final HttpHeaders headers;
         private final Flux<ByteBuffer> body;
         private final AtomicInteger closeCount;
+        private final AtomicInteger getBodyCount = new AtomicInteger();
 
         StreamingHttpResponse(HttpRequest request, String contentType, long contentLength, Flux<ByteBuffer> body,
             AtomicInteger closeCount) {
@@ -382,6 +405,7 @@ public class AsyncRestProxyTests {
 
         @Override
         public Flux<ByteBuffer> getBody() {
+            getBodyCount.incrementAndGet();
             return body;
         }
 
