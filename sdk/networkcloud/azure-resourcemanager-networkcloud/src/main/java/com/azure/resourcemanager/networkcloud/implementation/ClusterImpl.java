@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterInner;
 import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
+import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.Cluster;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
@@ -218,6 +219,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public String detailedStatusMessage() {
         return this.innerModel().detailedStatusMessage();
+    }
+
+    public CertificateInfo edgeManagementServiceCaCertificate() {
+        return this.innerModel().edgeManagementServiceCaCertificate();
     }
 
     public ExtendedLocation hybridAksExtendedLocation() {

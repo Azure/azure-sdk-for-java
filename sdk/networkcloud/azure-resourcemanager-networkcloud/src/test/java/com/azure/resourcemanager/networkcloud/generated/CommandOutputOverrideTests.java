@@ -15,28 +15,28 @@ public final class CommandOutputOverrideTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommandOutputOverride model = BinaryData.fromString(
-            "{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"wkqnyhg\"},\"commandOutputType\":\"BareMetalMachineRunCommand\",\"containerUrl\":\"jivfxzsjabib\"}")
+            "{\"associatedIdentity\":{\"identityType\":\"UserAssignedIdentity\",\"userAssignedIdentityResourceId\":\"nnqvsa\"},\"commandOutputType\":\"ClusterSupportAdministrativeActions\",\"containerUrl\":\"tor\"}")
             .toObject(CommandOutputOverride.class);
-        Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
+        Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
-        Assertions.assertEquals("wkqnyhg", model.associatedIdentity().userAssignedIdentityResourceId());
-        Assertions.assertEquals(CommandOutputType.BARE_METAL_MACHINE_RUN_COMMAND, model.commandOutputType());
-        Assertions.assertEquals("jivfxzsjabib", model.containerUrl());
+        Assertions.assertEquals("nnqvsa", model.associatedIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals(CommandOutputType.CLUSTER_SUPPORT_ADMINISTRATIVE_ACTIONS, model.commandOutputType());
+        Assertions.assertEquals("tor", model.containerUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommandOutputOverride model = new CommandOutputOverride()
             .withAssociatedIdentity(
-                new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
-                    .withUserAssignedIdentityResourceId("wkqnyhg"))
-            .withCommandOutputType(CommandOutputType.BARE_METAL_MACHINE_RUN_COMMAND)
-            .withContainerUrl("jivfxzsjabib");
+                new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId("nnqvsa"))
+            .withCommandOutputType(CommandOutputType.CLUSTER_SUPPORT_ADMINISTRATIVE_ACTIONS)
+            .withContainerUrl("tor");
         model = BinaryData.fromObject(model).toObject(CommandOutputOverride.class);
-        Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
+        Assertions.assertEquals(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
-        Assertions.assertEquals("wkqnyhg", model.associatedIdentity().userAssignedIdentityResourceId());
-        Assertions.assertEquals(CommandOutputType.BARE_METAL_MACHINE_RUN_COMMAND, model.commandOutputType());
-        Assertions.assertEquals("jivfxzsjabib", model.containerUrl());
+        Assertions.assertEquals("nnqvsa", model.associatedIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals(CommandOutputType.CLUSTER_SUPPORT_ADMINISTRATIVE_ACTIONS, model.commandOutputType());
+        Assertions.assertEquals("tor", model.containerUrl());
     }
 }

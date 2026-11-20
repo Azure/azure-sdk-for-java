@@ -11,7 +11,7 @@ public final class KubernetesVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesVersionProperties model = BinaryData.fromString(
-            "{\"values\":[{\"description\":\"azur\",\"version\":\"cbgoor\"},{\"description\":\"eoybfhjxakvvjgs\",\"version\":\"r\"},{\"description\":\"lmywwtkgkxnyed\",\"version\":\"gyvudtjuewbc\"},{\"description\":\"xuuwhcj\",\"version\":\"ccybvp\"}],\"provisioningState\":\"Canceled\"}")
+            "{\"values\":[{\"description\":\"k\",\"version\":\"aifmvikl\"},{\"description\":\"dvk\",\"version\":\"ejd\"},{\"description\":\"xcv\",\"version\":\"rhnj\"},{\"description\":\"olvtnovqfzge\",\"version\":\"dftuljltduce\"}],\"provisioningState\":\"Succeeded\"}")
             .toObject(KubernetesVersionProperties.class);
     }
 

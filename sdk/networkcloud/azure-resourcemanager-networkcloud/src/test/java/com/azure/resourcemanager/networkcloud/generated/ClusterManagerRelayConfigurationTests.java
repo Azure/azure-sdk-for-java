@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterManagerRelayConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterManagerRelayConfiguration model = BinaryData.fromString("{\"relayNamespaceId\":\"cjzkzivgvvcna\"}")
+        ClusterManagerRelayConfiguration model = BinaryData.fromString("{\"relayNamespaceId\":\"tmelw\"}")
             .toObject(ClusterManagerRelayConfiguration.class);
-        Assertions.assertEquals("cjzkzivgvvcna", model.relayNamespaceId());
+        Assertions.assertEquals("tmelw", model.relayNamespaceId());
     }
 }
