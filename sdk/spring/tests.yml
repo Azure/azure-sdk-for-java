@@ -38,6 +38,7 @@ extends:
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
           TestName: AppConfig_IT
+          TestOptions: '$(TestOptions) -DskipSpringITs=false'
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-test-appconfiguration-config
           Artifacts:

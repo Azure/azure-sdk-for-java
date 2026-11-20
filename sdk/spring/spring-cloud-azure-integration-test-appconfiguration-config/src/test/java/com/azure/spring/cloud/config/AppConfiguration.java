@@ -1,14 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@Configuration
-public class AppConfiguration {
-
-    @Bean
-    public CustomClient azureCredentials(Environment environment) {
-        return new CustomClient(environment);
-    }
+@SpringBootConfiguration(proxyBeanMethods = false)
+@EnableAutoConfiguration
+@EnableConfigurationProperties({ MessageProperties.class, PaginationProperties.class, SelectionProperties.class })
+class AppConfiguration {
 }
