@@ -272,10 +272,37 @@
   ],
   "overrides": [
     {
+      "filename": ".gitattributes",
+      "words": ["jspf", "jspx"]
+    },
+    {
+      "filename": ".github/ARCHITECTS",
+      "words": ["octocat", "alzimmermsft"]
+    },
+    {
+      "filename": ".github/agents/management-autopr-reviewer.agent.md",
+      "words": ["autopr"]
+    },
+    {
+      "filename": ".github/skills/create-package-skill/**",
+      "words": ["vally"]
+    },
+    {
       "filename": ".github/skills/management-autopr-review/**",
       "words": [
         "autopr",
         "vally"
+      ]
+    },
+    {
+      "filename": ".github/skills/management-autopr-review/evals/**",
+      "words": [
+        "containerservicepreparedimgspec",
+        "Contianer",
+        "contosocompute",
+        "contosomaintenance",
+        "contosowidgets",
+        "kubeconfigs"
       ]
     },
     {

@@ -29,3 +29,11 @@ words:
   - "viseme"
   - "webrtc"
   - "xhigh"
+overrides:
+  - filename: ".workflow_docs/**"
+    words:
+      - "Danimal"
+      - "Dbuildhelper"
+      - "dpkg"
+      - "FQCN"
+      - "javap"
