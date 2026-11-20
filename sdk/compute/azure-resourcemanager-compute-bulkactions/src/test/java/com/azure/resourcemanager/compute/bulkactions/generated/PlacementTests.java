@@ -14,21 +14,21 @@ public final class PlacementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Placement model = BinaryData.fromString(
-            "{\"zonePlacementPolicy\":\"Auto\",\"includeZones\":[\"syqtfi\",\"whbotzingamv\"],\"excludeZones\":[\"o\"]}")
+            "{\"zonePlacementPolicy\":\"Any\",\"includeZones\":[\"fq\",\"tmtdhtmdvypgik\"],\"excludeZones\":[\"zywkb\",\"rryuzhlhkjo\",\"rvqqaatj\"]}")
             .toObject(Placement.class);
-        Assertions.assertEquals(ZonePlacementPolicyType.AUTO, model.zonePlacementPolicy());
-        Assertions.assertEquals("syqtfi", model.includeZones().get(0));
-        Assertions.assertEquals("o", model.excludeZones().get(0));
+        Assertions.assertEquals(ZonePlacementPolicyType.ANY, model.zonePlacementPolicy());
+        Assertions.assertEquals("fq", model.includeZones().get(0));
+        Assertions.assertEquals("zywkb", model.excludeZones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Placement model = new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.AUTO)
-            .withIncludeZones(Arrays.asList("syqtfi", "whbotzingamv"))
-            .withExcludeZones(Arrays.asList("o"));
+        Placement model = new Placement().withZonePlacementPolicy(ZonePlacementPolicyType.ANY)
+            .withIncludeZones(Arrays.asList("fq", "tmtdhtmdvypgik"))
+            .withExcludeZones(Arrays.asList("zywkb", "rryuzhlhkjo", "rvqqaatj"));
         model = BinaryData.fromObject(model).toObject(Placement.class);
-        Assertions.assertEquals(ZonePlacementPolicyType.AUTO, model.zonePlacementPolicy());
-        Assertions.assertEquals("syqtfi", model.includeZones().get(0));
-        Assertions.assertEquals("o", model.excludeZones().get(0));
+        Assertions.assertEquals(ZonePlacementPolicyType.ANY, model.zonePlacementPolicy());
+        Assertions.assertEquals("fq", model.includeZones().get(0));
+        Assertions.assertEquals("zywkb", model.excludeZones().get(0));
     }
 }

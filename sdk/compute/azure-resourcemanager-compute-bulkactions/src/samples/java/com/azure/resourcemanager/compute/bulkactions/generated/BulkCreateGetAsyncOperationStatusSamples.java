@@ -9,17 +9,32 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class BulkCreateGetAsyncOperationStatusSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/BulkCreate_GetAsyncOperationStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-16/BulkCreate_GetAsyncOperationStatus.json
      */
     /**
-     * Sample code: BulkCreate_GetAsyncOperationStatus_MaximumSet.
+     * Sample code: Get the status of a completed bulk create operation.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void bulkCreateGetAsyncOperationStatusMaximumSet(
+    public static void getTheStatusOfACompletedBulkCreateOperation(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.bulkCreates()
-            .getAsyncOperationStatusWithResponse("eastus", "f1ac145b-9d8b-417d-8101-9962d03c0904",
+            .getAsyncOperationStatusWithResponse("eastus", "58dcb168-d2d0-42a2-8c38-b2650682c369",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-16/BulkCreate_GetAsyncOperationStatus_Failed.json
+     */
+    /**
+     * Sample code: Get the status of a failed bulk create operation.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void getTheStatusOfAFailedBulkCreateOperation(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.bulkCreates()
+            .getAsyncOperationStatusWithResponse("eastus", "cbdbac52-dad1-4c54-81e1-972427ecd140",
                 com.azure.core.util.Context.NONE);
     }
 }

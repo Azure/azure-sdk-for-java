@@ -19,39 +19,37 @@ public final class ExecutionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionParameters model = BinaryData.fromString(
-            "{\"retryPolicy\":{\"retryCount\":1665801665,\"retryWindowInMinutes\":1373520670,\"onFailureAction\":\"Deallocate\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"chgejspodm\",\"ilzyd\"],\"desiredSizes\":[\"jwyahuxinpmqnja\"],\"availabilityZones\":true},\"additionalCreateParameters\":{\"gjvw\":\"\\\"datasprozvcput\\\"\",\"dvpjhulsuuvmk\":\"\\\"datafdatsc\\\"\",\"jdpvwryo\":\"\\\"dataozkrwfndiodjpslw\\\"\"}}")
+            "{\"retryPolicy\":{\"retryCount\":1629282531,\"retryWindowInMinutes\":1041852302,\"onFailureAction\":\"Delete\"},\"verifyVmAgentHealth\":false,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"audccsnhs\",\"cnyejhkryhtnapcz\"],\"desiredSizes\":[\"kjyemkk\",\"ni\"],\"availabilityZones\":true},\"additionalCreateParameters\":{\"podmailzydehojwy\":\"\\\"datajnchgej\\\"\"}}")
             .toObject(ExecutionParameters.class);
-        Assertions.assertEquals(1665801665, model.retryPolicy().retryCount());
-        Assertions.assertEquals(1373520670, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DEALLOCATE, model.retryPolicy().onFailureAction());
-        Assertions.assertTrue(model.verifyVmAgentHealth());
-        Assertions.assertEquals("chgejspodm", model.capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("jwyahuxinpmqnja", model.capacityRecommendationParameters().desiredSizes().get(0));
+        Assertions.assertEquals(1629282531, model.retryPolicy().retryCount());
+        Assertions.assertEquals(1041852302, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE, model.retryPolicy().onFailureAction());
+        Assertions.assertFalse(model.verifyVmAgentHealth());
+        Assertions.assertEquals("audccsnhs", model.capacityRecommendationParameters().desiredLocations().get(0));
+        Assertions.assertEquals("kjyemkk", model.capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertTrue(model.capacityRecommendationParameters().availabilityZones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecutionParameters model = new ExecutionParameters()
-            .withRetryPolicy(new RetryPolicy().withRetryCount(1665801665)
-                .withRetryWindowInMinutes(1373520670)
-                .withOnFailureAction(ResourceOperationType.DEALLOCATE))
-            .withVerifyVmAgentHealth(true)
-            .withCapacityRecommendationParameters(
-                new CapacityRecommendationParameters().withDesiredLocations(Arrays.asList("chgejspodm", "ilzyd"))
-                    .withDesiredSizes(Arrays.asList("jwyahuxinpmqnja"))
-                    .withAvailabilityZones(true))
+            .withRetryPolicy(new RetryPolicy().withRetryCount(1629282531)
+                .withRetryWindowInMinutes(1041852302)
+                .withOnFailureAction(ResourceOperationType.DELETE))
+            .withVerifyVmAgentHealth(false)
+            .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
+                .withDesiredLocations(Arrays.asList("audccsnhs", "cnyejhkryhtnapcz"))
+                .withDesiredSizes(Arrays.asList("kjyemkk", "ni"))
+                .withAvailabilityZones(true))
             .withAdditionalCreateParameters(
-                mapOf("gjvw", BinaryData.fromBytes("\"datasprozvcput\"".getBytes(StandardCharsets.UTF_8)),
-                    "dvpjhulsuuvmk", BinaryData.fromBytes("\"datafdatsc\"".getBytes(StandardCharsets.UTF_8)),
-                    "jdpvwryo", BinaryData.fromBytes("\"dataozkrwfndiodjpslw\"".getBytes(StandardCharsets.UTF_8))));
+                mapOf("podmailzydehojwy", BinaryData.fromBytes("\"datajnchgej\"".getBytes(StandardCharsets.UTF_8))));
         model = BinaryData.fromObject(model).toObject(ExecutionParameters.class);
-        Assertions.assertEquals(1665801665, model.retryPolicy().retryCount());
-        Assertions.assertEquals(1373520670, model.retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.DEALLOCATE, model.retryPolicy().onFailureAction());
-        Assertions.assertTrue(model.verifyVmAgentHealth());
-        Assertions.assertEquals("chgejspodm", model.capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("jwyahuxinpmqnja", model.capacityRecommendationParameters().desiredSizes().get(0));
+        Assertions.assertEquals(1629282531, model.retryPolicy().retryCount());
+        Assertions.assertEquals(1041852302, model.retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE, model.retryPolicy().onFailureAction());
+        Assertions.assertFalse(model.verifyVmAgentHealth());
+        Assertions.assertEquals("audccsnhs", model.capacityRecommendationParameters().desiredLocations().get(0));
+        Assertions.assertEquals("kjyemkk", model.capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertTrue(model.capacityRecommendationParameters().availabilityZones());
     }
 

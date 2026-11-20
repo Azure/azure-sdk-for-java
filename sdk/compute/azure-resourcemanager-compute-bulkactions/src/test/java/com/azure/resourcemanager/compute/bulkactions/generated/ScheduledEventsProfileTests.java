@@ -14,11 +14,11 @@ public final class ScheduledEventsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEventsProfile model = BinaryData.fromString(
-            "{\"terminateNotificationProfile\":{\"notBeforeTimeout\":\"uwjuetaeburuvdmo\",\"enable\":false},\"osImageNotificationProfile\":{\"notBeforeTimeout\":\"xwabmqoe\",\"enable\":false}}")
+            "{\"terminateNotificationProfile\":{\"notBeforeTimeout\":\"qgsfraoyzkoow\",\"enable\":true},\"osImageNotificationProfile\":{\"notBeforeTimeout\":\"ux\",\"enable\":false}}")
             .toObject(ScheduledEventsProfile.class);
-        Assertions.assertEquals("uwjuetaeburuvdmo", model.terminateNotificationProfile().notBeforeTimeout());
-        Assertions.assertFalse(model.terminateNotificationProfile().enable());
-        Assertions.assertEquals("xwabmqoe", model.osImageNotificationProfile().notBeforeTimeout());
+        Assertions.assertEquals("qgsfraoyzkoow", model.terminateNotificationProfile().notBeforeTimeout());
+        Assertions.assertTrue(model.terminateNotificationProfile().enable());
+        Assertions.assertEquals("ux", model.osImageNotificationProfile().notBeforeTimeout());
         Assertions.assertFalse(model.osImageNotificationProfile().enable());
     }
 
@@ -26,13 +26,13 @@ public final class ScheduledEventsProfileTests {
     public void testSerialize() throws Exception {
         ScheduledEventsProfile model = new ScheduledEventsProfile()
             .withTerminateNotificationProfile(
-                new TerminateNotificationProfile().withNotBeforeTimeout("uwjuetaeburuvdmo").withEnable(false))
+                new TerminateNotificationProfile().withNotBeforeTimeout("qgsfraoyzkoow").withEnable(true))
             .withOsImageNotificationProfile(
-                new OSImageNotificationProfile().withNotBeforeTimeout("xwabmqoe").withEnable(false));
+                new OSImageNotificationProfile().withNotBeforeTimeout("ux").withEnable(false));
         model = BinaryData.fromObject(model).toObject(ScheduledEventsProfile.class);
-        Assertions.assertEquals("uwjuetaeburuvdmo", model.terminateNotificationProfile().notBeforeTimeout());
-        Assertions.assertFalse(model.terminateNotificationProfile().enable());
-        Assertions.assertEquals("xwabmqoe", model.osImageNotificationProfile().notBeforeTimeout());
+        Assertions.assertEquals("qgsfraoyzkoow", model.terminateNotificationProfile().notBeforeTimeout());
+        Assertions.assertTrue(model.terminateNotificationProfile().enable());
+        Assertions.assertEquals("ux", model.osImageNotificationProfile().notBeforeTimeout());
         Assertions.assertFalse(model.osImageNotificationProfile().enable());
     }
 }

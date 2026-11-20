@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class BillingProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingProfile model = BinaryData.fromString("{\"maxPrice\":62.17856093368022}").toObject(BillingProfile.class);
-        Assertions.assertEquals(62.17856093368022D, model.maxPrice());
+        BillingProfile model = BinaryData.fromString("{\"maxPrice\":44.6573664136105}").toObject(BillingProfile.class);
+        Assertions.assertEquals(44.6573664136105D, model.maxPrice());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingProfile model = new BillingProfile().withMaxPrice(62.17856093368022D);
+        BillingProfile model = new BillingProfile().withMaxPrice(44.6573664136105D);
         model = BinaryData.fromObject(model).toObject(BillingProfile.class);
-        Assertions.assertEquals(62.17856093368022D, model.maxPrice());
+        Assertions.assertEquals(44.6573664136105D, model.maxPrice());
     }
 }

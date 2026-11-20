@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateInner;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An immutable client-side representation of LocationBasedBulkCreate.
@@ -67,13 +66,6 @@ public interface LocationBasedBulkCreate {
     Placement placement();
 
     /**
-     * Gets the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * Gets the identity property: The managed service identities assigned to this resource.
      * 
      * @return the identity value.
@@ -93,13 +85,6 @@ public interface LocationBasedBulkCreate {
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the name of the resource group.
-     * 
-     * @return the name of the resource group.
-     */
-    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateInner object.
@@ -143,9 +128,9 @@ public interface LocationBasedBulkCreate {
          * The stage of the LocationBasedBulkCreate definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
-            DefinitionStages.WithZones, DefinitionStages.WithExtendedLocation, DefinitionStages.WithPlacement,
-            DefinitionStages.WithIdentity, DefinitionStages.WithPlan {
+        interface WithCreate
+            extends DefinitionStages.WithProperties, DefinitionStages.WithZones, DefinitionStages.WithExtendedLocation,
+            DefinitionStages.WithPlacement, DefinitionStages.WithIdentity, DefinitionStages.WithPlan {
             /**
              * Executes the create request.
              * 
@@ -160,19 +145,6 @@ public interface LocationBasedBulkCreate {
              * @return the created resource.
              */
             LocationBasedBulkCreate create(Context context);
-        }
-
-        /**
-         * The stage of the LocationBasedBulkCreate definition allowing to specify tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             * 
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -259,91 +231,6 @@ public interface LocationBasedBulkCreate {
     }
 
     /**
-     * Begins update for the LocationBasedBulkCreate resource.
-     * 
-     * @return the stage of resource update.
-     */
-    LocationBasedBulkCreate.Update update();
-
-    /**
-     * The template for LocationBasedBulkCreate update.
-     */
-    interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithIdentity, UpdateStages.WithPlan {
-        /**
-         * Executes the update request.
-         * 
-         * @return the updated resource.
-         */
-        LocationBasedBulkCreate apply();
-
-        /**
-         * Executes the update request.
-         * 
-         * @param context The context to associate with this operation.
-         * @return the updated resource.
-         */
-        LocationBasedBulkCreate apply(Context context);
-    }
-
-    /**
-     * The LocationBasedBulkCreate update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the LocationBasedBulkCreate update allowing to specify tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             * 
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the LocationBasedBulkCreate update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The resource-specific properties for this resource..
-             * 
-             * @param properties The resource-specific properties for this resource.
-             * @return the next definition stage.
-             */
-            Update withProperties(BulkCreateProperties properties);
-        }
-
-        /**
-         * The stage of the LocationBasedBulkCreate update allowing to specify identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies the identity property: The managed service identities assigned to this resource..
-             * 
-             * @param identity The managed service identities assigned to this resource.
-             * @return the next definition stage.
-             */
-            Update withIdentity(ManagedServiceIdentity identity);
-        }
-
-        /**
-         * The stage of the LocationBasedBulkCreate update allowing to specify plan.
-         */
-        interface WithPlan {
-            /**
-             * Specifies the plan property: Details of the resource plan..
-             * 
-             * @param plan Details of the resource plan.
-             * @return the next definition stage.
-             */
-            Update withPlan(Plan plan);
-        }
-    }
-
-    /**
      * Refreshes the resource to sync with Azure.
      * 
      * @return the refreshed resource.
@@ -357,24 +244,6 @@ public interface LocationBasedBulkCreate {
      * @return the refreshed resource.
      */
     LocationBasedBulkCreate refresh(Context context);
-
-    /**
-     * Cancels BulkCreate instances that have not yet launched.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void cancel();
-
-    /**
-     * Cancels BulkCreate instances that have not yet launched.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void cancel(Context context);
 
     /**
      * Gets the operation status for virtual machines in a BulkCreate operation.

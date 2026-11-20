@@ -9,14 +9,14 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class BulkCreateCustomListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/BulkCreateCustom_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-16/BulkCreateCustom_ListBySubscription.json
      */
     /**
-     * Sample code: BulkCreateCustom_ListBySubscription_MaximumSet.
+     * Sample code: List bulk create custom operations in a subscription and region.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void bulkCreateCustomListBySubscriptionMaximumSet(
+    public static void listBulkCreateCustomOperationsInASubscriptionAndRegion(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.bulkCreateCustoms().listBySubscription("eastus", com.azure.core.util.Context.NONE);
     }

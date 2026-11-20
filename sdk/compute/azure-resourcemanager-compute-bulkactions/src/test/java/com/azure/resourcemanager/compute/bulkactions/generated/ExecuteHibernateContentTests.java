@@ -9,9 +9,7 @@ import com.azure.resourcemanager.compute.bulkactions.models.CapacityRecommendati
 import com.azure.resourcemanager.compute.bulkactions.models.ExecuteHibernateContent;
 import com.azure.resourcemanager.compute.bulkactions.models.ExecutionParameters;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperationType;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.Resources;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourcesWithContext;
 import com.azure.resourcemanager.compute.bulkactions.models.RetryPolicy;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -23,55 +21,50 @@ public final class ExecuteHibernateContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteHibernateContent model = BinaryData.fromString(
-            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":2139410059,\"retryWindowInMinutes\":870158563,\"onFailureAction\":\"Start\"},\"verifyVmAgentHealth\":true,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"osfln\",\"osfqpteehzzv\"],\"desiredSizes\":[\"qrimzinpv\",\"wjdk\"],\"availabilityZones\":true},\"additionalCreateParameters\":{\"soifiyipjxsqw\":\"\\\"datadqxhcrmnohjtckwh\\\"\"}},\"resources\":{\"ids\":[\"jbznorc\"]},\"resourcesWithContext\":{\"resources\":[{\"resourceId\":\"snb\",\"resourceContext\":\"xqabnmocpcysh\"}]}}")
+            "{\"executionParameters\":{\"retryPolicy\":{\"retryCount\":1918679109,\"retryWindowInMinutes\":1181471279,\"onFailureAction\":\"Delete\"},\"verifyVmAgentHealth\":false,\"capacityRecommendationParameters\":{\"desiredLocations\":[\"mzinpvswjdk\"],\"desiredSizes\":[\"oodqxhcrm\",\"ohjtckw\",\"dsoifiyipj\",\"sqwpgrjb\"],\"availabilityZones\":true},\"additionalCreateParameters\":{\"ocpcy\":\"\\\"datajxvsnbyxqabn\\\"\",\"gpbtoqcjmklj\":\"\\\"datahurzafblj\\\"\",\"qajzyulpkudjkr\":\"\\\"datavbqid\\\"\"}},\"resources\":{\"ids\":[\"hbzhfepg\",\"gqexzlocxs\",\"paierh\"]}}")
             .toObject(ExecuteHibernateContent.class);
-        Assertions.assertEquals(2139410059, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(870158563, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.START,
+        Assertions.assertEquals(1918679109, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1181471279, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("osfln",
+        Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertEquals("mzinpvswjdk",
             model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("qrimzinpv",
+        Assertions.assertEquals("oodqxhcrm",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertTrue(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("jbznorc", model.resources().ids().get(0));
-        Assertions.assertEquals("snb", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("xqabnmocpcysh", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("hbzhfepg", model.resources().ids().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteHibernateContent model
-            = new ExecuteHibernateContent()
-                .withExecutionParameters(new ExecutionParameters()
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(2139410059)
-                        .withRetryWindowInMinutes(870158563)
-                        .withOnFailureAction(ResourceOperationType.START))
-                    .withVerifyVmAgentHealth(true)
-                    .withCapacityRecommendationParameters(new CapacityRecommendationParameters()
-                        .withDesiredLocations(Arrays.asList("osfln", "osfqpteehzzv"))
-                        .withDesiredSizes(Arrays.asList("qrimzinpv", "wjdk"))
+        ExecuteHibernateContent model = new ExecuteHibernateContent()
+            .withExecutionParameters(new ExecutionParameters()
+                .withRetryPolicy(new RetryPolicy().withRetryCount(1918679109)
+                    .withRetryWindowInMinutes(1181471279)
+                    .withOnFailureAction(ResourceOperationType.DELETE))
+                .withVerifyVmAgentHealth(false)
+                .withCapacityRecommendationParameters(
+                    new CapacityRecommendationParameters().withDesiredLocations(Arrays.asList("mzinpvswjdk"))
+                        .withDesiredSizes(Arrays.asList("oodqxhcrm", "ohjtckw", "dsoifiyipj", "sqwpgrjb"))
                         .withAvailabilityZones(true))
-                    .withAdditionalCreateParameters(mapOf("soifiyipjxsqw",
-                        BinaryData.fromBytes("\"datadqxhcrmnohjtckwh\"".getBytes(StandardCharsets.UTF_8)))))
-                .withResources(new Resources().withIds(Arrays.asList("jbznorc")))
-                .withResourcesWithContext(new ResourcesWithContext().withResources(Arrays
-                    .asList(new ResourceWithContext().withResourceId("snb").withResourceContext("xqabnmocpcysh"))));
+                .withAdditionalCreateParameters(
+                    mapOf("ocpcy", BinaryData.fromBytes("\"datajxvsnbyxqabn\"".getBytes(StandardCharsets.UTF_8)),
+                        "gpbtoqcjmklj", BinaryData.fromBytes("\"datahurzafblj\"".getBytes(StandardCharsets.UTF_8)),
+                        "qajzyulpkudjkr", BinaryData.fromBytes("\"datavbqid\"".getBytes(StandardCharsets.UTF_8)))))
+            .withResources(new Resources().withIds(Arrays.asList("hbzhfepg", "gqexzlocxs", "paierh")));
         model = BinaryData.fromObject(model).toObject(ExecuteHibernateContent.class);
-        Assertions.assertEquals(2139410059, model.executionParameters().retryPolicy().retryCount());
-        Assertions.assertEquals(870158563, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals(ResourceOperationType.START,
+        Assertions.assertEquals(1918679109, model.executionParameters().retryPolicy().retryCount());
+        Assertions.assertEquals(1181471279, model.executionParameters().retryPolicy().retryWindowInMinutes());
+        Assertions.assertEquals(ResourceOperationType.DELETE,
             model.executionParameters().retryPolicy().onFailureAction());
-        Assertions.assertTrue(model.executionParameters().verifyVmAgentHealth());
-        Assertions.assertEquals("osfln",
+        Assertions.assertFalse(model.executionParameters().verifyVmAgentHealth());
+        Assertions.assertEquals("mzinpvswjdk",
             model.executionParameters().capacityRecommendationParameters().desiredLocations().get(0));
-        Assertions.assertEquals("qrimzinpv",
+        Assertions.assertEquals("oodqxhcrm",
             model.executionParameters().capacityRecommendationParameters().desiredSizes().get(0));
         Assertions.assertTrue(model.executionParameters().capacityRecommendationParameters().availabilityZones());
-        Assertions.assertEquals("jbznorc", model.resources().ids().get(0));
-        Assertions.assertEquals("snb", model.resourcesWithContext().resources().get(0).resourceId());
-        Assertions.assertEquals("xqabnmocpcysh", model.resourcesWithContext().resources().get(0).resourceContext());
+        Assertions.assertEquals("hbzhfepg", model.resources().ids().get(0));
     }
 
     // Use "Map.of" if available

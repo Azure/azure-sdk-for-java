@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachinePublicIPAddressDnsSettingsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachinePublicIPAddressDnsSettingsConfiguration model
-            = BinaryData.fromString("{\"domainNameLabel\":\"zpof\",\"domainNameLabelScope\":\"TenantReuse\"}")
-                .toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
-        Assertions.assertEquals("zpof", model.domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.TENANT_REUSE, model.domainNameLabelScope());
+        VirtualMachinePublicIPAddressDnsSettingsConfiguration model = BinaryData
+            .fromString("{\"domainNameLabel\":\"kfbtndoaongbjc\",\"domainNameLabelScope\":\"ResourceGroupReuse\"}")
+            .toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
+        Assertions.assertEquals("kfbtndoaongbjc", model.domainNameLabel());
+        Assertions.assertEquals(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE, model.domainNameLabelScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachinePublicIPAddressDnsSettingsConfiguration model
-            = new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("zpof")
-                .withDomainNameLabelScope(DomainNameLabelScopeTypes.TENANT_REUSE);
+            = new VirtualMachinePublicIPAddressDnsSettingsConfiguration().withDomainNameLabel("kfbtndoaongbjc")
+                .withDomainNameLabelScope(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE);
         model = BinaryData.fromObject(model).toObject(VirtualMachinePublicIPAddressDnsSettingsConfiguration.class);
-        Assertions.assertEquals("zpof", model.domainNameLabel());
-        Assertions.assertEquals(DomainNameLabelScopeTypes.TENANT_REUSE, model.domainNameLabelScope());
+        Assertions.assertEquals("kfbtndoaongbjc", model.domainNameLabel());
+        Assertions.assertEquals(DomainNameLabelScopeTypes.RESOURCE_GROUP_REUSE, model.domainNameLabelScope());
     }
 }

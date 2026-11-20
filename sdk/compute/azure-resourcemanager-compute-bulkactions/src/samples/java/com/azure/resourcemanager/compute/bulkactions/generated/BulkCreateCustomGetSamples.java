@@ -9,17 +9,17 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class BulkCreateCustomGetSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/BulkCreateCustom_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-16/BulkCreateCustom_Get.json
      */
     /**
-     * Sample code: BulkCreateCustom_Get_MaximumSet.
+     * Sample code: Get a completed bulk create custom operation.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void
-        bulkCreateCustomGetMaximumSet(com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+    public static void getACompletedBulkCreateCustomOperation(
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.bulkCreateCustoms()
-            .getWithResponse("rgBulkactions", "eastus", "85c374f7-9857-4fd7-9267-81019219c362",
+            .getWithResponse("rg-bulk-create", "eastus", "a1223fe4-126f-4905-a870-6d53e360cab5",
                 com.azure.core.util.Context.NONE);
     }
 }
