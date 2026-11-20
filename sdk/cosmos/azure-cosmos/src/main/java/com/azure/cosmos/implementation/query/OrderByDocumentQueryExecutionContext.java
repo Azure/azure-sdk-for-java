@@ -33,6 +33,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.databind.node.TextNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -49,7 +50,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -67,7 +67,6 @@ public class OrderByDocumentQueryExecutionContext
 
     private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
     private final static String True = "true";
-    private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
     private final OrderbyRowComparer<Document> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
@@ -299,7 +298,7 @@ public class OrderByDocumentQueryExecutionContext
 
             this.appendToBuilders(left, target, right, "(");
 
-            String orderByItemToString = this.getOrderByItemString(rawItem);
+            String orderByItemToString = getOrderByItemString(rawItem);
 
              // Handling undefined needs filter literals
              // What we really want is to support expression > undefined,
@@ -441,19 +440,11 @@ public class OrderByDocumentQueryExecutionContext
                 right.toString());
     }
 
-    private String getOrderByItemString(Object orderbyRawItem) {
-        String orderByItemToString;
+    static String getOrderByItemString(Object orderbyRawItem) {
         if (orderbyRawItem instanceof String) {
-            orderByItemToString = "\"" + QUOTE_PATTERN.matcher(orderbyRawItem.toString()).replaceAll("\\\"") + "\"";
-        } else {
-            if (orderbyRawItem != null) {
-                orderByItemToString = orderbyRawItem.toString();
-            } else {
-                orderByItemToString = "null";
-            }
+            return TextNode.valueOf((String) orderbyRawItem).toString();
         }
-
-        return orderByItemToString;
+        return String.valueOf(orderbyRawItem);
     }
 
     private void appendToBuilders(StringBuilder leftBuilder, StringBuilder targetBuilder, StringBuilder rightBuilder, String appendText) {
