@@ -871,4 +871,23 @@ public class ModelHelper {
         }
         return new SimpleResponse<>(response, new ShareFileLinks(properties, links));
     }
+
+    /**
+     * Determines whether a failure is a 409 Conflict that the service answered with the given error code.
+     *
+     * <p>The status code alone does not say why the service refused a request: it also answers 409 for reasons such as
+     * ShareBeingDeleted or ResourceTypeMismatch. Methods that treat a conflict as "already exists" use this so that
+     * other conflicts still fail.</p>
+     *
+     * @param throwable The failure.
+     * @param errorCode The error code of the conflict to match.
+     * @return Whether the failure is a {@link ShareStorageException} with status code 409 and the given error code.
+     */
+    public static boolean isConflictWithErrorCode(Throwable throwable, ShareErrorCode errorCode) {
+        if (!(throwable instanceof ShareStorageException)) {
+            return false;
+        }
+        ShareStorageException e = (ShareStorageException) throwable;
+        return e.getStatusCode() == 409 && errorCode.equals(e.getErrorCode());
+    }
 }
