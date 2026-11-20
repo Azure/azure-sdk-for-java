@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
  */
 public final class RecoveryPlansGetSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlans_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-11-30-preview/RecoveryPlans_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_Get_MaximumSet.
@@ -20,5 +20,19 @@ public final class RecoveryPlansGetSamples {
         recoveryPlansGetMaximumSet(com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
         manager.recoveryPlans()
             .getWithResponse("sampleServiceGroupName", "samplePlanName", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-30-preview/RecoveryPlans_Get_CyberRecovery.json
+     */
+    /**
+     * Sample code: RecoveryPlans_Get_CyberRecovery.
+     * 
+     * @param manager Entry point to ResilienceManagementManager.
+     */
+    public static void recoveryPlansGetCyberRecovery(
+        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
+        manager.recoveryPlans()
+            .getWithResponse("contoso-service-group", "cyber-plan", com.azure.core.util.Context.NONE);
     }
 }

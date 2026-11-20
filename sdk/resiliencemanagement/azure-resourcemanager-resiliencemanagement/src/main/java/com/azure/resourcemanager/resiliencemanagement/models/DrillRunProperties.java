@@ -156,6 +156,13 @@ public interface DrillRunProperties {
     DrillReportSummary report();
 
     /**
+     * Gets the recoveryTimeObjective property: Recovery time objective for the drill run.
+     * 
+     * @return the recoveryTimeObjective value.
+     */
+    IsoDuration recoveryTimeObjective();
+
+    /**
      * Gets the inner com.azure.resourcemanager.resiliencemanagement.fluent.models.DrillRunPropertiesInner object.
      * 
      * @return the inner object.

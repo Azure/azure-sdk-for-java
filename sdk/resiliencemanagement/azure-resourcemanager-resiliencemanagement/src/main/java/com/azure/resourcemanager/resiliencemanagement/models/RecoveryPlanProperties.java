@@ -43,6 +43,11 @@ public final class RecoveryPlanProperties implements JsonSerializable<RecoveryPl
     private RecoveryGroupsSetting recoveryGroupsSetting;
 
     /*
+     * Resiliency-specific properties for the recovery plan.
+     */
+    private RecoveryPlanResiliencyProperties resiliencyPlanProperties;
+
+    /*
      * The status of the most recent failover operation executed.
      */
     private RecoveryPlanFailoverOperationStatus latestFailoverStatus;
@@ -146,6 +151,27 @@ public final class RecoveryPlanProperties implements JsonSerializable<RecoveryPl
     }
 
     /**
+     * Get the resiliencyPlanProperties property: Resiliency-specific properties for the recovery plan.
+     * 
+     * @return the resiliencyPlanProperties value.
+     */
+    public RecoveryPlanResiliencyProperties resiliencyPlanProperties() {
+        return this.resiliencyPlanProperties;
+    }
+
+    /**
+     * Set the resiliencyPlanProperties property: Resiliency-specific properties for the recovery plan.
+     * 
+     * @param resiliencyPlanProperties the resiliencyPlanProperties value to set.
+     * @return the RecoveryPlanProperties object itself.
+     */
+    public RecoveryPlanProperties
+        withResiliencyPlanProperties(RecoveryPlanResiliencyProperties resiliencyPlanProperties) {
+        this.resiliencyPlanProperties = resiliencyPlanProperties;
+        return this;
+    }
+
+    /**
      * Get the latestFailoverStatus property: The status of the most recent failover operation executed.
      * 
      * @return the latestFailoverStatus value.
@@ -181,6 +207,7 @@ public final class RecoveryPlanProperties implements JsonSerializable<RecoveryPl
         jsonWriter.writeStringField("planType", this.planType == null ? null : this.planType.toString());
         jsonWriter.writeStringField("planDescription", this.planDescription);
         jsonWriter.writeJsonField("recoveryGroupsSetting", this.recoveryGroupsSetting);
+        jsonWriter.writeJsonField("resiliencyPlanProperties", this.resiliencyPlanProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -211,6 +238,9 @@ public final class RecoveryPlanProperties implements JsonSerializable<RecoveryPl
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("planState".equals(fieldName)) {
                     deserializedRecoveryPlanProperties.planState = RecoveryPlanState.fromString(reader.getString());
+                } else if ("resiliencyPlanProperties".equals(fieldName)) {
+                    deserializedRecoveryPlanProperties.resiliencyPlanProperties
+                        = RecoveryPlanResiliencyProperties.fromJson(reader);
                 } else if ("latestFailoverStatus".equals(fieldName)) {
                     deserializedRecoveryPlanProperties.latestFailoverStatus
                         = RecoveryPlanFailoverOperationStatus.fromJson(reader);

@@ -22,6 +22,11 @@ public final class RecoveryPlanType extends ExpandableStringEnum<RecoveryPlanTyp
     public static final RecoveryPlanType ZONAL = fromString("Zonal");
 
     /**
+     * A recovery orchestration plan for cyber recovery into a clean-room environment.
+     */
+    public static final RecoveryPlanType CYBER_RECOVERY = fromString("CyberRecovery");
+
+    /**
      * Creates a new instance of RecoveryPlanType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

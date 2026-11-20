@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceLevelResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceLevelResource model = BinaryData.fromString("{\"serviceLevelIndicatorResourceId\":\"gexpaojakhmsbz\"}")
+        ServiceLevelResource model = BinaryData.fromString("{\"serviceLevelIndicatorResourceId\":\"paojakhmsbzjh\"}")
             .toObject(ServiceLevelResource.class);
-        Assertions.assertEquals("gexpaojakhmsbz", model.serviceLevelIndicatorResourceId());
+        Assertions.assertEquals("paojakhmsbzjh", model.serviceLevelIndicatorResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceLevelResource model = new ServiceLevelResource().withServiceLevelIndicatorResourceId("gexpaojakhmsbz");
+        ServiceLevelResource model = new ServiceLevelResource().withServiceLevelIndicatorResourceId("paojakhmsbzjh");
         model = BinaryData.fromObject(model).toObject(ServiceLevelResource.class);
-        Assertions.assertEquals("gexpaojakhmsbz", model.serviceLevelIndicatorResourceId());
+        Assertions.assertEquals("paojakhmsbzjh", model.serviceLevelIndicatorResourceId());
     }
 }

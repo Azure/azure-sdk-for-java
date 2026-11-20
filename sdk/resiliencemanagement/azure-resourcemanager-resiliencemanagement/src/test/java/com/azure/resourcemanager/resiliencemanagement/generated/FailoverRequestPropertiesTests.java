@@ -15,22 +15,22 @@ public final class FailoverRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FailoverRequestProperties model = BinaryData.fromString(
-            "{\"sourceLocations\":[\"hdlxyjrxsagafcn\"],\"selectedResourceIds\":[\"wqapnedgfbcvk\"],\"executionConfigurations\":{\"userConsent\":\"Unspecified\"}}")
+            "{\"sourceLocations\":[\"zpfrla\",\"szrnwo\"],\"selectedResourceIds\":[\"dfpwpjylwbtlhfls\",\"cdhszf\"],\"executionConfigurations\":{\"userConsent\":\"Allowed\"}}")
             .toObject(FailoverRequestProperties.class);
-        Assertions.assertEquals("hdlxyjrxsagafcn", model.sourceLocations().get(0));
-        Assertions.assertEquals("wqapnedgfbcvk", model.selectedResourceIds().get(0));
-        Assertions.assertEquals(UserConsent.UNSPECIFIED, model.executionConfigurations().userConsent());
+        Assertions.assertEquals("zpfrla", model.sourceLocations().get(0));
+        Assertions.assertEquals("dfpwpjylwbtlhfls", model.selectedResourceIds().get(0));
+        Assertions.assertEquals(UserConsent.ALLOWED, model.executionConfigurations().userConsent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FailoverRequestProperties model
-            = new FailoverRequestProperties().withSourceLocations(Arrays.asList("hdlxyjrxsagafcn"))
-                .withSelectedResourceIds(Arrays.asList("wqapnedgfbcvk"))
-                .withExecutionConfigurations(new ExecutionConfigurations().withUserConsent(UserConsent.UNSPECIFIED));
+            = new FailoverRequestProperties().withSourceLocations(Arrays.asList("zpfrla", "szrnwo"))
+                .withSelectedResourceIds(Arrays.asList("dfpwpjylwbtlhfls", "cdhszf"))
+                .withExecutionConfigurations(new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED));
         model = BinaryData.fromObject(model).toObject(FailoverRequestProperties.class);
-        Assertions.assertEquals("hdlxyjrxsagafcn", model.sourceLocations().get(0));
-        Assertions.assertEquals("wqapnedgfbcvk", model.selectedResourceIds().get(0));
-        Assertions.assertEquals(UserConsent.UNSPECIFIED, model.executionConfigurations().userConsent());
+        Assertions.assertEquals("zpfrla", model.sourceLocations().get(0));
+        Assertions.assertEquals("dfpwpjylwbtlhfls", model.selectedResourceIds().get(0));
+        Assertions.assertEquals(UserConsent.ALLOWED, model.executionConfigurations().userConsent());
     }
 }

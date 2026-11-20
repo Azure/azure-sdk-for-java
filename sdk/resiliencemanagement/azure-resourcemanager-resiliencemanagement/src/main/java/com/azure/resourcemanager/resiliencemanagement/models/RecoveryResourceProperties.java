@@ -52,6 +52,11 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
     private ResourceInclusionState inclusionState;
 
     /*
+     * Reasons why inclusion of the resource in a recovery plan is disabled.
+     */
+    private List<ResourceInclusionDisabledReason> inclusionDisabledReasons;
+
+    /*
      * Indicating if resource needs user attention and action, details will be found in attentionReasons
      */
     private Boolean needsAttention;
@@ -97,6 +102,11 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
      * Error details associated with the resource.
      */
     private ManagementError errorDetails;
+
+    /*
+     * Resiliency-specific properties for the recovery resource.
+     */
+    private RecoveryResourceResiliencyProperties resiliencyResourceProperties;
 
     /**
      * Creates an instance of RecoveryResourceProperties class.
@@ -183,6 +193,15 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
     public RecoveryResourceProperties withInclusionState(ResourceInclusionState inclusionState) {
         this.inclusionState = inclusionState;
         return this;
+    }
+
+    /**
+     * Get the inclusionDisabledReasons property: Reasons why inclusion of the resource in a recovery plan is disabled.
+     * 
+     * @return the inclusionDisabledReasons value.
+     */
+    public List<ResourceInclusionDisabledReason> inclusionDisabledReasons() {
+        return this.inclusionDisabledReasons;
     }
 
     /**
@@ -320,6 +339,27 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
     }
 
     /**
+     * Get the resiliencyResourceProperties property: Resiliency-specific properties for the recovery resource.
+     * 
+     * @return the resiliencyResourceProperties value.
+     */
+    public RecoveryResourceResiliencyProperties resiliencyResourceProperties() {
+        return this.resiliencyResourceProperties;
+    }
+
+    /**
+     * Set the resiliencyResourceProperties property: Resiliency-specific properties for the recovery resource.
+     * 
+     * @param resiliencyResourceProperties the resiliencyResourceProperties value to set.
+     * @return the RecoveryResourceProperties object itself.
+     */
+    public RecoveryResourceProperties
+        withResiliencyResourceProperties(RecoveryResourceResiliencyProperties resiliencyResourceProperties) {
+        this.resiliencyResourceProperties = resiliencyResourceProperties;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -333,6 +373,7 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
         jsonWriter.writeJsonField("selectedProtectionSolutionSetting", this.selectedProtectionSolutionSetting);
         jsonWriter.writeStringField("recoveryGroupId", this.recoveryGroupId);
         jsonWriter.writeJsonField("associatedIdentity", this.associatedIdentity);
+        jsonWriter.writeJsonField("resiliencyResourceProperties", this.resiliencyResourceProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -367,6 +408,10 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
                 } else if ("inclusionState".equals(fieldName)) {
                     deserializedRecoveryResourceProperties.inclusionState
                         = ResourceInclusionState.fromString(reader.getString());
+                } else if ("inclusionDisabledReasons".equals(fieldName)) {
+                    List<ResourceInclusionDisabledReason> inclusionDisabledReasons
+                        = reader.readArray(reader1 -> ResourceInclusionDisabledReason.fromString(reader1.getString()));
+                    deserializedRecoveryResourceProperties.inclusionDisabledReasons = inclusionDisabledReasons;
                 } else if ("needsAttention".equals(fieldName)) {
                     deserializedRecoveryResourceProperties.needsAttention = reader.getNullable(JsonReader::getBoolean);
                 } else if ("attentionReasons".equals(fieldName)) {
@@ -391,6 +436,9 @@ public final class RecoveryResourceProperties implements JsonSerializable<Recove
                     deserializedRecoveryResourceProperties.associatedIdentity = AssociatedIdentity.fromJson(reader);
                 } else if ("errorDetails".equals(fieldName)) {
                     deserializedRecoveryResourceProperties.errorDetails = ManagementError.fromJson(reader);
+                } else if ("resiliencyResourceProperties".equals(fieldName)) {
+                    deserializedRecoveryResourceProperties.resiliencyResourceProperties
+                        = RecoveryResourceResiliencyProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

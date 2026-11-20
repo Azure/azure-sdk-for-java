@@ -15,19 +15,19 @@ public final class DrillRunReprotectRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DrillRunReprotectRequest model = BinaryData.fromString(
-            "{\"reprotectProperties\":{\"reprotectRequestProperties\":{\"selectedResourceIds\":[\"xa\",\"guyaip\"]}}}")
+            "{\"reprotectProperties\":{\"reprotectRequestProperties\":{\"selectedResourceIds\":[\"kzmkwklsnoxaxmqe\",\"alhhjnhgwydyynfs\",\"khgb\"]}}}")
             .toObject(DrillRunReprotectRequest.class);
-        Assertions.assertEquals("xa",
+        Assertions.assertEquals("kzmkwklsnoxaxmqe",
             model.reprotectProperties().reprotectRequestProperties().selectedResourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillRunReprotectRequest model = new DrillRunReprotectRequest()
-            .withReprotectProperties(new ReprotectRequest().withReprotectRequestProperties(
-                new ReprotectRequestProperties().withSelectedResourceIds(Arrays.asList("xa", "guyaip"))));
+        DrillRunReprotectRequest model = new DrillRunReprotectRequest().withReprotectProperties(
+            new ReprotectRequest().withReprotectRequestProperties(new ReprotectRequestProperties()
+                .withSelectedResourceIds(Arrays.asList("kzmkwklsnoxaxmqe", "alhhjnhgwydyynfs", "khgb"))));
         model = BinaryData.fromObject(model).toObject(DrillRunReprotectRequest.class);
-        Assertions.assertEquals("xa",
+        Assertions.assertEquals("kzmkwklsnoxaxmqe",
             model.reprotectProperties().reprotectRequestProperties().selectedResourceIds().get(0));
     }
 }

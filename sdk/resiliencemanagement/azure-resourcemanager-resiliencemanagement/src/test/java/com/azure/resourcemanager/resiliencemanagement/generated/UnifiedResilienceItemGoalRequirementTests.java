@@ -12,7 +12,7 @@ public final class UnifiedResilienceItemGoalRequirementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UnifiedResilienceItemGoalRequirement model
-            = BinaryData.fromString("{\"required\":true}").toObject(UnifiedResilienceItemGoalRequirement.class);
-        Assertions.assertTrue(model.required());
+            = BinaryData.fromString("{\"required\":false}").toObject(UnifiedResilienceItemGoalRequirement.class);
+        Assertions.assertFalse(model.required());
     }
 }

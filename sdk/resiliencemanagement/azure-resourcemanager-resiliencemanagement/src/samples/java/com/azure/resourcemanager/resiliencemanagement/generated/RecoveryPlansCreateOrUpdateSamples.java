@@ -6,15 +6,20 @@ package com.azure.resourcemanager.resiliencemanagement.generated;
 
 import com.azure.resourcemanager.resiliencemanagement.fluent.models.RecoveryPlanInner;
 import com.azure.resourcemanager.resiliencemanagement.models.AssociatedIdentity;
+import com.azure.resourcemanager.resiliencemanagement.models.CyberResiliencyGroupProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.CyberResiliencyPlanProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.resiliencemanagement.models.RecoveryConfigProfileAssociation;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryGroup;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryGroupCustomRunbookAction;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryGroupProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryGroupsSetting;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryPlanProperties;
 import com.azure.resourcemanager.resiliencemanagement.models.RecoveryPlanType;
+import com.azure.resourcemanager.resiliencemanagement.models.TargetEnvironment;
 import com.azure.resourcemanager.resiliencemanagement.models.UserAssignedIdentity;
+import com.azure.resourcemanager.resiliencemanagement.models.WorkloadType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +29,7 @@ import java.util.Map;
  */
 public final class RecoveryPlansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-10-01/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-11-30-preview/RecoveryPlans_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: RecoveryPlans_CreateOrUpdate_MaximumSet.
@@ -427,6 +432,45 @@ public final class RecoveryPlansCreateOrUpdateSamples {
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf(
                         "/subscriptions/4e88bed3-114f-443d-9975-28f64122ec5e/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1",
+                        new UserAssignedIdentity()))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-11-30-preview/RecoveryPlans_CreateOrUpdate_CyberRecovery.json
+     */
+    /**
+     * Sample code: RecoveryPlans_CreateOrUpdate_CyberRecovery.
+     * 
+     * @param manager Entry point to ResilienceManagementManager.
+     */
+    public static void recoveryPlansCreateOrUpdateCyberRecovery(
+        com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager manager) {
+        manager.recoveryPlans()
+            .createOrUpdate("contoso-service-group", "cyber-plan", new RecoveryPlanInner()
+                .withProperties(new RecoveryPlanProperties().withPlanType(RecoveryPlanType.CYBER_RECOVERY)
+                    .withPlanDescription("Cyber recovery plan")
+                    .withRecoveryGroupsSetting(new RecoveryGroupsSetting()
+                        .withDefaultGroup(new RecoveryGroup().withProperties(
+                            new RecoveryGroupProperties().withGroupUniqueId("b7e2a1c4-9f3b-4e2d-8c6a-2f7e4d1b5a9f")
+                                .withOrderId(0)
+                                .withDescription("Foundation services")))
+                        .withAdditionalGroups(Arrays.asList(new RecoveryGroup().withProperties(
+                            new RecoveryGroupProperties().withGroupUniqueId("5d3c2b1a-8e7f-4a6b-9c0d-1e2f3a4b5c6d")
+                                .withOrderId(1)
+                                .withDescription("Tier 1 applications")
+                                .withResiliencyGroupProperties(new CyberResiliencyGroupProperties()
+                                    .withRecoveryConfigProfileAssociations(Arrays.asList(
+                                        new RecoveryConfigProfileAssociation().withWorkloadType(WorkloadType.AZURE_VM)
+                                            .withRecoveryConfigProfileId(
+                                                "/providers/Microsoft.Management/serviceGroups/contoso-service-group/providers/Microsoft.AzureResilienceManagement/recoveryPlans/cyber-plan/recoveryConfigProfiles/azure-vm-default"))))))))
+                    .withResiliencyPlanProperties(
+                        new CyberResiliencyPlanProperties().withTargetEnvironment(new TargetEnvironment()
+                            .withTargetSubscriptionIds(Arrays.asList("12345678-1234-1234-1234-123456789012"))
+                            .withTargetLocations(Arrays.asList("eastus2")))))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/cyber-recovery-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/cyber-recovery-identity",
                         new UserAssignedIdentity()))),
                 com.azure.core.util.Context.NONE);
     }
