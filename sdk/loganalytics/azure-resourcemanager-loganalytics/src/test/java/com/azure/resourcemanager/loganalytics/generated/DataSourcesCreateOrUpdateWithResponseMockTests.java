@@ -24,7 +24,7 @@ public final class DataSourcesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":\"\\\"datadkfnozoeoqbvj\\\"\",\"etag\":\"efgwbmqjc\",\"kind\":\"NetworkMonitoring\",\"tags\":{\"ymxbulpzealb\":\"sf\",\"mbtsuahxsg\":\"qkyojwyvf\",\"wsdrnpxqwodif\":\"jcmmzrrscub\",\"jogjonmc\":\"jxcjrmmuabwib\"},\"id\":\"foyzbamwineof\",\"name\":\"fkak\",\"type\":\"oldtvevboclzhz\"}";
+            = "{\"properties\":\"\\\"datajurbuhhlkyqltqsr\\\"\",\"etag\":\"tuwkffdj\",\"kind\":\"ChangeTrackingDataTypeConfiguration\",\"tags\":{\"lglxnfui\":\"sidfv\",\"qogsfikayian\":\"tkbu\",\"t\":\"haru\"},\"id\":\"qxfzyjqttvwk\",\"name\":\"qhjpenuygbqe\",\"type\":\"qekewvnqvcd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,18 @@ public final class DataSourcesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataSource response = manager.dataSources()
-            .define("aepwamcxtcz")
-            .withExistingWorkspace("jvhrweft", "wqejpmvsse")
-            .withProperties("\"dataupeuknijduyye\"")
-            .withKind(DataSourceKind.CHANGE_TRACKING_DEFAULT_REGISTRY)
-            .withTags(mapOf("lakuflgbhgauacd", "hhulrtywikdm"))
-            .withEtag("ydjfb")
+            .define("qbctqha")
+            .withExistingWorkspace("g", "jbgdlfgtdysnaquf")
+            .withProperties("\"datazjrwdkqze\"")
+            .withKind(DataSourceKind.LINUX_SYSLOG)
+            .withTags(mapOf("mlbnseq", "ntkwcegy", "m", "cjjvpilguooqja", "hrtdtpdelq", "itgueiookjbs", "vcjkgd",
+                "cslmotoebnfxo"))
+            .withEtag("jleziunjx")
             .create();
 
-        Assertions.assertEquals("efgwbmqjc", response.etag());
-        Assertions.assertEquals(DataSourceKind.NETWORK_MONITORING, response.kind());
-        Assertions.assertEquals("sf", response.tags().get("ymxbulpzealb"));
+        Assertions.assertEquals("tuwkffdj", response.etag());
+        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_DATA_TYPE_CONFIGURATION, response.kind());
+        Assertions.assertEquals("sidfv", response.tags().get("lglxnfui"));
     }
 
     // Use "Map.of" if available

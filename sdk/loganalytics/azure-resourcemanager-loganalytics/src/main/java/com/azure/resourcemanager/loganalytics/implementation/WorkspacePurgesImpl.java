@@ -12,6 +12,7 @@ import com.azure.resourcemanager.loganalytics.fluent.WorkspacePurgesClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeResponseInner;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspacePurgeStatusResponseInner;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBody;
+import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeLakeDataBody;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeResponse;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeStatusResponse;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurges;
@@ -67,6 +68,15 @@ public final class WorkspacePurgesImpl implements WorkspacePurges {
         } else {
             return null;
         }
+    }
+
+    public void purgeLakeData(String resourceGroupName, String workspaceName, WorkspacePurgeLakeDataBody body) {
+        this.serviceClient().purgeLakeData(resourceGroupName, workspaceName, body);
+    }
+
+    public void purgeLakeData(String resourceGroupName, String workspaceName, WorkspacePurgeLakeDataBody body,
+        Context context) {
+        this.serviceClient().purgeLakeData(resourceGroupName, workspaceName, body, context);
     }
 
     private WorkspacePurgesClient serviceClient() {

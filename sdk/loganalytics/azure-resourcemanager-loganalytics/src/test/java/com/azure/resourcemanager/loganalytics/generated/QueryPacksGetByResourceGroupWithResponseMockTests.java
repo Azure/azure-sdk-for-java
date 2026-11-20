@@ -21,7 +21,7 @@ public final class QueryPacksGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"queryPackId\":\"uyzwvbhlimbyqecr\",\"timeCreated\":\"2021-11-15T20:33:50Z\",\"timeModified\":\"2021-01-11T02:12:01Z\",\"provisioningState\":\"cdrdaasaxxo\"},\"location\":\"mfkwiyjvzuk\",\"tags\":{\"lnk\":\"nawnvz\"},\"id\":\"ywsxvjabjqqaxu\",\"name\":\"vym\",\"type\":\"nudn\"}";
+            = "{\"properties\":{\"queryPackId\":\"hfw\",\"timeCreated\":\"2021-03-18T01:10:33Z\",\"timeModified\":\"2021-08-19T18:11:58Z\",\"provisioningState\":\"wbqamteuliy\"},\"location\":\"pkcvmwf\",\"tags\":{\"myw\":\"xe\"},\"id\":\"ormcqmic\",\"name\":\"ijqpkzfbojxjmcs\",\"type\":\"yqwixvcpwnkwywzw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class QueryPacksGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogAnalyticsQueryPack response = manager.queryPacks()
-            .getByResourceGroupWithResponse("kbqsjhbtqqvyfscy", "fwbivqvo", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("nrqjbtxjea", "qaqbz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mfkwiyjvzuk", response.location());
-        Assertions.assertEquals("nawnvz", response.tags().get("lnk"));
+        Assertions.assertEquals("pkcvmwf", response.location());
+        Assertions.assertEquals("xe", response.tags().get("myw"));
     }
 }

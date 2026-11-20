@@ -9,7 +9,7 @@ package com.azure.resourcemanager.loganalytics.generated;
  */
 public final class TablesMigrateSamples {
     /*
-     * x-ms-original-file: 2025-07-01/TablesMigrate.json
+     * x-ms-original-file: 2026-03-01/TablesMigrate.json
      */
     /**
      * Sample code: TablesMigrate.

@@ -12,9 +12,9 @@ public final class LinkedStorageAccountsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedStorageAccountsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"dataSourceType\":\"CustomLogs\",\"storageAccountIds\":[\"mfgvxirpghriypo\"]},\"id\":\"yhlqhykprlpyznu\",\"name\":\"iq\",\"type\":\"smexiitdf\"}],\"nextLink\":\"tyasiibmiybnnust\"}")
+            "{\"value\":[{\"properties\":{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"wgdsl\"]},\"id\":\"ihhrmo\",\"name\":\"i\",\"type\":\"qseypxiutcxa\"},{\"properties\":{\"dataSourceType\":\"CustomLogs\",\"storageAccountIds\":[\"petogebjox\",\"lhvnhlab\",\"q\",\"kkzjcjbtrga\"]},\"id\":\"vvib\",\"name\":\"xjjs\",\"type\":\"oqbeitpkxzt\"}],\"nextLink\":\"ob\"}")
             .toObject(LinkedStorageAccountsListResult.class);
-        Assertions.assertEquals("mfgvxirpghriypo", model.value().get(0).storageAccountIds().get(0));
-        Assertions.assertEquals("tyasiibmiybnnust", model.nextLink());
+        Assertions.assertEquals("wgdsl", model.value().get(0).storageAccountIds().get(0));
+        Assertions.assertEquals("ob", model.nextLink());
     }
 }

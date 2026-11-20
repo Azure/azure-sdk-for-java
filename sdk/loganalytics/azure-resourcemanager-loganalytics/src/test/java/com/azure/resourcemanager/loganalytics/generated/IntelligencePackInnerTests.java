@@ -12,10 +12,10 @@ public final class IntelligencePackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntelligencePackInner model
-            = BinaryData.fromString("{\"name\":\"rc\",\"enabled\":false,\"displayName\":\"oxfrkenxpmyyefr\"}")
+            = BinaryData.fromString("{\"name\":\"jlkatnwxy\",\"enabled\":true,\"displayName\":\"dkqqfkuvscxkd\"}")
                 .toObject(IntelligencePackInner.class);
-        Assertions.assertEquals("rc", model.name());
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals("oxfrkenxpmyyefr", model.displayName());
+        Assertions.assertEquals("jlkatnwxy", model.name());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals("dkqqfkuvscxkd", model.displayName());
     }
 }

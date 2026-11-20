@@ -14,36 +14,36 @@ public final class SavedSearchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SavedSearchProperties model = BinaryData.fromString(
-            "{\"category\":\"aeqphchqnr\",\"displayName\":\"rpxeh\",\"query\":\"wrykqgai\",\"functionAlias\":\"viklb\",\"functionParameters\":\"vkhbejdznx\",\"version\":9195569848009574946,\"tags\":[{\"name\":\"njivolvtnovq\",\"value\":\"zgemjdftuljlt\"},{\"name\":\"ucea\",\"value\":\"tmczuomejwcwwqi\"}]}")
+            "{\"category\":\"vkg\",\"displayName\":\"u\",\"query\":\"gdknnqv\",\"functionAlias\":\"znqntoru\",\"functionParameters\":\"gsahmkycgrauw\",\"version\":6483951652276472612,\"tags\":[{\"name\":\"buruvd\",\"value\":\"ovsm\"},{\"name\":\"l\",\"value\":\"wabm\"}]}")
             .toObject(SavedSearchProperties.class);
-        Assertions.assertEquals("aeqphchqnr", model.category());
-        Assertions.assertEquals("rpxeh", model.displayName());
-        Assertions.assertEquals("wrykqgai", model.query());
-        Assertions.assertEquals("viklb", model.functionAlias());
-        Assertions.assertEquals("vkhbejdznx", model.functionParameters());
-        Assertions.assertEquals(9195569848009574946L, model.version());
-        Assertions.assertEquals("njivolvtnovq", model.tags().get(0).name());
-        Assertions.assertEquals("zgemjdftuljlt", model.tags().get(0).value());
+        Assertions.assertEquals("vkg", model.category());
+        Assertions.assertEquals("u", model.displayName());
+        Assertions.assertEquals("gdknnqv", model.query());
+        Assertions.assertEquals("znqntoru", model.functionAlias());
+        Assertions.assertEquals("gsahmkycgrauw", model.functionParameters());
+        Assertions.assertEquals(6483951652276472612L, model.version());
+        Assertions.assertEquals("buruvd", model.tags().get(0).name());
+        Assertions.assertEquals("ovsm", model.tags().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SavedSearchProperties model = new SavedSearchProperties().withCategory("aeqphchqnr")
-            .withDisplayName("rpxeh")
-            .withQuery("wrykqgai")
-            .withFunctionAlias("viklb")
-            .withFunctionParameters("vkhbejdznx")
-            .withVersion(9195569848009574946L)
-            .withTags(Arrays.asList(new Tag().withName("njivolvtnovq").withValue("zgemjdftuljlt"),
-                new Tag().withName("ucea").withValue("tmczuomejwcwwqi")));
+        SavedSearchProperties model = new SavedSearchProperties().withCategory("vkg")
+            .withDisplayName("u")
+            .withQuery("gdknnqv")
+            .withFunctionAlias("znqntoru")
+            .withFunctionParameters("gsahmkycgrauw")
+            .withVersion(6483951652276472612L)
+            .withTags(Arrays.asList(new Tag().withName("buruvd").withValue("ovsm"),
+                new Tag().withName("l").withValue("wabm")));
         model = BinaryData.fromObject(model).toObject(SavedSearchProperties.class);
-        Assertions.assertEquals("aeqphchqnr", model.category());
-        Assertions.assertEquals("rpxeh", model.displayName());
-        Assertions.assertEquals("wrykqgai", model.query());
-        Assertions.assertEquals("viklb", model.functionAlias());
-        Assertions.assertEquals("vkhbejdznx", model.functionParameters());
-        Assertions.assertEquals(9195569848009574946L, model.version());
-        Assertions.assertEquals("njivolvtnovq", model.tags().get(0).name());
-        Assertions.assertEquals("zgemjdftuljlt", model.tags().get(0).value());
+        Assertions.assertEquals("vkg", model.category());
+        Assertions.assertEquals("u", model.displayName());
+        Assertions.assertEquals("gdknnqv", model.query());
+        Assertions.assertEquals("znqntoru", model.functionAlias());
+        Assertions.assertEquals("gsahmkycgrauw", model.functionParameters());
+        Assertions.assertEquals(6483951652276472612L, model.version());
+        Assertions.assertEquals("buruvd", model.tags().get(0).name());
+        Assertions.assertEquals("ovsm", model.tags().get(0).value());
     }
 }

@@ -13,16 +13,16 @@ public final class LinkedStorageAccountsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedStorageAccountsProperties model = BinaryData.fromString(
-            "{\"dataSourceType\":\"AzureWatson\",\"storageAccountIds\":[\"aj\",\"nw\",\"acevehjkuyx\",\"afgaoqlt\"]}")
+            "{\"dataSourceType\":\"Ingestion\",\"storageAccountIds\":[\"ttikteusqczkvykl\",\"ubyjaffmmf\",\"lcqcuubgqibrt\"]}")
             .toObject(LinkedStorageAccountsProperties.class);
-        Assertions.assertEquals("aj", model.storageAccountIds().get(0));
+        Assertions.assertEquals("ttikteusqczkvykl", model.storageAccountIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinkedStorageAccountsProperties model = new LinkedStorageAccountsProperties()
-            .withStorageAccountIds(Arrays.asList("aj", "nw", "acevehjkuyx", "afgaoqlt"));
+            .withStorageAccountIds(Arrays.asList("ttikteusqczkvykl", "ubyjaffmmf", "lcqcuubgqibrt"));
         model = BinaryData.fromObject(model).toObject(LinkedStorageAccountsProperties.class);
-        Assertions.assertEquals("aj", model.storageAccountIds().get(0));
+        Assertions.assertEquals("ttikteusqczkvykl", model.storageAccountIds().get(0));
     }
 }
