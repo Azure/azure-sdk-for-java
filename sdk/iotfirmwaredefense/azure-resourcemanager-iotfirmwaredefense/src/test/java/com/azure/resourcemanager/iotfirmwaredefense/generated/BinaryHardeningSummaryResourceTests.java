@@ -12,13 +12,13 @@ public final class BinaryHardeningSummaryResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BinaryHardeningSummaryResource model = BinaryData.fromString(
-            "{\"summaryType\":\"BinaryHardening\",\"totalFiles\":1248291372184779781,\"notExecutableStackCount\":5418002986537845043,\"positionIndependentExecutableCount\":692631569824073211,\"relocationReadOnlyCount\":9032907208555956547,\"stackCanaryCount\":4855611501955594368,\"strippedBinaryCount\":3414804703443363087,\"provisioningState\":\"Failed\"}")
+            "{\"summaryType\":\"BinaryHardening\",\"totalFiles\":7606552657334268394,\"notExecutableStackCount\":1971349718738257268,\"positionIndependentExecutableCount\":8489866471664933355,\"relocationReadOnlyCount\":8674928390516574118,\"stackCanaryCount\":250164414285445387,\"strippedBinaryCount\":960595332999400866,\"provisioningState\":\"Extracting\"}")
             .toObject(BinaryHardeningSummaryResource.class);
-        Assertions.assertEquals(1248291372184779781L, model.totalFiles());
-        Assertions.assertEquals(5418002986537845043L, model.notExecutableStackCount());
-        Assertions.assertEquals(692631569824073211L, model.positionIndependentExecutableCount());
-        Assertions.assertEquals(9032907208555956547L, model.relocationReadOnlyCount());
-        Assertions.assertEquals(4855611501955594368L, model.stackCanaryCount());
-        Assertions.assertEquals(3414804703443363087L, model.strippedBinaryCount());
+        Assertions.assertEquals(7606552657334268394L, model.totalFiles());
+        Assertions.assertEquals(1971349718738257268L, model.notExecutableStackCount());
+        Assertions.assertEquals(8489866471664933355L, model.positionIndependentExecutableCount());
+        Assertions.assertEquals(8674928390516574118L, model.relocationReadOnlyCount());
+        Assertions.assertEquals(250164414285445387L, model.stackCanaryCount());
+        Assertions.assertEquals(960595332999400866L, model.strippedBinaryCount());
     }
 }

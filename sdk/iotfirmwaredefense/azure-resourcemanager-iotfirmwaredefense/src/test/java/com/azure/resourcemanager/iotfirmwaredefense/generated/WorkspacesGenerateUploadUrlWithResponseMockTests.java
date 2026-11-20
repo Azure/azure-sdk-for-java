@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class WorkspacesGenerateUploadUrlWithResponseMockTests {
     @Test
     public void testGenerateUploadUrlWithResponse() throws Exception {
-        String responseStr = "{\"url\":\"q\"}";
+        String responseStr = "{\"url\":\"tor\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class WorkspacesGenerateUploadUrlWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UrlToken response = manager.workspaces()
-            .generateUploadUrlWithResponse("bxmubyynt", "lrb",
-                new GenerateUploadUrlRequest().withFirmwareId("koievseo"), com.azure.core.util.Context.NONE)
+            .generateUploadUrlWithResponse("vkg", "u", new GenerateUploadUrlRequest().withFirmwareId("dknnqvsazn"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

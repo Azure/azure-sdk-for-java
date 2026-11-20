@@ -26,6 +26,17 @@ public final class CvssScore implements JsonSerializable<CvssScore> {
      */
     private Double score;
 
+    /*
+     * The CVSS vector for the specified score
+     */
+    private String vectorString;
+
+    /*
+     * The likelihood of the vulnerability being attacked based on information regarding the availability of
+     * exploitation code/processes and the state of exploitation techniques.
+     */
+    private ExploitMaturityLevel exploitMaturity;
+
     /**
      * Creates an instance of CvssScore class.
      */
@@ -51,6 +62,25 @@ public final class CvssScore implements JsonSerializable<CvssScore> {
     }
 
     /**
+     * Get the vectorString property: The CVSS vector for the specified score.
+     * 
+     * @return the vectorString value.
+     */
+    public String vectorString() {
+        return this.vectorString;
+    }
+
+    /**
+     * Get the exploitMaturity property: The likelihood of the vulnerability being attacked based on information
+     * regarding the availability of exploitation code/processes and the state of exploitation techniques.
+     * 
+     * @return the exploitMaturity value.
+     */
+    public ExploitMaturityLevel exploitMaturity() {
+        return this.exploitMaturity;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -58,6 +88,9 @@ public final class CvssScore implements JsonSerializable<CvssScore> {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("version", this.version);
         jsonWriter.writeNumberField("score", this.score);
+        jsonWriter.writeStringField("vectorString", this.vectorString);
+        jsonWriter.writeStringField("exploitMaturity",
+            this.exploitMaturity == null ? null : this.exploitMaturity.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -81,6 +114,10 @@ public final class CvssScore implements JsonSerializable<CvssScore> {
                     deserializedCvssScore.version = reader.getInt();
                 } else if ("score".equals(fieldName)) {
                     deserializedCvssScore.score = reader.getNullable(JsonReader::getDouble);
+                } else if ("vectorString".equals(fieldName)) {
+                    deserializedCvssScore.vectorString = reader.getString();
+                } else if ("exploitMaturity".equals(fieldName)) {
+                    deserializedCvssScore.exploitMaturity = ExploitMaturityLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

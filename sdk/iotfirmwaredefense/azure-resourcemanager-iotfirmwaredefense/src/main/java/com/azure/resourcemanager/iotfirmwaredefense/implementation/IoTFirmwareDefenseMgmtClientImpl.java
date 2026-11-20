@@ -36,6 +36,7 @@ import com.azure.resourcemanager.iotfirmwaredefense.fluent.OperationsClient;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.PasswordHashesClient;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.SbomComponentsClient;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.SummariesClient;
+import com.azure.resourcemanager.iotfirmwaredefense.fluent.UnsafeFunctionCallsClient;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.UsageMetricsClient;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.WorkspacesClient;
 import java.io.IOException;
@@ -291,6 +292,20 @@ public final class IoTFirmwareDefenseMgmtClientImpl implements IoTFirmwareDefens
     }
 
     /**
+     * The UnsafeFunctionCallsClient object to access its operations.
+     */
+    private final UnsafeFunctionCallsClient unsafeFunctionCalls;
+
+    /**
+     * Gets the UnsafeFunctionCallsClient object to access its operations.
+     * 
+     * @return the UnsafeFunctionCallsClient object.
+     */
+    public UnsafeFunctionCallsClient getUnsafeFunctionCalls() {
+        return this.unsafeFunctionCalls;
+    }
+
+    /**
      * Initializes an instance of IoTFirmwareDefenseMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -307,7 +322,7 @@ public final class IoTFirmwareDefenseMgmtClientImpl implements IoTFirmwareDefens
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-08-02";
+        this.apiVersion = "2026-06-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.firmwares = new FirmwaresClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
@@ -319,6 +334,7 @@ public final class IoTFirmwareDefenseMgmtClientImpl implements IoTFirmwareDefens
         this.sbomComponents = new SbomComponentsClientImpl(this);
         this.summaries = new SummariesClientImpl(this);
         this.usageMetrics = new UsageMetricsClientImpl(this);
+        this.unsafeFunctionCalls = new UnsafeFunctionCallsClientImpl(this);
     }
 
     /**

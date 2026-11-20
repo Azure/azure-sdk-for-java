@@ -12,6 +12,10 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveComponent;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveLink;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CvssScore;
+import com.azure.resourcemanager.iotfirmwaredefense.models.CweProperties;
+import com.azure.resourcemanager.iotfirmwaredefense.models.EpssProperties;
+import com.azure.resourcemanager.iotfirmwaredefense.models.ExploitMaturityLevel;
+import com.azure.resourcemanager.iotfirmwaredefense.models.KevProperties;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -57,22 +61,22 @@ public final class CveResult implements JsonSerializable<CveResult> {
     private CveComponent component;
 
     /*
-     * Legacy property for the effective CVE score.
+     * Legacy property for the effective CVE score (deprecated).
      */
     private String cvssScore;
 
     /*
-     * Legacy property for the CVE CVSS version 2 score, if one existed.
+     * Legacy property for the CVE CVSS version 2 score, if one existed. (deprecated)
      */
     private String cvssV2Score;
 
     /*
-     * Legacy property for the CVE CVSS version 3 score, if one existed.
+     * Legacy property for the CVE CVSS version 3 score, if one existed. (deprecated)
      */
     private String cvssV3Score;
 
     /*
-     * Legacy property for the what CVSS version score was stored in the cvssScore property
+     * Legacy property for the what CVSS version score was stored in the cvssScore property (deprecated).
      */
     private String cvssVersion;
 
@@ -85,6 +89,16 @@ public final class CveResult implements JsonSerializable<CveResult> {
      * The version of the effectiveCvssScore property.
      */
     private Integer effectiveCvssVersion;
+
+    /*
+     * The CVSS vector string for the effectiveCvssVersion.
+     */
+    private String effectiveVectorString;
+
+    /*
+     * The CVSS exploit maturity value for the effectiveCvssVersion.
+     */
+    private ExploitMaturityLevel effectiveExploitMaturity;
 
     /*
      * All known CVSS scores for the CVE.
@@ -100,6 +114,26 @@ public final class CveResult implements JsonSerializable<CveResult> {
      * The CVE description.
      */
     private String description;
+
+    /*
+     * EPSS (Exploit Prediction Scoring System) information related to this CVE.
+     */
+    private EpssProperties epss;
+
+    /*
+     * CWE (Common Weakness Enumeration) information related to this CVE.
+     */
+    private List<CweProperties> cwes;
+
+    /*
+     * KEV (Known Exploited Vulnerabilities) information related to this CVE.
+     */
+    private KevProperties kev;
+
+    /*
+     * The component versions in which this weakness was fixed, if any.
+     */
+    private List<String> fixedInVersions;
 
     /*
      * The status of the last operation.
@@ -176,7 +210,7 @@ public final class CveResult implements JsonSerializable<CveResult> {
     }
 
     /**
-     * Get the cvssScore property: Legacy property for the effective CVE score.
+     * Get the cvssScore property: Legacy property for the effective CVE score (deprecated).
      * 
      * @return the cvssScore value.
      */
@@ -185,7 +219,7 @@ public final class CveResult implements JsonSerializable<CveResult> {
     }
 
     /**
-     * Get the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed.
+     * Get the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed. (deprecated).
      * 
      * @return the cvssV2Score value.
      */
@@ -194,7 +228,7 @@ public final class CveResult implements JsonSerializable<CveResult> {
     }
 
     /**
-     * Get the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed.
+     * Get the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed. (deprecated).
      * 
      * @return the cvssV3Score value.
      */
@@ -204,7 +238,7 @@ public final class CveResult implements JsonSerializable<CveResult> {
 
     /**
      * Get the cvssVersion property: Legacy property for the what CVSS version score was stored in the cvssScore
-     * property.
+     * property (deprecated).
      * 
      * @return the cvssVersion value.
      */
@@ -228,6 +262,24 @@ public final class CveResult implements JsonSerializable<CveResult> {
      */
     public Integer effectiveCvssVersion() {
         return this.effectiveCvssVersion;
+    }
+
+    /**
+     * Get the effectiveVectorString property: The CVSS vector string for the effectiveCvssVersion.
+     * 
+     * @return the effectiveVectorString value.
+     */
+    public String effectiveVectorString() {
+        return this.effectiveVectorString;
+    }
+
+    /**
+     * Get the effectiveExploitMaturity property: The CVSS exploit maturity value for the effectiveCvssVersion.
+     * 
+     * @return the effectiveExploitMaturity value.
+     */
+    public ExploitMaturityLevel effectiveExploitMaturity() {
+        return this.effectiveExploitMaturity;
     }
 
     /**
@@ -258,6 +310,42 @@ public final class CveResult implements JsonSerializable<CveResult> {
     }
 
     /**
+     * Get the epss property: EPSS (Exploit Prediction Scoring System) information related to this CVE.
+     * 
+     * @return the epss value.
+     */
+    public EpssProperties epss() {
+        return this.epss;
+    }
+
+    /**
+     * Get the cwes property: CWE (Common Weakness Enumeration) information related to this CVE.
+     * 
+     * @return the cwes value.
+     */
+    public List<CweProperties> cwes() {
+        return this.cwes;
+    }
+
+    /**
+     * Get the kev property: KEV (Known Exploited Vulnerabilities) information related to this CVE.
+     * 
+     * @return the kev value.
+     */
+    public KevProperties kev() {
+        return this.kev;
+    }
+
+    /**
+     * Get the fixedInVersions property: The component versions in which this weakness was fixed, if any.
+     * 
+     * @return the fixedInVersions value.
+     */
+    public List<String> fixedInVersions() {
+        return this.fixedInVersions;
+    }
+
+    /**
      * Get the provisioningState property: The status of the last operation.
      * 
      * @return the provisioningState value.
@@ -285,8 +373,16 @@ public final class CveResult implements JsonSerializable<CveResult> {
         jsonWriter.writeStringField("cvssVersion", this.cvssVersion);
         jsonWriter.writeNumberField("effectiveCvssScore", this.effectiveCvssScore);
         jsonWriter.writeNumberField("effectiveCvssVersion", this.effectiveCvssVersion);
+        jsonWriter.writeStringField("effectiveVectorString", this.effectiveVectorString);
+        jsonWriter.writeStringField("effectiveExploitMaturity",
+            this.effectiveExploitMaturity == null ? null : this.effectiveExploitMaturity.toString());
         jsonWriter.writeArrayField("cvssScores", this.cvssScores, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("epss", this.epss);
+        jsonWriter.writeArrayField("cwes", this.cwes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("kev", this.kev);
+        jsonWriter.writeArrayField("fixedInVersions", this.fixedInVersions,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -331,6 +427,11 @@ public final class CveResult implements JsonSerializable<CveResult> {
                     deserializedCveResult.effectiveCvssScore = reader.getNullable(JsonReader::getDouble);
                 } else if ("effectiveCvssVersion".equals(fieldName)) {
                     deserializedCveResult.effectiveCvssVersion = reader.getNullable(JsonReader::getInt);
+                } else if ("effectiveVectorString".equals(fieldName)) {
+                    deserializedCveResult.effectiveVectorString = reader.getString();
+                } else if ("effectiveExploitMaturity".equals(fieldName)) {
+                    deserializedCveResult.effectiveExploitMaturity
+                        = ExploitMaturityLevel.fromString(reader.getString());
                 } else if ("cvssScores".equals(fieldName)) {
                     List<CvssScore> cvssScores = reader.readArray(reader1 -> CvssScore.fromJson(reader1));
                     deserializedCveResult.cvssScores = cvssScores;
@@ -339,6 +440,16 @@ public final class CveResult implements JsonSerializable<CveResult> {
                     deserializedCveResult.links = links;
                 } else if ("description".equals(fieldName)) {
                     deserializedCveResult.description = reader.getString();
+                } else if ("epss".equals(fieldName)) {
+                    deserializedCveResult.epss = EpssProperties.fromJson(reader);
+                } else if ("cwes".equals(fieldName)) {
+                    List<CweProperties> cwes = reader.readArray(reader1 -> CweProperties.fromJson(reader1));
+                    deserializedCveResult.cwes = cwes;
+                } else if ("kev".equals(fieldName)) {
+                    deserializedCveResult.kev = KevProperties.fromJson(reader);
+                } else if ("fixedInVersions".equals(fieldName)) {
+                    List<String> fixedInVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCveResult.fixedInVersions = fixedInVersions;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedCveResult.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else {
