@@ -1,14 +1,28 @@
 # Release History
 
-## 2.57.0-beta.2 (Unreleased)
+## 2.57.0 (2026-11-20)
+
+- Package api-version 2026-11-01.
 
 ### Features Added
 
-### Breaking Changes
+* `models.VirtualNetworkRule` was added
 
-### Bugs Fixed
+* `models.RegionalEndpoints` was added
 
-### Other Changes
+* `models.EndpointProtocol` was added
+
+#### `models.RegistryUpdateParameters` was modified
+
+* `withEndpointProtocol(models.EndpointProtocol)` was added
+* `endpointProtocol()` was added
+* `withRegionalEndpoints(models.RegionalEndpoints)` was added
+* `regionalEndpoints()` was added
+
+#### `models.NetworkRuleSet` was modified
+
+* `withVirtualNetworkRules(java.util.List)` was added
+* `virtualNetworkRules()` was added
 
 ## 2.57.0-beta.1 (2026-11-09)
 

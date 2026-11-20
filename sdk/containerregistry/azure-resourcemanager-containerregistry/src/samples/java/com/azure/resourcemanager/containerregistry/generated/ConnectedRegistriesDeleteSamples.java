@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class ConnectedRegistriesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-10-15-preview/ConnectedRegistryDelete.json
+     * x-ms-original-file: 2026-11-01/ConnectedRegistryDelete.json
      */
     /**
      * Sample code: ConnectedRegistryDelete.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-10-15-preview/OperationList.json
+     * x-ms-original-file: 2026-11-01/OperationList.json
      */
     /**
      * Sample code: OperationList.
