@@ -33,8 +33,8 @@
 
 - Updated Azure SDK dependency versions to the latest releases.
 - Added new library entries to the BOM:
-    - [`azure-ai-agents`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-agents/README.md)
-    - [`azure-ai-projects`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-projects/README.md)
+    - [`azure-ai-agents`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-agents/README.md) 
+    - [`azure-ai-projects`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-projects/README.md)   
 
 ## 1.3.5 (2026-03-05)
 
@@ -42,7 +42,7 @@
 
 - Updated Azure SDK dependency versions to the latest releases.
 - Added a new library entry to the BOM:
-    - [`azure-ai-contentunderstanding`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md)
+    - [`azure-ai-contentunderstanding`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md)  
 
 ## 1.3.4 (2026-01-30)
 
@@ -114,7 +114,7 @@
 
 ### Dependency Updates
 
-- Added a new libary entry to the BOM:
+- Added a new library entry to the BOM:
   - [azure-health-deidentification](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/README.md)
 
 - Updated Azure SDK dependency versions to the latest releases.
