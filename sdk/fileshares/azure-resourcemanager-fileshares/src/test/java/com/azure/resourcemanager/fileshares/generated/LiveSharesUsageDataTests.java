@@ -12,7 +12,7 @@ public final class LiveSharesUsageDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LiveSharesUsageData model
-            = BinaryData.fromString("{\"fileShareCount\":825397815}").toObject(LiveSharesUsageData.class);
-        Assertions.assertEquals(825397815, model.fileShareCount());
+            = BinaryData.fromString("{\"fileShareCount\":580602799}").toObject(LiveSharesUsageData.class);
+        Assertions.assertEquals(580602799, model.fileShareCount());
     }
 }

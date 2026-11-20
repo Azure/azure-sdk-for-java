@@ -17,6 +17,11 @@ public final class MediaTier extends ExpandableStringEnum<MediaTier> {
     public static final MediaTier SSD = fromString("SSD");
 
     /**
+     * HDD media tier.
+     */
+    public static final MediaTier HDD = fromString("HDD");
+
+    /**
      * Creates a new instance of MediaTier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

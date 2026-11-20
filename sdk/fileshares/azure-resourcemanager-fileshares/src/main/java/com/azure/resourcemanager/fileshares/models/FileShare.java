@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.fileshares.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -55,6 +56,13 @@ public interface FileShare {
      * @return the properties value.
      */
     FileShareProperties properties();
+
+    /**
+     * Gets the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -146,7 +154,8 @@ public interface FileShare {
          * The stage of the FileShare definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              * 
@@ -188,6 +197,19 @@ public interface FileShare {
              */
             WithCreate withProperties(FileShareProperties properties);
         }
+
+        /**
+         * The stage of the FileShare definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identities assigned to this resource..
+             * 
+             * @param identity The managed service identities assigned to this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
     }
 
     /**
@@ -200,7 +222,7 @@ public interface FileShare {
     /**
      * The template for FileShare update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -235,6 +257,19 @@ public interface FileShare {
         }
 
         /**
+         * The stage of the FileShare update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identities assigned to this resource..
+             * 
+             * @param identity The managed service identities assigned to this resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
          * The stage of the FileShare update allowing to specify properties.
          */
         interface WithProperties {
@@ -262,4 +297,47 @@ public interface FileShare {
      * @return the refreshed resource.
      */
     FileShare refresh(Context context);
+
+    /**
+     * Starts a redundancy conversion for the file share.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> startRedundancyConversionWithResponse(StartRedundancyConversionRequest body, Context context);
+
+    /**
+     * Starts a redundancy conversion for the file share.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startRedundancyConversion(StartRedundancyConversionRequest body);
+
+    /**
+     * Gets the status and details of the current or most recent redundancy conversion for the file share.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and details of the current or most recent redundancy conversion for the file share along with
+     * {@link Response}.
+     */
+    Response<RedundancyConversionStatusResponse> getRedundancyConversionStatusWithResponse(Context context);
+
+    /**
+     * Gets the status and details of the current or most recent redundancy conversion for the file share.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status and details of the current or most recent redundancy conversion for the file share.
+     */
+    RedundancyConversionStatusResponse getRedundancyConversionStatus();
 }

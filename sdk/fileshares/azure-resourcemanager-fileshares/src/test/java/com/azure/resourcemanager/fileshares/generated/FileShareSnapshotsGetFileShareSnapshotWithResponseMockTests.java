@@ -21,7 +21,7 @@ public final class FileShareSnapshotsGetFileShareSnapshotWithResponseMockTests {
     @Test
     public void testGetFileShareSnapshotWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"snapshotTime\":\"wiwubm\",\"initiatorId\":\"besldnkwwtppjflc\",\"metadata\":{\"mkqzeqqkdltfzxmh\":\"aokonzmnsik\",\"gureodkwobdag\":\"v\",\"gqxndlkzgxhuripl\":\"tibqdxbxwakb\",\"bxmubyynt\":\"podxunkb\"}},\"id\":\"rbqtkoie\",\"name\":\"seotgqrllt\",\"type\":\"u\"}";
+            = "{\"properties\":{\"snapshotTime\":\"uhavhql\",\"initiatorId\":\"humaqolbgyc\",\"metadata\":{\"l\":\"ertgccymva\",\"lfmmdnbbglzpswi\":\"ssl\",\"cwyhzdxssa\":\"d\",\"od\":\"bzmnvdfznud\"}},\"id\":\"zbn\",\"name\":\"blylpstdbh\",\"type\":\"xsrz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class FileShareSnapshotsGetFileShareSnapshotWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FileShareSnapshot response = manager.fileShareSnapshots()
-            .getFileShareSnapshotWithResponse("emwabnet", "hhszh", "d", com.azure.core.util.Context.NONE)
+            .getFileShareSnapshotWithResponse("oygmift", "nzdndslgna", "qig", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("besldnkwwtppjflc", response.properties().initiatorId());
-        Assertions.assertEquals("aokonzmnsik", response.properties().metadata().get("mkqzeqqkdltfzxmh"));
+        Assertions.assertEquals("humaqolbgyc", response.properties().initiatorId());
+        Assertions.assertEquals("ertgccymva", response.properties().metadata().get("l"));
     }
 }

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.fileshares.fluent.InformationalOperationsClient
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareLimitsResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareProvisioningRecommendationResponseInner;
 import com.azure.resourcemanager.fileshares.fluent.models.FileShareUsageDataResponseInner;
+import com.azure.resourcemanager.fileshares.models.FileShareLimitsRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareLimitsResponse;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationRequest;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationResponse;
@@ -47,8 +48,10 @@ public final class InformationalOperationsImpl implements InformationalOperation
         }
     }
 
-    public Response<FileShareLimitsResponse> getLimitsWithResponse(String location, Context context) {
-        Response<FileShareLimitsResponseInner> inner = this.serviceClient().getLimitsWithResponse(location, context);
+    public Response<FileShareLimitsResponse> getLimitsWithResponse(String location, FileShareLimitsRequest body,
+        Context context) {
+        Response<FileShareLimitsResponseInner> inner
+            = this.serviceClient().getLimitsWithResponse(location, body, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
             new FileShareLimitsResponseImpl(inner.getValue(), this.manager()));
     }
