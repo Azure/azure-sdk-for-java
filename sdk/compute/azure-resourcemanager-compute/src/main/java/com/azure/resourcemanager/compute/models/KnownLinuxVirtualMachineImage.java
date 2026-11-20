@@ -43,7 +43,11 @@ public enum KnownLinuxVirtualMachineImage {
     /** Oracle Linux 8.1. */
     ORACLE_LINUX_8_1("Oracle", "Oracle-Linux", "81"),
 
-    /** UbuntuServer 18.04LTS Gen2. */
+    /**
+     * UbuntuServer 18.04LTS Gen2.
+     * @deprecated use UBUNTU_SERVER_20_04_LTS.
+     */
+    @Deprecated
     UBUNTU_SERVER_18_04_LTS_GEN2("Canonical", "UbuntuServer", "18_04-lts-gen2"),
     /** UbuntuServer 20.04LTS. */
     UBUNTU_SERVER_20_04_LTS("Canonical", "0001-com-ubuntu-server-focal", "20_04-lts"),

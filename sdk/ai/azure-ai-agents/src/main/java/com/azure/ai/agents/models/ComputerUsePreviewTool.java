@@ -11,8 +11,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
+ * Computer use preview
+ *
  * A tool that controls a virtual computer. Learn more about the [computer
- * tool](https://platform.openai.com/docs/guides/tools-computer-use).
+ * tool](https://developers.openai.com/api/docs/guides/tools-computer-use).
  */
 @Immutable
 public final class ComputerUsePreviewTool extends Tool {
@@ -27,19 +29,19 @@ public final class ComputerUsePreviewTool extends Tool {
      * The type of computer environment to control.
      */
     @Generated
-    private final ComputerUsePreviewToolEnvironment environment;
+    private final ComputerEnvironment environment;
 
     /*
      * The width of the computer display.
      */
     @Generated
-    private final int displayWidth;
+    private final long displayWidth;
 
     /*
      * The height of the computer display.
      */
     @Generated
-    private final int displayHeight;
+    private final long displayHeight;
 
     /**
      * Creates an instance of ComputerUsePreviewTool class.
@@ -49,7 +51,7 @@ public final class ComputerUsePreviewTool extends Tool {
      * @param displayHeight the displayHeight value to set.
      */
     @Generated
-    public ComputerUsePreviewTool(ComputerUsePreviewToolEnvironment environment, int displayWidth, int displayHeight) {
+    public ComputerUsePreviewTool(ComputerEnvironment environment, long displayWidth, long displayHeight) {
         this.environment = environment;
         this.displayWidth = displayWidth;
         this.displayHeight = displayHeight;
@@ -72,7 +74,7 @@ public final class ComputerUsePreviewTool extends Tool {
      * @return the environment value.
      */
     @Generated
-    public ComputerUsePreviewToolEnvironment getEnvironment() {
+    public ComputerEnvironment getEnvironment() {
         return this.environment;
     }
 
@@ -82,7 +84,7 @@ public final class ComputerUsePreviewTool extends Tool {
      * @return the displayWidth value.
      */
     @Generated
-    public int getDisplayWidth() {
+    public long getDisplayWidth() {
         return this.displayWidth;
     }
 
@@ -92,7 +94,7 @@ public final class ComputerUsePreviewTool extends Tool {
      * @return the displayHeight value.
      */
     @Generated
-    public int getDisplayHeight() {
+    public long getDisplayHeight() {
         return this.displayHeight;
     }
 
@@ -104,8 +106,8 @@ public final class ComputerUsePreviewTool extends Tool {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("environment", this.environment == null ? null : this.environment.toString());
-        jsonWriter.writeIntField("display_width", this.displayWidth);
-        jsonWriter.writeIntField("display_height", this.displayHeight);
+        jsonWriter.writeLongField("display_width", this.displayWidth);
+        jsonWriter.writeLongField("display_height", this.displayHeight);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -122,19 +124,19 @@ public final class ComputerUsePreviewTool extends Tool {
     @Generated
     public static ComputerUsePreviewTool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ComputerUsePreviewToolEnvironment environment = null;
-            int displayWidth = 0;
-            int displayHeight = 0;
+            ComputerEnvironment environment = null;
+            long displayWidth = 0L;
+            long displayHeight = 0L;
             ToolType type = ToolType.COMPUTER_USE_PREVIEW;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("environment".equals(fieldName)) {
-                    environment = ComputerUsePreviewToolEnvironment.fromString(reader.getString());
+                    environment = ComputerEnvironment.fromString(reader.getString());
                 } else if ("display_width".equals(fieldName)) {
-                    displayWidth = reader.getInt();
+                    displayWidth = reader.getLong();
                 } else if ("display_height".equals(fieldName)) {
-                    displayHeight = reader.getInt();
+                    displayHeight = reader.getLong();
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else {

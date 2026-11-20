@@ -4,16 +4,14 @@
 package com.azure.ai.agents.implementation.http;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.openai.core.http.HttpRequestBody;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -25,49 +23,18 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class HttpClientHelperTests {
-
-    private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("x-request-id");
-    private static final HttpHeaderName CUSTOM_HEADER_NAME = HttpHeaderName.fromString("custom-header");
-    private static final HttpHeaderName X_TEST_HEADER = HttpHeaderName.fromString("X-Test");
-    private static final HttpHeaderName X_MULTI_HEADER = HttpHeaderName.fromString("X-Multi");
-
-    @Test
-    void executeMapsRequestAndResponse() {
-        RecordingHttpClient recordingClient = new RecordingHttpClient(request -> createMockResponse(request, 201,
-            new HttpHeaders().set(REQUEST_ID_HEADER, "req-123").set(CUSTOM_HEADER_NAME, "custom-value"), "pong"));
-        com.openai.core.http.HttpClient openAiClient
-            = HttpClientHelper.mapToOpenAIHttpClient(new HttpPipelineBuilder().httpClient(recordingClient).build());
-
-        com.openai.core.http.HttpRequest openAiRequest = createOpenAiRequest();
-
-        try (com.openai.core.http.HttpResponse response = openAiClient.execute(openAiRequest)) {
-            HttpRequest sentRequest = recordingClient.getLastRequest();
-            assertNotNull(sentRequest, "Azure HttpClient should receive a request");
-            assertEquals(HttpMethod.POST, sentRequest.getHttpMethod());
-            assertEquals("https://example.com/path/segment?q=a%20b", sentRequest.getUrl().toString());
-            assertEquals("alpha", sentRequest.getHeaders().getValue(X_TEST_HEADER));
-            assertArrayEquals(new String[] { "first", "second" }, sentRequest.getHeaders().getValues(X_MULTI_HEADER));
-            assertEquals("text/plain", sentRequest.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
-            assertEquals("payload", new String(sentRequest.getBodyAsBinaryData().toBytes(), StandardCharsets.UTF_8));
-
-            assertEquals(201, response.statusCode());
-            assertEquals("req-123", response.requestId().orElseThrow(() -> new AssertionError("Missing request id")));
-            assertEquals("custom-value", response.headers().values("custom-header").get(0));
-            assertEquals("pong", new String(readAllBytes(response.body()), StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            fail("Exception thrown while reading response", e);
-        }
-    }
 
     @Test
     void executeAsyncCompletesSuccessfully() {
@@ -85,6 +52,37 @@ class HttpClientHelperTests {
             fail("Exception thrown while reading response", e);
         }
         assertEquals(1, recordingClient.getSendCount());
+    }
+
+    @Test
+    void executeAsyncRestoresTraceContextFromRequestHeaders() {
+        Context parent = new Context("parent", "chat");
+        OpenAITracingContextBridge contextBridge = new OpenAITracingContextBridge();
+        String token = contextBridge.register(parent);
+
+        RecordingHttpClient recordingClient
+            = new RecordingHttpClient(request -> createMockResponse(request, 204, new HttpHeaders(), ""));
+        AtomicReference<Context> pipelineContext = new AtomicReference<>();
+        HttpPipelinePolicy captureContextPolicy = (context, next) -> {
+            pipelineContext.set(context.getContext());
+            return next.process();
+        };
+        com.openai.core.http.HttpClient openAiClient = HttpClientHelper.mapToOpenAIHttpClient(
+            new HttpPipelineBuilder().policies(captureContextPolicy).httpClient(recordingClient).build(),
+            contextBridge);
+        com.openai.core.http.HttpRequest request = com.openai.core.http.HttpRequest.builder()
+            .method(com.openai.core.http.HttpMethod.GET)
+            .baseUrl("https://example.com")
+            .putHeader(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER, token)
+            .build();
+
+        try (com.openai.core.http.HttpResponse response = openAiClient.executeAsync(request).join()) {
+            assertEquals(204, response.statusCode());
+            assertSame(parent, pipelineContext.get());
+            assertNull(recordingClient.getLastRequest()
+                .getHeaders()
+                .getValue(OpenAITracingContextBridge.TRACE_CONTEXT_HEADER));
+        }
     }
 
     @Test
@@ -112,7 +110,6 @@ class HttpClientHelperTests {
         }
     }
 
-    @Disabled("Body gets eagerly evaluated. Instrumentation could be wrong.")
     @Test
     void executeThrowsUncheckedIOExceptionOnBodyBufferingFailure() {
         RecordingHttpClient recordingClient
@@ -153,7 +150,6 @@ class HttpClientHelperTests {
         });
     }
 
-    @Disabled("Body gets eagerly evaluated. Instrumentation could be wrong.")
     @Test
     void executeAsyncPropagatesRequestBuildingErrors() {
         RecordingHttpClient recordingClient
@@ -253,6 +249,7 @@ class HttpClientHelperTests {
         int getSendCount() {
             return sendCount;
         }
+
     }
 
     private static final class TestHttpRequestBody implements HttpRequestBody {

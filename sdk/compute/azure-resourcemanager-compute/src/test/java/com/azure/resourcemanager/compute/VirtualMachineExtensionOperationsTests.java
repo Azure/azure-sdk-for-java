@@ -18,6 +18,7 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -313,6 +314,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
             vm.listExtensions().values().stream().allMatch(extension -> extension.getInstanceView() == null));
     }
 
+    @Disabled("Forbidden to create secret")
     @Test
     public void canIgnoreInvalidJson() throws IOException {
         String vmName = generateRandomResourceName("javavm", 15);

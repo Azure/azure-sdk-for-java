@@ -179,8 +179,8 @@ public class RecoveryServicesBackupManagerTests extends TestProxyTestBase {
 
             protectionPolicyResource = recoveryServicesBackupManager.protectionPolicies()
                 .define(policyName)
-                .withRegion(REGION)
                 .withExistingVault(vaultName, resourceGroupName)
+                .withRegion(REGION)
                 .withProperties(new AzureVmWorkloadProtectionPolicy().withWorkLoadType(WorkloadType.SQLDATA_BASE)
                     .withSettings(new Settings().withTimeZone("Pacific Standard Time").withIssqlcompression(false))
                     .withSubProtectionPolicy(lstSubProtectionPolicy))

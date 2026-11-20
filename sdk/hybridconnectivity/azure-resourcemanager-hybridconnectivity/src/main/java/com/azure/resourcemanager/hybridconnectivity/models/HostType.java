@@ -17,6 +17,11 @@ public final class HostType extends ExpandableStringEnum<HostType> {
     public static final HostType AWS = fromString("AWS");
 
     /**
+     * GCP state.
+     */
+    public static final HostType GCP = fromString("GCP");
+
+    /**
      * Creates a new instance of HostType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

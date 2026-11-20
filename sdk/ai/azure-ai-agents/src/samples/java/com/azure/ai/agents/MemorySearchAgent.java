@@ -3,9 +3,8 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.MemorySearchTool;
+import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
 import com.azure.ai.agents.models.MemoryStoreDefaultOptions;
 import com.azure.ai.agents.models.MemoryStoreDetails;
@@ -13,9 +12,11 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.services.blocking.ConversationService;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -28,23 +29,22 @@ public class MemorySearchAgent {
 
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = configuration.get("AZURE_AGENTS_ENDPOINT");
-        String agentModel = configuration.get("AZURE_AGENT_MODEL");
+        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
+        String agentModel = configuration.get("FOUNDRY_MODEL_NAME");
         String chatModel = configuration.get("AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME");
         String embeddingModel = configuration.get("AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .serviceVersion(AgentsServiceVersion.V2025_05_15_PREVIEW);
+                .serviceVersion(AgentsServiceVersion.getLatest());
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
-        ResponsesClient responsesClient = builder.buildResponsesClient();
-
+        BetaMemoryStoresClient memoryStoresClient = builder.beta().buildBetaMemoryStoresClient();
         String memoryStoreName = "my_memory_store";
         String agentName = "MyAgent";
+        OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentName);
+        ConversationService conversationService = openAIClient.conversations();
         String description = "Example memory store for conversations";
         String scope = "user_123";
 
@@ -62,8 +62,8 @@ public class MemorySearchAgent {
                     = memoryStoresClient.createMemoryStore(memoryStoreName, definition, description, null);
             System.out.printf("Created memory store: %s (%s)\n", memoryStore.getName(), memoryStore.getId());
 
-            MemorySearchTool tool = new MemorySearchTool(memoryStore.getName(), scope)
-                    .setUpdateDelay(1); // Wait 1 second of inactivity before extracting memories
+            MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName(), scope)
+                    .setUpdateDelaySeconds(1); // Wait 1 second of inactivity before extracting memories
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(agentModel)
                     .setInstructions("You are a helpful assistant that answers general questions.")
@@ -72,32 +72,37 @@ public class MemorySearchAgent {
             agent = agentsClient.createAgentVersion(agentName, agentDefinition);
             System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
 
-            AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
             firstConversationId = conversation.id();
             System.out.println("Created conversation (id: " + firstConversationId + ")");
 
 
-            Response response = responsesClient.createWithAgentConversation(agentReference, firstConversationId,
-                    ResponseCreateParams.builder().input("I prefer dark roast coffee"));
+            Response response = openAIClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .conversation(firstConversationId)
+                        .input("I prefer dark roast coffee")
+                        .build());
             System.out.println("Response output: " + getResponseText(response));
 
             System.out.println("Waiting for memories to be stored...");
             sleepSeconds(MEMORY_WRITE_DELAY_SECONDS);
 
-            Conversation newConversation = conversationsClient.getConversationService().create();
+            Conversation newConversation = conversationService.create();
             followUpConversationId = newConversation.id();
             System.out.println("Created new conversation (id: " + followUpConversationId + ")");
 
-            Response followUpResponse = responsesClient.createWithAgentConversation(agentReference,
-                    followUpConversationId, ResponseCreateParams.builder().input("Please order my usual coffee"));
+            Response followUpResponse = openAIClient.responses().create(
+                    ResponseCreateParams.builder()
+                        .conversation(followUpConversationId)
+                        .input("Please order my usual coffee")
+                        .build());
             System.out.println("Response output: " + getResponseText(followUpResponse));
 
             System.out.println("Sample completed successfully.");
         } finally {
-            deleteConversation(conversationsClient, firstConversationId);
-            deleteConversation(conversationsClient, followUpConversationId);
+            deleteConversation(conversationService, firstConversationId);
+            deleteConversation(conversationService, followUpConversationId);
             if (agent != null) {
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
                 System.out.println("Agent deleted");
@@ -106,7 +111,7 @@ public class MemorySearchAgent {
         }
     }
 
-    private static void cleanupMemoryStore(MemoryStoresClient memoryStoresClient, String memoryStoreName) {
+    private static void cleanupMemoryStore(BetaMemoryStoresClient memoryStoresClient, String memoryStoreName) {
         if (memoryStoreName == null) {
             return;
         }
@@ -118,12 +123,12 @@ public class MemorySearchAgent {
         }
     }
 
-    private static void deleteConversation(ConversationsClient conversationsClient, String conversationId) {
+    private static void deleteConversation(ConversationService conversationsClient, String conversationId) {
         if (conversationId == null) {
             return;
         }
         try {
-            conversationsClient.getConversationService().delete(conversationId);
+            conversationsClient.delete(conversationId);
             System.out.println("Conversation deleted (id: " + conversationId + ")");
         } catch (Exception ignored) {
             // best-effort cleanup

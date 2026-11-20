@@ -21,7 +21,7 @@ public final class AzureFunctionDefinition implements JsonSerializable<AzureFunc
      * The definition of azure function and its parameters.
      */
     @Generated
-    private final AzureFunctionDefinitionFunction function;
+    private final AzureFunctionDefinitionDetails function;
 
     /*
      * Input storage queue. The queue storage trigger runs a function as messages are added to it.
@@ -36,27 +36,12 @@ public final class AzureFunctionDefinition implements JsonSerializable<AzureFunc
     private final AzureFunctionBinding outputBinding;
 
     /**
-     * Creates an instance of AzureFunctionDefinition class.
-     *
-     * @param function the function value to set.
-     * @param inputBinding the inputBinding value to set.
-     * @param outputBinding the outputBinding value to set.
-     */
-    @Generated
-    public AzureFunctionDefinition(AzureFunctionDefinitionFunction function, AzureFunctionBinding inputBinding,
-        AzureFunctionBinding outputBinding) {
-        this.function = function;
-        this.inputBinding = inputBinding;
-        this.outputBinding = outputBinding;
-    }
-
-    /**
      * Get the function property: The definition of azure function and its parameters.
      *
      * @return the function value.
      */
     @Generated
-    public AzureFunctionDefinitionFunction getFunction() {
+    public AzureFunctionDefinitionDetails getFunction() {
         return this.function;
     }
 
@@ -107,14 +92,14 @@ public final class AzureFunctionDefinition implements JsonSerializable<AzureFunc
     @Generated
     public static AzureFunctionDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AzureFunctionDefinitionFunction function = null;
+            AzureFunctionDefinitionDetails function = null;
             AzureFunctionBinding inputBinding = null;
             AzureFunctionBinding outputBinding = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("function".equals(fieldName)) {
-                    function = AzureFunctionDefinitionFunction.fromJson(reader);
+                    function = AzureFunctionDefinitionDetails.fromJson(reader);
                 } else if ("input_binding".equals(fieldName)) {
                     inputBinding = AzureFunctionBinding.fromJson(reader);
                 } else if ("output_binding".equals(fieldName)) {
@@ -125,5 +110,20 @@ public final class AzureFunctionDefinition implements JsonSerializable<AzureFunc
             }
             return new AzureFunctionDefinition(function, inputBinding, outputBinding);
         });
+    }
+
+    /**
+     * Creates an instance of AzureFunctionDefinition class.
+     *
+     * @param function the function value to set.
+     * @param inputBinding the inputBinding value to set.
+     * @param outputBinding the outputBinding value to set.
+     */
+    @Generated
+    public AzureFunctionDefinition(AzureFunctionDefinitionDetails function, AzureFunctionBinding inputBinding,
+        AzureFunctionBinding outputBinding) {
+        this.function = function;
+        this.inputBinding = inputBinding;
+        this.outputBinding = outputBinding;
     }
 }

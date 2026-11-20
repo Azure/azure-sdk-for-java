@@ -55,7 +55,8 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
         for (KnownLinuxVirtualMachineImage image : Arrays.stream(KnownLinuxVirtualMachineImage.values())
             .filter(image -> image != KnownLinuxVirtualMachineImage.OPENSUSE_LEAP_15_1
                 && image != KnownLinuxVirtualMachineImage.SLES_15_SP1
-                && image != KnownLinuxVirtualMachineImage.ORACLE_LINUX_8_1)
+                && image != KnownLinuxVirtualMachineImage.ORACLE_LINUX_8_1
+                && image != KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS_GEN2)
             .collect(Collectors.toList())) {
 
             Mono<VirtualMachine> mono = computeManager.virtualMachines()

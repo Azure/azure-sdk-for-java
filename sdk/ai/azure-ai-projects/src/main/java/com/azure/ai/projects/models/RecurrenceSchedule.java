@@ -27,7 +27,7 @@ public class RecurrenceSchedule implements JsonSerializable<RecurrenceSchedule> 
      * Creates an instance of RecurrenceSchedule class.
      */
     @Generated
-    public RecurrenceSchedule() {
+    protected RecurrenceSchedule() {
     }
 
     /**

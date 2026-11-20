@@ -33,12 +33,8 @@ public final class SolutionConfigurationsImpl implements SolutionConfigurations 
         Context context) {
         Response<SolutionConfigurationInner> inner
             = this.serviceClient().getWithResponse(resourceUri, solutionConfiguration, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SolutionConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SolutionConfigurationImpl(inner.getValue(), this.manager()));
     }
 
     public SolutionConfiguration get(String resourceUri, String solutionConfiguration) {
