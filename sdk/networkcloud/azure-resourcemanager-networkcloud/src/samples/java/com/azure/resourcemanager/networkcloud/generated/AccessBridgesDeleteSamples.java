@@ -11,7 +11,7 @@ import com.azure.resourcemanager.networkcloud.models.AccessBridgeAllowedName;
  */
 public final class AccessBridgesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AccessBridges_Delete.json
+     * x-ms-original-file: 2026-07-01/AccessBridges_Delete.json
      */
     /**
      * Sample code: Delete access bridge.

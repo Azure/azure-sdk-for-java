@@ -52,9 +52,9 @@ public final class StacSearchParametersTests {
                 .setBoundingBox(Arrays.asList(-180.0, -90.0, 180.0, 90.0))
                 .setDatetime("2021-01-01T00:00:00Z/2021-12-31T23:59:59Z")
                 .setLimit(50)
-                .setConformanceClass(mapOf("core-item", new HashMap<>()))
-                .setQuery(mapOf("eo:cloud_cover", mapOf("lt", 20)))
-                .setFilter(mapOf("op", "<="))
+                .setConformanceClass(mapOf("core-item", BinaryData.fromObject(new HashMap<>())))
+                .setQuery(mapOf("eo:cloud_cover", BinaryData.fromObject(mapOf("lt", 20))))
+                .setFilter(mapOf("op", BinaryData.fromString("\"<=\"")))
                 .setFilterCoordinateReferenceSystem("http://www.opengis.net/def/crs/OGC/1.3/CRS84")
                 .setFilterLang(FilterLanguage.CQL2_JSON)
                 .setToken("next:abc123");

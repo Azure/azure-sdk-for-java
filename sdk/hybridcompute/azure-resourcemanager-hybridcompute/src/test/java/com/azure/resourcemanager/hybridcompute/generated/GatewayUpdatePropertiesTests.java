@@ -12,16 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayUpdateProperties model = BinaryData.fromString("{\"allowedFeatures\":[\"drhneuyow\",\"kdw\"]}")
+        GatewayUpdateProperties model = BinaryData.fromString(
+            "{\"allowedFeatures\":[\"gdyftumrtwna\",\"jslb\",\"wkojgcyztsfmzn\"],\"gatewayBypass\":[\"qphchqnrnrpxehuw\",\"ykqgaifmvik\",\"bydvkhbejdz\"]}")
             .toObject(GatewayUpdateProperties.class);
-        Assertions.assertEquals("drhneuyow", model.allowedFeatures().get(0));
+        Assertions.assertEquals("gdyftumrtwna", model.allowedFeatures().get(0));
+        Assertions.assertEquals("qphchqnrnrpxehuw", model.gatewayBypass().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GatewayUpdateProperties model
-            = new GatewayUpdateProperties().withAllowedFeatures(Arrays.asList("drhneuyow", "kdw"));
+            = new GatewayUpdateProperties().withAllowedFeatures(Arrays.asList("gdyftumrtwna", "jslb", "wkojgcyztsfmzn"))
+                .withGatewayBypass(Arrays.asList("qphchqnrnrpxehuw", "ykqgaifmvik", "bydvkhbejdz"));
         model = BinaryData.fromObject(model).toObject(GatewayUpdateProperties.class);
-        Assertions.assertEquals("drhneuyow", model.allowedFeatures().get(0));
+        Assertions.assertEquals("gdyftumrtwna", model.allowedFeatures().get(0));
+        Assertions.assertEquals("qphchqnrnrpxehuw", model.gatewayBypass().get(0));
     }
 }

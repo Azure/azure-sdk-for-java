@@ -11,7 +11,7 @@ public final class ZoneResolutionInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZoneResolutionInfo model = BinaryData.fromString(
-            "{\"mode\":\"physical\",\"requestedPhysicalZones\":[\"uckpggqoweyir\",\"hlisngw\",\"lqqmpiz\",\"uwnpqxpxiwfcng\"],\"subscriptionZoneMappings\":[{\"subscriptionId\":\"aas\",\"zoneMappings\":[{\"physicalZone\":\"xtmkzjvkviir\",\"logicalZone\":\"gfgrwsdp\"},{\"physicalZone\":\"ra\",\"logicalZone\":\"zvzbglbyv\"},{\"physicalZone\":\"ctctbrxkjz\",\"logicalZone\":\"rgxffmshkw\"},{\"physicalZone\":\"bkgozxwopdbydpi\",\"logicalZone\":\"qaclnapxbiy\"}]},{\"subscriptionId\":\"nugj\",\"zoneMappings\":[{\"physicalZone\":\"fsmfcttuxuuyi\",\"logicalZone\":\"flqo\"}]},{\"subscriptionId\":\"quvre\",\"zoneMappings\":[{\"physicalZone\":\"rnjhvsujztczytqj\",\"logicalZone\":\"w\"},{\"physicalZone\":\"auunfprnjletlx\",\"logicalZone\":\"mr\"}]}]}")
+            "{\"mode\":\"logical\",\"requestedPhysicalZones\":[\"y\",\"qnzrd\"],\"subscriptionZoneMappings\":[{\"subscriptionId\":\"ovw\",\"zoneMappings\":[{\"physicalZone\":\"nptgoeiybba\",\"logicalZone\":\"pfhvfslk\"}]},{\"subscriptionId\":\"ntjlr\",\"zoneMappings\":[{\"physicalZone\":\"jkskyr\",\"logicalZone\":\"oov\"},{\"physicalZone\":\"idsxwaabzmifry\",\"logicalZone\":\"znmmaxrizkzobgo\"},{\"physicalZone\":\"xlhslnel\",\"logicalZone\":\"ieixynllxe\"}]},{\"subscriptionId\":\"wcrojphslhcaw\",\"zoneMappings\":[{\"physicalZone\":\"tifdwfmvi\",\"logicalZone\":\"orq\"}]},{\"subscriptionId\":\"bttzhraglkafhonq\",\"zoneMappings\":[{\"physicalZone\":\"jeick\",\"logicalZone\":\"zvcpopm\"},{\"physicalZone\":\"elnwclt\",\"logicalZone\":\"jedexxmlf\"}]}]}")
             .toObject(ZoneResolutionInfo.class);
     }
 }

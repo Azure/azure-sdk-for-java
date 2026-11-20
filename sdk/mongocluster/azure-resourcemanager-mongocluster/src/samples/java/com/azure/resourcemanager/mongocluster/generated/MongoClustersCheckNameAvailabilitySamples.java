@@ -11,14 +11,14 @@ import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityReques
  */
 public final class MongoClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_NameAvailability.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_NameAvailability.json
      */
     /**
-     * Sample code: Checks and confirms the Mongo Cluster name is available for use.
+     * Sample code: Checks and confirms the DocumentDB cluster name is available for use.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void checksAndConfirmsTheMongoClusterNameIsAvailableForUse(
+    public static void checksAndConfirmsTheDocumentDBClusterNameIsAvailableForUse(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .checkNameAvailabilityWithResponse("westus2", new CheckNameAvailabilityRequest().withName("newmongocluster")
@@ -26,14 +26,14 @@ public final class MongoClustersCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_NameAvailability_AlreadyExists.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_NameAvailability_AlreadyExists.json
      */
     /**
-     * Sample code: Checks and returns that the Mongo Cluster name is already in-use.
+     * Sample code: Checks and returns that the DocumentDB cluster name is already in-use.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void checksAndReturnsThatTheMongoClusterNameIsAlreadyInUse(
+    public static void checksAndReturnsThatTheDocumentDBClusterNameIsAlreadyInUse(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .checkNameAvailabilityWithResponse("westus2",

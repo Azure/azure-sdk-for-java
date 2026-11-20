@@ -115,6 +115,13 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         withoutAppSetting(SETTING_REGISTRY_SERVER);
         withoutAppSetting(SETTING_REGISTRY_USERNAME);
         withoutAppSetting(SETTING_REGISTRY_PASSWORD);
+        // ACR managed identity pull
+        if (siteConfig != null && siteConfig.acrUseManagedIdentityCreds() != null) {
+            siteConfig.withAcrUseManagedIdentityCreds(null);
+        }
+        if (siteConfig != null && siteConfig.acrUserManagedIdentityId() != null) {
+            siteConfig.withAcrUserManagedIdentityId(null);
+        }
     }
 
     @Override

@@ -20,6 +20,9 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureKeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureUnwrapResult;
+import com.azure.security.keyvault.keys.cryptography.models.SecureWrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
@@ -772,6 +775,104 @@ public class CryptographyAsyncClient {
                     return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
                 }
             }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Generates and securely wraps a new 256-bit AES key inside the trusted execution environment (TEE).
+     *
+     * <p>The secure wrap operation creates a fresh 256-bit AES key inside a TEE and wraps it with this client's key as
+     * the wrapping key. Requires the {@code keys/wrapKey} permission. This operation is remote-only.</p>
+     *
+     * <p>This operation requires a Managed HSM and is only available with service API version
+     * {@code 2026-04-01} and newer.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Performs a secure wrap operation and prints out the wrapped key details when a response is received.</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.secureWrapKey#SecureKeyWrapAlgorithm -->
+     * <pre>
+     * cryptographyAsyncClient.secureWrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;secureWrapResult -&gt;
+     *         System.out.printf&#40;&quot;Received encrypted key of length: %d, with algorithm: %s.%n&quot;,
+     *             secureWrapResult.getEncryptedKey&#40;&#41;.length, secureWrapResult.getAlgorithm&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.secureWrapKey#SecureKeyWrapAlgorithm -->
+     *
+     * @param algorithm The secure wrap algorithm to use.
+     *
+     * @return A {@link Mono} containing the {@link SecureWrapResult} whose
+     * {@link SecureWrapResult#getEncryptedKey() encrypted key} contains the wrapped, newly generated key.
+     *
+     * @throws NullPointerException If {@code algorithm} is {@code null}.
+     * @throws UnsupportedOperationException If the client was created for local-only cryptography operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SecureWrapResult> secureWrapKey(SecureKeyWrapAlgorithm algorithm) {
+        try {
+            if (implClient == null) {
+                return monoError(LOGGER, new UnsupportedOperationException(
+                    "The secure wrap operation is not supported for local-only cryptography clients."));
+            }
+
+            return withContext(context -> implClient.secureWrapKeyAsync(algorithm, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Securely unwraps a key into a trusted execution environment (TEE).
+     *
+     * <p>The secure unwrap operation unwraps a key previously wrapped by
+     * {@link #secureWrapKey(SecureKeyWrapAlgorithm) secure wrap} and releases it only into a target TEE attested by the
+     * supplied Microsoft Azure Attestation (MAA) token. Requires the {@code keys/unwrapKey} permission. This operation
+     * is remote-only.</p>
+     *
+     * <p>This operation requires a Managed HSM and is only available with service API version
+     * {@code 2026-04-01} and newer.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Securely unwraps a previously wrapped key and prints out the unwrapped key details when a response is
+     * received.</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String -->
+     * <pre>
+     * cryptographyAsyncClient.secureWrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;secureWrapResult -&gt;
+     *         cryptographyAsyncClient.secureUnwrapKey&#40;SecureKeyWrapAlgorithm.RSA_OAEP_256,
+     *                 secureWrapResult.getEncryptedKey&#40;&#41;, &quot;&lt;target-attestation-token&gt;&quot;&#41;
+     *             .subscribe&#40;secureUnwrapResult -&gt;
+     *                 System.out.printf&#40;&quot;Received key of length: %d.%n&quot;, secureUnwrapResult.getKey&#40;&#41;.length&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String -->
+     *
+     * @param algorithm The secure wrap algorithm originally used to wrap the key.
+     * @param encryptedKey The wrapped key bytes to unwrap.
+     * @param targetAttestationToken The MAA attestation token of the target TEE.
+     *
+     * @return A {@link Mono} containing the {@link SecureUnwrapResult} whose {@link SecureUnwrapResult#getKey()
+     * decrypted key} contains the unwrapped key result.
+     *
+     * @throws NullPointerException If {@code algorithm}, {@code encryptedKey}, or {@code targetAttestationToken} are
+     * {@code null}.
+     * @throws UnsupportedOperationException If the client was created for local-only cryptography operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SecureUnwrapResult> secureUnwrapKey(SecureKeyWrapAlgorithm algorithm, byte[] encryptedKey,
+        String targetAttestationToken) {
+        try {
+            if (implClient == null) {
+                return monoError(LOGGER, new UnsupportedOperationException(
+                    "The secure unwrap operation is not supported for local-only cryptography clients."));
+            }
+
+            return withContext(
+                context -> implClient.secureUnwrapKeyAsync(algorithm, encryptedKey, targetAttestationToken, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

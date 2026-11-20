@@ -212,14 +212,15 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Get an AppLink.
+     * Get the details of an Azure Kubernetes Application Network.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLink along with {@link Response} on successful completion of {@link Mono}.
+     * @return the details of an Azure Kubernetes Application Network along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppLinkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -232,14 +233,14 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Get an AppLink.
+     * Get the details of an Azure Kubernetes Application Network.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLink on successful completion of {@link Mono}.
+     * @return the details of an Azure Kubernetes Application Network on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppLinkInner> getByResourceGroupAsync(String resourceGroupName, String appLinkName) {
@@ -248,7 +249,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Get an AppLink.
+     * Get the details of an Azure Kubernetes Application Network.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -256,7 +257,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLink along with {@link Response}.
+     * @return the details of an Azure Kubernetes Application Network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppLinkInner> getByResourceGroupWithResponse(String resourceGroupName, String appLinkName,
@@ -267,14 +268,14 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Get an AppLink.
+     * Get the details of an Azure Kubernetes Application Network.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AppLink.
+     * @return the details of an Azure Kubernetes Application Network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner getByResourceGroup(String resourceGroupName, String appLinkName) {
@@ -282,7 +283,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -290,7 +291,8 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Kubernetes Application Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -305,7 +307,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -313,7 +315,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource along with {@link Response}.
+     * @return an Azure Kubernetes Application Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String appLinkName,
@@ -326,7 +328,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -335,7 +337,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource along with {@link Response}.
+     * @return an Azure Kubernetes Application Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String appLinkName,
@@ -347,7 +349,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -355,7 +357,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of appLink resource.
+     * @return the {@link PollerFlux} for polling of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppLinkInner>, AppLinkInner> beginCreateOrUpdateAsync(String resourceGroupName,
@@ -367,7 +369,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -375,7 +377,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appLink resource.
+     * @return the {@link SyncPoller} for polling of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppLinkInner>, AppLinkInner> beginCreateOrUpdate(String resourceGroupName,
@@ -386,7 +388,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -395,7 +397,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appLink resource.
+     * @return the {@link SyncPoller} for polling of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppLinkInner>, AppLinkInner> beginCreateOrUpdate(String resourceGroupName,
@@ -406,7 +408,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -414,7 +416,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource on successful completion of {@link Mono}.
+     * @return an Azure Kubernetes Application Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppLinkInner> createOrUpdateAsync(String resourceGroupName, String appLinkName,
@@ -424,7 +426,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -432,7 +434,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource.
+     * @return an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner createOrUpdate(String resourceGroupName, String appLinkName, AppLinkInner resource) {
@@ -440,7 +442,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Create an AppLink.
+     * Create an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -449,7 +451,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource.
+     * @return an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner createOrUpdate(String resourceGroupName, String appLinkName, AppLinkInner resource,
@@ -458,7 +460,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -466,7 +468,8 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Kubernetes Application Network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String appLinkName,
@@ -479,7 +482,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -487,7 +490,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource along with {@link Response}.
+     * @return an Azure Kubernetes Application Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String appLinkName,
@@ -500,7 +503,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -509,7 +512,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource along with {@link Response}.
+     * @return an Azure Kubernetes Application Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String appLinkName,
@@ -521,7 +524,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -529,7 +532,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of appLink resource.
+     * @return the {@link PollerFlux} for polling of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppLinkInner>, AppLinkInner> beginUpdateAsync(String resourceGroupName,
@@ -540,7 +543,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -548,7 +551,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appLink resource.
+     * @return the {@link SyncPoller} for polling of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppLinkInner>, AppLinkInner> beginUpdate(String resourceGroupName, String appLinkName,
@@ -559,7 +562,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -568,7 +571,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of appLink resource.
+     * @return the {@link SyncPoller} for polling of an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppLinkInner>, AppLinkInner> beginUpdate(String resourceGroupName, String appLinkName,
@@ -579,7 +582,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -587,7 +590,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource on successful completion of {@link Mono}.
+     * @return an Azure Kubernetes Application Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppLinkInner> updateAsync(String resourceGroupName, String appLinkName, AppLinkUpdate properties) {
@@ -596,7 +599,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -604,7 +607,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource.
+     * @return an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner update(String resourceGroupName, String appLinkName, AppLinkUpdate properties) {
@@ -612,7 +615,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Update an AppLink.
+     * Update an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -621,7 +624,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appLink resource.
+     * @return an Azure Kubernetes Application Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppLinkInner update(String resourceGroupName, String appLinkName, AppLinkUpdate properties,
@@ -630,7 +633,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -648,7 +651,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -664,7 +667,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -681,7 +684,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -698,7 +701,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -714,7 +717,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -732,7 +735,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -747,7 +750,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -761,7 +764,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * Delete an AppLink.
+     * Delete an Azure Kubernetes Application Network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param appLinkName The name of the AppLink.
@@ -776,7 +779,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by resource group.
+     * List Azure Kubernetes Application Network resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,7 +800,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by resource group.
+     * List Azure Kubernetes Application Network resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -812,7 +815,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by resource group.
+     * List Azure Kubernetes Application Network resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -830,7 +833,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by resource group.
+     * List Azure Kubernetes Application Network resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -849,7 +852,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by resource group.
+     * List Azure Kubernetes Application Network resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -864,7 +867,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by resource group.
+     * List Azure Kubernetes Application Network resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -880,7 +883,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by subscription.
+     * List Azure Kubernetes Application Network resources by subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -899,7 +902,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by subscription.
+     * List Azure Kubernetes Application Network resources by subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -912,7 +915,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by subscription.
+     * List Azure Kubernetes Application Network resources by subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -928,7 +931,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by subscription.
+     * List Azure Kubernetes Application Network resources by subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -946,7 +949,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by subscription.
+     * List Azure Kubernetes Application Network resources by subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -958,7 +961,7 @@ public final class AppLinksClientImpl implements AppLinksClient {
     }
 
     /**
-     * List AppLink resources by subscription.
+     * List Azure Kubernetes Application Network resources by subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

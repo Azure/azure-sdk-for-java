@@ -10,10 +10,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.edgeactions.EdgeActionsManager;
-import com.azure.resourcemanager.edgeactions.fluent.models.EdgeActionVersionPropertiesInner;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionIsDefaultVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersion;
 import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionDeploymentType;
+import com.azure.resourcemanager.edgeactions.models.EdgeActionVersionProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public final class EdgeActionVersionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deploymentType\":\"others\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-04-02T03:24:37Z\"},\"location\":\"nkxmyskpbhenbtk\",\"tags\":{\"y\":\"w\"},\"id\":\"nrs\",\"name\":\"nlqidybyxczf\",\"type\":\"lhaaxdbabp\"}";
+            = "{\"properties\":{\"deploymentType\":\"others\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-09-02T22:18:46Z\"},\"location\":\"ckzywbiexzfeyue\",\"tags\":{\"wbhqwal\":\"bxu\"},\"id\":\"uzyoxaep\",\"name\":\"kzjancuxrhdwbav\",\"type\":\"bniwdj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,17 +36,17 @@ public final class EdgeActionVersionsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeActionVersion response = manager.edgeActionVersions()
-            .define("mpvecxgodebfqk")
-            .withRegion("flz")
-            .withExistingEdgeAction("bgsncghkjeszzhb", "jhtxfvgxbfsmxne")
-            .withTags(mapOf("qzahmgkbrp", "xzpuzycisp", "hibnuqqkpika", "y", "buynhijggm", "rgvtqag"))
-            .withProperties(
-                new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.FILE)
-                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE))
+            .define("hibnuqqkpika")
+            .withRegion("ynhijggme")
+            .withExistingEdgeAction("qzahmgkbrp", "y")
+            .withTags(
+                mapOf("zmhjrunmp", "iarbutrcvpna", "nkxmyskpbhenbtk", "ttdbhrbnl", "yxczfclh", "xywnytnrsynlqidy"))
+            .withProperties(new EdgeActionVersionProperties().withDeploymentType(EdgeActionVersionDeploymentType.OTHERS)
+                .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE))
             .create();
 
-        Assertions.assertEquals("nkxmyskpbhenbtk", response.location());
-        Assertions.assertEquals("w", response.tags().get("y"));
+        Assertions.assertEquals("ckzywbiexzfeyue", response.location());
+        Assertions.assertEquals("bxu", response.tags().get("wbhqwal"));
         Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, response.properties().deploymentType());
         Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, response.properties().isDefaultVersion());
     }

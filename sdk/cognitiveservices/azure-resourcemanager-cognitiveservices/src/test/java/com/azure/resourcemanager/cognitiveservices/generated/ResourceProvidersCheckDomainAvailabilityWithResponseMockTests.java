@@ -22,7 +22,7 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
     @Test
     public void testCheckDomainAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"isSubdomainAvailable\":true,\"reason\":\"eoxinhgre\",\"subdomainName\":\"twhlpuzjpce\",\"type\":\"nzangprbfaxy\",\"kind\":\"lbciphmsexro\"}";
+            = "{\"isSubdomainAvailable\":true,\"reason\":\"cikswhcamwu\",\"subdomainName\":\"fxkcgsfcmvhad\",\"type\":\"batvyrk\",\"kind\":\"qkqwsyjtvjko\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,15 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DomainAvailability response = manager.resourceProviders()
-            .checkDomainAvailabilityWithResponse(
-                new CheckDomainAvailabilityParameter().withSubdomainName("fyvrtpqpemhzcgk")
-                    .withType("epdqhqyhwq")
-                    .withKind("mvxqab"),
-                com.azure.core.util.Context.NONE)
+            .checkDomainAvailabilityWithResponse(new CheckDomainAvailabilityParameter().withSubdomainName("cdmwk")
+                .withType("upf")
+                .withKind("ldqdzauiunyevdyz"), com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertTrue(response.isSubdomainAvailable());
-        Assertions.assertEquals("eoxinhgre", response.reason());
-        Assertions.assertEquals("twhlpuzjpce", response.subdomainName());
-        Assertions.assertEquals("nzangprbfaxy", response.type());
-        Assertions.assertEquals("lbciphmsexro", response.kind());
+        Assertions.assertEquals("cikswhcamwu", response.reason());
+        Assertions.assertEquals("fxkcgsfcmvhad", response.subdomainName());
+        Assertions.assertEquals("batvyrk", response.type());
+        Assertions.assertEquals("qkqwsyjtvjko", response.kind());
     }
 }

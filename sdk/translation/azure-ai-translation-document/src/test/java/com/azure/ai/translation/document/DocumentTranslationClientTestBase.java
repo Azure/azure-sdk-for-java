@@ -30,6 +30,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -162,6 +165,23 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     String createSourceContainer(List<TestDocument> documents) {
         String containerName = testResourceNamer.randomName("source", 10);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
+        return blobContainerClient.getBlobContainerUrl();
+    }
+
+    String createSourceContainerFromFile(String fileName) {
+        String containerName = testResourceNamer.randomName("source", 10);
+        BlobContainerClient blobContainerClient = getBlobContainerClient(containerName);
+        if (!blobContainerClient.exists()) {
+            blobContainerClient.create();
+        }
+        try {
+            Path filePath = Paths.get(System.getProperty("user.dir"), "src", "test", "resources", fileName);
+            byte[] data = Files.readAllBytes(filePath);
+            BlobClient blobClient = blobContainerClient.getBlobClient(fileName);
+            blobClient.upload(new ByteArrayInputStream(data), true);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload test file: " + fileName, e);
+        }
         return blobContainerClient.getBlobContainerUrl();
     }
 

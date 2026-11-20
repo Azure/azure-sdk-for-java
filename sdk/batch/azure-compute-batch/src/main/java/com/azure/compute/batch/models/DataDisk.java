@@ -32,7 +32,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
      */
     @Generated
-    private CachingType caching;
+    private BatchCachingType caching;
 
     /*
      * The initial disk size in gigabytes.
@@ -72,22 +72,8 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
      * @return the caching value.
      */
     @Generated
-    public CachingType getCaching() {
+    public BatchCachingType getCaching() {
         return this.caching;
-    }
-
-    /**
-     * Set the caching property: The type of caching to be enabled for the data disks. The default value for caching is
-     * readwrite. For information about the caching options see:
-     * https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
-     *
-     * @param caching the caching value to set.
-     * @return the DataDisk object itself.
-     */
-    @Generated
-    public DataDisk setCaching(CachingType caching) {
-        this.caching = caching;
-        return this;
     }
 
     /**
@@ -128,7 +114,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
         return jsonReader.readObject(reader -> {
             int logicalUnitNumber = 0;
             int diskSizeGb = 0;
-            CachingType caching = null;
+            BatchCachingType caching = null;
             ManagedDisk managedDisk = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -138,7 +124,7 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
                 } else if ("diskSizeGB".equals(fieldName)) {
                     diskSizeGb = reader.getInt();
                 } else if ("caching".equals(fieldName)) {
-                    caching = CachingType.fromString(reader.getString());
+                    caching = BatchCachingType.fromString(reader.getString());
                 } else if ("managedDisk".equals(fieldName)) {
                     managedDisk = ManagedDisk.fromJson(reader);
                 } else {
@@ -177,6 +163,20 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
     @Generated
     public DataDisk setManagedDisk(ManagedDisk managedDisk) {
         this.managedDisk = managedDisk;
+        return this;
+    }
+
+    /**
+     * Set the caching property: The type of caching to be enabled for the data disks. The default value for caching is
+     * readwrite. For information about the caching options see:
+     * https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
+     *
+     * @param caching the caching value to set.
+     * @return the DataDisk object itself.
+     */
+    @Generated
+    public DataDisk setCaching(BatchCachingType caching) {
+        this.caching = caching;
         return this;
     }
 }

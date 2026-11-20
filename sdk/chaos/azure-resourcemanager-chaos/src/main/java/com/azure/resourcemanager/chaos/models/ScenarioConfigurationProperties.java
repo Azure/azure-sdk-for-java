@@ -28,19 +28,22 @@ public final class ScenarioConfigurationProperties implements JsonSerializable<S
     private List<KeyValuePair> parameters;
 
     /*
-     * Exclusion criteria for protecting resources from fault injection.
-     */
-    private ConfigurationExclusions exclusions;
-
-    /*
      * Most recent provisioning state for the given scenario resource.
      */
     private ProvisioningState provisioningState;
 
     /*
-     * Filter criteria used to constrain which discovered resources participate in fault injection.
+     * Unified resource targeting policy that controls which discovered resources participate
+     * in fault injection. Replaces the separate `exclusions` and `filters` properties with
+     * symmetric include/exclude criteria.
+     * 
+     * Include uses AND logic — a resource must match ALL active include dimensions.
+     * Exclude uses OR logic — a resource is removed if it matches ANY exclude dimension.
+     * When include and exclude conflict on the same resource, exclude wins.
+     * 
+     * Null or omitted means all discovered resources participate (no targeting constraints).
      */
-    private ConfigurationFilters filters;
+    private ResourceTargeting resourceTargeting;
 
     /**
      * Creates an instance of ScenarioConfigurationProperties class.
@@ -91,26 +94,6 @@ public final class ScenarioConfigurationProperties implements JsonSerializable<S
     }
 
     /**
-     * Get the exclusions property: Exclusion criteria for protecting resources from fault injection.
-     * 
-     * @return the exclusions value.
-     */
-    public ConfigurationExclusions exclusions() {
-        return this.exclusions;
-    }
-
-    /**
-     * Set the exclusions property: Exclusion criteria for protecting resources from fault injection.
-     * 
-     * @param exclusions the exclusions value to set.
-     * @return the ScenarioConfigurationProperties object itself.
-     */
-    public ScenarioConfigurationProperties withExclusions(ConfigurationExclusions exclusions) {
-        this.exclusions = exclusions;
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: Most recent provisioning state for the given scenario resource.
      * 
      * @return the provisioningState value.
@@ -120,24 +103,40 @@ public final class ScenarioConfigurationProperties implements JsonSerializable<S
     }
 
     /**
-     * Get the filters property: Filter criteria used to constrain which discovered resources participate in fault
-     * injection.
+     * Get the resourceTargeting property: Unified resource targeting policy that controls which discovered resources
+     * participate
+     * in fault injection. Replaces the separate `exclusions` and `filters` properties with
+     * symmetric include/exclude criteria.
      * 
-     * @return the filters value.
+     * Include uses AND logic — a resource must match ALL active include dimensions.
+     * Exclude uses OR logic — a resource is removed if it matches ANY exclude dimension.
+     * When include and exclude conflict on the same resource, exclude wins.
+     * 
+     * Null or omitted means all discovered resources participate (no targeting constraints).
+     * 
+     * @return the resourceTargeting value.
      */
-    public ConfigurationFilters filters() {
-        return this.filters;
+    public ResourceTargeting resourceTargeting() {
+        return this.resourceTargeting;
     }
 
     /**
-     * Set the filters property: Filter criteria used to constrain which discovered resources participate in fault
-     * injection.
+     * Set the resourceTargeting property: Unified resource targeting policy that controls which discovered resources
+     * participate
+     * in fault injection. Replaces the separate `exclusions` and `filters` properties with
+     * symmetric include/exclude criteria.
      * 
-     * @param filters the filters value to set.
+     * Include uses AND logic — a resource must match ALL active include dimensions.
+     * Exclude uses OR logic — a resource is removed if it matches ANY exclude dimension.
+     * When include and exclude conflict on the same resource, exclude wins.
+     * 
+     * Null or omitted means all discovered resources participate (no targeting constraints).
+     * 
+     * @param resourceTargeting the resourceTargeting value to set.
      * @return the ScenarioConfigurationProperties object itself.
      */
-    public ScenarioConfigurationProperties withFilters(ConfigurationFilters filters) {
-        this.filters = filters;
+    public ScenarioConfigurationProperties withResourceTargeting(ResourceTargeting resourceTargeting) {
+        this.resourceTargeting = resourceTargeting;
         return this;
     }
 
@@ -149,8 +148,7 @@ public final class ScenarioConfigurationProperties implements JsonSerializable<S
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("scenarioId", this.scenarioId);
         jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("exclusions", this.exclusions);
-        jsonWriter.writeJsonField("filters", this.filters);
+        jsonWriter.writeJsonField("resourceTargeting", this.resourceTargeting);
         return jsonWriter.writeEndObject();
     }
 
@@ -176,13 +174,11 @@ public final class ScenarioConfigurationProperties implements JsonSerializable<S
                 } else if ("parameters".equals(fieldName)) {
                     List<KeyValuePair> parameters = reader.readArray(reader1 -> KeyValuePair.fromJson(reader1));
                     deserializedScenarioConfigurationProperties.parameters = parameters;
-                } else if ("exclusions".equals(fieldName)) {
-                    deserializedScenarioConfigurationProperties.exclusions = ConfigurationExclusions.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedScenarioConfigurationProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
-                } else if ("filters".equals(fieldName)) {
-                    deserializedScenarioConfigurationProperties.filters = ConfigurationFilters.fromJson(reader);
+                } else if ("resourceTargeting".equals(fieldName)) {
+                    deserializedScenarioConfigurationProperties.resourceTargeting = ResourceTargeting.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

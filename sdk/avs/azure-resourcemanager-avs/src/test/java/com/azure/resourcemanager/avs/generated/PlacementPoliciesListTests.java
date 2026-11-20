@@ -13,10 +13,10 @@ public final class PlacementPoliciesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlacementPoliciesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"ilpjzuaejxdult\",\"provisioningState\":\"Canceled\"},\"id\":\"btdzumveekg\",\"name\":\"wozuhkf\",\"type\":\"bsjyofdx\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"ttouwaboekqvkel\",\"provisioningState\":\"Succeeded\"},\"id\":\"bxwyjsflhhcaa\",\"name\":\"n\",\"type\":\"ixisxyawjoy\"}],\"nextLink\":\"cslyjpk\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"ewgdrjervn\",\"provisioningState\":\"Canceled\"},\"id\":\"pehindoygm\",\"name\":\"fthnzdn\",\"type\":\"sl\"}],\"nextLink\":\"ayqigynduhav\"}")
             .toObject(PlacementPoliciesList.class);
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.value().get(0).properties().state());
-        Assertions.assertEquals("ilpjzuaejxdult", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("cslyjpk", model.nextLink());
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.value().get(0).properties().state());
+        Assertions.assertEquals("ewgdrjervn", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("ayqigynduhav", model.nextLink());
     }
 }

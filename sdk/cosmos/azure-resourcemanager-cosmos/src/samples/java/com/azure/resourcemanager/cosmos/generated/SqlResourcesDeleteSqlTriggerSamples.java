@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesDeleteSqlTriggerSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBSqlTriggerDelete.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlTriggerDelete.json
      */
     /**
      * Sample code: CosmosDBSqlTriggerDelete.

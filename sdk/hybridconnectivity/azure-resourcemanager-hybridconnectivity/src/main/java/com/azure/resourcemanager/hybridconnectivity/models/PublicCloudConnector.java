@@ -57,6 +57,13 @@ public interface PublicCloudConnector {
     PublicCloudConnectorProperties properties();
 
     /**
+     * Gets the kind property: The kind of the public cloud connector.
+     * 
+     * @return the kind value.
+     */
+    HostType kind();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.

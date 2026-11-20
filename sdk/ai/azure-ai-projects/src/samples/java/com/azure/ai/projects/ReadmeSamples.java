@@ -27,14 +27,14 @@ public final class ReadmeSamples {
             .allowPreview(true); // Only needed for preview APIs on non-Beta clients that support them.
 
         ConnectionsClient connectionsClient = builder.buildConnectionsClient();
-        // Beta* clients automatically opt in to their preview service area.
-        BetaDatasetsClient dataGenerationJobsClient = builder.beta().buildBetaDatasetsClient();
+        AgentInsightMonitorsClient agentInsightMonitorsClient = builder.buildAgentInsightMonitorsClient();
         DatasetsClient datasetsClient = builder.buildDatasetsClient();
         DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
         EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
+        // Beta* clients automatically opt in to their preview service area.
         BetaEvaluationTaxonomiesClient evaluationTaxonomiesClient
             = builder.beta().buildBetaEvaluationTaxonomiesClient();
-        BetaEvaluatorsClient evaluatorsClient = builder.beta().buildBetaEvaluatorsClient();
+        EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
         IndexesClient indexesClient = builder.buildIndexesClient();
         BetaInsightsClient insightsClient = builder.beta().buildBetaInsightsClient();
         BetaModelsClient modelsClient = builder.beta().buildBetaModelsClient();

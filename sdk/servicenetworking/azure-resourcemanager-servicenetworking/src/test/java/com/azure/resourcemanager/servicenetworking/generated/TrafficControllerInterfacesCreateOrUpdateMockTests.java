@@ -27,7 +27,7 @@ public final class TrafficControllerInterfacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"configurationEndpoints\":[\"p\"],\"frontends\":[{\"id\":\"gxqquezik\"},{\"id\":\"wggxkallat\"},{\"id\":\"elwuipi\"}],\"associations\":[{\"id\":\"zkzivgvvcnay\"},{\"id\":\"hyrnxxmu\"}],\"securityPolicies\":[{\"id\":\"ndrdvstkwq\"},{\"id\":\"tchealmf\"},{\"id\":\"tdaaygdvwvg\"},{\"id\":\"iohgwxrtfud\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"xg\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"agvrvmnpkuk\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"dblx\",\"tags\":{\"j\":\"mfnjh\",\"oqreyfkzikfjawn\":\"wmszkk\",\"vxwc\":\"a\"},\"id\":\"elpcirelsfeaenwa\",\"name\":\"fatkld\",\"type\":\"xbjhwuaanozjosph\"}";
+            = "{\"properties\":{\"configurationEndpoints\":[\"dw\"],\"frontends\":[{\"id\":\"swibyr\"},{\"id\":\"dl\"}],\"associations\":[{\"id\":\"hfwpracstwit\"},{\"id\":\"khevxccedc\"},{\"id\":\"nmdyodnwzxl\"},{\"id\":\"jc\"}],\"securityPolicies\":[{\"id\":\"ltiugcxnavv\"}],\"privateEndpointConnections\":[{\"id\":\"ibyqunyowxwlmdj\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"fgbvfvpdbo\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"cizsjqlhkrribdei\"}},\"provisioningState\":\"Succeeded\"},\"location\":\"qkgh\",\"tags\":{\"rwkq\":\"dzwmkrefajpj\",\"sjabibs\":\"yhgbijtjivfx\",\"bjxbkzbzk\":\"stawfsdjpvkv\"},\"id\":\"vncjabudurgk\",\"name\":\"kmokz\",\"type\":\"jjklff\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,20 +37,21 @@ public final class TrafficControllerInterfacesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TrafficController response = manager.trafficControllerInterfaces()
-            .define("jfqka")
-            .withRegion("yynpcdpumnzgmwz")
-            .withExistingResourceGroup("uu")
-            .withTags(mapOf("lwwrl", "biknsorgjhxbld", "ok", "dmtnc"))
+            .define("dlhewp")
+            .withRegion("gusl")
+            .withExistingResourceGroup("kkze")
+            .withTags(mapOf("sx", "dcygqukyhejhz"))
             .withProperties(
                 new TrafficControllerProperties().withSecurityPolicyConfigurations(new SecurityPolicyConfigurations()
-                    .withWafSecurityPolicy(new WafSecurityPolicy().withId("nkedyatrwyhqmib"))
-                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("hwit"))))
+                    .withWafSecurityPolicy(new WafSecurityPolicy().withId("ttlstvlzywemhz"))
+                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("csdtclusiypbs"))))
             .create();
 
-        Assertions.assertEquals("dblx", response.location());
-        Assertions.assertEquals("mfnjh", response.tags().get("j"));
-        Assertions.assertEquals("xg", response.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("agvrvmnpkuk",
+        Assertions.assertEquals("qkgh", response.location());
+        Assertions.assertEquals("dzwmkrefajpj", response.tags().get("rwkq"));
+        Assertions.assertEquals("fgbvfvpdbo",
+            response.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("cizsjqlhkrribdei",
             response.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 

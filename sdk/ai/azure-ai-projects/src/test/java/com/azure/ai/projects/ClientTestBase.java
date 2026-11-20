@@ -73,18 +73,21 @@ public class ClientTestBase extends TestProxyTestBase {
     private void addTestRecordCustomSanitizers() {
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..error.target", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..createdBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        sanitizers.add(new TestProxySanitizer("$..modifiedBy", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
-        sanitizers.add(new TestProxySanitizer("Content-Type",
-            "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+        sanitizers.add(new TestProxySanitizer("Content-Type", "^multipart\\/form-data(; charset=[^;]+)?; boundary=.*",
             "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER));
 
         interceptorManager.addSanitizers(sanitizers);
     }
 
     private void addCustomMatchers() {
-        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie",
-            "X-Stainless-Arch", "X-Stainless-Lang", "X-Stainless-OS", "X-Stainless-OS-Version",
-            "X-Stainless-Package-Version", "X-Stainless-Runtime", "X-Stainless-Runtime-Version")));
+        interceptorManager.addMatchers(new CustomMatcher()
+            .setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie", "Accept", "X-Stainless-Arch", "X-Stainless-Lang",
+                "X-Stainless-OS", "X-Stainless-OS-Version", "X-Stainless-Package-Version", "X-Stainless-Runtime",
+                "X-Stainless-Runtime-Version", "X-Stainless-Kotlin-Version", "X-Stainless-Retry-Count")));
     }
 
     protected Path getPath(String fileName) throws FileNotFoundException, URISyntaxException {
@@ -144,6 +147,35 @@ public class ClientTestBase extends TestProxyTestBase {
     protected IndexesAsyncClient getIndexesAsyncClient(HttpClient httpClient,
         AIProjectsServiceVersion aiProjectsServiceVersion) {
         return getClientBuilder(httpClient, aiProjectsServiceVersion).buildIndexesAsyncClient();
+    }
+
+    protected String recordedSetting(String name, String sanitizedValue) {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return testResourceNamer.recordValueFromConfig(sanitizedValue);
+        }
+        String value = Configuration.getGlobalConfiguration().get(name);
+        if (value == null || value.isEmpty()) {
+            throw new IllegalStateException("Set " + name + " before recording this test.");
+        }
+        if (getTestMode() == TestMode.RECORD) {
+            testResourceNamer.recordValueFromConfig(sanitizedValue);
+            String escapedValue = value.replace(".", "\\.");
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer(escapedValue, sanitizedValue, TestProxySanitizerType.BODY_REGEX),
+                    new TestProxySanitizer(escapedValue, sanitizedValue, TestProxySanitizerType.URL)));
+        }
+        return value;
+    }
+
+    protected void sanitizeInsightContent() {
+        if (getTestMode() == TestMode.RECORD) {
+            interceptorManager.addSanitizers(
+                Arrays.asList(new TestProxySanitizer("$..title", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                    new TestProxySanitizer("$..description", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                    new TestProxySanitizer("$..summary", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                    new TestProxySanitizer("$..text", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                    new TestProxySanitizer("$..trace_id", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+        }
     }
 
     protected void assertValidConnection(Connection connection, String expectedName, ConnectionType expectedType,

@@ -12,15 +12,15 @@ public final class SettingsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SettingsInner model = BinaryData.fromString(
-            "{\"properties\":{\"tenantId\":\"lhjlmuoyxprimr\",\"gatewayProperties\":{\"gatewayResourceId\":\"teecjmeislst\"}},\"id\":\"sylwxdzaumweooh\",\"name\":\"uufuz\",\"type\":\"oyjathwtzol\"}")
+            "{\"properties\":{\"tenantId\":\"bzbkiw\",\"gatewayProperties\":{\"gatewayResourceId\":\"n\"}},\"id\":\"phzfylsgcrp\",\"name\":\"bcunezzceze\",\"type\":\"fwyfwlwxjwet\"}")
             .toObject(SettingsInner.class);
-        Assertions.assertEquals("teecjmeislst", model.gatewayResourceId());
+        Assertions.assertEquals("n", model.gatewayResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsInner model = new SettingsInner().withGatewayResourceId("teecjmeislst");
+        SettingsInner model = new SettingsInner().withGatewayResourceId("n");
         model = BinaryData.fromObject(model).toObject(SettingsInner.class);
-        Assertions.assertEquals("teecjmeislst", model.gatewayResourceId());
+        Assertions.assertEquals("n", model.gatewayResourceId());
     }
 }

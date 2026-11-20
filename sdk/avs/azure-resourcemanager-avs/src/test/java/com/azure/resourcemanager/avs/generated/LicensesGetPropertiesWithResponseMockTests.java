@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class LicensesGetPropertiesWithResponseMockTests {
     @Test
     public void testGetPropertiesWithResponse() throws Exception {
-        String responseStr = "{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Succeeded\"}";
+        String responseStr = "{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Canceled\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class LicensesGetPropertiesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LicenseProperties response = manager.licenses()
-            .getPropertiesWithResponse("hqo", "oihiqak", LicenseName.VMWARE_FIREWALL, com.azure.core.util.Context.NONE)
+            .getPropertiesWithResponse("qogsfikayian", "haru", LicenseName.VMWARE_FIREWALL,
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

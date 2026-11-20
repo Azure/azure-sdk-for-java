@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface CancelOperationsResponse {
     /**
-     * Gets the results property: An array of resource operations that were successfully cancelled.
+     * Gets the results property: The current result for each operation submitted for cancellation.
      * 
      * @return the results value.
      */

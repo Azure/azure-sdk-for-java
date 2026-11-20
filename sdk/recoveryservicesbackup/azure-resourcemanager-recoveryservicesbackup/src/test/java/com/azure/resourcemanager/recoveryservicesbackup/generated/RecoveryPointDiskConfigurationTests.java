@@ -12,13 +12,17 @@ public final class RecoveryPointDiskConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointDiskConfiguration model = BinaryData.fromString(
-            "{\"numberOfDisksIncludedInBackup\":1622829877,\"numberOfDisksAttachedToVm\":602738724,\"includedDiskList\":[{\"lun\":68719037,\"name\":\"dshf\"},{\"lun\":224040944,\"name\":\"bgye\"},{\"lun\":934099618,\"name\":\"sgaojfmwncot\"}],\"excludedDiskList\":[{\"lun\":2093197643,\"name\":\"ctymoxoftp\"}]}")
+            "{\"numberOfDisksIncludedInBackup\":1476296254,\"numberOfDisksAttachedToVm\":915753980,\"includedDiskList\":[{\"lun\":1430018563,\"name\":\"xeizzg\",\"diskSizeInGb\":1958797848,\"storageType\":\"srmffeycxcktpiym\"},{\"lun\":1764465622,\"name\":\"eammxqiekkkzddr\",\"diskSizeInGb\":205119429,\"storageType\":\"ojbmxv\"}],\"excludedDiskList\":[{\"lun\":1699732408,\"name\":\"eesvecu\",\"diskSizeInGb\":2054437598,\"storageType\":\"txsu\"},{\"lun\":1728879575,\"name\":\"ujwsawddjibabxvi\",\"diskSizeInGb\":1579058461,\"storageType\":\"tzeexav\"}]}")
             .toObject(RecoveryPointDiskConfiguration.class);
-        Assertions.assertEquals(1622829877, model.numberOfDisksIncludedInBackup());
-        Assertions.assertEquals(602738724, model.numberOfDisksAttachedToVm());
-        Assertions.assertEquals(68719037, model.includedDiskList().get(0).lun());
-        Assertions.assertEquals("dshf", model.includedDiskList().get(0).name());
-        Assertions.assertEquals(2093197643, model.excludedDiskList().get(0).lun());
-        Assertions.assertEquals("ctymoxoftp", model.excludedDiskList().get(0).name());
+        Assertions.assertEquals(1476296254, model.numberOfDisksIncludedInBackup());
+        Assertions.assertEquals(915753980, model.numberOfDisksAttachedToVm());
+        Assertions.assertEquals(1430018563, model.includedDiskList().get(0).lun());
+        Assertions.assertEquals("xeizzg", model.includedDiskList().get(0).name());
+        Assertions.assertEquals(1958797848, model.includedDiskList().get(0).diskSizeInGb());
+        Assertions.assertEquals("srmffeycxcktpiym", model.includedDiskList().get(0).storageType());
+        Assertions.assertEquals(1699732408, model.excludedDiskList().get(0).lun());
+        Assertions.assertEquals("eesvecu", model.excludedDiskList().get(0).name());
+        Assertions.assertEquals(2054437598, model.excludedDiskList().get(0).diskSizeInGb());
+        Assertions.assertEquals("txsu", model.excludedDiskList().get(0).storageType());
     }
 }

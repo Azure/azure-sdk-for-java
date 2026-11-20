@@ -6,6 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -41,7 +42,7 @@ public class ListUpdatesSample {
             String updateName = Configuration.getGlobalConfiguration().get("DEVICEUPDATE_UPDATE_NAME");
             System.out.println("\nEnumerate provider '" + updateProvider + "' and name '" + updateName + "' versions:");
             // BEGIN: com.azure.iot.deviceupdate.DeviceUpdateClient.EnumerateVersions
-            PagedIterable<BinaryData> versions = client.listVersions(updateProvider, updateName, null);
+            PagedIterable<BinaryData> versions = client.listVersions(updateProvider, updateName, new RequestOptions());
             for (BinaryData v: versions) {
                 System.out.println(v);
             }

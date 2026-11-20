@@ -106,27 +106,11 @@ public final class BatchJobSpecification implements JsonSerializable<BatchJobSpe
     private List<EnvironmentSetting> commonEnvironmentSettings;
 
     /*
-     * The Pool on which the Batch service runs the Tasks of Jobs created under this schedule.
-     */
-    @Generated
-    private final BatchPoolInfo poolInfo;
-
-    /*
      * A list of name-value pairs associated with each Job created under this schedule as metadata. The Batch service
      * does not assign any meaning to metadata; it is solely for the use of user code.
      */
     @Generated
     private List<BatchMetadataItem> metadata;
-
-    /**
-     * Creates an instance of BatchJobSpecification class.
-     *
-     * @param poolInfo the poolInfo value to set.
-     */
-    @Generated
-    public BatchJobSpecification(BatchPoolInfo poolInfo) {
-        this.poolInfo = poolInfo;
-    }
 
     /**
      * Get the priority property: The priority of Jobs created under this schedule. Priority values can range from -1000
@@ -421,17 +405,6 @@ public final class BatchJobSpecification implements JsonSerializable<BatchJobSpe
     }
 
     /**
-     * Get the poolInfo property: The Pool on which the Batch service runs the Tasks of Jobs created under this
-     * schedule.
-     *
-     * @return the poolInfo value.
-     */
-    @Generated
-    public BatchPoolInfo getPoolInfo() {
-        return this.poolInfo;
-    }
-
-    /**
      * Get the metadata property: A list of name-value pairs associated with each Job created under this schedule as
      * metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
      *
@@ -462,7 +435,7 @@ public final class BatchJobSpecification implements JsonSerializable<BatchJobSpe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("poolInfo", this.poolInfo);
+        jsonWriter.writeJsonField("poolInfo", this.poolDetails);
         jsonWriter.writeNumberField("priority", this.priority);
         jsonWriter.writeBooleanField("allowTaskPreemption", this.allowTaskPreemption);
         jsonWriter.writeNumberField("maxParallelTasks", this.maxParallelTasks);
@@ -495,7 +468,7 @@ public final class BatchJobSpecification implements JsonSerializable<BatchJobSpe
     @Generated
     public static BatchJobSpecification fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BatchPoolInfo poolInfo = null;
+            BatchPoolDetails poolDetails = null;
             Integer priority = null;
             Boolean allowTaskPreemption = null;
             Integer maxParallelTasks = null;
@@ -514,7 +487,7 @@ public final class BatchJobSpecification implements JsonSerializable<BatchJobSpe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("poolInfo".equals(fieldName)) {
-                    poolInfo = BatchPoolInfo.fromJson(reader);
+                    poolDetails = BatchPoolDetails.fromJson(reader);
                 } else if ("priority".equals(fieldName)) {
                     priority = reader.getNullable(JsonReader::getInt);
                 } else if ("allowTaskPreemption".equals(fieldName)) {
@@ -547,7 +520,7 @@ public final class BatchJobSpecification implements JsonSerializable<BatchJobSpe
                     reader.skipChildren();
                 }
             }
-            BatchJobSpecification deserializedBatchJobSpecification = new BatchJobSpecification(poolInfo);
+            BatchJobSpecification deserializedBatchJobSpecification = new BatchJobSpecification(poolDetails);
             deserializedBatchJobSpecification.priority = priority;
             deserializedBatchJobSpecification.allowTaskPreemption = allowTaskPreemption;
             deserializedBatchJobSpecification.maxParallelTasks = maxParallelTasks;
@@ -643,5 +616,32 @@ public final class BatchJobSpecification implements JsonSerializable<BatchJobSpe
     public BatchJobSpecification setTaskFailureMode(BatchTaskFailureMode taskFailureMode) {
         this.taskFailureMode = taskFailureMode;
         return this;
+    }
+
+    /*
+     * The Pool on which the Batch service runs the Tasks of Jobs created under this schedule.
+     */
+    @Generated
+    private final BatchPoolDetails poolDetails;
+
+    /**
+     * Creates an instance of BatchJobSpecification class.
+     *
+     * @param poolDetails the poolDetails value to set.
+     */
+    @Generated
+    public BatchJobSpecification(BatchPoolDetails poolDetails) {
+        this.poolDetails = poolDetails;
+    }
+
+    /**
+     * Get the poolDetails property: The Pool on which the Batch service runs the Tasks of Jobs created under this
+     * schedule.
+     *
+     * @return the poolDetails value.
+     */
+    @Generated
+    public BatchPoolDetails getPoolDetails() {
+        return this.poolDetails;
     }
 }

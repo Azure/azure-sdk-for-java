@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.horizondb.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Properties of the private endpoint connection.
  */
-@Immutable
+@Fluent
 public final class PrivateEndpointConnectionProperties
     implements JsonSerializable<PrivateEndpointConnectionProperties> {
     /*
@@ -41,7 +41,7 @@ public final class PrivateEndpointConnectionProperties
     /**
      * Creates an instance of PrivateEndpointConnectionProperties class.
      */
-    private PrivateEndpointConnectionProperties() {
+    public PrivateEndpointConnectionProperties() {
     }
 
     /**
@@ -63,6 +63,17 @@ public final class PrivateEndpointConnectionProperties
     }
 
     /**
+     * Set the privateEndpoint property: The private endpoint resource.
+     * 
+     * @param privateEndpoint the privateEndpoint value to set.
+     * @return the PrivateEndpointConnectionProperties object itself.
+     */
+    public PrivateEndpointConnectionProperties withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
+        this.privateEndpoint = privateEndpoint;
+        return this;
+    }
+
+    /**
      * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
      * between service consumer and provider.
      * 
@@ -70,6 +81,19 @@ public final class PrivateEndpointConnectionProperties
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
         return this.privateLinkServiceConnectionState;
+    }
+
+    /**
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
+     * 
+     * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
+     * @return the PrivateEndpointConnectionProperties object itself.
+     */
+    public PrivateEndpointConnectionProperties
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        return this;
     }
 
     /**

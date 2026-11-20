@@ -22,7 +22,7 @@ public final class ExperimentsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"hotj\",\"tenantId\":\"lpxuzzjgnrefq\",\"type\":\"None\",\"userAssignedIdentities\":{\"odaqaxsi\":{\"principalId\":\"oihiqak\",\"clientId\":\"iwfbrkwpzdqtvhcs\"},\"pubntnbatz\":{\"principalId\":\"etgbebjfulb\",\"clientId\":\"ichdlpn\"}}},\"properties\":{\"provisioningState\":\"Canceled\",\"steps\":[{\"name\":\"owsaaelcattcjuh\",\"branches\":[{\"name\":\"rvkmjcwmjvlgfggc\",\"actions\":[]},{\"name\":\"kyylizr\",\"actions\":[]}]},{\"name\":\"bjpsfxsfuztlvtm\",\"branches\":[{\"name\":\"gbwidqlvh\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"oveofizrvjfnmj\",\"filter\":{\"type\":\"ChaosTargetFilter\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"lwyzgib\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}],\"customerDataStorage\":{\"storageAccountResourceId\":\"rllfojuidjpuuyj\",\"blobContainerName\":\"ejikzoeovvtzejet\"}},\"location\":\"ln\",\"tags\":{\"zolxrzvhqjwtr\":\"yjuzkdb\"},\"id\":\"tgvgzp\",\"name\":\"rrkolawjmjs\",\"type\":\"wro\"}";
+            = "{\"identity\":{\"principalId\":\"azpmkmlmv\",\"tenantId\":\"f\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"nzqcy\":{\"principalId\":\"hbzxli\",\"clientId\":\"rdddtfgxqbawpcb\"}}},\"properties\":{\"provisioningState\":\"Canceled\",\"steps\":[{\"name\":\"qofyuicdhzbdy\",\"branches\":[{\"name\":\"wgbdvibidmhmwffp\",\"actions\":[]},{\"name\":\"fmuvapckccr\",\"actions\":[]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"weyoxoy\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}],\"customerDataStorage\":{\"storageAccountResourceId\":\"haim\",\"blobContainerName\":\"iroqbosh\"}},\"location\":\"a\",\"tags\":{\"vbopfppdbwnu\":\"yyrmfsvbp\",\"fdmmcpug\":\"gahxkumasjcaa\"},\"id\":\"ehqepvufhbzehe\",\"name\":\"hoqhnl\",\"type\":\"qnbldxe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class ExperimentsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Experiment response = manager.experiments()
-            .getByResourceGroupWithResponse("mykyujxsglhs", "rryejylmbkzudnig", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("o", "izrxklob", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ln", response.location());
-        Assertions.assertEquals("yjuzkdb", response.tags().get("zolxrzvhqjwtr"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("owsaaelcattcjuh", response.steps().get(0).name());
-        Assertions.assertEquals("rvkmjcwmjvlgfggc", response.steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("oveofizrvjfnmj", response.selectors().get(0).id());
-        Assertions.assertEquals("rllfojuidjpuuyj", response.customerDataStorage().storageAccountResourceId());
-        Assertions.assertEquals("ejikzoeovvtzejet", response.customerDataStorage().blobContainerName());
+        Assertions.assertEquals("a", response.location());
+        Assertions.assertEquals("yyrmfsvbp", response.tags().get("vbopfppdbwnu"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("qofyuicdhzbdy", response.steps().get(0).name());
+        Assertions.assertEquals("wgbdvibidmhmwffp", response.steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("weyoxoy", response.selectors().get(0).id());
+        Assertions.assertEquals("haim", response.customerDataStorage().storageAccountResourceId());
+        Assertions.assertEquals("iroqbosh", response.customerDataStorage().blobContainerName());
     }
 }

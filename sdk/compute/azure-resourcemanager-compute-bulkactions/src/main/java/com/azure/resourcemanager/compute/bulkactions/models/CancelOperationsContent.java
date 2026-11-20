@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This is the request to cancel running operations in scheduled actions using the operation ids.
+ * The eligible operations to cancel.
  */
 @Fluent
 public final class CancelOperationsContent implements JsonSerializable<CancelOperationsContent> {
     /*
-     * The list of operation ids to cancel operations on
+     * The Bulk Action Operation Ids that identify the operations to cancel.
      */
     private List<String> operationIds;
 
@@ -29,7 +29,7 @@ public final class CancelOperationsContent implements JsonSerializable<CancelOpe
     }
 
     /**
-     * Get the operationIds property: The list of operation ids to cancel operations on.
+     * Get the operationIds property: The Bulk Action Operation Ids that identify the operations to cancel.
      * 
      * @return the operationIds value.
      */
@@ -38,7 +38,7 @@ public final class CancelOperationsContent implements JsonSerializable<CancelOpe
     }
 
     /**
-     * Set the operationIds property: The list of operation ids to cancel operations on.
+     * Set the operationIds property: The Bulk Action Operation Ids that identify the operations to cancel.
      * 
      * @param operationIds the operationIds value to set.
      * @return the CancelOperationsContent object itself.

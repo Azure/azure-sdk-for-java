@@ -233,7 +233,7 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
      * @return the {@link SyncPoller} for polling of monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
+    private SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner>
         beginResubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body) {
         Response<BinaryData> response = resubscribeWithResponse(resourceGroupName, monitorName, body);
         return this.client.<ElasticMonitorResourceInner, ElasticMonitorResourceInner>getLroResult(response,

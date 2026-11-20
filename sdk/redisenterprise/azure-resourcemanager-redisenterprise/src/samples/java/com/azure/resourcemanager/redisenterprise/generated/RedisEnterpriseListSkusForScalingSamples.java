@@ -9,7 +9,7 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class RedisEnterpriseListSkusForScalingSamples {
     /*
-     * x-ms-original-file: 2026-06-01-preview/RedisEnterpriseListSkusForScaling.json
+     * x-ms-original-file: 2026-10-01-preview/RedisEnterpriseListSkusForScaling.json
      */
     /**
      * Sample code: RedisEnterpriseListSkusForScaling.

@@ -83,14 +83,14 @@ public interface ElasticSan {
      * 
      * @return the baseSizeTiB value.
      */
-    long baseSizeTiB();
+    Long baseSizeTiB();
 
     /**
      * Gets the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB.
      * 
      * @return the extendedCapacitySizeTiB value.
      */
-    long extendedCapacitySizeTiB();
+    Long extendedCapacitySizeTiB();
 
     /**
      * Gets the totalVolumeSizeGiB property: Total size of the provisioned Volumes in GiB.
@@ -107,21 +107,24 @@ public interface ElasticSan {
     Long volumeGroupCount();
 
     /**
-     * Gets the totalIops property: Total Provisioned IOPS of the Elastic San appliance.
+     * Gets the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Settable only for
+     * ElasticSanVersion V2, where it is required; read-only for V1.
      * 
      * @return the totalIops value.
      */
     Long totalIops();
 
     /**
-     * Gets the totalMBps property: Total Provisioned MBps Elastic San appliance.
+     * Gets the totalMBps property: Total Provisioned MBps Elastic San appliance. Settable only for ElasticSanVersion
+     * V2, where it is required; read-only for V1.
      * 
      * @return the totalMBps value.
      */
     Long totalMBps();
 
     /**
-     * Gets the totalSizeTiB property: Total size of the Elastic San appliance in TB.
+     * Gets the totalSizeTiB property: Total size of the Elastic San appliance in TB. Settable only for
+     * ElasticSanVersion V2, where it is required; read-only for V1.
      * 
      * @return the totalSizeTiB value.
      */
@@ -148,6 +151,34 @@ public interface ElasticSan {
      * @return the autoScaleProperties value.
      */
     AutoScaleProperties autoScaleProperties();
+
+    /**
+     * Gets the version property: Elastic San appliance version. Defaults to V1 if not specified.
+     * 
+     * @return the version value.
+     */
+    ElasticSanVersion version();
+
+    /**
+     * Gets the usedCapacityGiB property: Used capacity in GiB.
+     * 
+     * @return the usedCapacityGiB value.
+     */
+    Long usedCapacityGiB();
+
+    /**
+     * Gets the totalReservedIops property: Total IOPS reserved by all the volume groups under an ElasticSan.
+     * 
+     * @return the totalReservedIops value.
+     */
+    Integer totalReservedIops();
+
+    /**
+     * Gets the totalReservedMBps property: Total MBps reserved by all the volume groups under an ElasticSan.
+     * 
+     * @return the totalReservedMBps value.
+     */
+    Integer totalReservedMBps();
 
     /**
      * Gets the region of the resource.
@@ -181,8 +212,7 @@ public interface ElasticSan {
      * The entirety of the ElasticSan definition.
      */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
-        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithBaseSizeTiB,
-        DefinitionStages.WithExtendedCapacitySizeTiB, DefinitionStages.WithCreate {
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /**
@@ -239,41 +269,18 @@ public interface ElasticSan {
              * @param sku resource sku.
              * @return the next definition stage.
              */
-            WithBaseSizeTiB withSku(Sku sku);
-        }
-
-        /**
-         * The stage of the ElasticSan definition allowing to specify baseSizeTiB.
-         */
-        interface WithBaseSizeTiB {
-            /**
-             * Specifies the baseSizeTiB property: Base size of the Elastic San appliance in TiB..
-             * 
-             * @param baseSizeTiB Base size of the Elastic San appliance in TiB.
-             * @return the next definition stage.
-             */
-            WithExtendedCapacitySizeTiB withBaseSizeTiB(long baseSizeTiB);
-        }
-
-        /**
-         * The stage of the ElasticSan definition allowing to specify extendedCapacitySizeTiB.
-         */
-        interface WithExtendedCapacitySizeTiB {
-            /**
-             * Specifies the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB..
-             * 
-             * @param extendedCapacitySizeTiB Extended size of the Elastic San appliance in TiB.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedCapacitySizeTiB(long extendedCapacitySizeTiB);
+            WithCreate withSku(Sku sku);
         }
 
         /**
          * The stage of the ElasticSan definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAvailabilityZones,
-            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithAutoScaleProperties {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithAvailabilityZones, DefinitionStages.WithBaseSizeTiB,
+            DefinitionStages.WithExtendedCapacitySizeTiB, DefinitionStages.WithTotalIops,
+            DefinitionStages.WithTotalMBps, DefinitionStages.WithTotalSizeTiB, DefinitionStages.WithPublicNetworkAccess,
+            DefinitionStages.WithAutoScaleProperties, DefinitionStages.WithVersion {
             /**
              * Executes the create request.
              * 
@@ -317,6 +324,77 @@ public interface ElasticSan {
         }
 
         /**
+         * The stage of the ElasticSan definition allowing to specify baseSizeTiB.
+         */
+        interface WithBaseSizeTiB {
+            /**
+             * Specifies the baseSizeTiB property: Base size of the Elastic San appliance in TiB..
+             * 
+             * @param baseSizeTiB Base size of the Elastic San appliance in TiB.
+             * @return the next definition stage.
+             */
+            WithCreate withBaseSizeTiB(Long baseSizeTiB);
+        }
+
+        /**
+         * The stage of the ElasticSan definition allowing to specify extendedCapacitySizeTiB.
+         */
+        interface WithExtendedCapacitySizeTiB {
+            /**
+             * Specifies the extendedCapacitySizeTiB property: Extended size of the Elastic San appliance in TiB..
+             * 
+             * @param extendedCapacitySizeTiB Extended size of the Elastic San appliance in TiB.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedCapacitySizeTiB(Long extendedCapacitySizeTiB);
+        }
+
+        /**
+         * The stage of the ElasticSan definition allowing to specify totalIops.
+         */
+        interface WithTotalIops {
+            /**
+             * Specifies the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Settable only for
+             * ElasticSanVersion V2, where it is required; read-only for V1..
+             * 
+             * @param totalIops Total Provisioned IOPS of the Elastic San appliance. Settable only for ElasticSanVersion
+             * V2, where it is required; read-only for V1.
+             * @return the next definition stage.
+             */
+            WithCreate withTotalIops(Long totalIops);
+        }
+
+        /**
+         * The stage of the ElasticSan definition allowing to specify totalMBps.
+         */
+        interface WithTotalMBps {
+            /**
+             * Specifies the totalMBps property: Total Provisioned MBps Elastic San appliance. Settable only for
+             * ElasticSanVersion V2, where it is required; read-only for V1..
+             * 
+             * @param totalMBps Total Provisioned MBps Elastic San appliance. Settable only for ElasticSanVersion V2,
+             * where it is required; read-only for V1.
+             * @return the next definition stage.
+             */
+            WithCreate withTotalMBps(Long totalMBps);
+        }
+
+        /**
+         * The stage of the ElasticSan definition allowing to specify totalSizeTiB.
+         */
+        interface WithTotalSizeTiB {
+            /**
+             * Specifies the totalSizeTiB property: Total size of the Elastic San appliance in TB. Settable only for
+             * ElasticSanVersion V2, where it is required; read-only for V1..
+             * 
+             * @param totalSizeTiB Total size of the Elastic San appliance in TB. Settable only for ElasticSanVersion
+             * V2, where it is required; read-only for V1.
+             * @return the next definition stage.
+             */
+            WithCreate withTotalSizeTiB(Long totalSizeTiB);
+        }
+
+        /**
          * The stage of the ElasticSan definition allowing to specify publicNetworkAccess.
          */
         interface WithPublicNetworkAccess {
@@ -343,6 +421,19 @@ public interface ElasticSan {
              */
             WithCreate withAutoScaleProperties(AutoScaleProperties autoScaleProperties);
         }
+
+        /**
+         * The stage of the ElasticSan definition allowing to specify version.
+         */
+        interface WithVersion {
+            /**
+             * Specifies the version property: Elastic San appliance version. Defaults to V1 if not specified..
+             * 
+             * @param version Elastic San appliance version. Defaults to V1 if not specified.
+             * @return the next definition stage.
+             */
+            WithCreate withVersion(ElasticSanVersion version);
+        }
     }
 
     /**
@@ -357,7 +448,8 @@ public interface ElasticSan {
      */
     interface Update
         extends UpdateStages.WithTags, UpdateStages.WithBaseSizeTiB, UpdateStages.WithExtendedCapacitySizeTiB,
-        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithAutoScaleProperties {
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithAutoScaleProperties, UpdateStages.WithTotalIops,
+        UpdateStages.WithTotalMBps, UpdateStages.WithTotalSizeTiB {
         /**
          * Executes the update request.
          * 
@@ -443,6 +535,50 @@ public interface ElasticSan {
              * @return the next definition stage.
              */
             Update withAutoScaleProperties(AutoScaleProperties autoScaleProperties);
+        }
+
+        /**
+         * The stage of the ElasticSan update allowing to specify totalIops.
+         */
+        interface WithTotalIops {
+            /**
+             * Specifies the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Supported only for
+             * ElasticSanVersion V2..
+             * 
+             * @param totalIops Total Provisioned IOPS of the Elastic San appliance. Supported only for
+             * ElasticSanVersion V2.
+             * @return the next definition stage.
+             */
+            Update withTotalIops(Long totalIops);
+        }
+
+        /**
+         * The stage of the ElasticSan update allowing to specify totalMBps.
+         */
+        interface WithTotalMBps {
+            /**
+             * Specifies the totalMBps property: Total Provisioned MBps Elastic San appliance. Supported only for
+             * ElasticSanVersion V2..
+             * 
+             * @param totalMBps Total Provisioned MBps Elastic San appliance. Supported only for ElasticSanVersion V2.
+             * @return the next definition stage.
+             */
+            Update withTotalMBps(Long totalMBps);
+        }
+
+        /**
+         * The stage of the ElasticSan update allowing to specify totalSizeTiB.
+         */
+        interface WithTotalSizeTiB {
+            /**
+             * Specifies the totalSizeTiB property: Total size of the Elastic San appliance in TB. Supported only for
+             * ElasticSanVersion V2..
+             * 
+             * @param totalSizeTiB Total size of the Elastic San appliance in TB. Supported only for ElasticSanVersion
+             * V2.
+             * @return the next definition stage.
+             */
+            Update withTotalSizeTiB(Long totalSizeTiB);
         }
     }
 

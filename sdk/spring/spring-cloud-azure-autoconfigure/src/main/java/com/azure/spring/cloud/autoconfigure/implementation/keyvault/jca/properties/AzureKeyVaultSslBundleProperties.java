@@ -8,7 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,9 +75,19 @@ public class AzureKeyVaultSslBundleProperties {
          */
         private boolean refreshCertificatesWhenHaveUntrustedCertificate;
         /**
+         * Whether to disable automatic Authority Information Access (AIA) certificate chain completion downloads.
+         */
+        private boolean disableAiaDownload;
+        /**
          * Time interval to refresh all Key Vault certificate.
          */
         private Duration certificatesRefreshInterval;
+        /**
+         * Key Vault certificate alias filter patterns. Include patterns are configured as regular expressions and
+         * exclude patterns are prefixed with {@code !}. If no patterns are configured, all certificate aliases are
+         * loaded.
+         */
+        private final List<String> certificateAliasFilterPatterns = new ArrayList<>();
 
         @NestedConfigurationProperty
         private final CertificatePathsProperties certificatePaths = new CertificatePathsProperties();
@@ -96,12 +108,24 @@ public class AzureKeyVaultSslBundleProperties {
             this.refreshCertificatesWhenHaveUntrustedCertificate = refreshCertificatesWhenHaveUntrustedCertificate;
         }
 
+        public boolean isDisableAiaDownload() {
+            return disableAiaDownload;
+        }
+
+        public void setDisableAiaDownload(boolean disableAiaDownload) {
+            this.disableAiaDownload = disableAiaDownload;
+        }
+
         public Duration getCertificatesRefreshInterval() {
             return certificatesRefreshInterval;
         }
 
         public void setCertificatesRefreshInterval(Duration certificatesRefreshInterval) {
             this.certificatesRefreshInterval = certificatesRefreshInterval;
+        }
+
+        public List<String> getCertificateAliasFilterPatterns() {
+            return certificateAliasFilterPatterns;
         }
 
         public CertificatePathsProperties getCertificatePaths() {

@@ -154,6 +154,14 @@ public interface Machine {
     LicenseProfileMachineInstanceView licenseProfile();
 
     /**
+     * Gets the statusReason property: Indicates whether the service has detected that this Arc machine is a clone of
+     * another onboarded machine. Service-computed; not settable by the user.
+     * 
+     * @return the statusReason value.
+     */
+    MachineStatusReason statusReason();
+
+    /**
      * Gets the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.
@@ -740,7 +748,7 @@ public interface Machine {
         extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithLocationData,
         UpdateStages.WithOsProfile, UpdateStages.WithCloudMetadata, UpdateStages.WithAgentUpgrade,
         UpdateStages.WithParentClusterResourceId, UpdateStages.WithPrivateLinkScopeResourceId,
-        UpdateStages.WithIdentityKeyStore, UpdateStages.WithTpmEkCertificate {
+        UpdateStages.WithIdentityKeyStore, UpdateStages.WithTpmEkCertificate, UpdateStages.WithClientPublicKey {
         /**
          * Executes the update request.
          * 
@@ -909,6 +917,20 @@ public interface Machine {
              * @return the next definition stage.
              */
             Update withTpmEkCertificate(String tpmEkCertificate);
+        }
+
+        /**
+         * The stage of the Machine update allowing to specify clientPublicKey.
+         */
+        interface WithClientPublicKey {
+            /**
+             * Specifies the clientPublicKey property: Public Key that the client provides to be used during initial
+             * resource onboarding.
+             * 
+             * @param clientPublicKey Public Key that the client provides to be used during initial resource onboarding.
+             * @return the next definition stage.
+             */
+            Update withClientPublicKey(String clientPublicKey);
         }
     }
 

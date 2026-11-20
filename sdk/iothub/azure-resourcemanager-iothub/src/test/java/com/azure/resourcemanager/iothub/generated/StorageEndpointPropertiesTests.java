@@ -15,28 +15,28 @@ public final class StorageEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageEndpointProperties model = BinaryData.fromString(
-            "{\"sasTtlAsIso8601\":\"PT178H12M30S\",\"connectionString\":\"ncghkje\",\"containerName\":\"zz\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"txfvgx\"}}")
+            "{\"sasTtlAsIso8601\":\"PT7H27M17S\",\"connectionString\":\"gmebfsiarbutrcv\",\"containerName\":\"na\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"runmp\"}}")
             .toObject(StorageEndpointProperties.class);
-        Assertions.assertEquals(Duration.parse("PT178H12M30S"), model.sasTtlAsIso8601());
-        Assertions.assertEquals("ncghkje", model.connectionString());
-        Assertions.assertEquals("zz", model.containerName());
-        Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("txfvgx", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(Duration.parse("PT7H27M17S"), model.sasTtlAsIso8601());
+        Assertions.assertEquals("gmebfsiarbutrcv", model.connectionString());
+        Assertions.assertEquals("na", model.containerName());
+        Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
+        Assertions.assertEquals("runmp", model.identity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageEndpointProperties model
-            = new StorageEndpointProperties().withSasTtlAsIso8601(Duration.parse("PT178H12M30S"))
-                .withConnectionString("ncghkje")
-                .withContainerName("zz")
-                .withAuthenticationType(AuthenticationType.KEY_BASED)
-                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("txfvgx"));
+            = new StorageEndpointProperties().withSasTtlAsIso8601(Duration.parse("PT7H27M17S"))
+                .withConnectionString("gmebfsiarbutrcv")
+                .withContainerName("na")
+                .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
+                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("runmp"));
         model = BinaryData.fromObject(model).toObject(StorageEndpointProperties.class);
-        Assertions.assertEquals(Duration.parse("PT178H12M30S"), model.sasTtlAsIso8601());
-        Assertions.assertEquals("ncghkje", model.connectionString());
-        Assertions.assertEquals("zz", model.containerName());
-        Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("txfvgx", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(Duration.parse("PT7H27M17S"), model.sasTtlAsIso8601());
+        Assertions.assertEquals("gmebfsiarbutrcv", model.connectionString());
+        Assertions.assertEquals("na", model.containerName());
+        Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
+        Assertions.assertEquals("runmp", model.identity().userAssignedIdentity());
     }
 }

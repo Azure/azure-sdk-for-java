@@ -22,7 +22,7 @@ public final class LicensesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"owsaaelcattcjuh\",\"name\":\"lrvkmjc\",\"type\":\"mjvlgfgg\"}";
+            = "{\"properties\":{\"kind\":\"LicenseProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"vvi\",\"name\":\"acgxmfcsse\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class LicensesCreateOrUpdateMockTests {
 
         License response = manager.licenses()
             .define(LicenseName.VMWARE_FIREWALL)
-            .withExistingPrivateCloud("fb", "kwpzdqtvh")
+            .withExistingPrivateCloud("qxfzyjqttvwk", "qhjpenuygbqe")
             .withProperties(new LicensePropertiesInner())
             .create();
 

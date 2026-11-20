@@ -11,7 +11,7 @@ public final class NetworkSecurityPerimeterConfigurationReconcileResultInnerTest
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationReconcileResultInner model
-            = BinaryData.fromString("{\"location\":\"kdncj\"}")
+            = BinaryData.fromString("{\"location\":\"bkbxgomfa\"}")
                 .toObject(NetworkSecurityPerimeterConfigurationReconcileResultInner.class);
     }
 }

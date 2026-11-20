@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link ContentRange}.
@@ -184,6 +186,26 @@ public class ContentRangeTest {
     }
 
     @Test
+    public void rawVideoRangeMatchesTypedRange() {
+        ContentRange typedRange = ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(5));
+        ContentRange rawRange = new ContentRange("0-5000");
+
+        assertEquals(typedRange, rawRange);
+        assertEquals(serialize(new AnalysisInput().setContentRange(typedRange)),
+            serialize(new AnalysisInput().setContentRange(rawRange)));
+    }
+
+    @Test
+    public void rawAudioRangeMatchesTypedRange() {
+        ContentRange typedRange = ContentRange.timeRangeFrom(Duration.ofSeconds(5));
+        ContentRange rawRange = new ContentRange("5000-");
+
+        assertEquals(typedRange, rawRange);
+        assertEquals(serialize(new AnalysisInput().setContentRange(typedRange)),
+            serialize(new AnalysisInput().setContentRange(rawRange)));
+    }
+
+    @Test
     public void timeRangeDurationRejectsNullStart() {
         assertThrows(NullPointerException.class, () -> ContentRange.timeRange(null, Duration.ofMillis(5000)));
     }
@@ -226,15 +248,19 @@ public class ContentRangeTest {
     @Test
     public void analysisInputSetContentRangeAcceptsContentRange() {
         AnalysisInput input = new AnalysisInput();
-        input.setContentRange(ContentRange.pages(1, 3));
-        // Verify via JSON round-trip that the range was stored
-        assertEquals("1-3", extractContentRangeFromJson(input));
+        ContentRange range = ContentRange.pages(1, 3);
+
+        AnalysisInput returned = input.setContentRange(range);
+
+        assertSame(input, returned);
+        assertTrue(serialize(input).contains("\"range\":\"1-3\""));
     }
 
     @Test
     public void analysisInputContentRangeNullByDefault() {
         AnalysisInput input = new AnalysisInput();
-        assertNull(extractContentRangeFromJson(input));
+
+        assertFalse(serialize(input).contains("\"range\":"));
     }
 
     @Test
@@ -242,7 +268,8 @@ public class ContentRangeTest {
         AnalysisInput input = new AnalysisInput();
         ContentRange range = ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5));
         input.setContentRange(range);
-        assertEquals("1-3,5", extractContentRangeFromJson(input));
+
+        assertTrue(serialize(roundTrip(input)).contains("\"range\":\"1-3,5\""));
     }
 
     @Test
@@ -250,45 +277,26 @@ public class ContentRangeTest {
         AnalysisInput input = new AnalysisInput();
         input.setContentRange(ContentRange.page(1));
         input.setContentRange((ContentRange) null);
-        assertNull(extractContentRangeFromJson(input));
+
+        assertFalse(serialize(input).contains("\"range\":"));
+        assertFalse(serialize(roundTrip(input)).contains("\"range\":"));
     }
 
-    /**
-     * Helper: serialize AnalysisInput to JSON and extract the "range" field value.
-     * This avoids depending on package-private getContentRange().
-     */
-    private static String extractContentRangeFromJson(AnalysisInput input) {
+    private static String serialize(AnalysisInput input) {
         try {
-            java.io.StringWriter sw = new java.io.StringWriter();
-            com.azure.json.JsonWriter writer = com.azure.json.JsonProviders.createWriter(sw);
+            java.io.StringWriter output = new java.io.StringWriter();
+            com.azure.json.JsonWriter writer = com.azure.json.JsonProviders.createWriter(output);
             input.toJson(writer);
             writer.flush();
-            com.azure.json.JsonReader reader = com.azure.json.JsonProviders.createReader(sw.toString());
-            AnalysisInput deserialized = AnalysisInput.fromJson(reader);
-            // Use toJson again to inspect; or parse the JSON directly
-            java.io.StringWriter sw2 = new java.io.StringWriter();
-            com.azure.json.JsonWriter writer2 = com.azure.json.JsonProviders.createWriter(sw2);
-            deserialized.toJson(writer2);
-            writer2.flush();
-            String json = sw2.toString();
-            // Parse "range" field from JSON
-            int idx = json.indexOf("\"range\"");
-            if (idx < 0) {
-                return null;
-            }
-            int colon = json.indexOf(':', idx);
-            int valueStart = colon + 1;
-            // skip whitespace
-            while (valueStart < json.length() && json.charAt(valueStart) == ' ') {
-                valueStart++;
-            }
-            if (valueStart >= json.length() || json.charAt(valueStart) == 'n') {
-                return null; // null value
-            }
-            // It's a quoted string
-            int quoteStart = json.indexOf('"', valueStart);
-            int quoteEnd = json.indexOf('"', quoteStart + 1);
-            return json.substring(quoteStart + 1, quoteEnd);
+            return output.toString();
+        } catch (java.io.IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static AnalysisInput roundTrip(AnalysisInput input) {
+        try (com.azure.json.JsonReader reader = com.azure.json.JsonProviders.createReader(serialize(input))) {
+            return AnalysisInput.fromJson(reader);
         } catch (java.io.IOException e) {
             throw new RuntimeException(e);
         }

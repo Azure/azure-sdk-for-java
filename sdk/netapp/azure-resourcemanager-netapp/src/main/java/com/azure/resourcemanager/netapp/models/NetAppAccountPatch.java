@@ -117,7 +117,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * 
      * @return the encryption value.
      */
-    public AccountEncryption encryption() {
+    public AccountEncryptionPatch encryption() {
         return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
@@ -127,7 +127,7 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
      * @param encryption the encryption value to set.
      * @return the NetAppAccountPatch object itself.
      */
-    public NetAppAccountPatch withEncryption(AccountEncryption encryption) {
+    public NetAppAccountPatch withEncryption(AccountEncryptionPatch encryption) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccountPropertiesPatch();
         }
@@ -157,29 +157,6 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
             this.innerProperties = new AccountPropertiesPatch();
         }
         this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
-        return this;
-    }
-
-    /**
-     * Get the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @return the entraIdConfig value.
-     */
-    public EntraIdConfigPatch entraIdConfig() {
-        return this.innerProperties() == null ? null : this.innerProperties().entraIdConfig();
-    }
-
-    /**
-     * Set the entraIdConfig property: Entra ID configuration for the account.
-     * 
-     * @param entraIdConfig the entraIdConfig value to set.
-     * @return the NetAppAccountPatch object itself.
-     */
-    public NetAppAccountPatch withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccountPropertiesPatch();
-        }
-        this.innerProperties().withEntraIdConfig(entraIdConfig);
         return this;
     }
 

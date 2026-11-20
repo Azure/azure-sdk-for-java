@@ -14,15 +14,15 @@ public final class AzureIaaSvmJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSvmJobTaskDetails model = BinaryData.fromString(
-            "{\"taskId\":\"psfxsf\",\"startTime\":\"2021-06-27T03:41:35Z\",\"endTime\":\"2021-07-16T14:55:45Z\",\"instanceId\":\"mvagbwidqlvhuko\",\"duration\":\"PT100H15M24S\",\"status\":\"i\",\"progressPercentage\":21.16068549152601,\"taskExecutionDetails\":\"nmjmvlwyzgiblk\"}")
+            "{\"taskId\":\"krxwet\",\"startTime\":\"2021-03-03T08:34:14Z\",\"endTime\":\"2021-05-20T10:11:19Z\",\"instanceId\":\"rucpcunnuz\",\"duration\":\"PT26H47M8S\",\"status\":\"oenodnaienh\",\"progressPercentage\":99.61060010726467,\"taskExecutionDetails\":\"dnelqkaad\"}")
             .toObject(AzureIaaSvmJobTaskDetails.class);
-        Assertions.assertEquals("psfxsf", model.taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-27T03:41:35Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T14:55:45Z"), model.endTime());
-        Assertions.assertEquals("mvagbwidqlvhuko", model.instanceId());
-        Assertions.assertEquals(Duration.parse("PT100H15M24S"), model.duration());
-        Assertions.assertEquals("i", model.status());
-        Assertions.assertEquals(21.16068549152601D, model.progressPercentage());
-        Assertions.assertEquals("nmjmvlwyzgiblk", model.taskExecutionDetails());
+        Assertions.assertEquals("krxwet", model.taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T08:34:14Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-20T10:11:19Z"), model.endTime());
+        Assertions.assertEquals("rucpcunnuz", model.instanceId());
+        Assertions.assertEquals(Duration.parse("PT26H47M8S"), model.duration());
+        Assertions.assertEquals("oenodnaienh", model.status());
+        Assertions.assertEquals(99.61060010726467D, model.progressPercentage());
+        Assertions.assertEquals("dnelqkaad", model.taskExecutionDetails());
     }
 }

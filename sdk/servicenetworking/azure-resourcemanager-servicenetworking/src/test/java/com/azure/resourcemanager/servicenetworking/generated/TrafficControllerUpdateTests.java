@@ -18,26 +18,28 @@ public final class TrafficControllerUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"atkpnp\":\"f\"},\"properties\":{\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"xbczwtruwiqz\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"j\"}}}}")
+            "{\"tags\":{\"hrk\":\"dobpxjmflbvvn\",\"ajiwkuo\":\"ciwwzjuqkhr\",\"sauuimj\":\"oskg\",\"rfbyaosvexcso\":\"vxieduugidyj\"},\"properties\":{\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"hocohslkev\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"ggzfbu\"}}}}")
             .toObject(TrafficControllerUpdate.class);
-        Assertions.assertEquals("f", model.tags().get("atkpnp"));
-        Assertions.assertEquals("xbczwtruwiqz",
+        Assertions.assertEquals("dobpxjmflbvvn", model.tags().get("hrk"));
+        Assertions.assertEquals("hocohslkev",
             model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("j",
+        Assertions.assertEquals("ggzfbu",
             model.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficControllerUpdate model = new TrafficControllerUpdate().withTags(mapOf("atkpnp", "f"))
+        TrafficControllerUpdate model = new TrafficControllerUpdate()
+            .withTags(mapOf("hrk", "dobpxjmflbvvn", "ajiwkuo", "ciwwzjuqkhr", "sauuimj", "oskg", "rfbyaosvexcso",
+                "vxieduugidyj"))
             .withProperties(new TrafficControllerUpdateProperties().withSecurityPolicyConfigurations(
-                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("xbczwtruwiqz"))
-                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("j"))));
+                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("hocohslkev"))
+                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("ggzfbu"))));
         model = BinaryData.fromObject(model).toObject(TrafficControllerUpdate.class);
-        Assertions.assertEquals("f", model.tags().get("atkpnp"));
-        Assertions.assertEquals("xbczwtruwiqz",
+        Assertions.assertEquals("dobpxjmflbvvn", model.tags().get("hrk"));
+        Assertions.assertEquals("hocohslkev",
             model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
-        Assertions.assertEquals("j",
+        Assertions.assertEquals("ggzfbu",
             model.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 

@@ -125,12 +125,31 @@ public final class DeletedServerInner extends ProxyResource {
     }
 
     /**
+     * Get the originalResourceGroup property: The resource group of the original server before deletion.
+     * 
+     * @return the originalResourceGroup value.
+     */
+    public String originalResourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().originalResourceGroup();
+    }
+
+    /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
      * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
         return this.innerProperties() == null ? null : this.innerProperties().fullyQualifiedDomainName();
+    }
+
+    /**
+     * Get the scheduledPurgeTime property: The date and time when the deleted server will be permanently deleted
+     * (purged).
+     * 
+     * @return the scheduledPurgeTime value.
+     */
+    public OffsetDateTime scheduledPurgeTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledPurgeTime();
     }
 
     /**

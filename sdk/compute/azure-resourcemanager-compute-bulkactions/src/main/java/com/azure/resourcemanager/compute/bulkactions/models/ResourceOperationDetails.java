@@ -15,69 +15,79 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * The details of a response from an operation on a resource.
+ * The status and settings for an operation on one virtual machine.
  */
 @Immutable
 public final class ResourceOperationDetails implements JsonSerializable<ResourceOperationDetails> {
     /*
-     * Operation identifier for the unique operation
+     * The operation ID used to track the action for this virtual machine.
      */
     private String operationId;
 
     /*
-     * Unique identifier for the resource involved in the operation, for example Azure resource ID
+     * The virtual machine's Azure resource ID.
      */
     private String resourceId;
 
     /*
-     * Type of operation performed on the resources
+     * The type of operation performed on the virtual machine.
      */
     private ResourceOperationType opType;
 
     /*
-     * Subscription id attached to the request
+     * The subscription ID associated with the bulk action.
      */
     private String subscriptionId;
 
     /*
-     * Deadline for the operation
+     * The requested deadline for the operation.
      */
     private OffsetDateTime deadline;
 
     /*
-     * Type of deadline of the operation
+     * Specifies whether the deadline time indicates the time at which the operation should start or should be complete.
      */
     private DeadlineType deadlineType;
 
     /*
-     * Current state of the operation
+     * The current state of the operation.
      */
     private OperationState state;
 
     /*
-     * Timezone for the operation
+     * The time zone used to interpret the operation deadline.
      */
     private String timezone;
 
     /*
-     * Operation level errors if they exist
+     * Contains error details if the operation does not succeed.
      */
     private ResourceOperationError resourceOperationError;
 
     /*
-     * Fallback operation details if a fallback was performed
+     * Information about the fallback operation attempted after the requested operation did not succeed.
      */
     private FallbackOperationInfo fallbackOperationInfo;
 
     /*
-     * Time the operation was complete if errors are null
+     * The date and time when the operation completed.
      */
     private OffsetDateTime completedAt;
 
     /*
-     * Retry policy the user can pass
+     * The retry settings for the bulk action.
      */
     private RetryPolicy retryPolicy;
+
+    /*
+     * Caller-provided context associated with the virtual machine operation.
+     */
+    private ResourceNotificationDetails resourceNotificationDetails;
+
+    /*
+     * The capacity/placement recommendation computed for the operation, if requested
+     */
+    private CapacityRecommendation capacityRecommendation;
 
     /**
      * Creates an instance of ResourceOperationDetails class.
@@ -86,7 +96,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the operationId property: Operation identifier for the unique operation.
+     * Get the operationId property: The operation ID used to track the action for this virtual machine.
      * 
      * @return the operationId value.
      */
@@ -95,8 +105,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the resourceId property: Unique identifier for the resource involved in the operation, for example Azure
-     * resource ID.
+     * Get the resourceId property: The virtual machine's Azure resource ID.
      * 
      * @return the resourceId value.
      */
@@ -105,7 +114,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the opType property: Type of operation performed on the resources.
+     * Get the opType property: The type of operation performed on the virtual machine.
      * 
      * @return the opType value.
      */
@@ -114,7 +123,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the subscriptionId property: Subscription id attached to the request.
+     * Get the subscriptionId property: The subscription ID associated with the bulk action.
      * 
      * @return the subscriptionId value.
      */
@@ -123,7 +132,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the deadline property: Deadline for the operation.
+     * Get the deadline property: The requested deadline for the operation.
      * 
      * @return the deadline value.
      */
@@ -132,7 +141,8 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the deadlineType property: Type of deadline of the operation.
+     * Get the deadlineType property: Specifies whether the deadline time indicates the time at which the operation
+     * should start or should be complete.
      * 
      * @return the deadlineType value.
      */
@@ -141,7 +151,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the state property: Current state of the operation.
+     * Get the state property: The current state of the operation.
      * 
      * @return the state value.
      */
@@ -150,7 +160,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the timezone property: Timezone for the operation.
+     * Get the timezone property: The time zone used to interpret the operation deadline.
      * 
      * @return the timezone value.
      */
@@ -159,7 +169,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the resourceOperationError property: Operation level errors if they exist.
+     * Get the resourceOperationError property: Contains error details if the operation does not succeed.
      * 
      * @return the resourceOperationError value.
      */
@@ -168,7 +178,8 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the fallbackOperationInfo property: Fallback operation details if a fallback was performed.
+     * Get the fallbackOperationInfo property: Information about the fallback operation attempted after the requested
+     * operation did not succeed.
      * 
      * @return the fallbackOperationInfo value.
      */
@@ -177,7 +188,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the completedAt property: Time the operation was complete if errors are null.
+     * Get the completedAt property: The date and time when the operation completed.
      * 
      * @return the completedAt value.
      */
@@ -186,12 +197,32 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Get the retryPolicy property: Retry policy the user can pass.
+     * Get the retryPolicy property: The retry settings for the bulk action.
      * 
      * @return the retryPolicy value.
      */
     public RetryPolicy retryPolicy() {
         return this.retryPolicy;
+    }
+
+    /**
+     * Get the resourceNotificationDetails property: Caller-provided context associated with the virtual machine
+     * operation.
+     * 
+     * @return the resourceNotificationDetails value.
+     */
+    public ResourceNotificationDetails resourceNotificationDetails() {
+        return this.resourceNotificationDetails;
+    }
+
+    /**
+     * Get the capacityRecommendation property: The capacity/placement recommendation computed for the operation, if
+     * requested.
+     * 
+     * @return the capacityRecommendation value.
+     */
+    public CapacityRecommendation capacityRecommendation() {
+        return this.capacityRecommendation;
     }
 
     /**
@@ -214,6 +245,8 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
         jsonWriter.writeStringField("completedAt",
             this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
+        jsonWriter.writeJsonField("resourceNotificationDetails", this.resourceNotificationDetails);
+        jsonWriter.writeJsonField("capacityRecommendation", this.capacityRecommendation);
         return jsonWriter.writeEndObject();
     }
 
@@ -260,6 +293,12 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("retryPolicy".equals(fieldName)) {
                     deserializedResourceOperationDetails.retryPolicy = RetryPolicy.fromJson(reader);
+                } else if ("resourceNotificationDetails".equals(fieldName)) {
+                    deserializedResourceOperationDetails.resourceNotificationDetails
+                        = ResourceNotificationDetails.fromJson(reader);
+                } else if ("capacityRecommendation".equals(fieldName)) {
+                    deserializedResourceOperationDetails.capacityRecommendation
+                        = CapacityRecommendation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

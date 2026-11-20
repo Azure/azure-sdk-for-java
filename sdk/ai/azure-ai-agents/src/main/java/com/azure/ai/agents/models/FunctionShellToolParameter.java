@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +31,30 @@ public final class FunctionShellToolParameter extends Tool {
      */
     @Generated
     private FunctionShellToolParamEnvironment environment;
+
+    /*
+     * The allowed_callers property.
+     */
+    @Generated
+    private List<CallableToolAllowedCaller> allowedCallers;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String name;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private String description;
+
+    /*
+     * Deprecated. This property is deprecated and will be removed in a future version.
+     */
+    @Generated
+    private Map<String, ToolConfig> toolConfigs;
 
     /**
      * Creates an instance of FunctionShellToolParameter class.
@@ -72,72 +97,26 @@ public final class FunctionShellToolParameter extends Tool {
     }
 
     /**
-     * {@inheritDoc}
+     * Get the allowedCallers property: The allowed_callers property.
+     *
+     * @return the allowedCallers value.
      */
     @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeJsonField("environment", this.environment);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
+    public List<CallableToolAllowedCaller> getAllowedCallers() {
+        return this.allowedCallers;
     }
 
     /**
-     * Reads an instance of FunctionShellToolParameter from the JsonReader.
+     * Set the allowedCallers property: The allowed_callers property.
      *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionShellToolParameter if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the FunctionShellToolParameter.
+     * @param allowedCallers the allowedCallers value to set.
+     * @return the FunctionShellToolParameter object itself.
      */
     @Generated
-    public static FunctionShellToolParameter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            FunctionShellToolParameter deserializedFunctionShellToolParameter = new FunctionShellToolParameter();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedFunctionShellToolParameter.type = ToolType.fromString(reader.getString());
-                } else if ("environment".equals(fieldName)) {
-                    deserializedFunctionShellToolParameter.environment
-                        = FunctionShellToolParamEnvironment.fromJson(reader);
-                } else if ("name".equals(fieldName)) {
-                    deserializedFunctionShellToolParameter.name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedFunctionShellToolParameter.description = reader.getString();
-                } else if ("tool_configs".equals(fieldName)) {
-                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
-                    deserializedFunctionShellToolParameter.toolConfigs = toolConfigs;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedFunctionShellToolParameter;
-        });
+    public FunctionShellToolParameter setAllowedCallers(List<CallableToolAllowedCaller> allowedCallers) {
+        this.allowedCallers = allowedCallers;
+        return this;
     }
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private String description;
-
-    /*
-     * Deprecated. This property is deprecated and will be removed in a future version.
-     */
-    @Generated
-    private Map<String, ToolConfig> toolConfigs;
 
     /**
      * Get the name property: Deprecated. This property is deprecated and will be removed in a future version.
@@ -203,5 +182,61 @@ public final class FunctionShellToolParameter extends Tool {
     public FunctionShellToolParameter setToolConfigs(Map<String, ToolConfig> toolConfigs) {
         this.toolConfigs = toolConfigs;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("environment", this.environment);
+        jsonWriter.writeArrayField("allowed_callers", this.allowedCallers,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("tool_configs", this.toolConfigs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionShellToolParameter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionShellToolParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionShellToolParameter.
+     */
+    @Generated
+    public static FunctionShellToolParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionShellToolParameter deserializedFunctionShellToolParameter = new FunctionShellToolParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    deserializedFunctionShellToolParameter.type = ToolType.fromString(reader.getString());
+                } else if ("environment".equals(fieldName)) {
+                    deserializedFunctionShellToolParameter.environment
+                        = FunctionShellToolParamEnvironment.fromJson(reader);
+                } else if ("allowed_callers".equals(fieldName)) {
+                    List<CallableToolAllowedCaller> allowedCallers
+                        = reader.readArray(reader1 -> CallableToolAllowedCaller.fromString(reader1.getString()));
+                    deserializedFunctionShellToolParameter.allowedCallers = allowedCallers;
+                } else if ("name".equals(fieldName)) {
+                    deserializedFunctionShellToolParameter.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedFunctionShellToolParameter.description = reader.getString();
+                } else if ("tool_configs".equals(fieldName)) {
+                    Map<String, ToolConfig> toolConfigs = reader.readMap(reader1 -> ToolConfig.fromJson(reader1));
+                    deserializedFunctionShellToolParameter.toolConfigs = toolConfigs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFunctionShellToolParameter;
+        });
     }
 }

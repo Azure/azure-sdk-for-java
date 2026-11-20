@@ -3,13 +3,9 @@
 
 package com.azure.ai.agents.implementation;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollingStrategyOptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -18,10 +14,26 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AgentsServicePollUtilsTest {
+    @Test
+    void optimizationPollingUsesPublicJobRoute() {
+        String pollingUrl = AgentsServicePollUtils.getOptimizationPollingUrl(
+            BinaryData.fromString("{\"id\":\"opt_123\",\"status\":\"queued\"}"),
+            "https://example.test/api/projects/project");
+
+        assertEquals("https://example.test/api/projects/project/agent_optimization_jobs/opt_123", pollingUrl);
+    }
+
+    @Test
+    void optimizationPollingHandlesTrailingSlash() {
+        String pollingUrl = AgentsServicePollUtils.getOptimizationPollingUrl(
+            BinaryData.fromString("{\"id\":\"opt_123\"}"), "https://example.test/api/projects/project/");
+
+        assertEquals("https://example.test/api/projects/project/agent_optimization_jobs/opt_123", pollingUrl);
+    }
 
     static Stream<Arguments> remapStatusCases() {
         return Stream.of(
@@ -30,7 +42,12 @@ class AgentsServicePollUtilsTest {
             Arguments.of("Completed", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
             Arguments.of("COMPLETED", LongRunningOperationStatus.SUCCESSFULLY_COMPLETED),
             Arguments.of("superseded", LongRunningOperationStatus.USER_CANCELLED),
-            Arguments.of("Superseded", LongRunningOperationStatus.USER_CANCELLED));
+            Arguments.of("Superseded", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of("cancelled", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of("CANCELLED", LongRunningOperationStatus.USER_CANCELLED),
+            Arguments.of("skipped", LongRunningOperationStatus.FAILED),
+            Arguments.of("Skipped", LongRunningOperationStatus.FAILED),
+            Arguments.of("SKIPPED", LongRunningOperationStatus.FAILED));
     }
 
     @ParameterizedTest
@@ -43,6 +60,7 @@ class AgentsServicePollUtilsTest {
         PollResponse<String> remapped = AgentsServicePollUtils.remapStatus(original);
 
         assertEquals(expected, remapped.getStatus());
+        assertTrue(remapped.getStatus().isComplete());
         assertEquals("value", remapped.getValue());
     }
 
@@ -62,65 +80,16 @@ class AgentsServicePollUtilsTest {
         assertSame(original, result, "Standard status should return the same PollResponse instance");
     }
 
-    @Test
-    void remapStatusPreservesRetryAfter() {
-        LongRunningOperationStatus completed = LongRunningOperationStatus.fromString("completed", false);
+    @ParameterizedTest
+    @MethodSource("remapStatusCases")
+    void remapStatusPreservesRetryAfter(String statusName, LongRunningOperationStatus expected) {
+        LongRunningOperationStatus status = LongRunningOperationStatus.fromString(statusName, false);
         java.time.Duration retryAfter = java.time.Duration.ofSeconds(5);
-        PollResponse<String> original = new PollResponse<>(completed, "value", retryAfter);
+        PollResponse<String> original = new PollResponse<>(status, "value", retryAfter);
 
         PollResponse<String> remapped = AgentsServicePollUtils.remapStatus(original);
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, remapped.getStatus());
+        assertEquals(expected, remapped.getStatus());
         assertEquals(retryAfter, remapped.getRetryAfter());
-    }
-
-    @Test
-    void withFoundryFeaturesAddsHeaderToContext() {
-        PollingStrategyOptions options = new PollingStrategyOptions(new HttpPipelineBuilder().build());
-
-        PollingStrategyOptions result = AgentsServicePollUtils.withFoundryFeatures(options);
-
-        Context context = result.getContext();
-        assertNotNull(context);
-        Object headerObj = context.getData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY).orElse(null);
-        assertNotNull(headerObj, "Context should contain HTTP headers under the AddHeadersFromContextPolicy key");
-        HttpHeaders headers = (HttpHeaders) headerObj;
-        assertEquals("MemoryStores=V1Preview",
-            headers.getValue(com.azure.core.http.HttpHeaderName.fromString("Foundry-Features")));
-    }
-
-    @Test
-    void withFoundryFeaturesPreservesExistingContext() {
-        PollingStrategyOptions options
-            = new PollingStrategyOptions(new HttpPipelineBuilder().build()).setContext(new Context("myKey", "myValue"));
-
-        PollingStrategyOptions result = AgentsServicePollUtils.withFoundryFeatures(options);
-
-        Context context = result.getContext();
-        assertEquals("myValue", context.getData("myKey").orElse(null), "Existing context data should be preserved");
-        assertNotNull(context.getData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY).orElse(null),
-            "Foundry-Features header should also be present");
-    }
-
-    @Test
-    void withFoundryFeaturesMergesWithExistingHeaders() {
-        HttpHeaders existingHeaders = new HttpHeaders();
-        existingHeaders.set(com.azure.core.http.HttpHeaderName.fromString("X-Custom"), "custom-value");
-        Context contextWithHeaders
-            = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, existingHeaders);
-        PollingStrategyOptions options
-            = new PollingStrategyOptions(new HttpPipelineBuilder().build()).setContext(contextWithHeaders);
-
-        PollingStrategyOptions result = AgentsServicePollUtils.withFoundryFeatures(options);
-
-        HttpHeaders merged = (HttpHeaders) result.getContext()
-            .getData(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY)
-            .orElse(null);
-        assertNotNull(merged);
-        assertEquals("custom-value", merged.getValue(com.azure.core.http.HttpHeaderName.fromString("X-Custom")),
-            "Pre-existing header should be preserved");
-        assertEquals("MemoryStores=V1Preview",
-            merged.getValue(com.azure.core.http.HttpHeaderName.fromString("Foundry-Features")),
-            "Foundry-Features header should be added");
     }
 }

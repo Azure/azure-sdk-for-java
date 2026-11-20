@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import com.microsoft.azure.servicebus.management.ManagementClientAsync;
 import com.microsoft.azure.servicebus.management.QueueDescription;
@@ -56,12 +56,12 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
-        Assert.assertEquals("Message Body Type did not match", MessageBodyType.VALUE, receivedMessage.getMessageBody().getBodyType());
-        Assert.assertEquals("Message content did not match", messageData, receivedMessage.getMessageBody().getValueData());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
+        Assertions.assertEquals(MessageBodyType.VALUE, receivedMessage.getMessageBody().getBodyType(), "Message Body Type did not match");
+        Assertions.assertEquals(messageData, receivedMessage.getMessageBody().getValueData(), "Message content did not match");
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message received again", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message received again");
     }
 
     public static void testBasicReceiveAndDeleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -87,12 +87,12 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
-        Assert.assertEquals("Message Body Type did not match", MessageBodyType.BINARY, receivedMessage.getMessageBody().getBodyType());
-        Assert.assertArrayEquals("Message content did not match", binaryData, Utils.getDataFromMessageBody(receivedMessage.getMessageBody()));
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
+        Assertions.assertEquals(MessageBodyType.BINARY, receivedMessage.getMessageBody().getBodyType(), "Message Body Type did not match");
+        Assertions.assertArrayEquals(binaryData, Utils.getDataFromMessageBody(receivedMessage.getMessageBody()), "Message content did not match");
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message received again", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message received again");
     }
     
     private static void testBasicReceiveAndCompleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver, int messageSize) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -110,13 +110,13 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
-        Assert.assertEquals("Message Body Type did not match", MessageBodyType.BINARY, receivedMessage.getMessageBody().getBodyType());
-        Assert.assertArrayEquals("Message content did not match", binaryData, Utils.getDataFromMessageBody(receivedMessage.getMessageBody()));
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
+        Assertions.assertEquals(MessageBodyType.BINARY, receivedMessage.getMessageBody().getBodyType(), "Message Body Type did not match");
+        Assertions.assertArrayEquals(binaryData, Utils.getDataFromMessageBody(receivedMessage.getMessageBody()), "Message content did not match");
         receiver.complete(receivedMessage.getLockToken());
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message received again", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message received again");
     }
 
     public static void testBasicReceiveAndDeleteWithSequenceData(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -133,12 +133,12 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
-        Assert.assertEquals("Message Body Type did not match", MessageBodyType.SEQUENCE, receivedMessage.getMessageBody().getBodyType());
-        Assert.assertArrayEquals("Message content did not match", sequence.toArray(new String[] {}), Utils.getSequenceFromMessageBody(receivedMessage.getMessageBody()).toArray(new String[] {}));
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
+        Assertions.assertEquals(MessageBodyType.SEQUENCE, receivedMessage.getMessageBody().getBodyType(), "Message Body Type did not match");
+        Assertions.assertArrayEquals(sequence.toArray(new String[] {}), Utils.getSequenceFromMessageBody(receivedMessage.getMessageBody()).toArray(new String[] {}), "Message content did not match");
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message received again", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message received again");
     }
 
     public static void testBasicReceiveBatchAndDelete(IMessageSender sender, String sessionId, IMessageReceiver receiver, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -173,9 +173,9 @@ public class TestCommons {
             receivedMessages = receiver.receiveBatch(numMessages);
         }
 
-        Assert.assertEquals("All messages not received", numMessages, totalReceivedMessages);
+        Assertions.assertEquals(numMessages, totalReceivedMessages, "All messages not received");
         receivedMessages = receiver.receiveBatch(numMessages, SHORT_WAIT_TIME);
-        Assert.assertNull("Messages received again", receivedMessages);
+        Assertions.assertNull(receivedMessages, "Messages received again");
     }
 
     public static void testBasicReceiveAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -188,11 +188,11 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
         receiver.complete(receivedMessage.getLockToken());
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message was not properly completed", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message was not properly completed");
     }
 
     public static void testBasicReceiveAndCompleteMessageWithProperties(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -209,14 +209,14 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
         Map<String, Object> receivedProps = receivedMessage.getProperties();
-        Assert.assertEquals("All sent properties not recieved", "value1", receivedProps.get("key1"));
-        Assert.assertNull("Property with null value not received",  receivedProps.get("key2"));
+        Assertions.assertEquals("value1", receivedProps.get("key1"), "All sent properties not recieved");
+        Assertions.assertNull(receivedProps.get("key2"), "Property with null value not received");
         receiver.complete(receivedMessage.getLockToken());
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message was not properly completed", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message was not properly completed");
     }
 
     public static void testBasicReceiveAndAbandon(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -229,14 +229,14 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
         long deliveryCount = receivedMessage.getDeliveryCount();
-        Assert.assertEquals("Wrong delivery count for received message", 1, deliveryCount);
+        Assertions.assertEquals(1, deliveryCount, "Wrong delivery count for received message");
         receiver.abandon(receivedMessage.getLockToken());
         receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("DeliveryCount not incremented", deliveryCount + 1, receivedMessage.getDeliveryCount());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(deliveryCount + 1, receivedMessage.getDeliveryCount(), "DeliveryCount not incremented");
         receiver.complete(receivedMessage.getLockToken());
     }
 
@@ -250,12 +250,12 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
         String deadLetterReason = "java client deadletter test";
         receiver.deadLetter(receivedMessage.getLockToken(), deadLetterReason, null);
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message was not properly deadlettered", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message was not properly deadlettered");
     }
 
     public static void testBasicReceiveAndRenewLock(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {
@@ -268,13 +268,13 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
         Instant oldLockedUntilTime = receivedMessage.getLockedUntilUtc();
         Thread.sleep(1000);
         Instant newLockedUntilUtc = receiver.renewMessageLock(receivedMessage);
-        Assert.assertTrue("Lock not renewed. OldLockedUntilUtc:" + oldLockedUntilTime.toString() + ", newLockedUntilUtc:" + newLockedUntilUtc, newLockedUntilUtc.isAfter(oldLockedUntilTime));
-        Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockedUntilUtc, receivedMessage.getLockedUntilUtc());
+        Assertions.assertTrue(newLockedUntilUtc.isAfter(oldLockedUntilTime), "Lock not renewed. OldLockedUntilUtc:" + oldLockedUntilTime.toString() + ", newLockedUntilUtc:" + newLockedUntilUtc);
+        Assertions.assertEquals(newLockedUntilUtc, receivedMessage.getLockedUntilUtc(), "Renewed lockeduntil time not set in Message");
         receiver.complete(receivedMessage.getLockToken());
     }
 
@@ -311,10 +311,10 @@ public class TestCommons {
             }
             receivedMessages = receiver.receiveBatch(numMessages);
         }
-        Assert.assertEquals("All messages not received", numMessages, totalMessagesReceived);
+        Assertions.assertEquals(numMessages, totalMessagesReceived, "All messages not received");
 
         receivedMessages = receiver.receiveBatch(numMessages, SHORT_WAIT_TIME);
-        Assert.assertNull("Messages received again", receivedMessages);
+        Assertions.assertNull(receivedMessages, "Messages received again");
     }
 
     public static void testSendSceduledMessageAndReceive(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
@@ -358,7 +358,7 @@ public class TestCommons {
             }
         }
 
-        Assert.assertTrue("Scheduled messages not received", firstMessageReceived && secondMessageReceived);
+        Assertions.assertTrue(firstMessageReceived && secondMessageReceived, "Scheduled messages not received");
     }
 
     public static void testSendSceduledMessageAndCancel(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
@@ -392,8 +392,8 @@ public class TestCommons {
             receivedMessages = receiver.receiveBatch(10);
         }
 
-        Assert.assertTrue("Scheduled messages not received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId1)));
-        Assert.assertFalse("Cancelled scheduled messages also received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId2)));
+        Assertions.assertTrue(allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId1)), "Scheduled messages not received");
+        Assertions.assertFalse(allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId2)), "Cancelled scheduled messages also received");
     }
     
     public static void testLargeTimeToLiveOnMessage(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {        
@@ -407,11 +407,11 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("TimeToLive value didn't match", timeToLive, receivedMessage.getTimeToLive());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(timeToLive, receivedMessage.getTimeToLive(), "TimeToLive value didn't match");
         receiver.complete(receivedMessage.getLockToken());
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
-        Assert.assertNull("Message was not properly completed", receivedMessage);
+        Assertions.assertNull(receivedMessage, "Message was not properly completed");
     }
 
     public static void testPeekMessage(IMessageSender sender, String sessionId, IMessageBrowser browser) throws InterruptedException, ServiceBusException {
@@ -429,11 +429,11 @@ public class TestCommons {
         IMessage peekedMessage1 = browser.peek();
         long firstMessageSequenceNumber = peekedMessage1.getSequenceNumber();
         IMessage peekedMessage2 = browser.peek();
-        Assert.assertNotEquals("Peek returned the same message again.", firstMessageSequenceNumber, peekedMessage2.getSequenceNumber());
+        Assertions.assertNotEquals(firstMessageSequenceNumber, peekedMessage2.getSequenceNumber(), "Peek returned the same message again.");
 
         // Now peek with fromSequnceNumber.. May not work for partitioned entities
         IMessage peekedMessage5 = browser.peek(firstMessageSequenceNumber);
-        Assert.assertEquals("Peek with sequence number failed.", firstMessageSequenceNumber, peekedMessage5.getSequenceNumber());
+        Assertions.assertEquals(firstMessageSequenceNumber, peekedMessage5.getSequenceNumber(), "Peek with sequence number failed.");
     }
 
     public static void testPeekMessageBatch(IMessageSender sender, String sessionId, IMessageBrowser browser, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException {
@@ -465,12 +465,12 @@ public class TestCommons {
             peekedMessages = browser.peekBatch(10);
             peekedMessagesCount += peekedMessages.size();
         }
-        Assert.assertEquals("PeekBatch didnot return all messages.", 2, peekedMessagesCount);
+        Assertions.assertEquals(2, peekedMessagesCount, "PeekBatch didnot return all messages.");
 
         // Now peek with fromSequnceNumber.. May not work for partitioned entities
         Collection<IMessage> peekedMessagesBatch2 = browser.peekBatch(firstMessageSequenceNumber, 10);
-        Assert.assertEquals("PeekBatch with sequence number didnot return all messages.", 2, peekedMessagesBatch2.size());
-        Assert.assertEquals("PeekBatch with sequence number failed.", firstMessageSequenceNumber, peekedMessagesBatch2.iterator().next().getSequenceNumber());
+        Assertions.assertEquals(2, peekedMessagesBatch2.size(), "PeekBatch with sequence number didnot return all messages.");
+        Assertions.assertEquals(firstMessageSequenceNumber, peekedMessagesBatch2.iterator().next().getSequenceNumber(), "PeekBatch with sequence number failed.");
     }
 
     public static void testReceiveBySequenceNumberAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException {
@@ -487,14 +487,14 @@ public class TestCommons {
 
         // Now receive by sequence number
         receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
+        Assertions.assertEquals(sequenceNumber, receivedMessage.getSequenceNumber(), "ReceiveBySequenceNumber didn't receive the right message.");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "ReceiveBySequenceNumber didn't receive the right message.");
         receiver.complete(receivedMessage.getLockToken());
 
         // Try to receive by sequence number again
         try {
             receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
-            Assert.fail("Message recieved by sequnce number was not properly completed.");
+            Assertions.fail("Message recieved by sequnce number was not properly completed.");
         } catch (MessageNotFoundException e) {
             // Expected
         }
@@ -514,15 +514,15 @@ public class TestCommons {
 
         // Now receive by sequence number
         receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
+        Assertions.assertEquals(sequenceNumber, receivedMessage.getSequenceNumber(), "ReceiveBySequenceNumber didn't receive the right message.");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "ReceiveBySequenceNumber didn't receive the right message.");
         long deliveryCount = receivedMessage.getDeliveryCount();
-        Assert.assertEquals("Wrong delivery count for received message", 2, deliveryCount);
+        Assertions.assertEquals(2, deliveryCount, "Wrong delivery count for received message");
         receiver.abandon(receivedMessage.getLockToken());
 
         // Try to receive by sequence number again
         receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
-        Assert.assertEquals("Abandon didn't increase the delivery count for the message received by sequence number.", deliveryCount + 1, receivedMessage.getDeliveryCount());
+        Assertions.assertEquals(deliveryCount + 1, receivedMessage.getDeliveryCount(), "Abandon didn't increase the delivery count for the message received by sequence number.");
         receiver.complete(receivedMessage.getLockToken());
     }
 
@@ -550,16 +550,16 @@ public class TestCommons {
 
         // Now receive by sequence number
         receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
-        Assert.assertEquals("Defer didn't update properties of the message received by sequence number", firstDeferredPhase, receivedMessage.getProperties().get(phaseKey));
+        Assertions.assertEquals(sequenceNumber, receivedMessage.getSequenceNumber(), "ReceiveBySequenceNumber didn't receive the right message.");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "ReceiveBySequenceNumber didn't receive the right message.");
+        Assertions.assertEquals(firstDeferredPhase, receivedMessage.getProperties().get(phaseKey), "Defer didn't update properties of the message received by sequence number");
         customProperties.put(phaseKey, secondDeferredPhase);
         receiver.defer(receivedMessage.getLockToken(), customProperties);
 
         // Try to receive by sequence number again
         receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message after deferrring", sequenceNumber, receivedMessage.getSequenceNumber());
-        Assert.assertEquals("Defer didn't update properties of the message received by sequence number", secondDeferredPhase, receivedMessage.getProperties().get(phaseKey));
+        Assertions.assertEquals(sequenceNumber, receivedMessage.getSequenceNumber(), "ReceiveBySequenceNumber didn't receive the right message after deferrring");
+        Assertions.assertEquals(secondDeferredPhase, receivedMessage.getProperties().get(phaseKey), "Defer didn't update properties of the message received by sequence number");
         receiver.complete(receivedMessage.getLockToken());
     }
 
@@ -577,15 +577,15 @@ public class TestCommons {
 
         // Now receive by sequence number
         receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
-        Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
+        Assertions.assertEquals(sequenceNumber, receivedMessage.getSequenceNumber(), "ReceiveBySequenceNumber didn't receive the right message.");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "ReceiveBySequenceNumber didn't receive the right message.");
         String deadLetterReason = "java client deadletter test";
         receiver.deadLetter(receivedMessage.getLockToken(), deadLetterReason, null);
 
         // Try to receive by sequence number again
         try {
             receivedMessage = receiver.receiveDeferredMessage(sequenceNumber);
-            Assert.fail("Message received by sequence number was not properly deadlettered");
+            Assertions.fail("Message received by sequence number was not properly deadlettered");
         } catch (MessageNotFoundException e) {
             // Expected
         }
@@ -626,14 +626,14 @@ public class TestCommons {
         sender.send(message);
 
         IMessage receivedMessage = receiver.receive();
-        Assert.assertNotNull("Message not received", receivedMessage);
-        Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
+        Assertions.assertNotNull(receivedMessage, "Message not received");
+        Assertions.assertEquals(messageId, receivedMessage.getMessageId(), "Message Id did not match");
         Map<String, Object> receivedProperties = receivedMessage.getProperties();
         for (Map.Entry<String, Object> sentEntry : sentProperties.entrySet()) {
             if (sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray()) {
-                Assert.assertArrayEquals("Sent property didn't match with received property", (Object[]) sentEntry.getValue(), (Object[]) receivedProperties.get(sentEntry.getKey()));
+                Assertions.assertArrayEquals((Object[]) sentEntry.getValue(), (Object[]) receivedProperties.get(sentEntry.getKey()), "Sent property didn't match with received property");
             } else {
-                Assert.assertEquals("Sent property didn't match with received property", sentEntry.getValue(), receivedProperties.get(sentEntry.getKey()));
+                Assertions.assertEquals(sentEntry.getValue(), receivedProperties.get(sentEntry.getKey()), "Sent property didn't match with received property");
             }
         }
     }
@@ -654,19 +654,19 @@ public class TestCommons {
         } else {
             sessions = Utils.completeFuture(((SubscriptionClient) sessionsClient).getMessageSessionsAsync());
         }
-        Assert.assertTrue("GetMessageSessions didnot return all sessions", numSessions <= sessions.size()); // There could be sessions left over from other tests
+        Assertions.assertTrue(numSessions <= sessions.size(), "GetMessageSessions didnot return all sessions"); // There could be sessions left over from other tests
 
         IMessageSession anySession = (IMessageSession) sessions.toArray()[0];
         try {
             anySession.receive();
-            Assert.fail("Browsable session should not support receive operation");
+            Assertions.fail("Browsable session should not support receive operation");
         } catch (UnsupportedOperationException e) {
             // Expected
         }
 
         try {
             anySession.setState(null);
-            Assert.fail("Browsable session should not support setstate operation");
+            Assertions.fail("Browsable session should not support setstate operation");
         } catch (UnsupportedOperationException e) {
             // Expected
         }
@@ -675,7 +675,7 @@ public class TestCommons {
         byte[] sessionState = anySession.getState();
 
         IMessage peekedMessage = anySession.peek();
-        Assert.assertNotNull("Peek on a browsable session failed.", peekedMessage);
+        Assertions.assertNotNull(peekedMessage, "Peek on a browsable session failed.");
 
         // Close all sessions
         for (IMessageSession session : sessions) {
@@ -714,10 +714,10 @@ public class TestCommons {
         try {
         	rcvdMessage = receiveFuture.get(maxReceiveWaitTimeInSeconds, TimeUnit.SECONDS);
         } catch (java.util.concurrent.TimeoutException te) {
-        	Assert.fail("Long poll receive didn't receive a message after entity reload");
+            Assertions.fail("Long poll receive didn't receive a message after entity reload");
         }
         
-        Assert.assertNotNull("Long poll receive didn't receive a message after entity reload", rcvdMessage);
+        Assertions.assertNotNull(rcvdMessage, "Long poll receive didn't receive a message after entity reload");
     }
 
     public static void drainAllMessagesFromReceiver(IMessageReceiver receiver) throws InterruptedException, ServiceBusException {

@@ -9,7 +9,22 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01/NetworkVirtualApplianceGet.json
+     * x-ms-original-file: 2026-05-01/NetworkVirtualApplianceVhubSourceIPGet.json
+     */
+    /**
+     * Sample code: Get a managed NVA in a virtual hub with SourceIP load distribution.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void getAManagedNVAInAVirtualHubWithSourceIPLoadDistribution(
+        com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getNetworkVirtualAppliances()
+            .getByResourceGroupWithResponse("rg1", "nva-vhub", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/NetworkVirtualApplianceGet.json
      */
     /**
      * Sample code: Get NetworkVirtualAppliance.
@@ -20,5 +35,50 @@ public final class NetworkVirtualAppliancesGetByResourceGroupSamples {
         manager.serviceClient()
             .getNetworkVirtualAppliances()
             .getByResourceGroupWithResponse("rg1", "nva", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/NetworkVirtualApplianceVnetDualStackGet.json
+     */
+    /**
+     * Sample code: Get NetworkVirtualAppliance in VNet with Dual Stack.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void
+        getNetworkVirtualApplianceInVNetWithDualStack(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getNetworkVirtualAppliances()
+            .getByResourceGroupWithResponse("rg1", "nva", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/NetworkVirtualApplianceVhubDualStackGet.json
+     */
+    /**
+     * Sample code: Get NetworkVirtualAppliance in Virtual Hub with Dual Stack.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void
+        getNetworkVirtualApplianceInVirtualHubWithDualStack(com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getNetworkVirtualAppliances()
+            .getByResourceGroupWithResponse("rg1", "nva", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-05-01/NetworkVirtualApplianceVhubSourceIPProtocolGet.json
+     */
+    /**
+     * Sample code: Get a managed NVA in a virtual hub with SourceIPProtocol load distribution.
+     * 
+     * @param manager Entry point to NetworkManager.
+     */
+    public static void getAManagedNVAInAVirtualHubWithSourceIPProtocolLoadDistribution(
+        com.azure.resourcemanager.network.NetworkManager manager) {
+        manager.serviceClient()
+            .getNetworkVirtualAppliances()
+            .getByResourceGroupWithResponse("rg1", "nva-vhub", null, com.azure.core.util.Context.NONE);
     }
 }

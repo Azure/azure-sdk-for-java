@@ -7,6 +7,7 @@ package com.azure.analytics.planetarycomputer.models;
 import com.azure.analytics.planetarycomputer.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -112,7 +113,7 @@ public final class StacAsset implements JsonSerializable<StacAsset> {
      * Represents a STAC asset, which is a file or resource associated with a STAC item.
      */
     @Generated
-    private Map<String, Object> additionalProperties;
+    private Map<String, BinaryData> additionalProperties;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -459,7 +460,7 @@ public final class StacAsset implements JsonSerializable<StacAsset> {
      * @return the additionalProperties value.
      */
     @Generated
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, BinaryData> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -473,7 +474,7 @@ public final class StacAsset implements JsonSerializable<StacAsset> {
      * @return the StacAsset object itself.
      */
     @Generated
-    public StacAsset setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public StacAsset setAdditionalProperties(Map<String, BinaryData> additionalProperties) {
         this.additionalProperties = additionalProperties;
         this.updatedProperties.add("additionalProperties");
         return this;
@@ -506,8 +507,13 @@ public final class StacAsset implements JsonSerializable<StacAsset> {
             jsonWriter.writeStringField("type", this.type);
             jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeString(element));
             if (additionalProperties != null) {
-                for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                    jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+                for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                    jsonWriter.writeFieldName(additionalProperty.getKey());
+                    if (additionalProperty.getValue() == null) {
+                        jsonWriter.writeNull();
+                    } else {
+                        additionalProperty.getValue().writeTo(jsonWriter);
+                    }
                 }
             }
             return jsonWriter.writeEndObject();
@@ -612,8 +618,13 @@ public final class StacAsset implements JsonSerializable<StacAsset> {
             }
         }
         if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();
@@ -631,7 +642,7 @@ public final class StacAsset implements JsonSerializable<StacAsset> {
     public static StacAsset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StacAsset deserializedStacAsset = new StacAsset();
-            Map<String, Object> additionalProperties = null;
+            Map<String, BinaryData> additionalProperties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -672,7 +683,8 @@ public final class StacAsset implements JsonSerializable<StacAsset> {
                         additionalProperties = new LinkedHashMap<>();
                     }
 
-                    additionalProperties.put(fieldName, reader.readUntyped());
+                    additionalProperties.put(fieldName,
+                        reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 }
             }
             deserializedStacAsset.additionalProperties = additionalProperties;

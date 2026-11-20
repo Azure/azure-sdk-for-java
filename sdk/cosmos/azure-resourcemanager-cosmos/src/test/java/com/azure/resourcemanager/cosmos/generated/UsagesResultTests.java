@@ -12,8 +12,8 @@ public final class UsagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesResult model = BinaryData.fromString(
-            "{\"value\":[{\"unit\":\"Seconds\",\"name\":{\"value\":\"pichkoymkcdy\",\"localizedValue\":\"pkkpw\"},\"quotaPeriod\":\"eqnovvqfovl\",\"limit\":7527902783356338105,\"currentValue\":7201540616351679717},{\"unit\":\"Seconds\",\"name\":{\"value\":\"ndsytgadg\",\"localizedValue\":\"aeaeneqnzarrw\"},\"quotaPeriod\":\"uu\",\"limit\":4399358999277003826,\"currentValue\":7831439414407354845}],\"nextLink\":\"wiipfpub\"}")
+            "{\"value\":[{\"unit\":\"Seconds\",\"name\":{\"value\":\"ebmnzbtbhjpglk\",\"localizedValue\":\"ohdneuel\"},\"quotaPeriod\":\"hsd\",\"limit\":250164414285445387,\"currentValue\":960595332999400866},{\"unit\":\"Percent\",\"name\":{\"value\":\"wq\",\"localizedValue\":\"v\"},\"quotaPeriod\":\"xclvit\",\"limit\":6465268745370114488,\"currentValue\":2144640656240762223},{\"unit\":\"Count\",\"name\":{\"value\":\"hcohfwdsjnk\",\"localizedValue\":\"jutiiswacff\"},\"quotaPeriod\":\"k\",\"limit\":2817316502996814580,\"currentValue\":4896642944442173063},{\"unit\":\"CountPerSecond\",\"name\":{\"value\":\"a\",\"localizedValue\":\"vpnpp\"},\"quotaPeriod\":\"flrwd\",\"limit\":8515210692095487331,\"currentValue\":5459273226490403172}],\"nextLink\":\"xsaga\"}")
             .toObject(UsagesResult.class);
-        Assertions.assertEquals("wiipfpub", model.nextLink());
+        Assertions.assertEquals("xsaga", model.nextLink());
     }
 }

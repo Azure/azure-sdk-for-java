@@ -4,68 +4,88 @@
 
 package com.azure.resourcemanager.keyvault.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * SKU of the managed HSM Pool.
  */
-public enum ManagedHsmSkuName {
+public final class ManagedHsmSkuName extends ExpandableStringEnum<ManagedHsmSkuName> {
     /**
-     * Enum value Standard_B1.
+     * Standard_B1 SKU.
      */
-    STANDARD_B1("Standard_B1"),
+    public static final ManagedHsmSkuName STANDARD_B1 = fromString("Standard_B1");
 
     /**
-     * Enum value Custom_B32.
+     * Custom_B32 SKU.
      */
-    CUSTOM_B32("Custom_B32"),
+    public static final ManagedHsmSkuName CUSTOM_B32 = fromString("Custom_B32");
 
     /**
-     * Enum value Custom_B6.
+     * Custom_B6 SKU.
      */
-    CUSTOM_B6("Custom_B6"),
+    public static final ManagedHsmSkuName CUSTOM_B6 = fromString("Custom_B6");
 
     /**
-     * Enum value Custom_C42.
+     * Custom_C42 SKU.
      */
-    CUSTOM_C42("Custom_C42"),
+    public static final ManagedHsmSkuName CUSTOM_C42 = fromString("Custom_C42");
 
     /**
-     * Enum value Custom_C10.
+     * Custom_C10 SKU.
      */
-    CUSTOM_C10("Custom_C10");
+    public static final ManagedHsmSkuName CUSTOM_C10 = fromString("Custom_C10");
 
     /**
-     * The actual serialized value for a ManagedHsmSkuName instance.
+     * Standard_B1v2 SKU.
      */
-    private final String value;
-
-    ManagedHsmSkuName(String value) {
-        this.value = value;
-    }
+    public static final ManagedHsmSkuName STANDARD_B1V2 = fromString("Standard_B1v2");
 
     /**
-     * Parses a serialized value to a ManagedHsmSkuName instance.
+     * Standard_B5v2 SKU.
+     */
+    public static final ManagedHsmSkuName STANDARD_B5V2 = fromString("Standard_B5v2");
+
+    /**
+     * Standard_B10v2 SKU.
+     */
+    public static final ManagedHsmSkuName STANDARD_B10V2 = fromString("Standard_B10v2");
+
+    /**
+     * Standard_B15v2 SKU.
+     */
+    public static final ManagedHsmSkuName STANDARD_B15V2 = fromString("Standard_B15v2");
+
+    /**
+     * Standard_B20v2 SKU.
+     */
+    public static final ManagedHsmSkuName STANDARD_B20V2 = fromString("Standard_B20v2");
+
+    /**
+     * Creates a new instance of ManagedHsmSkuName value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ManagedHsmSkuName object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ManagedHsmSkuName fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ManagedHsmSkuName[] items = ManagedHsmSkuName.values();
-        for (ManagedHsmSkuName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public ManagedHsmSkuName() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ManagedHsmSkuName from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ManagedHsmSkuName.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static ManagedHsmSkuName fromString(String name) {
+        return fromString(name, ManagedHsmSkuName.class);
+    }
+
+    /**
+     * Gets known ManagedHsmSkuName values.
+     * 
+     * @return known ManagedHsmSkuName values.
+     */
+    public static Collection<ManagedHsmSkuName> values() {
+        return values(ManagedHsmSkuName.class);
     }
 }

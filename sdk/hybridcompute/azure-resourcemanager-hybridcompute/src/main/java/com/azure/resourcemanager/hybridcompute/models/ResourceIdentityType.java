@@ -4,48 +4,58 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
- * Defines values for ResourceIdentityType.
+ * Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
  */
-public enum ResourceIdentityType {
+public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIdentityType> {
     /**
-     * Enum value SystemAssigned.
+     * No managed identity.
      */
-    SYSTEM_ASSIGNED("SystemAssigned");
+    public static final ResourceIdentityType NONE = fromString("None");
 
     /**
-     * The actual serialized value for a ResourceIdentityType instance.
+     * System assigned managed identity.
      */
-    private final String value;
-
-    ResourceIdentityType(String value) {
-        this.value = value;
-    }
+    public static final ResourceIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
     /**
-     * Parses a serialized value to a ResourceIdentityType instance.
+     * User assigned managed identity.
+     */
+    public static final ResourceIdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /**
+     * System and user assigned managed identity.
+     */
+    public static final ResourceIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
+
+    /**
+     * Creates a new instance of ResourceIdentityType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ResourceIdentityType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ResourceIdentityType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ResourceIdentityType[] items = ResourceIdentityType.values();
-        for (ResourceIdentityType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public ResourceIdentityType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ResourceIdentityType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ResourceIdentityType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static ResourceIdentityType fromString(String name) {
+        return fromString(name, ResourceIdentityType.class);
+    }
+
+    /**
+     * Gets known ResourceIdentityType values.
+     * 
+     * @return known ResourceIdentityType values.
+     */
+    public static Collection<ResourceIdentityType> values() {
+        return values(ResourceIdentityType.class);
     }
 }

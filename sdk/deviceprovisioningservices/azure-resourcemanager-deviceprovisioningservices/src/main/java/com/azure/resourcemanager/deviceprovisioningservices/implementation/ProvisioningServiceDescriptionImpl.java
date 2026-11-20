@@ -152,15 +152,18 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.provisioningServiceName
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "provisioningServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}",
+            "resourceGroupName");
+        this.provisioningServiceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}",
+            "provisioningServiceName");
     }
 
     public ProvisioningServiceDescription refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getIotDpsResources()
-            .getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, Context.NONE)
+            .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, Context.NONE)
             .getValue();
         return this;
     }
@@ -168,7 +171,7 @@ public final class ProvisioningServiceDescriptionImpl implements ProvisioningSer
     public ProvisioningServiceDescription refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getIotDpsResources()
-            .getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, context)
+            .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, context)
             .getValue();
         return this;
     }

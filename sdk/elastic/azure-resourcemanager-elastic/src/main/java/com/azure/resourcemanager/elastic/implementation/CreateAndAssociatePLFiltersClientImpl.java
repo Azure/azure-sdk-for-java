@@ -205,7 +205,7 @@ public final class CreateAndAssociatePLFiltersClientImpl implements CreateAndAss
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName, String name,
+    private SyncPoller<PollResult<Void>, Void> beginCreate(String resourceGroupName, String monitorName, String name,
         String privateEndpointGuid, String privateEndpointName) {
         Response<BinaryData> response
             = createWithResponse(resourceGroupName, monitorName, name, privateEndpointGuid, privateEndpointName);

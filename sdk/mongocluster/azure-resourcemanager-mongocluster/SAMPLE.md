@@ -55,14 +55,14 @@ import com.azure.resourcemanager.mongocluster.models.FirewallRuleProperties;
  */
 public final class FirewallRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_FirewallRuleCreate.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_FirewallRuleCreate.json
      */
     /**
-     * Sample code: Creates a firewall rule on a Mongo Cluster resource.
+     * Sample code: Creates a firewall rule on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsAFirewallRuleOnAMongoClusterResource(
+    public static void createsAFirewallRuleOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.firewallRules()
             .define("rule1")
@@ -82,14 +82,14 @@ public final class FirewallRulesCreateOrUpdateSamples {
  */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_FirewallRuleDelete.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_FirewallRuleDelete.json
      */
     /**
-     * Sample code: Deletes a firewall rule on a Mongo Cluster resource.
+     * Sample code: Deletes a firewall rule on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void deletesAFirewallRuleOnAMongoClusterResource(
+    public static void deletesAFirewallRuleOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.firewallRules().delete("TestGroup", "myMongoCluster", "rule1", com.azure.core.util.Context.NONE);
     }
@@ -104,15 +104,15 @@ public final class FirewallRulesDeleteSamples {
  */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_FirewallRuleGet.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_FirewallRuleGet.json
      */
     /**
-     * Sample code: Gets a firewall rule on a Mongo Cluster resource.
+     * Sample code: Gets a firewall rule on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void
-        getsAFirewallRuleOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+    public static void getsAFirewallRuleOnADocumentDBClusterResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.firewallRules()
             .getWithResponse("TestGroup", "myMongoCluster", "rule1", com.azure.core.util.Context.NONE);
     }
@@ -127,14 +127,14 @@ public final class FirewallRulesGetSamples {
  */
 public final class FirewallRulesListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_FirewallRuleList.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_FirewallRuleList.json
      */
     /**
-     * Sample code: List the firewall rules on a Mongo Cluster resource.
+     * Sample code: List the firewall rules on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listTheFirewallRulesOnAMongoClusterResource(
+    public static void listTheFirewallRulesOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.firewallRules().listByMongoCluster("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }
@@ -151,14 +151,14 @@ import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityReques
  */
 public final class MongoClustersCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_NameAvailability.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_NameAvailability.json
      */
     /**
-     * Sample code: Checks and confirms the Mongo Cluster name is available for use.
+     * Sample code: Checks and confirms the DocumentDB cluster name is available for use.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void checksAndConfirmsTheMongoClusterNameIsAvailableForUse(
+    public static void checksAndConfirmsTheDocumentDBClusterNameIsAvailableForUse(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .checkNameAvailabilityWithResponse("westus2", new CheckNameAvailabilityRequest().withName("newmongocluster")
@@ -166,14 +166,14 @@ public final class MongoClustersCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_NameAvailability_AlreadyExists.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_NameAvailability_AlreadyExists.json
      */
     /**
-     * Sample code: Checks and returns that the Mongo Cluster name is already in-use.
+     * Sample code: Checks and returns that the DocumentDB cluster name is already in-use.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void checksAndReturnsThatTheMongoClusterNameIsAlreadyInUse(
+    public static void checksAndReturnsThatTheDocumentDBClusterNameIsAlreadyInUse(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .checkNameAvailabilityWithResponse("westus2",
@@ -217,43 +217,15 @@ import java.util.Map;
  */
 public final class MongoClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_Create_SSDv2.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_CreateGeoReplica_CMK.json
      */
     /**
-     * Sample code: Creates a new Mongo Cluster resource with Premium SSDv2 storage.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void createsANewMongoClusterResourceWithPremiumSSDv2Storage(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        manager.mongoClusters()
-            .define("myMongoCluster")
-            .withRegion("westus2")
-            .withExistingResourceGroup("TestResourceGroup")
-            .withProperties(new MongoClusterProperties()
-                .withAdministrator(
-                    new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder"))
-                .withServerVersion("5.0")
-                .withHighAvailability(
-                    new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.ZONE_REDUNDANT_PREFERRED))
-                .withStorage(new StorageProperties().withSizeGb(32L).withType(StorageType.PREMIUM_SSDV2))
-                .withSharding(new ShardingProperties().withShardCount(1))
-                .withCompute(new ComputeProperties().withTier("M30"))
-                .withAuthConfig(
-                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.NATIVE_AUTH))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_CreateGeoReplica_CMK.json
-     */
-    /**
-     * Sample code: Creates a replica Mongo Cluster resource with Customer Managed Key encryption from a source
+     * Sample code: Creates a replica DocumentDB cluster resource with Customer Managed Key encryption from a source
      * resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsAReplicaMongoClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource(
+    public static void createsAReplicaDocumentDBClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myReplicaMongoCluster")
@@ -278,14 +250,105 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_Create_CMK.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_Create_SSDv2.json
      */
     /**
-     * Sample code: Creates a new Mongo Cluster resource with Customer Managed Key encryption.
+     * Sample code: Creates a new DocumentDB cluster resource with Premium SSDv2 storage.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsANewMongoClusterResourceWithCustomerManagedKeyEncryption(
+    public static void createsANewDocumentDBClusterResourceWithPremiumSSDv2Storage(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myMongoCluster")
+            .withRegion("westus2")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withProperties(new MongoClusterProperties()
+                .withAdministrator(
+                    new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder"))
+                .withServerVersion("5.0")
+                .withHighAvailability(
+                    new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.ZONE_REDUNDANT_PREFERRED))
+                .withStorage(new StorageProperties().withSizeGb(32L).withType(StorageType.PREMIUM_SSDV2))
+                .withSharding(new ShardingProperties().withShardCount(1))
+                .withCompute(new ComputeProperties().withTier("M30"))
+                .withAuthConfig(
+                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.NATIVE_AUTH))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_Create.json
+     */
+    /**
+     * Sample code: Creates a DocumentDB cluster with default PremiumSSDv2 storage and string-valued tags.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void createsADocumentDBClusterWithDefaultPremiumSSDv2StorageAndStringValuedTags(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myMongoCluster")
+            .withRegion("westus2")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withTags(mapOf("environment", "production", "costCenter", "1234"))
+            .withProperties(new MongoClusterProperties()
+                .withAdministrator(
+                    new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder"))
+                .withServerVersion("5.0")
+                .withHighAvailability(
+                    new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.ZONE_REDUNDANT_PREFERRED))
+                .withStorage(new StorageProperties().withSizeGb(128L))
+                .withSharding(new ShardingProperties().withShardCount(1))
+                .withCompute(new ComputeProperties().withTier("M30"))
+                .withAuthConfig(
+                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.NATIVE_AUTH))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_CreatePITR_CMK.json
+     */
+    /**
+     * Sample code: Creates a DocumentDB cluster resource with Customer Managed Key encryption from a point in time
+     * restore.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void createsADocumentDBClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myMongoCluster")
+            .withRegion("westus2")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+                .withRestoreParameters(new MongoClusterRestoreParameters()
+                    .withPointInTimeUTC(OffsetDateTime.parse("2023-01-13T20:07:35Z"))
+                    .withSourceResourceId(
+                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"))
+                .withEncryption(new EncryptionProperties()
+                    .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryptionProperties()
+                        .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                            .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
+                            .withUserAssignedIdentityResourceId(
+                                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"))
+                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
+                    new UserAssignedIdentity())))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_Create_CMK.json
+     */
+    /**
+     * Sample code: Creates a new DocumentDB cluster resource with Customer Managed Key encryption.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void createsANewDocumentDBClusterResourceWithCustomerManagedKeyEncryption(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myMongoCluster")
@@ -313,36 +376,14 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_CreateGeoReplica.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_CreatePITR.json
      */
     /**
-     * Sample code: Creates a replica Mongo Cluster resource from a source resource.
+     * Sample code: Creates a DocumentDB cluster resource from a point in time restore.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsAReplicaMongoClusterResourceFromASourceResource(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        manager.mongoClusters()
-            .define("myReplicaMongoCluster")
-            .withRegion("centralus")
-            .withExistingResourceGroup("TestResourceGroup")
-            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.GEO_REPLICA)
-                .withReplicaParameters(new MongoClusterReplicaParameters().withSourceResourceId(
-                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster")
-                    .withSourceLocation("eastus"))
-                .withStorage(new StorageProperties().withType(StorageType.PREMIUM_SSDV2)))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_CreatePITR.json
-     */
-    /**
-     * Sample code: Creates a Mongo Cluster resource from a point in time restore.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void createsAMongoClusterResourceFromAPointInTimeRestore(
+    public static void createsADocumentDBClusterResourceFromAPointInTimeRestore(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myMongoCluster")
@@ -359,16 +400,39 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_CreatePITR_EntraAuth.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_CreateGeoReplica.json
      */
     /**
-     * Sample code: Creates a Mongo Cluster resource from a point in time restore with Microsoft Entra ID authentication
-     * mode enabled.
+     * Sample code: Creates a replica DocumentDB cluster resource from a source resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void createsAMongoClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIDAuthenticationModeEnabled(
+    public static void createsAReplicaDocumentDBClusterResourceFromASourceResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myReplicaMongoCluster")
+            .withRegion("centralus")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.GEO_REPLICA)
+                .withReplicaParameters(new MongoClusterReplicaParameters().withSourceResourceId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster")
+                    .withSourceLocation("eastus"))
+                .withStorage(new StorageProperties().withType(StorageType.PREMIUM_SSDV2)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_CreatePITR_EntraAuth.json
+     */
+    /**
+     * Sample code: Creates a DocumentDB cluster resource from a point in time restore with Microsoft Entra ID
+     * authentication mode enabled.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        createsADocumentDBClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIDAuthenticationModeEnabled(
+            com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .define("myMongoCluster")
             .withRegion("westus2")
@@ -380,67 +444,6 @@ public final class MongoClustersCreateOrUpdateSamples {
                         "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"))
                 .withAuthConfig(
                     new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_Create.json
-     */
-    /**
-     * Sample code: Creates a new Mongo Cluster resource.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void
-        createsANewMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        manager.mongoClusters()
-            .define("myMongoCluster")
-            .withRegion("westus2")
-            .withExistingResourceGroup("TestResourceGroup")
-            .withProperties(new MongoClusterProperties()
-                .withAdministrator(
-                    new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder"))
-                .withServerVersion("5.0")
-                .withHighAvailability(
-                    new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.ZONE_REDUNDANT_PREFERRED))
-                .withStorage(new StorageProperties().withSizeGb(128L))
-                .withSharding(new ShardingProperties().withShardCount(1))
-                .withCompute(new ComputeProperties().withTier("M30"))
-                .withAuthConfig(
-                    new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.NATIVE_AUTH))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_CreatePITR_CMK.json
-     */
-    /**
-     * Sample code: Creates a Mongo Cluster resource with Customer Managed Key encryption from a point in time restore.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void createsAMongoClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        manager.mongoClusters()
-            .define("myMongoCluster")
-            .withRegion("westus2")
-            .withExistingResourceGroup("TestResourceGroup")
-            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
-                .withRestoreParameters(new MongoClusterRestoreParameters()
-                    .withPointInTimeUTC(OffsetDateTime.parse("2023-01-13T20:07:35Z"))
-                    .withSourceResourceId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"))
-                .withEncryption(new EncryptionProperties()
-                    .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryptionProperties()
-                        .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
-                            .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
-                            .withUserAssignedIdentityResourceId(
-                                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"))
-                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
-                    new UserAssignedIdentity())))
             .create();
     }
 
@@ -466,15 +469,15 @@ public final class MongoClustersCreateOrUpdateSamples {
  */
 public final class MongoClustersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_Delete.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_Delete.json
      */
     /**
-     * Sample code: Deletes a Mongo Cluster resource.
+     * Sample code: Deletes a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        deletesAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        deletesADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters().delete("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }
 }
@@ -488,14 +491,15 @@ public final class MongoClustersDeleteSamples {
  */
 public final class MongoClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_Get.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_Get.json
      */
     /**
-     * Sample code: Gets a Mongo Cluster resource.
+     * Sample code: Gets a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void getsAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+    public static void
+        getsADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }
@@ -510,14 +514,14 @@ public final class MongoClustersGetByResourceGroupSamples {
  */
 public final class MongoClustersListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_List.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_List.json
      */
     /**
-     * Sample code: Lists the Mongo Cluster resources in a subscription.
+     * Sample code: Lists the DocumentDB cluster resources in a subscription.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listsTheMongoClusterResourcesInASubscription(
+    public static void listsTheDocumentDBClusterResourcesInASubscription(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters().list(com.azure.core.util.Context.NONE);
     }
@@ -532,14 +536,14 @@ public final class MongoClustersListSamples {
  */
 public final class MongoClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_ListByResourceGroup.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_ListByResourceGroup.json
      */
     /**
-     * Sample code: Lists the Mongo Cluster resources in a resource group.
+     * Sample code: Lists the DocumentDB cluster resources in a resource group.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listsTheMongoClusterResourcesInAResourceGroup(
+    public static void listsTheDocumentDBClusterResourcesInAResourceGroup(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters().listByResourceGroup("TestResourceGroup", com.azure.core.util.Context.NONE);
     }
@@ -554,14 +558,14 @@ public final class MongoClustersListByResourceGroupSamples {
  */
 public final class MongoClustersListConnectionStringsSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_ListConnectionStrings.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_ListConnectionStrings.json
      */
     /**
-     * Sample code: List the available connection strings for the Mongo Cluster resource.
+     * Sample code: List the available connection strings for the DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listTheAvailableConnectionStringsForTheMongoClusterResource(
+    public static void listTheAvailableConnectionStringsForTheDocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .listConnectionStringsWithResponse("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
@@ -581,18 +585,36 @@ import com.azure.resourcemanager.mongocluster.models.PromoteReplicaRequest;
  */
 public final class MongoClustersPromoteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_ForcePromoteReplica.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_ForcePromoteReplica.json
      */
     /**
-     * Sample code: Promotes a replica Mongo Cluster resource to a primary role.
+     * Sample code: Promotes a replica DocumentDB cluster resource to a primary role.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void promotesAReplicaMongoClusterResourceToAPrimaryRole(
+    public static void promotesAReplicaDocumentDBClusterResourceToAPrimaryRole(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.mongoClusters()
             .promote("TestGroup", "myMongoCluster",
                 new PromoteReplicaRequest().withPromoteOption(PromoteOption.FORCED).withMode(PromoteMode.SWITCHOVER),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_PlannedPromoteReplica.json
+     */
+    /**
+     * Sample code: Promotes a replica DocumentDB cluster resource to a primary role, waiting for the replica to catch
+     * up before promoting.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        promotesAReplicaDocumentDBClusterResourceToAPrimaryRoleWaitingForTheReplicaToCatchUpBeforePromoting(
+            com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .promote("TestGroup", "myMongoCluster",
+                new PromoteReplicaRequest().withPromoteOption(PromoteOption.PLANNED).withMode(PromoteMode.SWITCHOVER),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -632,7 +654,7 @@ import java.util.Map;
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PatchEnableEntraIDAuth.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchEnableEntraIDAuth.json
      */
     /**
      * Sample code: Updates the allowed authentication modes to include Microsoft Entra ID authentication.
@@ -652,7 +674,42 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_ResetPassword.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchTags.json
+     */
+    /**
+     * Sample code: Updates string-valued resource tags without changing the existing PremiumSSD storage type.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesStringValuedResourceTagsWithoutChangingTheExistingPremiumSSDStorageType(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("environment", "production", "costCenter", "1234")).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchSSDv2.json
+     */
+    /**
+     * Sample code: Updates the Premium SSDv2 size on a DocumentDB cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesThePremiumSSDv2SizeOnADocumentDBClusterResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties()
+                .withStorage(new StorageProperties().withSizeGb(128L).withType(StorageType.PREMIUM_SSDV2)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_ResetPassword.json
      */
     /**
      * Sample code: Resets the administrator login password.
@@ -671,14 +728,33 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PatchCMK.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchDisableNativeAuth.json
      */
     /**
-     * Sample code: Updates the customer managed encryption key on a mongo cluster resource.
+     * Sample code: Updates the allowed authentication modes to remove Native authentication.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void updatesTheCustomerManagedEncryptionKeyOnAMongoClusterResource(
+    public static void updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withAuthConfig(
+                new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchCMK.json
+     */
+    /**
+     * Sample code: Updates the customer managed encryption key on a DocumentDB cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesTheCustomerManagedEncryptionKeyOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
@@ -699,34 +775,15 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PatchDisableNativeAuth.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchDiskSize.json
      */
     /**
-     * Sample code: Updates the allowed authentication modes to remove Native authentication.
+     * Sample code: Updates the disk size on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication(
+    public static void updatesTheDiskSizeOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        MongoCluster resource = manager.mongoClusters()
-            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new MongoClusterUpdateProperties().withAuthConfig(
-                new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PatchDiskSize.json
-     */
-    /**
-     * Sample code: Updates the disk size on a Mongo Cluster resource.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void
-        updatesTheDiskSizeOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
             .getValue();
@@ -736,53 +793,16 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PatchPrivateNetworkAccess.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchNetworkBypassMode.json
      */
     /**
-     * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        MongoCluster resource = manager.mongoClusters()
-            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new MongoClusterUpdateProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PatchSSDv2.json
-     */
-    /**
-     * Sample code: Updates the Premium SSDv2 size on a Mongo Cluster resource.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void updatesThePremiumSSDv2SizeOnAMongoClusterResource(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        MongoCluster resource = manager.mongoClusters()
-            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new MongoClusterUpdateProperties()
-                .withStorage(new StorageProperties().withSizeGb(128L).withType(StorageType.PREMIUM_SSDV2)))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PatchNetworkBypassMode.json
-     */
-    /**
-     * Sample code: Enables network bypass mode on a Mongo Cluster resource to allow Azure Cosmos DB service to bypass
-     * network restrictions.
+     * Sample code: Enables network bypass mode on an Azure DocumentDB Cluster resource to allow the Azure Cosmos DB
+     * service to bypass network restrictions.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        enablesNetworkBypassModeOnAMongoClusterResourceToAllowAzureCosmosDBServiceToBypassNetworkRestrictions(
+        enablesNetworkBypassModeOnAnAzureDocumentDBClusterResourceToAllowTheAzureCosmosDBServiceToBypassNetworkRestrictions(
             com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
@@ -793,15 +813,15 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PatchDataApi.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchDataApi.json
      */
     /**
-     * Sample code: Enables data API on a mongo cluster resource.
+     * Sample code: Enables data API on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        enablesDataAPIOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        enablesDataAPIOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
             .getValue();
@@ -812,15 +832,33 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_Update.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchPrivateNetworkAccess.json
      */
     /**
-     * Sample code: Updates a Mongo Cluster resource.
+     * Sample code: Disables public network access on a DocumentDB cluster resource with a private endpoint connection.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void disablesPublicNetworkAccessOnADocumentDBClusterResourceWithAPrivateEndpointConnection(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_Update.json
+     */
+    /**
+     * Sample code: Updates a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        updatesAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        updatesADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
             .getValue();
@@ -830,7 +868,7 @@ public final class MongoClustersUpdateSamples {
                 .withServerVersion("5.0")
                 .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.SAME_ZONE))
-                .withStorage(new StorageProperties().withSizeGb(256L).withType(StorageType.PREMIUM_SSD))
+                .withStorage(new StorageProperties().withSizeGb(256L).withType(StorageType.PREMIUM_SSDV2))
                 .withSharding(new ShardingProperties().withShardCount(4))
                 .withCompute(new ComputeProperties().withTier("M50"))
                 .withDataApi(new DataApiProperties().withMode(DataApiMode.DISABLED))
@@ -862,7 +900,7 @@ public final class MongoClustersUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Operations_List.json
+     * x-ms-original-file: 2026-09-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -887,14 +925,14 @@ import com.azure.resourcemanager.mongocluster.models.PrivateLinkServiceConnectio
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PrivateEndpointConnectionPut.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PrivateEndpointConnectionPut.json
      */
     /**
-     * Sample code: Approves a private endpoint connection on a Mongo Cluster resource.
+     * Sample code: Approves a private endpoint connection on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void approvesAPrivateEndpointConnectionOnAMongoClusterResource(
+    public static void approvesAPrivateEndpointConnectionOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .define("pecTest")
@@ -915,14 +953,14 @@ public final class PrivateEndpointConnectionsCreateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PrivateEndpointConnectionDelete.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PrivateEndpointConnectionDelete.json
      */
     /**
-     * Sample code: Delete a private endpoint connection on a Mongo Cluster resource.
+     * Sample code: Delete a private endpoint connection on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void deleteAPrivateEndpointConnectionOnAMongoClusterResource(
+    public static void deleteAPrivateEndpointConnectionOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .delete("TestGroup", "myMongoCluster", "pecTest.5d393f64-ef64-46d0-9959-308321c44ac0",
@@ -939,14 +977,14 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PrivateEndpointConnectionGet.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PrivateEndpointConnectionGet.json
      */
     /**
-     * Sample code: Get a private endpoint connection on a Mongo Cluster resource.
+     * Sample code: Get a private endpoint connection on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void getAPrivateEndpointConnectionOnAMongoClusterResource(
+    public static void getAPrivateEndpointConnectionOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .getWithResponse("TestGroup", "myMongoCluster", "pecTest.5d393f64-ef64-46d0-9959-308321c44ac0",
@@ -963,14 +1001,14 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PrivateEndpointConnectionList.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PrivateEndpointConnectionList.json
      */
     /**
-     * Sample code: Lists the private endpoint connection resources on a Mongo Cluster resource.
+     * Sample code: Lists the private endpoint connection resources on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listsThePrivateEndpointConnectionResourcesOnAMongoClusterResource(
+    public static void listsThePrivateEndpointConnectionResourcesOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .listByMongoCluster("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
@@ -986,14 +1024,14 @@ public final class PrivateEndpointConnectionsListByMongoClusterSamples {
  */
 public final class PrivateLinksListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_PrivateLinkResourceList.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PrivateLinkResourceList.json
      */
     /**
-     * Sample code: Lists the private link resources available on a Mongo Cluster resource.
+     * Sample code: Lists the private link resources available on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listsThePrivateLinkResourcesAvailableOnAMongoClusterResource(
+    public static void listsThePrivateLinkResourcesAvailableOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateLinks().listByMongoCluster("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }
@@ -1008,14 +1046,14 @@ public final class PrivateLinksListByMongoClusterSamples {
  */
 public final class ReplicasListByParentSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_ReplicaList.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_ReplicaList.json
      */
     /**
-     * Sample code: List the replicas linked to a Mongo Cluster resource.
+     * Sample code: List the replicas linked to a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listTheReplicasLinkedToAMongoClusterResource(
+    public static void listTheReplicasLinkedToADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.replicas().listByParent("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }
@@ -1038,15 +1076,15 @@ import java.util.Arrays;
  */
 public final class UsersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_UserCreateOrUpdate.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_UserCreateOrUpdate.json
      */
     /**
-     * Sample code: Creates a user on a Mongo Cluster resource.
+     * Sample code: Creates a user on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        createsAUserOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        createsAUserOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.users()
             .define("uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu")
             .withExistingMongoCluster("TestGroup", "myMongoCluster")
@@ -1067,15 +1105,15 @@ public final class UsersCreateOrUpdateSamples {
  */
 public final class UsersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_UserDelete.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_UserDelete.json
      */
     /**
-     * Sample code: Deletes a user on a Mongo Cluster resource.
+     * Sample code: Deletes a user on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        deletesAUserOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        deletesAUserOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.users()
             .delete("TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu",
                 com.azure.core.util.Context.NONE);
@@ -1091,15 +1129,15 @@ public final class UsersDeleteSamples {
  */
 public final class UsersGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_UserGet.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_UserGet.json
      */
     /**
-     * Sample code: Gets a user on a Mongo Cluster resource.
+     * Sample code: Gets a user on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        getsAUserOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        getsAUserOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.users()
             .getWithResponse("TestGroup", "myMongoCluster", "uuuuuuuu-uuuu-uuuu-uuuu-uuuuuuuuuuuu",
                 com.azure.core.util.Context.NONE);
@@ -1115,15 +1153,15 @@ public final class UsersGetSamples {
  */
 public final class UsersListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_UserList.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_UserList.json
      */
     /**
-     * Sample code: List the users on a Mongo Cluster resource.
+     * Sample code: List the users on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        listTheUsersOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        listTheUsersOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.users().listByMongoCluster("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }
 }

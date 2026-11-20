@@ -24,7 +24,6 @@ import java.util.function.Supplier;
 
 public class JsonNodeStorePayload implements StorePayload<JsonNode> {
     private static final Logger logger = LoggerFactory.getLogger(JsonNodeStorePayload.class);
-    private static final CharsetDecoder fallbackCharsetDecoder = getFallbackCharsetDecoder();
     private final int responsePayloadSize;
     private final JsonNode jsonValue;
 
@@ -68,9 +67,11 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
             return Utils.getSimpleObjectMapper().readTree(bytes);
         } catch (IOException e) {
             Map<String, String> responseHeaders = headersSupplier.get();
+            // CharsetDecoder is stateful and must not be shared between concurrent responses.
+            CharsetDecoder fallbackCharsetDecoder = getFallbackCharsetDecoder();
             if (fallbackCharsetDecoder != null) {
                 logger.warn("Unable to parse JSON, fallback to use customized charset decoder.", e);
-                return fromJsonWithFallbackCharsetDecoder(bytes, responseHeaders);
+                return fromJsonWithFallbackCharsetDecoder(bytes, responseHeaders, fallbackCharsetDecoder);
             } else {
                 String baseErrorMessage = "Failed to parse JSON document. No fallback charset decoder configured.";
 
@@ -100,7 +101,8 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
         return map;
     }
 
-    private static JsonNode fromJsonWithFallbackCharsetDecoder(byte[] bytes, Map<String, String> responseHeaders) {
+    private static JsonNode fromJsonWithFallbackCharsetDecoder(
+        byte[] bytes, Map<String, String> responseHeaders, CharsetDecoder fallbackCharsetDecoder) {
         try {
             String sanitizedJson = fallbackCharsetDecoder.decode(ByteBuffer.wrap(bytes)).toString();
             return Utils.getSimpleObjectMapper().readTree(sanitizedJson);

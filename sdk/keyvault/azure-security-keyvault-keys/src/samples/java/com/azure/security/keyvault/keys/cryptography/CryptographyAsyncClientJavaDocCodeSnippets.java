@@ -11,6 +11,7 @@ import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureKeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.util.context.Context;
@@ -242,6 +243,33 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
                     .subscribe(keyUnwrapResult ->
                         System.out.printf("Received key of length: %d.%n", keyUnwrapResult.getKey().length)));
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte
+    }
+
+    /**
+     * Generates a code sample for using
+     * {@link CryptographyAsyncClient#secureWrapKey(SecureKeyWrapAlgorithm)} and
+     * {@link CryptographyAsyncClient#secureUnwrapKey(SecureKeyWrapAlgorithm, byte[], String)}.
+     */
+    public void secureWrapKeySecureUnwrapKey() {
+        CryptographyAsyncClient cryptographyAsyncClient = createAsyncClient();
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.secureWrapKey#SecureKeyWrapAlgorithm
+        cryptographyAsyncClient.secureWrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256)
+            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
+            .subscribe(secureWrapResult ->
+                System.out.printf("Received encrypted key of length: %d, with algorithm: %s.%n",
+                    secureWrapResult.getEncryptedKey().length, secureWrapResult.getAlgorithm().toString()));
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.secureWrapKey#SecureKeyWrapAlgorithm
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String
+        cryptographyAsyncClient.secureWrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256)
+            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
+            .subscribe(secureWrapResult ->
+                cryptographyAsyncClient.secureUnwrapKey(SecureKeyWrapAlgorithm.RSA_OAEP_256,
+                        secureWrapResult.getEncryptedKey(), "<target-attestation-token>")
+                    .subscribe(secureUnwrapResult ->
+                        System.out.printf("Received key of length: %d.%n", secureUnwrapResult.getKey().length)));
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.secureUnwrapKey#SecureKeyWrapAlgorithm-byte-String
     }
 
     /**

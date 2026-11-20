@@ -26,109 +26,108 @@ public final class AzureWorkloadSqlRestoreWithRehydrateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadSqlRestoreWithRehydrateRequest model = BinaryData.fromString(
-            "{\"objectType\":\"AzureWorkloadSQLRestoreWithRehydrateRequest\",\"recoveryPointRehydrationInfo\":{\"rehydrationRetentionDuration\":\"l\",\"rehydrationPriority\":\"Standard\"},\"shouldUseAlternateTargetLocation\":true,\"isNonRecoverable\":false,\"alternateDirectoryPaths\":[{\"mappingType\":\"Log\",\"sourceLogicalName\":\"f\",\"sourcePath\":\"snvpdibmi\",\"targetPath\":\"stbz\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"buqny\",\"sourcePath\":\"hzfylsgcrpfbc\",\"targetPath\":\"ezzcez\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"yfwlwxjwet\",\"sourcePath\":\"sihclafzvaylp\",\"targetPath\":\"sqqw\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"w\",\"sourcePath\":\"chcxwaxfewzj\",\"targetPath\":\"exfdeqvhpsylk\"}],\"recoveryType\":\"OriginalLocation\",\"sourceResourceId\":\"bffmbmxz\",\"propertyBag\":{\"icgaao\":\"ywwpgjxsnptfuj\",\"wemxswvruunzz\":\"pttaqutd\",\"yinljqe\":\"gehkfkimrtixokff\"},\"targetInfo\":{\"overwriteOption\":\"Overwrite\",\"containerId\":\"xmonstshi\",\"databaseName\":\"gvelfc\",\"targetDirectoryForFileRestore\":\"uccbirdsvuw\"},\"recoveryMode\":\"RecoveryUsingSnapshot\",\"targetResourceGroupName\":\"egstmninwjizci\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"hgshe\",\"identityName\":\"tbxqmuluxlxq\",\"userAssignedIdentityProperties\":{\"clientId\":\"ers\",\"principalId\":\"cucrwnamikze\"}},\"snapshotRestoreParameters\":{\"skipAttachAndMount\":true,\"logPointInTimeForDBRecovery\":\"mswziq\"},\"targetVirtualMachineId\":\"uhok\",\"resourceGuardOperationRequests\":[\"swhvhczznvfbycj\",\"xjww\",\"xzv\",\"mwmxqhndvnoamld\"]}")
+            "{\"objectType\":\"AzureWorkloadSQLRestoreWithRehydrateRequest\",\"recoveryPointRehydrationInfo\":{\"rehydrationRetentionDuration\":\"ygvoavyunssxlgh\",\"rehydrationPriority\":\"High\"},\"shouldUseAlternateTargetLocation\":true,\"isNonRecoverable\":false,\"alternateDirectoryPaths\":[{\"mappingType\":\"Data\",\"sourceLogicalName\":\"eksgbuxantuygd\",\"sourcePath\":\"aq\",\"targetPath\":\"irpiwrqofulopmj\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"whc\",\"sourcePath\":\"pibkephuu\",\"targetPath\":\"rctat\"},{\"mappingType\":\"Invalid\",\"sourceLogicalName\":\"tqpbrlcy\",\"sourcePath\":\"uczkgofxyfsruc\",\"targetPath\":\"rrp\"}],\"recoveryType\":\"AlternateLocation\",\"sourceResourceId\":\"bstvje\",\"propertyBag\":{\"vrmazlpdwwexymzv\":\"rmvvfkoxmlghktui\",\"yy\":\"azipbhpwvqsg\",\"patlbijp\":\"uzivensrpmeyyvp\",\"olmk\":\"gsksrfhf\"},\"targetInfo\":{\"overwriteOption\":\"Overwrite\",\"containerId\":\"cdommpvfqaw\",\"databaseName\":\"gbrt\",\"targetDirectoryForFileRestore\":\"iac\"},\"recoveryMode\":\"RecoveryUsingSnapshot\",\"targetResourceGroupName\":\"xhajlfnth\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"yuttdiygbpvnwswm\",\"identityName\":\"k\",\"userAssignedIdentityProperties\":{\"clientId\":\"wwgzwxjlmecvog\",\"principalId\":\"zyvneezaifghtmo\"}},\"snapshotRestoreParameters\":{\"skipAttachAndMount\":false,\"logPointInTimeForDBRecovery\":\"fhzbkr\",\"disksToDetachOnClash\":[\"javfqn\",\"hnqoewdo\"]},\"targetVirtualMachineId\":\"yetesy\",\"resourceGuardOperationRequests\":[\"dbztjhqtfbov\"]}")
             .toObject(AzureWorkloadSqlRestoreWithRehydrateRequest.class);
-        Assertions.assertEquals("swhvhczznvfbycj", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
-        Assertions.assertEquals("bffmbmxz", model.sourceResourceId());
-        Assertions.assertEquals("ywwpgjxsnptfuj", model.propertyBag().get("icgaao"));
+        Assertions.assertEquals("dbztjhqtfbov", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.ALTERNATE_LOCATION, model.recoveryType());
+        Assertions.assertEquals("bstvje", model.sourceResourceId());
+        Assertions.assertEquals("rmvvfkoxmlghktui", model.propertyBag().get("vrmazlpdwwexymzv"));
         Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("xmonstshi", model.targetInfo().containerId());
-        Assertions.assertEquals("gvelfc", model.targetInfo().databaseName());
-        Assertions.assertEquals("uccbirdsvuw", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals("cdommpvfqaw", model.targetInfo().containerId());
+        Assertions.assertEquals("gbrt", model.targetInfo().databaseName());
+        Assertions.assertEquals("iac", model.targetInfo().targetDirectoryForFileRestore());
         Assertions.assertEquals(RecoveryMode.RECOVERY_USING_SNAPSHOT, model.recoveryMode());
-        Assertions.assertEquals("egstmninwjizci", model.targetResourceGroupName());
-        Assertions.assertEquals("hgshe", model.userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("tbxqmuluxlxq", model.userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("ers",
+        Assertions.assertEquals("xhajlfnth", model.targetResourceGroupName());
+        Assertions.assertEquals("yuttdiygbpvnwswm", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("k", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("wwgzwxjlmecvog",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("cucrwnamikze",
+        Assertions.assertEquals("zyvneezaifghtmo",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
-        Assertions.assertTrue(model.snapshotRestoreParameters().skipAttachAndMount());
-        Assertions.assertEquals("mswziq", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
-        Assertions.assertEquals("uhok", model.targetVirtualMachineId());
+        Assertions.assertFalse(model.snapshotRestoreParameters().skipAttachAndMount());
+        Assertions.assertEquals("fhzbkr", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
+        Assertions.assertEquals("javfqn", model.snapshotRestoreParameters().disksToDetachOnClash().get(0));
+        Assertions.assertEquals("yetesy", model.targetVirtualMachineId());
         Assertions.assertTrue(model.shouldUseAlternateTargetLocation());
         Assertions.assertFalse(model.isNonRecoverable());
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.alternateDirectoryPaths().get(0).mappingType());
-        Assertions.assertEquals("f", model.alternateDirectoryPaths().get(0).sourceLogicalName());
-        Assertions.assertEquals("snvpdibmi", model.alternateDirectoryPaths().get(0).sourcePath());
-        Assertions.assertEquals("stbz", model.alternateDirectoryPaths().get(0).targetPath());
-        Assertions.assertEquals("l", model.recoveryPointRehydrationInfo().rehydrationRetentionDuration());
-        Assertions.assertEquals(RehydrationPriority.STANDARD,
-            model.recoveryPointRehydrationInfo().rehydrationPriority());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.alternateDirectoryPaths().get(0).mappingType());
+        Assertions.assertEquals("eksgbuxantuygd", model.alternateDirectoryPaths().get(0).sourceLogicalName());
+        Assertions.assertEquals("aq", model.alternateDirectoryPaths().get(0).sourcePath());
+        Assertions.assertEquals("irpiwrqofulopmj", model.alternateDirectoryPaths().get(0).targetPath());
+        Assertions.assertEquals("ygvoavyunssxlgh", model.recoveryPointRehydrationInfo().rehydrationRetentionDuration());
+        Assertions.assertEquals(RehydrationPriority.HIGH, model.recoveryPointRehydrationInfo().rehydrationPriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadSqlRestoreWithRehydrateRequest model = new AzureWorkloadSqlRestoreWithRehydrateRequest()
-            .withResourceGuardOperationRequests(Arrays.asList("swhvhczznvfbycj", "xjww", "xzv", "mwmxqhndvnoamld"))
-            .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
-            .withSourceResourceId("bffmbmxz")
-            .withPropertyBag(
-                mapOf("icgaao", "ywwpgjxsnptfuj", "wemxswvruunzz", "pttaqutd", "yinljqe", "gehkfkimrtixokff"))
+            .withResourceGuardOperationRequests(Arrays.asList("dbztjhqtfbov"))
+            .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
+            .withSourceResourceId("bstvje")
+            .withPropertyBag(mapOf("vrmazlpdwwexymzv", "rmvvfkoxmlghktui", "yy", "azipbhpwvqsg", "patlbijp",
+                "uzivensrpmeyyvp", "olmk", "gsksrfhf"))
             .withTargetInfo(new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.OVERWRITE)
-                .withContainerId("xmonstshi")
-                .withDatabaseName("gvelfc")
-                .withTargetDirectoryForFileRestore("uccbirdsvuw"))
+                .withContainerId("cdommpvfqaw")
+                .withDatabaseName("gbrt")
+                .withTargetDirectoryForFileRestore("iac"))
             .withRecoveryMode(RecoveryMode.RECOVERY_USING_SNAPSHOT)
-            .withTargetResourceGroupName("egstmninwjizci")
-            .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails().withIdentityArmId("hgshe")
-                .withIdentityName("tbxqmuluxlxq")
-                .withUserAssignedIdentityProperties(
-                    new UserAssignedIdentityProperties().withClientId("ers").withPrincipalId("cucrwnamikze")))
-            .withSnapshotRestoreParameters(
-                new SnapshotRestoreParameters().withSkipAttachAndMount(true).withLogPointInTimeForDBRecovery("mswziq"))
-            .withTargetVirtualMachineId("uhok")
+            .withTargetResourceGroupName("xhajlfnth")
+            .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails()
+                .withIdentityArmId("yuttdiygbpvnwswm")
+                .withIdentityName("k")
+                .withUserAssignedIdentityProperties(new UserAssignedIdentityProperties().withClientId("wwgzwxjlmecvog")
+                    .withPrincipalId("zyvneezaifghtmo")))
+            .withSnapshotRestoreParameters(new SnapshotRestoreParameters().withSkipAttachAndMount(false)
+                .withLogPointInTimeForDBRecovery("fhzbkr")
+                .withDisksToDetachOnClash(Arrays.asList("javfqn", "hnqoewdo")))
+            .withTargetVirtualMachineId("yetesy")
             .withShouldUseAlternateTargetLocation(true)
             .withIsNonRecoverable(false)
             .withAlternateDirectoryPaths(Arrays.asList(
-                new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.LOG)
-                    .withSourceLogicalName("f")
-                    .withSourcePath("snvpdibmi")
-                    .withTargetPath("stbz"),
+                new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.DATA)
+                    .withSourceLogicalName("eksgbuxantuygd")
+                    .withSourcePath("aq")
+                    .withTargetPath("irpiwrqofulopmj"),
                 new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.INVALID)
-                    .withSourceLogicalName("buqny")
-                    .withSourcePath("hzfylsgcrpfbc")
-                    .withTargetPath("ezzcez"),
+                    .withSourceLogicalName("whc")
+                    .withSourcePath("pibkephuu")
+                    .withTargetPath("rctat"),
                 new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.INVALID)
-                    .withSourceLogicalName("yfwlwxjwet")
-                    .withSourcePath("sihclafzvaylp")
-                    .withTargetPath("sqqw"),
-                new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.INVALID)
-                    .withSourceLogicalName("w")
-                    .withSourcePath("chcxwaxfewzj")
-                    .withTargetPath("exfdeqvhpsylk")))
-            .withRecoveryPointRehydrationInfo(new RecoveryPointRehydrationInfo().withRehydrationRetentionDuration("l")
-                .withRehydrationPriority(RehydrationPriority.STANDARD));
+                    .withSourceLogicalName("tqpbrlcy")
+                    .withSourcePath("uczkgofxyfsruc")
+                    .withTargetPath("rrp")))
+            .withRecoveryPointRehydrationInfo(
+                new RecoveryPointRehydrationInfo().withRehydrationRetentionDuration("ygvoavyunssxlgh")
+                    .withRehydrationPriority(RehydrationPriority.HIGH));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSqlRestoreWithRehydrateRequest.class);
-        Assertions.assertEquals("swhvhczznvfbycj", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
-        Assertions.assertEquals("bffmbmxz", model.sourceResourceId());
-        Assertions.assertEquals("ywwpgjxsnptfuj", model.propertyBag().get("icgaao"));
+        Assertions.assertEquals("dbztjhqtfbov", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.ALTERNATE_LOCATION, model.recoveryType());
+        Assertions.assertEquals("bstvje", model.sourceResourceId());
+        Assertions.assertEquals("rmvvfkoxmlghktui", model.propertyBag().get("vrmazlpdwwexymzv"));
         Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("xmonstshi", model.targetInfo().containerId());
-        Assertions.assertEquals("gvelfc", model.targetInfo().databaseName());
-        Assertions.assertEquals("uccbirdsvuw", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals("cdommpvfqaw", model.targetInfo().containerId());
+        Assertions.assertEquals("gbrt", model.targetInfo().databaseName());
+        Assertions.assertEquals("iac", model.targetInfo().targetDirectoryForFileRestore());
         Assertions.assertEquals(RecoveryMode.RECOVERY_USING_SNAPSHOT, model.recoveryMode());
-        Assertions.assertEquals("egstmninwjizci", model.targetResourceGroupName());
-        Assertions.assertEquals("hgshe", model.userAssignedManagedIdentityDetails().identityArmId());
-        Assertions.assertEquals("tbxqmuluxlxq", model.userAssignedManagedIdentityDetails().identityName());
-        Assertions.assertEquals("ers",
+        Assertions.assertEquals("xhajlfnth", model.targetResourceGroupName());
+        Assertions.assertEquals("yuttdiygbpvnwswm", model.userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("k", model.userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("wwgzwxjlmecvog",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().clientId());
-        Assertions.assertEquals("cucrwnamikze",
+        Assertions.assertEquals("zyvneezaifghtmo",
             model.userAssignedManagedIdentityDetails().userAssignedIdentityProperties().principalId());
-        Assertions.assertTrue(model.snapshotRestoreParameters().skipAttachAndMount());
-        Assertions.assertEquals("mswziq", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
-        Assertions.assertEquals("uhok", model.targetVirtualMachineId());
+        Assertions.assertFalse(model.snapshotRestoreParameters().skipAttachAndMount());
+        Assertions.assertEquals("fhzbkr", model.snapshotRestoreParameters().logPointInTimeForDBRecovery());
+        Assertions.assertEquals("javfqn", model.snapshotRestoreParameters().disksToDetachOnClash().get(0));
+        Assertions.assertEquals("yetesy", model.targetVirtualMachineId());
         Assertions.assertTrue(model.shouldUseAlternateTargetLocation());
         Assertions.assertFalse(model.isNonRecoverable());
-        Assertions.assertEquals(SqlDataDirectoryType.LOG, model.alternateDirectoryPaths().get(0).mappingType());
-        Assertions.assertEquals("f", model.alternateDirectoryPaths().get(0).sourceLogicalName());
-        Assertions.assertEquals("snvpdibmi", model.alternateDirectoryPaths().get(0).sourcePath());
-        Assertions.assertEquals("stbz", model.alternateDirectoryPaths().get(0).targetPath());
-        Assertions.assertEquals("l", model.recoveryPointRehydrationInfo().rehydrationRetentionDuration());
-        Assertions.assertEquals(RehydrationPriority.STANDARD,
-            model.recoveryPointRehydrationInfo().rehydrationPriority());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.alternateDirectoryPaths().get(0).mappingType());
+        Assertions.assertEquals("eksgbuxantuygd", model.alternateDirectoryPaths().get(0).sourceLogicalName());
+        Assertions.assertEquals("aq", model.alternateDirectoryPaths().get(0).sourcePath());
+        Assertions.assertEquals("irpiwrqofulopmj", model.alternateDirectoryPaths().get(0).targetPath());
+        Assertions.assertEquals("ygvoavyunssxlgh", model.recoveryPointRehydrationInfo().rehydrationRetentionDuration());
+        Assertions.assertEquals(RehydrationPriority.HIGH, model.recoveryPointRehydrationInfo().rehydrationPriority());
     }
 
     // Use "Map.of" if available

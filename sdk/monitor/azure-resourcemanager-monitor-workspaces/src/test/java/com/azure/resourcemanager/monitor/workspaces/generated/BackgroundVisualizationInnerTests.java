@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class BackgroundVisualizationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackgroundVisualizationInner model = BinaryData
-            .fromString(
-                "{\"visualization\":\"cnqxwbpokulpi\",\"origin\":{\"addedBy\":\"jwaa\",\"addedByType\":\"Automatic\"}}")
+        BackgroundVisualizationInner model = BinaryData.fromString(
+            "{\"visualization\":\"krtswbxqz\",\"origin\":{\"addedBy\":\"szjfauvjfdxxivet\",\"addedByType\":\"Manual\"}}")
             .toObject(BackgroundVisualizationInner.class);
-        Assertions.assertEquals("cnqxwbpokulpi", model.visualization());
+        Assertions.assertEquals("krtswbxqz", model.visualization());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackgroundVisualizationInner model = new BackgroundVisualizationInner().withVisualization("cnqxwbpokulpi");
+        BackgroundVisualizationInner model = new BackgroundVisualizationInner().withVisualization("krtswbxqz");
         model = BinaryData.fromObject(model).toObject(BackgroundVisualizationInner.class);
-        Assertions.assertEquals("cnqxwbpokulpi", model.visualization());
+        Assertions.assertEquals("krtswbxqz", model.visualization());
     }
 }

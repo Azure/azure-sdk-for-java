@@ -92,6 +92,11 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     public static final DataSourceType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
+     * A SQL Server instance.
+     */
+    public static final DataSourceType SQLINSTANCE = fromString("SQLInstance");
+
+    /**
      * Creates a new instance of DataSourceType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -190,6 +190,8 @@ public final class AzureSqlagWorkloadContainerProtectionContainer extends AzureW
                 } else if ("protectableObjectType".equals(fieldName)) {
                     deserializedAzureSqlagWorkloadContainerProtectionContainer
                         .withProtectableObjectType(reader.getString());
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedAzureSqlagWorkloadContainerProtectionContainer.withSourceLocation(reader.getString());
                 } else if ("sourceResourceId".equals(fieldName)) {
                     deserializedAzureSqlagWorkloadContainerProtectionContainer.withSourceResourceId(reader.getString());
                 } else if ("lastUpdatedTime".equals(fieldName)) {

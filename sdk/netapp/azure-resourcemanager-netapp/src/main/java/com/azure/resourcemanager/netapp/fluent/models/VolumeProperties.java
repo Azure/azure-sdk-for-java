@@ -15,10 +15,8 @@ import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakthroughMode;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
-import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
-import com.azure.resourcemanager.netapp.models.LargeVolumeType;
 import com.azure.resourcemanager.netapp.models.LdapServerType;
 import com.azure.resourcemanager.netapp.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
@@ -27,7 +25,7 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
+import com.azure.resourcemanager.netapp.models.SmbOplocks;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -56,10 +54,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /*
      * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For
-     * regular volumes, valid values are in the range 50GiB to 100TiB.
-     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
-     * to 2400TiB.
-     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range
+     * 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
      * of 1 GiB.
      */
     private long usageThreshold;
@@ -70,7 +66,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private VolumePropertiesExportPolicy exportPolicy;
 
     /*
-     * Set of protocol types, default NFSv3, CIFS for SMB protocol
+     * Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1, and CIFS. For SMB volumes,
+     * specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3
      */
     private List<String> protocolTypes;
 
@@ -189,6 +187,11 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Enables continuously available share property for smb volume. Only applicable for SMB volume
      */
     private Boolean smbContinuouslyAvailable;
+
+    /*
+     * Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable for SMB/DualProtocol volume
+     */
+    private SmbOplocks smbOplocks;
 
     /*
      * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
@@ -341,11 +344,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private List<PlacementKeyValuePairs> placementRules;
 
     /*
-     * Flag indicating whether subvolume operations are enabled on the volume
-     */
-    private EnableSubvolumes enableSubvolumes;
-
-    /*
      * The availability zone where the volume is provisioned. This refers to the logical availability zone where the
      * volume resides.
      */
@@ -357,15 +355,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private Boolean isLargeVolume;
 
     /*
-     * Specifies the type of the Large Volume. When set to 'LargeVolume', the large volume is created with standard
-     * configuration.
-     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
-     * with cool access enabled,
-     * delivering higher capacity limit with lower costs.
-     */
-    private LargeVolumeType largeVolumeType;
-
-    /*
      * Id of the snapshot or backup that the volume is restored from.
      */
     private String originatingResourceId;
@@ -374,11 +363,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * Space shared by short term clone volume with parent volume in bytes.
      */
     private Long inheritedSizeInBytes;
-
-    /*
-     * Language supported for volume.
-     */
-    private VolumeLanguage language;
 
     /*
      * Specifies whether the volume operates in Breakthrough Mode.
@@ -442,11 +426,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
-     * to 2400TiB.
-     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
-     * of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -456,11 +438,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
-     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
-     * to 2400TiB.
-     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
-     * of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeProperties object itself.
@@ -491,7 +471,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Get the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @return the protocolTypes value.
      */
@@ -500,7 +482,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the protocolTypes property: Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * Set the protocolTypes property: Specify the protocol types for the volume. Supported values are NFSv3, NFSv4.1,
+     * and CIFS. For SMB volumes, specify CIFS.
+     * The value SMB isn't supported in the protocolTypes property. Default: NFSv3.
      * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeProperties object itself.
@@ -904,6 +888,28 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public VolumeProperties withSmbContinuouslyAvailable(Boolean smbContinuouslyAvailable) {
         this.smbContinuouslyAvailable = smbContinuouslyAvailable;
+        return this;
+    }
+
+    /**
+     * Get the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @return the smbOplocks value.
+     */
+    public SmbOplocks smbOplocks() {
+        return this.smbOplocks;
+    }
+
+    /**
+     * Set the smbOplocks property: Enables or disables SMB opportunistic lock property for SMB Shares. Only applicable
+     * for SMB/DualProtocol volume.
+     * 
+     * @param smbOplocks the smbOplocks value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withSmbOplocks(SmbOplocks smbOplocks) {
+        this.smbOplocks = smbOplocks;
         return this;
     }
 
@@ -1390,26 +1396,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
-     * 
-     * @return the enableSubvolumes value.
-     */
-    public EnableSubvolumes enableSubvolumes() {
-        return this.enableSubvolumes;
-    }
-
-    /**
-     * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
-     * 
-     * @param enableSubvolumes the enableSubvolumes value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withEnableSubvolumes(EnableSubvolumes enableSubvolumes) {
-        this.enableSubvolumes = enableSubvolumes;
-        return this;
-    }
-
-    /**
      * Get the provisionedAvailabilityZone property: The availability zone where the volume is provisioned. This refers
      * to the logical availability zone where the volume resides.
      * 
@@ -1440,34 +1426,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the largeVolumeType property: Specifies the type of the Large Volume. When set to 'LargeVolume', the large
-     * volume is created with standard configuration.
-     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
-     * with cool access enabled,
-     * delivering higher capacity limit with lower costs.
-     * 
-     * @return the largeVolumeType value.
-     */
-    public LargeVolumeType largeVolumeType() {
-        return this.largeVolumeType;
-    }
-
-    /**
-     * Set the largeVolumeType property: Specifies the type of the Large Volume. When set to 'LargeVolume', the large
-     * volume is created with standard configuration.
-     * If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB
-     * with cool access enabled,
-     * delivering higher capacity limit with lower costs.
-     * 
-     * @param largeVolumeType the largeVolumeType value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withLargeVolumeType(LargeVolumeType largeVolumeType) {
-        this.largeVolumeType = largeVolumeType;
-        return this;
-    }
-
-    /**
      * Get the originatingResourceId property: Id of the snapshot or backup that the volume is restored from.
      * 
      * @return the originatingResourceId value.
@@ -1483,26 +1441,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public Long inheritedSizeInBytes() {
         return this.inheritedSizeInBytes;
-    }
-
-    /**
-     * Get the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    public VolumeLanguage language() {
-        return this.language;
-    }
-
-    /**
-     * Set the language property: Language supported for volume.
-     * 
-     * @param language the language value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withLanguage(VolumeLanguage language) {
-        this.language = language;
-        return this;
     }
 
     /**
@@ -1588,6 +1526,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("smbNonBrowsable",
             this.smbNonBrowsable == null ? null : this.smbNonBrowsable.toString());
         jsonWriter.writeBooleanField("smbContinuouslyAvailable", this.smbContinuouslyAvailable);
+        jsonWriter.writeStringField("smbOplocks", this.smbOplocks == null ? null : this.smbOplocks.toString());
         jsonWriter.writeNumberField("throughputMibps", this.throughputMibps);
         jsonWriter.writeStringField("encryptionKeySource",
             this.encryptionKeySource == null ? null : this.encryptionKeySource.toString());
@@ -1611,12 +1550,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("volumeSpecName", this.volumeSpecName);
         jsonWriter.writeArrayField("placementRules", this.placementRules,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("enableSubvolumes",
-            this.enableSubvolumes == null ? null : this.enableSubvolumes.toString());
         jsonWriter.writeBooleanField("isLargeVolume", this.isLargeVolume);
-        jsonWriter.writeStringField("largeVolumeType",
-            this.largeVolumeType == null ? null : this.largeVolumeType.toString());
-        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
         jsonWriter.writeStringField("breakthroughMode",
             this.breakthroughMode == null ? null : this.breakthroughMode.toString());
         return jsonWriter.writeEndObject();
@@ -1701,6 +1635,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.smbNonBrowsable = SmbNonBrowsable.fromString(reader.getString());
                 } else if ("smbContinuouslyAvailable".equals(fieldName)) {
                     deserializedVolumeProperties.smbContinuouslyAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("smbOplocks".equals(fieldName)) {
+                    deserializedVolumeProperties.smbOplocks = SmbOplocks.fromString(reader.getString());
                 } else if ("throughputMibps".equals(fieldName)) {
                     deserializedVolumeProperties.throughputMibps = reader.getNullable(JsonReader::getFloat);
                 } else if ("actualThroughputMibps".equals(fieldName)) {
@@ -1759,20 +1695,14 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     List<PlacementKeyValuePairs> placementRules
                         = reader.readArray(reader1 -> PlacementKeyValuePairs.fromJson(reader1));
                     deserializedVolumeProperties.placementRules = placementRules;
-                } else if ("enableSubvolumes".equals(fieldName)) {
-                    deserializedVolumeProperties.enableSubvolumes = EnableSubvolumes.fromString(reader.getString());
                 } else if ("provisionedAvailabilityZone".equals(fieldName)) {
                     deserializedVolumeProperties.provisionedAvailabilityZone = reader.getString();
                 } else if ("isLargeVolume".equals(fieldName)) {
                     deserializedVolumeProperties.isLargeVolume = reader.getNullable(JsonReader::getBoolean);
-                } else if ("largeVolumeType".equals(fieldName)) {
-                    deserializedVolumeProperties.largeVolumeType = LargeVolumeType.fromString(reader.getString());
                 } else if ("originatingResourceId".equals(fieldName)) {
                     deserializedVolumeProperties.originatingResourceId = reader.getString();
                 } else if ("inheritedSizeInBytes".equals(fieldName)) {
                     deserializedVolumeProperties.inheritedSizeInBytes = reader.getNullable(JsonReader::getLong);
-                } else if ("language".equals(fieldName)) {
-                    deserializedVolumeProperties.language = VolumeLanguage.fromString(reader.getString());
                 } else if ("breakthroughMode".equals(fieldName)) {
                     deserializedVolumeProperties.breakthroughMode = BreakthroughMode.fromString(reader.getString());
                 } else {

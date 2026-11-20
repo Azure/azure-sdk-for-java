@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.ResiliencyLevel;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -68,6 +69,11 @@ public final class ExpressRouteCircuitPropertiesFormat
     private SubResource expressRoutePort;
 
     /*
+     * The reference to the ExpressRouteLag resource when the circuit is provisioned on an ExpressRouteLag resource.
+     */
+    private SubResource expressRouteLag;
+
+    /*
      * The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource.
      */
     private Float bandwidthInGbps;
@@ -76,6 +82,21 @@ public final class ExpressRouteCircuitPropertiesFormat
      * The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
      */
     private Integer stag;
+
+    /*
+     * The resiliency level of the ExpressRoute circuit.
+     */
+    private ResiliencyLevel resiliencyLevel;
+
+    /*
+     * Account ID of customer account on partner cloud provider.
+     */
+    private String partnerAccountId;
+
+    /*
+     * Activation Key from partner cloud provider.
+     */
+    private String activationKey;
 
     /*
      * The provisioning state of the express route circuit resource.
@@ -299,6 +320,28 @@ public final class ExpressRouteCircuitPropertiesFormat
     }
 
     /**
+     * Get the expressRouteLag property: The reference to the ExpressRouteLag resource when the circuit is provisioned
+     * on an ExpressRouteLag resource.
+     * 
+     * @return the expressRouteLag value.
+     */
+    public SubResource expressRouteLag() {
+        return this.expressRouteLag;
+    }
+
+    /**
+     * Set the expressRouteLag property: The reference to the ExpressRouteLag resource when the circuit is provisioned
+     * on an ExpressRouteLag resource.
+     * 
+     * @param expressRouteLag the expressRouteLag value to set.
+     * @return the ExpressRouteCircuitPropertiesFormat object itself.
+     */
+    public ExpressRouteCircuitPropertiesFormat withExpressRouteLag(SubResource expressRouteLag) {
+        this.expressRouteLag = expressRouteLag;
+        return this;
+    }
+
+    /**
      * Get the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
      * ExpressRoutePort resource.
      * 
@@ -327,6 +370,55 @@ public final class ExpressRouteCircuitPropertiesFormat
      */
     public Integer stag() {
         return this.stag;
+    }
+
+    /**
+     * Get the resiliencyLevel property: The resiliency level of the ExpressRoute circuit.
+     * 
+     * @return the resiliencyLevel value.
+     */
+    public ResiliencyLevel resiliencyLevel() {
+        return this.resiliencyLevel;
+    }
+
+    /**
+     * Get the partnerAccountId property: Account ID of customer account on partner cloud provider.
+     * 
+     * @return the partnerAccountId value.
+     */
+    public String partnerAccountId() {
+        return this.partnerAccountId;
+    }
+
+    /**
+     * Set the partnerAccountId property: Account ID of customer account on partner cloud provider.
+     * 
+     * @param partnerAccountId the partnerAccountId value to set.
+     * @return the ExpressRouteCircuitPropertiesFormat object itself.
+     */
+    public ExpressRouteCircuitPropertiesFormat withPartnerAccountId(String partnerAccountId) {
+        this.partnerAccountId = partnerAccountId;
+        return this;
+    }
+
+    /**
+     * Get the activationKey property: Activation Key from partner cloud provider.
+     * 
+     * @return the activationKey value.
+     */
+    public String activationKey() {
+        return this.activationKey;
+    }
+
+    /**
+     * Set the activationKey property: Activation Key from partner cloud provider.
+     * 
+     * @param activationKey the activationKey value to set.
+     * @return the ExpressRouteCircuitPropertiesFormat object itself.
+     */
+    public ExpressRouteCircuitPropertiesFormat withActivationKey(String activationKey) {
+        this.activationKey = activationKey;
+        return this;
     }
 
     /**
@@ -463,7 +555,10 @@ public final class ExpressRouteCircuitPropertiesFormat
         jsonWriter.writeStringField("serviceProviderNotes", this.serviceProviderNotes);
         jsonWriter.writeJsonField("serviceProviderProperties", this.serviceProviderProperties);
         jsonWriter.writeJsonField("expressRoutePort", this.expressRoutePort);
+        jsonWriter.writeJsonField("expressRouteLag", this.expressRouteLag);
         jsonWriter.writeNumberField("bandwidthInGbps", this.bandwidthInGbps);
+        jsonWriter.writeStringField("partnerAccountId", this.partnerAccountId);
+        jsonWriter.writeStringField("activationKey", this.activationKey);
         jsonWriter.writeStringField("gatewayManagerEtag", this.gatewayManagerEtag);
         jsonWriter.writeBooleanField("globalReachEnabled", this.globalReachEnabled);
         jsonWriter.writeStringField("authorizationKey", this.authorizationKey);
@@ -512,11 +607,20 @@ public final class ExpressRouteCircuitPropertiesFormat
                         = ExpressRouteCircuitServiceProviderProperties.fromJson(reader);
                 } else if ("expressRoutePort".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.expressRoutePort = SubResource.fromJson(reader);
+                } else if ("expressRouteLag".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.expressRouteLag = SubResource.fromJson(reader);
                 } else if ("bandwidthInGbps".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.bandwidthInGbps
                         = reader.getNullable(JsonReader::getFloat);
                 } else if ("stag".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.stag = reader.getNullable(JsonReader::getInt);
+                } else if ("resiliencyLevel".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.resiliencyLevel
+                        = ResiliencyLevel.fromString(reader.getString());
+                } else if ("partnerAccountId".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.partnerAccountId = reader.getString();
+                } else if ("activationKey".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPropertiesFormat.activationKey = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());

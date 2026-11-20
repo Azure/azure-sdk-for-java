@@ -5,8 +5,8 @@ package com.microsoft.azure.servicebus;
 
 import java.time.Instant;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
@@ -45,10 +45,10 @@ public class TopicSendReceiveTests extends SendReceiveTests {
         IMessage peekedMessage1 = topicClient.peek();
         long firstMessageSequenceNumber = peekedMessage1.getSequenceNumber();
         IMessage peekedMessage2 = topicClient.peek();
-        Assert.assertNotEquals("Peek returned the same message again.", firstMessageSequenceNumber, peekedMessage2.getSequenceNumber());
+        Assertions.assertNotEquals(firstMessageSequenceNumber, peekedMessage2.getSequenceNumber(), "Peek returned the same message again.");
 
         // Now peek with fromSequnceNumber.. May not work for partitioned entities
         IMessage peekedMessage5 = topicClient.peek(firstMessageSequenceNumber);
-        Assert.assertEquals("Peek with sequence number failed.", firstMessageSequenceNumber, peekedMessage5.getSequenceNumber());
+        Assertions.assertEquals(firstMessageSequenceNumber, peekedMessage5.getSequenceNumber(), "Peek with sequence number failed.");
     }
 }

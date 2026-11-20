@@ -9,35 +9,34 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * The response from a deallocate request.
+ * The result of a bulk deallocate action.
  */
 @Immutable
 public final class DeallocateResourceOperationResponseInner
     implements JsonSerializable<DeallocateResourceOperationResponseInner> {
     /*
-     * The description of the operation response
+     * A description of the bulk action result.
      */
     private String description;
 
     /*
-     * The type of resources used in the deallocate request eg virtual machines
+     * The type of resources targeted by the bulk action.
      */
     private String type;
 
     /*
-     * The location of the deallocate request eg westus
+     * The Azure region where Bulk Actions processes the request.
      */
     private String location;
 
     /*
-     * The results from the deallocate request if no errors exist
+     * The result for each virtual machine.
      */
-    private List<ResourceOperation> results;
+    private List<ResourceOperationInner> results;
 
     /**
      * Creates an instance of DeallocateResourceOperationResponseInner class.
@@ -46,7 +45,7 @@ public final class DeallocateResourceOperationResponseInner
     }
 
     /**
-     * Get the description property: The description of the operation response.
+     * Get the description property: A description of the bulk action result.
      * 
      * @return the description value.
      */
@@ -55,7 +54,7 @@ public final class DeallocateResourceOperationResponseInner
     }
 
     /**
-     * Get the type property: The type of resources used in the deallocate request eg virtual machines.
+     * Get the type property: The type of resources targeted by the bulk action.
      * 
      * @return the type value.
      */
@@ -64,7 +63,7 @@ public final class DeallocateResourceOperationResponseInner
     }
 
     /**
-     * Get the location property: The location of the deallocate request eg westus.
+     * Get the location property: The Azure region where Bulk Actions processes the request.
      * 
      * @return the location value.
      */
@@ -73,11 +72,11 @@ public final class DeallocateResourceOperationResponseInner
     }
 
     /**
-     * Get the results property: The results from the deallocate request if no errors exist.
+     * Get the results property: The result for each virtual machine.
      * 
      * @return the results value.
      */
-    public List<ResourceOperation> results() {
+    public List<ResourceOperationInner> results() {
         return this.results;
     }
 
@@ -118,7 +117,8 @@ public final class DeallocateResourceOperationResponseInner
                 } else if ("location".equals(fieldName)) {
                     deserializedDeallocateResourceOperationResponseInner.location = reader.getString();
                 } else if ("results".equals(fieldName)) {
-                    List<ResourceOperation> results = reader.readArray(reader1 -> ResourceOperation.fromJson(reader1));
+                    List<ResourceOperationInner> results
+                        = reader.readArray(reader1 -> ResourceOperationInner.fromJson(reader1));
                     deserializedDeallocateResourceOperationResponseInner.results = results;
                 } else {
                     reader.skipChildren();

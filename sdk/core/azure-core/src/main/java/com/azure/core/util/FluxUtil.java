@@ -40,6 +40,7 @@ import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -243,7 +244,7 @@ public final class FluxUtil {
     }
 
     /**
-     * Converts an {@link InputStream} into a {@link Flux} of {@link ByteBuffer} using a chunk size of 4096.
+     * Converts an {@link InputStream} into a {@link Flux} of {@link ByteBuffer} using a maximum chunk size of 4096.
      * <p>
      * Given that {@link InputStream} is not guaranteed to be replayable the returned {@link Flux} should be considered
      * non-replayable as well.
@@ -266,7 +267,8 @@ public final class FluxUtil {
      * If the passed {@link InputStream} is {@code null} {@link Flux#empty()} will be returned.
      *
      * @param inputStream The {@link InputStream} to convert into a {@link Flux}.
-     * @param chunkSize The requested size for each {@link ByteBuffer}.
+     * @param chunkSize The maximum size, in bytes, of each {@link ByteBuffer}. Buffers may be smaller when a read returns
+     * fewer bytes and no additional bytes are reported as immediately available.
      * @return A {@link Flux} of {@link ByteBuffer ByteBuffers} that contains the contents of the stream.
      * @throws IllegalArgumentException If {@code chunkSize} is less than or equal to {@code 0}.
      */
@@ -319,34 +321,46 @@ public final class FluxUtil {
             });
         }
 
-        return Flux.<ByteBuffer, InputStream>generate(() -> inputStream, (stream, sink) -> {
+        return Flux.defer(() -> {
+            // Reads go into one array reused for the subscription and each emission copies out only the bytes read,
+            // so consumers retaining the emitted buffers don't retain a chunkSize array for every partial read.
             byte[] buffer = new byte[chunkSize];
 
-            try {
-                int offset = 0;
+            return Flux.<ByteBuffer, InputStream>generate(() -> inputStream, (stream, sink) -> {
+                try {
+                    int readCount;
+                    do {
+                        readCount = stream.read(buffer, 0, chunkSize);
+                    } while (readCount == 0);
 
-                while (offset < chunkSize) {
-                    int readCount = inputStream.read(buffer, offset, chunkSize - offset);
-
-                    // We have finished reading the stream, trigger onComplete.
                     if (readCount == -1) {
-                        // If there were bytes read before reaching the end emit the buffer before completing.
-                        if (offset > 0) {
-                            sink.next(ByteBuffer.wrap(buffer, 0, offset));
-                        }
                         sink.complete();
                         return stream;
                     }
 
-                    offset += readCount;
+                    int offset = readCount;
+                    while (offset < chunkSize) {
+                        // Availability is only a batching hint; zero ends coalescing, not the stream.
+                        int available = stream.available();
+                        if (available <= 0) {
+                            break;
+                        }
+
+                        readCount = stream.read(buffer, offset, Math.min(available, chunkSize - offset));
+                        if (readCount <= 0) {
+                            break;
+                        }
+
+                        offset += readCount;
+                    }
+
+                    sink.next(ByteBuffer.wrap(Arrays.copyOf(buffer, offset)));
+                } catch (IOException ex) {
+                    sink.error(ex);
                 }
 
-                sink.next(ByteBuffer.wrap(buffer));
-            } catch (IOException ex) {
-                sink.error(ex);
-            }
-
-            return stream;
+                return stream;
+            });
         }).filter(ByteBuffer::hasRemaining);
     }
 

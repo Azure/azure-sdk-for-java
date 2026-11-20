@@ -27,6 +27,7 @@ public final class LogAnalyticsDestination implements JsonSerializable<LogAnalyt
     private String workspaceId;
 
     /*
+     * 
      * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      */
@@ -68,7 +69,8 @@ public final class LogAnalyticsDestination implements JsonSerializable<LogAnalyt
     }
 
     /**
-     * Get the name property: A friendly name for the destination.
+     * Get the name property:
+     * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      * 
      * @return the name value.
@@ -78,7 +80,8 @@ public final class LogAnalyticsDestination implements JsonSerializable<LogAnalyt
     }
 
     /**
-     * Set the name property: A friendly name for the destination.
+     * Set the name property:
+     * A friendly name for the destination.
      * This name should be unique across all destinations (regardless of type) within the data collection rule.
      * 
      * @param name the name value to set.

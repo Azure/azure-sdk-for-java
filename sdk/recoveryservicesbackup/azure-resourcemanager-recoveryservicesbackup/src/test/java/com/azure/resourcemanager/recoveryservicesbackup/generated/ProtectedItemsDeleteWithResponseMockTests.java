@@ -28,7 +28,8 @@ public final class ProtectedItemsDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.protectedItems()
-            .deleteWithResponse("mzjqrbr", "vnmdyfoeboj", "jpp", "laohoqkp", "t", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("zgihotje", "ohmxvvlrrska", "bxwie", "xuy", "derltfokyksyim",
+                com.azure.core.util.Context.NONE);
 
     }
 }

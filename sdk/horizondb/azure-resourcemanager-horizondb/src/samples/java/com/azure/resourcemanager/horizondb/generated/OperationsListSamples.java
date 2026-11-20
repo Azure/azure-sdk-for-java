@@ -9,7 +9,7 @@ package com.azure.resourcemanager.horizondb.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-01-20-preview/Operations_List.json
+     * x-ms-original-file: 2026-10-01-preview/Operations_List.json
      */
     /**
      * Sample code: List operations for Microsoft.HorizonDb.

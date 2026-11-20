@@ -24,7 +24,7 @@ public final class StorageTargetsListByCacheMockTests {
     @Test
     public void testListByCache() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"junctions\":[{\"namespacePath\":\"ejqgw\",\"targetPath\":\"nfqn\",\"nfsExport\":\"ypsxjvfoim\",\"nfsAccessPolicy\":\"slirciz\"}],\"targetType\":\"blobNfs\",\"provisioningState\":\"Failed\",\"state\":\"Suspended\",\"nfs3\":{\"target\":\"acvlhv\",\"usageModel\":\"dyftumrtwna\",\"verificationTimer\":951831262,\"writeBackTimer\":786702902},\"clfs\":{\"target\":\"kojgcyzts\"},\"unknown\":{\"attributes\":{\"qnrnrpxehuwryk\":\"baeqphc\",\"bydvkhbejdz\":\"gaifmvik\",\"srhnjivo\":\"xcv\"}},\"blobNfs\":{\"target\":\"novqfzge\",\"usageModel\":\"dftuljltduce\",\"verificationTimer\":1779259768,\"writeBackTimer\":654358924},\"allocationPercentage\":128848719},\"location\":\"m\",\"id\":\"wcw\",\"name\":\"qioknssxmojm\",\"type\":\"vpkjpr\"}]}";
+            = "{\"value\":[{\"properties\":{\"junctions\":[{\"namespacePath\":\"gzukxitmm\",\"targetPath\":\"gqqqxh\",\"nfsExport\":\"xrxc\",\"nfsAccessPolicy\":\"uisavokq\"},{\"namespacePath\":\"fvazivjlfrqttba\",\"targetPath\":\"katnwxyi\",\"nfsExport\":\"id\",\"nfsAccessPolicy\":\"qfkuvscxkdmli\"},{\"namespacePath\":\"vibrxkpmloazuruo\",\"targetPath\":\"goorbteo\",\"nfsExport\":\"fhjxakvvjgs\",\"nfsAccessPolicy\":\"r\"},{\"namespacePath\":\"lmywwtkgkxnyed\",\"targetPath\":\"gyvudtjuewbc\",\"nfsExport\":\"xuuwhcj\",\"nfsAccessPolicy\":\"ccybvp\"}],\"targetType\":\"nfs3\",\"provisioningState\":\"Deleting\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"px\",\"usageModel\":\"jplmagstcy\",\"verificationTimer\":1758670411,\"writeBackTimer\":895396019},\"clfs\":{\"target\":\"kdbdgiogsj\"},\"unknown\":{\"attributes\":{\"gfnmntfpmvmemfnc\":\"qjnobaiyhddviac\",\"xlllchp\":\"dwvvba\"}},\"blobNfs\":{\"target\":\"zevwrdnhfukuv\",\"usageModel\":\"cswsmystul\",\"verificationTimer\":1634922440,\"writeBackTimer\":2048413099},\"allocationPercentage\":1783589840},\"location\":\"er\",\"id\":\"pqbmfpjbab\",\"name\":\"idfcxsspuunnoxyh\",\"type\":\"xgqddrih\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,23 +34,24 @@ public final class StorageTargetsListByCacheMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StorageTarget> response
-            = manager.storageTargets().listByCache("blwpcesutrgj", "pauutpw", com.azure.core.util.Context.NONE);
+            = manager.storageTargets().listByCache("minsgowzf", "tsttktlahbq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ejqgw", response.iterator().next().junctions().get(0).namespacePath());
-        Assertions.assertEquals("nfqn", response.iterator().next().junctions().get(0).targetPath());
-        Assertions.assertEquals("ypsxjvfoim", response.iterator().next().junctions().get(0).nfsExport());
-        Assertions.assertEquals("slirciz", response.iterator().next().junctions().get(0).nfsAccessPolicy());
-        Assertions.assertEquals(StorageTargetType.BLOB_NFS, response.iterator().next().targetType());
-        Assertions.assertEquals(OperationalStateType.SUSPENDED, response.iterator().next().state());
-        Assertions.assertEquals("acvlhv", response.iterator().next().nfs3().target());
-        Assertions.assertEquals("dyftumrtwna", response.iterator().next().nfs3().usageModel());
-        Assertions.assertEquals(951831262, response.iterator().next().nfs3().verificationTimer());
-        Assertions.assertEquals(786702902, response.iterator().next().nfs3().writeBackTimer());
-        Assertions.assertEquals("kojgcyzts", response.iterator().next().clfs().target());
-        Assertions.assertEquals("baeqphc", response.iterator().next().unknown().attributes().get("qnrnrpxehuwryk"));
-        Assertions.assertEquals("novqfzge", response.iterator().next().blobNfs().target());
-        Assertions.assertEquals("dftuljltduce", response.iterator().next().blobNfs().usageModel());
-        Assertions.assertEquals(1779259768, response.iterator().next().blobNfs().verificationTimer());
-        Assertions.assertEquals(654358924, response.iterator().next().blobNfs().writeBackTimer());
+        Assertions.assertEquals("gzukxitmm", response.iterator().next().junctions().get(0).namespacePath());
+        Assertions.assertEquals("gqqqxh", response.iterator().next().junctions().get(0).targetPath());
+        Assertions.assertEquals("xrxc", response.iterator().next().junctions().get(0).nfsExport());
+        Assertions.assertEquals("uisavokq", response.iterator().next().junctions().get(0).nfsAccessPolicy());
+        Assertions.assertEquals(StorageTargetType.NFS3, response.iterator().next().targetType());
+        Assertions.assertEquals(OperationalStateType.FLUSHING, response.iterator().next().state());
+        Assertions.assertEquals("px", response.iterator().next().nfs3().target());
+        Assertions.assertEquals("jplmagstcy", response.iterator().next().nfs3().usageModel());
+        Assertions.assertEquals(1758670411, response.iterator().next().nfs3().verificationTimer());
+        Assertions.assertEquals(895396019, response.iterator().next().nfs3().writeBackTimer());
+        Assertions.assertEquals("kdbdgiogsj", response.iterator().next().clfs().target());
+        Assertions.assertEquals("qjnobaiyhddviac",
+            response.iterator().next().unknown().attributes().get("gfnmntfpmvmemfnc"));
+        Assertions.assertEquals("zevwrdnhfukuv", response.iterator().next().blobNfs().target());
+        Assertions.assertEquals("cswsmystul", response.iterator().next().blobNfs().usageModel());
+        Assertions.assertEquals(1634922440, response.iterator().next().blobNfs().verificationTimer());
+        Assertions.assertEquals(2048413099, response.iterator().next().blobNfs().writeBackTimer());
     }
 }

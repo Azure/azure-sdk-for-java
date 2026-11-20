@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraResourcesMigrateCassandraTableToAutoscaleSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBCassandraTableMigrateToAutoscale.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBCassandraTableMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBCassandraTableMigrateToAutoscale.

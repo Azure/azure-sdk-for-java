@@ -24,7 +24,7 @@ public final class IssuesAddInvestigationResultWithResponseMockTests {
     @Test
     public void testAddInvestigationResultWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"mqnrojlpijnkr\",\"origin\":{\"addedBy\":\"rddh\",\"addedByType\":\"Manual\"},\"createdAt\":\"2021-06-05T19:19:34Z\",\"lastModifiedAt\":\"2021-09-16T04:19:40Z\",\"result\":\"zronasxift\"}";
+            = "{\"id\":\"xpgpq\",\"origin\":{\"addedBy\":\"isze\",\"addedByType\":\"Manual\"},\"createdAt\":\"2021-02-11T21:08:57Z\",\"lastModifiedAt\":\"2021-01-06T23:48:23Z\",\"result\":\"rxgibbd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,20 +34,20 @@ public final class IssuesAddInvestigationResultWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         InvestigationResult response = manager.issues()
-            .addInvestigationResultWithResponse("ihxumwctondzj", "uu", "fdlwg",
-                new InvestigationResultInner().withId("ytsbwtovv")
-                    .withOrigin(new Origin().withAddedBy("seinqfiuf").withAddedByType(AddedByType.MANUAL))
-                    .withCreatedAt(OffsetDateTime.parse("2021-10-13T18:52:56Z"))
-                    .withLastModifiedAt(OffsetDateTime.parse("2021-05-31T07:01:39Z"))
-                    .withResult("rgnepttwqmsniffc"),
+            .addInvestigationResultWithResponse("jjziuxxpsh", "eekulfgslqubkwd", "enr",
+                new InvestigationResultInner().withId("sutujba")
+                    .withOrigin(new Origin().withAddedBy("juohminyflnorw").withAddedByType(AddedByType.AUTOMATIC))
+                    .withCreatedAt(OffsetDateTime.parse("2021-10-26T10:15:26Z"))
+                    .withLastModifiedAt(OffsetDateTime.parse("2021-11-23T23:27:44Z"))
+                    .withResult("klvxwmyg"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mqnrojlpijnkr", response.id());
-        Assertions.assertEquals("rddh", response.origin().addedBy());
+        Assertions.assertEquals("xpgpq", response.id());
+        Assertions.assertEquals("isze", response.origin().addedBy());
         Assertions.assertEquals(AddedByType.MANUAL, response.origin().addedByType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-05T19:19:34Z"), response.createdAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T04:19:40Z"), response.lastModifiedAt());
-        Assertions.assertEquals("zronasxift", response.result());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T21:08:57Z"), response.createdAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T23:48:23Z"), response.lastModifiedAt());
+        Assertions.assertEquals("rxgibbd", response.result());
     }
 }

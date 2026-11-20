@@ -10,6 +10,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
  * A toolbox that stores reusable tool definitions for agents.
@@ -35,20 +38,6 @@ public final class ToolboxDetails implements JsonSerializable<ToolboxDetails> {
      */
     @Generated
     private final String defaultVersion;
-
-    /**
-     * Creates an instance of ToolboxDetails class.
-     *
-     * @param id the id value to set.
-     * @param name the name value to set.
-     * @param defaultVersion the defaultVersion value to set.
-     */
-    @Generated
-    private ToolboxDetails(String id, String name, String defaultVersion) {
-        this.id = id;
-        this.name = name;
-        this.defaultVersion = defaultVersion;
-    }
 
     /**
      * Get the id property: The unique identifier of the toolbox.
@@ -90,6 +79,8 @@ public final class ToolboxDetails implements JsonSerializable<ToolboxDetails> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeLongField("updated_at", this.updatedAt);
+        jsonWriter.writeJsonField("versions", this.versions);
         jsonWriter.writeStringField("default_version", this.defaultVersion);
         return jsonWriter.writeEndObject();
     }
@@ -108,6 +99,8 @@ public final class ToolboxDetails implements JsonSerializable<ToolboxDetails> {
         return jsonReader.readObject(reader -> {
             String id = null;
             String name = null;
+            OffsetDateTime updatedAt = null;
+            ToolboxVersions versions = null;
             String defaultVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -116,13 +109,74 @@ public final class ToolboxDetails implements JsonSerializable<ToolboxDetails> {
                     id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
+                } else if ("updated_at".equals(fieldName)) {
+                    updatedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("versions".equals(fieldName)) {
+                    versions = ToolboxVersions.fromJson(reader);
                 } else if ("default_version".equals(fieldName)) {
                     defaultVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ToolboxDetails(id, name, defaultVersion);
+            return new ToolboxDetails(id, name, updatedAt, versions, defaultVersion);
         });
+    }
+
+    /*
+     * The Unix timestamp (seconds) when the toolbox was last updated. This value changes when a new toolbox version is
+     * created or the toolbox is updated.
+     */
+    @Generated
+    private final long updatedAt;
+
+    /*
+     * The versions associated with the toolbox.
+     */
+    @Generated
+    private final ToolboxVersions versions;
+
+    /**
+     * Creates an instance of ToolboxDetails class.
+     *
+     * @param id the id value to set.
+     * @param name the name value to set.
+     * @param updatedAt the updatedAt value to set.
+     * @param versions the versions value to set.
+     * @param defaultVersion the defaultVersion value to set.
+     */
+    @Generated
+    private ToolboxDetails(String id, String name, OffsetDateTime updatedAt, ToolboxVersions versions,
+        String defaultVersion) {
+        this.id = id;
+        this.name = name;
+        if (updatedAt == null) {
+            this.updatedAt = 0L;
+        } else {
+            this.updatedAt = updatedAt.toEpochSecond();
+        }
+        this.versions = versions;
+        this.defaultVersion = defaultVersion;
+    }
+
+    /**
+     * Get the updatedAt property: The Unix timestamp (seconds) when the toolbox was last updated. This value changes
+     * when a new toolbox version is created or the toolbox is updated.
+     *
+     * @return the updatedAt value.
+     */
+    @Generated
+    public OffsetDateTime getUpdatedAt() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.updatedAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get the versions property: The versions associated with the toolbox.
+     *
+     * @return the versions value.
+     */
+    @Generated
+    public ToolboxVersions getVersions() {
+        return this.versions;
     }
 }

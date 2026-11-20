@@ -34,7 +34,8 @@ public final class BatchPoolResizeParameters implements JsonSerializable<BatchPo
     /*
      * The timeout for allocation of Nodes to the Pool or removal of Compute Nodes from the Pool. The default value is
      * 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns
-     * an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request). The time duration
+     * is specified in ISO 8601 format.
      */
     @Generated
     private Duration resizeTimeout;
@@ -101,7 +102,7 @@ public final class BatchPoolResizeParameters implements JsonSerializable<BatchPo
      * Get the resizeTimeout property: The timeout for allocation of Nodes to the Pool or removal of Compute Nodes from
      * the Pool. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5
      * minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is
-     * 400 (Bad Request).
+     * 400 (Bad Request). The time duration is specified in ISO 8601 format.
      *
      * @return the resizeTimeout value.
      */
@@ -114,7 +115,7 @@ public final class BatchPoolResizeParameters implements JsonSerializable<BatchPo
      * Set the resizeTimeout property: The timeout for allocation of Nodes to the Pool or removal of Compute Nodes from
      * the Pool. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5
      * minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is
-     * 400 (Bad Request).
+     * 400 (Bad Request). The time duration is specified in ISO 8601 format.
      *
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the BatchPoolResizeParameters object itself.

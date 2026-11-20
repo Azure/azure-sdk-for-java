@@ -188,7 +188,7 @@ public final class MonitorOperationsClientImpl implements MonitorOperationsClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName,
+    private SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String monitorName,
         ElasticMonitorUpgrade body) {
         Response<BinaryData> response = upgradeWithResponse(resourceGroupName, monitorName, body);
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);

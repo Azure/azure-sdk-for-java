@@ -15,7 +15,7 @@ import com.azure.resourcemanager.appnetwork.fluent.models.AvailableVersionInner;
  */
 public interface AvailableVersionsClient {
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +27,7 @@ public interface AvailableVersionsClient {
     PagedIterable<AvailableVersionInner> listByLocation(String location);
 
     /**
-     * List AvailableVersion resources by location.
+     * List the Azure Kubernetes Application Network versions available in a location.
      * 
      * @param location The name of the Azure region.
      * @param kubernetesVersion Kubernetes version to filter profiles.

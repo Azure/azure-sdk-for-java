@@ -435,7 +435,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
+    private SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName,
             ClusterMetricsConfigurationInner metricsConfigurationParameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, clusterName,
@@ -752,7 +752,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
+    private SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
         String resourceGroupName, String clusterName, String metricsConfigurationName, String ifMatch,
         String ifNoneMatch, ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, metricsConfigurationName,
@@ -1047,7 +1047,7 @@ public final class MetricsConfigurationsClientImpl implements MetricsConfigurati
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String metricsConfigurationName, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, clusterName, metricsConfigurationName, ifMatch, ifNoneMatch);

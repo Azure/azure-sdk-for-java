@@ -17,7 +17,7 @@ import java.util.Map;
  * A custom event routine trigger.
  */
 @Fluent
-@Beta(warningText = "Preview API. Routines=V1Preview")
+@Beta(warningText = "Preview API. Routines=V2Preview")
 public final class CustomRoutineTrigger extends RoutineTrigger {
 
     /*

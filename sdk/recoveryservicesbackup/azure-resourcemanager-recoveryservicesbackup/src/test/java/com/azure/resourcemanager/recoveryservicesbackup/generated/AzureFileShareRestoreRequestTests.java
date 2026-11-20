@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.CopyOptions;
+import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreFileSpecs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestType;
@@ -18,45 +19,48 @@ public final class AzureFileShareRestoreRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileShareRestoreRequest model = BinaryData.fromString(
-            "{\"objectType\":\"AzureFileShareRestoreRequest\",\"recoveryType\":\"Offline\",\"sourceResourceId\":\"zjhfjmhvv\",\"copyOptions\":\"CreateCopy\",\"restoreRequestType\":\"FullShareRestore\",\"restoreFileSpecs\":[{\"path\":\"eqsx\",\"fileSpecType\":\"hfbuzjyihsasbhud\",\"targetFolderPath\":\"ohyuemslynsq\"},{\"path\":\"pfoobr\",\"fileSpecType\":\"tyms\",\"targetFolderPath\":\"ygqdnfwqzdz\"},{\"path\":\"ilaxhn\",\"fileSpecType\":\"qlyvijo\",\"targetFolderPath\":\"iv\"}],\"targetDetails\":{\"name\":\"yzunbixxrtikv\",\"targetResourceId\":\"wpgclrcivt\"},\"resourceGuardOperationRequests\":[\"frkenxpmyyefrp\"]}")
+            "{\"objectType\":\"AzureFileShareRestoreRequest\",\"recoveryType\":\"Invalid\",\"sourceResourceId\":\"g\",\"copyOptions\":\"CreateCopy\",\"restoreRequestType\":\"FullShareRestore\",\"restoreFileSpecs\":[{\"path\":\"tdysnaquflq\",\"fileSpecType\":\"tqhamzjrw\",\"targetFolderPath\":\"qzeqyjleziunjxdf\"}],\"targetDetails\":{\"name\":\"tkw\",\"targetResourceId\":\"gyamlbnseqacjjv\"},\"identityInfo\":{\"isSystemAssignedIdentity\":true,\"managedIdentityResourceId\":\"ooqjagmditgueio\"},\"resourceGuardOperationRequests\":[\"bsahrtd\",\"pdelqa\",\"slmot\"]}")
             .toObject(AzureFileShareRestoreRequest.class);
-        Assertions.assertEquals("frkenxpmyyefrp", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
-        Assertions.assertEquals("zjhfjmhvv", model.sourceResourceId());
+        Assertions.assertEquals("bsahrtd", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.INVALID, model.recoveryType());
+        Assertions.assertEquals("g", model.sourceResourceId());
         Assertions.assertEquals(CopyOptions.CREATE_COPY, model.copyOptions());
         Assertions.assertEquals(RestoreRequestType.FULL_SHARE_RESTORE, model.restoreRequestType());
-        Assertions.assertEquals("eqsx", model.restoreFileSpecs().get(0).path());
-        Assertions.assertEquals("hfbuzjyihsasbhud", model.restoreFileSpecs().get(0).fileSpecType());
-        Assertions.assertEquals("ohyuemslynsq", model.restoreFileSpecs().get(0).targetFolderPath());
-        Assertions.assertEquals("yzunbixxrtikv", model.targetDetails().name());
-        Assertions.assertEquals("wpgclrcivt", model.targetDetails().targetResourceId());
+        Assertions.assertEquals("tdysnaquflq", model.restoreFileSpecs().get(0).path());
+        Assertions.assertEquals("tqhamzjrw", model.restoreFileSpecs().get(0).fileSpecType());
+        Assertions.assertEquals("qzeqyjleziunjxdf", model.restoreFileSpecs().get(0).targetFolderPath());
+        Assertions.assertEquals("tkw", model.targetDetails().name());
+        Assertions.assertEquals("gyamlbnseqacjjv", model.targetDetails().targetResourceId());
+        Assertions.assertTrue(model.identityInfo().isSystemAssignedIdentity());
+        Assertions.assertEquals("ooqjagmditgueio", model.identityInfo().managedIdentityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFileShareRestoreRequest model = new AzureFileShareRestoreRequest()
-            .withResourceGuardOperationRequests(Arrays.asList("frkenxpmyyefrp"))
-            .withRecoveryType(RecoveryType.OFFLINE)
-            .withSourceResourceId("zjhfjmhvv")
+            .withResourceGuardOperationRequests(Arrays.asList("bsahrtd", "pdelqa", "slmot"))
+            .withRecoveryType(RecoveryType.INVALID)
+            .withSourceResourceId("g")
             .withCopyOptions(CopyOptions.CREATE_COPY)
             .withRestoreRequestType(RestoreRequestType.FULL_SHARE_RESTORE)
-            .withRestoreFileSpecs(Arrays.asList(
-                new RestoreFileSpecs().withPath("eqsx")
-                    .withFileSpecType("hfbuzjyihsasbhud")
-                    .withTargetFolderPath("ohyuemslynsq"),
-                new RestoreFileSpecs().withPath("pfoobr").withFileSpecType("tyms").withTargetFolderPath("ygqdnfwqzdz"),
-                new RestoreFileSpecs().withPath("ilaxhn").withFileSpecType("qlyvijo").withTargetFolderPath("iv")))
-            .withTargetDetails(new TargetAfsRestoreInfo().withName("yzunbixxrtikv").withTargetResourceId("wpgclrcivt"));
+            .withRestoreFileSpecs(Arrays.asList(new RestoreFileSpecs().withPath("tdysnaquflq")
+                .withFileSpecType("tqhamzjrw")
+                .withTargetFolderPath("qzeqyjleziunjxdf")))
+            .withTargetDetails(new TargetAfsRestoreInfo().withName("tkw").withTargetResourceId("gyamlbnseqacjjv"))
+            .withIdentityInfo(
+                new IdentityInfo().withIsSystemAssignedIdentity(true).withManagedIdentityResourceId("ooqjagmditgueio"));
         model = BinaryData.fromObject(model).toObject(AzureFileShareRestoreRequest.class);
-        Assertions.assertEquals("frkenxpmyyefrp", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
-        Assertions.assertEquals("zjhfjmhvv", model.sourceResourceId());
+        Assertions.assertEquals("bsahrtd", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(RecoveryType.INVALID, model.recoveryType());
+        Assertions.assertEquals("g", model.sourceResourceId());
         Assertions.assertEquals(CopyOptions.CREATE_COPY, model.copyOptions());
         Assertions.assertEquals(RestoreRequestType.FULL_SHARE_RESTORE, model.restoreRequestType());
-        Assertions.assertEquals("eqsx", model.restoreFileSpecs().get(0).path());
-        Assertions.assertEquals("hfbuzjyihsasbhud", model.restoreFileSpecs().get(0).fileSpecType());
-        Assertions.assertEquals("ohyuemslynsq", model.restoreFileSpecs().get(0).targetFolderPath());
-        Assertions.assertEquals("yzunbixxrtikv", model.targetDetails().name());
-        Assertions.assertEquals("wpgclrcivt", model.targetDetails().targetResourceId());
+        Assertions.assertEquals("tdysnaquflq", model.restoreFileSpecs().get(0).path());
+        Assertions.assertEquals("tqhamzjrw", model.restoreFileSpecs().get(0).fileSpecType());
+        Assertions.assertEquals("qzeqyjleziunjxdf", model.restoreFileSpecs().get(0).targetFolderPath());
+        Assertions.assertEquals("tkw", model.targetDetails().name());
+        Assertions.assertEquals("gyamlbnseqacjjv", model.targetDetails().targetResourceId());
+        Assertions.assertTrue(model.identityInfo().isSystemAssignedIdentity());
+        Assertions.assertEquals("ooqjagmditgueio", model.identityInfo().managedIdentityResourceId());
     }
 }

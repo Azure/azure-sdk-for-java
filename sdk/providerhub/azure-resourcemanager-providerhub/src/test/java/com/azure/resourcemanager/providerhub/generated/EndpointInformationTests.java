@@ -13,22 +13,21 @@ public final class EndpointInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointInformation model = BinaryData
-            .fromString(
-                "{\"endpoint\":\"nenlsvxeizzg\",\"endpointType\":\"Webhook\",\"schemaVersion\":\"srmffeycxcktpiym\"}")
+            .fromString("{\"endpoint\":\"bajlka\",\"endpointType\":\"Eventhub\",\"schemaVersion\":\"yiopi\"}")
             .toObject(EndpointInformation.class);
-        Assertions.assertEquals("nenlsvxeizzg", model.endpoint());
-        Assertions.assertEquals(NotificationEndpointType.WEBHOOK, model.endpointType());
-        Assertions.assertEquals("srmffeycxcktpiym", model.schemaVersion());
+        Assertions.assertEquals("bajlka", model.endpoint());
+        Assertions.assertEquals(NotificationEndpointType.EVENTHUB, model.endpointType());
+        Assertions.assertEquals("yiopi", model.schemaVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointInformation model = new EndpointInformation().withEndpoint("nenlsvxeizzg")
-            .withEndpointType(NotificationEndpointType.WEBHOOK)
-            .withSchemaVersion("srmffeycxcktpiym");
+        EndpointInformation model = new EndpointInformation().withEndpoint("bajlka")
+            .withEndpointType(NotificationEndpointType.EVENTHUB)
+            .withSchemaVersion("yiopi");
         model = BinaryData.fromObject(model).toObject(EndpointInformation.class);
-        Assertions.assertEquals("nenlsvxeizzg", model.endpoint());
-        Assertions.assertEquals(NotificationEndpointType.WEBHOOK, model.endpointType());
-        Assertions.assertEquals("srmffeycxcktpiym", model.schemaVersion());
+        Assertions.assertEquals("bajlka", model.endpoint());
+        Assertions.assertEquals(NotificationEndpointType.EVENTHUB, model.endpointType());
+        Assertions.assertEquals("yiopi", model.schemaVersion());
     }
 }

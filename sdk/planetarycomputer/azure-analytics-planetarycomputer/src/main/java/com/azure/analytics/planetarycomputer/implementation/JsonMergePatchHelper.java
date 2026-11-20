@@ -4,7 +4,7 @@
 
 package com.azure.analytics.planetarycomputer.implementation;
 
-import com.azure.analytics.planetarycomputer.models.Geometry;
+import com.azure.analytics.planetarycomputer.models.GeoJsonGeometry;
 import com.azure.analytics.planetarycomputer.models.IngestionDefinition;
 import com.azure.analytics.planetarycomputer.models.StacAsset;
 import com.azure.analytics.planetarycomputer.models.StacContextExtension;
@@ -113,22 +113,22 @@ public class JsonMergePatchHelper {
         return stacItemOrStacItemCollectionAccessor;
     }
 
-    private static GeometryAccessor geometryAccessor;
+    private static GeoJsonGeometryAccessor geoJsonGeometryAccessor;
 
-    public interface GeometryAccessor {
-        Geometry prepareModelForJsonMergePatch(Geometry geometry, boolean jsonMergePatchEnabled);
+    public interface GeoJsonGeometryAccessor {
+        GeoJsonGeometry prepareModelForJsonMergePatch(GeoJsonGeometry geoJsonGeometry, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(Geometry geometry);
+        boolean isJsonMergePatch(GeoJsonGeometry geoJsonGeometry);
 
-        void setBoundingBox(Geometry geometry, List<Double> boundingBox);
+        void setBoundingBox(GeoJsonGeometry geoJsonGeometry, List<Double> boundingBox);
     }
 
-    public static void setGeometryAccessor(GeometryAccessor accessor) {
-        geometryAccessor = accessor;
+    public static void setGeoJsonGeometryAccessor(GeoJsonGeometryAccessor accessor) {
+        geoJsonGeometryAccessor = accessor;
     }
 
-    public static GeometryAccessor getGeometryAccessor() {
-        return geometryAccessor;
+    public static GeoJsonGeometryAccessor getGeoJsonGeometryAccessor() {
+        return geoJsonGeometryAccessor;
     }
 
     private static StacItemPropertiesAccessor stacItemPropertiesAccessor;

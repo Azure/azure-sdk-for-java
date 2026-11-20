@@ -22,7 +22,7 @@ public final class ConfigurationAssignmentsForResourceGroupsGetByResourceGroupWi
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"maintenanceConfigurationId\":\"zlrphwzs\",\"resourceId\":\"dweyuqdunv\",\"filter\":{\"resourceTypes\":[\"wrbiorkt\",\"lywjhh\"],\"resourceGroups\":[\"hxmsivfo\",\"iloxggdufiq\"],\"osTypes\":[\"euzaof\",\"chvcyyysfgdo\",\"cubiipuipw\",\"qonmacj\"],\"locations\":[\"izsh\",\"vcimpev\",\"gmblrri\"],\"tagSettings\":{\"tags\":{\"ynszquji\":[\"xsmiccwrwfscjf\"],\"hjoxo\":[\"voqyt\",\"byowbblgyavutp\"]},\"filterOperator\":\"All\"}}},\"location\":\"ksbpimlqoljx\",\"id\":\"gxxlxsffgcvizq\",\"name\":\"dwl\",\"type\":\"w\"}";
+            = "{\"properties\":{\"maintenanceConfigurationId\":\"mlqoljx\",\"resourceId\":\"gxxlxsffgcvizq\",\"filter\":{\"resourceTypes\":[\"vwlyoup\"],\"resourceGroups\":[\"bkjubdyhgkfmins\",\"owzfttsttkt\",\"ahbqactxtgzuk\",\"itmmqtgqqqxh\"],\"osTypes\":[\"rxcpjuisavo\"],\"locations\":[\"zfvazi\"],\"tagSettings\":{\"tags\":{\"rxkpmloazuruoc\":[\"qttbaj\",\"katnwxyi\",\"pidkqqfkuvscxkdm\",\"igovi\"],\"ordilmywwtkgkxny\":[\"oorb\",\"eoybfhjxakvvjgs\"],\"uewbc\":[\"abgyvudt\"],\"wjplma\":[\"xuuwhcj\",\"xccybvpa\",\"akkud\",\"px\"]},\"filterOperator\":\"Any\"}}},\"location\":\"yohpfkyrkdbdgiog\",\"id\":\"kmnwqjnobaiyhddv\",\"name\":\"acegfnmntf\",\"type\":\"mvmemfnczd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class ConfigurationAssignmentsForResourceGroupsGetByResourceGroupWi
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ConfigurationAssignment response = manager.configurationAssignmentsForResourceGroups()
-            .getByResourceGroupWithResponse("xconfozauors", "kokwbqplhlvnu", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("hjoxo", "smsks", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ksbpimlqoljx", response.location());
-        Assertions.assertEquals("zlrphwzs", response.maintenanceConfigurationId());
-        Assertions.assertEquals("dweyuqdunv", response.resourceId());
-        Assertions.assertEquals("wrbiorkt", response.filter().resourceTypes().get(0));
-        Assertions.assertEquals("hxmsivfo", response.filter().resourceGroups().get(0));
-        Assertions.assertEquals("euzaof", response.filter().osTypes().get(0));
-        Assertions.assertEquals("izsh", response.filter().locations().get(0));
-        Assertions.assertEquals("xsmiccwrwfscjf", response.filter().tagSettings().tags().get("ynszquji").get(0));
-        Assertions.assertEquals(TagOperators.ALL, response.filter().tagSettings().filterOperator());
+        Assertions.assertEquals("yohpfkyrkdbdgiog", response.location());
+        Assertions.assertEquals("mlqoljx", response.maintenanceConfigurationId());
+        Assertions.assertEquals("gxxlxsffgcvizq", response.resourceId());
+        Assertions.assertEquals("vwlyoup", response.filter().resourceTypes().get(0));
+        Assertions.assertEquals("bkjubdyhgkfmins", response.filter().resourceGroups().get(0));
+        Assertions.assertEquals("rxcpjuisavo", response.filter().osTypes().get(0));
+        Assertions.assertEquals("zfvazi", response.filter().locations().get(0));
+        Assertions.assertEquals("qttbaj", response.filter().tagSettings().tags().get("rxkpmloazuruoc").get(0));
+        Assertions.assertEquals(TagOperators.ANY, response.filter().tagSettings().filterOperator());
     }
 }

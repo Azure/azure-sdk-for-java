@@ -25,7 +25,7 @@ public final class StoragesListByCloudAccountMockTests {
     @Test
     public void testListByCloudAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"location\":\"ouw\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COLD\",\"provisioningState\":\"Failed\"},\"id\":\"eeyebi\",\"name\":\"ikayuhqlbjbsybb\",\"type\":\"wrv\"}]}";
+            = "{\"value\":[{\"properties\":{\"location\":\"hszfjvfb\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COOL\",\"provisioningState\":\"Failed\",\"complianceLockStatus\":\"Disabled\"},\"id\":\"qmqhldvriii\",\"name\":\"jnalghf\",\"type\":\"vtvsexsowueluq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,9 +35,9 @@ public final class StoragesListByCloudAccountMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Storage> response
-            = manager.storages().listByCloudAccount("udurgkakmokz", "jjklff", com.azure.core.util.Context.NONE);
+            = manager.storages().listByCloudAccount("zszrnwoiindfpw", "jylwbtlhflsj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ouw", response.iterator().next().properties().location());
+        Assertions.assertEquals("hszfjvfb", response.iterator().next().properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, response.iterator().next().properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, response.iterator().next().properties().vendor());
         Assertions.assertEquals(StorageClassType.COOL, response.iterator().next().properties().classProperty());

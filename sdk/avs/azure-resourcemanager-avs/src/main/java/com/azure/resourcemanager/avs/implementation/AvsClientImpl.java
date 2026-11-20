@@ -487,7 +487,7 @@ public final class AvsClientImpl implements AvsClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01";
+        this.apiVersion = "2026-03-01";
         this.operations = new OperationsClientImpl(this);
         this.addons = new AddonsClientImpl(this);
         this.authorizations = new AuthorizationsClientImpl(this);

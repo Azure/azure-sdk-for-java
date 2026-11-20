@@ -18,7 +18,7 @@ public class IngestionSourcesList {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildIngestionClient();
         // BEGIN:com.azure.analytics.planetarycomputer.generated.ingestion-list-sources.ingestion-sources-list
-        PagedIterable<IngestionSourceSummary> response = ingestionClient.listSources(null, null);
+        PagedIterable<IngestionSourceSummary> response = ingestionClient.listSources((Integer) null, (Integer) null);
         // END:com.azure.analytics.planetarycomputer.generated.ingestion-list-sources.ingestion-sources-list
     }
 }

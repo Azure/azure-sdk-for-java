@@ -14,21 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayUpdate model = BinaryData
-            .fromString(
-                "{\"properties\":{\"allowedFeatures\":[\"mfpgv\",\"pip\"]},\"tags\":{\"wbdsr\":\"thaqfxssmwu\"}}")
+        GatewayUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"allowedFeatures\":[\"ifqjz\",\"xmrhu\",\"lw\"],\"gatewayBypass\":[\"sutrgjup\",\"uutpwoqhih\",\"jqgwzp\",\"fqntcyp\"]},\"tags\":{\"cizjxvydfceacvl\":\"vfoimwksli\"}}")
             .toObject(GatewayUpdate.class);
-        Assertions.assertEquals("thaqfxssmwu", model.tags().get("wbdsr"));
-        Assertions.assertEquals("mfpgv", model.allowedFeatures().get(0));
+        Assertions.assertEquals("vfoimwksli", model.tags().get("cizjxvydfceacvl"));
+        Assertions.assertEquals("ifqjz", model.allowedFeatures().get(0));
+        Assertions.assertEquals("sutrgjup", model.gatewayBypass().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayUpdate model = new GatewayUpdate().withTags(mapOf("wbdsr", "thaqfxssmwu"))
-            .withAllowedFeatures(Arrays.asList("mfpgv", "pip"));
+        GatewayUpdate model = new GatewayUpdate().withTags(mapOf("cizjxvydfceacvl", "vfoimwksli"))
+            .withAllowedFeatures(Arrays.asList("ifqjz", "xmrhu", "lw"))
+            .withGatewayBypass(Arrays.asList("sutrgjup", "uutpwoqhih", "jqgwzp", "fqntcyp"));
         model = BinaryData.fromObject(model).toObject(GatewayUpdate.class);
-        Assertions.assertEquals("thaqfxssmwu", model.tags().get("wbdsr"));
-        Assertions.assertEquals("mfpgv", model.allowedFeatures().get(0));
+        Assertions.assertEquals("vfoimwksli", model.tags().get("cizjxvydfceacvl"));
+        Assertions.assertEquals("ifqjz", model.allowedFeatures().get(0));
+        Assertions.assertEquals("sutrgjup", model.gatewayBypass().get(0));
     }
 
     // Use "Map.of" if available

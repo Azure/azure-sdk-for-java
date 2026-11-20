@@ -1,0 +1,79 @@
+From 1dd081b1aa323e1da8b2d1a64390828b1e4e7c58 Mon Sep 17 00:00:00 2001
+From: Weidong Xu <weidxu@microsoft.com>
+Date: Wed, 16 Sep 2026 19:22:22 +0800
+Subject: [PATCH] Fix customized transcription generated tests
+
+Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+Copilot-Session: bbb8f8a7-8cb7-4e00-8c51-872dee15fcc9
+---
+ .../transcription/generated/TranscribeAudioFileTests.java      | 3 +--
+ .../transcription/generated/TranscribeAudioFromURLTests.java   | 3 +--
+ .../generated/TranscribeWithEnhancedModeTests.java             | 3 +--
+ 3 files changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeAudioFileTests.java b/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeAudioFileTests.java
+index 06817d89130..ac8c847552a 100644
+--- a/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeAudioFileTests.java
++++ b/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeAudioFileTests.java
+@@ -7,7 +7,6 @@ package com.azure.ai.speech.transcription.generated;
+ import com.azure.ai.speech.transcription.models.ChannelCombinedPhrases;
+ import com.azure.ai.speech.transcription.models.TranscribedPhrase;
+ import com.azure.ai.speech.transcription.models.TranscribedWord;
+-import com.azure.ai.speech.transcription.models.TranscriptionContent;
+ import com.azure.ai.speech.transcription.models.TranscriptionResult;
+ import java.util.List;
+ import org.junit.jupiter.api.Assertions;
+@@ -20,7 +19,7 @@ public final class TranscribeAudioFileTests extends TranscriptionClientTestBase
+     @Disabled
+     public void testTranscribeAudioFileTests() {
+         // method invocation
+-        TranscriptionResult response = transcriptionClient.transcribe((TranscriptionContent) null);
++        TranscriptionResult response = transcriptionClient.transcribe(null);
+ 
+         // response assertion
+         Assertions.assertNotNull(response);
+diff --git a/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeAudioFromURLTests.java b/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeAudioFromURLTests.java
+index 7daca09f378..e431b89cc08 100644
+--- a/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeAudioFromURLTests.java
++++ b/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeAudioFromURLTests.java
+@@ -7,7 +7,6 @@ package com.azure.ai.speech.transcription.generated;
+ import com.azure.ai.speech.transcription.models.ChannelCombinedPhrases;
+ import com.azure.ai.speech.transcription.models.TranscribedPhrase;
+ import com.azure.ai.speech.transcription.models.TranscribedWord;
+-import com.azure.ai.speech.transcription.models.TranscriptionContent;
+ import com.azure.ai.speech.transcription.models.TranscriptionResult;
+ import java.util.List;
+ import org.junit.jupiter.api.Assertions;
+@@ -20,7 +19,7 @@ public final class TranscribeAudioFromURLTests extends TranscriptionClientTestBa
+     @Disabled
+     public void testTranscribeAudioFromURLTests() {
+         // method invocation
+-        TranscriptionResult response = transcriptionClient.transcribe((TranscriptionContent) null);
++        TranscriptionResult response = transcriptionClient.transcribe(null);
+ 
+         // response assertion
+         Assertions.assertNotNull(response);
+diff --git a/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeWithEnhancedModeTests.java b/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeWithEnhancedModeTests.java
+index 3b32a2f3bd1..b92423bd969 100644
+--- a/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeWithEnhancedModeTests.java
++++ b/sdk/transcription/azure-ai-speech-transcription/src/test/java/com/azure/ai/speech/transcription/generated/TranscribeWithEnhancedModeTests.java
+@@ -7,7 +7,6 @@ package com.azure.ai.speech.transcription.generated;
+ import com.azure.ai.speech.transcription.models.ChannelCombinedPhrases;
+ import com.azure.ai.speech.transcription.models.TranscribedPhrase;
+ import com.azure.ai.speech.transcription.models.TranscribedWord;
+-import com.azure.ai.speech.transcription.models.TranscriptionContent;
+ import com.azure.ai.speech.transcription.models.TranscriptionResult;
+ import java.util.List;
+ import org.junit.jupiter.api.Assertions;
+@@ -20,7 +19,7 @@ public final class TranscribeWithEnhancedModeTests extends TranscriptionClientTe
+     @Disabled
+     public void testTranscribeWithEnhancedModeTests() {
+         // method invocation
+-        TranscriptionResult response = transcriptionClient.transcribe((TranscriptionContent) null);
++        TranscriptionResult response = transcriptionClient.transcribe(null);
+ 
+         // response assertion
+         Assertions.assertNotNull(response);
+-- 
+2.55.0.windows.3
+

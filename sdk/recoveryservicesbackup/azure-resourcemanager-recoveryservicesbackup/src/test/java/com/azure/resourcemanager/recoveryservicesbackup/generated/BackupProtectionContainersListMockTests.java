@@ -23,7 +23,7 @@ public final class BackupProtectionContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"mypgfqvmty\",\"backupManagementType\":\"AzureStorage\",\"registrationStatus\":\"kxp\",\"healthStatus\":\"pewpyj\",\"protectableObjectType\":\"xampqcr\"},\"tags\":{\"qdtadrakgdd\":\"uqxbpiatwfauje\",\"txqfpjbq\":\"jkrukizyhgsqtnqs\",\"dmncgbf\":\"gweeiwd\"},\"location\":\"scstunmlhxd\",\"eTag\":\"klciichgjsysm\",\"id\":\"o\",\"name\":\"gwxfkzsi\",\"type\":\"cuvbdujgcwxvec\"}]}";
+            = "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"dprmimrljdpoqf\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"hkftbaewh\",\"healthStatus\":\"cloamfmxtllflt\",\"protectableObjectType\":\"qcnrrfijhggabqb\",\"sourceLocation\":\"mkli\"},\"tags\":{\"tqrxqwqnjxrdf\":\"wdvffhsdpzouh\",\"eapyfmlxrlj\":\"dtullygtavczcxdf\",\"aspiflei\":\"h\",\"hfgsmd\":\"ixlmdbgic\"},\"location\":\"uq\",\"eTag\":\"xtokljmtz\",\"id\":\"axwfqtyyqip\",\"name\":\"cltungbso\",\"type\":\"jck\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class BackupProtectionContainersListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionContainerResource> response = manager.backupProtectionContainers()
-            .list("tpmnoe", "hqlfmsib", "oyrfgxk", com.azure.core.util.Context.NONE);
+            .list("dejkluxxrwzobuz", "sxgamtdtkw", "pt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mypgfqvmty", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE,
+        Assertions.assertEquals("dprmimrljdpoqf", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("kxp", response.iterator().next().properties().registrationStatus());
-        Assertions.assertEquals("pewpyj", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals("xampqcr", response.iterator().next().properties().protectableObjectType());
-        Assertions.assertEquals("uqxbpiatwfauje", response.iterator().next().tags().get("qdtadrakgdd"));
-        Assertions.assertEquals("scstunmlhxd", response.iterator().next().location());
-        Assertions.assertEquals("klciichgjsysm", response.iterator().next().etag());
+        Assertions.assertEquals("hkftbaewh", response.iterator().next().properties().registrationStatus());
+        Assertions.assertEquals("cloamfmxtllflt", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("qcnrrfijhggabqb", response.iterator().next().properties().protectableObjectType());
+        Assertions.assertEquals("wdvffhsdpzouh", response.iterator().next().tags().get("tqrxqwqnjxrdf"));
+        Assertions.assertEquals("uq", response.iterator().next().location());
+        Assertions.assertEquals("xtokljmtz", response.iterator().next().etag());
     }
 }

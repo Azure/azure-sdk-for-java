@@ -7,7 +7,9 @@ param(
     # The yml file whose artifacts and additionalModules lists will be updated
     [Parameter(Mandatory = $true)][string]$PackagesYmlPath,
     # When set, creates patch branches from the current branch instead of remote main.
-    [switch]$UseCurrentBranch
+    [switch]$UseCurrentBranch,
+    # Increment the minor version instead of the patch version for every selected package.
+    [switch]$IncrementMinorVersion
 )
 
 $StartTime = $( get-date )
@@ -21,7 +23,7 @@ try {
     $currentBranchName = GetCurrentBranchName
 
     # Generate the list of artifacts to update for a patch release.
-    . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
+    . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath -IncrementMinorVersion:$IncrementMinorVersion
 
     # Update local repository with all the latest changes from remote repository
     # And clean up any references that have been deleted on the remote side.
@@ -99,7 +101,7 @@ try {
         }
     }
 
-    # Build PatchVersionOverrides: map of "${groupId}:${artifactId}" → patch version for all
+    # Build PatchVersionOverrides: map of "${groupId}:${artifactId}" → release version for all
     # artifacts being patched. This is passed to generatepatch.ps1 so changelogs show the
     # correct version when a sibling dependency is also being patched in the same run.
     $PatchVersionOverrides = @{}
@@ -109,18 +111,18 @@ try {
         $pkgKey = "${pkgGroupId}:${pkgArtifactId}"
         try {
             $mavenInfo = GetVersionInfoForAnArtifactId -GroupId $pkgGroupId -ArtifactId $pkgArtifactId
-            $patchVersion = GetPatchVersion -ReleaseVersion $mavenInfo.LatestGAOrPatchVersion
+            $patchVersion = GetPatchVersion -ReleaseVersion $mavenInfo.LatestGAOrPatchVersion -IncrementMinorVersion:$IncrementMinorVersion
             $PatchVersionOverrides[$pkgKey] = $patchVersion
         } catch {
-            Write-Warning "Could not determine patch version for ${pkgArtifactId}: $_"
+            Write-Warning "Could not determine release version for ${pkgArtifactId}: $_"
         }
     }
 
-    # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
+    # Reset each package to the latest stable release and update CHANGELOG, POM and README for release.
     foreach ($packageData in $packagesData) {
         $pkgKey = $packageData["groupId"] + ":" + $packageData["name"]
         $capturedPomVersion = $CurrentPomFileVersions[$pkgKey]
-        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"] -UseCurrentBranch:$UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides -CurrentPomFileVersion $capturedPomVersion
+        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"] -UseCurrentBranch:$UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides -CurrentPomFileVersion $capturedPomVersion -IncrementMinorVersion:$IncrementMinorVersion
         $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
     }
 

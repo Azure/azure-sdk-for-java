@@ -6,8 +6,10 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
+import com.azure.resourcemanager.servicenetworking.models.FrontendAssociation;
 import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 import com.azure.resourcemanager.servicenetworking.models.IpAccessRulesSecurityPolicy;
+import com.azure.resourcemanager.servicenetworking.models.PublicNetworkAccess;
 import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyConfigurations;
 import com.azure.resourcemanager.servicenetworking.models.WafSecurityPolicy;
 import java.util.HashMap;
@@ -18,28 +20,33 @@ public final class FrontendInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendInner model = BinaryData.fromString(
-            "{\"properties\":{\"fqdn\":\"zwuxzd\",\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"yrlhmwhfpmrqobm\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"kknryrtihf\"}},\"provisioningState\":\"Deleting\"},\"location\":\"bpzvgn\",\"tags\":{\"ohdbihanufh\":\"ymglzufcyz\",\"a\":\"cbjy\",\"xwczbyscnp\":\"ithxqhabifpi\"},\"id\":\"x\",\"name\":\"hiv\",\"type\":\"qniwbybrkxvdumj\"}")
+            "{\"properties\":{\"fqdn\":\"zwuxzd\",\"publicNetworkAccess\":\"Enabled\",\"association\":{\"id\":\"rlhm\"},\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"pmrqobm\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"kknryrtihf\"}},\"provisioningState\":\"Deleting\"},\"location\":\"bpzvgn\",\"tags\":{\"ohdbihanufh\":\"ymglzufcyz\",\"a\":\"cbjy\",\"xwczbyscnp\":\"ithxqhabifpi\"},\"id\":\"x\",\"name\":\"hiv\",\"type\":\"qniwbybrkxvdumj\"}")
             .toObject(FrontendInner.class);
         Assertions.assertEquals("bpzvgn", model.location());
         Assertions.assertEquals("ymglzufcyz", model.tags().get("ohdbihanufh"));
-        Assertions.assertEquals("yrlhmwhfpmrqobm",
-            model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("rlhm", model.properties().association().id());
+        Assertions.assertEquals("pmrqobm", model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
         Assertions.assertEquals("kknryrtihf",
             model.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendInner model = new FrontendInner().withLocation("bpzvgn")
-            .withTags(mapOf("ohdbihanufh", "ymglzufcyz", "a", "cbjy", "xwczbyscnp", "ithxqhabifpi"))
-            .withProperties(new FrontendProperties().withSecurityPolicyConfigurations(new SecurityPolicyConfigurations()
-                .withWafSecurityPolicy(new WafSecurityPolicy().withId("yrlhmwhfpmrqobm"))
-                .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("kknryrtihf"))));
+        FrontendInner model
+            = new FrontendInner().withLocation("bpzvgn")
+                .withTags(mapOf("ohdbihanufh", "ymglzufcyz", "a", "cbjy", "xwczbyscnp", "ithxqhabifpi"))
+                .withProperties(new FrontendProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                    .withAssociation(new FrontendAssociation().withId("rlhm"))
+                    .withSecurityPolicyConfigurations(new SecurityPolicyConfigurations()
+                        .withWafSecurityPolicy(new WafSecurityPolicy().withId("pmrqobm"))
+                        .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("kknryrtihf"))));
         model = BinaryData.fromObject(model).toObject(FrontendInner.class);
         Assertions.assertEquals("bpzvgn", model.location());
         Assertions.assertEquals("ymglzufcyz", model.tags().get("ohdbihanufh"));
-        Assertions.assertEquals("yrlhmwhfpmrqobm",
-            model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("rlhm", model.properties().association().id());
+        Assertions.assertEquals("pmrqobm", model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
         Assertions.assertEquals("kknryrtihf",
             model.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }

@@ -119,8 +119,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the runtimeVersion property: The RuntimeVersion of the Authentication / Authorization feature in use for the
-     * current app.
+     * Get the runtimeVersion property:
+     * The RuntimeVersion of the Authentication / Authorization feature in use for the current app.
      * The setting in this value can control the behavior of certain features in the Authentication / Authorization
      * module.
      * 
@@ -131,8 +131,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the runtimeVersion property: The RuntimeVersion of the Authentication / Authorization feature in use for the
-     * current app.
+     * Set the runtimeVersion property:
+     * The RuntimeVersion of the Authentication / Authorization feature in use for the current app.
      * The setting in this value can control the behavior of certain features in the Authentication / Authorization
      * module.
      * 
@@ -259,8 +259,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tokenRefreshExtensionHours property: The number of hours after session token expiration that a session
-     * token can be used to
+     * Get the tokenRefreshExtensionHours property:
+     * The number of hours after session token expiration that a session token can be used to
      * call the token refresh API. The default is 72 hours.
      * 
      * @return the tokenRefreshExtensionHours value.
@@ -270,8 +270,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tokenRefreshExtensionHours property: The number of hours after session token expiration that a session
-     * token can be used to
+     * Set the tokenRefreshExtensionHours property:
+     * The number of hours after session token expiration that a session token can be used to
      * call the token refresh API. The default is 72 hours.
      * 
      * @param tokenRefreshExtensionHours the tokenRefreshExtensionHours value to set.
@@ -373,8 +373,9 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
-     * of a certificate used for signing purposes. This property acts as
+     * Get the clientSecretCertificateThumbprint property:
+     * An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This
+     * property acts as
      * a replacement for the Client Secret. It is also optional.
      * 
      * @return the clientSecretCertificateThumbprint value.
@@ -384,8 +385,9 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
-     * of a certificate used for signing purposes. This property acts as
+     * Set the clientSecretCertificateThumbprint property:
+     * An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This
+     * property acts as
      * a replacement for the Client Secret. It is also optional.
      * 
      * @param clientSecretCertificateThumbprint the clientSecretCertificateThumbprint value to set.
@@ -589,8 +591,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the googleClientSecretSettingName property: The app setting name that contains the client secret associated
-     * with
+     * Get the googleClientSecretSettingName property:
+     * The app setting name that contains the client secret associated with
      * the Google web application.
      * 
      * @return the googleClientSecretSettingName value.
@@ -600,8 +602,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the googleClientSecretSettingName property: The app setting name that contains the client secret associated
-     * with
+     * Set the googleClientSecretSettingName property:
+     * The app setting name that contains the client secret associated with
      * the Google web application.
      * 
      * @param googleClientSecretSettingName the googleClientSecretSettingName value to set.
@@ -753,7 +755,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the gitHubClientId property: The Client Id of the GitHub app used for login.
+     * Get the gitHubClientId property:
+     * The Client Id of the GitHub app used for login.
      * This setting is required for enabling Github login.
      * 
      * @return the gitHubClientId value.
@@ -763,7 +766,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the gitHubClientId property: The Client Id of the GitHub app used for login.
+     * Set the gitHubClientId property:
+     * The Client Id of the GitHub app used for login.
      * This setting is required for enabling Github login.
      * 
      * @param gitHubClientId the gitHubClientId value to set.
@@ -778,7 +782,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the gitHubClientSecret property: The Client Secret of the GitHub app used for Github Login.
+     * Get the gitHubClientSecret property:
+     * The Client Secret of the GitHub app used for Github Login.
      * This setting is required for enabling Github login.
      * 
      * @return the gitHubClientSecret value.
@@ -788,7 +793,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the gitHubClientSecret property: The Client Secret of the GitHub app used for Github Login.
+     * Set the gitHubClientSecret property:
+     * The Client Secret of the GitHub app used for Github Login.
      * This setting is required for enabling Github login.
      * 
      * @param gitHubClientSecret the gitHubClientSecret value to set.
@@ -803,8 +809,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the gitHubClientSecretSettingName property: The app setting name that contains the client secret of the
-     * Github
+     * Get the gitHubClientSecretSettingName property:
+     * The app setting name that contains the client secret of the Github
      * app used for GitHub Login.
      * 
      * @return the gitHubClientSecretSettingName value.
@@ -814,8 +820,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the gitHubClientSecretSettingName property: The app setting name that contains the client secret of the
-     * Github
+     * Set the gitHubClientSecretSettingName property:
+     * The app setting name that contains the client secret of the Github
      * app used for GitHub Login.
      * 
      * @param gitHubClientSecretSettingName the gitHubClientSecretSettingName value to set.
@@ -830,8 +836,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the gitHubOAuthScopes property: The OAuth 2.0 scopes that will be requested as part of GitHub Login
-     * authentication.
+     * Get the gitHubOAuthScopes property:
+     * The OAuth 2.0 scopes that will be requested as part of GitHub Login authentication.
      * This setting is optional.
      * 
      * @return the gitHubOAuthScopes value.
@@ -841,8 +847,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the gitHubOAuthScopes property: The OAuth 2.0 scopes that will be requested as part of GitHub Login
-     * authentication.
+     * Set the gitHubOAuthScopes property:
+     * The OAuth 2.0 scopes that will be requested as part of GitHub Login authentication.
      * This setting is optional.
      * 
      * @param gitHubOAuthScopes the gitHubOAuthScopes value to set.
@@ -913,8 +919,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the twitterConsumerSecretSettingName property: The app setting name that contains the OAuth 1.0a consumer
-     * secret of the Twitter
+     * Get the twitterConsumerSecretSettingName property:
+     * The app setting name that contains the OAuth 1.0a consumer secret of the Twitter
      * application used for sign-in.
      * 
      * @return the twitterConsumerSecretSettingName value.
@@ -924,8 +930,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the twitterConsumerSecretSettingName property: The app setting name that contains the OAuth 1.0a consumer
-     * secret of the Twitter
+     * Set the twitterConsumerSecretSettingName property:
+     * The app setting name that contains the OAuth 1.0a consumer secret of the Twitter
      * application used for sign-in.
      * 
      * @param twitterConsumerSecretSettingName the twitterConsumerSecretSettingName value to set.
@@ -998,8 +1004,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the microsoftAccountClientSecretSettingName property: The app setting name containing the OAuth 2.0 client
-     * secret that was created for the
+     * Get the microsoftAccountClientSecretSettingName property:
+     * The app setting name containing the OAuth 2.0 client secret that was created for the
      * app used for authentication.
      * 
      * @return the microsoftAccountClientSecretSettingName value.
@@ -1009,8 +1015,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the microsoftAccountClientSecretSettingName property: The app setting name containing the OAuth 2.0 client
-     * secret that was created for the
+     * Set the microsoftAccountClientSecretSettingName property:
+     * The app setting name containing the OAuth 2.0 client secret that was created for the
      * app used for authentication.
      * 
      * @param microsoftAccountClientSecretSettingName the microsoftAccountClientSecretSettingName value to set.
@@ -1080,7 +1086,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the authFilePath property: The path of the config file containing auth settings.
+     * Get the authFilePath property:
+     * The path of the config file containing auth settings.
      * If the path is relative, base will the site's root directory.
      * 
      * @return the authFilePath value.
@@ -1090,7 +1097,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the authFilePath property: The path of the config file containing auth settings.
+     * Set the authFilePath property:
+     * The path of the config file containing auth settings.
      * If the path is relative, base will the site's root directory.
      * 
      * @param authFilePath the authFilePath value to set.
@@ -1105,8 +1113,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
-     * current app.
+     * Get the configVersion property:
+     * The ConfigVersion of the Authentication / Authorization feature in use for the current app.
      * The setting in this value can control the behavior of the control plane for Authentication / Authorization.
      * 
      * @return the configVersion value.
@@ -1116,8 +1124,8 @@ public final class SiteAuthSettingsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the configVersion property: The ConfigVersion of the Authentication / Authorization feature in use for the
-     * current app.
+     * Set the configVersion property:
+     * The ConfigVersion of the Authentication / Authorization feature in use for the current app.
      * The setting in this value can control the behavior of the control plane for Authentication / Authorization.
      * 
      * @param configVersion the configVersion value to set.

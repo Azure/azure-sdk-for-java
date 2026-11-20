@@ -5,7 +5,7 @@ package com.azure.ai.agents.toolboxes;
 
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ToolboxesClient;
-import com.azure.ai.agents.models.ToolboxSearchPreviewToolboxTool;
+import com.azure.ai.agents.models.ToolSearchToolboxTool;
 import com.azure.ai.agents.models.ToolboxTool;
 import com.azure.ai.agents.models.ToolboxVersionDetails;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -15,7 +15,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Collections;
 
 /**
- * This sample demonstrates creating a toolbox version that includes the Toolbox Search preview tool.
+ * This sample demonstrates creating a toolbox version that includes the Toolbox Search tool.
  *
  * <p>Toolboxes are a preview feature. Before running, set {@code FOUNDRY_PROJECT_ENDPOINT} to your Azure AI Foundry
  * project endpoint.</p>
@@ -39,14 +39,14 @@ public class ToolboxSearchToolboxSample {
         try {
             // BEGIN: com.azure.ai.agents.toolboxes.ToolboxSearchToolboxSample.createToolboxSearchToolbox
 
-            ToolboxSearchPreviewToolboxTool toolboxSearchTool = new ToolboxSearchPreviewToolboxTool()
+            ToolSearchToolboxTool toolboxSearchTool = new ToolSearchToolboxTool()
                 .setName("search_tools")
                 .setDescription("Search over available toolbox tools at runtime.");
 
             ToolboxVersionDetails version = toolboxesClient.createToolboxVersion(
                 toolboxName,
                 Collections.singletonList(toolboxSearchTool),
-                "Toolbox version with a Toolbox Search preview tool.",
+                "Toolbox version with a Toolbox Search tool.",
                 null,
                 null,
                 null);

@@ -19,8 +19,8 @@ import java.io.IOException;
 public final class FileKnowledgeSourceParameters implements JsonSerializable<FileKnowledgeSourceParameters> {
 
     /*
-     * Consolidates all general ingestion settings. Only 'minimal' content extraction mode and embeddingModel are
-     * supported for file knowledge sources.
+     * Consolidates all general ingestion settings for the File knowledge source, including the content extraction mode
+     * and an optional embeddingModel.
      */
     @Generated
     private KnowledgeSourceIngestionParameters ingestionParameters;
@@ -39,8 +39,8 @@ public final class FileKnowledgeSourceParameters implements JsonSerializable<Fil
     }
 
     /**
-     * Get the ingestionParameters property: Consolidates all general ingestion settings. Only 'minimal' content
-     * extraction mode and embeddingModel are supported for file knowledge sources.
+     * Get the ingestionParameters property: Consolidates all general ingestion settings for the File knowledge source,
+     * including the content extraction mode and an optional embeddingModel.
      *
      * @return the ingestionParameters value.
      */
@@ -50,8 +50,8 @@ public final class FileKnowledgeSourceParameters implements JsonSerializable<Fil
     }
 
     /**
-     * Set the ingestionParameters property: Consolidates all general ingestion settings. Only 'minimal' content
-     * extraction mode and embeddingModel are supported for file knowledge sources.
+     * Set the ingestionParameters property: Consolidates all general ingestion settings for the File knowledge source,
+     * including the content extraction mode and an optional embeddingModel.
      *
      * @param ingestionParameters the ingestionParameters value to set.
      * @return the FileKnowledgeSourceParameters object itself.

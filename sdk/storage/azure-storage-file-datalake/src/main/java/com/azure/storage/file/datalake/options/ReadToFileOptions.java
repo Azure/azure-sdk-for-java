@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.options;
 
+import com.azure.storage.common.LayoutAwareRouting;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.DataLakeFileClient;
@@ -26,6 +27,7 @@ public class ReadToFileOptions {
     private Boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
     private Boolean userPrincipalName;
+    private LayoutAwareRouting layoutAwareRouting;
 
     /**
      * Constructs a {@link ReadToFileOptions}.
@@ -182,6 +184,26 @@ public class ReadToFileOptions {
     }
 
     /**
+     * Gets the {@link LayoutAwareRouting}.
+     *
+     * @return {@link LayoutAwareRouting}
+     */
+    public LayoutAwareRouting getLayoutAwareRouting() {
+        return layoutAwareRouting;
+    }
+
+    /**
+     * Sets the {@link LayoutAwareRouting}.
+     *
+     * @param layoutAwareRouting {@link LayoutAwareRouting}
+     * @return The updated options.
+     */
+    public ReadToFileOptions setLayoutAwareRouting(LayoutAwareRouting layoutAwareRouting) {
+        this.layoutAwareRouting = layoutAwareRouting;
+        return this;
+    }
+
+    /**
      * Sets the value for the x-ms-upn header.
      *
      * @param userPrincipalName The value for the x-ms-upn header.
@@ -191,4 +213,5 @@ public class ReadToFileOptions {
         this.userPrincipalName = userPrincipalName;
         return this;
     }
+
 }

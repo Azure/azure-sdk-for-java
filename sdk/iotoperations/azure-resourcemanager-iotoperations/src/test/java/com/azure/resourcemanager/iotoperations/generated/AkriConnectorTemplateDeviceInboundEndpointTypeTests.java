@@ -12,22 +12,22 @@ public final class AkriConnectorTemplateDeviceInboundEndpointTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorTemplateDeviceInboundEndpointType model = BinaryData
-            .fromString("{\"displayName\":\"fdlwg\",\"endpointType\":\"ytsbwtovv\",\"version\":\"seinqfiuf\"}")
+            .fromString("{\"displayName\":\"luyovwxnbkfezzx\",\"endpointType\":\"cy\",\"version\":\"zdgiruj\"}")
             .toObject(AkriConnectorTemplateDeviceInboundEndpointType.class);
-        Assertions.assertEquals("fdlwg", model.displayName());
-        Assertions.assertEquals("ytsbwtovv", model.endpointType());
-        Assertions.assertEquals("seinqfiuf", model.version());
+        Assertions.assertEquals("luyovwxnbkfezzx", model.displayName());
+        Assertions.assertEquals("cy", model.endpointType());
+        Assertions.assertEquals("zdgiruj", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AkriConnectorTemplateDeviceInboundEndpointType model
-            = new AkriConnectorTemplateDeviceInboundEndpointType().withDisplayName("fdlwg")
-                .withEndpointType("ytsbwtovv")
-                .withVersion("seinqfiuf");
+            = new AkriConnectorTemplateDeviceInboundEndpointType().withDisplayName("luyovwxnbkfezzx")
+                .withEndpointType("cy")
+                .withVersion("zdgiruj");
         model = BinaryData.fromObject(model).toObject(AkriConnectorTemplateDeviceInboundEndpointType.class);
-        Assertions.assertEquals("fdlwg", model.displayName());
-        Assertions.assertEquals("ytsbwtovv", model.endpointType());
-        Assertions.assertEquals("seinqfiuf", model.version());
+        Assertions.assertEquals("luyovwxnbkfezzx", model.displayName());
+        Assertions.assertEquals("cy", model.endpointType());
+        Assertions.assertEquals("zdgiruj", model.version());
     }
 }

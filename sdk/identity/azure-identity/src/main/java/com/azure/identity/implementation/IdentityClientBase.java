@@ -46,6 +46,7 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentityId;
@@ -224,8 +225,9 @@ public abstract class IdentityClientBase {
         } else if (clientAssertionSupplier != null) {
             credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
         } else if (clientAssertionSupplierWithHttpPipeline != null) {
+            // Fetch remote assertions during token acquisition, not permanently cached client initialization.
             credential = ClientCredentialFactory
-                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline()));
+                .createFromCallback(() -> clientAssertionSupplierWithHttpPipeline.apply(getPipeline()));
         } else {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Must provide client secret or client certificate path."
@@ -270,9 +272,12 @@ public abstract class IdentityClientBase {
             applicationBuilder.executorService(SharedExecutorService.getInstance());
         }
 
+        ITokenCacheAccessAspect tokenCacheAccessAspect = options.getTokenCacheAccessAspect();
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
-        if (tokenCachePersistenceOptions != null) {
+        if (tokenCacheAccessAspect != null) {
+            applicationBuilder.setTokenCacheAccessAspect(tokenCacheAccessAspect);
+        } else if (tokenCachePersistenceOptions != null) {
             try {
                 tokenCache = new PersistentTokenCacheImpl(enableCae)
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())
@@ -373,9 +378,12 @@ public abstract class IdentityClientBase {
             }
         }
 
+        ITokenCacheAccessAspect tokenCacheAccessAspect = options.getTokenCacheAccessAspect();
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
-        if (tokenCachePersistenceOptions != null) {
+        if (tokenCacheAccessAspect != null) {
+            builder.setTokenCacheAccessAspect(tokenCacheAccessAspect);
+        } else if (tokenCachePersistenceOptions != null) {
             try {
                 tokenCache = new PersistentTokenCacheImpl(enableCae)
                     .setAllowUnencryptedStorage(tokenCachePersistenceOptions.isUnencryptedStorageAllowed())

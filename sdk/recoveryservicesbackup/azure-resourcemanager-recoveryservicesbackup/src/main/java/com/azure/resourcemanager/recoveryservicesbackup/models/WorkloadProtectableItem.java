@@ -197,8 +197,6 @@ public class WorkloadProtectableItem implements JsonSerializable<WorkloadProtect
                     return AzureVmWorkloadSapHanaDBInstance.fromJson(readerToUse.reset());
                 } else if ("HanaHSRContainer".equals(discriminatorValue)) {
                     return AzureVmWorkloadSapHanaHsr.fromJson(readerToUse.reset());
-                } else if ("HanaScaleoutContainer".equals(discriminatorValue)) {
-                    return AzureVmWorkloadSAPHanaScaleoutProtectableItem.fromJson(readerToUse.reset());
                 } else if ("SQLAvailabilityGroupContainer".equals(discriminatorValue)) {
                     return AzureVmWorkloadSqlAvailabilityGroupProtectableItem.fromJson(readerToUse.reset());
                 } else if ("SQLDataBase".equals(discriminatorValue)) {

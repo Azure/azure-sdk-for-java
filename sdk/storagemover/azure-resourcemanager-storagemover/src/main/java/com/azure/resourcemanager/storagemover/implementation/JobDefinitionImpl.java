@@ -18,6 +18,7 @@ import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.JobType;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
 import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -127,6 +128,26 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
         return this.innerModel().preservePermissions();
     }
 
+    public Boolean isCrossTenantJob() {
+        return this.innerModel().isCrossTenantJob();
+    }
+
+    public String crossTenantEndpointTenantId() {
+        return this.innerModel().crossTenantEndpointTenantId();
+    }
+
+    public String crossTenantEndpointResourceId() {
+        return this.innerModel().crossTenantEndpointResourceId();
+    }
+
+    public String syncMode() {
+        return this.innerModel().syncMode();
+    }
+
+    public OffsetDateTime moverSyncedUntil() {
+        return this.innerModel().moverSyncedUntil();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -208,10 +229,18 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
         com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.storageMoverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "storageMovers");
-        this.projectName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "projects");
-        this.jobDefinitionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jobDefinitions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}",
+            "resourceGroupName");
+        this.storageMoverName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}",
+            "storageMoverName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}",
+            "projectName");
+        this.jobDefinitionName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}",
+            "jobDefinitionName");
     }
 
     public JobDefinition refresh() {
@@ -248,6 +277,16 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
     public JobRunResourceId stopJob() {
         return serviceManager.jobDefinitions()
             .stopJob(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
+    }
+
+    public Response<JobRunResourceId> reconcileJobWithResponse(Context context) {
+        return serviceManager.jobDefinitions()
+            .reconcileJobWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
+    }
+
+    public JobRunResourceId reconcileJob() {
+        return serviceManager.jobDefinitions()
+            .reconcileJob(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
     }
 
     public JobDefinitionImpl withCopyMode(CopyMode copyMode) {
@@ -343,6 +382,41 @@ public final class JobDefinitionImpl implements JobDefinition, JobDefinition.Def
     public JobDefinitionImpl withPreservePermissions(Boolean preservePermissions) {
         this.innerModel().withPreservePermissions(preservePermissions);
         return this;
+    }
+
+    public JobDefinitionImpl withIsCrossTenantJob(Boolean isCrossTenantJob) {
+        this.innerModel().withIsCrossTenantJob(isCrossTenantJob);
+        return this;
+    }
+
+    public JobDefinitionImpl withCrossTenantEndpointTenantId(String crossTenantEndpointTenantId) {
+        this.innerModel().withCrossTenantEndpointTenantId(crossTenantEndpointTenantId);
+        return this;
+    }
+
+    public JobDefinitionImpl withCrossTenantEndpointResourceId(String crossTenantEndpointResourceId) {
+        this.innerModel().withCrossTenantEndpointResourceId(crossTenantEndpointResourceId);
+        return this;
+    }
+
+    public JobDefinitionImpl withSyncMode(String syncMode) {
+        if (isInCreateMode()) {
+            this.innerModel().withSyncMode(syncMode);
+            return this;
+        } else {
+            this.updateJobDefinition.withSyncMode(syncMode);
+            return this;
+        }
+    }
+
+    public JobDefinitionImpl withMoverSyncedUntil(OffsetDateTime moverSyncedUntil) {
+        if (isInCreateMode()) {
+            this.innerModel().withMoverSyncedUntil(moverSyncedUntil);
+            return this;
+        } else {
+            this.updateJobDefinition.withMoverSyncedUntil(moverSyncedUntil);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

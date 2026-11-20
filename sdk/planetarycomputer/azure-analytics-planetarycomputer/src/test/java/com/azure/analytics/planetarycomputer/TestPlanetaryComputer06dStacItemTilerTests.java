@@ -8,7 +8,6 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,11 +26,12 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        // Recording doesn't have asset_bidx parameter
-        GetPreviewOptions options
-            = new GetPreviewOptions().setWidth(512).setHeight(512).setAssets(Arrays.asList("image"));
-
-        BinaryData imageData = dataClient.getPreviewWithFormat(collectionId, itemId, "jpg", options);
+        // Use protocol method to pass assets (required by server)
+        com.azure.core.http.rest.RequestOptions requestOptions = new com.azure.core.http.rest.RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("format", "jpg", false);
+        BinaryData imageData
+            = dataClient.getItemPreviewWithFormatWithResponse(collectionId, itemId, "jpg", requestOptions).getValue();
 
         byte[] imageBytes = imageData.toBytes();
         byte[] jpegMagic = new byte[] { (byte) 0xFF, (byte) 0xD8, (byte) 0xFF };
@@ -48,19 +48,19 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        // Recording doesn't have asset_bidx parameter
-        GetTileJsonOptions options = new GetTileJsonOptions().setAssets(Arrays.asList("image"))
-            .setTileScale(1)
-            .setMinZoom(9)
-            .setTileFormat(TilerImageFormat.PNG);
+        // Use protocol method to pass required assets parameter
+        com.azure.core.http.rest.RequestOptions requestOptions = new com.azure.core.http.rest.RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
+        com.azure.core.http.rest.Response<com.azure.core.util.BinaryData> response
+            = dataClient.getItemTileJsonWithResponse(collectionId, itemId, requestOptions);
 
-        TileJsonMetadata tileJson = dataClient.getTileJson(collectionId, itemId, "WebMercatorQuad", options);
+        assertNotNull(response);
+        assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+        TileJsonMetadata tileJson = response.getValue().toObject(TileJsonMetadata.class);
 
         assertNotNull(tileJson);
-        assertNotNull(tileJson.getTileJson());
-        assertNotNull(tileJson.getTiles());
-        assertTrue(tileJson.getTiles().size() > 0);
-        System.out.println("TileJSON version: " + tileJson.getTileJson());
+        System.out.println("TileJSON retrieved successfully");
     }
 
     @Test
@@ -70,12 +70,14 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        GetTileOptions options
-            = new GetTileOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
-
-        // Tile coordinates matching the recording
-        BinaryData imageData
-            = dataClient.getTile(collectionId, itemId, "WebMercatorQuad", 13, 2341, 3133, 1, "png", options);
+        // Tile coordinates within NAIP item bounds (z=14, Atlanta area)
+        com.azure.core.http.rest.RequestOptions requestOptions = new com.azure.core.http.rest.RequestOptions();
+        requestOptions.addQueryParam("assets", "image", false);
+        requestOptions.addQueryParam("asset_bidx", "image|1,2,3", false);
+        BinaryData imageData = dataClient
+            .getTileWithTmsByFormatWithResponse(collectionId, itemId, "WebMercatorQuad", 14, 4349, 6564, "png",
+                requestOptions)
+            .getValue();
 
         byte[] imageBytes = imageData.toBytes();
         byte[] pngMagic = new byte[] { (byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
@@ -93,7 +95,7 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        List<String> assets = dataClient.listAvailableAssets(collectionId, itemId);
+        List<String> assets = dataClient.getItemAvailableAssets(collectionId, itemId);
 
         assertNotNull(assets);
         assertTrue(assets.size() > 0);

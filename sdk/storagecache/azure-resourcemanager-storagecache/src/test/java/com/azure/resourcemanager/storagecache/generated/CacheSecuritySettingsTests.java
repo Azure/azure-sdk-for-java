@@ -17,98 +17,49 @@ public final class CacheSecuritySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheSecuritySettings model = BinaryData.fromString(
-            "{\"accessPolicies\":[{\"name\":\"wdkcglhsl\",\"accessRules\":[{\"scope\":\"network\",\"filter\":\"yggdtjixh\",\"access\":\"ro\",\"suid\":true,\"submountAccess\":true,\"rootSquash\":false,\"anonymousUID\":\"kh\",\"anonymousGID\":\"n\"}]},{\"name\":\"vfyexfw\",\"accessRules\":[{\"scope\":\"network\",\"filter\":\"i\",\"access\":\"ro\",\"suid\":true,\"submountAccess\":false,\"rootSquash\":false,\"anonymousUID\":\"ynnaam\",\"anonymousGID\":\"ctehfiqscjey\"},{\"scope\":\"host\",\"filter\":\"ezrkgqhcjrefo\",\"access\":\"no\",\"suid\":true,\"submountAccess\":false,\"rootSquash\":true,\"anonymousUID\":\"yvxyqjp\",\"anonymousGID\":\"attpngjcrcczsq\"},{\"scope\":\"host\",\"filter\":\"vmdajvnysou\",\"access\":\"rw\",\"suid\":true,\"submountAccess\":false,\"rootSquash\":false,\"anonymousUID\":\"upfh\",\"anonymousGID\":\"ltrpmopj\"},{\"scope\":\"default\",\"filter\":\"atuokthfuiu\",\"access\":\"rw\",\"suid\":true,\"submountAccess\":false,\"rootSquash\":false,\"anonymousUID\":\"xodpuozmyzydagfu\",\"anonymousGID\":\"bezy\"}]},{\"name\":\"uokktwhrdxwz\",\"accessRules\":[{\"scope\":\"network\",\"filter\":\"mbsureximo\",\"access\":\"no\",\"suid\":false,\"submountAccess\":false,\"rootSquash\":false,\"anonymousUID\":\"ymddys\",\"anonymousGID\":\"i\"},{\"scope\":\"default\",\"filter\":\"hqyudxorrqnbpoc\",\"access\":\"no\",\"suid\":false,\"submountAccess\":false,\"rootSquash\":false,\"anonymousUID\":\"dvjsllrmvvdf\",\"anonymousGID\":\"t\"}]}]}")
+            "{\"accessPolicies\":[{\"name\":\"bvyvdcsity\",\"accessRules\":[{\"scope\":\"network\",\"filter\":\"mdectehfiqscjey\",\"access\":\"rw\",\"suid\":true,\"submountAccess\":true,\"rootSquash\":true,\"anonymousUID\":\"hcjrefovgmk\",\"anonymousGID\":\"leyyvx\"},{\"scope\":\"host\",\"filter\":\"pkc\",\"access\":\"ro\",\"suid\":true,\"submountAccess\":true,\"rootSquash\":false,\"anonymousUID\":\"cczsq\",\"anonymousGID\":\"hvmdajvnysounq\"}]}]}")
             .toObject(CacheSecuritySettings.class);
-        Assertions.assertEquals("wdkcglhsl", model.accessPolicies().get(0).name());
+        Assertions.assertEquals("bvyvdcsity", model.accessPolicies().get(0).name());
         Assertions.assertEquals(NfsAccessRuleScope.NETWORK, model.accessPolicies().get(0).accessRules().get(0).scope());
-        Assertions.assertEquals("yggdtjixh", model.accessPolicies().get(0).accessRules().get(0).filter());
-        Assertions.assertEquals(NfsAccessRuleAccess.RO, model.accessPolicies().get(0).accessRules().get(0).access());
+        Assertions.assertEquals("mdectehfiqscjey", model.accessPolicies().get(0).accessRules().get(0).filter());
+        Assertions.assertEquals(NfsAccessRuleAccess.RW, model.accessPolicies().get(0).accessRules().get(0).access());
         Assertions.assertTrue(model.accessPolicies().get(0).accessRules().get(0).suid());
         Assertions.assertTrue(model.accessPolicies().get(0).accessRules().get(0).submountAccess());
-        Assertions.assertFalse(model.accessPolicies().get(0).accessRules().get(0).rootSquash());
-        Assertions.assertEquals("kh", model.accessPolicies().get(0).accessRules().get(0).anonymousUid());
-        Assertions.assertEquals("n", model.accessPolicies().get(0).accessRules().get(0).anonymousGid());
+        Assertions.assertTrue(model.accessPolicies().get(0).accessRules().get(0).rootSquash());
+        Assertions.assertEquals("hcjrefovgmk", model.accessPolicies().get(0).accessRules().get(0).anonymousUid());
+        Assertions.assertEquals("leyyvx", model.accessPolicies().get(0).accessRules().get(0).anonymousGid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CacheSecuritySettings model
-            = new CacheSecuritySettings()
-                .withAccessPolicies(
-                    Arrays
-                        .asList(
-                            new NfsAccessPolicy().withName("wdkcglhsl")
-                                .withAccessRules(
-                                    Arrays
-                                        .asList(new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK)
-                                            .withFilter("yggdtjixh")
-                                            .withAccess(NfsAccessRuleAccess.RO)
-                                            .withSuid(true)
-                                            .withSubmountAccess(true)
-                                            .withRootSquash(false)
-                                            .withAnonymousUid("kh")
-                                            .withAnonymousGid("n"))),
-                            new NfsAccessPolicy().withName("vfyexfw")
-                                .withAccessRules(Arrays.asList(
-                                    new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK)
-                                        .withFilter("i")
-                                        .withAccess(NfsAccessRuleAccess.RO)
-                                        .withSuid(true)
-                                        .withSubmountAccess(false)
-                                        .withRootSquash(false)
-                                        .withAnonymousUid("ynnaam")
-                                        .withAnonymousGid("ctehfiqscjey"),
-                                    new NfsAccessRule().withScope(NfsAccessRuleScope.HOST)
-                                        .withFilter("ezrkgqhcjrefo")
-                                        .withAccess(NfsAccessRuleAccess.NO)
-                                        .withSuid(true)
-                                        .withSubmountAccess(false)
-                                        .withRootSquash(true)
-                                        .withAnonymousUid("yvxyqjp")
-                                        .withAnonymousGid("attpngjcrcczsq"),
-                                    new NfsAccessRule().withScope(NfsAccessRuleScope.HOST)
-                                        .withFilter("vmdajvnysou")
-                                        .withAccess(NfsAccessRuleAccess.RW)
-                                        .withSuid(true)
-                                        .withSubmountAccess(false)
-                                        .withRootSquash(false)
-                                        .withAnonymousUid("upfh")
-                                        .withAnonymousGid("ltrpmopj"),
-                                    new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
-                                        .withFilter("atuokthfuiu")
-                                        .withAccess(NfsAccessRuleAccess.RW)
-                                        .withSuid(true)
-                                        .withSubmountAccess(false)
-                                        .withRootSquash(false)
-                                        .withAnonymousUid("xodpuozmyzydagfu")
-                                        .withAnonymousGid("bezy"))),
-                            new NfsAccessPolicy().withName("uokktwhrdxwz")
-                                .withAccessRules(Arrays.asList(
-                                    new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK)
-                                        .withFilter("mbsureximo")
-                                        .withAccess(NfsAccessRuleAccess.NO)
-                                        .withSuid(false)
-                                        .withSubmountAccess(false)
-                                        .withRootSquash(false)
-                                        .withAnonymousUid("ymddys")
-                                        .withAnonymousGid("i"),
-                                    new NfsAccessRule().withScope(NfsAccessRuleScope.DEFAULT)
-                                        .withFilter("hqyudxorrqnbpoc")
-                                        .withAccess(NfsAccessRuleAccess.NO)
-                                        .withSuid(false)
-                                        .withSubmountAccess(false)
-                                        .withRootSquash(false)
-                                        .withAnonymousUid("dvjsllrmvvdf")
-                                        .withAnonymousGid("t")))));
+            = new CacheSecuritySettings().withAccessPolicies(Arrays.asList(new NfsAccessPolicy().withName("bvyvdcsity")
+                .withAccessRules(Arrays.asList(
+                    new NfsAccessRule().withScope(NfsAccessRuleScope.NETWORK)
+                        .withFilter("mdectehfiqscjey")
+                        .withAccess(NfsAccessRuleAccess.RW)
+                        .withSuid(true)
+                        .withSubmountAccess(true)
+                        .withRootSquash(true)
+                        .withAnonymousUid("hcjrefovgmk")
+                        .withAnonymousGid("leyyvx"),
+                    new NfsAccessRule().withScope(NfsAccessRuleScope.HOST)
+                        .withFilter("pkc")
+                        .withAccess(NfsAccessRuleAccess.RO)
+                        .withSuid(true)
+                        .withSubmountAccess(true)
+                        .withRootSquash(false)
+                        .withAnonymousUid("cczsq")
+                        .withAnonymousGid("hvmdajvnysounq")))));
         model = BinaryData.fromObject(model).toObject(CacheSecuritySettings.class);
-        Assertions.assertEquals("wdkcglhsl", model.accessPolicies().get(0).name());
+        Assertions.assertEquals("bvyvdcsity", model.accessPolicies().get(0).name());
         Assertions.assertEquals(NfsAccessRuleScope.NETWORK, model.accessPolicies().get(0).accessRules().get(0).scope());
-        Assertions.assertEquals("yggdtjixh", model.accessPolicies().get(0).accessRules().get(0).filter());
-        Assertions.assertEquals(NfsAccessRuleAccess.RO, model.accessPolicies().get(0).accessRules().get(0).access());
+        Assertions.assertEquals("mdectehfiqscjey", model.accessPolicies().get(0).accessRules().get(0).filter());
+        Assertions.assertEquals(NfsAccessRuleAccess.RW, model.accessPolicies().get(0).accessRules().get(0).access());
         Assertions.assertTrue(model.accessPolicies().get(0).accessRules().get(0).suid());
         Assertions.assertTrue(model.accessPolicies().get(0).accessRules().get(0).submountAccess());
-        Assertions.assertFalse(model.accessPolicies().get(0).accessRules().get(0).rootSquash());
-        Assertions.assertEquals("kh", model.accessPolicies().get(0).accessRules().get(0).anonymousUid());
-        Assertions.assertEquals("n", model.accessPolicies().get(0).accessRules().get(0).anonymousGid());
+        Assertions.assertTrue(model.accessPolicies().get(0).accessRules().get(0).rootSquash());
+        Assertions.assertEquals("hcjrefovgmk", model.accessPolicies().get(0).accessRules().get(0).anonymousUid());
+        Assertions.assertEquals("leyyvx", model.accessPolicies().get(0).accessRules().get(0).anonymousGid());
     }
 }

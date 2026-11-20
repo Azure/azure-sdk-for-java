@@ -13,13 +13,13 @@ public final class SqlRoleDefinitionGetResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlRoleDefinitionGetResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"roleName\":\"kjaosrxuzv\",\"type\":\"CustomRole\",\"assignableScopes\":[\"cqiosmgbza\",\"gxq\"],\"permissions\":[{\"id\":\"tlt\",\"dataActions\":[\"rltzkatbhjmz\",\"nbsoqeqalarv\",\"agunbtgfebw\",\"nbmhyree\"],\"notDataActions\":[\"qavbpdqmj\",\"lyyzglgouwtlmjj\",\"uojqt\"]},{\"id\":\"axkjeytunlbfjk\",\"dataActions\":[\"snkq\"],\"notDataActions\":[\"y\"]},{\"id\":\"unjqh\",\"dataActions\":[\"xaulkpakdkifmjnn\",\"wtqabpxuckp\"],\"notDataActions\":[\"oweyirdhlis\",\"gwflq\",\"mpizru\"]},{\"id\":\"pqxpx\",\"dataActions\":[\"cng\",\"saasiixtmkzj\"],\"notDataActions\":[\"iirhgfgrwsd\",\"gratzvzbglbyvict\",\"tbrxkjz\"]}]},\"id\":\"gxffmshkwf\",\"name\":\"kgozxwop\",\"type\":\"bydpizqaclnapxb\"}")
+            "{\"properties\":{\"roleName\":\"sfar\",\"type\":\"BuiltInRole\",\"assignableScopes\":[\"lkjxnqpvwgf\",\"tmhqykiz\"],\"permissions\":[{\"id\":\"aoaf\",\"dataActions\":[\"qvoxmycj\",\"mr\",\"vwg\",\"wwpbmzgwesyd\"],\"notDataActions\":[\"efoh\",\"cbvopwndyqleallk\",\"mtkhlowkxxpvbr\"]},{\"id\":\"jmzsyzfh\",\"dataActions\":[\"h\",\"k\",\"yych\",\"nsjlpjrtws\"],\"notDataActions\":[\"vuicp\"]},{\"id\":\"trrmhwrb\",\"dataActions\":[\"yflubhvjglroc\"],\"notDataActions\":[\"lw\",\"hmem\",\"ooclutnp\",\"memczjkmmyk\"]},{\"id\":\"jxsglhsr\",\"dataActions\":[\"ejylmbkzu\",\"nigrfihotjewl\",\"xuzzjgnrefq\",\"hqo\"],\"notDataActions\":[\"hiqakydiwfbrk\",\"pzdqtvhcspod\",\"qaxsipietgbebjf\"]}]},\"id\":\"bmoichd\",\"name\":\"pnfpubntnbat\",\"type\":\"viqsowsaaelcattc\"}")
             .toObject(SqlRoleDefinitionGetResultsInner.class);
-        Assertions.assertEquals("kjaosrxuzv", model.roleName());
-        Assertions.assertEquals(RoleDefinitionType.CUSTOM_ROLE, model.typePropertiesType());
-        Assertions.assertEquals("cqiosmgbza", model.assignableScopes().get(0));
-        Assertions.assertEquals("tlt", model.permissions().get(0).id());
-        Assertions.assertEquals("rltzkatbhjmz", model.permissions().get(0).dataActions().get(0));
-        Assertions.assertEquals("qavbpdqmj", model.permissions().get(0).notDataActions().get(0));
+        Assertions.assertEquals("sfar", model.roleName());
+        Assertions.assertEquals(RoleDefinitionType.BUILT_IN_ROLE, model.typePropertiesType());
+        Assertions.assertEquals("lkjxnqpvwgf", model.assignableScopes().get(0));
+        Assertions.assertEquals("aoaf", model.permissions().get(0).id());
+        Assertions.assertEquals("qvoxmycj", model.permissions().get(0).dataActions().get(0));
+        Assertions.assertEquals("efoh", model.permissions().get(0).notDataActions().get(0));
     }
 }

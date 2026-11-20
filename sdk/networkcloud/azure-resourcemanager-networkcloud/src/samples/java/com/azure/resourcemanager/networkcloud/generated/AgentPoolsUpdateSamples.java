@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class AgentPoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AgentPools_Patch.json
+     * x-ms-original-file: 2026-07-01/AgentPools_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster agent pool.

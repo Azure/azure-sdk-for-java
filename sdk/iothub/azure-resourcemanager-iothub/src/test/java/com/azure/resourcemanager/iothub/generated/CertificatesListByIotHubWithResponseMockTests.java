@@ -21,7 +21,7 @@ public final class CertificatesListByIotHubWithResponseMockTests {
     @Test
     public void testListByIotHubWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"subject\":\"zpnfqntcypsxj\",\"expiry\":\"Thu, 01 Apr 2021 01:04:39 GMT\",\"thumbprint\":\"mwks\",\"isVerified\":true,\"created\":\"Mon, 06 Sep 2021 21:17:56 GMT\",\"updated\":\"Thu, 08 Jul 2021 14:21:01 GMT\",\"certificate\":\"vydfceacvlhvygdy\",\"policyResourceId\":\"umrtwnawjsl\"},\"etag\":\"wkojgcyztsfmzn\",\"id\":\"eqphchqnrnr\",\"name\":\"x\",\"type\":\"huwrykqgaifm\"}]}";
+            = "{\"value\":[{\"properties\":{\"subject\":\"zpnfqntcypsxj\",\"expiry\":\"Thu, 01 Apr 2021 01:04:39 GMT\",\"thumbprint\":\"mwks\",\"isVerified\":true,\"created\":\"Mon, 06 Sep 2021 21:17:56 GMT\",\"updated\":\"Thu, 08 Jul 2021 14:21:01 GMT\",\"certificate\":\"vydfceacvlhvygdy\",\"certificateAuthorityResourceId\":\"umrtwnawjsl\"},\"etag\":\"wkojgcyztsfmzn\",\"id\":\"eqphchqnrnr\",\"name\":\"x\",\"type\":\"huwrykqgaifm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,6 +36,6 @@ public final class CertificatesListByIotHubWithResponseMockTests {
 
         Assertions.assertTrue(response.value().get(0).properties().isVerified());
         Assertions.assertEquals("vydfceacvlhvygdy", response.value().get(0).properties().certificate());
-        Assertions.assertEquals("umrtwnawjsl", response.value().get(0).properties().policyResourceId());
+        Assertions.assertEquals("umrtwnawjsl", response.value().get(0).properties().certificateAuthorityResourceId());
     }
 }

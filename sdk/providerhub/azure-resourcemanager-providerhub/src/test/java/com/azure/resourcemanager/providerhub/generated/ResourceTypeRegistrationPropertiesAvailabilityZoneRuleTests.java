@@ -13,17 +13,17 @@ public final class ResourceTypeRegistrationPropertiesAvailabilityZoneRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesAvailabilityZoneRule model
-            = BinaryData.fromString("{\"availabilityZonePolicy\":\"NotSpecified\"}")
+            = BinaryData.fromString("{\"availabilityZonePolicy\":\"MultiZoned\"}")
                 .toObject(ResourceTypeRegistrationPropertiesAvailabilityZoneRule.class);
-        Assertions.assertEquals(AvailabilityZonePolicy.NOT_SPECIFIED, model.availabilityZonePolicy());
+        Assertions.assertEquals(AvailabilityZonePolicy.MULTI_ZONED, model.availabilityZonePolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesAvailabilityZoneRule model
             = new ResourceTypeRegistrationPropertiesAvailabilityZoneRule()
-                .withAvailabilityZonePolicy(AvailabilityZonePolicy.NOT_SPECIFIED);
+                .withAvailabilityZonePolicy(AvailabilityZonePolicy.MULTI_ZONED);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesAvailabilityZoneRule.class);
-        Assertions.assertEquals(AvailabilityZonePolicy.NOT_SPECIFIED, model.availabilityZonePolicy());
+        Assertions.assertEquals(AvailabilityZonePolicy.MULTI_ZONED, model.availabilityZonePolicy());
     }
 }

@@ -13,18 +13,18 @@ public final class SharedLimitCapInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SharedLimitCapInner model = BinaryData.fromString(
-            "{\"properties\":{\"defaultMemberCap\":931696713,\"isBoundedCap\":false,\"provisioningState\":\"Canceled\"},\"id\":\"prwzwbnguitnwui\",\"name\":\"gazxuf\",\"type\":\"zuckyfi\"}")
+            "{\"properties\":{\"defaultMemberCap\":1252731195,\"isBoundedCap\":true,\"provisioningState\":\"Failed\"},\"id\":\"z\",\"name\":\"eiachboosflnr\",\"type\":\"sfqpteehz\"}")
             .toObject(SharedLimitCapInner.class);
-        Assertions.assertEquals(931696713, model.properties().defaultMemberCap());
-        Assertions.assertFalse(model.properties().isBoundedCap());
+        Assertions.assertEquals(1252731195, model.properties().defaultMemberCap());
+        Assertions.assertTrue(model.properties().isBoundedCap());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedLimitCapInner model = new SharedLimitCapInner()
-            .withProperties(new SharedLimitCapProperties().withDefaultMemberCap(931696713).withIsBoundedCap(false));
+            .withProperties(new SharedLimitCapProperties().withDefaultMemberCap(1252731195).withIsBoundedCap(true));
         model = BinaryData.fromObject(model).toObject(SharedLimitCapInner.class);
-        Assertions.assertEquals(931696713, model.properties().defaultMemberCap());
-        Assertions.assertFalse(model.properties().isBoundedCap());
+        Assertions.assertEquals(1252731195, model.properties().defaultMemberCap());
+        Assertions.assertTrue(model.properties().isBoundedCap());
     }
 }

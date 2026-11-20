@@ -37,10 +37,39 @@ public final class LoggingUtil {
      */
     public static void logTokenError(ClientLogger logger, IdentityClientOptions options, TokenRequestContext context,
         Throwable error) {
-        logger.log(options.getIdentityLogOptionsImpl().getRuntimeExceptionLogLevel(),
+        if (IdentityUtil.isShutdownSignal(error)) {
+            logger.log(tokenErrorLogLevel(options, error),
+                () -> String.format("Azure Identity => getToken() call for scopes [%s] was %s: %s",
+                    CoreUtils.stringJoin(", ", context.getScopes()),
+                    IdentityUtil.isInterruption(error) ? "interrupted" : "cancelled by JVM shutdown",
+                    error.getMessage()),
+                error);
+            return;
+        }
+        logger.log(tokenErrorLogLevel(options, error),
             () -> String.format("Azure Identity => ERROR in getToken() call for scopes [%s]: %s",
                 CoreUtils.stringJoin(", ", context.getScopes()), error == null ? "" : error.getMessage()),
             error);
+    }
+
+    /**
+     * Resolve the level at which a getToken() failure is logged.
+     * <p>
+     * An interruption of the calling thread is a cooperative cancellation by the caller (for example a Reactor
+     * scheduler disposing the worker that made the call), and a token request that runs into the JVM shutting down
+     * is a shutdown signal too. Neither is an authentication failure. Reporting them at the configured error level
+     * floods logs during normal shutdown and scale-down, so they are logged at verbose level. Every other failure is
+     * logged at the level configured through the identity log options (error by default).
+     *
+     * @param options the identity client options
+     * @param error the error thrown during getToken()
+     * @return the log level to use for the error
+     */
+    static LogLevel tokenErrorLogLevel(IdentityClientOptions options, Throwable error) {
+        if (IdentityUtil.isShutdownSignal(error)) {
+            return LogLevel.VERBOSE;
+        }
+        return options.getIdentityLogOptionsImpl().getRuntimeExceptionLogLevel();
     }
 
     /**

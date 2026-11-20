@@ -17,8 +17,8 @@ public final class EntityGetByUniqueAttributesTests extends DataMapClientTestBas
     @Disabled
     public void testEntityGetByUniqueAttributesTests() {
         // method invocation
-        AtlasEntityWithExtInfo response = entityClient.getByUniqueAttribute("azure_storage_account", true, null,
-            "https://exampleaccount.core.windows.net");
+        AtlasEntityWithExtInfo response = entityClient.getByUniqueAttribute("azure_storage_account", true,
+            (Boolean) null, "https://exampleaccount.core.windows.net");
 
         // response assertion
         Assertions.assertNotNull(response);

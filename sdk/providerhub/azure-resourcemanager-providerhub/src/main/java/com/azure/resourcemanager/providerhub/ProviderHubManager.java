@@ -28,7 +28,7 @@ import com.azure.resourcemanager.providerhub.fluent.ProviderHubManagementClient;
 import com.azure.resourcemanager.providerhub.implementation.AuthorizedApplicationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.CustomRolloutsImpl;
 import com.azure.resourcemanager.providerhub.implementation.DefaultRolloutsImpl;
-import com.azure.resourcemanager.providerhub.implementation.NewRegionFrontloadReleasesImpl;
+import com.azure.resourcemanager.providerhub.implementation.ManifestsImpl;
 import com.azure.resourcemanager.providerhub.implementation.NotificationRegistrationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.OperationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.ProviderHubManagementClientBuilder;
@@ -41,7 +41,7 @@ import com.azure.resourcemanager.providerhub.implementation.SkusImpl;
 import com.azure.resourcemanager.providerhub.models.AuthorizedApplications;
 import com.azure.resourcemanager.providerhub.models.CustomRollouts;
 import com.azure.resourcemanager.providerhub.models.DefaultRollouts;
-import com.azure.resourcemanager.providerhub.models.NewRegionFrontloadReleases;
+import com.azure.resourcemanager.providerhub.models.Manifests;
 import com.azure.resourcemanager.providerhub.models.NotificationRegistrations;
 import com.azure.resourcemanager.providerhub.models.Operations;
 import com.azure.resourcemanager.providerhub.models.ProviderMonitorSettings;
@@ -69,8 +69,6 @@ public final class ProviderHubManager {
 
     private CustomRollouts customRollouts;
 
-    private NewRegionFrontloadReleases newRegionFrontloadReleases;
-
     private ProviderRegistrations providerRegistrations;
 
     private DefaultRollouts defaultRollouts;
@@ -84,6 +82,8 @@ public final class ProviderHubManager {
     private AuthorizedApplications authorizedApplications;
 
     private ProviderMonitorSettings providerMonitorSettings;
+
+    private Manifests manifests;
 
     private ResourceActions resourceActions;
 
@@ -339,19 +339,6 @@ public final class ProviderHubManager {
     }
 
     /**
-     * Gets the resource collection API of NewRegionFrontloadReleases.
-     * 
-     * @return Resource collection API of NewRegionFrontloadReleases.
-     */
-    public NewRegionFrontloadReleases newRegionFrontloadReleases() {
-        if (this.newRegionFrontloadReleases == null) {
-            this.newRegionFrontloadReleases
-                = new NewRegionFrontloadReleasesImpl(clientObject.getNewRegionFrontloadReleases(), this);
-        }
-        return newRegionFrontloadReleases;
-    }
-
-    /**
      * Gets the resource collection API of ProviderRegistrations.
      * 
      * @return Resource collection API of ProviderRegistrations.
@@ -437,6 +424,18 @@ public final class ProviderHubManager {
                 = new ProviderMonitorSettingsImpl(clientObject.getProviderMonitorSettings(), this);
         }
         return providerMonitorSettings;
+    }
+
+    /**
+     * Gets the resource collection API of Manifests. It manages ManifestInfo.
+     * 
+     * @return Resource collection API of Manifests.
+     */
+    public Manifests manifests() {
+        if (this.manifests == null) {
+            this.manifests = new ManifestsImpl(clientObject.getManifests(), this);
+        }
+        return manifests;
     }
 
     /**

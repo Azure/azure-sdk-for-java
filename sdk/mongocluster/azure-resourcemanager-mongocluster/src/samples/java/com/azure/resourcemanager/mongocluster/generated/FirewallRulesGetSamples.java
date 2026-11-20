@@ -9,15 +9,15 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/MongoClusters_FirewallRuleGet.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_FirewallRuleGet.json
      */
     /**
-     * Sample code: Gets a firewall rule on a Mongo Cluster resource.
+     * Sample code: Gets a firewall rule on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void
-        getsAFirewallRuleOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+    public static void getsAFirewallRuleOnADocumentDBClusterResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.firewallRules()
             .getWithResponse("TestGroup", "myMongoCluster", "rule1", com.azure.core.util.Context.NONE);
     }
