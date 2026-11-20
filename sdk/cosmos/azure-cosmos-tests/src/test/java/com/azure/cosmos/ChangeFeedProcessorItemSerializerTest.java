@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
@@ -17,6 +18,43 @@ import java.time.Instant;
 public class ChangeFeedProcessorItemSerializerTest {
 
     private final ObjectMapper simpleObjectMapper = Utils.getSimpleObjectMapper();
+
+    @DataProvider(name = "previousImages")
+    public Object[][] previousImages() {
+        return new Object[][] {
+            { "create", false }, { "replace", false }, { "delete", false },
+            { "replace", true }, { "delete", true }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "previousImages")
+    public void previousImageEnvelopeRoundTrips(String operationType, boolean hasPrevious) throws JsonProcessingException {
+        String previous = "{\"id\":\"item\",\"pk\":\"partition\",\"version\":1,\"nested\":{\"value\":true},"
+            + "\"array\":[1,2],\"_etag\":\"before\"}";
+        String current = "delete".equals(operationType) ? "{}" : "{\"id\":\"item\",\"pk\":\"partition\",\"version\":2}";
+        String json = "{\"current\":" + current
+            + (hasPrevious ? ",\"previous\":" + previous : "")
+            + ",\"metadata\":{\"lsn\":178,\"crts\":1689561600,\"operationType\":\"" + operationType + "\""
+            + ("create".equals(operationType) ? "" : ",\"previousImageLSN\":176") + "}}";
+        ChangeFeedProcessorItem item = simpleObjectMapper.readValue(json, ChangeFeedProcessorItem.class);
+
+        Assertions.assertThat(item.getCurrent()).isEqualTo(simpleObjectMapper.readTree(current));
+        if (hasPrevious) {
+            Assertions.assertThat(item.getPrevious()).isEqualTo(simpleObjectMapper.readTree(previous));
+        } else {
+            Assertions.assertThat(item.getPrevious()).isNull();
+        }
+        Assertions.assertThat(item.getChangeFeedMetaData().getOperationType().toString())
+            .isEqualToIgnoringCase(operationType);
+        Assertions.assertThat(item.getChangeFeedMetaData().getLogSequenceNumber()).isEqualTo(178);
+        Assertions.assertThat(item.getChangeFeedMetaData().getPreviousLogSequenceNumber())
+            .isEqualTo("create".equals(operationType) ? 0 : 176);
+        Assertions.assertThat(item.getChangeFeedMetaData().getConflictResolutionTimestamp())
+            .isEqualTo(Instant.ofEpochSecond(1689561600));
+        Assertions.assertThat(item.toJsonNode()).isEqualTo(simpleObjectMapper.readTree(json));
+        Assertions.assertThat(simpleObjectMapper.readValue(item.toString(), ChangeFeedProcessorItem.class).toJsonNode())
+            .isEqualTo(item.toJsonNode());
+    }
 
     @Test(groups = { "unit" })
     public void testChangeFeedMetaDataDeSerializer() throws JsonProcessingException {
