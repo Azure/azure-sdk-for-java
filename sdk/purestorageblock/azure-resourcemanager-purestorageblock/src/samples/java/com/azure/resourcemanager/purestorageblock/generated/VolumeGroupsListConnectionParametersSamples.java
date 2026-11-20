@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class VolumeGroupsListConnectionParametersSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_ListConnectionParameters.

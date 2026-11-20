@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class AvsVmsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/AvsVms_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/AvsVms_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AvsVms_Delete.

@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/VolumeGroups_Create_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/VolumeGroups_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Create.

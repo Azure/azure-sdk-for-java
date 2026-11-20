@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class StoragePoolsListPlatformConsoleActivationCodeSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/StoragePools_ListPlatformConsoleActivationCode_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/StoragePools_ListPlatformConsoleActivationCode_MaximumSet_Gen.json
      */
     /**
      * Sample code: StoragePools_ListPlatformConsoleActivationCode.

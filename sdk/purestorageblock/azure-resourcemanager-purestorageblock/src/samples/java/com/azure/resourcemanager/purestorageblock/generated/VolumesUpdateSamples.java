@@ -12,7 +12,7 @@ import com.azure.resourcemanager.purestorageblock.models.VolumeUpdateProperties;
  */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Volumes_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Update.

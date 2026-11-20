@@ -9,7 +9,7 @@ package com.azure.resourcemanager.purestorageblock.generated;
  */
 public final class ReservationsLatestLinkedSaaSSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-01/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
      */
     /**
      * Sample code: Reservations_LatestLinkedSaaS.
