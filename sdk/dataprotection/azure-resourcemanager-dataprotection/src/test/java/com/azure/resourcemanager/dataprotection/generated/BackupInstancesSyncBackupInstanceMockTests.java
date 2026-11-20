@@ -30,7 +30,7 @@ public final class BackupInstancesSyncBackupInstanceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.backupInstances()
-            .syncBackupInstance("ktp", "ymerteeammxq", "ekkkzd",
+            .syncBackupInstance("nmgixh", "mavmq", "oudorhcgyyp",
                 new SyncBackupInstanceRequest().withSyncType(SyncType.FORCE_RESYNC), com.azure.core.util.Context.NONE);
 
     }
