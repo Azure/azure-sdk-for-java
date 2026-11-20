@@ -53,6 +53,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private boolean completeAfterAllCurrentChangesRetrieved;
     private Long endLSN;
     private ReadConsistencyStrategy readConsistencyStrategy;
+    private String query;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         if (toBeCloned.continuationState != null) {
@@ -80,6 +81,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = toBeCloned.endLSN;
+        this.query = toBeCloned.query;
     }
 
     /**
@@ -132,6 +134,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.completeAfterAllCurrentChangesRetrieved = source.completeAfterAllCurrentChangesRetrieved;
         this.endLSN = source.endLSN;
         this.readConsistencyStrategy = source.readConsistencyStrategy;
+        this.query = source.query;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -180,6 +183,14 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
 
     public ChangeFeedState getContinuation() {
         return this.continuationState;
+    }
+
+    public String getQuery() {
+        return this.query;
+    }
+
+    public void setQuery(String query) {
+        this.query = Strings.isNullOrEmpty(query) ? null : query;
     }
 
     public FeedRange getFeedRange() {

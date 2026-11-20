@@ -129,7 +129,7 @@ class ChangeFeedQueryImpl<T> {
         );
     }
 
-    private RxDocumentServiceRequest createDocumentServiceRequest() {
+    RxDocumentServiceRequest createDocumentServiceRequest() {
         Map<String, String> headers = new HashMap<>();
 
         Map<String, String> customOptions =
@@ -175,12 +175,25 @@ class ChangeFeedQueryImpl<T> {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
         }
 
+        String query = this.options.getQuery();
+        boolean isFiltered = query != null;
+        if (isFiltered) {
+            headers.put(HttpConstants.HttpHeaders.IS_QUERY, "true");
+            headers.put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.QUERY_JSON);
+        }
+
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(clientContext,
-            OperationType.ReadFeed,
+            isFiltered ? OperationType.Query : OperationType.ReadFeed,
             resourceType,
             documentsLink,
             headers,
             options);
+
+        if (isFiltered) {
+            InternalObjectNode payload = new InternalObjectNode();
+            payload.set("query", query);
+            request.setContentBytes(Utils.getUTF8Bytes(payload.toJson()));
+        }
 
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
@@ -191,7 +204,7 @@ class ChangeFeedQueryImpl<T> {
         return request;
     }
 
-    private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
+    Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
             return handlePerPartitionFailoverPrerequisites(request)
                 .flatMap(client::readFeed)
@@ -246,7 +259,8 @@ class ChangeFeedQueryImpl<T> {
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)
                 || globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
             return Mono.just(request)
-                .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
+                .flatMap(req -> client.populateHeadersAsync(req,
+                    req.getOperationType() == OperationType.Query ? RequestVerb.POST : RequestVerb.GET))
                 .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
                     .flatMap(documentCollectionValueHolder -> {
 

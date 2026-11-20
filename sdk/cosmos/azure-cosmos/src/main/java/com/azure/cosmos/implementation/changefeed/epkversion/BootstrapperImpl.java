@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
+import com.azure.cosmos.implementation.changefeed.common.LeaseStoreInitializationLocks;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
@@ -32,11 +34,11 @@ class BootstrapperImpl implements Bootstrapper {
     private final LeaseStoreManager pkRangeVersionLeaseStoreManager;
     private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final ChangeFeedMode changeFeedModeToStart;
-    private final Duration lockTime;
     private final Duration sleepTime;
 
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
+    private final LeaseStoreInitializationLocks initializationLocks;
 
     public BootstrapperImpl(
         PartitionSynchronizer synchronizer,
@@ -64,8 +66,8 @@ class BootstrapperImpl implements Bootstrapper {
         this.pkRangeVersionLeaseStoreManager = pkRangeVersionLeaseStoreManager;
         this.changeFeedProcessorOptions = changeFeedProcessorOptions;
         this.changeFeedModeToStart = changeFeedModeToStart;
-        this.lockTime = lockTime;
         this.sleepTime = sleepTime;
+        this.initializationLocks = new LeaseStoreInitializationLocks(leaseStore, pkRangeVersionLeaseStoreManager, lockTime);
 
         this.isInitialized = false;
     }
@@ -80,6 +82,8 @@ class BootstrapperImpl implements Bootstrapper {
 
         return Mono.just(this)
             .flatMap(value -> this.leaseStore.isInitialized())
+            .flatMap(initialized -> this.pkRangeVersionLeaseStoreManager.isInitialized().thenReturn(initialized))
+            .flatMap(initialized -> this.pkRangeVersionLeaseStoreManager.getAllLeases().then().thenReturn(initialized))
             .flatMap(initialized -> {
                 this.isInitialized = initialized;
                 Mono<Void> previousOperation = Mono.empty();
@@ -93,7 +97,7 @@ class BootstrapperImpl implements Bootstrapper {
 
                 logger.info("Acquire initialization lock");
                 return previousOperation.then(
-                    this.leaseStore.acquireInitializationLock(this.lockTime)
+                    this.initializationLocks.acquire()
                     .flatMap(lockAcquired -> {
                         this.isLockAcquired = lockAcquired;
 
@@ -101,19 +105,32 @@ class BootstrapperImpl implements Bootstrapper {
                             logger.info("Another instance is initializing the store");
                             return Mono.just(isLockAcquired).delayElement(this.sleepTime, CosmosSchedulers.COSMOS_PARALLEL);
                         } else {
-                            return this.synchronizer.createMissingLeases()
-                                .then(!isInitialized
-                                    ? this.leaseStore.markInitialized().flatMap((initSucceeded) -> Mono.just(lockAcquired))
-                                    : Mono.just(lockAcquired));
+                            return this.leaseStore.isInitialized()
+                                .flatMap(currentlyInitialized -> {
+                                    this.isInitialized = currentlyInitialized;
+                                    return this.pkRangeVersionLeaseStoreManager.isInitialized();
+                                })
+                                .then(Mono.defer(() -> this.pkRangeVersionLeaseStoreManager.getAllLeases().then()))
+                                .then(Mono.defer(() -> this.isInitialized
+                                    ? this.validateLeaseCFModeInteroperabilityForEpkRangeBasedLease() : Mono.empty()))
+                                .then(Mono.defer(() -> this.synchronizer.createMissingLeases()))
+                                .then(Mono.defer(() -> !this.isInitialized
+                                    ? this.leaseStore.markInitialized().thenReturn(lockAcquired)
+                                    : Mono.just(lockAcquired)));
                         }
                     })
                     .onErrorResume(throwable -> {
+                        if (throwable instanceof ChangeFeedQueryFilter.QueryFilterMismatchException
+                            || throwable instanceof LeaseStoreInitializationLocks.ConfigurationMismatchException) {
+                            return this.initializationLocks.release()
+                                .then(Mono.error(throwable));
+                        }
                         logger.warn("Unexpected exception caught while initializing the lock", throwable);
                         return Mono.just(this.isLockAcquired);
                     })
                     .flatMap(lockAcquired -> {
                         if (this.isLockAcquired) {
-                            return this.leaseStore.releaseInitializationLock();
+                            return this.initializationLocks.release();
                         }
                         return Mono.just(lockAcquired);
                     })
@@ -135,7 +152,7 @@ class BootstrapperImpl implements Bootstrapper {
                             "ChangeFeedProcessor#handleChanges was also started for" +
                             "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
 
-                        return Mono.error(new IllegalStateException(errorMessage));
+                        return Mono.error(new LeaseStoreInitializationLocks.ConfigurationMismatchException(errorMessage));
                     }
 
                     return Mono.empty();
@@ -159,7 +176,7 @@ class BootstrapperImpl implements Bootstrapper {
                                     "ChangeFeedProcessor#handleLatestVersionChanges were also started for " +
                                     "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
 
-                                return Mono.error(new IllegalStateException(errorMessage));
+                                return Mono.error(new LeaseStoreInitializationLocks.ConfigurationMismatchException(errorMessage));
                             }
                         }
                     }

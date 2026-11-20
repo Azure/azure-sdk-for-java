@@ -28,6 +28,7 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
     private final CosmosAsyncContainer collectionSelfLink;
     private final String collectionResourceId;
     private final ChangeFeedMode changeFeedMode;
+    private final String query;
     private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     public PartitionProcessorFactoryImpl(
@@ -38,6 +39,20 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
             String collectionResourceId,
             ChangeFeedMode changeFeedMode,
             FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
+        this(documentClient, changeFeedProcessorOptions, leaseCheckpointer, collectionSelfLink,
+            collectionResourceId, changeFeedMode, feedRangeThroughputControlConfigManager,
+            changeFeedProcessorOptions.getQuery());
+    }
+
+    PartitionProcessorFactoryImpl(
+            ChangeFeedContextClient documentClient,
+            ChangeFeedProcessorOptions changeFeedProcessorOptions,
+            LeaseCheckpointer leaseCheckpointer,
+            CosmosAsyncContainer collectionSelfLink,
+            String collectionResourceId,
+            ChangeFeedMode changeFeedMode,
+            FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager,
+            String query) {
 
         checkNotNull(documentClient, "Argument 'documentClient' can not be null");
         checkNotNull(changeFeedProcessorOptions, "Argument 'changeFeedProcessorOptions' can not be null");
@@ -51,6 +66,7 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
         this.collectionSelfLink = collectionSelfLink;
         this.collectionResourceId = collectionResourceId;
         this.changeFeedMode = changeFeedMode;
+        this.query = query;
         this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
     }
 
@@ -76,7 +92,8 @@ class PartitionProcessorFactoryImpl<T> implements PartitionProcessorFactory<T> {
 
         ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)
             .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
-            .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
+            .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount())
+            .withQuery(this.query);
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
 

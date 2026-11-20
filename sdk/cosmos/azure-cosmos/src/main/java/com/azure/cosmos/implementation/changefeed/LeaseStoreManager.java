@@ -31,6 +31,8 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
 
         LeaseStoreManagerBuilderDefinition hostName(String hostName);
 
+        LeaseStoreManagerBuilderDefinition query(String query);
+
         LeaseStoreManager build();
     }
 

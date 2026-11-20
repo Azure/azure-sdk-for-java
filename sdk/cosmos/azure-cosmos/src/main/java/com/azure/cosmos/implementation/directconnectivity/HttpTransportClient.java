@@ -299,6 +299,9 @@ public class HttpTransportClient extends TransportClient {
     }
 
     private String getMatch(RxDocumentServiceRequest request, ResourceOperation resourceOperation) {
+        if (request.isChangeFeedRequest() && resourceOperation.operationType == OperationType.Query) {
+            return request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH);
+        }
         switch (resourceOperation.operationType) {
             case Delete:
             case ExecuteJavaScript:

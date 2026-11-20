@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedQueryFilter;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.epkversion.feedRangeGoneHandler.FeedRangeGoneHandler;
@@ -75,6 +76,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
                 .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
                 .onErrorResume(throwable -> {
+                    if (throwable instanceof ChangeFeedQueryFilter.QueryFilterMismatchException) {
+                        return Mono.error(throwable);
+                    }
                     logger.error("Create lease failed", throwable);
                     return Mono.empty();
                 });

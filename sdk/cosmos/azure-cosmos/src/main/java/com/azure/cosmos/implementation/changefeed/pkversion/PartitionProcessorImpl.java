@@ -81,6 +81,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
         this.options.setMaxItemCount(settings.getMaxItemCount());
+        this.options.setQuery(settings.getQuery());
         // For pk version, merge is not support, exclude it from the capabilities header
         changeFeedOptionsAccessor()
             .setHeader(
@@ -167,6 +168,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             this.options =
                                 CosmosChangeFeedRequestOptions
                                     .createForProcessingFromContinuation(continuationToken);
+                            this.options.setQuery(this.settings.getQuery());
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
@@ -189,6 +191,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             this.options =
                                 CosmosChangeFeedRequestOptions
                                     .createForProcessingFromContinuation(continuationToken);
+                            this.options.setQuery(this.settings.getQuery());
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });

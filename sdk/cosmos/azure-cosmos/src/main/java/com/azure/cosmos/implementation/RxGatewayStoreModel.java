@@ -336,6 +336,12 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
+        if (request.isChangeFeedRequest()) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.IS_QUERY, "true");
+            request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.QUERY_JSON);
+            return this.performRequest(request);
+        }
+
         if (request.getOperationType() != OperationType.QueryPlan) {
             request.getHeaders().put(HttpConstants.HttpHeaders.IS_QUERY, "true");
         }

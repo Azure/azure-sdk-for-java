@@ -34,6 +34,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.channel.ConnectTimeoutException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -61,6 +62,34 @@ public class HttpTransportClientTest {
 
     private final long lsn = 5;
     private final String partitionKeyRangeId = "3";
+
+    @Test(groups = "unit")
+    public void filteredChangeFeedUsesPostAndRetainsPhysicalContinuation() {
+        HttpResponse response = new HttpClientMockWrapper.HttpClientBehaviourBuilder()
+            .withContent("").withStatus(200).withHeaders(new HttpHeaders()).asHttpResponse();
+        HttpClientMockWrapper http = new HttpClientMockWrapper(response);
+        ConnectionPolicy policy = ConnectionPolicy.getDefaultPolicy();
+        HttpTransportClient transport = getHttpTransportClientUnderTest(policy, new UserAgentContainer(), http.getClient());
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Query, "dbs/db/colls/col", ResourceType.Document);
+        request.setContentBytes("{\"query\":\"SELECT * FROM c WHERE c.age > 5\"}".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        request.setResponseTimeout(policy.getHttpNetworkRequestTimeout());
+        request.getHeaders().put(HttpConstants.HttpHeaders.IS_QUERY, "true");
+        request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, "application/query+json");
+        request.getHeaders().put(HttpConstants.HttpHeaders.A_IM, HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+        request.getHeaders().put(HttpConstants.HttpHeaders.IF_NONE_MATCH, "\"42\"");
+        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, "7");
+
+        transport.invokeResourceOperationAsync(Uri.create(physicalAddress), request).block();
+        HttpRequest captured = http.getCapturedInvocation().get(0);
+        assertThat(captured.httpMethod()).isEqualTo(HttpMethod.POST);
+        assertThat(captured.headers().value("Match")).isEqualTo("\"42\"");
+        assertThat(captured.headers().value(HttpConstants.HttpHeaders.A_IM))
+            .isEqualTo(HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+        assertThat(captured.headers().value(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)).isEqualTo("7");
+        assertThat(captured.headers().value(HttpConstants.HttpHeaders.CONTENT_TYPE)).isEqualTo("application/query+json");
+        assertThat(captured.headers().value(HttpConstants.HttpHeaders.IS_QUERY)).isEqualTo("true");
+    }
 
     @Test(groups = "unit")
     public void getResourceFeedUri_Document() throws Exception {
