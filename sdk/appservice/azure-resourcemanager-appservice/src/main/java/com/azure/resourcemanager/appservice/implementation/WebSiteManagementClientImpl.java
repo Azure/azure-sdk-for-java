@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.appservice.fluent.AiGatewaysClient;
 import com.azure.resourcemanager.appservice.fluent.AppServiceEnvironmentsClient;
 import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
@@ -16,11 +17,18 @@ import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.GetUsagesInLocationsClient;
 import com.azure.resourcemanager.appservice.fluent.GlobalsClient;
 import com.azure.resourcemanager.appservice.fluent.KubeEnvironmentsClient;
+import com.azure.resourcemanager.appservice.fluent.LastKnownGoodResourcesClient;
+import com.azure.resourcemanager.appservice.fluent.ManagedTrafficConfigResourcesClient;
 import com.azure.resourcemanager.appservice.fluent.ProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.RecommendationsClient;
 import com.azure.resourcemanager.appservice.fluent.ResourceHealthMetadatasClient;
 import com.azure.resourcemanager.appservice.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.appservice.fluent.ServerFarmSiloResourcesClient;
 import com.azure.resourcemanager.appservice.fluent.SiteCertificatesClient;
+import com.azure.resourcemanager.appservice.fluent.SiteSiloResourcesClient;
+import com.azure.resourcemanager.appservice.fluent.SiteSiloVirtualNetworkConnectionsClient;
+import com.azure.resourcemanager.appservice.fluent.SitesClient;
+import com.azure.resourcemanager.appservice.fluent.StaticSitesAsyncOperationsClient;
 import com.azure.resourcemanager.appservice.fluent.StaticSitesClient;
 import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
@@ -266,6 +274,48 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The SitesClient object to access its operations.
+     */
+    private final SitesClient sites;
+
+    /**
+     * Gets the SitesClient object to access its operations.
+     * 
+     * @return the SitesClient object.
+     */
+    public SitesClient getSites() {
+        return this.sites;
+    }
+
+    /**
+     * The StaticSitesAsyncOperationsClient object to access its operations.
+     */
+    private final StaticSitesAsyncOperationsClient staticSitesAsyncOperations;
+
+    /**
+     * Gets the StaticSitesAsyncOperationsClient object to access its operations.
+     * 
+     * @return the StaticSitesAsyncOperationsClient object.
+     */
+    public StaticSitesAsyncOperationsClient getStaticSitesAsyncOperations() {
+        return this.staticSitesAsyncOperations;
+    }
+
+    /**
+     * The AiGatewaysClient object to access its operations.
+     */
+    private final AiGatewaysClient aiGateways;
+
+    /**
+     * Gets the AiGatewaysClient object to access its operations.
+     * 
+     * @return the AiGatewaysClient object.
+     */
+    public AiGatewaysClient getAiGateways() {
+        return this.aiGateways;
+    }
+
+    /**
      * The WorkflowRunsClient object to access its operations.
      */
     private final WorkflowRunsClient workflowRuns;
@@ -347,6 +397,76 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      */
     public WorkflowVersionsClient getWorkflowVersions() {
         return this.workflowVersions;
+    }
+
+    /**
+     * The SiteSiloResourcesClient object to access its operations.
+     */
+    private final SiteSiloResourcesClient siteSiloResources;
+
+    /**
+     * Gets the SiteSiloResourcesClient object to access its operations.
+     * 
+     * @return the SiteSiloResourcesClient object.
+     */
+    public SiteSiloResourcesClient getSiteSiloResources() {
+        return this.siteSiloResources;
+    }
+
+    /**
+     * The SiteSiloVirtualNetworkConnectionsClient object to access its operations.
+     */
+    private final SiteSiloVirtualNetworkConnectionsClient siteSiloVirtualNetworkConnections;
+
+    /**
+     * Gets the SiteSiloVirtualNetworkConnectionsClient object to access its operations.
+     * 
+     * @return the SiteSiloVirtualNetworkConnectionsClient object.
+     */
+    public SiteSiloVirtualNetworkConnectionsClient getSiteSiloVirtualNetworkConnections() {
+        return this.siteSiloVirtualNetworkConnections;
+    }
+
+    /**
+     * The ServerFarmSiloResourcesClient object to access its operations.
+     */
+    private final ServerFarmSiloResourcesClient serverFarmSiloResources;
+
+    /**
+     * Gets the ServerFarmSiloResourcesClient object to access its operations.
+     * 
+     * @return the ServerFarmSiloResourcesClient object.
+     */
+    public ServerFarmSiloResourcesClient getServerFarmSiloResources() {
+        return this.serverFarmSiloResources;
+    }
+
+    /**
+     * The ManagedTrafficConfigResourcesClient object to access its operations.
+     */
+    private final ManagedTrafficConfigResourcesClient managedTrafficConfigResources;
+
+    /**
+     * Gets the ManagedTrafficConfigResourcesClient object to access its operations.
+     * 
+     * @return the ManagedTrafficConfigResourcesClient object.
+     */
+    public ManagedTrafficConfigResourcesClient getManagedTrafficConfigResources() {
+        return this.managedTrafficConfigResources;
+    }
+
+    /**
+     * The LastKnownGoodResourcesClient object to access its operations.
+     */
+    private final LastKnownGoodResourcesClient lastKnownGoodResources;
+
+    /**
+     * Gets the LastKnownGoodResourcesClient object to access its operations.
+     * 
+     * @return the LastKnownGoodResourcesClient object.
+     */
+    public LastKnownGoodResourcesClient getLastKnownGoodResources() {
+        return this.lastKnownGoodResources;
     }
 
     /**
@@ -479,7 +599,7 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-05-01";
+        this.apiVersion = "2026-08-01";
         this.appServiceEnvironments = new AppServiceEnvironmentsClientImpl(this);
         this.recommendations = new RecommendationsClientImpl(this);
         this.staticSites = new StaticSitesClientImpl(this);
@@ -490,12 +610,20 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.globals = new GlobalsClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
         this.kubeEnvironments = new KubeEnvironmentsClientImpl(this);
+        this.sites = new SitesClientImpl(this);
+        this.staticSitesAsyncOperations = new StaticSitesAsyncOperationsClientImpl(this);
+        this.aiGateways = new AiGatewaysClientImpl(this);
         this.workflowRuns = new WorkflowRunsClientImpl(this);
         this.workflowRunActions = new WorkflowRunActionsClientImpl(this);
         this.workflowRunActionScopeRepetitions = new WorkflowRunActionScopeRepetitionsClientImpl(this);
         this.workflowTriggers = new WorkflowTriggersClientImpl(this);
         this.workflowTriggerHistories = new WorkflowTriggerHistoriesClientImpl(this);
         this.workflowVersions = new WorkflowVersionsClientImpl(this);
+        this.siteSiloResources = new SiteSiloResourcesClientImpl(this);
+        this.siteSiloVirtualNetworkConnections = new SiteSiloVirtualNetworkConnectionsClientImpl(this);
+        this.serverFarmSiloResources = new ServerFarmSiloResourcesClientImpl(this);
+        this.managedTrafficConfigResources = new ManagedTrafficConfigResourcesClientImpl(this);
+        this.lastKnownGoodResources = new LastKnownGoodResourcesClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.providers = new ProvidersClientImpl(this);
         this.deletedWebApps = new DeletedWebAppsClientImpl(this);
