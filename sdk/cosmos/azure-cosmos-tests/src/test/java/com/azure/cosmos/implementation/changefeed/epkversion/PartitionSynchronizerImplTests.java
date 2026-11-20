@@ -23,8 +23,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -145,6 +147,63 @@ public class PartitionSynchronizerImplTests {
         verify(leaseManagerMock, times(1)).createLeaseIfNotExist(feedRangeEpkArgumentCaptor.capture(), any());
         assertThat(feedRangeEpkArgumentCaptor.getAllValues().size()).isEqualTo(1);
         assertThat(feedRangeEpkArgumentCaptor.getAllValues().get(0).getRange()).isEqualTo(overlappingRanges.get(2).toRange());
+    }
+
+    @Test(groups = "unit")
+    public void createsLeasesOnlyForUncoveredIntervalsAfterMerge() {
+        ChangeFeedContextClient contextClient = Mockito.mock(ChangeFeedContextClient.class);
+        LeaseContainer leaseContainer = Mockito.mock(LeaseContainer.class);
+        LeaseManager leaseManager = Mockito.mock(LeaseManager.class);
+        PartitionSynchronizer synchronizer = new PartitionSynchronizerImpl(
+            contextClient, "container", leaseContainer, leaseManager, 1, 1,
+            new ChangeFeedProcessorOptions(), ChangeFeedMode.INCREMENTAL);
+
+        when(contextClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true))
+            .thenReturn(Mono.just(Arrays.asList(new PartitionKeyRange("1", "", "FF"))));
+        Lease firstLease = new ServiceItemLeaseV1()
+            .withFeedRange(new FeedRangeEpkImpl(new Range<>("", "AA", true, false)));
+        Lease middleLease = new ServiceItemLeaseV1()
+            .withFeedRange(new FeedRangeEpkImpl(new Range<>("BB", "CC", true, false)));
+        when(leaseContainer.getAllLeases()).thenReturn(Flux.just(middleLease, firstLease));
+        when(leaseManager.createLeaseIfNotExist(any(FeedRangeEpkImpl.class), Mockito.isNull()))
+            .thenReturn(Mono.empty());
+
+        StepVerifier.create(synchronizer.createMissingLeases()).verifyComplete();
+
+        ArgumentCaptor<FeedRangeEpkImpl> createdRanges = ArgumentCaptor.forClass(FeedRangeEpkImpl.class);
+        verify(leaseManager, times(2)).createLeaseIfNotExist(createdRanges.capture(), Mockito.isNull());
+        Assertions.assertThat(createdRanges.getAllValues()).containsExactly(
+            new FeedRangeEpkImpl(new Range<>("AA", "BB", true, false)),
+            new FeedRangeEpkImpl(new Range<>("CC", "FF", true, false)));
+    }
+
+    @Test(groups = "unit")
+    public void keepsCheckpointedParentAndAdjacentLeasesThatCoverCurrentPartitions() {
+        ChangeFeedContextClient contextClient = Mockito.mock(ChangeFeedContextClient.class);
+        LeaseContainer leaseContainer = Mockito.mock(LeaseContainer.class);
+        LeaseManager leaseManager = Mockito.mock(LeaseManager.class);
+        PartitionSynchronizer synchronizer = new PartitionSynchronizerImpl(
+            contextClient, "container", leaseContainer, leaseManager, 1, 1,
+            new ChangeFeedProcessorOptions(), ChangeFeedMode.INCREMENTAL);
+
+        when(contextClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true))
+            .thenReturn(Mono.just(Arrays.asList(
+                new PartitionKeyRange("1", "", "AA"),
+                new PartitionKeyRange("2", "AA", "BB"),
+                new PartitionKeyRange("3", "BB", "CC"),
+                new PartitionKeyRange("4", "CC", "FF"))));
+        Lease parent = new ServiceItemLeaseV1()
+            .withFeedRange(new FeedRangeEpkImpl(new Range<>("", "CC", true, false)))
+            .withContinuationToken(Base64.getEncoder().encodeToString("parent-checkpoint".getBytes(StandardCharsets.UTF_8)));
+        Lease firstAdjacent = new ServiceItemLeaseV1()
+            .withFeedRange(new FeedRangeEpkImpl(new Range<>("CC", "DD", true, false)));
+        Lease secondAdjacent = new ServiceItemLeaseV1()
+            .withFeedRange(new FeedRangeEpkImpl(new Range<>("DD", "FF", true, false)));
+        when(leaseContainer.getAllLeases()).thenReturn(Flux.just(secondAdjacent, parent, firstAdjacent));
+
+        StepVerifier.create(synchronizer.createMissingLeases()).verifyComplete();
+
+        Mockito.verifyNoInteractions(leaseManager);
     }
 
     @Test(groups = "unit")

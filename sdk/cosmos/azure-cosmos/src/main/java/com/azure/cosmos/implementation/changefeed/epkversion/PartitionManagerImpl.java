@@ -25,8 +25,8 @@ class PartitionManagerImpl implements PartitionManager {
     @Override
     public Mono<Void> start() {
         return this.bootstrapper.initialize()
-            .then(this.partitionController.initialize())
-            .then(this.partitionLoadBalancer.start());
+            .then(Mono.defer(this.partitionController::initialize))
+            .then(Mono.defer(this.partitionLoadBalancer::start));
     }
 
     @Override
