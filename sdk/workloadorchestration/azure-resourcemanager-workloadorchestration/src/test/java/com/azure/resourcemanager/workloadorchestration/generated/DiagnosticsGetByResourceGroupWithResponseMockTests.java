@@ -22,7 +22,7 @@ public final class DiagnosticsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"qduqgixexkydf\",\"type\":\"CustomLocation\"},\"eTag\":\"javh\",\"location\":\"rkjd\",\"tags\":{\"ksdwgdnk\":\"gliegftcvbiif\"},\"id\":\"fgmwd\",\"name\":\"c\",\"type\":\"buvczldbglzoutb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"oyutehlk\",\"type\":\"CustomLocation\"},\"eTag\":\"tipquks\",\"location\":\"kn\",\"tags\":{\"swhpcek\":\"fu\",\"nnbbxngdfkke\":\"gvm\",\"i\":\"eetxtpwcv\",\"qdonbzzs\":\"wsunjzijaciwmmpd\"},\"id\":\"fzyviiwsua\",\"name\":\"zhw\",\"type\":\"yui\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class DiagnosticsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Diagnostic response = manager.diagnostics()
-            .getByResourceGroupWithResponse("qvfqepdxc", "tuubwyvpjb", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("taftazgcx", "vqlcqufylamxo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rkjd", response.location());
-        Assertions.assertEquals("gliegftcvbiif", response.tags().get("ksdwgdnk"));
-        Assertions.assertEquals("qduqgixexkydf", response.extendedLocation().name());
+        Assertions.assertEquals("kn", response.location());
+        Assertions.assertEquals("fu", response.tags().get("swhpcek"));
+        Assertions.assertEquals("oyutehlk", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

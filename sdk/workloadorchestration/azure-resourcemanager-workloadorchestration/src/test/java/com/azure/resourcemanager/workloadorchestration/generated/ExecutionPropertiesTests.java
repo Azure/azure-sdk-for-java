@@ -6,6 +6,7 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.models.ExecutionProperties;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -14,17 +15,19 @@ public final class ExecutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionProperties model = BinaryData.fromString(
-            "{\"workflowVersionId\":\"mcmuapc\",\"specification\":{},\"status\":{\"updateTime\":\"2021-12-02T23:21:10Z\",\"status\":15684677,\"statusMessage\":\"xeyskonqzinkfkbg\",\"stageHistory\":[{\"status\":1881387928,\"statusMessage\":\"eqocljmygvk\",\"stage\":\"kjjeokbz\",\"nextstage\":\"ezrxcczurtleipqx\",\"errorMessage\":\"wvz\",\"isActive\":\"active\",\"inputs\":{},\"outputs\":{}},{\"status\":202407711,\"statusMessage\":\"xzmqpnodawop\",\"stage\":\"ewjptmcg\",\"nextstage\":\"ostzelndlatu\",\"errorMessage\":\"zlbiojlvfhrbbpn\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"InProgress\"}")
+            "{\"workflowVersionId\":\"ov\",\"specification\":{\"ntopa\":\"\\\"dataxdndsbdweaderzm\\\"\",\"jiuazjc\":\"\\\"datattmvmmagoaqylkjz\\\"\"},\"status\":{\"updateTime\":\"2021-11-26T20:43:17Z\",\"status\":1509778207,\"statusMessage\":\"inzcpdltkrlgj\",\"stageHistory\":[{\"status\":1780203290,\"statusMessage\":\"cqguef\",\"stage\":\"ompheqdur\",\"nextstage\":\"yujlfyoumpckyecl\",\"errorMessage\":\"igptajbrzmqxucyc\",\"isActive\":\"active\",\"inputs\":{\"nrqjbtxjea\":\"\\\"dataxiutgjcyzyzj\\\"\",\"yh\":\"\\\"dataqaqbz\\\"\",\"v\":\"\\\"dataw\\\"\",\"e\":\"\\\"dataatbwbqam\\\"\"},\"outputs\":{\"auxxepmyw\":\"\\\"datayslpkcvmw\\\"\",\"ijqpkzfbojxjmcs\":\"\\\"dataormcqmic\\\"\",\"falickduoiqtamty\":\"\\\"datayqwixvcpwnkwywzw\\\"\",\"zagxnvhycvdi\":\"\\\"datasknxrwzawnvsbcf\\\"\"}}]},\"provisioningState\":\"Succeeded\"}")
             .toObject(ExecutionProperties.class);
-        Assertions.assertEquals("mcmuapc", model.workflowVersionId());
+        Assertions.assertEquals("ov", model.workflowVersionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecutionProperties model
-            = new ExecutionProperties().withWorkflowVersionId("mcmuapc").withSpecification(mapOf());
+        ExecutionProperties model = new ExecutionProperties().withWorkflowVersionId("ov")
+            .withSpecification(
+                mapOf("ntopa", BinaryData.fromBytes("\"dataxdndsbdweaderzm\"".getBytes(StandardCharsets.UTF_8)),
+                    "jiuazjc", BinaryData.fromBytes("\"datattmvmmagoaqylkjz\"".getBytes(StandardCharsets.UTF_8))));
         model = BinaryData.fromObject(model).toObject(ExecutionProperties.class);
-        Assertions.assertEquals("mcmuapc", model.workflowVersionId());
+        Assertions.assertEquals("ov", model.workflowVersionId());
     }
 
     // Use "Map.of" if available

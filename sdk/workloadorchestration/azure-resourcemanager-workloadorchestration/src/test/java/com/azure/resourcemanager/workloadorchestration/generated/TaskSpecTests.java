@@ -6,6 +6,7 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.models.TaskSpec;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,18 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TaskSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TaskSpec model = BinaryData.fromString("{\"name\":\"e\",\"targetId\":\"dhgbjkvre\",\"specification\":{}}")
+        TaskSpec model = BinaryData.fromString(
+            "{\"name\":\"bekpeeksnbksdqhj\",\"targetId\":\"klxesl\",\"specification\":{\"o\":\"\\\"datahustcpoqmavnwqjw\\\"\"}}")
             .toObject(TaskSpec.class);
-        Assertions.assertEquals("e", model.name());
-        Assertions.assertEquals("dhgbjkvre", model.targetId());
+        Assertions.assertEquals("bekpeeksnbksdqhj", model.name());
+        Assertions.assertEquals("klxesl", model.targetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskSpec model = new TaskSpec().withName("e").withTargetId("dhgbjkvre").withSpecification(mapOf());
+        TaskSpec model = new TaskSpec().withName("bekpeeksnbksdqhj")
+            .withTargetId("klxesl")
+            .withSpecification(
+                mapOf("o", BinaryData.fromBytes("\"datahustcpoqmavnwqjw\"".getBytes(StandardCharsets.UTF_8))));
         model = BinaryData.fromObject(model).toObject(TaskSpec.class);
-        Assertions.assertEquals("e", model.name());
-        Assertions.assertEquals("dhgbjkvre", model.targetId());
+        Assertions.assertEquals("bekpeeksnbksdqhj", model.name());
+        Assertions.assertEquals("klxesl", model.targetId());
     }
 
     // Use "Map.of" if available

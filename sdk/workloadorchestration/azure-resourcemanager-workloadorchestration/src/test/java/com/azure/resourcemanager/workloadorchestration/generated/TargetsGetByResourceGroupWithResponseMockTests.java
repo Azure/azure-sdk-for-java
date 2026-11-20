@@ -23,7 +23,7 @@ public final class TargetsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"lmknbnxwcdom\",\"displayName\":\"pvfqawz\",\"contextId\":\"gbrt\",\"targetSpecification\":{},\"capabilities\":[\"aclkiexhajlfnt\"],\"hierarchyLevel\":\"iqfyuttdi\",\"status\":{\"lastModified\":\"2021-09-07T21:32:41Z\",\"deployed\":149960086,\"expectedRunningJobId\":1375874232,\"runningJobId\":714698861,\"status\":\"xkyctwwgzwx\",\"statusDetails\":\"mecvogygzyvneeza\",\"generation\":390965858,\"targetStatuses\":[{\"name\":\"oqqtl\",\"status\":\"hzbkrkjj\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"qnvhnqoe\",\"status\":\"ogiyetes\",\"componentStatuses\":[{},{},{}]},{\"name\":\"dbztjhqtfbov\",\"status\":\"nkbw\",\"componentStatuses\":[{},{},{}]}]},\"solutionScope\":\"uhpsprkzyaupia\",\"state\":\"active\",\"provisioningState\":\"Deleting\"},\"eTag\":\"bwqroohtuovm\",\"extendedLocation\":{\"name\":\"nur\",\"type\":\"EdgeZone\"},\"location\":\"mghihp\",\"tags\":{\"sjuscvsfxigctmg\":\"mslclblyjxlt\",\"zqccydrtce\":\"uupb\",\"eq\":\"kdqkkyihzt\",\"ecfehuwa\":\"gqzgwldoychill\"},\"id\":\"a\",\"name\":\"uhicqllizstacsjv\",\"type\":\"rweft\"}";
+            = "{\"properties\":{\"description\":\"ktz\",\"displayName\":\"oimyfpqd\",\"contextId\":\"wkppnwyytfvp\",\"targetSpecification\":{\"vuldbkkejjk\":\"\\\"datajikffffgkuhznw\\\"\",\"azmxjqi\":\"\\\"dataigaw\\\"\",\"jjsbcmlzaahzbhur\":\"\\\"datah\\\"\",\"lirh\":\"\\\"dataolk\\\"\"},\"capabilities\":[\"ojusuzgfjzcva\",\"xoia\"],\"hierarchyLevel\":\"ahfxwccok\",\"status\":{\"lastModified\":\"2021-12-09T01:14:20Z\",\"deployed\":1036449956,\"expectedRunningJobId\":58255309,\"runningJobId\":1311276979,\"status\":\"uhhoqeqshavlj\",\"statusDetails\":\"xyrqo\",\"generation\":900253875,\"targetStatuses\":[{\"name\":\"nkgzukwdr\",\"status\":\"kjthfce\",\"componentStatuses\":[{},{},{}]},{\"name\":\"jmlfuyfjbp\",\"status\":\"ddhlrufzcqyj\",\"componentStatuses\":[{},{},{}]},{\"name\":\"uiocuselqkrsazr\",\"status\":\"uddq\",\"componentStatuses\":[{},{}]},{\"name\":\"fisjmrkk\",\"status\":\"wdmdlgyqixokwt\",\"componentStatuses\":[{},{},{}]}]},\"solutionScope\":\"vagnqfqqdlcvmyo\",\"state\":\"inactive\",\"provisioningState\":\"Canceled\"},\"eTag\":\"chtvsnvlaqd\",\"extendedLocation\":{\"name\":\"yzawatu\",\"type\":\"CustomLocation\"},\"location\":\"okbczothymgob\",\"tags\":{\"eakhtmhobcya\":\"snwgwimaa\"},\"id\":\"rfvqtvkhgvo\",\"name\":\"gxkfnaoaqymhccto\",\"type\":\"uowyrnskbyhqu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class TargetsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Target response = manager.targets()
-            .getByResourceGroupWithResponse("patlbijp", "gsksrfhf", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("cd", "akt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mghihp", response.location());
-        Assertions.assertEquals("mslclblyjxlt", response.tags().get("sjuscvsfxigctmg"));
-        Assertions.assertEquals("lmknbnxwcdom", response.properties().description());
-        Assertions.assertEquals("pvfqawz", response.properties().displayName());
-        Assertions.assertEquals("gbrt", response.properties().contextId());
-        Assertions.assertEquals("aclkiexhajlfnt", response.properties().capabilities().get(0));
-        Assertions.assertEquals("iqfyuttdi", response.properties().hierarchyLevel());
-        Assertions.assertEquals("uhpsprkzyaupia", response.properties().solutionScope());
-        Assertions.assertEquals(ResourceState.ACTIVE, response.properties().state());
-        Assertions.assertEquals("nur", response.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, response.extendedLocation().type());
+        Assertions.assertEquals("okbczothymgob", response.location());
+        Assertions.assertEquals("snwgwimaa", response.tags().get("eakhtmhobcya"));
+        Assertions.assertEquals("ktz", response.properties().description());
+        Assertions.assertEquals("oimyfpqd", response.properties().displayName());
+        Assertions.assertEquals("wkppnwyytfvp", response.properties().contextId());
+        Assertions.assertEquals("ojusuzgfjzcva", response.properties().capabilities().get(0));
+        Assertions.assertEquals("ahfxwccok", response.properties().hierarchyLevel());
+        Assertions.assertEquals("vagnqfqqdlcvmyo", response.properties().solutionScope());
+        Assertions.assertEquals(ResourceState.INACTIVE, response.properties().state());
+        Assertions.assertEquals("yzawatu", response.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

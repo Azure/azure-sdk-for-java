@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Bulk publish target details.
@@ -22,9 +23,24 @@ public final class BulkPublishTargetDetails implements JsonSerializable<BulkPubl
     private String targetId;
 
     /*
+     * Solution dependencies
+     */
+    private List<SolutionDependencyParameter> solutionDependencies;
+
+    /*
      * Name of the solution instance
      */
     private String solutionInstanceName;
+
+    /*
+     * ArmId of Target Solution Version
+     */
+    private String solutionVersionId;
+
+    /*
+     * Configuration of solution
+     */
+    private String solutionConfiguration;
 
     /**
      * Creates an instance of BulkPublishTargetDetails class.
@@ -53,6 +69,26 @@ public final class BulkPublishTargetDetails implements JsonSerializable<BulkPubl
     }
 
     /**
+     * Get the solutionDependencies property: Solution dependencies.
+     * 
+     * @return the solutionDependencies value.
+     */
+    public List<SolutionDependencyParameter> solutionDependencies() {
+        return this.solutionDependencies;
+    }
+
+    /**
+     * Set the solutionDependencies property: Solution dependencies.
+     * 
+     * @param solutionDependencies the solutionDependencies value to set.
+     * @return the BulkPublishTargetDetails object itself.
+     */
+    public BulkPublishTargetDetails withSolutionDependencies(List<SolutionDependencyParameter> solutionDependencies) {
+        this.solutionDependencies = solutionDependencies;
+        return this;
+    }
+
+    /**
      * Get the solutionInstanceName property: Name of the solution instance.
      * 
      * @return the solutionInstanceName value.
@@ -73,13 +109,57 @@ public final class BulkPublishTargetDetails implements JsonSerializable<BulkPubl
     }
 
     /**
+     * Get the solutionVersionId property: ArmId of Target Solution Version.
+     * 
+     * @return the solutionVersionId value.
+     */
+    public String solutionVersionId() {
+        return this.solutionVersionId;
+    }
+
+    /**
+     * Set the solutionVersionId property: ArmId of Target Solution Version.
+     * 
+     * @param solutionVersionId the solutionVersionId value to set.
+     * @return the BulkPublishTargetDetails object itself.
+     */
+    public BulkPublishTargetDetails withSolutionVersionId(String solutionVersionId) {
+        this.solutionVersionId = solutionVersionId;
+        return this;
+    }
+
+    /**
+     * Get the solutionConfiguration property: Configuration of solution.
+     * 
+     * @return the solutionConfiguration value.
+     */
+    public String solutionConfiguration() {
+        return this.solutionConfiguration;
+    }
+
+    /**
+     * Set the solutionConfiguration property: Configuration of solution.
+     * 
+     * @param solutionConfiguration the solutionConfiguration value to set.
+     * @return the BulkPublishTargetDetails object itself.
+     */
+    public BulkPublishTargetDetails withSolutionConfiguration(String solutionConfiguration) {
+        this.solutionConfiguration = solutionConfiguration;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("targetId", this.targetId);
+        jsonWriter.writeArrayField("solutionDependencies", this.solutionDependencies,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("solutionInstanceName", this.solutionInstanceName);
+        jsonWriter.writeStringField("solutionVersionId", this.solutionVersionId);
+        jsonWriter.writeStringField("solutionConfiguration", this.solutionConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -101,8 +181,16 @@ public final class BulkPublishTargetDetails implements JsonSerializable<BulkPubl
 
                 if ("targetId".equals(fieldName)) {
                     deserializedBulkPublishTargetDetails.targetId = reader.getString();
+                } else if ("solutionDependencies".equals(fieldName)) {
+                    List<SolutionDependencyParameter> solutionDependencies
+                        = reader.readArray(reader1 -> SolutionDependencyParameter.fromJson(reader1));
+                    deserializedBulkPublishTargetDetails.solutionDependencies = solutionDependencies;
                 } else if ("solutionInstanceName".equals(fieldName)) {
                     deserializedBulkPublishTargetDetails.solutionInstanceName = reader.getString();
+                } else if ("solutionVersionId".equals(fieldName)) {
+                    deserializedBulkPublishTargetDetails.solutionVersionId = reader.getString();
+                } else if ("solutionConfiguration".equals(fieldName)) {
+                    deserializedBulkPublishTargetDetails.solutionConfiguration = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -23,7 +23,7 @@ public final class DiagnosticsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"gmnzjotvmrx\",\"type\":\"CustomLocation\"},\"eTag\":\"obvvjbhvh\",\"location\":\"qayfl\",\"tags\":{\"elvhyibdrqrswh\":\"uosnuud\"},\"id\":\"uubpyrow\",\"name\":\"joxztfwfqchvczev\",\"type\":\"nnctagfyvrt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"pjpngvyvuo\",\"type\":\"CustomLocation\"},\"eTag\":\"l\",\"location\":\"xntugfwim\",\"tags\":{\"ifqhdx\":\"yclocfmvswxvjel\",\"byjecrq\":\"wwulkrybpaevy\"},\"id\":\"wakkchsfo\",\"name\":\"lb\",\"type\":\"rcxuibsdqbdyblp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class DiagnosticsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Diagnostic> response
-            = manager.diagnostics().listByResourceGroup("aqgzekajclyzgs", com.azure.core.util.Context.NONE);
+            = manager.diagnostics().listByResourceGroup("kzqqhbtfloilmkf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qayfl", response.iterator().next().location());
-        Assertions.assertEquals("uosnuud", response.iterator().next().tags().get("elvhyibdrqrswh"));
-        Assertions.assertEquals("gmnzjotvmrx", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("xntugfwim", response.iterator().next().location());
+        Assertions.assertEquals("yclocfmvswxvjel", response.iterator().next().tags().get("ifqhdx"));
+        Assertions.assertEquals("pjpngvyvuo", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
     }

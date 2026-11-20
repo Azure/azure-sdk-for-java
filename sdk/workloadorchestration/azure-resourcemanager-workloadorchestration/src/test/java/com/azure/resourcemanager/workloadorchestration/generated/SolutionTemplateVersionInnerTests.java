@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.fluent.models.SolutionTemplateVersionInner;
 import com.azure.resourcemanager.workloadorchestration.models.OrchestratorType;
 import com.azure.resourcemanager.workloadorchestration.models.SolutionTemplateVersionProperties;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,20 +17,24 @@ public final class SolutionTemplateVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTemplateVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"configurations\":\"aivwitqscywu\",\"specification\":{},\"orchestratorType\":\"TO\",\"provisioningState\":\"Failed\"},\"eTag\":\"czbwemhairsbr\",\"id\":\"dwmsweypqwd\",\"name\":\"ggicccnxqhue\",\"type\":\"mkttlstvlzywem\"}")
+            "{\"properties\":{\"configurations\":\"\\\"datazhyrmewipmve\\\"\",\"specification\":{\"xundxgk\":\"\\\"dataxukuqgsj\\\"\",\"muvgp\":\"\\\"datatwzhhzjhfjmhv\\\"\",\"uzjyihsasbhudypo\":\"\\\"datauneqsxvmhf\\\"\",\"slynsqyrpfoo\":\"\\\"datayue\\\"\"},\"orchestratorType\":\"TO\",\"internalState\":\"PendingValidation\",\"provisioningState\":\"InProgress\"},\"eTag\":\"jnygq\",\"id\":\"fwqzdz\",\"name\":\"tilaxh\",\"type\":\"fhqlyvi\"}")
             .toObject(SolutionTemplateVersionInner.class);
-        Assertions.assertEquals("aivwitqscywu", model.properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.properties().orchestratorType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionTemplateVersionInner model = new SolutionTemplateVersionInner()
-            .withProperties(new SolutionTemplateVersionProperties().withConfigurations("aivwitqscywu")
-                .withSpecification(mapOf())
-                .withOrchestratorType(OrchestratorType.TO));
+        SolutionTemplateVersionInner model
+            = new SolutionTemplateVersionInner()
+                .withProperties(new SolutionTemplateVersionProperties()
+                    .withConfigurations(BinaryData.fromBytes("\"datazhyrmewipmve\"".getBytes(StandardCharsets.UTF_8)))
+                    .withSpecification(mapOf("xundxgk",
+                        BinaryData.fromBytes("\"dataxukuqgsj\"".getBytes(StandardCharsets.UTF_8)), "muvgp",
+                        BinaryData.fromBytes("\"datatwzhhzjhfjmhv\"".getBytes(StandardCharsets.UTF_8)),
+                        "uzjyihsasbhudypo", BinaryData.fromBytes("\"datauneqsxvmhf\"".getBytes(StandardCharsets.UTF_8)),
+                        "slynsqyrpfoo", BinaryData.fromBytes("\"datayue\"".getBytes(StandardCharsets.UTF_8))))
+                    .withOrchestratorType(OrchestratorType.TO));
         model = BinaryData.fromObject(model).toObject(SolutionTemplateVersionInner.class);
-        Assertions.assertEquals("aivwitqscywu", model.properties().configurations());
         Assertions.assertEquals(OrchestratorType.TO, model.properties().orchestratorType());
     }
 

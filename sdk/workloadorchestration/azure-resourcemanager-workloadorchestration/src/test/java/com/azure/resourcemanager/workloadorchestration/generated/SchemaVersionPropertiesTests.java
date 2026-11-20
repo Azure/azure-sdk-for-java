@@ -6,21 +6,20 @@ package com.azure.resourcemanager.workloadorchestration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.workloadorchestration.models.SchemaVersionProperties;
-import org.junit.jupiter.api.Assertions;
+import java.nio.charset.StandardCharsets;
 
 public final class SchemaVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaVersionProperties model
-            = BinaryData.fromString("{\"value\":\"gaudcc\",\"provisioningState\":\"Initialized\"}")
+            = BinaryData.fromString("{\"value\":\"\\\"datahbcryffdfdosyge\\\"\",\"provisioningState\":\"Deleting\"}")
                 .toObject(SchemaVersionProperties.class);
-        Assertions.assertEquals("gaudcc", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaVersionProperties model = new SchemaVersionProperties().withValue("gaudcc");
+        SchemaVersionProperties model = new SchemaVersionProperties()
+            .withValue(BinaryData.fromBytes("\"datahbcryffdfdosyge\"".getBytes(StandardCharsets.UTF_8)));
         model = BinaryData.fromObject(model).toObject(SchemaVersionProperties.class);
-        Assertions.assertEquals("gaudcc", model.value());
     }
 }

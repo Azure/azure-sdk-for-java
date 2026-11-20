@@ -12,9 +12,9 @@ public final class SiteReferenceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SiteReferenceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"siteId\":\"yjleziunjx\",\"provisioningState\":\"Deleting\"},\"id\":\"ntkwcegy\",\"name\":\"mlbnseq\",\"type\":\"cjjvpilguooqja\"}],\"nextLink\":\"d\"}")
+            "{\"value\":[{\"properties\":{\"siteId\":\"zxrrfc\",\"provisioningState\":\"Canceled\"},\"id\":\"khgsnxuwwkpphefs\",\"name\":\"zxlb\",\"type\":\"xomeikjclwzacn\"},{\"properties\":{\"siteId\":\"pfsuqtaaz\",\"provisioningState\":\"Succeeded\"},\"id\":\"yxoyfp\",\"name\":\"qqi\",\"type\":\"ezxlhdjzqdca\"},{\"properties\":{\"siteId\":\"vpsozjiihjri\",\"provisioningState\":\"Initialized\"},\"id\":\"zo\",\"name\":\"pnx\",\"type\":\"dvwnjkgvfnmxa\"}],\"nextLink\":\"sqftibtyibuyvp\"}")
             .toObject(SiteReferenceListResult.class);
-        Assertions.assertEquals("yjleziunjx", model.value().get(0).properties().siteId());
-        Assertions.assertEquals("d", model.nextLink());
+        Assertions.assertEquals("zxrrfc", model.value().get(0).properties().siteId());
+        Assertions.assertEquals("sqftibtyibuyvp", model.nextLink());
     }
 }

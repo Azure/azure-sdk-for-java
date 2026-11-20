@@ -15,20 +15,20 @@ public final class SchemaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaInner model = BinaryData.fromString(
-            "{\"properties\":{\"currentVersion\":\"fsqesaagdfmglzlh\",\"provisioningState\":\"Deleting\"},\"eTag\":\"f\",\"location\":\"mrvktsizntoc\",\"tags\":{\"kfo\":\"ouajpsqucmpoyf\"},\"id\":\"knygjofjddeq\",\"name\":\"rd\",\"type\":\"upewnwreitjzy\"}")
+            "{\"properties\":{\"currentVersion\":\"xukcdmpar\",\"provisioningState\":\"Failed\"},\"eTag\":\"anzwuxzdxta\",\"location\":\"lhmwhfpmrqobm\",\"tags\":{\"pzvgnwzsymglzufc\":\"knryrtihfxtij\",\"hdbihan\":\"zk\",\"y\":\"fhfcb\"},\"id\":\"a\",\"name\":\"ithxqhabifpi\",\"type\":\"xwczbyscnp\"}")
             .toObject(SchemaInner.class);
-        Assertions.assertEquals("mrvktsizntoc", model.location());
-        Assertions.assertEquals("ouajpsqucmpoyf", model.tags().get("kfo"));
+        Assertions.assertEquals("lhmwhfpmrqobm", model.location());
+        Assertions.assertEquals("knryrtihfxtij", model.tags().get("pzvgnwzsymglzufc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaInner model = new SchemaInner().withLocation("mrvktsizntoc")
-            .withTags(mapOf("kfo", "ouajpsqucmpoyf"))
+        SchemaInner model = new SchemaInner().withLocation("lhmwhfpmrqobm")
+            .withTags(mapOf("pzvgnwzsymglzufc", "knryrtihfxtij", "hdbihan", "zk", "y", "fhfcb"))
             .withProperties(new SchemaProperties());
         model = BinaryData.fromObject(model).toObject(SchemaInner.class);
-        Assertions.assertEquals("mrvktsizntoc", model.location());
-        Assertions.assertEquals("ouajpsqucmpoyf", model.tags().get("kfo"));
+        Assertions.assertEquals("lhmwhfpmrqobm", model.location());
+        Assertions.assertEquals("knryrtihfxtij", model.tags().get("pzvgnwzsymglzufc"));
     }
 
     // Use "Map.of" if available

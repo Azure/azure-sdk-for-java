@@ -16,10 +16,38 @@ import java.io.IOException;
  */
 @Immutable
 public final class SchemaUpdateProperties implements JsonSerializable<SchemaUpdateProperties> {
+    /*
+     * Current Version of schema
+     */
+    private String currentVersion;
+
+    /*
+     * Provisioning state of resource
+     */
+    private ProvisioningState provisioningState;
+
     /**
      * Creates an instance of SchemaUpdateProperties class.
      */
     public SchemaUpdateProperties() {
+    }
+
+    /**
+     * Get the currentVersion property: Current Version of schema.
+     * 
+     * @return the currentVersion value.
+     */
+    public String currentVersion() {
+        return this.currentVersion;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -46,7 +74,14 @@ public final class SchemaUpdateProperties implements JsonSerializable<SchemaUpda
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                reader.skipChildren();
+                if ("currentVersion".equals(fieldName)) {
+                    deserializedSchemaUpdateProperties.currentVersion = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSchemaUpdateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
             }
 
             return deserializedSchemaUpdateProperties;

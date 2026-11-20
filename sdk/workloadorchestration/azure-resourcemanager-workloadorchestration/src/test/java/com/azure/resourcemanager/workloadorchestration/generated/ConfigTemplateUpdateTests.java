@@ -15,20 +15,21 @@ public final class ConfigTemplateUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigTemplateUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"jqctojcmisofie\":\"ysownbtgkbug\",\"ojyqdhcuplcplcw\":\"pe\"},\"properties\":{\"description\":\"hihlhzdsqtzbs\"}}")
+            "{\"tags\":{\"jopwbeonrlkwz\":\"z\",\"soqfyiaseqchkrt\":\"qybxceakxcp\",\"uem\":\"zrazisgyk\",\"klinhmdptysprq\":\"anbwzohmnrxxbso\"},\"properties\":{\"description\":\"zxojpslsv\"}}")
             .toObject(ConfigTemplateUpdate.class);
-        Assertions.assertEquals("ysownbtgkbug", model.tags().get("jqctojcmisofie"));
-        Assertions.assertEquals("hihlhzdsqtzbs", model.properties().description());
+        Assertions.assertEquals("z", model.tags().get("jopwbeonrlkwz"));
+        Assertions.assertEquals("zxojpslsv", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigTemplateUpdate model
-            = new ConfigTemplateUpdate().withTags(mapOf("jqctojcmisofie", "ysownbtgkbug", "ojyqdhcuplcplcw", "pe"))
-                .withProperties(new ConfigTemplateUpdateProperties().withDescription("hihlhzdsqtzbs"));
+        ConfigTemplateUpdate model = new ConfigTemplateUpdate()
+            .withTags(mapOf("jopwbeonrlkwz", "z", "soqfyiaseqchkrt", "qybxceakxcp", "uem", "zrazisgyk",
+                "klinhmdptysprq", "anbwzohmnrxxbso"))
+            .withProperties(new ConfigTemplateUpdateProperties().withDescription("zxojpslsv"));
         model = BinaryData.fromObject(model).toObject(ConfigTemplateUpdate.class);
-        Assertions.assertEquals("ysownbtgkbug", model.tags().get("jqctojcmisofie"));
-        Assertions.assertEquals("hihlhzdsqtzbs", model.properties().description());
+        Assertions.assertEquals("z", model.tags().get("jopwbeonrlkwz"));
+        Assertions.assertEquals("zxojpslsv", model.properties().description());
     }
 
     // Use "Map.of" if available

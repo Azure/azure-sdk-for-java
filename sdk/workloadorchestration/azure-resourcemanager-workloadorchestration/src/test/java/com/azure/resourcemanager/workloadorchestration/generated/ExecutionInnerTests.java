@@ -9,6 +9,7 @@ import com.azure.resourcemanager.workloadorchestration.fluent.models.ExecutionIn
 import com.azure.resourcemanager.workloadorchestration.models.ExecutionProperties;
 import com.azure.resourcemanager.workloadorchestration.models.ExtendedLocation;
 import com.azure.resourcemanager.workloadorchestration.models.ExtendedLocationType;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -17,23 +18,26 @@ public final class ExecutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"workflowVersionId\":\"foudor\",\"specification\":{},\"status\":{\"updateTime\":\"2021-03-21T18:39:32Z\",\"status\":307968762,\"statusMessage\":\"wy\",\"stageHistory\":[{\"status\":915134983,\"statusMessage\":\"xhugcm\",\"stage\":\"avlg\",\"nextstage\":\"bmftpmdt\",\"errorMessage\":\"jltfvnzcyjtotpv\",\"isActive\":\"inactive\",\"inputs\":{},\"outputs\":{}}]},\"provisioningState\":\"Initialized\"},\"extendedLocation\":{\"name\":\"qqihedsvqwthmk\",\"type\":\"CustomLocation\"},\"eTag\":\"cysihs\",\"id\":\"cw\",\"name\":\"hohsd\",\"type\":\"mcdzsufcohdxbz\"}")
+            "{\"properties\":{\"workflowVersionId\":\"bjb\",\"specification\":{\"gmuwdchozfnkf\":\"\\\"dataybvitvqkjyaznumt\\\"\",\"oaiknaqlnuwig\":\"\\\"dataxlvxnoakiz\\\"\"},\"status\":{\"updateTime\":\"2021-02-22T21:39:11Z\",\"status\":1039817424,\"statusMessage\":\"phvxz\",\"stageHistory\":[{\"status\":624092419,\"statusMessage\":\"ejtlk\",\"stage\":\"aonwivkcqhrxh\",\"nextstage\":\"nlccrm\",\"errorMessage\":\"yupiju\",\"isActive\":\"inactive\",\"inputs\":{\"em\":\"\\\"datakakfqfr\\\"\"},\"outputs\":{\"dxphlk\":\"\\\"datadudxjascowvfdjk\\\"\",\"dkz\":\"\\\"datasnmgzvyfi\\\"\",\"uqwqulsutrjbhxyk\":\"\\\"dataqnwsithuqolyah\\\"\"}},{\"status\":248961091,\"statusMessage\":\"ezvqq\",\"stage\":\"drftbcvexreuquo\",\"nextstage\":\"ljvfwhreagk\",\"errorMessage\":\"xv\",\"isActive\":\"inactive\",\"inputs\":{\"epjpfs\":\"\\\"dataczsulmdggl\\\"\",\"fpgylkve\":\"\\\"dataykgsangpszng\\\"\",\"edmzrgjfoknub\":\"\\\"datajujcngoad\\\"\",\"coqra\":\"\\\"dataoitpkpztrgdgx\\\"\"},\"outputs\":{\"eialwvskb\":\"\\\"datagyxpqit\\\"\",\"cujp\":\"\\\"datahzacaqtyltco\\\"\"}},{\"status\":982712312,\"statusMessage\":\"akuejk\",\"stage\":\"bizt\",\"nextstage\":\"fqcvovj\",\"errorMessage\":\"ycsjmlbem\",\"isActive\":\"active\",\"inputs\":{\"rtudawlpjfel\":\"\\\"dataiuxegth\\\"\",\"bgqnz\":\"\\\"dataerppt\\\"\",\"ialwc\":\"\\\"datanhii\\\"\",\"ccgzpraoxnyu\":\"\\\"datagckbb\\\"\"},\"outputs\":{\"qdx\":\"\\\"datatsgftipwcxbyubh\\\"\"}}]},\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"pnuhzafccnu\",\"type\":\"EdgeZone\"},\"eTag\":\"gbylbuig\",\"id\":\"vatvcrkd\",\"name\":\"b\",\"type\":\"bqxvhcsyhzlwxae\"}")
             .toObject(ExecutionInner.class);
-        Assertions.assertEquals("foudor", model.properties().workflowVersionId());
-        Assertions.assertEquals("qqihedsvqwthmk", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
+        Assertions.assertEquals("bjb", model.properties().workflowVersionId());
+        Assertions.assertEquals("pnuhzafccnu", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecutionInner model = new ExecutionInner()
-            .withProperties(new ExecutionProperties().withWorkflowVersionId("foudor").withSpecification(mapOf()))
+            .withProperties(new ExecutionProperties().withWorkflowVersionId("bjb")
+                .withSpecification(mapOf("gmuwdchozfnkf",
+                    BinaryData.fromBytes("\"dataybvitvqkjyaznumt\"".getBytes(StandardCharsets.UTF_8)), "oaiknaqlnuwig",
+                    BinaryData.fromBytes("\"dataxlvxnoakiz\"".getBytes(StandardCharsets.UTF_8)))))
             .withExtendedLocation(
-                new ExtendedLocation().withName("qqihedsvqwthmk").withType(ExtendedLocationType.CUSTOM_LOCATION));
+                new ExtendedLocation().withName("pnuhzafccnu").withType(ExtendedLocationType.EDGE_ZONE));
         model = BinaryData.fromObject(model).toObject(ExecutionInner.class);
-        Assertions.assertEquals("foudor", model.properties().workflowVersionId());
-        Assertions.assertEquals("qqihedsvqwthmk", model.extendedLocation().name());
-        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.extendedLocation().type());
+        Assertions.assertEquals("bjb", model.properties().workflowVersionId());
+        Assertions.assertEquals("pnuhzafccnu", model.extendedLocation().name());
+        Assertions.assertEquals(ExtendedLocationType.EDGE_ZONE, model.extendedLocation().type());
     }
 
     // Use "Map.of" if available

@@ -17,6 +17,11 @@ public final class JobType extends ExpandableStringEnum<JobType> {
     public static final JobType DEPLOY = fromString("deploy");
 
     /**
+     * A publish job.
+     */
+    public static final JobType PUBLISH = fromString("publish");
+
+    /**
      * A staging job.
      */
     public static final JobType STAGING = fromString("staging");
@@ -25,6 +30,11 @@ public final class JobType extends ExpandableStringEnum<JobType> {
      * A validation job.
      */
     public static final JobType EXTERNAL_VALIDATION = fromString("externalValidation");
+
+    /**
+     * An Uninstall job.
+     */
+    public static final JobType UNINSTALL = fromString("uninstall");
 
     /**
      * Creates a new instance of JobType value.

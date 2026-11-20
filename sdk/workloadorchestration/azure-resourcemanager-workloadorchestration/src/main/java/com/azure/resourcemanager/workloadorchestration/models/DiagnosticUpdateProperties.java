@@ -16,10 +16,24 @@ import java.io.IOException;
  */
 @Immutable
 public final class DiagnosticUpdateProperties implements JsonSerializable<DiagnosticUpdateProperties> {
+    /*
+     * The status of the last operation.
+     */
+    private ProvisioningState provisioningState;
+
     /**
      * Creates an instance of DiagnosticUpdateProperties class.
      */
     public DiagnosticUpdateProperties() {
+    }
+
+    /**
+     * Get the provisioningState property: The status of the last operation.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -46,7 +60,12 @@ public final class DiagnosticUpdateProperties implements JsonSerializable<Diagno
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                reader.skipChildren();
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedDiagnosticUpdateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
             }
 
             return deserializedDiagnosticUpdateProperties;

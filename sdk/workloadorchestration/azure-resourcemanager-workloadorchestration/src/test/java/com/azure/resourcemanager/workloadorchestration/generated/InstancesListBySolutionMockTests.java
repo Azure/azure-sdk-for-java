@@ -25,7 +25,7 @@ public final class InstancesListBySolutionMockTests {
     @Test
     public void testListBySolution() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"solutionVersionId\":\"hlzvfictnkjj\",\"targetId\":\"gcwn\",\"activeState\":\"inactive\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"fyrtogmhmjp\"},\"solutionScope\":\"cdf\",\"status\":{\"lastModified\":\"2021-09-25T01:25:06Z\",\"deployed\":1104557547,\"expectedRunningJobId\":495145104,\"runningJobId\":806895875,\"status\":\"mseharx\",\"statusDetails\":\"vqnrxtmbpj\",\"generation\":1341207363,\"targetStatuses\":[{\"name\":\"hrsidq\",\"status\":\"l\",\"componentStatuses\":[{},{},{}]},{\"name\":\"kft\",\"status\":\"atw\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"u\",\"status\":\"ym\",\"componentStatuses\":[{},{},{},{}]},{\"name\":\"jhp\",\"status\":\"vjqdvdwkq\",\"componentStatuses\":[{},{},{},{}]}]},\"deploymentTimestampEpoch\":5810045625940459054,\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"aavuagntetaout\",\"type\":\"CustomLocation\"},\"eTag\":\"ctuhspfefyihduye\",\"id\":\"ldphmtybkcgs\",\"name\":\"thhllnmwyne\",\"type\":\"x\"}]}";
+            = "{\"value\":[{\"properties\":{\"solutionVersionId\":\"e\",\"targetId\":\"vvpxjoeg\",\"activeState\":\"active\",\"reconciliationPolicy\":{\"state\":\"active\",\"interval\":\"leuidpmton\"},\"solutionScope\":\"gnhtmeplhbpjbap\",\"status\":{\"lastModified\":\"2021-01-28T04:40:28Z\",\"deployed\":1930840208,\"expectedRunningJobId\":46117438,\"runningJobId\":293685955,\"status\":\"gjiuaiqpmnufzhrc\",\"statusDetails\":\"wwuzd\",\"generation\":1313685247,\"targetStatuses\":[{\"name\":\"ivjmxmlitqdsjipd\",\"status\":\"scotyx\",\"componentStatuses\":[{},{}]},{\"name\":\"fefndslvrqoemwsi\",\"status\":\"ailwdqmqfyd\",\"componentStatuses\":[{}]}]},\"deploymentTimestampEpoch\":4969443878930869226,\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"lgwgnamku\",\"type\":\"CustomLocation\"},\"eTag\":\"uyuafixlxicw\",\"id\":\"th\",\"name\":\"cfmfzcfasfodro\",\"type\":\"alvngtwy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,17 @@ public final class InstancesListBySolutionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Instance> response
-            = manager.instances().listBySolution("fununmpzk", "vfy", "fkd", com.azure.core.util.Context.NONE);
+            = manager.instances().listBySolution("ugkw", "rq", "rpahuuonjkkxuk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hlzvfictnkjj", response.iterator().next().properties().solutionVersionId());
-        Assertions.assertEquals("gcwn", response.iterator().next().properties().targetId());
-        Assertions.assertEquals(ActiveState.INACTIVE, response.iterator().next().properties().activeState());
+        Assertions.assertEquals("e", response.iterator().next().properties().solutionVersionId());
+        Assertions.assertEquals("vvpxjoeg", response.iterator().next().properties().targetId());
+        Assertions.assertEquals(ActiveState.ACTIVE, response.iterator().next().properties().activeState());
         Assertions.assertEquals(ReconciliationState.ACTIVE,
             response.iterator().next().properties().reconciliationPolicy().state());
-        Assertions.assertEquals("fyrtogmhmjp",
+        Assertions.assertEquals("leuidpmton",
             response.iterator().next().properties().reconciliationPolicy().interval());
-        Assertions.assertEquals("cdf", response.iterator().next().properties().solutionScope());
-        Assertions.assertEquals("aavuagntetaout", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("gnhtmeplhbpjbap", response.iterator().next().properties().solutionScope());
+        Assertions.assertEquals("lgwgnamku", response.iterator().next().extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION,
             response.iterator().next().extendedLocation().type());
     }
