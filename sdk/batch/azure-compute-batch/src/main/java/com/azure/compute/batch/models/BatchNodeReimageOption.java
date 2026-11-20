@@ -34,14 +34,6 @@ public final class BatchNodeReimageOption extends ExpandableStringEnum<BatchNode
     public static final BatchNodeReimageOption TASK_COMPLETION = fromString("taskcompletion");
 
     /**
-     * Deprecated, we encourage you to upload task data to Azure Storage in your task and use `TaskCompletion` instead.
-     * Allow currently running Tasks to complete, then wait for all Task data retention periods to expire. Schedule no
-     * new Tasks while waiting. Reimage the Compute Node when all Task retention periods have expired.
-     */
-    @Generated
-    public static final BatchNodeReimageOption RETAINED_DATA = fromString("retaineddata");
-
-    /**
      * Creates a new instance of BatchNodeReimageOption value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

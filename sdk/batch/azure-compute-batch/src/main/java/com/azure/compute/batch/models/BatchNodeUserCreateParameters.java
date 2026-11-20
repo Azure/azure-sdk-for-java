@@ -70,14 +70,14 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
     }
 
     /**
-     * Get the admin property: Whether the Account should be an administrator on the Compute Node. The default value is
-     * false.
+     * Get the isAdmin property: Whether the Account should be an administrator on the Compute Node. The default value
+     * is false.
      *
-     * @return the admin value.
+     * @return the isAdmin value.
      */
     @Generated
     public Boolean isAdmin() {
-        return this.admin;
+        return this.isAdmin;
     }
 
     /**
@@ -164,7 +164,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeBooleanField("isAdmin", this.admin);
+        jsonWriter.writeBooleanField("isAdmin", this.isAdmin);
         jsonWriter.writeStringField("expiryTime",
             this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
         jsonWriter.writeStringField("password", this.password);
@@ -185,7 +185,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
     public static BatchNodeUserCreateParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            Boolean admin = null;
+            Boolean isAdmin = null;
             OffsetDateTime expiryTime = null;
             String password = null;
             String sshPublicKey = null;
@@ -195,7 +195,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("isAdmin".equals(fieldName)) {
-                    admin = reader.getNullable(JsonReader::getBoolean);
+                    isAdmin = reader.getNullable(JsonReader::getBoolean);
                 } else if ("expiryTime".equals(fieldName)) {
                     expiryTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -209,7 +209,7 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
             }
             BatchNodeUserCreateParameters deserializedBatchNodeUserCreateParameters
                 = new BatchNodeUserCreateParameters(name);
-            deserializedBatchNodeUserCreateParameters.admin = admin;
+            deserializedBatchNodeUserCreateParameters.isAdmin = isAdmin;
             deserializedBatchNodeUserCreateParameters.expiryTime = expiryTime;
             deserializedBatchNodeUserCreateParameters.password = password;
             deserializedBatchNodeUserCreateParameters.sshPublicKey = sshPublicKey;
@@ -221,18 +221,18 @@ public final class BatchNodeUserCreateParameters implements JsonSerializable<Bat
      * Whether the Account should be an administrator on the Compute Node. The default value is false.
      */
     @Generated
-    private Boolean admin;
+    private Boolean isAdmin;
 
     /**
-     * Set the admin property: Whether the Account should be an administrator on the Compute Node. The default value is
-     * false.
+     * Set the isAdmin property: Whether the Account should be an administrator on the Compute Node. The default value
+     * is false.
      *
-     * @param admin the admin value to set.
+     * @param isAdmin the isAdmin value to set.
      * @return the BatchNodeUserCreateParameters object itself.
      */
     @Generated
-    public BatchNodeUserCreateParameters setAdmin(Boolean admin) {
-        this.admin = admin;
+    public BatchNodeUserCreateParameters setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
         return this;
     }
 }

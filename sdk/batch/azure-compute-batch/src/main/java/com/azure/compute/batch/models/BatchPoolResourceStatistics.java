@@ -13,7 +13,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 /**
  * Statistics related to resource consumption by Compute Nodes in a Pool.
@@ -256,8 +255,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
         jsonWriter.writeDoubleField("peakMemoryGiB", this.peakMemoryGiB);
         jsonWriter.writeDoubleField("avgDiskGiB", this.avgDiskGiB);
         jsonWriter.writeDoubleField("peakDiskGiB", this.peakDiskGiB);
-        jsonWriter.writeStringField("diskReadIOps", Objects.toString(this.diskReadIops, null));
-        jsonWriter.writeStringField("diskWriteIOps", Objects.toString(this.diskWriteIops, null));
+        jsonWriter.writeLongField("diskReadIOps", this.diskReadIops);
+        jsonWriter.writeLongField("diskWriteIOps", this.diskWriteIops);
         jsonWriter.writeDoubleField("diskReadGiB", this.diskReadGiB);
         jsonWriter.writeDoubleField("diskWriteGiB", this.diskWriteGiB);
         jsonWriter.writeDoubleField("networkReadGiB", this.networkReadGiB);
@@ -284,8 +283,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
             double peakMemoryGiB = 0.0;
             double avgDiskGiB = 0.0;
             double peakDiskGiB = 0.0;
-            long diskReadIops = Long.parseLong("0");
-            long diskWriteIops = Long.parseLong("0");
+            long diskReadIops = 0L;
+            long diskWriteIops = 0L;
             double diskReadGiB = 0.0;
             double diskWriteGiB = 0.0;
             double networkReadGiB = 0.0;
@@ -310,9 +309,9 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
                 } else if ("peakDiskGiB".equals(fieldName)) {
                     peakDiskGiB = reader.getDouble();
                 } else if ("diskReadIOps".equals(fieldName)) {
-                    diskReadIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    diskReadIops = Long.parseLong(reader.getString());
                 } else if ("diskWriteIOps".equals(fieldName)) {
-                    diskWriteIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    diskWriteIops = Long.parseLong(reader.getString());
                 } else if ("diskReadGiB".equals(fieldName)) {
                     diskReadGiB = reader.getDouble();
                 } else if ("diskWriteGiB".equals(fieldName)) {

@@ -2,7 +2,23 @@
 
 ## 1.0.0 (2026-08-17)
 
+### Features Added
+
+- Added support for Azure Batch service API version `2026-10-01`.
+- Added VM SKU profiles and allocation strategies for instance mix pools.
+- Added hardware profiles, VM size properties, placement, and resiliency policies to virtual machine configuration.
+- Added public IPv4 and IPv6 addresses to `BatchNode`.
+
 ### Breaking Changes
+
+- Removed `listPoolUsageMetrics` from `BatchClient` and `BatchAsyncClient`, along with
+  `BatchPoolUsageMetrics`, `BatchPoolUsageMetricsListOptions`, and `BatchPoolUsageStatistics`.
+- Removed `getUsageStatistics()` from `BatchPoolStatistics`.
+- Renamed `BatchOSType` to `OsType`.
+- Renamed `BatchNodeUserCreateParameters.setAdmin()` to `setIsAdmin()` and
+  `ContainerHostBatchBindMountEntry.setReadOnly()` to `setIsReadOnly()`.
+- Removed `RETAINED_DATA` from `BatchNodeDeallocateOption`, `BatchNodeDeallocationOption`,
+  `BatchNodeRebootKind`, and `BatchNodeReimageOption`.
 
 - Name changes for timeout methods:
   - `getTimeOutInSeconds()` -> `getTimeout()`
@@ -18,6 +34,7 @@
 
 ### Bugs Fixed
 
+- Preserved deserialization of pool disk I/O counters returned as strings by earlier service API versions.
 - Fixed a race condition that could cause bulk task creation to return before retrying tasks with server errors.
 
 ### Other Changes
