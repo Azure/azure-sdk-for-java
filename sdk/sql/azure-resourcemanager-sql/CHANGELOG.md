@@ -1,14 +1,68 @@
 # Release History
 
-## 2.56.0-beta.1 (Unreleased)
+## 2.56.0-beta.1 (2026-11-06)
 
-### Features Added
+- Package api-version 2026-08-01-preview.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.DataMaskingFunction` was modified
 
-### Other Changes
+* `toString()` was removed
+* `models.DataMaskingFunction[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+
+#### `models.DataMaskingRuleState` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+* `models.DataMaskingRuleState[] values()` -> `java.util.Collection values()`
+
+#### `models.PrivateEndpointProvisioningState` was modified
+
+* `READY` was removed
+* `APPROVING` was removed
+* `DROPPING` was removed
+* `REJECTING` was removed
+
+### Features Added
+
+* `models.ManagedInstanceAdministratorPrincipalType` was added
+
+* `models.LinkModeType` was added
+
+* `models.ImmutabilityStatus` was added
+
+* `models.EndpointTrustedRootCertificateInfo` was added
+
+* `models.DataSyncParticipantUserAssignedIdentity` was added
+
+* `models.DataSyncParticipantIdentityType` was added
+
+* `models.DataSyncParticipantIdentity` was added
+
+#### `models.ElasticPoolUpdate` was modified
+
+* `currentSku()` was added
+
+#### `models.DataMaskingFunction` was modified
+
+* `DataMaskingFunction()` was added
+
+#### `models.DatabaseUpdate` was modified
+
+* `provisioningState()` was added
+
+#### `models.DataMaskingRuleState` was modified
+
+* `DataMaskingRuleState()` was added
+
+#### `models.PrivateEndpointProvisioningState` was modified
+
+* `IN_PROGRESS` was added
+* `CREATED` was added
+* `SUCCEEDED` was added
+* `CANCELED` was added
 
 ## 2.55.1 (2026-11-02)
 
