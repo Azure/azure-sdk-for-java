@@ -25,50 +25,51 @@ public final class RelayNamespaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelayNamespaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"hzzvypyq\",\"status\":\"mzinpvswjdk\",\"createdAt\":\"2021-11-08T02:13:55Z\",\"updatedAt\":\"2021-06-03T00:49:48Z\",\"serviceBusEndpoint\":\"qxhcrmn\",\"metricId\":\"jtckwhdso\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"jxsqwpgrjbz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xv\"},\"provisioningState\":\"Failed\"},\"location\":\"xqabnmocpcysh\",\"id\":\"zafb\",\"name\":\"jjgpb\",\"type\":\"oq\"}],\"publicNetworkAccess\":\"Disabled\",\"minimumTlsVersion\":\"1.2\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"idtqajzyu\",\"tags\":{\"jkrlkhbzhfepg\":\"u\",\"paierh\":\"gqexzlocxs\",\"tjaodxobnb\":\"bcsglumma\"},\"id\":\"xkqpxo\",\"name\":\"ajionpimexgstxg\",\"type\":\"po\"}")
+            "{\"properties\":{\"provisioningState\":\"udgwdslfho\",\"status\":\"mcy\",\"createdAt\":\"2021-07-29T20:13:33Z\",\"updatedAt\":\"2021-07-05T23:51:59Z\",\"serviceBusEndpoint\":\"npgacftade\",\"metricId\":\"nltyfsoppusuesnz\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"vorxzdmohct\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"wxdndnvowgujjug\"},\"provisioningState\":\"Updating\"},\"location\":\"glhslazj\",\"id\":\"ggd\",\"name\":\"jixhbk\",\"type\":\"ofqweykhmenevfye\"}],\"publicNetworkAccess\":\"SecuredByPerimeter\",\"minimumTlsVersion\":\"1.3\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Standard\"},\"location\":\"yvdcsitynnaa\",\"tags\":{\"vhezrkgqhcj\":\"ctehfiqscjey\",\"sle\":\"efovgmk\"},\"id\":\"yvxyqjp\",\"name\":\"cattpngjcrcczsq\",\"type\":\"jh\"}")
             .toObject(RelayNamespaceInner.class);
-        Assertions.assertEquals("idtqajzyu", model.location());
-        Assertions.assertEquals("u", model.tags().get("jkrlkhbzhfepg"));
+        Assertions.assertEquals("yvdcsitynnaa", model.location());
+        Assertions.assertEquals("ctehfiqscjey", model.tags().get("vhezrkgqhcj"));
         Assertions.assertEquals(SkuName.STANDARD, model.sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals("jxsqwpgrjbz", model.privateEndpointConnections().get(0).privateEndpoint().id());
-        Assertions.assertEquals(PrivateLinkConnectionStatus.REJECTED,
+        Assertions.assertEquals("vorxzdmohct", model.privateEndpointConnections().get(0).privateEndpoint().id());
+        Assertions.assertEquals(PrivateLinkConnectionStatus.DISCONNECTED,
             model.privateEndpointConnections().get(0).privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("xv",
+        Assertions.assertEquals("wxdndnvowgujjug",
             model.privateEndpointConnections().get(0).privateLinkServiceConnectionState().description());
-        Assertions.assertEquals(EndPointProvisioningState.FAILED,
+        Assertions.assertEquals(EndPointProvisioningState.UPDATING,
             model.privateEndpointConnections().get(0).provisioningState());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersion());
+        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
+        Assertions.assertEquals(TlsVersion.ONE_THREE, model.minimumTlsVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RelayNamespaceInner model
-            = new RelayNamespaceInner().withLocation("idtqajzyu")
-                .withTags(mapOf("jkrlkhbzhfepg", "u", "paierh", "gqexzlocxs", "tjaodxobnb", "bcsglumma"))
+            = new RelayNamespaceInner().withLocation("yvdcsitynnaa")
+                .withTags(mapOf("vhezrkgqhcj", "ctehfiqscjey", "sle", "efovgmk"))
                 .withSku(new Sku().withName(SkuName.STANDARD).withTier(SkuTier.STANDARD))
                 .withPrivateEndpointConnections(Arrays.asList(new PrivateEndpointConnectionInner()
-                    .withPrivateEndpoint(new PrivateEndpoint().withId("jxsqwpgrjbz"))
+                    .withPrivateEndpoint(new PrivateEndpoint().withId("vorxzdmohct"))
                     .withPrivateLinkServiceConnectionState(
-                        new ConnectionState().withStatus(PrivateLinkConnectionStatus.REJECTED).withDescription("xv"))
-                    .withProvisioningState(EndPointProvisioningState.FAILED)))
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                .withMinimumTlsVersion(TlsVersion.ONE_TWO);
+                        new ConnectionState().withStatus(PrivateLinkConnectionStatus.DISCONNECTED)
+                            .withDescription("wxdndnvowgujjug"))
+                    .withProvisioningState(EndPointProvisioningState.UPDATING)))
+                .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
+                .withMinimumTlsVersion(TlsVersion.ONE_THREE);
         model = BinaryData.fromObject(model).toObject(RelayNamespaceInner.class);
-        Assertions.assertEquals("idtqajzyu", model.location());
-        Assertions.assertEquals("u", model.tags().get("jkrlkhbzhfepg"));
+        Assertions.assertEquals("yvdcsitynnaa", model.location());
+        Assertions.assertEquals("ctehfiqscjey", model.tags().get("vhezrkgqhcj"));
         Assertions.assertEquals(SkuName.STANDARD, model.sku().name());
         Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals("jxsqwpgrjbz", model.privateEndpointConnections().get(0).privateEndpoint().id());
-        Assertions.assertEquals(PrivateLinkConnectionStatus.REJECTED,
+        Assertions.assertEquals("vorxzdmohct", model.privateEndpointConnections().get(0).privateEndpoint().id());
+        Assertions.assertEquals(PrivateLinkConnectionStatus.DISCONNECTED,
             model.privateEndpointConnections().get(0).privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("xv",
+        Assertions.assertEquals("wxdndnvowgujjug",
             model.privateEndpointConnections().get(0).privateLinkServiceConnectionState().description());
-        Assertions.assertEquals(EndPointProvisioningState.FAILED,
+        Assertions.assertEquals(EndPointProvisioningState.UPDATING,
             model.privateEndpointConnections().get(0).provisioningState());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(TlsVersion.ONE_TWO, model.minimumTlsVersion());
+        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.publicNetworkAccess());
+        Assertions.assertEquals(TlsVersion.ONE_THREE, model.minimumTlsVersion());
     }
 
     // Use "Map.of" if available

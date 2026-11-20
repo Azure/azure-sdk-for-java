@@ -26,6 +26,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.relay.fluent.ClustersClient;
 import com.azure.resourcemanager.relay.fluent.HybridConnectionsClient;
 import com.azure.resourcemanager.relay.fluent.NamespacesClient;
 import com.azure.resourcemanager.relay.fluent.OperationsClient;
@@ -202,6 +203,20 @@ public final class RelayManagementClientImpl implements RelayManagementClient {
     }
 
     /**
+     * The ClustersClient object to access its operations.
+     */
+    private final ClustersClient clusters;
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     * 
+     * @return the ClustersClient object.
+     */
+    public ClustersClient getClusters() {
+        return this.clusters;
+    }
+
+    /**
      * The NamespacesClient object to access its operations.
      */
     private final NamespacesClient namespaces;
@@ -232,12 +247,13 @@ public final class RelayManagementClientImpl implements RelayManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-01";
+        this.apiVersion = "2026-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.hybridConnections = new HybridConnectionsClientImpl(this);
         this.wcfRelays = new WcfRelaysClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.clusters = new ClustersClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
     }
 

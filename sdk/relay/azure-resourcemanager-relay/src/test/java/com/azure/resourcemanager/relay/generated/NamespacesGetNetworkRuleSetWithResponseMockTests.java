@@ -24,7 +24,7 @@ public final class NamespacesGetNetworkRuleSetWithResponseMockTests {
     @Test
     public void testGetNetworkRuleSetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"trustedServiceAccessEnabled\":true,\"defaultAction\":\"Deny\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"ipRules\":[{\"ipMask\":\"tfudxepx\",\"action\":\"Allow\"},{\"ipMask\":\"gvr\",\"action\":\"Allow\"},{\"ipMask\":\"k\",\"action\":\"Allow\"}]},\"id\":\"i\",\"name\":\"dblx\",\"type\":\"wi\"}";
+            = "{\"properties\":{\"trustedServiceAccessEnabled\":false,\"defaultAction\":\"Deny\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"ipRules\":[{\"ipMask\":\"ncj\",\"action\":\"Allow\"},{\"ipMask\":\"urgkakmokzhjjk\",\"action\":\"Allow\"},{\"ipMask\":\"mouwqlgzrfzeey\",\"action\":\"Allow\"},{\"ipMask\":\"ikayuhqlbjbsybb\",\"action\":\"Allow\"}]},\"id\":\"t\",\"name\":\"dgmfpgvmpipasl\",\"type\":\"haq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class NamespacesGetNetworkRuleSetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NetworkRuleSet response = manager.namespaces()
-            .getNetworkRuleSetWithResponse("mtdaa", "gdv", com.azure.core.util.Context.NONE)
+            .getNetworkRuleSetWithResponse("jivfxzsjabib", "ystawfsdjpvkvp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertTrue(response.trustedServiceAccessEnabled());
+        Assertions.assertFalse(response.trustedServiceAccessEnabled());
         Assertions.assertEquals(DefaultAction.DENY, response.defaultAction());
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, response.publicNetworkAccess());
-        Assertions.assertEquals("tfudxepx", response.ipRules().get(0).ipMask());
+        Assertions.assertEquals("ncj", response.ipRules().get(0).ipMask());
         Assertions.assertEquals(NetworkRuleIPAction.ALLOW, response.ipRules().get(0).action());
     }
 }

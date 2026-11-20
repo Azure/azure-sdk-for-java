@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
+     * x-ms-original-file: 2026-07-01-preview/NameSpaces/RelayNameSpaceListBySubscription.json
      */
     /**
      * Sample code: RelayNameSpaceListBySubscription.

@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class NamespacesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"message\":\"fjhdg\",\"nameAvailable\":true,\"reason\":\"NameInLockdown\"}";
+        String responseStr = "{\"message\":\"nalghfkvtvsexso\",\"nameAvailable\":false,\"reason\":\"InvalidName\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class NamespacesCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResult response = manager.namespaces()
-            .checkNameAvailabilityWithResponse(new CheckNameAvailability().withName("ikh"),
+            .checkNameAvailabilityWithResponse(new CheckNameAvailability().withName("qmqhldvriii"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertTrue(response.nameAvailable());
-        Assertions.assertEquals(UnavailableReason.NAME_IN_LOCKDOWN, response.reason());
+        Assertions.assertFalse(response.nameAvailable());
+        Assertions.assertEquals(UnavailableReason.INVALID_NAME, response.reason());
     }
 }

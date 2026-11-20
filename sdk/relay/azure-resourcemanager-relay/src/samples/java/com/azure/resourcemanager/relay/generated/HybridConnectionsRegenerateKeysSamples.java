@@ -12,7 +12,7 @@ import com.azure.resourcemanager.relay.models.RegenerateAccessKeyParameters;
  */
 public final class HybridConnectionsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
+     * x-ms-original-file: 2026-07-01-preview/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json
      */
     /**
      * Sample code: RelayHybridConnectionAuthorizationRuleRegenerateKey.

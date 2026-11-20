@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class WcfRelaysListByNamespaceSamples {
     /*
-     * x-ms-original-file: 2026-01-01/Relay/RelayListAll.json
+     * x-ms-original-file: 2026-07-01-preview/Relay/RelayListAll.json
      */
     /**
      * Sample code: RelayListAll.

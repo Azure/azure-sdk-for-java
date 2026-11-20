@@ -9,7 +9,7 @@ package com.azure.resourcemanager.relay.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-01-01/RelayOperations_List.json
+     * x-ms-original-file: 2026-07-01-preview/RelayOperations_List.json
      */
     /**
      * Sample code: RelayOperationsList.
