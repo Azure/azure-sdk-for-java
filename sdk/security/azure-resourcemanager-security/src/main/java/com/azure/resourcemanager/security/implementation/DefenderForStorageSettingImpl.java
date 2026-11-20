@@ -11,7 +11,7 @@ import com.azure.resourcemanager.security.fluent.models.DefenderForStorageSettin
 import com.azure.resourcemanager.security.models.DefenderForStorageSetting;
 import com.azure.resourcemanager.security.models.DefenderForStorageSettingProperties;
 import com.azure.resourcemanager.security.models.MalwareScan;
-import com.azure.resourcemanager.security.models.SettingName;
+import com.azure.resourcemanager.security.models.StartMalwareScanRequest;
 
 public final class DefenderForStorageSettingImpl
     implements DefenderForStorageSetting, DefenderForStorageSetting.Definition {
@@ -55,7 +55,7 @@ public final class DefenderForStorageSettingImpl
 
     private String resourceId;
 
-    private SettingName settingName;
+    private String settingName;
 
     public DefenderForStorageSettingImpl withExistingResourceId(String resourceId) {
         this.resourceId = resourceId;
@@ -78,7 +78,7 @@ public final class DefenderForStorageSettingImpl
         return this;
     }
 
-    DefenderForStorageSettingImpl(SettingName name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    DefenderForStorageSettingImpl(String name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = new DefenderForStorageSettingInner();
         this.serviceManager = serviceManager;
         this.settingName = name;
@@ -100,8 +100,9 @@ public final class DefenderForStorageSettingImpl
         return this;
     }
 
-    public Response<MalwareScan> startMalwareScanWithResponse(Context context) {
-        return serviceManager.defenderForStorages().startMalwareScanWithResponse(resourceId, settingName, context);
+    public Response<MalwareScan> startMalwareScanWithResponse(StartMalwareScanRequest body, Context context) {
+        return serviceManager.defenderForStorages()
+            .startMalwareScanWithResponse(resourceId, settingName, body, context);
     }
 
     public MalwareScan startMalwareScan() {

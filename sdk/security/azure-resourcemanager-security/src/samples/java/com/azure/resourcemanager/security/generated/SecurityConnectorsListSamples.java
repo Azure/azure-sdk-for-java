@@ -9,7 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecurityConnectorsListSamples {
     /*
-     * x-ms-original-file: 2024-08-01-preview/SecurityConnectors/GetSecurityConnectorsSubscription_example.json
+     * x-ms-original-file: 2026-08-01-preview/SecurityConnectors/GetSecurityConnectorsSubscription_example.json
      */
     /**
      * Sample code: List all security connectors of a specified subscription.

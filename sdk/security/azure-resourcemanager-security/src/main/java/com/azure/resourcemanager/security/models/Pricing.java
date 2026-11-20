@@ -141,6 +141,28 @@ public interface Pricing {
     List<String> replacedBy();
 
     /**
+     * Gets the securityOperatorResourceId property: Resource ID of the security operator associated with the pricing
+     * configuration.
+     * 
+     * @return the securityOperatorResourceId value.
+     */
+    String securityOperatorResourceId();
+
+    /**
+     * Gets the originatedFrom property: Indicates the origin of the most recent configuration change.
+     * 
+     * @return the originatedFrom value.
+     */
+    OriginatedFrom originatedFrom();
+
+    /**
+     * Gets the managedBy property: Indicates who exclusively manages the pricing configuration.
+     * 
+     * @return the managedBy value.
+     */
+    String managedBy();
+
+    /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.PricingInner object.
      * 
      * @return the inner object.

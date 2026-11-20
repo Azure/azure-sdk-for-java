@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.resourcemanager.security.models.SettingName;
-
 /**
  * Samples for DefenderForStorage Get.
  */
 public final class DefenderForStorageGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/DefenderForStorage/GetDefenderForStorageSettings_example.json
+     * x-ms-original-file: 2026-09-01/DefenderForStorage/GetDefenderForStorageSettings_example.json
      */
     /**
      * Sample code: Gets the Defender for Storage settings for the specified resource.
@@ -23,6 +21,6 @@ public final class DefenderForStorageGetSamples {
         manager.defenderForStorages()
             .getWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount",
-                SettingName.CURRENT, com.azure.core.util.Context.NONE);
+                "current", com.azure.core.util.Context.NONE);
     }
 }

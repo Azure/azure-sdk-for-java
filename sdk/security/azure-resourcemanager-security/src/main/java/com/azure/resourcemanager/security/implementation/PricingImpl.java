@@ -9,6 +9,7 @@ import com.azure.resourcemanager.security.fluent.models.PricingInner;
 import com.azure.resourcemanager.security.models.Enforce;
 import com.azure.resourcemanager.security.models.Extension;
 import com.azure.resourcemanager.security.models.Inherited;
+import com.azure.resourcemanager.security.models.OriginatedFrom;
 import com.azure.resourcemanager.security.models.Pricing;
 import com.azure.resourcemanager.security.models.PricingTier;
 import com.azure.resourcemanager.security.models.ResourcesCoverageStatus;
@@ -95,6 +96,18 @@ public final class PricingImpl implements Pricing {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public String securityOperatorResourceId() {
+        return this.innerModel().securityOperatorResourceId();
+    }
+
+    public OriginatedFrom originatedFrom() {
+        return this.innerModel().originatedFrom();
+    }
+
+    public String managedBy() {
+        return this.innerModel().managedBy();
     }
 
     public PricingInner innerModel() {

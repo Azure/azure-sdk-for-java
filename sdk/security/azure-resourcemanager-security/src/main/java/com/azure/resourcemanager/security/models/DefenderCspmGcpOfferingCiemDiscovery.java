@@ -32,6 +32,11 @@ public final class DefenderCspmGcpOfferingCiemDiscovery
      */
     private String azureActiveDirectoryAppName;
 
+    /*
+     * Is audit log ingestion enabled for the Permissions Management offering
+     */
+    private Boolean enableAuditLogIngestion;
+
     /**
      * Creates an instance of DefenderCspmGcpOfferingCiemDiscovery class.
      */
@@ -105,6 +110,26 @@ public final class DefenderCspmGcpOfferingCiemDiscovery
     }
 
     /**
+     * Get the enableAuditLogIngestion property: Is audit log ingestion enabled for the Permissions Management offering.
+     * 
+     * @return the enableAuditLogIngestion value.
+     */
+    public Boolean enableAuditLogIngestion() {
+        return this.enableAuditLogIngestion;
+    }
+
+    /**
+     * Set the enableAuditLogIngestion property: Is audit log ingestion enabled for the Permissions Management offering.
+     * 
+     * @param enableAuditLogIngestion the enableAuditLogIngestion value to set.
+     * @return the DefenderCspmGcpOfferingCiemDiscovery object itself.
+     */
+    public DefenderCspmGcpOfferingCiemDiscovery withEnableAuditLogIngestion(Boolean enableAuditLogIngestion) {
+        this.enableAuditLogIngestion = enableAuditLogIngestion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -121,6 +146,7 @@ public final class DefenderCspmGcpOfferingCiemDiscovery
         jsonWriter.writeStringField("workloadIdentityProviderId", this.workloadIdentityProviderId);
         jsonWriter.writeStringField("serviceAccountEmailAddress", this.serviceAccountEmailAddress);
         jsonWriter.writeStringField("azureActiveDirectoryAppName", this.azureActiveDirectoryAppName);
+        jsonWriter.writeBooleanField("enableAuditLogIngestion", this.enableAuditLogIngestion);
         return jsonWriter.writeEndObject();
     }
 
@@ -146,6 +172,9 @@ public final class DefenderCspmGcpOfferingCiemDiscovery
                     deserializedDefenderCspmGcpOfferingCiemDiscovery.serviceAccountEmailAddress = reader.getString();
                 } else if ("azureActiveDirectoryAppName".equals(fieldName)) {
                     deserializedDefenderCspmGcpOfferingCiemDiscovery.azureActiveDirectoryAppName = reader.getString();
+                } else if ("enableAuditLogIngestion".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOfferingCiemDiscovery.enableAuditLogIngestion
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

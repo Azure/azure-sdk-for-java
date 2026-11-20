@@ -11,7 +11,6 @@ import com.azure.resourcemanager.security.models.MalwareScanningProperties;
 import com.azure.resourcemanager.security.models.OnUploadFilters;
 import com.azure.resourcemanager.security.models.OnUploadProperties;
 import com.azure.resourcemanager.security.models.SensitiveDataDiscoveryProperties;
-import com.azure.resourcemanager.security.models.SettingName;
 import java.util.Arrays;
 
 /**
@@ -19,7 +18,7 @@ import java.util.Arrays;
  */
 public final class DefenderForStorageCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/DefenderForStorage/PutDefenderForStorageSettings_example.json
+     * x-ms-original-file: 2026-09-01/DefenderForStorage/PutDefenderForStorageSettings_example.json
      */
     /**
      * Sample code: Creates or updates the Defender for Storage settings on a specified resource.
@@ -29,7 +28,7 @@ public final class DefenderForStorageCreateSamples {
     public static void createsOrUpdatesTheDefenderForStorageSettingsOnASpecifiedResource(
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager.defenderForStorages()
-            .define(SettingName.CURRENT)
+            .define("current")
             .withExistingResourceId(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount")
             .withProperties(
@@ -42,12 +41,16 @@ public final class DefenderForStorageCreateSamples {
                                     .withExcludeBlobsWithPrefix(Arrays.asList("unscanned-container",
                                         "sample-container/logs"))
                                     .withExcludeBlobsWithSuffix(Arrays.asList(".log", ".jpg"))
-                                    .withExcludeBlobsLargerThan(1024)))
+                                    .withExcludeBlobsLargerThan(1024L)))
                         .withScanResultsEventGridTopicResourceId(
                             "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.EventGrid/topics/sampletopic")
                         .withBlobScanResultsOptions(BlobScanResultsOptions.BLOB_INDEX_TAGS)
-                        .withAutomatedResponse(AutomatedResponseType.BLOB_SOFT_DELETE))
-                    .withSensitiveDataDiscovery(new SensitiveDataDiscoveryProperties().withIsEnabled(true))
+                        .withAutomatedResponse(AutomatedResponseType.BLOB_SOFT_DELETE)
+                        .withScannerResourceId(
+                            "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/malwareScanningOperator"))
+                    .withSensitiveDataDiscovery(new SensitiveDataDiscoveryProperties().withIsEnabled(true)
+                        .withScannerResourceId(
+                            "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/sensitiveDataDiscoveryOperator"))
                     .withOverrideSubscriptionLevelSettings(true))
             .create();
     }

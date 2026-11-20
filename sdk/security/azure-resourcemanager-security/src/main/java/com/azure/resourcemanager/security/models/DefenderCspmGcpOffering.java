@@ -26,6 +26,11 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
     private DefenderCspmGcpOfferingCiemDiscovery ciemDiscovery;
 
     /*
+     * The GCP Defender CSPM Permissions Management configurations
+     */
+    private DefenderCspmGcpOfferingCiem ciem;
+
+    /*
      * The Microsoft Defender for CSPM VM scanning configuration
      */
     private DefenderCspmGcpOfferingVmScanners vmScanners;
@@ -80,6 +85,26 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
      */
     public DefenderCspmGcpOffering withCiemDiscovery(DefenderCspmGcpOfferingCiemDiscovery ciemDiscovery) {
         this.ciemDiscovery = ciemDiscovery;
+        return this;
+    }
+
+    /**
+     * Get the ciem property: The GCP Defender CSPM Permissions Management configurations.
+     * 
+     * @return the ciem value.
+     */
+    public DefenderCspmGcpOfferingCiem ciem() {
+        return this.ciem;
+    }
+
+    /**
+     * Set the ciem property: The GCP Defender CSPM Permissions Management configurations.
+     * 
+     * @param ciem the ciem value to set.
+     * @return the DefenderCspmGcpOffering object itself.
+     */
+    public DefenderCspmGcpOffering withCiem(DefenderCspmGcpOfferingCiem ciem) {
+        this.ciem = ciem;
         return this;
     }
 
@@ -178,6 +203,9 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
         if (ciemDiscovery() != null) {
             ciemDiscovery().validate();
         }
+        if (ciem() != null) {
+            ciem().validate();
+        }
         if (vmScanners() != null) {
             vmScanners().validate();
         }
@@ -200,6 +228,7 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
         jsonWriter.writeJsonField("ciemDiscovery", this.ciemDiscovery);
+        jsonWriter.writeJsonField("ciem", this.ciem);
         jsonWriter.writeJsonField("vmScanners", this.vmScanners);
         jsonWriter.writeJsonField("dataSensitivityDiscovery", this.dataSensitivityDiscovery);
         jsonWriter.writeJsonField("mdcContainersImageAssessment", this.mdcContainersImageAssessment);
@@ -229,6 +258,8 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
                 } else if ("ciemDiscovery".equals(fieldName)) {
                     deserializedDefenderCspmGcpOffering.ciemDiscovery
                         = DefenderCspmGcpOfferingCiemDiscovery.fromJson(reader);
+                } else if ("ciem".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOffering.ciem = DefenderCspmGcpOfferingCiem.fromJson(reader);
                 } else if ("vmScanners".equals(fieldName)) {
                     deserializedDefenderCspmGcpOffering.vmScanners = DefenderCspmGcpOfferingVmScanners.fromJson(reader);
                 } else if ("dataSensitivityDiscovery".equals(fieldName)) {

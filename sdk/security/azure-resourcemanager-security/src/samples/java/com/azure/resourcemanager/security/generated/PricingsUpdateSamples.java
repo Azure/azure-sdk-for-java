@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class PricingsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/PutPricingByNamePartialSuccess_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/PutPricingByNamePartialSuccess_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for CloudPosture plan) - partial success.
@@ -33,7 +33,7 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/PutPricingByName_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/PutPricingByName_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for CloudPosture plan).
@@ -48,7 +48,7 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/PutResourcePricingByNameContainers_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/PutResourcePricingByNameContainers_example.json
      */
     /**
      * Sample code: Update pricing on resource (example for Containers plan).
@@ -75,29 +75,7 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/PutResourcePricingByNameContainersACR_example.json
-     */
-    /**
-     * Sample code: Update pricing on resource (Container Registry ACR).
-     * 
-     * @param manager Entry point to SecurityManager.
-     */
-    public static void
-        updatePricingOnResourceContainerRegistryACR(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.pricings()
-            .updateWithResponse(
-                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myContainerRegistry",
-                "Containers",
-                new PricingInner().withPricingTier(PricingTier.STANDARD)
-                    .withExtensions(Arrays.asList(
-                        new Extension().withName("ContainerRegistriesVulnerabilityAssessments")
-                            .withIsEnabled(IsEnabled.TRUE),
-                        new Extension().withName("ContainerIntegrityContribution").withIsEnabled(IsEnabled.TRUE))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-01-01/Pricings/PutPricingVMsByName_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/PutPricingVMsByName_example.json
      */
     /**
      * Sample code: Update pricing on subscription (example for VirtualMachines plan).
@@ -113,7 +91,7 @@ public final class PricingsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-01-01/Pricings/PutResourcePricingByNameVirtualMachines_example.json
+     * x-ms-original-file: 2026-07-01/Pricings/PutResourcePricingByNameVirtualMachines_example.json
      */
     /**
      * Sample code: Update pricing on resource (example for VirtualMachines plan).

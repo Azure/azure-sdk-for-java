@@ -41,6 +41,21 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
     private DefenderForContainersAwsOfferingKinesisToS3 kinesisToS3;
 
     /*
+     * The installation method for the Defender for Containers agent.
+     */
+    private InstallationMethod installationMethod;
+
+    /*
+     * Is security gating enabled
+     */
+    private Boolean securityGatingEnabled;
+
+    /*
+     * Is defender anti-malware enabled
+     */
+    private Boolean containerAntiMalwareEnabled;
+
+    /*
      * Is audit logs data collection enabled
      */
     private Boolean enableAuditLogsAutoProvisioning;
@@ -176,6 +191,66 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
      */
     public DefenderForContainersAwsOffering withKinesisToS3(DefenderForContainersAwsOfferingKinesisToS3 kinesisToS3) {
         this.kinesisToS3 = kinesisToS3;
+        return this;
+    }
+
+    /**
+     * Get the installationMethod property: The installation method for the Defender for Containers agent.
+     * 
+     * @return the installationMethod value.
+     */
+    public InstallationMethod installationMethod() {
+        return this.installationMethod;
+    }
+
+    /**
+     * Set the installationMethod property: The installation method for the Defender for Containers agent.
+     * 
+     * @param installationMethod the installationMethod value to set.
+     * @return the DefenderForContainersAwsOffering object itself.
+     */
+    public DefenderForContainersAwsOffering withInstallationMethod(InstallationMethod installationMethod) {
+        this.installationMethod = installationMethod;
+        return this;
+    }
+
+    /**
+     * Get the securityGatingEnabled property: Is security gating enabled.
+     * 
+     * @return the securityGatingEnabled value.
+     */
+    public Boolean securityGatingEnabled() {
+        return this.securityGatingEnabled;
+    }
+
+    /**
+     * Set the securityGatingEnabled property: Is security gating enabled.
+     * 
+     * @param securityGatingEnabled the securityGatingEnabled value to set.
+     * @return the DefenderForContainersAwsOffering object itself.
+     */
+    public DefenderForContainersAwsOffering withSecurityGatingEnabled(Boolean securityGatingEnabled) {
+        this.securityGatingEnabled = securityGatingEnabled;
+        return this;
+    }
+
+    /**
+     * Get the containerAntiMalwareEnabled property: Is defender anti-malware enabled.
+     * 
+     * @return the containerAntiMalwareEnabled value.
+     */
+    public Boolean containerAntiMalwareEnabled() {
+        return this.containerAntiMalwareEnabled;
+    }
+
+    /**
+     * Set the containerAntiMalwareEnabled property: Is defender anti-malware enabled.
+     * 
+     * @param containerAntiMalwareEnabled the containerAntiMalwareEnabled value to set.
+     * @return the DefenderForContainersAwsOffering object itself.
+     */
+    public DefenderForContainersAwsOffering withContainerAntiMalwareEnabled(Boolean containerAntiMalwareEnabled) {
+        this.containerAntiMalwareEnabled = containerAntiMalwareEnabled;
         return this;
     }
 
@@ -393,6 +468,10 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
         jsonWriter.writeJsonField("kubernetesDataCollection", this.kubernetesDataCollection);
         jsonWriter.writeJsonField("cloudWatchToKinesis", this.cloudWatchToKinesis);
         jsonWriter.writeJsonField("kinesisToS3", this.kinesisToS3);
+        jsonWriter.writeStringField("installationMethod",
+            this.installationMethod == null ? null : this.installationMethod.toString());
+        jsonWriter.writeBooleanField("securityGatingEnabled", this.securityGatingEnabled);
+        jsonWriter.writeBooleanField("containerAntiMalwareEnabled", this.containerAntiMalwareEnabled);
         jsonWriter.writeBooleanField("enableAuditLogsAutoProvisioning", this.enableAuditLogsAutoProvisioning);
         jsonWriter.writeBooleanField("enableDefenderAgentAutoProvisioning", this.enableDefenderAgentAutoProvisioning);
         jsonWriter.writeBooleanField("enablePolicyAgentAutoProvisioning", this.enablePolicyAgentAutoProvisioning);
@@ -437,6 +516,15 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
                 } else if ("kinesisToS3".equals(fieldName)) {
                     deserializedDefenderForContainersAwsOffering.kinesisToS3
                         = DefenderForContainersAwsOfferingKinesisToS3.fromJson(reader);
+                } else if ("installationMethod".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.installationMethod
+                        = InstallationMethod.fromString(reader.getString());
+                } else if ("securityGatingEnabled".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.securityGatingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("containerAntiMalwareEnabled".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOffering.containerAntiMalwareEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableAuditLogsAutoProvisioning".equals(fieldName)) {
                     deserializedDefenderForContainersAwsOffering.enableAuditLogsAutoProvisioning
                         = reader.getNullable(JsonReader::getBoolean);
