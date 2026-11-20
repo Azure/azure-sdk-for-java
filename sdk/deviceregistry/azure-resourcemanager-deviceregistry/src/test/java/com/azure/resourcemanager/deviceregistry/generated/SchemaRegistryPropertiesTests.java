@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentity;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,24 +14,30 @@ public final class SchemaRegistryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryProperties model = BinaryData.fromString(
-            "{\"uuid\":\"vfcjnaeoisrvhmg\",\"namespace\":\"r\",\"displayName\":\"ukiscvwmzhw\",\"description\":\"efaxvxilc\",\"storageAccountContainerUrl\":\"tg\",\"provisioningState\":\"Canceled\"}")
+            "{\"uuid\":\"cqwogfnzjvusfzl\",\"namespace\":\"mozuxylfsb\",\"displayName\":\"adpysownbt\",\"description\":\"bugrj\",\"storageAccountContainerUrl\":\"cto\",\"outboundIdentity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"sofieypefojyqd\"},\"provisioningState\":\"Succeeded\"}")
             .toObject(SchemaRegistryProperties.class);
-        Assertions.assertEquals("r", model.namespace());
-        Assertions.assertEquals("ukiscvwmzhw", model.displayName());
-        Assertions.assertEquals("efaxvxilc", model.description());
-        Assertions.assertEquals("tg", model.storageAccountContainerUrl());
+        Assertions.assertEquals("mozuxylfsb", model.namespace());
+        Assertions.assertEquals("adpysownbt", model.displayName());
+        Assertions.assertEquals("bugrj", model.description());
+        Assertions.assertEquals("cto", model.storageAccountContainerUrl());
+        Assertions.assertEquals(OutboundIdentityType.SYSTEM_ASSIGNED, model.outboundIdentity().type());
+        Assertions.assertEquals("sofieypefojyqd", model.outboundIdentity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaRegistryProperties model = new SchemaRegistryProperties().withNamespace("r")
-            .withDisplayName("ukiscvwmzhw")
-            .withDescription("efaxvxilc")
-            .withStorageAccountContainerUrl("tg");
+        SchemaRegistryProperties model = new SchemaRegistryProperties().withNamespace("mozuxylfsb")
+            .withDisplayName("adpysownbt")
+            .withDescription("bugrj")
+            .withStorageAccountContainerUrl("cto")
+            .withOutboundIdentity(new OutboundIdentity().withType(OutboundIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentity("sofieypefojyqd"));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryProperties.class);
-        Assertions.assertEquals("r", model.namespace());
-        Assertions.assertEquals("ukiscvwmzhw", model.displayName());
-        Assertions.assertEquals("efaxvxilc", model.description());
-        Assertions.assertEquals("tg", model.storageAccountContainerUrl());
+        Assertions.assertEquals("mozuxylfsb", model.namespace());
+        Assertions.assertEquals("adpysownbt", model.displayName());
+        Assertions.assertEquals("bugrj", model.description());
+        Assertions.assertEquals("cto", model.storageAccountContainerUrl());
+        Assertions.assertEquals(OutboundIdentityType.SYSTEM_ASSIGNED, model.outboundIdentity().type());
+        Assertions.assertEquals("sofieypefojyqd", model.outboundIdentity().userAssignedIdentity());
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceregistry.models.BrokerStateStoreDestinationConfiguration;
 import com.azure.resourcemanager.deviceregistry.models.DatasetBrokerStateStoreDestination;
 import com.azure.resourcemanager.deviceregistry.models.DeviceRef;
+import com.azure.resourcemanager.deviceregistry.models.EventMqttDestination;
 import com.azure.resourcemanager.deviceregistry.models.EventStorageDestination;
 import com.azure.resourcemanager.deviceregistry.models.ExtendedLocation;
 import com.azure.resourcemanager.deviceregistry.models.MqttDestinationConfiguration;
@@ -15,6 +16,8 @@ import com.azure.resourcemanager.deviceregistry.models.MqttDestinationQos;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssetProperties;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDataset;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDatasetDataPoint;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredEvent;
+import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredEventGroup;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementAction;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementActionType;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredManagementGroup;
@@ -34,7 +37,7 @@ import java.util.Map;
  */
 public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/CreateOrReplace_NamespaceDiscoveredAsset.json
+     * x-ms-original-file: 2026-11-01/CreateOrReplace_NamespaceDiscoveredAsset.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDiscoveredAsset.
@@ -53,7 +56,7 @@ public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
             .withTags(mapOf("site", "building-1"))
             .withProperties(new NamespaceDiscoveredAssetProperties()
                 .withDeviceRef(new DeviceRef().withDeviceName("myDevice").withEndpointName("opcuaendpointname"))
-                .withAssetTypeRefs(Arrays.asList("myAssetTypeRef1", "myAssetTypeRef2"))
+                .withAssetTypeRefs(Arrays.asList("myAssetTypeRef1"))
                 .withDiscoveryId("11111111-1111-1111-1111-111111111111")
                 .withVersion(73766L)
                 .withManufacturer("Contoso")
@@ -85,66 +88,45 @@ public final class NamespaceDiscoveredAssetsCreateOrReplaceSamples {
                     .withDatasetConfiguration("{\"publishingInterval\":10,\"samplingInterval\":15,\"queueSize\":20}")
                     .withDestinations(Arrays.asList(new DatasetBrokerStateStoreDestination().withConfiguration(
                         new BrokerStateStoreDestinationConfiguration().withKey("fakeTokenPlaceholder"))))
-                    .withDataPoints(Arrays.asList(
-                        new NamespaceDiscoveredDatasetDataPoint().withName("dataset1DataPoint1")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))
-                            .withTypeRef("dataset1DataPoint1TypeRef"),
-                        new NamespaceDiscoveredDatasetDataPoint().withName("dataset1DataPoint2")
-                            .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4")
-                            .withDataPointConfiguration(
-                                "{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                            .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))
-                            .withTypeRef("dataset1DataPoint2TypeRef")))
+                    .withDataPoints(Arrays.asList(new NamespaceDiscoveredDatasetDataPoint()
+                        .withName("dataset1DataPoint1")
+                        .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                        .withDataPointConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))
+                        .withTypeRef("dataset1DataPoint1TypeRef")))
                     .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
-                .withStreams(Arrays.asList(
-                    new NamespaceDiscoveredStream().withName("stream1")
-                        .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                        .withTypeRef("stream1TypeRef")
-                        .withDestinations(Arrays.asList(new StreamStorageDestination()
-                            .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/stream1"))))
-                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")),
-                    new NamespaceDiscoveredStream().withName("stream2")
-                        .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
-                        .withTypeRef("stream2TypeRef")
-                        .withDestinations(Arrays.asList(new StreamMqttDestination()
-                            .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testStream2")
-                                .withRetain(TopicRetainType.NEVER)
+                .withEventGroups(Arrays.asList(new NamespaceDiscoveredEventGroup().withName("default")
+                    .withEvents(Arrays.asList(new NamespaceDiscoveredEvent().withName("event1")
+                        .withDataSource("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3")
+                        .withEventConfiguration("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}")
+                        .withDestinations(Arrays.asList(new EventMqttDestination()
+                            .withConfiguration(new MqttDestinationConfiguration().withTopic("/contoso/testEvent1")
+                                .withRetain(TopicRetainType.KEEP)
                                 .withQos(MqttDestinationQos.QOS0)
                                 .withTtl(7200L))))
-                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
+                        .withTypeRef("event1Ref")
+                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))))
+                .withStreams(Arrays.asList(new NamespaceDiscoveredStream().withName("stream1")
+                    .withStreamConfiguration("{\"publishingInterval\":8,\"samplingInterval\":8,\"queueSize\":4}")
+                    .withTypeRef("stream1TypeRef")
+                    .withDestinations(Arrays.asList(new StreamStorageDestination()
+                        .withConfiguration(new StorageDestinationConfiguration().withPath("/tmp/stream1"))))
+                    .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
                 .withManagementGroups(
-                    Arrays
-                        .asList(
-                            new NamespaceDiscoveredManagementGroup().withName("managementGroup1")
-                                .withManagementGroupConfiguration("{\"retryCount\":10,\"retryBackoffInterval\":15}")
-                                .withTypeRef("managementGroup1TypeRef")
-                                .withDefaultTopic("/contoso/managementGroup1")
-                                .withDefaultTimeoutInSeconds(100)
-                                .withActions(
-                                    Arrays
-                                        .asList(
-                                            new NamespaceDiscoveredManagementAction().withName("action1")
-                                                .withActionConfiguration(
-                                                    "{\"retryCount\":5,\"retryBackoffInterval\":5}")
-                                                .withTargetUri("/onvif/device_service?ONVIFProfile=Profile1")
-                                                .withTypeRef("action1TypeRef")
-                                                .withTopic("/contoso/managementGroup1/action1")
-                                                .withActionType(NamespaceDiscoveredManagementActionType.CALL)
-                                                .withTimeoutInSeconds(60)
-                                                .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")),
-                                            new NamespaceDiscoveredManagementAction().withName("action2")
-                                                .withActionConfiguration(
-                                                    "{\"retryCount\":5,\"retryBackoffInterval\":5}")
-                                                .withTargetUri("/onvif/device_service?ONVIFProfile=Profile2")
-                                                .withTypeRef("action2TypeRef")
-                                                .withTopic("/contoso/managementGroup1/action2")
-                                                .withActionType(NamespaceDiscoveredManagementActionType.CALL)
-                                                .withTimeoutInSeconds(60)
-                                                .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
-                                .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")))))
+                    Arrays.asList(new NamespaceDiscoveredManagementGroup().withName("managementGroup1")
+                        .withManagementGroupConfiguration("{\"retryCount\":10,\"retryBackoffInterval\":15}")
+                        .withTypeRef("managementGroup1TypeRef")
+                        .withDefaultTopic("/contoso/managementGroup1")
+                        .withDefaultTimeoutInSeconds(100)
+                        .withActions(Arrays.asList(new NamespaceDiscoveredManagementAction().withName("action1")
+                            .withActionConfiguration("{\"retryCount\":5,\"retryBackoffInterval\":5}")
+                            .withTargetUri("/onvif/device_service?ONVIFProfile=Profile1")
+                            .withTypeRef("action1TypeRef")
+                            .withTopic("/contoso/managementGroup1/action1")
+                            .withActionType(NamespaceDiscoveredManagementActionType.CALL)
+                            .withTimeoutInSeconds(60)
+                            .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z"))))
+                        .withLastUpdatedOn(OffsetDateTime.parse("2024-04-09T14:20:00.52Z")))))
             .create();
     }
 

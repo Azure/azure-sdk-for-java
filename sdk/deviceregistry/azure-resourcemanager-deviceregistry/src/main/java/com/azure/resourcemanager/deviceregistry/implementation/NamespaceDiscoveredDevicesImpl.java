@@ -53,17 +53,16 @@ public final class NamespaceDiscoveredDevicesImpl implements NamespaceDiscovered
         this.serviceClient().delete(resourceGroupName, namespaceName, discoveredDeviceName, context);
     }
 
-    public PagedIterable<NamespaceDiscoveredDevice> listByResourceGroup(String resourceGroupName,
-        String namespaceName) {
+    public PagedIterable<NamespaceDiscoveredDevice> listByNamespace(String resourceGroupName, String namespaceName) {
         PagedIterable<NamespaceDiscoveredDeviceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName);
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceDiscoveredDeviceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NamespaceDiscoveredDevice> listByResourceGroup(String resourceGroupName, String namespaceName,
+    public PagedIterable<NamespaceDiscoveredDevice> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {
         PagedIterable<NamespaceDiscoveredDeviceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, namespaceName, context);
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceDiscoveredDeviceImpl(inner1, this.manager()));
     }
 

@@ -31,6 +31,31 @@ public final class MessagingEndpoint implements JsonSerializable<MessagingEndpoi
      */
     private String resourceId;
 
+    /*
+     * The endpoint address used by devices.
+     */
+    private String deviceAddress;
+
+    /*
+     * The identity the linked resource uses to call the ADR namespace.
+     */
+    private InboundCallerIdentity inboundCallerIdentity;
+
+    /*
+     * The linking state of this messaging endpoint.
+     */
+    private NamespaceLinkingStateValue linkingState;
+
+    /*
+     * The error detail surfaced when this messaging endpoint is in the Failed linking state.
+     */
+    private NamespaceLinkingError linkingError;
+
+    /*
+     * The provisioning configuration for this messaging endpoint.
+     */
+    private MessagingEndpointProvisioning provisioning;
+
     /**
      * Creates an instance of MessagingEndpoint class.
      */
@@ -98,14 +123,84 @@ public final class MessagingEndpoint implements JsonSerializable<MessagingEndpoi
     }
 
     /**
+     * Get the deviceAddress property: The endpoint address used by devices.
+     * 
+     * @return the deviceAddress value.
+     */
+    public String deviceAddress() {
+        return this.deviceAddress;
+    }
+
+    /**
+     * Get the inboundCallerIdentity property: The identity the linked resource uses to call the ADR namespace.
+     * 
+     * @return the inboundCallerIdentity value.
+     */
+    public InboundCallerIdentity inboundCallerIdentity() {
+        return this.inboundCallerIdentity;
+    }
+
+    /**
+     * Set the inboundCallerIdentity property: The identity the linked resource uses to call the ADR namespace.
+     * 
+     * @param inboundCallerIdentity the inboundCallerIdentity value to set.
+     * @return the MessagingEndpoint object itself.
+     */
+    public MessagingEndpoint withInboundCallerIdentity(InboundCallerIdentity inboundCallerIdentity) {
+        this.inboundCallerIdentity = inboundCallerIdentity;
+        return this;
+    }
+
+    /**
+     * Get the linkingState property: The linking state of this messaging endpoint.
+     * 
+     * @return the linkingState value.
+     */
+    public NamespaceLinkingStateValue linkingState() {
+        return this.linkingState;
+    }
+
+    /**
+     * Get the linkingError property: The error detail surfaced when this messaging endpoint is in the Failed linking
+     * state.
+     * 
+     * @return the linkingError value.
+     */
+    public NamespaceLinkingError linkingError() {
+        return this.linkingError;
+    }
+
+    /**
+     * Get the provisioning property: The provisioning configuration for this messaging endpoint.
+     * 
+     * @return the provisioning value.
+     */
+    public MessagingEndpointProvisioning provisioning() {
+        return this.provisioning;
+    }
+
+    /**
+     * Set the provisioning property: The provisioning configuration for this messaging endpoint.
+     * 
+     * @param provisioning the provisioning value to set.
+     * @return the MessagingEndpoint object itself.
+     */
+    public MessagingEndpoint withProvisioning(MessagingEndpointProvisioning provisioning) {
+        this.provisioning = provisioning;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("address", this.address);
         jsonWriter.writeStringField("endpointType", this.endpointType);
+        jsonWriter.writeStringField("address", this.address);
         jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeJsonField("inboundCallerIdentity", this.inboundCallerIdentity);
+        jsonWriter.writeJsonField("provisioning", this.provisioning);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,7 +210,6 @@ public final class MessagingEndpoint implements JsonSerializable<MessagingEndpoi
      * @param jsonReader The JsonReader being read.
      * @return An instance of MessagingEndpoint if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MessagingEndpoint.
      */
     public static MessagingEndpoint fromJson(JsonReader jsonReader) throws IOException {
@@ -125,12 +219,23 @@ public final class MessagingEndpoint implements JsonSerializable<MessagingEndpoi
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("address".equals(fieldName)) {
-                    deserializedMessagingEndpoint.address = reader.getString();
-                } else if ("endpointType".equals(fieldName)) {
+                if ("endpointType".equals(fieldName)) {
                     deserializedMessagingEndpoint.endpointType = reader.getString();
+                } else if ("address".equals(fieldName)) {
+                    deserializedMessagingEndpoint.address = reader.getString();
                 } else if ("resourceId".equals(fieldName)) {
                     deserializedMessagingEndpoint.resourceId = reader.getString();
+                } else if ("deviceAddress".equals(fieldName)) {
+                    deserializedMessagingEndpoint.deviceAddress = reader.getString();
+                } else if ("inboundCallerIdentity".equals(fieldName)) {
+                    deserializedMessagingEndpoint.inboundCallerIdentity = InboundCallerIdentity.fromJson(reader);
+                } else if ("linkingState".equals(fieldName)) {
+                    deserializedMessagingEndpoint.linkingState
+                        = NamespaceLinkingStateValue.fromString(reader.getString());
+                } else if ("linkingError".equals(fieldName)) {
+                    deserializedMessagingEndpoint.linkingError = NamespaceLinkingError.fromJson(reader);
+                } else if ("provisioning".equals(fieldName)) {
+                    deserializedMessagingEndpoint.provisioning = MessagingEndpointProvisioning.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

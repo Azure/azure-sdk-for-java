@@ -14,7 +14,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -37,7 +36,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespaceDevicesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceDeviceInner;
 import com.azure.resourcemanager.deviceregistry.implementation.models.NamespaceDeviceListResult;
-import com.azure.resourcemanager.deviceregistry.models.DeviceCredentialsRevokeRequest;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDeviceUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -155,7 +153,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceDeviceListResult>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<NamespaceDeviceListResult>> listByNamespace(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Accept") String accept, Context context);
@@ -164,36 +162,16 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<NamespaceDeviceListResult> listByResourceGroupSync(@HostParam("endpoint") String endpoint,
+        Response<NamespaceDeviceListResult> listByNamespaceSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @HeaderParam("Accept") String accept, Context context);
-
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}/revoke")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> revoke(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @PathParam("deviceName") String deviceName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") DeviceCredentialsRevokeRequest body,
-            Context context);
-
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/devices/{deviceName}/revoke")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> revokeSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
-            @PathParam("deviceName") String deviceName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") DeviceCredentialsRevokeRequest body,
-            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceDeviceListResult>> listByResourceGroupNext(
+        Mono<Response<NamespaceDeviceListResult>> listByNamespaceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -201,7 +179,7 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<NamespaceDeviceListResult> listByResourceGroupNextSync(
+        Response<NamespaceDeviceListResult> listByNamespaceNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -830,11 +808,11 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceDeviceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<NamespaceDeviceInner>> listByNamespaceSinglePageAsync(String resourceGroupName,
         String namespaceName) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.listByNamespace(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context))
             .<PagedResponse<NamespaceDeviceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -852,9 +830,9 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @return the response of a NamespaceDevice list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NamespaceDeviceInner> listByResourceGroupAsync(String resourceGroupName, String namespaceName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    private PagedFlux<NamespaceDeviceInner> listByNamespaceAsync(String resourceGroupName, String namespaceName) {
+        return new PagedFlux<>(() -> listByNamespaceSinglePageAsync(resourceGroupName, namespaceName),
+            nextLink -> listByNamespaceNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -868,11 +846,11 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @return the response of a NamespaceDevice list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceDeviceInner> listByResourceGroupSinglePage(String resourceGroupName,
+    private PagedResponse<NamespaceDeviceInner> listByNamespaceSinglePage(String resourceGroupName,
         String namespaceName) {
         final String accept = "application/json";
         Response<NamespaceDeviceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -890,11 +868,11 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @return the response of a NamespaceDevice list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceDeviceInner> listByResourceGroupSinglePage(String resourceGroupName,
+    private PagedResponse<NamespaceDeviceInner> listByNamespaceSinglePage(String resourceGroupName,
         String namespaceName, Context context) {
         final String accept = "application/json";
         Response<NamespaceDeviceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            = service.listByNamespaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, namespaceName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -911,9 +889,9 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @return the response of a NamespaceDevice list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NamespaceDeviceInner> listByResourceGroup(String resourceGroupName, String namespaceName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+    public PagedIterable<NamespaceDeviceInner> listByNamespace(String resourceGroupName, String namespaceName) {
+        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName),
+            nextLink -> listByNamespaceNextSinglePage(nextLink));
     }
 
     /**
@@ -928,194 +906,10 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @return the response of a NamespaceDevice list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NamespaceDeviceInner> listByResourceGroup(String resourceGroupName, String namespaceName,
+    public PagedIterable<NamespaceDeviceInner> listByNamespace(String resourceGroupName, String namespaceName,
         Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, namespaceName, context),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request payload for revoking device credentials along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> revokeWithResponseAsync(String resourceGroupName, String namespaceName,
-        String deviceName, DeviceCredentialsRevokeRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.revoke(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept,
-                body, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request payload for revoking device credentials along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> revokeWithResponse(String resourceGroupName, String namespaceName, String deviceName,
-        DeviceCredentialsRevokeRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.revokeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept, body,
-            Context.NONE);
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request payload for revoking device credentials along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> revokeWithResponse(String resourceGroupName, String namespaceName, String deviceName,
-        DeviceCredentialsRevokeRequest body, Context context) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.revokeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, namespaceName, deviceName, contentType, accept, body,
-            context);
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of request payload for revoking device credentials.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRevokeAsync(String resourceGroupName, String namespaceName,
-        String deviceName, DeviceCredentialsRevokeRequest body) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = revokeWithResponseAsync(resourceGroupName, namespaceName, deviceName, body);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request payload for revoking device credentials.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName,
-        String deviceName, DeviceCredentialsRevokeRequest body) {
-        Response<BinaryData> response = revokeWithResponse(resourceGroupName, namespaceName, deviceName, body);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of request payload for revoking device credentials.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRevoke(String resourceGroupName, String namespaceName,
-        String deviceName, DeviceCredentialsRevokeRequest body, Context context) {
-        Response<BinaryData> response = revokeWithResponse(resourceGroupName, namespaceName, deviceName, body, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return request payload for revoking device credentials on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> revokeAsync(String resourceGroupName, String namespaceName, String deviceName,
-        DeviceCredentialsRevokeRequest body) {
-        return beginRevokeAsync(resourceGroupName, namespaceName, deviceName, body).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revoke(String resourceGroupName, String namespaceName, String deviceName,
-        DeviceCredentialsRevokeRequest body) {
-        beginRevoke(resourceGroupName, namespaceName, deviceName, body).getFinalResult();
-    }
-
-    /**
-     * The revoke operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param namespaceName The name of the namespace.
-     * @param deviceName The name of the device.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revoke(String resourceGroupName, String namespaceName, String deviceName,
-        DeviceCredentialsRevokeRequest body, Context context) {
-        beginRevoke(resourceGroupName, namespaceName, deviceName, body, context).getFinalResult();
+        return new PagedIterable<>(() -> listByNamespaceSinglePage(resourceGroupName, namespaceName, context),
+            nextLink -> listByNamespaceNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1129,11 +923,10 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceDeviceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<NamespaceDeviceInner>> listByNamespaceNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<NamespaceDeviceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1149,10 +942,10 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @return the response of a NamespaceDevice list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceDeviceInner> listByResourceGroupNextSinglePage(String nextLink) {
+    private PagedResponse<NamespaceDeviceInner> listByNamespaceNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<NamespaceDeviceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -1168,10 +961,10 @@ public final class NamespaceDevicesClientImpl implements NamespaceDevicesClient 
      * @return the response of a NamespaceDevice list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<NamespaceDeviceInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<NamespaceDeviceInner> listByNamespaceNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<NamespaceDeviceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+            = service.listByNamespaceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

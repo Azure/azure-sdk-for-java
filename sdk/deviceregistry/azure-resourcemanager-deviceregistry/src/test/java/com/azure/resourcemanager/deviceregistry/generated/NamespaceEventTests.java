@@ -14,26 +14,25 @@ public final class NamespaceEventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceEvent model = BinaryData.fromString(
-            "{\"name\":\"xqzvszjfa\",\"dataSource\":\"j\",\"eventConfiguration\":\"xxivetv\",\"destinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"qtdo\"}")
+            "{\"name\":\"bm\",\"dataSource\":\"wuwprzqlv\",\"eventConfiguration\":\"alupjm\",\"destinations\":[{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"},{\"target\":\"EventDestination\"}],\"typeRef\":\"obbc\"}")
             .toObject(NamespaceEvent.class);
-        Assertions.assertEquals("xqzvszjfa", model.name());
-        Assertions.assertEquals("j", model.dataSource());
-        Assertions.assertEquals("xxivetv", model.eventConfiguration());
-        Assertions.assertEquals("qtdo", model.typeRef());
+        Assertions.assertEquals("bm", model.name());
+        Assertions.assertEquals("wuwprzqlv", model.dataSource());
+        Assertions.assertEquals("alupjm", model.eventConfiguration());
+        Assertions.assertEquals("obbc", model.typeRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceEvent model = new NamespaceEvent().withName("xqzvszjfa")
-            .withDataSource("j")
-            .withEventConfiguration("xxivetv")
-            .withDestinations(Arrays.asList(new EventDestination(), new EventDestination(), new EventDestination(),
-                new EventDestination()))
-            .withTypeRef("qtdo");
+        NamespaceEvent model = new NamespaceEvent().withName("bm")
+            .withDataSource("wuwprzqlv")
+            .withEventConfiguration("alupjm")
+            .withDestinations(Arrays.asList(new EventDestination(), new EventDestination(), new EventDestination()))
+            .withTypeRef("obbc");
         model = BinaryData.fromObject(model).toObject(NamespaceEvent.class);
-        Assertions.assertEquals("xqzvszjfa", model.name());
-        Assertions.assertEquals("j", model.dataSource());
-        Assertions.assertEquals("xxivetv", model.eventConfiguration());
-        Assertions.assertEquals("qtdo", model.typeRef());
+        Assertions.assertEquals("bm", model.name());
+        Assertions.assertEquals("wuwprzqlv", model.dataSource());
+        Assertions.assertEquals("alupjm", model.eventConfiguration());
+        Assertions.assertEquals("obbc", model.typeRef());
     }
 }
