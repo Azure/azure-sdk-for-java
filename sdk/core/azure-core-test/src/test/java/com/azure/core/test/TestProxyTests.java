@@ -207,6 +207,9 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Playback")
     public void testRecordWithRedaction() {
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        // Keep the recorded Operation-Location, as libraries with long-running operations do, instead of the test
+        // proxy's default replacement of "https://example.com".
+        interceptorManager.removeSanitizers("AZSDK2030");
         interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Connection")));
         HttpClient client = interceptorManager.getPlaybackClient();
 
@@ -224,6 +227,10 @@ public class TestProxyTests extends TestProxyTestBase {
             assertEquals(200, response.getStatusCode());
 
             assertEquals(200, response.getStatusCode());
+            // The recorded polling URL is moved onto the host and port of the playback request, keeping its recorded
+            // scheme and path.
+            assertEquals("https://localhost:" + server.port() + "/fr/models//905a58f9-131e-42b8-8410-493ab1517d62",
+                response.getHeaderValue(HttpHeaderName.OPERATION_LOCATION));
             RecordedTestProxyData recordedTestProxyData = readDataFromFile();
             RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
             // default sanitizers

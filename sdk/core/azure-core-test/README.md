@@ -195,6 +195,11 @@ the recording.
 To run live tests, set the environment variable `AZURE_TEST_MODE` to `LIVE`.
 To run tests in playback, set `AZURE_TEST_MODE` to `PLAYBACK` or leave it unset.
 
+In playback, URLs in the `Operation-Location`, `Azure-AsyncOperation`, and non-redirect `Location` response headers are
+moved onto the host and port of the request that received them, keeping their recorded scheme and path. This keeps
+long-running operation polling on the playback endpoint, even though recordings store sanitized or real service hosts
+for these URLs.
+
 ## Run and record tests
 
 Set the environment variable `AZURE_TEST_MODE` to `RECORD` to run your test(s) in record mode.
