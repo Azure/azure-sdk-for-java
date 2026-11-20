@@ -69,11 +69,14 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
 
     @Override
     public Mono<Void> processChanges(ChangeFeedObserverContext<T> context, List<T> docs) {
-        return Mono.defer(() -> this.observer.processChanges(context, docs))
-            .doOnError(throwable -> {
-                logger.warn("Unexpected exception from thread: " + Thread.currentThread().getId(), throwable);
-            })
-            .then(Mono.defer(() -> this.afterProcessChanges(context, docs.size())));
+        return Mono.defer(() -> {
+            int deliveredItemCount = docs.size();
+            return this.observer.processChanges(context, docs)
+                .doOnError(throwable -> {
+                    logger.warn("Unexpected exception from thread: " + Thread.currentThread().getId(), throwable);
+                })
+                .then(Mono.defer(() -> this.afterProcessChanges(context, deliveredItemCount)));
+        });
     }
 
     @Override
@@ -84,7 +87,9 @@ public class AutoCheckpointer<T> implements ChangeFeedObserver<T> {
     private Mono<Void> afterProcessChanges(ChangeFeedObserverContext<T> context, int documentCount) {
         this.processedDocCount.addAndGet(documentCount);
         this.pendingContext = context;
-        return this.isCheckpointNeeded() ? this.checkpoint(context, false) : Mono.empty();
+        // A new lease needs a durable resume position before subsequent checkpoints can be deferred.
+        return context.isInitialCheckpointRequired() || this.isCheckpointNeeded()
+            ? this.checkpoint(context, false) : Mono.empty();
     }
 
     private Mono<Void> checkpoint(ChangeFeedObserverContext<T> context, boolean shutdown) {

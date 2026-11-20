@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -53,6 +54,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
+    private boolean initialCheckpointRequired;
     private final ChangeFeedObserver<JsonNode> observer;
     private volatile CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
@@ -77,6 +79,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.checkpointer = checkPointer;
         this.lease = lease;
         this.lastServerContinuationToken = this.lease.getContinuationToken();
+        this.initialCheckpointRequired = Strings.isNullOrWhiteSpace(this.lease.getContinuationToken());
 
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
@@ -164,6 +167,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             "Exception was thrown from thread " + Thread.currentThread().getId(),
                             throwable))
                         .doOnSuccess((Void) -> {
+                            this.initialCheckpointRequired = false;
                             this.options =
                                 CosmosChangeFeedRequestOptions
                                     .createForProcessingFromContinuation(continuationToken);
@@ -172,14 +176,16 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         });
                 } else {
                     // only update when server returned continuationToken change
-                    boolean shouldSkipCheckpoint = !hasServerContinuationTokenChange && !hasMoreResults;
+                    boolean shouldSkipCheckpoint = !this.initialCheckpointRequired
+                        && !hasServerContinuationTokenChange && !hasMoreResults;
                     return Mono.just(shouldSkipCheckpoint)
                         .flatMap(skipCheckpoint -> {
                             if (skipCheckpoint) {
                                 return Mono.empty();
                             } else {
                                 return this.observer.processEmptyBatch(new ChangeFeedObserverContextImpl<>(
-                                        this.lease.getLeaseToken(), documentFeedResponse, continuationState, this.checkpointer))
+                                        this.lease.getLeaseToken(), documentFeedResponse, continuationState, this.checkpointer,
+                                        this.initialCheckpointRequired))
                                     .doOnError(throwable -> {
                                         logger.warn("Failed to checkpoint partition " + this.lease.getLeaseToken()
                                                 + " from thread " + Thread.currentThread().getId(), throwable);
@@ -187,6 +193,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             }
                         })
                         .doOnSuccess((Void) -> {
+                            this.initialCheckpointRequired = false;
                             this.options =
                                 CosmosChangeFeedRequestOptions
                                     .createForProcessingFromContinuation(continuationToken);
@@ -338,7 +345,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
             this.getPkRangeFeedRangeFromStartState().getPartitionKeyRangeId(),
             response,
             continuationState,
-            this.checkpointer);
+            this.checkpointer,
+            this.initialCheckpointRequired);
 
         return this.observer.processChanges(context, response.getResults());
     }

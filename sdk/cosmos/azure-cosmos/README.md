@@ -152,7 +152,9 @@ Pass `options` to `ChangeFeedProcessorBuilder.options(options)`. These options a
 all-versions-and-deletes processing, including legacy partition-key-range leases. Thresholds apply independently to
 each lease. Reaching either configured threshold checkpoints the entire successfully processed batch; item counts
 include items filtered out by the handler. Use `null` for the interval or `0` for the item count to disable that threshold.
-With both thresholds disabled, checkpointing returns to the default behavior.
+With both thresholds disabled, checkpointing returns to the default behavior. A new lease without a persisted
+continuation checkpoints its first successfully processed response, including an empty response, before deferring
+subsequent checkpoints. This establishes a durable resume position for restart or lease takeover.
 
 The interval is evaluated after successful batches, including empty responses that advance the continuation. It is not
 a background timer, and it does not delay processing or change `feedPollDelay`. A count-only threshold may leave progress

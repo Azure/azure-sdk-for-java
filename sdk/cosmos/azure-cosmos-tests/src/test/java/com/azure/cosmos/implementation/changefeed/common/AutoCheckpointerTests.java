@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -213,9 +214,85 @@ public class AutoCheckpointerTests {
         assertEquals(observer.closes, 1);
     }
 
+    @Test(groups = "unit")
+    public void countsDeliveredItemsWhenHandlerClearsList() {
+        TestObserver observer = new TestObserver();
+        observer.clearDocs = true;
+        AutoCheckpointer<String> checkpointer = new AutoCheckpointer<>(
+            new CheckpointFrequency().withProcessedDocumentCount(5), observer);
+        TestContext context = new TestContext();
+        List<String> first = new ArrayList<>(Collections.nCopies(3, "item"));
+        checkpointer.processChanges(context, first).block();
+        assertEquals(first.size(), 0);
+        assertEquals(context.checkpoints, 0);
+        checkpointer.processChanges(context, new ArrayList<>(Collections.nCopies(2, "item"))).block();
+        assertEquals(context.checkpoints, 1);
+    }
+
+    @Test(groups = "unit")
+    public void failedMutatingHandlerDoesNotCountDeliveredItems() {
+        TestObserver observer = new TestObserver();
+        observer.clearDocs = true;
+        observer.processing = Mono.error(new IllegalStateException("handler failed"));
+        AutoCheckpointer<String> checkpointer = new AutoCheckpointer<>(
+            new CheckpointFrequency().withProcessedDocumentCount(5), observer);
+        TestContext context = new TestContext();
+        StepVerifier.create(checkpointer.processChanges(context, new ArrayList<>(Collections.nCopies(3, "item"))))
+            .expectErrorMessage("handler failed").verify();
+        observer.processing = Mono.empty();
+        checkpointer.processChanges(context, new ArrayList<>(Collections.nCopies(2, "item"))).block();
+        assertEquals(context.checkpoints, 0);
+        checkpointer.processChanges(context, new ArrayList<>(Collections.nCopies(3, "item"))).block();
+        assertEquals(context.checkpoints, 1);
+    }
+
+    @DataProvider(name = "initialResponses")
+    public Object[][] initialResponses() {
+        return new Object[][] {{false}, {true}};
+    }
+
+    @Test(groups = "unit", dataProvider = "initialResponses")
+    public void initialContinuationIsPersistedBeforeDeferringCheckpoints(boolean empty) {
+        AutoCheckpointer<String> checkpointer = new AutoCheckpointer<>(new CheckpointFrequency()
+            .withProcessedDocumentCount(100).withTimeInterval(Duration.ofHours(1)), new TestObserver());
+        TestContext context = new TestContext();
+        context.initialCheckpointRequired = true;
+        if (empty) {
+            checkpointer.processEmptyBatch(context).block();
+        } else {
+            checkpointer.processChanges(context, Collections.singletonList("item")).block();
+        }
+        assertEquals(context.checkpoints, 1);
+        context.initialCheckpointRequired = false;
+        checkpointer.processChanges(context, Collections.singletonList("item")).block();
+        assertEquals(context.checkpoints, 1);
+    }
+
+    @Test(groups = "unit")
+    public void initialCheckpointRequiresSuccessfulProcessing() {
+        TestObserver observer = new TestObserver();
+        observer.processing = Mono.error(new IllegalStateException("handler failed"));
+        AutoCheckpointer<String> checkpointer = new AutoCheckpointer<>(
+            new CheckpointFrequency().withProcessedDocumentCount(100), observer);
+        TestContext context = new TestContext();
+        context.initialCheckpointRequired = true;
+        StepVerifier.create(checkpointer.processChanges(context, Collections.singletonList("item")))
+            .expectErrorMessage("handler failed").verify();
+        assertEquals(context.checkpoints, 0);
+        observer.processing = Mono.empty();
+        context.result = Mono.error(new IllegalStateException("checkpoint failed"));
+        StepVerifier.create(checkpointer.processChanges(context, Collections.singletonList("item")))
+            .expectErrorMessage("checkpoint failed").verify();
+        assertEquals(context.checkpoints, 1);
+        context.result = Mono.empty();
+        checkpointer.processChanges(context, Collections.singletonList("item")).block();
+        assertEquals(context.checkpoints, 2);
+    }
+
     private static final class TestObserver implements ChangeFeedObserver<String> {
         private Mono<Void> processing = Mono.empty();
         private int batches;
+        private boolean clearDocs;
         private int closes;
 
         @Override
@@ -230,12 +307,16 @@ public class AutoCheckpointerTests {
         @Override
         public Mono<Void> processChanges(ChangeFeedObserverContext<String> context, List<String> docs) {
             this.batches++;
+            if (this.clearDocs) {
+                docs.clear();
+            }
             return this.processing;
         }
     }
 
     private static final class TestContext implements ChangeFeedObserverContext<String> {
         private int checkpoints;
+        private boolean initialCheckpointRequired;
         private int shutdownCheckpoints;
         private Mono<Lease> result = Mono.empty();
 
@@ -247,6 +328,11 @@ public class AutoCheckpointerTests {
         @Override
         public FeedResponse<String> getFeedResponse() {
             return null;
+        }
+
+        @Override
+        public boolean isInitialCheckpointRequired() {
+            return this.initialCheckpointRequired;
         }
 
         @Override

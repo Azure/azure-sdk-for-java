@@ -36,6 +36,15 @@ public interface ChangeFeedObserverContext<T> {
     Mono<Lease> checkpoint();
 
     /**
+     * Indicates that this lease has no persisted resume position yet.
+     *
+     * @return true if the current continuation must be persisted regardless of checkpoint thresholds.
+     */
+    default boolean isInitialCheckpointRequired() {
+        return false;
+    }
+
+    /**
      * Checkpoints completed progress after processing has stopped. Lease ownership is still validated.
      *
      * @return the deferred checkpoint operation.

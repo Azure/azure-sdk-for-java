@@ -222,7 +222,9 @@ public final class ChangeFeedProcessorOptions {
      * Checkpoint thresholds are evaluated after successful processing of a batch, including empty responses that
      * advance the continuation. This is not a background timer and does not delay processing or change polling.
      * If an item count threshold is also configured, reaching either threshold triggers a checkpoint.
-     * With neither threshold configured, each processed batch is checkpointed.
+     * With neither threshold configured, each processed batch is checkpointed. For a new lease without a persisted
+     * continuation, the first successfully processed response is checkpointed regardless of these thresholds to
+     * establish a durable resume position, including when that response is empty.
      * <p>
      * Less frequent checkpoints reduce lease writes but increase potential redelivery after a failure or lease loss.
      * Handlers must be idempotent. On graceful shutdown, pending progress is checkpointed before releasing the lease
@@ -268,7 +270,9 @@ public final class ChangeFeedProcessorOptions {
      * Counts items delivered to the handler, including items the handler filters out. Thresholds are evaluated after
      * successful processing of entire batches, so a checkpoint can include more items than this threshold.
      * If an interval is also configured, reaching either threshold triggers a checkpoint.
-     * With neither threshold configured, each processed batch is checkpointed.
+     * With neither threshold configured, each processed batch is checkpointed. For a new lease without a persisted
+     * continuation, the first successfully processed response is checkpointed regardless of these thresholds to
+     * establish a durable resume position, including when that response is empty.
      * <p>
      * Less frequent checkpoints increase potential redelivery after a failure or lease loss. Handlers must be
      * idempotent. Pending progress is checkpointed on graceful shutdown if ownership is still valid.
