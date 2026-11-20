@@ -4,10 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.implementation.context;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
-import org.springframework.beans.factory.aot.BeanRegistrationExcludeFilter;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.RegisteredBean;
+import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
@@ -27,7 +26,22 @@ import static org.springframework.beans.factory.support.BeanDefinitionBuilder.ge
 @Import(AzureGlobalPropertiesAutoConfiguration.Registrar.class)
 public class AzureGlobalPropertiesAutoConfiguration {
 
-    static class Registrar implements EnvironmentAware, ImportBeanDefinitionRegistrar {
+    static class Registrar implements ImportBeanDefinitionRegistrar {
+
+        @Override
+        public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
+                                            BeanDefinitionRegistry registry) {
+            if (!registry.containsBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME)) {
+                BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(AzureGlobalProperties.class)
+                    .setFactoryMethodOnBean("buildProperties",
+                        BeanDefinitionReaderUtils.registerWithGeneratedName(
+                            genericBeanDefinition(PropertiesFactory.class).getBeanDefinition(), registry));
+                registry.registerBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME, definitionBuilder.getBeanDefinition());
+            }
+        }
+    }
+
+    static class PropertiesFactory implements EnvironmentAware {
 
         private Environment environment;
 
@@ -36,25 +50,9 @@ public class AzureGlobalPropertiesAutoConfiguration {
             this.environment = environment;
         }
 
-        @Override
-        public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-                                            BeanDefinitionRegistry registry) {
-            if (!registry.containsBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME)) {
-                BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(AzureGlobalProperties.class,
-                    () -> Binder.get(this.environment)
-                                .bindOrCreate(AzureGlobalProperties.PREFIX,
-                                    AzureGlobalProperties.class));
-                registry.registerBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME, definitionBuilder.getBeanDefinition());
-            }
+        AzureGlobalProperties buildProperties() {
+            return Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class);
         }
     }
 
-    static class AzureGlobalPropertiesBeanRegistrationExcludeFilter implements BeanRegistrationExcludeFilter {
-
-        @Override
-        public boolean isExcludedFromAotProcessing(RegisteredBean registeredBean) {
-            return AZURE_GLOBAL_PROPERTY_BEAN_NAME.equals(registeredBean.getBeanName());
-        }
-
-    }
 }
