@@ -17,16 +17,10 @@ public class RegionalRoutingContext {
     private String thinclientRegionalEndpointAsString;
 
     public RegionalRoutingContext(URI gatewayRegionalEndpoint) {
-        this(gatewayRegionalEndpoint, null);
-    }
-
-    public RegionalRoutingContext(URI gatewayRegionalEndpoint, URI thinclientRegionalEndpoint) {
         this.gatewayRegionalEndpoint = gatewayRegionalEndpoint;
         this.gatewayRegionalEndpointAsString = gatewayRegionalEndpoint.toString();
-        this.thinclientRegionalEndpoint = thinclientRegionalEndpoint;
-        this.thinclientRegionalEndpointAsString = thinclientRegionalEndpoint == null
-            ? null
-            : thinclientRegionalEndpoint.toString();
+        this.thinclientRegionalEndpoint = null;
+        this.thinclientRegionalEndpointAsString = null;
     }
 
     public URI getGatewayRegionalEndpoint() {

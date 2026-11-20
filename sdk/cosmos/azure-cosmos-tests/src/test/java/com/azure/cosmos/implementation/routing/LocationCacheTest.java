@@ -555,41 +555,9 @@ public class LocationCacheTest {
     }
 
     @Test(groups = "unit")
-    public void resolveServiceEndpointWithUnmatchedPreferredRegionUsesDefaultThinClientEndpoint() {
+    public void unmatchedPreferredRegionDoesNotFallBackToThinClientEndpoint() {
         URI defaultEndpoint = createUrl("https://acct.documents.azure.com:443/");
-        URI primaryWriteRegionThinClientEndpoint = createUrl("https://acct-westcentralus.documents.azure.com:10250/");
-
         DatabaseAccount account = createThinClientAccount(
-            primaryWriteRegionThinClientEndpoint,
-            createUrl("https://acct-eastus3.documents.azure.com:10250/"));
-
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        connectionPolicy.setEndpointDiscoveryEnabled(true);
-        connectionPolicy.setMultipleWriteRegionsEnabled(true);
-        connectionPolicy.setPreferredRegions(Collections.singletonList("East US 2"));
-
-        LocationCache cache = new LocationCache(connectionPolicy, defaultEndpoint, configs);
-        cache.onDatabaseAccountRead(account);
-
-        // No preferred region matches the account, so both reads and writes fall back to the
-        // default (global) routing context. Its thin-client endpoint must be populated.
-        RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-        RegionalRoutingContext readContext = cache.resolveServiceEndpoint(readRequest);
-        assertThat(readContext.getGatewayRegionalEndpoint()).isEqualTo(defaultEndpoint);
-        assertThat(readContext.getThinclientRegionalEndpoint()).isEqualTo(primaryWriteRegionThinClientEndpoint);
-
-        RxDocumentServiceRequest writeRequest = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document);
-        RegionalRoutingContext writeContext = cache.resolveServiceEndpoint(writeRequest);
-        assertThat(writeContext.getGatewayRegionalEndpoint()).isEqualTo(defaultEndpoint);
-        assertThat(writeContext.getThinclientRegionalEndpoint()).isEqualTo(primaryWriteRegionThinClientEndpoint);
-    }
-
-    @Test(groups = "unit")
-    public void onDatabaseAccountReadWithoutThinClientLocationsPublishesNewDefaultContext() {
-        URI defaultEndpoint = createUrl("https://acct.documents.azure.com:443/");
-        DatabaseAccount thinClientAccount = createThinClientAccount(
             createUrl("https://acct-westcentralus.documents.azure.com:10250/"),
             createUrl("https://acct-eastus3.documents.azure.com:10250/"));
 
@@ -599,84 +567,6 @@ public class LocationCacheTest {
         connectionPolicy.setPreferredRegions(Collections.singletonList("East US 2"));
 
         LocationCache cache = new LocationCache(connectionPolicy, defaultEndpoint, configs);
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-
-        cache.onDatabaseAccountRead(thinClientAccount);
-        RegionalRoutingContext initialContext = cache.resolveServiceEndpoint(request);
-        assertThat(initialContext.getThinclientRegionalEndpoint()).isNotNull();
-
-        cache.onDatabaseAccountRead(createDatabaseAccount(true));
-        RegionalRoutingContext replacementContext = cache.resolveServiceEndpoint(request);
-        assertThat(replacementContext).isNotSameAs(initialContext);
-        assertThat(replacementContext.getThinclientRegionalEndpoint()).isNull();
-    }
-
-    @Test(groups = "unit")
-    public void topologyRefreshDoesNotMutateContextPinnedByInFlightRequest() {
-        URI defaultEndpoint = createUrl("https://acct.documents.azure.com:443/");
-        URI thinClientEndpoint = createUrl("https://acct-westcentralus.documents.azure.com:10250/");
-        DatabaseAccount thinClientAccount = createThinClientAccount(
-            thinClientEndpoint, createUrl("https://acct-eastus3.documents.azure.com:10250/"));
-
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        connectionPolicy.setEndpointDiscoveryEnabled(true);
-        connectionPolicy.setMultipleWriteRegionsEnabled(true);
-        connectionPolicy.setPreferredRegions(Collections.singletonList("East US 2"));
-
-        LocationCache cache = new LocationCache(connectionPolicy, defaultEndpoint, configs);
-        cache.onDatabaseAccountRead(thinClientAccount);
-
-        RxDocumentServiceRequest pinnedRequest = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-        RegionalRoutingContext pinnedContext = cache.resolveServiceEndpoint(pinnedRequest);
-        pinnedRequest.requestContext.routeToLocation(pinnedContext);
-        assertThat(pinnedContext.getThinclientRegionalEndpoint()).isEqualTo(thinClientEndpoint);
-
-        // A refresh that removes thin-client locations must not clear the context pinned by the in-flight request.
-        cache.onDatabaseAccountRead(createDatabaseAccount(true));
-
-        assertThat(cache.resolveServiceEndpoint(pinnedRequest)).isSameAs(pinnedContext);
-        assertThat(pinnedContext.getThinclientRegionalEndpoint()).isEqualTo(thinClientEndpoint);
-
-        RxDocumentServiceRequest newRequest = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-        assertThat(cache.resolveServiceEndpoint(newRequest).getThinclientRegionalEndpoint()).isNull();
-    }
-
-    @DataProvider(name = "regionalDefaultEndpoints")
-    public Object[][] regionalDefaultEndpoints() {
-        URI eastUs3ThinClientEndpoint = createUrl("https://acct-eastus3.documents.azure.com:10250/");
-        URI westCentralUsThinClientEndpoint = createUrl("https://acct-westcentralus.documents.azure.com:10250/");
-
-        return new Object[][] {
-            // Equivalent spellings of the East US 3 regional gateway endpoint.
-            { "https://acct-eastus3.documents.azure.com:443/", true, eastUs3ThinClientEndpoint },
-            { "https://acct-eastus3.documents.azure.com", false, eastUs3ThinClientEndpoint },
-            { "https://acct-eastus3.documents.azure.com/", false, eastUs3ThinClientEndpoint },
-            { "https://acct-eastus3.documents.azure.com:443", false, eastUs3ThinClientEndpoint },
-            // A non-default port is significant: this endpoint is not the regional gateway endpoint.
-            { "https://acct-eastus3.documents.azure.com:10250/", false, westCentralUsThinClientEndpoint }
-        };
-    }
-
-    @Test(groups = "unit", dataProvider = "regionalDefaultEndpoints")
-    public void regionalDefaultEndpointUsesThinClientEndpointOfItsOwnRegion(
-            String defaultEndpointString,
-            boolean endpointDiscoveryEnabled,
-            URI expectedThinClientEndpoint) {
-
-        URI defaultEndpoint = createUrl(defaultEndpointString);
-        URI eastUs3ThinClientEndpoint = createUrl("https://acct-eastus3.documents.azure.com:10250/");
-        DatabaseAccount account = createThinClientAccount(
-            createUrl("https://acct-westcentralus.documents.azure.com:10250/"), eastUs3ThinClientEndpoint);
-
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        connectionPolicy.setEndpointDiscoveryEnabled(endpointDiscoveryEnabled);
-        connectionPolicy.setMultipleWriteRegionsEnabled(true);
-        connectionPolicy.setPreferredRegions(Collections.emptyList());
-
-        LocationCache cache = new LocationCache(connectionPolicy, defaultEndpoint, configs);
         cache.onDatabaseAccountRead(account);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
@@ -684,7 +574,9 @@ public class LocationCacheTest {
         RegionalRoutingContext resolved = cache.resolveServiceEndpoint(request);
 
         assertThat(resolved.getGatewayRegionalEndpoint()).isEqualTo(defaultEndpoint);
-        assertThat(resolved.getThinclientRegionalEndpoint()).isEqualTo(expectedThinClientEndpoint);
+        // There must be no silent fallback to a thin-client endpoint from a region the customer did not
+        // configure. ThinClientStoreModel surfaces an IllegalArgumentException instead.
+        assertThat(resolved.getThinclientRegionalEndpoint()).isNull();
     }
 
     private static DatabaseAccount createThinClientAccount(URI primaryThinClientEndpoint, URI secondaryThinClientEndpoint) {
