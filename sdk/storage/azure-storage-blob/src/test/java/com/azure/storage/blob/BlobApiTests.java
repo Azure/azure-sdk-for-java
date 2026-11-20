@@ -71,6 +71,7 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -3316,6 +3317,68 @@ public class BlobApiTests extends BlobTestBase {
             "Expected multiple chunked download ranges; saw " + downloadAuthSchemesByRange);
         assertTrue(downloadAuthSchemesByRange.values().stream().allMatch(schemes -> schemes.contains("Session")),
             "Expected every chunked blob download range to attempt Session auth; saw " + downloadAuthSchemesByRange);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobToFileInChunksWithContentValidationOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length);
+
+        Map<String, List<String>> downloadAttemptsByRange = Collections.synchronizedMap(new HashMap<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                String range = req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+                if (range == null) {
+                    range = req.getHeaders().getValue(HttpHeaderName.fromString("Range"));
+                }
+                String rangeKey = range == null ? "<no range>" : range;
+                String attempt = (auth.startsWith("Session ") ? "Session" : "Bearer")
+                    + (req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-structured-body")) == null
+                        ? ""
+                        : "+StructuredMessage");
+                synchronized (downloadAttemptsByRange) {
+                    downloadAttemptsByRange.computeIfAbsent(rangeKey, ignored -> new ArrayList<>()).add(attempt);
+                }
+            }
+        });
+
+        BlobClient sessionBlob
+            = getOAuthServiceClient(new SessionContext().setSessionMode(SessionMode.ENABLED), inspect)
+                .getBlobContainerClient(cc.getBlobContainerName())
+                .getBlobClient(blobName);
+
+        File outFile = new File(prefix + "-session-cv-download.tmp");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        sessionBlob
+            .downloadToFileWithResponse(
+                new BlobDownloadToFileOptions(outFile.toPath().toString()).setParallelTransferOptions(
+                    new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize)
+                        .setMaxConcurrency(2))
+                    .setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64),
+                null, null);
+
+        assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+        assertTrue(downloadAttemptsByRange.size() > 1,
+            "Expected multiple chunked download ranges; saw " + downloadAttemptsByRange);
+        assertTrue(
+            downloadAttemptsByRange.values()
+                .stream()
+                .allMatch(attempts -> attempts.contains("Session+StructuredMessage")),
+            "Expected every structured message download range to attempt Session auth; saw " + downloadAttemptsByRange);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")

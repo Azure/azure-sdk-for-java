@@ -3,6 +3,8 @@
 ## 12.38.0-beta.2 (Unreleased)
 
 ### Features Added
+- Session-based authentication now also applies to Blob GET requests that use structured message content validation
+  (`ContentValidationAlgorithm.CRC64` or `AUTO`). Previously, these requests always used bearer token authentication.
 
 ### Breaking Changes
 
