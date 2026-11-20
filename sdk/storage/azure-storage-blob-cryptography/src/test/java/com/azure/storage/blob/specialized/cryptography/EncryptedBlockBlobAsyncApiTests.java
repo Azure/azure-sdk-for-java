@@ -1880,7 +1880,7 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return next.process().flatMap(response -> {
                 if (response.getRequest().getHttpMethod() == HttpMethod.GET
-                    && !expectedRangeHeader.equals(response.getRequest().getHeaders().getValue("x-ms-range"))) {
+                    && !expectedRangeHeader.equals(response.getRequest().getHeaders().getValue(HttpHeaderName.RANGE))) {
                     return Mono.error(new IllegalArgumentException("The range header was not set correctly on retry."));
                 } else if (response.getRequest().getHttpMethod() == HttpMethod.GET) {
                     // ETag can be a dummy value. It's not validated, but DownloadResponse requires one

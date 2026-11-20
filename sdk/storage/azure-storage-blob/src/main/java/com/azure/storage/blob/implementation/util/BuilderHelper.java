@@ -31,6 +31,7 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.accesshelpers.SessionContextAccessor;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.SessionContext;
@@ -390,6 +391,22 @@ public final class BuilderHelper {
      */
     public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
         logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
+    }
+
+    /**
+     * Creates the generated service layer. A null pipeline falls back to the generated default pipeline, as the
+     * builder used before the TypeSpec migration did.
+     *
+     * @param pipeline The pipeline used to send service requests, may be null.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @return The generated service layer.
+     */
+    public static AzureBlobStorageImpl createAzureBlobStorage(HttpPipeline pipeline, String url,
+        BlobServiceVersion serviceVersion) {
+        return pipeline == null
+            ? new AzureBlobStorageImpl(url, serviceVersion)
+            : new AzureBlobStorageImpl(pipeline, url, serviceVersion);
     }
 
 }

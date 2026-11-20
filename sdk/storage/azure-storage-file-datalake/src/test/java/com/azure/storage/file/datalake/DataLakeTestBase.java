@@ -169,7 +169,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256",
                 "x-ms-blob-if-modified-since", "x-ms-blob-if-unmodified-since"))
             .setQueryOrderingIgnored(true)
-            .setIgnoredQueryParameters(Arrays.asList("sv"))));
+            .setIgnoredQueryParameters(Arrays.asList("sv"))
+            .setExcludedHeaders(Collections.singletonList("Accept"))));
 
         primaryDataLakeServiceClient = getServiceClient(ENVIRONMENT.getDataLakeAccount());
         primaryDataLakeServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount());

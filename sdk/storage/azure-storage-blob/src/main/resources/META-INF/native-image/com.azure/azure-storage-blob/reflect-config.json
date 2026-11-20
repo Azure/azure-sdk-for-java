@@ -84,6 +84,24 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.SessionContext",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.AppendBlobAsyncClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.AppendBlobClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.implementation.AppendBlobsImpl",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -96,13 +114,55 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder",
+        "name": "com.azure.storage.blob.implementation.BlobAsyncClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.BlobClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.BlobContainerClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.BlobServiceAsyncClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.BlobServiceClientInternal",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
         "name": "com.azure.storage.blob.implementation.BlobsImpl",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.BlockBlobAsyncClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.BlockBlobClientInternal",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -120,6 +180,18 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.implementation.PageBlobAsyncClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.PageBlobClientInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.implementation.PageBlobsImpl",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -132,7 +204,19 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.SignedIdentifiersWrapper",
+        "name": "com.azure.storage.blob.implementation.XmlSerializer",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.XmlSerializerProviders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.accesshelpers.AppendBlobItemConstructorProxy",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -150,6 +234,24 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.implementation.accesshelpers.BlobItemConstructorProxy",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.accesshelpers.BlobItemPropertiesConstructorProxy",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.accesshelpers.BlobLayoutPagingAccessHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -157,6 +259,24 @@
     },
     {
         "name": "com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.accesshelpers.BlockBlobItemConstructorProxy",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.accesshelpers.PageBlobItemConstructorProxy",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.accesshelpers.SessionContextAccessor",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -186,13 +306,19 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.ArrowConfiguration",
+        "name": "com.azure.storage.blob.implementation.models.ArrowFieldInternal",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.ArrowField",
+        "name": "com.azure.storage.blob.implementation.models.ArrowTextConfigurationInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.AuthenticationType",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -222,12 +348,6 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.BlobFlatListSegment",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
         "name": "com.azure.storage.blob.implementation.models.BlobHierarchyListSegment",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -241,6 +361,42 @@
     },
     {
         "name": "com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlobLayoutEndpoints",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlobLayoutEndpointsEndpointItem",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlobLayoutInternal",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlobLayoutRanges",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlobLayoutRangesRangeItem",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlobListArrowParseException",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -282,7 +438,7 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLHeaders",
+        "name": "com.azure.storage.blob.implementation.models.BlobsAbortCopyFromUrlHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -306,7 +462,7 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.BlobsCopyFromURLHeaders",
+        "name": "com.azure.storage.blob.implementation.models.BlobsCopyFromUrlHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -336,13 +492,13 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.BlobsGetAccessControlHeaders",
+        "name": "com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders",
+        "name": "com.azure.storage.blob.implementation.models.BlobsGetLayoutHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -360,6 +516,12 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.implementation.models.BlobSignedIdentifiers",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.implementation.models.BlobsQueryHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -372,19 +534,7 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.BlobsRenameHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
         "name": "com.azure.storage.blob.implementation.models.BlobsRenewLeaseHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.BlobsSetAccessControlHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -432,7 +582,19 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders",
+        "name": "com.azure.storage.blob.implementation.models.BlobsStartCopyFromUrlHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlobStorageError",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlobStorageErrorException",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -468,19 +630,19 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLHeaders",
+        "name": "com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromUrlHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
         "name": "com.azure.storage.blob.implementation.models.BlockBlobsStageBlockHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.BlockBlobsUploadBlobFromUrlHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -511,6 +673,12 @@
     },
     {
         "name": "com.azure.storage.blob.implementation.models.ContainersCreateHeaders",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.ContainersCreateSessionHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -594,25 +762,13 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.ContainersSubmitBatchHeaders",
+        "name": "com.azure.storage.blob.implementation.models.CreateSessionConfiguration",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.DataLakeStorageError",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.DataLakeStorageErrorDetails",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.DataLakeStorageErrorException",
+        "name": "com.azure.storage.blob.implementation.models.CreateSessionResponse",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -624,37 +780,7 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.DirectoriesCreateHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.DirectoriesDeleteHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.DirectoriesGetAccessControlHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.DirectoriesRenameHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.DirectoriesSetAccessControlHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.DirectoryHttpHeaders",
+        "name": "com.azure.storage.blob.implementation.models.DownloadHint",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -690,7 +816,7 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.JsonTextConfiguration",
+        "name": "com.azure.storage.blob.implementation.models.JsonTextConfigurationInternal",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -732,19 +858,7 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesDiffNextHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
         "name": "com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.PageBlobsGetPageRangesNextHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -756,13 +870,13 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.PageBlobsUpdateSequenceNumberHeaders",
+        "name": "com.azure.storage.blob.implementation.models.PageBlobsSetSequenceNumberHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromURLHeaders",
+        "name": "com.azure.storage.blob.implementation.models.PageBlobsUploadPagesFromUrlHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -774,19 +888,13 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.PageListCollection",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
         "name": "com.azure.storage.blob.implementation.models.PageListHelper",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.PageListSegment",
+        "name": "com.azure.storage.blob.implementation.models.ParquetTextConfiguration",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -811,6 +919,12 @@
     },
     {
         "name": "com.azure.storage.blob.implementation.models.QueryRequest",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.models.QueryRequestType",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -852,13 +966,7 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentHeaders",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
-        "name": "com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentNextHeaders",
+        "name": "com.azure.storage.blob.implementation.models.ServicesListContainersSegmentHeaders",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -870,25 +978,55 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.ServicesSubmitBatchHeaders",
+        "name": "com.azure.storage.blob.implementation.models.SessionCredentials",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.StorageError",
+        "name": "com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.models.StorageErrorException",
+        "name": "com.azure.storage.blob.implementation.util.BlobConstants",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.BlobGetLayoutOptions",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
         "name": "com.azure.storage.blob.implementation.util.BlobHeadersAndQueryParameters",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.BlobLayoutCacheValue",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.BlobLayoutRange",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.BlobLayoutRangeResolver",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.BlobListArrowStreamReader",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -924,13 +1062,19 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.implementation.util.ChunkedDownloadUtils",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer",
+        "name": "com.azure.storage.blob.implementation.util.ContainerSessionProvider",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -942,7 +1086,163 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.implementation.util.RequestOptionsHelper",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.SessionAcquirer",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.SessionAuthenticationPolicy",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.SessionAwareLoggingPolicy",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.SessionCredential",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.SessionProvider",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.SessionRequestContext",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.implementation.util.StorageBlockingSink",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.BodyCompression",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.Buffer",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.Endianness",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.Field",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.FieldNode",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.Int",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.KeyValue",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.Message",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.MessageHeader",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.RecordBatch",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.Schema",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.Timestamp",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.TimeUnit",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.apachearrow.Type",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.flatbuffers.Constants",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.flatbuffers.Struct",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.flatbuffers.Table",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.flatbuffers.Utf8",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.implementation.util.flatbuffers.Utf8Safe",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -985,6 +1285,12 @@
     },
     {
         "name": "com.azure.storage.blob.models.BlobAnalyticsLogging",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.models.BlobAudience",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -1242,6 +1548,12 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.models.BlobSeekableByteChannelReadResult",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.models.BlobServiceProperties",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -1338,6 +1650,12 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.models.DownloadHint",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.models.DownloadRetryOptions",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -1345,6 +1663,12 @@
     },
     {
         "name": "com.azure.storage.blob.models.EncryptionAlgorithmType",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.models.FileShareTokenIntent",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -1452,12 +1776,6 @@
         "allDeclaredMethods": true
     },
     {
-        "name": "com.azure.storage.blob.models.PageListDeserializer",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
         "name": "com.azure.storage.blob.models.PageRange",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -1518,6 +1836,12 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.models.StorageResponseSerializationFormat",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.models.SyncCopyStatusType",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -1542,7 +1866,19 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.options.AppendBlobAppendBlockOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.options.AppendBlobCreateOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.options.AppendBlobOutputStreamOptions",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -1596,6 +1932,18 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.options.BlobDownloadContentOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.options.BlobDownloadStreamOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.options.BlobDownloadToFileOptions",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
@@ -1603,6 +1951,12 @@
     },
     {
         "name": "com.azure.storage.blob.options.BlobGetTagsOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.options.BlobGetUserDelegationKeyOptions",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -1633,6 +1987,12 @@
     },
     {
         "name": "com.azure.storage.blob.options.BlobRenewLeaseOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -1675,6 +2035,12 @@
     },
     {
         "name": "com.azure.storage.blob.options.BlockBlobOutputStreamOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.options.BlockBlobSeekableByteChannelWriteOptions",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -1728,7 +2094,19 @@
         "allDeclaredMethods": true
     },
     {
+        "name": "com.azure.storage.blob.options.PageBlobOutputStreamOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
         "name": "com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.options.PageBlobUploadPagesOptions",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true
@@ -1855,6 +2233,18 @@
     },
     {
         "name": "com.azure.storage.blob.specialized.SpecializedBlobClientBuilder",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.specialized.StorageSeekableByteChannelBlobReadBehavior",
+        "allDeclaredConstructors": true,
+        "allDeclaredFields": true,
+        "allDeclaredMethods": true
+    },
+    {
+        "name": "com.azure.storage.blob.specialized.StorageSeekableByteChannelBlockBlobWriteBehavior",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
         "allDeclaredMethods": true

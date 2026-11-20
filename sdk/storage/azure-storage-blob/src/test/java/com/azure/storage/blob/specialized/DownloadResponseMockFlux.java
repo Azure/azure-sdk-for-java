@@ -164,7 +164,7 @@ public class DownloadResponseMockFlux {
             if (tryNumber > 1) {
                 retryIfMatch = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.IF_MATCH);
             }
-            HttpHeader rangeHeader = context.getHttpRequest().getHeaders().get("x-ms-range");
+            HttpHeader rangeHeader = context.getHttpRequest().getHeaders().get(HttpHeaderName.RANGE);
             long offset = 0L;
             Long count = null;
             if (rangeHeader != null) {

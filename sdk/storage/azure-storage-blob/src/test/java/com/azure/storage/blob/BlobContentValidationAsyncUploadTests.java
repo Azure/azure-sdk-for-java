@@ -85,7 +85,6 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     private static final HttpHeaderName APPEND_POS = HttpHeaderName.fromString("x-ms-blob-condition-appendpos");
     private static final HttpHeaderName MAX_SIZE = HttpHeaderName.fromString("x-ms-blob-condition-maxsize");
     private static final HttpHeaderName SEQ_EQ = HttpHeaderName.fromString("x-ms-if-sequence-number-eq");
-    private static final HttpHeaderName X_MS_RANGE = HttpHeaderName.fromString("x-ms-range");
 
     private static final int TEN_MB = 10 * Constants.MB;
     // Generic ">= 4 MiB so the single-shot upload path uses a structured message" payload for the replayable
@@ -1432,7 +1431,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         assertTrue(allUploadsUseCrc64Header(recorded));
         assertCrc64HeaderMatches(upload.getHeaders(), data);
         assertEquals("bytes=" + start + "-" + (start + UNDER_4MB_PAGE_ALIGNED - 1),
-            upload.getHeaders().getValue(X_MS_RANGE),
+            upload.getHeaders().getValue(HttpHeaderName.RANGE),
             "A non-zero page offset must be forwarded alongside content validation");
     }
 

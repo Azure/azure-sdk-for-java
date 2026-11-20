@@ -4,6 +4,8 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
+import java.util.Collections;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.TestUtils;
@@ -51,6 +53,10 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addMatchers(
+                Collections.singletonList(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Accept"))));
+        }
 
         prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
         BlobServiceAsyncClient primaryBlobServiceAsyncClient = getServiceAsyncClient(ENV.getPrimaryAccount());

@@ -12,7 +12,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.BlobContainerAsyncClientInternal;
 import com.azure.storage.blob.implementation.models.AuthenticationType;
 import com.azure.storage.blob.implementation.models.CreateSessionConfiguration;
 import com.azure.storage.blob.implementation.models.CreateSessionResponse;
@@ -75,11 +75,8 @@ final class SessionAcquirer {
      * @return This acquirer.
      */
     SessionAcquirer bind(HttpPipeline pipeline) {
-        this.azureBlobStorage
-            = new AzureBlobStorageImplBuilder().pipeline(Objects.requireNonNull(pipeline, "'pipeline' cannot be null."))
-                .url(endpoint)
-                .version(serviceVersion.getVersion())
-                .buildClient();
+        this.azureBlobStorage = new AzureBlobStorageImpl(Objects.requireNonNull(pipeline, "'pipeline' cannot be null."),
+            endpoint, serviceVersion);
         return this;
     }
 
@@ -120,12 +117,13 @@ final class SessionAcquirer {
                 new IllegalStateException("The session acquirer has not been bound to a pipeline.")));
         }
 
-        CreateSessionConfiguration config
-            = new CreateSessionConfiguration().setAuthenticationType(AuthenticationType.HMAC);
+        CreateSessionConfiguration config = new CreateSessionConfiguration(AuthenticationType.HMAC);
         Context acquisitionContext = context.addData(SESSION_ACQUISITION_CONTEXT_KEY, true)
             .addData(DataLocalityPolicy.LAYOUT_ENDPOINT_KEY, "");
-        return client.getContainers()
-            .createSessionWithResponseAsync(containerName, config, null, null, acquisitionContext);
+        return new BlobContainerAsyncClientInternal(client.getContainers())
+            .createSessionWithResponse(config, null,
+                RequestOptionsHelper.containerRequestOptions(acquisitionContext, client.getUrl(), containerName))
+            .map(response -> response);
     }
 
     /**
