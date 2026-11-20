@@ -387,6 +387,11 @@ public final class ConnectionCategory extends ExpandableStringEnum<ConnectionCat
     public static final ConnectionCategory REMOTE_TOOL = fromString("RemoteTool");
 
     /**
+     * Connection to an endpoint described by an OpenAPI specification.
+     */
+    public static final ConnectionCategory OPEN_API = fromString("OpenAPI");
+
+    /**
      * Static value AmazonMws for ConnectionCategory.
      */
     public static final ConnectionCategory AMAZON_MWS = fromString("AmazonMws");

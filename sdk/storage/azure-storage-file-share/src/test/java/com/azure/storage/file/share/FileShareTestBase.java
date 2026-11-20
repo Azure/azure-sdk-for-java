@@ -28,6 +28,7 @@ import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
@@ -41,6 +42,8 @@ import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +61,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FileShareTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     protected static final TestDataFactory DATA = TestDataFactory.getInstance();
+
+    // After a share is deleted, the service answers a create of the same name with 409 ShareBeingDeleted for about 30
+    // seconds. Live tests wait out the minimum, then retry slowly, so each test sends only a few requests.
+    private static final Duration SHARE_DELETE_MIN_WAIT = Duration.ofSeconds(30);
+    private static final Duration SHARE_DELETE_RETRY_INTERVAL = Duration.ofSeconds(10);
+    private static final Duration SHARE_DELETE_TIMEOUT = Duration.ofMinutes(2);
 
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
@@ -321,6 +330,39 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
         instrument(builder);
         return builder;
+    }
+
+    /**
+     * Creates a share whose name was just deleted, once the service has finished the delete. Waits
+     * {@link #SHARE_DELETE_MIN_WAIT} without sending anything, then retries every {@link #SHARE_DELETE_RETRY_INTERVAL}
+     * while the service answers 409 ShareBeingDeleted, up to {@link #SHARE_DELETE_TIMEOUT}. For {@code @LiveOnly}
+     * tests: it really waits.
+     *
+     * @param create Creates the share when subscribed to.
+     * @param <T> The result of the create.
+     * @return A {@link Mono} of the first create that the service does not refuse as ShareBeingDeleted.
+     */
+    protected static <T> Mono<T> createAfterShareDeleteCompletes(Mono<T> create) {
+        long maxRetries
+            = SHARE_DELETE_TIMEOUT.minus(SHARE_DELETE_MIN_WAIT).toMillis() / SHARE_DELETE_RETRY_INTERVAL.toMillis();
+
+        return Mono.delay(SHARE_DELETE_MIN_WAIT)
+            .then(create.retryWhen(Retry.fixedDelay(maxRetries, SHARE_DELETE_RETRY_INTERVAL)
+                .filter(t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.SHARE_BEING_DELETED))
+                .onRetryExhaustedThrow((spec, signal) -> signal.failure())));
+    }
+
+    /**
+     * Synchronous form of {@link #createAfterShareDeleteCompletes(Mono)}. The create runs on
+     * {@link Schedulers#boundedElastic()} because synchronous clients block, which Reactor's timer threads forbid.
+     *
+     * @param create Creates the share; may throw {@link ShareStorageException}.
+     * @param <T> The result of the create.
+     * @return The result of the first create that the service does not refuse as ShareBeingDeleted.
+     */
+    protected static <T> T createAfterShareDeleteCompletes(Supplier<T> create) {
+        return createAfterShareDeleteCompletes(Mono.fromSupplier(create).subscribeOn(Schedulers.boundedElastic()))
+            .block();
     }
 
     protected static ShareLeaseClient createLeaseClient(ShareFileClient fileClient) {

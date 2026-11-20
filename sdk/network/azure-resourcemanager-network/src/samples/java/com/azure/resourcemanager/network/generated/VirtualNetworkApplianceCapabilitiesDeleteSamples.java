@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkApplianceCapabilitiesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-03-01/VirtualNetworkApplianceCapabilities_Delete.json
+     * x-ms-original-file: 2026-05-01/VirtualNetworkApplianceCapabilities_Delete.json
      */
     /**
      * Sample code: Delete virtual network appliance capability.

@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomBlocklistConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomBlocklistConfig model
-            = BinaryData.fromString("{\"source\":\"PreToolCall\",\"blocklistName\":\"efajpj\",\"blocking\":false}")
-                .toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("efajpj", model.blocklistName());
-        Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
+        CustomBlocklistConfig model = BinaryData
+            .fromString("{\"source\":\"AgentShutdown\",\"blocklistName\":\"jjjkxybwfdbk\",\"blocking\":true}")
+            .toObject(CustomBlocklistConfig.class);
+        Assertions.assertEquals("jjjkxybwfdbk", model.blocklistName());
+        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.AGENT_SHUTDOWN, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("efajpj")
-            .withBlocking(false)
-            .withSource(RaiPolicyContentSource.PRE_TOOL_CALL);
+        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("jjjkxybwfdbk")
+            .withBlocking(true)
+            .withSource(RaiPolicyContentSource.AGENT_SHUTDOWN);
         model = BinaryData.fromObject(model).toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("efajpj", model.blocklistName());
-        Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PRE_TOOL_CALL, model.source());
+        Assertions.assertEquals("jjjkxybwfdbk", model.blocklistName());
+        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.AGENT_SHUTDOWN, model.source());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: 2026-11-01/ListUsages.json
+     * x-ms-original-file: 2026-11-15-preview/ListUsages.json
      */
     /**
      * Sample code: Get Usages.
@@ -21,7 +21,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/ListUsagesClassicScope.json
+     * x-ms-original-file: 2026-11-15-preview/ListUsagesClassicScope.json
      */
     /**
      * Sample code: Get Usages Classic Scope.
@@ -34,7 +34,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/ListUsagesDataZoneScope.json
+     * x-ms-original-file: 2026-11-15-preview/ListUsagesDataZoneScope.json
      */
     /**
      * Sample code: Get Usages DataZone Scope.
@@ -47,7 +47,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/ListUsagesWithResourceMetadata.json
+     * x-ms-original-file: 2026-11-15-preview/ListUsagesWithResourceMetadata.json
      */
     /**
      * Sample code: Get Usages With Resource Metadata.
@@ -60,7 +60,7 @@ public final class UsagesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/ListUsagesGlobalScope.json
+     * x-ms-original-file: 2026-11-15-preview/ListUsagesGlobalScope.json
      */
     /**
      * Sample code: Get Usages Global Scope.
