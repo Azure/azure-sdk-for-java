@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkApplianceIn
  */
 public final class VirtualNetworkAppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01/VirtualNetworkAppliances_CreateOrUpdate_WithCapacityProvider.json
+     * x-ms-original-file: 2026-05-01/VirtualNetworkAppliances_CreateOrUpdate_WithCapacityProvider.json
      */
     /**
      * Sample code: Create virtual network appliance with capacity provider.
@@ -34,7 +34,7 @@ public final class VirtualNetworkAppliancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01/VirtualNetworkAppliances_CreateOrUpdate.json
+     * x-ms-original-file: 2026-05-01/VirtualNetworkAppliances_CreateOrUpdate.json
      */
     /**
      * Sample code: Create virtual network appliance.

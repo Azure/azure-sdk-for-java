@@ -3105,7 +3105,7 @@ public class ShareFileClient {
             ? null
             : new ShareFileHttpHeaders().setContentType(options.getContentType());
 
-        String renameSource = Utility.encodeUrlPath(this.getFileUrl());
+        String renameSource = ModelHelper.encodeRenameSourceUrl(this.getFileUrl());
 
         String finalRenameSource
             = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
@@ -3126,8 +3126,9 @@ public class ShareFileClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
 
-        return new ShareFileClient(shareFileAsyncClient, this.azureFileStorageClient, getShareName(), destinationPath,
-            null, this.getAccountName(), this.getServiceVersion(), this.getSasToken());
+        return new ShareFileClient(shareFileAsyncClient.getFileAsyncClient(destinationPath),
+            this.azureFileStorageClient, getShareName(), destinationPath, null, this.getAccountName(),
+            this.getServiceVersion(), this.getSasToken());
     }
 
     /**

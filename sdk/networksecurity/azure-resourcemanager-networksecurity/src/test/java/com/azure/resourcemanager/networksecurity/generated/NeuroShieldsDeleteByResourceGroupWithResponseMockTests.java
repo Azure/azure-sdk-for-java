@@ -28,7 +28,7 @@ public final class NeuroShieldsDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.neuroShields()
-            .deleteByResourceGroupWithResponse("cjooxdjebwpucwwf", "ovbvmeueciv", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("p", "ipwoqonmacjek", com.azure.core.util.Context.NONE);
 
     }
 }

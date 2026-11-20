@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-11-01/GetAccount.json
+     * x-ms-original-file: 2026-11-15-preview/GetAccount.json
      */
     /**
      * Sample code: Get Account.
@@ -22,7 +22,7 @@ public final class AccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/GetAccountWithTrustedCertificateSources.json
+     * x-ms-original-file: 2026-11-15-preview/GetAccountWithTrustedCertificateSources.json
      */
     /**
      * Sample code: Get an account with private CA trust.

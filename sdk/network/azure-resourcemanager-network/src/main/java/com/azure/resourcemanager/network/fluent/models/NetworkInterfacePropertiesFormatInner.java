@@ -61,6 +61,11 @@ public final class NetworkInterfacePropertiesFormatInner
     private String macAddress;
 
     /*
+     * The index of the physical network adapter.
+     */
+    private Integer networkAdapterIndex;
+
+    /*
      * Whether this is a primary network interface on a virtual machine.
      */
     private Boolean primary;
@@ -243,6 +248,26 @@ public final class NetworkInterfacePropertiesFormatInner
      */
     public String macAddress() {
         return this.macAddress;
+    }
+
+    /**
+     * Get the networkAdapterIndex property: The index of the physical network adapter.
+     * 
+     * @return the networkAdapterIndex value.
+     */
+    public Integer networkAdapterIndex() {
+        return this.networkAdapterIndex;
+    }
+
+    /**
+     * Set the networkAdapterIndex property: The index of the physical network adapter.
+     * 
+     * @param networkAdapterIndex the networkAdapterIndex value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withNetworkAdapterIndex(Integer networkAdapterIndex) {
+        this.networkAdapterIndex = networkAdapterIndex;
+        return this;
     }
 
     /**
@@ -529,6 +554,7 @@ public final class NetworkInterfacePropertiesFormatInner
         jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeNumberField("networkAdapterIndex", this.networkAdapterIndex);
         jsonWriter.writeBooleanField("enableAcceleratedNetworking", this.enableAcceleratedNetworking);
         jsonWriter.writeBooleanField("disableTcpStateTracking", this.disableTcpStateTracking);
         jsonWriter.writeBooleanField("enableIPForwarding", this.enableIpForwarding);
@@ -579,6 +605,9 @@ public final class NetworkInterfacePropertiesFormatInner
                         = NetworkInterfaceDnsSettings.fromJson(reader);
                 } else if ("macAddress".equals(fieldName)) {
                     deserializedNetworkInterfacePropertiesFormatInner.macAddress = reader.getString();
+                } else if ("networkAdapterIndex".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.networkAdapterIndex
+                        = reader.getNullable(JsonReader::getInt);
                 } else if ("primary".equals(fieldName)) {
                     deserializedNetworkInterfacePropertiesFormatInner.primary
                         = reader.getNullable(JsonReader::getBoolean);

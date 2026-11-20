@@ -42,6 +42,26 @@ public final class RaiPolicyContentSource extends ExpandableStringEnum<RaiPolicy
     public static final RaiPolicyContentSource POST_RUN = fromString("PostRun");
 
     /**
+     * Content evaluated when an agent execution session starts.
+     */
+    public static final RaiPolicyContentSource AGENT_STARTUP = fromString("AgentStartup");
+
+    /**
+     * Content evaluated before a model call is made.
+     */
+    public static final RaiPolicyContentSource PRE_MODEL_CALL = fromString("PreModelCall");
+
+    /**
+     * Content evaluated after a model call returns.
+     */
+    public static final RaiPolicyContentSource POST_MODEL_CALL = fromString("PostModelCall");
+
+    /**
+     * Content evaluated when an agent execution session shuts down.
+     */
+    public static final RaiPolicyContentSource AGENT_SHUTDOWN = fromString("AgentShutdown");
+
+    /**
      * Creates a new instance of RaiPolicyContentSource value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
