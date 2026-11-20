@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `HttpPipelineNextSyncPolicy.clone(HttpRequest, Context)` to resume a pipeline with an independent call context.
+
 - Added `HttpProtocolVersion` for configuring the maximum HTTP protocol version in HTTP client builders.
 - Added `HttpClientOptions.getMaximumHttpVersion` and `setMaximumHttpVersion` for transport-independent HTTP protocol
   configuration. An unset or cleared maximum preserves the selected transport's existing default.

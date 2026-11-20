@@ -78,7 +78,17 @@ public class HttpPipelineCallState {
 
     @Override
     public HttpPipelineCallState clone() {
-        HttpPipelineCallState cloned = new HttpPipelineCallState(this.pipeline, this.callContext);
+        return clone(this.callContext);
+    }
+
+    /**
+     * Clones the pipeline position using the supplied call context.
+     *
+     * @param context The context for the cloned chain.
+     * @return The cloned pipeline call state.
+     */
+    public HttpPipelineCallState clone(HttpPipelineCallContext context) {
+        HttpPipelineCallState cloned = new HttpPipelineCallState(this.pipeline, context);
         cloned.currentPolicyIndex = this.currentPolicyIndex;
         return cloned;
     }
