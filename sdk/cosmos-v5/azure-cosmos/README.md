@@ -22,26 +22,132 @@ of this foundation.
 
 ## Building and testing
 
-Use a checkout of this feature branch, Maven, Python 3.9 or newer, and JDK 17 or newer.
-Set `JAVA_HOME` explicitly: the JDK used by Maven may differ from `java` on `PATH`.
-From the repository root:
+### Developer setup
+
+Ordinary Java development uses **JDK and Maven only**. Python is needed for the
+additional cold-build/isolation validation below, not to compile or run the Java
+tests. Use a checkout of `feature/cosmos/vnext` or a PR branch based on it, and
+run all commands from the repository root.
+
+Install a [JDK](https://learn.microsoft.com/java/openjdk/download) (17, 21, or 25)
+and extract the [Maven 3.9 binary distribution](https://maven.apache.org/download.cgi).
+Choose the JDK download matching your OS and CPU architecture. Set the paths
+below to your installation directories; `JAVA_HOME` must name the JDK, not its
+`bin` directory. These settings apply to the current terminal.
+
+**macOS (zsh or Bash):**
+
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+export MAVEN_HOME="/absolute/path/to/apache-maven"
+export PATH="$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
+export COSMOS_MAVEN_REPO="$HOME/.m2/cosmos-v5"
+```
+
+For an unpacked JDK not registered with `java_home`, set `JAVA_HOME` to its
+`Contents/Home` directory instead.
+
+**Linux (Bash):**
+
+```bash
+export JAVA_HOME="/absolute/path/to/jdk-17"
+export MAVEN_HOME="/absolute/path/to/apache-maven"
+export PATH="$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
+export COSMOS_MAVEN_REPO="$HOME/.m2/cosmos-v5"
+```
+
+**Windows (PowerShell):**
+
+```powershell
+$env:JAVA_HOME = "C:\path\to\jdk-17"
+$env:MAVEN_HOME = "C:\path\to\apache-maven"
+$env:PATH = "$env:JAVA_HOME\bin;$env:MAVEN_HOME\bin;$env:PATH"
+$COSMOS_MAVEN_REPO = Join-Path $HOME ".m2/cosmos-v5"
+```
+
+Use the Windows [long-path setup](../../../docs/contributor/getting-started.md#3-git--long-path-support-windows)
+if checkout reports paths that are too long. On each OS, run `java -version` and
+`mvn -version`; Maven must report the selected JDK 17 or newer. See the repository's
+[build guide](../../../docs/contributor/building.md) for shared tooling and
+dependency-feed authentication guidance.
+
+### Direct Maven build
+
+The following commands work in both the Unix shells and PowerShell configured
+above. Keep the quotes around Maven properties, especially on Windows.
+
+First bootstrap the unchanged Core dependencies into the separate local Maven
+repository. This selects Core and its parents/dependencies, **not Cosmos**, and
+uses the repository's quick-build options for those dependencies:
+
+```text
+mvn -B -ntp "-Dmaven.repo.local=$COSMOS_MAVEN_REPO" "-Dgpg.skip" -f sdk/cosmos-v5/reactor.xml -pl com.azure.v2:azure-core -am clean install "-Dmaven.test.skip=true" "-Dcheckstyle.skip" "-Dmaven.javadoc.skip" "-Drevapi.skip" "-Dspotbugs.skip" "-Djacoco.skip" "-Dspotless.skip"
+```
+
+After that command succeeds, build the v5 module with its tests and quality checks:
+
+```text
+mvn -B -ntp "-Dmaven.repo.local=$COSMOS_MAVEN_REPO" "-Dgpg.skip" -f sdk/cosmos-v5/reactor.xml -pl com.azure:azure-cosmos clean verify "-Dspotless.apply.skip=true"
+```
+
+The second command runs the four JUnit 5 metadata tests, Checkstyle, SpotBugs,
+formatting verification, and artifact generation without disabling those checks
+for Cosmos. Outputs are under `sdk/cosmos-v5/azure-cosmos/target`. Reuse this
+Maven repository for iterative builds; rerun the bootstrap after changing the
+same-checkout Core dependencies. Neither command deploys packages.
+
+### Additional cold-build validation
+
+`verify-build.py` is a **validation harness, not a build system or code generator**.
+It invokes the same Maven commands above, then checks invariants that a successful
+`mvn verify` alone does not establish: local/shared version-map consistency,
+v4/v5 discovery isolation, effective compiler-execution configuration, Java 17
+class-file versions, expected artifact contents, and the deployment guard.
+It also rejects implementation classes and native payloads for this initial
+migration slice. Those last assertions must evolve deliberately in later PRs.
+Keep this validation when changing build, version, or packaging configuration.
+
+For this additional validation, install
+[Python 3.9 or newer](https://www.python.org/downloads/). No `pip` packages are
+needed. Verify `python3 --version` on macOS/Linux, or `py -3 --version` on Windows
+with the Python launcher installed. Use a new empty/absent absolute cache path,
+**not** the populated `$COSMOS_MAVEN_REPO` from the developer build:
 
 ```bash
 python3 sdk/cosmos-v5/azure-cosmos/verify-build.py --maven-repository /absolute/path/to/empty/maven-repository
 ```
 
+On Windows, invoke the same script from PowerShell:
+
+```powershell
+py -3 sdk/cosmos-v5/azure-cosmos/verify-build.py --maven-repository C:\path\to\empty\maven-repository
+```
+
 The repository path must be empty or absent. The validation builds Core and
 Client Core from the same checkout into this isolated local Maven repository,
-then verifies the Cosmos foundation with JUnit 5 and the inherited quality tools.
-It checks the effective compiler executions, Java 17 bytecode, module boundaries,
-and the SDK, sources, Javadoc, and POM artifacts. No native toolchain, credentials,
-Cosmos account, or preinstalled private Core JAR is needed.
+then verifies the Cosmos foundation and its SDK, sources, Javadoc, and POM
+artifacts. No native toolchain, Cosmos account, service credentials, or
+preinstalled private Core JAR is needed. Artifact-feed authentication may still
+be required by your Maven configuration.
 
 The Core versions used by this branch are not yet available from Maven Central.
 A successful cold reactor build is not a claim that a standalone published
 consumer can resolve the future SDK today.
 
 ### Opt-in build and version configuration
+
+This is **Cosmos-specific coexistence scaffolding, not a Core v2 convention**.
+Core v2 uses ordinary `pom.xml` files. Here, `sdk-build.xml` and `reactor.xml` are
+also ordinary Maven POMs; Maven's standard `-f` option selects them. Python does
+not translate them or supply Maven's version values. Maven reads the literal
+versions in the descriptors; the local text maps are consistency-check inputs.
+
+The nonstandard filenames keep the approved same-coordinate v5 source from
+colliding with v4 in shared repository discovery. Renaming to `pom.xml` alone
+would expose both `com.azure:azure-cosmos` modules to that tooling and allow the
+shared v4 version map to rewrite the v5 descriptor. Returning to conventional
+filenames therefore requires a coordinated discovery/versioning change or an
+SDK identity decision; it is not required by the choice of Core dependency.
 
 `sdk/cosmos-v5/reactor.xml` is a dedicated reactor for this foundation and its
 same-checkout Core dependencies. It is not included in the repository's root
@@ -70,6 +176,8 @@ only their own Cosmos version. Run them independently with:
 python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p test_build_configuration.py
 ```
 
+On Windows, replace `python3` with `py -3`.
+
 When changing the v5 version, update both the local manifest and `sdk-build.xml`.
 Do not run the shared version updater's `--target-file` option on this descriptor:
 without the local override it would apply the v4 version.
@@ -84,7 +192,7 @@ to the root build while the same-GA v4 source remains selected there.
 
 ## Validation and release boundaries
 
-The separate `sdk/cosmos-v5/ci.yml` pipeline runs build validation on JDK 17,
+The separate `sdk/cosmos-v5/ci.yml` pipeline defines build validation on JDK 17,
 21, and 25. It does not import release stages, deploy Maven packages, sign
 packages, or publish to a dev feed. The module also disables Maven deployment.
 Pipeline registration and required-check configuration must be arranged with
