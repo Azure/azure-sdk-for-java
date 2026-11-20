@@ -11,6 +11,74 @@ are not part of this directory.
 | `resolve-cosmos-test-account.sh` | Pre-step parser: reads the JSON secret + a selector, exports `ACCOUNT_HOST`/`ACCOUNT_KEY`. |
 | `resolve-test-account-steps.yml` | Reusable `PreTestRunSteps` template that runs the parser for a selector. |
 | `cspell.json` | Spelling configuration for this directory's CI files and documentation. |
+| `Assert-ServiceRegressionResults.ps1` | Requires an executed, passing vector regression with the expected mode configuration. |
+| `Assert-ServiceRegressionResults.Tests.ps1` | Offline tests for missing, skipped, failed, and mismatched regression results. |
+
+## Service-regression pipeline
+
+[service-regression.yml](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/service-regression.yml)
+is a separate pipeline entry point, not a stage added to routine
+[tests.yml](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/tests.yml).
+It uses the existing Azure SDK build, Maven feed authentication, test reporting,
+and per-job resource cleanup templates. It does not change the SDK's runtime
+behavior or suppress known service failures.
+
+The pipeline has no CI, PR, schedule, or completion triggers. `TestEnvironment`
+defaults to `stage`. The Stage Signoff orchestrator must explicitly queue a stage
+run after deploying the candidate service build, wait for that exact run, and
+block promotion unless all three connection-mode jobs succeed. A live run must be
+manually queued with `TestEnvironment=live`; a non-manual live request is rejected.
+Both environments run the same `-Pservice-regression` suite with strict failure
+handling. Live failures affect only this on-demand run, not the routine live CI.
+
+### External registration and signoff wiring
+
+These are administrative steps; committing the YAML does not complete them:
+
+1. Register the new YAML pipeline in an Azure SDK project with access to the
+   repository's 1ES templates, agent pool, and `azure-sdk-for-java` artifact feed.
+   The provided entry point reuses Azure SDK organization templates; it is not a
+   standalone replacement for the classic `msdata/CosmosDB` signoff definition.
+2. Link a restricted variable group (or equivalent pipeline variables) with:
+
+   | Environment | Endpoint variable | Secret key variable |
+   | --- | --- | --- |
+   | Stage | `service-regression-stage-account-host` | `service-regression-stage-account-key` |
+   | Live (optional) | `service-regression-live-account-host` | `service-regression-live-account-key` |
+
+   Keep keys secret. Each account must support all four vector types, an
+   HTTP/2-capable Compute Gateway, and advertised ThinClient proxy endpoints.
+   The stage account must be on the candidate deployment; an environment label
+   alone does not establish that. Do not copy credentials into YAML or local
+   `cosmos-v4.properties` files on agents.
+3. Configure the service's Stage Signoff orchestration to queue this pipeline
+   with `TestEnvironment=stage` and
+   the intended SDK revision. Grant only the required cross-project/organization
+   queue and read permissions. Record the child run ID and require that exact
+   run to succeed; do not use an older green run.
+4. Do not register this pipeline as a required SDK PR check, or add it to the
+   routine live-test schedule. Production/live execution is for explicit
+   investigation only.
+
+The `direct`, `fast`, and `long` profiles do not select the dedicated regression
+suite. Adding the new required execution is essential; changing failure policy
+without selecting the test provides no signoff coverage. Dependency-feed
+authentication must also succeed before any test result can be used as evidence.
+
+The in-process janitor and post-job cleanup remain active. Missing/empty reports,
+skips, failed assertions, and mode mismatches fail the dedicated pipeline.
+Original JUnit failures are published unchanged, and Maven/cleanup-listener
+failures are not converted into successful runs.
+
+### Offline validation
+
+Run `ServiceRegressionSuiteTest` and `TestResourceHygieneTest` with the Cosmos
+unit profile. They check suite isolation, lifecycle/listener wiring, and resource
+hygiene. Run the PowerShell gate tests with:
+
+```powershell
+Invoke-Pester sdk/cosmos/pipeline/Assert-ServiceRegressionResults.Tests.ps1
+```
 
 ## How it works
 
