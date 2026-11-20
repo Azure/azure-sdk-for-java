@@ -85,7 +85,11 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
         }
 
         HttpHeaders requestHeaders = context.getHttpRequest().getHeaders();
-        String initialRangeHeader = requestHeaders.getValue(RANGE_HEADER);
+        // Blob clients send the standard Range header. A caller-supplied x-ms-range takes precedence, as it does for
+        // the service, so the expanded range is written back to whichever header carries it.
+        HttpHeaderName rangeHeaderName
+            = requestHeaders.getValue(RANGE_HEADER) != null ? RANGE_HEADER : HttpHeaderName.RANGE;
+        String initialRangeHeader = requestHeaders.getValue(rangeHeaderName);
 
         if (!isRangeRequest(initialRangeHeader)) {
             // If there is no range, there is nothing to expand, so we can continue with the request
@@ -148,9 +152,7 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
 
             EncryptedBlobRange encryptedRange
                 = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(initialRangeHeader, encryptionData);
-            if (context.getHttpRequest().getHeaders().getValue(RANGE_HEADER) != null) {
-                requestHeaders.set(RANGE_HEADER, encryptedRange.toBlobRange().toString());
-            }
+            requestHeaders.set(rangeHeaderName, encryptedRange.toBlobRange().toString());
 
             // Process the request after expanding the range/
             return next.process().map(httpResponse -> {

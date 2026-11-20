@@ -386,7 +386,6 @@ public class BlobStorageCustomizations extends Customization {
     private static final Map<String, List<String>> SHIPPED_ENUM_ORDER = new LinkedHashMap<>();
 
     static {
-        SHIPPED_ENUM_ORDER.put("BlobImmutabilityPolicyMode", Arrays.asList("MUTABLE", "UNLOCKED", "LOCKED"));
         SHIPPED_ENUM_ORDER.put("CopyStatusType", Arrays.asList("PENDING", "SUCCESS", "ABORTED", "FAILED"));
         SHIPPED_ENUM_ORDER.put("DeleteSnapshotsOptionType", Arrays.asList("INCLUDE", "ONLY"));
         SHIPPED_ENUM_ORDER.put("LeaseStatusType", Arrays.asList("LOCKED", "UNLOCKED"));

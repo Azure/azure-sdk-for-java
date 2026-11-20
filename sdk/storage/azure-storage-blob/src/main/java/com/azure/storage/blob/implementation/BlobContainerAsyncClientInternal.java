@@ -1060,7 +1060,7 @@ public final class BlobContainerAsyncClientInternal {
      *                 RehydratePriority: String(High/Standard) (Optional)
      *                 LastAccessTime: DateTimeRfc1123 (Optional)
      *                 ImmutabilityPolicyUntilDate: DateTimeRfc1123 (Optional)
-     *                 ImmutabilityPolicyMode: String(mutable/locked/unlocked) (Optional)
+     *                 ImmutabilityPolicyMode: String(Mutable/Unlocked/Locked) (Optional)
      *                 LegalHold: Boolean (Optional)
      *             }
      *             Metadata (Optional): {
@@ -1255,7 +1255,7 @@ public final class BlobContainerAsyncClientInternal {
      *                     RehydratePriority: String(High/Standard) (Optional)
      *                     LastAccessTime: DateTimeRfc1123 (Optional)
      *                     ImmutabilityPolicyUntilDate: DateTimeRfc1123 (Optional)
-     *                     ImmutabilityPolicyMode: String(mutable/locked/unlocked) (Optional)
+     *                     ImmutabilityPolicyMode: String(Mutable/Unlocked/Locked) (Optional)
      *                     LegalHold: Boolean (Optional)
      *                 }
      *                 Metadata (Optional): {
