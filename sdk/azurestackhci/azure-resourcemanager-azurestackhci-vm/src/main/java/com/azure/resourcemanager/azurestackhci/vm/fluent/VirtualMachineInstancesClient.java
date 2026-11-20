@@ -11,7 +11,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.azurestackhci.vm.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.azurestackhci.vm.fluent.models.VirtualMachineInstanceInner;
+import com.azure.resourcemanager.azurestackhci.vm.models.PowerOffVirtualMachineOptions;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstanceUpdateRequest;
 
 /**
@@ -473,4 +475,60 @@ public interface VirtualMachineInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void save(String resourceUri, Context context);
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(String resourceUri,
+        PowerOffVirtualMachineOptions body);
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(String resourceUri,
+        PowerOffVirtualMachineOptions body, Context context);
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner powerOff(String resourceUri, PowerOffVirtualMachineOptions body);
+
+    /**
+     * The operation to power off a virtual machine instance.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner powerOff(String resourceUri, PowerOffVirtualMachineOptions body, Context context);
 }

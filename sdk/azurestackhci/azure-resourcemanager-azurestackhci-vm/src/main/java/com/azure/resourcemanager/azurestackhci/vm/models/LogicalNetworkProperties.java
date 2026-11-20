@@ -24,6 +24,12 @@ public final class LogicalNetworkProperties implements JsonSerializable<LogicalN
     private LogicalNetworkPropertiesDhcpOptions dhcpOptions;
 
     /*
+     * Managed network fabric l2/l3 ISD for this logical network. If set empty, the logical network remains entirely
+     * local.
+     */
+    private ManagedNetworkFabricArmReference fabricNetworkConfiguration;
+
+    /*
      * Subnet - list of subnets under the logical network
      */
     private List<Subnet> subnets;
@@ -73,6 +79,29 @@ public final class LogicalNetworkProperties implements JsonSerializable<LogicalN
      */
     public LogicalNetworkProperties withDhcpOptions(LogicalNetworkPropertiesDhcpOptions dhcpOptions) {
         this.dhcpOptions = dhcpOptions;
+        return this;
+    }
+
+    /**
+     * Get the fabricNetworkConfiguration property: Managed network fabric l2/l3 ISD for this logical network. If set
+     * empty, the logical network remains entirely local.
+     * 
+     * @return the fabricNetworkConfiguration value.
+     */
+    public ManagedNetworkFabricArmReference fabricNetworkConfiguration() {
+        return this.fabricNetworkConfiguration;
+    }
+
+    /**
+     * Set the fabricNetworkConfiguration property: Managed network fabric l2/l3 ISD for this logical network. If set
+     * empty, the logical network remains entirely local.
+     * 
+     * @param fabricNetworkConfiguration the fabricNetworkConfiguration value to set.
+     * @return the LogicalNetworkProperties object itself.
+     */
+    public LogicalNetworkProperties
+        withFabricNetworkConfiguration(ManagedNetworkFabricArmReference fabricNetworkConfiguration) {
+        this.fabricNetworkConfiguration = fabricNetworkConfiguration;
         return this;
     }
 
@@ -150,6 +179,7 @@ public final class LogicalNetworkProperties implements JsonSerializable<LogicalN
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("dhcpOptions", this.dhcpOptions);
+        jsonWriter.writeJsonField("fabricNetworkConfiguration", this.fabricNetworkConfiguration);
         jsonWriter.writeArrayField("subnets", this.subnets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("vmSwitchName", this.vmSwitchName);
         return jsonWriter.writeEndObject();
@@ -173,6 +203,9 @@ public final class LogicalNetworkProperties implements JsonSerializable<LogicalN
                 if ("dhcpOptions".equals(fieldName)) {
                     deserializedLogicalNetworkProperties.dhcpOptions
                         = LogicalNetworkPropertiesDhcpOptions.fromJson(reader);
+                } else if ("fabricNetworkConfiguration".equals(fieldName)) {
+                    deserializedLogicalNetworkProperties.fabricNetworkConfiguration
+                        = ManagedNetworkFabricArmReference.fromJson(reader);
                 } else if ("subnets".equals(fieldName)) {
                     List<Subnet> subnets = reader.readArray(reader1 -> Subnet.fromJson(reader1));
                     deserializedLogicalNetworkProperties.subnets = subnets;

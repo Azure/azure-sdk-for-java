@@ -34,6 +34,12 @@ public final class VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryC
      */
     private Integer targetMemoryBuffer;
 
+    /*
+     * Specifies whether dynamic memory is enabled for the virtual machine instance. When omitted, dynamic memory
+     * remains enabled; setting this to false converts the virtual machine instance to static memory.
+     */
+    private Boolean enabled;
+
     /**
      * Creates an instance of VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig class.
      */
@@ -110,6 +116,30 @@ public final class VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryC
     }
 
     /**
+     * Get the enabled property: Specifies whether dynamic memory is enabled for the virtual machine instance. When
+     * omitted, dynamic memory remains enabled; setting this to false converts the virtual machine instance to static
+     * memory.
+     * 
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.enabled;
+    }
+
+    /**
+     * Set the enabled property: Specifies whether dynamic memory is enabled for the virtual machine instance. When
+     * omitted, dynamic memory remains enabled; setting this to false converts the virtual machine instance to static
+     * memory.
+     * 
+     * @param enabled the enabled value to set.
+     * @return the VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig object itself.
+     */
+    public VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig withEnabled(Boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -118,6 +148,7 @@ public final class VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryC
         jsonWriter.writeNumberField("maximumMemoryMB", this.maximumMemoryMB);
         jsonWriter.writeNumberField("minimumMemoryMB", this.minimumMemoryMB);
         jsonWriter.writeNumberField("targetMemoryBuffer", this.targetMemoryBuffer);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +179,9 @@ public final class VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryC
                 } else if ("targetMemoryBuffer".equals(fieldName)) {
                     deserializedVirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig.targetMemoryBuffer
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedVirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

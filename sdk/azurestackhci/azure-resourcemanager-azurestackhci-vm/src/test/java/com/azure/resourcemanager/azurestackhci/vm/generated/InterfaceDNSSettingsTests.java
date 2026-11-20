@@ -13,14 +13,14 @@ public final class InterfaceDNSSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InterfaceDNSSettings model
-            = BinaryData.fromString("{\"dnsServers\":[\"uqkhrsajiwku\"]}").toObject(InterfaceDNSSettings.class);
-        Assertions.assertEquals("uqkhrsajiwku", model.dnsServers().get(0));
+            = BinaryData.fromString("{\"dnsServers\":[\"na\",\"zmhjrunmp\"]}").toObject(InterfaceDNSSettings.class);
+        Assertions.assertEquals("na", model.dnsServers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InterfaceDNSSettings model = new InterfaceDNSSettings().withDnsServers(Arrays.asList("uqkhrsajiwku"));
+        InterfaceDNSSettings model = new InterfaceDNSSettings().withDnsServers(Arrays.asList("na", "zmhjrunmp"));
         model = BinaryData.fromObject(model).toObject(InterfaceDNSSettings.class);
-        Assertions.assertEquals("uqkhrsajiwku", model.dnsServers().get(0));
+        Assertions.assertEquals("na", model.dnsServers().get(0));
     }
 }

@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ARM ID for a Gallery Image.
+ * The Azure Resource ID for a Gallery Image.
  */
 @Fluent
 public final class ImageArmReference implements JsonSerializable<ImageArmReference> {
     /*
-     * The ARM ID for an image resource used by the virtual machine instance.
+     * The Azure Resource ID for an image resource used by the virtual machine instance.
      */
     private String id;
 
@@ -28,7 +28,7 @@ public final class ImageArmReference implements JsonSerializable<ImageArmReferen
     }
 
     /**
-     * Get the id property: The ARM ID for an image resource used by the virtual machine instance.
+     * Get the id property: The Azure Resource ID for an image resource used by the virtual machine instance.
      * 
      * @return the id value.
      */
@@ -37,7 +37,7 @@ public final class ImageArmReference implements JsonSerializable<ImageArmReferen
     }
 
     /**
-     * Set the id property: The ARM ID for an image resource used by the virtual machine instance.
+     * Set the id property: The Azure Resource ID for an image resource used by the virtual machine instance.
      * 
      * @param id the id value to set.
      * @return the ImageArmReference object itself.

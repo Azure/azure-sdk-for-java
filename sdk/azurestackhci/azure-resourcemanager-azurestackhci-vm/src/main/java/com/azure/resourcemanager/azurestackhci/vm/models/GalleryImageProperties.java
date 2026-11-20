@@ -42,11 +42,6 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
     private HyperVGeneration hyperVGeneration;
 
     /*
-     * The credentials used to login to the image repository that has access to the specified image
-     */
-    private VmImageRepositoryCredentials vmImageRepositoryCredentials;
-
-    /*
      * This is the gallery image definition identifier.
      */
     private GalleryImageIdentifier identifier;
@@ -180,29 +175,6 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
     }
 
     /**
-     * Get the vmImageRepositoryCredentials property: The credentials used to login to the image repository that has
-     * access to the specified image.
-     * 
-     * @return the vmImageRepositoryCredentials value.
-     */
-    public VmImageRepositoryCredentials vmImageRepositoryCredentials() {
-        return this.vmImageRepositoryCredentials;
-    }
-
-    /**
-     * Set the vmImageRepositoryCredentials property: The credentials used to login to the image repository that has
-     * access to the specified image.
-     * 
-     * @param vmImageRepositoryCredentials the vmImageRepositoryCredentials value to set.
-     * @return the GalleryImageProperties object itself.
-     */
-    public GalleryImageProperties
-        withVmImageRepositoryCredentials(VmImageRepositoryCredentials vmImageRepositoryCredentials) {
-        this.vmImageRepositoryCredentials = vmImageRepositoryCredentials;
-        return this;
-    }
-
-    /**
      * Get the identifier property: This is the gallery image definition identifier.
      * 
      * @return the identifier value.
@@ -297,7 +269,6 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
             this.cloudInitDataSource == null ? null : this.cloudInitDataSource.toString());
         jsonWriter.writeStringField("hyperVGeneration",
             this.hyperVGeneration == null ? null : this.hyperVGeneration.toString());
-        jsonWriter.writeJsonField("vmImageRepositoryCredentials", this.vmImageRepositoryCredentials);
         jsonWriter.writeJsonField("identifier", this.identifier);
         jsonWriter.writeJsonField("version", this.version);
         jsonWriter.writeStringField("sourceVirtualMachineId", this.sourceVirtualMachineId);
@@ -332,9 +303,6 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
                 } else if ("hyperVGeneration".equals(fieldName)) {
                     deserializedGalleryImageProperties.hyperVGeneration
                         = HyperVGeneration.fromString(reader.getString());
-                } else if ("vmImageRepositoryCredentials".equals(fieldName)) {
-                    deserializedGalleryImageProperties.vmImageRepositoryCredentials
-                        = VmImageRepositoryCredentials.fromJson(reader);
                 } else if ("identifier".equals(fieldName)) {
                     deserializedGalleryImageProperties.identifier = GalleryImageIdentifier.fromJson(reader);
                 } else if ("version".equals(fieldName)) {

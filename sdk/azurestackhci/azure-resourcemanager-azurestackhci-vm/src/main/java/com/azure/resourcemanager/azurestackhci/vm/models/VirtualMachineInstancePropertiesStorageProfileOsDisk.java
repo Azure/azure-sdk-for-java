@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class VirtualMachineInstancePropertiesStorageProfileOsDisk
     implements JsonSerializable<VirtualMachineInstancePropertiesStorageProfileOsDisk> {
     /*
-     * The ARM ID for a Virtual Hard Disk.
+     * The Azure Resource ID for a Virtual Hard Disk.
      */
     private String id;
 
@@ -40,7 +40,7 @@ public final class VirtualMachineInstancePropertiesStorageProfileOsDisk
     }
 
     /**
-     * Get the id property: The ARM ID for a Virtual Hard Disk.
+     * Get the id property: The Azure Resource ID for a Virtual Hard Disk.
      * 
      * @return the id value.
      */
@@ -49,7 +49,7 @@ public final class VirtualMachineInstancePropertiesStorageProfileOsDisk
     }
 
     /**
-     * Set the id property: The ARM ID for a Virtual Hard Disk.
+     * Set the id property: The Azure Resource ID for a Virtual Hard Disk.
      * 
      * @param id the id value to set.
      * @return the VirtualMachineInstancePropertiesStorageProfileOsDisk object itself.

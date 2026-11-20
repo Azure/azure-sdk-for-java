@@ -4,8 +4,10 @@
 
 package com.azure.resourcemanager.azurestackhci.vm.generated;
 
+import com.azure.resourcemanager.azurestackhci.vm.models.HardwareProfileUpdate;
 import com.azure.resourcemanager.azurestackhci.vm.models.StorageProfileUpdate;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualHardDiskArmReference;
+import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstanceUpdateProperties;
 import com.azure.resourcemanager.azurestackhci.vm.models.VirtualMachineInstanceUpdateRequest;
 import java.util.Arrays;
@@ -15,7 +17,30 @@ import java.util.Arrays;
  */
 public final class VirtualMachineInstancesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/VirtualMachineInstances_Update.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualMachineInstances_Update_DynamicMemory.json
+     */
+    /**
+     * Sample code: UpdateVirtualMachineDynamicMemory.
+     * 
+     * @param manager Entry point to AzureStackHciVmManager.
+     */
+    public static void
+        updateVirtualMachineDynamicMemory(com.azure.resourcemanager.azurestackhci.vm.AzureStackHciVmManager manager) {
+        manager.virtualMachineInstances()
+            .update(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM",
+                new VirtualMachineInstanceUpdateRequest().withProperties(new VirtualMachineInstanceUpdateProperties()
+                    .withHardwareProfile(new HardwareProfileUpdate().withDynamicMemoryConfig(
+                        new VirtualMachineInstancePropertiesHardwareProfileDynamicMemoryConfig()
+                            .withMaximumMemoryMB(8192L)
+                            .withMinimumMemoryMB(2048L)
+                            .withTargetMemoryBuffer(20)
+                            .withEnabled(true)))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01-preview/VirtualMachineInstances_Update.json
      */
     /**
      * Sample code: UpdateVirtualMachine.

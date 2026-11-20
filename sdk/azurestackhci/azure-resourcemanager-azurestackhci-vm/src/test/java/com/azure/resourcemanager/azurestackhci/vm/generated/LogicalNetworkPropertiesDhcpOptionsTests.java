@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class LogicalNetworkPropertiesDhcpOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogicalNetworkPropertiesDhcpOptions model = BinaryData.fromString("{\"dnsServers\":[\"tusivyevcciqihn\"]}")
+        LogicalNetworkPropertiesDhcpOptions model = BinaryData
+            .fromString("{\"dnsServers\":[\"lyxwjkcprbnwbx\",\"jvtbvpyss\",\"dnrujqguhmuouqfp\",\"wzwbnguitn\"]}")
             .toObject(LogicalNetworkPropertiesDhcpOptions.class);
-        Assertions.assertEquals("tusivyevcciqihn", model.dnsServers().get(0));
+        Assertions.assertEquals("lyxwjkcprbnwbx", model.dnsServers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogicalNetworkPropertiesDhcpOptions model
-            = new LogicalNetworkPropertiesDhcpOptions().withDnsServers(Arrays.asList("tusivyevcciqihn"));
+        LogicalNetworkPropertiesDhcpOptions model = new LogicalNetworkPropertiesDhcpOptions()
+            .withDnsServers(Arrays.asList("lyxwjkcprbnwbx", "jvtbvpyss", "dnrujqguhmuouqfp", "wzwbnguitn"));
         model = BinaryData.fromObject(model).toObject(LogicalNetworkPropertiesDhcpOptions.class);
-        Assertions.assertEquals("tusivyevcciqihn", model.dnsServers().get(0));
+        Assertions.assertEquals("lyxwjkcprbnwbx", model.dnsServers().get(0));
     }
 }

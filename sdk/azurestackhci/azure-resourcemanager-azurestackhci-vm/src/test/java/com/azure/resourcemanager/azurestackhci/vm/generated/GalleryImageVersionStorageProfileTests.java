@@ -12,7 +12,7 @@ public final class GalleryImageVersionStorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GalleryImageVersionStorageProfile model
-            = BinaryData.fromString("{\"osDiskImage\":{\"sizeInMB\":6890840342903312019}}")
+            = BinaryData.fromString("{\"osDiskImage\":{\"sizeInMB\":5597579256870764074}}")
                 .toObject(GalleryImageVersionStorageProfile.class);
     }
 

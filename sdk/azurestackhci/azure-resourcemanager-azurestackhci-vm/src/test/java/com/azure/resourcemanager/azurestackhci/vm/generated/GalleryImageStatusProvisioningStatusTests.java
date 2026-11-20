@@ -13,9 +13,9 @@ public final class GalleryImageStatusProvisioningStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GalleryImageStatusProvisioningStatus model
-            = BinaryData.fromString("{\"operationId\":\"yf\",\"status\":\"Failed\"}")
+            = BinaryData.fromString("{\"operationId\":\"smy\",\"status\":\"Succeeded\"}")
                 .toObject(GalleryImageStatusProvisioningStatus.class);
-        Assertions.assertEquals("yf", model.operationId());
-        Assertions.assertEquals(Status.FAILED, model.status());
+        Assertions.assertEquals("smy", model.operationId());
+        Assertions.assertEquals(Status.SUCCEEDED, model.status());
     }
 }

@@ -20,34 +20,36 @@ public final class VirtualMachineInstancePropertiesStorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstancePropertiesStorageProfile model = BinaryData.fromString(
-            "{\"dataDisks\":[{\"id\":\"xznelixhnrztf\"}],\"imageReference\":{\"id\":\"bnxknalaulppg\"},\"osDisk\":{\"id\":\"pnapnyiropuh\",\"osType\":\"Windows\",\"managedDisk\":{\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\"}}},\"vmConfigStoragePathId\":\"gqgitxmedjvcsl\"}")
+            "{\"dataDisks\":[{\"id\":\"lpiujwaa\"},{\"id\":\"pqiiobyuqe\"},{\"id\":\"qlpqwcciuq\"}],\"imageReference\":{\"id\":\"butauvfb\"},\"osDisk\":{\"id\":\"whhmhykojo\",\"osType\":\"Windows\",\"managedDisk\":{\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\"}}},\"vmConfigStoragePathId\":\"ichkoymkcdyhb\"}")
             .toObject(VirtualMachineInstancePropertiesStorageProfile.class);
-        Assertions.assertEquals("xznelixhnrztf", model.dataDisks().get(0).id());
-        Assertions.assertEquals("bnxknalaulppg", model.imageReference().id());
-        Assertions.assertEquals("pnapnyiropuh", model.osDisk().id());
+        Assertions.assertEquals("lpiujwaa", model.dataDisks().get(0).id());
+        Assertions.assertEquals("butauvfb", model.imageReference().id());
+        Assertions.assertEquals("whhmhykojo", model.osDisk().id());
         Assertions.assertEquals(OperatingSystemTypes.WINDOWS, model.osDisk().osType());
         Assertions.assertEquals(SecurityEncryptionType.NON_PERSISTED_TPM,
             model.osDisk().managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("gqgitxmedjvcsl", model.vmConfigStoragePathId());
+        Assertions.assertEquals("ichkoymkcdyhb", model.vmConfigStoragePathId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineInstancePropertiesStorageProfile model = new VirtualMachineInstancePropertiesStorageProfile()
-            .withDataDisks(Arrays.asList(new VirtualHardDiskArmReference().withId("xznelixhnrztf")))
-            .withImageReference(new ImageArmReference().withId("bnxknalaulppg"))
-            .withOsDisk(new VirtualMachineInstancePropertiesStorageProfileOsDisk().withId("pnapnyiropuh")
+            .withDataDisks(Arrays.asList(new VirtualHardDiskArmReference().withId("lpiujwaa"),
+                new VirtualHardDiskArmReference().withId("pqiiobyuqe"),
+                new VirtualHardDiskArmReference().withId("qlpqwcciuq")))
+            .withImageReference(new ImageArmReference().withId("butauvfb"))
+            .withOsDisk(new VirtualMachineInstancePropertiesStorageProfileOsDisk().withId("whhmhykojo")
                 .withOsType(OperatingSystemTypes.WINDOWS)
                 .withManagedDisk(new VirtualMachineInstanceManagedDiskParameters().withSecurityProfile(
                     new VMDiskSecurityProfile().withSecurityEncryptionType(SecurityEncryptionType.NON_PERSISTED_TPM))))
-            .withVmConfigStoragePathId("gqgitxmedjvcsl");
+            .withVmConfigStoragePathId("ichkoymkcdyhb");
         model = BinaryData.fromObject(model).toObject(VirtualMachineInstancePropertiesStorageProfile.class);
-        Assertions.assertEquals("xznelixhnrztf", model.dataDisks().get(0).id());
-        Assertions.assertEquals("bnxknalaulppg", model.imageReference().id());
-        Assertions.assertEquals("pnapnyiropuh", model.osDisk().id());
+        Assertions.assertEquals("lpiujwaa", model.dataDisks().get(0).id());
+        Assertions.assertEquals("butauvfb", model.imageReference().id());
+        Assertions.assertEquals("whhmhykojo", model.osDisk().id());
         Assertions.assertEquals(OperatingSystemTypes.WINDOWS, model.osDisk().osType());
         Assertions.assertEquals(SecurityEncryptionType.NON_PERSISTED_TPM,
             model.osDisk().managedDisk().securityProfile().securityEncryptionType());
-        Assertions.assertEquals("gqgitxmedjvcsl", model.vmConfigStoragePathId());
+        Assertions.assertEquals("ichkoymkcdyhb", model.vmConfigStoragePathId());
     }
 }

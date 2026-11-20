@@ -14,20 +14,21 @@ public final class RouteTableTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RouteTable model = BinaryData.fromString(
-            "{\"etag\":\"whdsoifiyip\",\"name\":\"sqwpgrjb\",\"type\":\"orcjxvsnby\",\"properties\":{\"routes\":[{\"properties\":{\"addressPrefix\":\"ocpcy\",\"nextHopIpAddress\":\"urzafb\"},\"name\":\"j\"}]}}")
+            "{\"etag\":\"iwqvhkh\",\"name\":\"uigdtopbobjog\",\"type\":\"e\",\"properties\":{\"routes\":[{\"properties\":{\"addressPrefix\":\"hrzayvvtpgvdf\",\"nextHopIpAddress\":\"otkftutqxlngx\"},\"name\":\"fgugnxkrxdqmid\"}]}}")
             .toObject(RouteTable.class);
-        Assertions.assertEquals("j", model.routes().get(0).name());
-        Assertions.assertEquals("ocpcy", model.routes().get(0).addressPrefix());
-        Assertions.assertEquals("urzafb", model.routes().get(0).nextHopIpAddress());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.routes().get(0).name());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.routes().get(0).addressPrefix());
+        Assertions.assertEquals("otkftutqxlngx", model.routes().get(0).nextHopIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RouteTable model = new RouteTable().withRoutes(
-            Arrays.asList(new Route().withName("j").withAddressPrefix("ocpcy").withNextHopIpAddress("urzafb")));
+        RouteTable model = new RouteTable().withRoutes(Arrays.asList(new Route().withName("fgugnxkrxdqmid")
+            .withAddressPrefix("hrzayvvtpgvdf")
+            .withNextHopIpAddress("otkftutqxlngx")));
         model = BinaryData.fromObject(model).toObject(RouteTable.class);
-        Assertions.assertEquals("j", model.routes().get(0).name());
-        Assertions.assertEquals("ocpcy", model.routes().get(0).addressPrefix());
-        Assertions.assertEquals("urzafb", model.routes().get(0).nextHopIpAddress());
+        Assertions.assertEquals("fgugnxkrxdqmid", model.routes().get(0).name());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.routes().get(0).addressPrefix());
+        Assertions.assertEquals("otkftutqxlngx", model.routes().get(0).nextHopIpAddress());
     }
 }

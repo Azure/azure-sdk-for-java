@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.vm.generated;
  */
 public final class MarketplaceGalleryImagesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/MarketplaceGalleryImages_Get.json
+     * x-ms-original-file: 2026-07-01-preview/MarketplaceGalleryImages_Get.json
      */
     /**
      * Sample code: GetMarketplaceGalleryImage.

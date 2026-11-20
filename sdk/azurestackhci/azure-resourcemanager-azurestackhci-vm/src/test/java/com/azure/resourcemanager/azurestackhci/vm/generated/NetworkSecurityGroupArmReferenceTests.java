@@ -12,14 +12,14 @@ public final class NetworkSecurityGroupArmReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityGroupArmReference model
-            = BinaryData.fromString("{\"id\":\"nohjt\"}").toObject(NetworkSecurityGroupArmReference.class);
-        Assertions.assertEquals("nohjt", model.id());
+            = BinaryData.fromString("{\"id\":\"pyeicxm\"}").toObject(NetworkSecurityGroupArmReference.class);
+        Assertions.assertEquals("pyeicxm", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityGroupArmReference model = new NetworkSecurityGroupArmReference().withId("nohjt");
+        NetworkSecurityGroupArmReference model = new NetworkSecurityGroupArmReference().withId("pyeicxm");
         model = BinaryData.fromObject(model).toObject(NetworkSecurityGroupArmReference.class);
-        Assertions.assertEquals("nohjt", model.id());
+        Assertions.assertEquals("pyeicxm", model.id());
     }
 }

@@ -11,7 +11,7 @@ public final class AttestationStatusPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AttestationStatusProperties model = BinaryData.fromString(
-            "{\"attestSecureBootEnabled\":\"Disabled\",\"attestationCertValidated\":\"Valid\",\"bootIntegrityValidated\":\"Invalid\",\"linuxKernelVersion\":\"ft\",\"healthStatus\":\"Healthy\",\"timestamp\":\"pwiyzvqtm\",\"errorMessage\":\"bexkpzksmondj\",\"provisioningState\":\"Succeeded\",\"attestHardwarePlatform\":\"Unknown\",\"attestDiskSecurityEncryptionType\":\"Unknown\"}")
+            "{\"attestSecureBootEnabled\":\"Disabled\",\"attestationCertValidated\":\"Invalid\",\"bootIntegrityValidated\":\"Valid\",\"linuxKernelVersion\":\"tcje\",\"healthStatus\":\"Unknown\",\"timestamp\":\"waezkojvd\",\"errorMessage\":\"zfoqouicybxar\",\"provisioningState\":\"Deleting\",\"attestHardwarePlatform\":\"SEVSNP\",\"attestDiskSecurityEncryptionType\":\"Unknown\"}")
             .toObject(AttestationStatusProperties.class);
     }
 }

@@ -14,16 +14,16 @@ public final class GalleryImageVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GalleryImageVersion model = BinaryData.fromString(
-            "{\"name\":\"lzl\",\"properties\":{\"storageProfile\":{\"osDiskImage\":{\"sizeInMB\":8500205466841144449}}}}")
+            "{\"name\":\"ogknygjofjdd\",\"properties\":{\"storageProfile\":{\"osDiskImage\":{\"sizeInMB\":3233201824029317370}}}}")
             .toObject(GalleryImageVersion.class);
-        Assertions.assertEquals("lzl", model.name());
+        Assertions.assertEquals("ogknygjofjdd", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GalleryImageVersion model = new GalleryImageVersion().withName("lzl")
+        GalleryImageVersion model = new GalleryImageVersion().withName("ogknygjofjdd")
             .withStorageProfile(new GalleryImageVersionStorageProfile().withOsDiskImage(new GalleryOSDiskImage()));
         model = BinaryData.fromObject(model).toObject(GalleryImageVersion.class);
-        Assertions.assertEquals("lzl", model.name());
+        Assertions.assertEquals("ogknygjofjdd", model.name());
     }
 }

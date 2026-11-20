@@ -30,7 +30,7 @@ import java.util.Arrays;
 public final class VirtualMachineInstancesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gallery_Image.json
+     * 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gallery_Image.json
      */
     /**
      * Sample code: PutVirtualMachineInstanceWithGalleryImage.
@@ -68,7 +68,7 @@ public final class VirtualMachineInstancesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Os_Disk.json
+     * 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Os_Disk.json
      */
     /**
      * Sample code: PutVirtualMachineInstanceWithOsDisk.
@@ -101,7 +101,7 @@ public final class VirtualMachineInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/
+     * x-ms-original-file: 2026-07-01-preview/
      * VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Marketplace_Gallery_Image.json
      */
     /**
@@ -140,7 +140,7 @@ public final class VirtualMachineInstancesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Vm_Config_Agent.json
+     * 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Vm_Config_Agent.json
      */
     /**
      * Sample code: PutVirtualMachineInstanceWithVMConfigAgent.
@@ -180,7 +180,7 @@ public final class VirtualMachineInstancesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * 2025-06-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gpu.json
+     * 2026-07-01-preview/VirtualMachineInstances_CreateOrUpdate_Put_Virtual_Machine_Instance_With_Gpu.json
      */
     /**
      * Sample code: PutVirtualMachineInstanceWithGpu.
@@ -223,7 +223,7 @@ public final class VirtualMachineInstancesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01-preview/VirtualMachineInstances__CreateOrUpdate_CreateFromLocal.json
+     * x-ms-original-file: 2026-07-01-preview/VirtualMachineInstances__CreateOrUpdate_CreateFromLocal.json
      */
     /**
      * Sample code: CreateVirtualMachineInstanceFromLocal.
@@ -242,7 +242,8 @@ public final class VirtualMachineInstancesCreateOrUpdateSamples {
                     .withStorageProfile(new VirtualMachineInstancePropertiesStorageProfile()
                         .withDataDisks(Arrays.asList(new VirtualHardDiskArmReference().withId(
                             "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/virtualHardDisks/test-vhd"))))
-                    .withCreateFromLocal(true))
+                    .withCreateFromLocal(true)
+                    .withLocalVmName("DemoVM_restored"))
                     .withExtendedLocation(new ExtendedLocation().withName(
                         "/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location")
                         .withType(ExtendedLocationTypes.CUSTOM_LOCATION)),
