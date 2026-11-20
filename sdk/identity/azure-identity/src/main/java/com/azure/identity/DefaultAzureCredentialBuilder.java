@@ -165,6 +165,25 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
+     * Disables mutual TLS (mTLS) proof-of-possession for managed identity, so that {@link ManagedIdentityCredential}
+     * always returns bearer tokens.
+     *
+     * <p>
+     * By default, when a client library asks for a proof-of-possession token, and both the application and the
+     * managed identity host support mTLS proof-of-possession, {@link ManagedIdentityCredential} returns a token bound
+     * to a TLS client certificate. See {@link ManagedIdentityCredentialBuilder#disableMtlsProofOfPossession()} for what
+     * it needs. To disable it without changing code, set the {@code MSAL_MI_DISABLE_IMDS_V2} environment variable to
+     * {@code true}.
+     * </p>
+     *
+     * @return An updated instance of this builder with mTLS proof-of-possession disabled for managed identity.
+     */
+    public DefaultAzureCredentialBuilder disableManagedIdentityMtlsProofOfPossession() {
+        this.identityClientOptions.disableMtlsProofOfPossession();
+        return this;
+    }
+
+    /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *

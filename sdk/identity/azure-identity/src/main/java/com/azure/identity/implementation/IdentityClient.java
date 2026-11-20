@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.identity.CredentialUnavailableException;
@@ -32,6 +33,7 @@ import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -61,7 +63,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -72,6 +76,9 @@ import java.util.function.Supplier;
  */
 public class IdentityClient extends IdentityClientBase {
     private static final int IMDS_PROBE_TIMEOUT_MILLIS = 1000;
+    private static final String MSAL_KEY_ATTESTATION_LIBRARY_PATH = "MSAL_KEY_ATTESTATION_LIBRARY_PATH";
+    private static final String MTLS_POP_UNAVAILABLE
+        = "Managed identity mTLS proof-of-possession was requested but isn't available, so bearer tokens are returned. ";
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
 
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessorWithCae;
@@ -80,6 +87,8 @@ public class IdentityClient extends IdentityClientBase {
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessorWithCae;
     private final SynchronizedAccessor<ConfidentialClientApplication> aksConfidentialClientApplicationAccessor;
     private final SynchronizedAccessor<ManagedIdentityApplication> managedIdentityMsalApplicationAccessor;
+    private final SynchronizedAccessor<ManagedIdentityApplication> managedIdentityMtlsPopMsalApplicationAccessor;
+    private final SynchronizedAccessor<Optional<ManagedIdentityMtlsPop>> managedIdentityMtlsPopAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> workloadIdentityConfidentialClientApplicationAccessor;
     private final SynchronizedAccessor<String> clientAssertionAccessor;
 
@@ -123,6 +132,12 @@ public class IdentityClient extends IdentityClientBase {
             = new SynchronizedAccessor<>(this::getAksConfidentialClientApplication);
 
         this.managedIdentityMsalApplicationAccessor = new SynchronizedAccessor<>(this::getManagedIdentityMsalClient);
+
+        this.managedIdentityMtlsPopMsalApplicationAccessor
+            = new SynchronizedAccessor<>(() -> Mono.fromCallable(this::getManagedIdentityMtlsPopMsalApplication));
+
+        this.managedIdentityMtlsPopAccessor
+            = new SynchronizedAccessor<>(() -> Mono.fromCallable(this::createManagedIdentityMtlsPop));
 
         this.workloadIdentityConfidentialClientApplicationAccessor
             = new SynchronizedAccessor<>(this::getWorkloadIdentityConfidentialClientApplication);
@@ -576,7 +591,9 @@ public class IdentityClient extends IdentityClientBase {
 
         return Mono.fromSupplier(() -> IdentityUtil.shouldProbeImds(options))
             .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
-            .flatMap(ignored -> getTokenFromMsalMIClient(resource));
+            .flatMap(ignored -> request.getProofOfPossessionOptions() == null
+                ? getTokenFromMsalMIClient(resource)
+                : getMtlsPopOrBearerTokenFromMsalMIClient(resource));
     }
 
     private Mono<AccessToken> getTokenFromMsalMIClient(String resource) {
@@ -601,6 +618,118 @@ public class IdentityClient extends IdentityClientBase {
                     "Managed Identity authentication failed, see inner exception" + " for more information.", null, t);
             })
             .map(MsalToken::new);
+    }
+
+    // A proof-of-possession request gets a token bound to a TLS client certificate (mTLS proof-of-possession) when
+    // this application and the host support it, and a bearer token otherwise.
+    private Mono<AccessToken> getMtlsPopOrBearerTokenFromMsalMIClient(String resource) {
+        return managedIdentityMtlsPopAccessor.getValue()
+            .flatMap(mtlsPop -> mtlsPop.isPresent()
+                ? getMtlsPopTokenIfSupported(mtlsPop.get(), resource)
+                : getTokenFromMsalMIClient(resource));
+    }
+
+    private Mono<AccessToken> getMtlsPopTokenIfSupported(ManagedIdentityMtlsPop mtlsPop, String resource) {
+        return managedIdentityMtlsPopMsalApplicationAccessor.getValue()
+            .flatMap(application -> isKeyGuardSupported(mtlsPop, application).flatMap(supported -> supported
+                ? getMtlsPopTokenFromMsalMIClient(mtlsPop, application, resource)
+                : getTokenFromMsalMIClient(resource)));
+    }
+
+    private Mono<Boolean> isKeyGuardSupported(ManagedIdentityMtlsPop mtlsPop, ManagedIdentityApplication application) {
+        if (!IdentityUtil.canSkipUnavailableManagedIdentity(options)) {
+            return mtlsPop.isKeyGuardSupported(application, null)
+                .onErrorMap(error -> new ClientAuthenticationException("Managed Identity authentication failed. "
+                    + "Discovering whether the host supports mTLS proof-of-possession failed, see inner exception for "
+                    + "more information.", null, error));
+        }
+
+        // DefaultAzureCredential bounds discovery like its IMDS probe, and moves on to its next credential when
+        // discovery doesn't answer in time.
+        return mtlsPop.isKeyGuardSupported(application, Duration.ofMillis(IMDS_PROBE_TIMEOUT_MILLIS))
+            .onErrorMap(error -> LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                new CredentialUnavailableException(
+                    "ManagedIdentityCredential authentication unavailable. " + (error instanceof TimeoutException
+                        ? "The host didn't report whether it supports mTLS proof-of-possession within "
+                            + IMDS_PROBE_TIMEOUT_MILLIS + " milliseconds."
+                        : "Discovering whether the host supports mTLS proof-of-possession failed: "
+                            + error.getMessage()),
+                    error)));
+    }
+
+    private Mono<AccessToken> getMtlsPopTokenFromMsalMIClient(ManagedIdentityMtlsPop mtlsPop,
+        ManagedIdentityApplication application, String resource) {
+        // Once mTLS proof-of-possession is chosen, its failures are surfaced rather than replaced by a bearer token.
+        return mtlsPop.authenticate(application, resource).onErrorMap(error -> {
+            String details = error.getMessage();
+            return new ClientAuthenticationException(
+                "Managed Identity authentication with mTLS proof-of-possession " + (CoreUtils.isNullOrEmpty(details)
+                    ? "failed, see inner exception for more information."
+                    : "failed: " + details),
+                null, error);
+        });
+    }
+
+    /**
+     * Checks the prerequisites of mTLS proof-of-possession that don't change while the application runs, from the
+     * cheapest to the most expensive. Discovering whether the host supports it comes after these.
+     *
+     * @return The means to acquire mTLS proof-of-possession tokens, or empty if a prerequisite is missing.
+     */
+    private Optional<ManagedIdentityMtlsPop> createManagedIdentityMtlsPop() {
+        if (options.isMtlsProofOfPossessionDisabled()) {
+            LOGGER.verbose("Managed identity mTLS proof-of-possession is disabled, so bearer tokens are returned.");
+            return Optional.empty();
+        }
+
+        ManagedIdentitySourceType source = ManagedIdentityApplication.getManagedIdentitySource();
+        if (source != ManagedIdentitySourceType.DEFAULT_TO_IMDS && source != ManagedIdentitySourceType.IMDS) {
+            LOGGER.verbose("Managed identity mTLS proof-of-possession is only supported on Azure virtual machines and "
+                + "virtual machine scale sets, not with the {} managed identity source, so bearer tokens are returned.",
+                source);
+            return Optional.empty();
+        }
+
+        if (!isMtlsSupportedByMsal()) {
+            LOGGER
+                .info(MTLS_POP_UNAVAILABLE + "The msal4j version on the class path doesn't support it. Use the msal4j "
+                    + "version that this version of azure-identity depends on.");
+            return Optional.empty();
+        }
+
+        ManagedIdentityMtlsPop mtlsPop = findManagedIdentityAttestation();
+        if (mtlsPop == null) {
+            LOGGER.info(MTLS_POP_UNAVAILABLE + "Add the optional com.microsoft.azure:msal4j-key-attestation dependency "
+                + "to enable it.");
+            return Optional.empty();
+        }
+
+        Configuration configuration
+            = options.getConfiguration() == null ? Configuration.getGlobalConfiguration() : options.getConfiguration();
+        if (CoreUtils.isNullOrEmpty(configuration.get(MSAL_KEY_ATTESTATION_LIBRARY_PATH))) {
+            LOGGER.info(MTLS_POP_UNAVAILABLE + "Set the " + MSAL_KEY_ATTESTATION_LIBRARY_PATH + " environment variable "
+                + "to the absolute path of AttestationClientLib.dll to enable it.");
+            return Optional.empty();
+        }
+
+        return Optional.of(mtlsPop);
+    }
+
+    // msal4j versions without MSAL's mTLS API, such as one resolved through another dependency, can't load
+    // ManagedIdentityMtlsPop. Package-private for testing.
+    boolean isMtlsSupportedByMsal() {
+        try {
+            Class.forName("com.microsoft.aad.msal4j.MtlsPopOptions", false,
+                ManagedIdentityApplication.class.getClassLoader());
+            return true;
+        } catch (ClassNotFoundException | LinkageError e) {
+            return false;
+        }
+    }
+
+    // Package-private for testing.
+    ManagedIdentityMtlsPop findManagedIdentityAttestation() {
+        return ManagedIdentityMtlsPop.createIfAttestationAvailable();
     }
 
     public Mono<AccessToken> authenticateWithWorkloadIdentityConfidentialClient(TokenRequestContext request) {

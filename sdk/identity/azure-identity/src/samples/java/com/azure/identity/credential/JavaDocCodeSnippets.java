@@ -197,6 +197,17 @@ public final class JavaDocCodeSnippets {
     }
 
     /**
+     * Disables mutual TLS (mTLS) proof-of-possession for {@link ManagedIdentityCredential}.
+     */
+    public void managedIdentityMtlsProofOfPossessionCodeSnippets() {
+        // BEGIN: readme-sample-disable-managed-identity-mtls-pop
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+            .disableMtlsProofOfPossession()
+            .build();
+        // END: readme-sample-disable-managed-identity-mtls-pop
+    }
+
+    /**
      * Method to insert code snippets for {@link EnvironmentCredential}
      */
     public void environmentCredentialsCodeSnippets() {

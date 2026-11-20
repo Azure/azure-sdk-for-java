@@ -25,11 +25,14 @@ import reactor.test.StepVerifier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
@@ -45,6 +48,18 @@ public class ManagedIdentityCredentialTest {
     public void testVirtualMachineMSICredentialConfigurations() {
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId("foo").build();
         assertEquals("foo", credential.getClientId());
+    }
+
+    @Test
+    public void testDisableMtlsProofOfPossession() {
+        List<IdentityClientOptions> clientOptions = new ArrayList<>();
+        try (MockedConstruction<IdentityClient> identityClient = mockConstruction(IdentityClient.class,
+            (client, context) -> clientOptions.add((IdentityClientOptions) context.arguments().get(13)))) {
+            new ManagedIdentityCredentialBuilder().disableMtlsProofOfPossession().build();
+            assertEquals(1, identityClient.constructed().size());
+        }
+
+        assertTrue(clientOptions.get(0).isMtlsProofOfPossessionDisabled());
     }
 
     @ParameterizedTest

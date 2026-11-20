@@ -136,6 +136,31 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
+     * Disables mutual TLS (mTLS) proof-of-possession, so that the credential always returns bearer tokens.
+     *
+     * <p>
+     * By default, when a client library asks for a proof-of-possession token, and both the application and the
+     * managed identity host support mTLS proof-of-possession, the credential returns a token bound to a TLS client
+     * certificate. The client library then only sends the token over TLS connections that present that certificate.
+     * mTLS proof-of-possession needs a Windows x64 Azure virtual machine or virtual machine scale set with KeyGuard,
+     * the optional {@code com.microsoft.azure:msal4j-key-attestation} dependency, and the
+     * {@code MSAL_KEY_ATTESTATION_LIBRARY_PATH} environment variable set to the absolute path of
+     * {@code AttestationClientLib.dll}. Otherwise, the credential returns bearer tokens.
+     * </p>
+     *
+     * <p>
+     * To disable mTLS proof-of-possession without changing code, set the {@code MSAL_MI_DISABLE_IMDS_V2} environment
+     * variable to {@code true}.
+     * </p>
+     *
+     * @return the ManagedIdentityCredentialBuilder itself
+     */
+    public ManagedIdentityCredentialBuilder disableMtlsProofOfPossession() {
+        this.identityClientOptions.disableMtlsProofOfPossession();
+        return this;
+    }
+
+    /**
      * Creates a new {@link ManagedIdentityCredential} with the current configurations.
      *
      * @return a {@link ManagedIdentityCredential} with the current configurations.
