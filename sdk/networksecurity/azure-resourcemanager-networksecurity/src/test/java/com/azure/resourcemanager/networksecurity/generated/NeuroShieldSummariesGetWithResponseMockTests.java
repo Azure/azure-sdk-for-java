@@ -21,7 +21,7 @@ public final class NeuroShieldSummariesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"protectedCount\":2053949685,\"scannedProtectedCount\":627733683,\"activeFindings\":857226054,\"criticalFindings\":293726964,\"highFindings\":1336387683,\"mediumFindings\":1854550992,\"lowFindings\":1562521656,\"unreachableFindings\":121264437,\"awaitingApprovalMitigations\":520113589,\"queuedMitigations\":889591338,\"inProgressMitigations\":1577221415,\"succeededMitigations\":1359376561,\"failedMitigations\":1139203375,\"rollbackInProgressMitigations\":455035351},\"id\":\"svshqjohx\",\"name\":\"rsbfovasrruvw\",\"type\":\"hsqfsubcgjbirxbp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"protectedCount\":1449086974,\"scannedProtectedCount\":1407382097,\"activeFindings\":347721012,\"criticalFindings\":998565327,\"highFindings\":781075850,\"mediumFindings\":1631944105,\"lowFindings\":1430433647,\"unreachableFindings\":2027275706,\"awaitingApprovalMitigations\":21548435,\"queuedMitigations\":279762954,\"inProgressMitigations\":1326013393,\"succeededMitigations\":839049702,\"failedMitigations\":1633052469,\"rollbackInProgressMitigations\":746925062},\"id\":\"fcibyfmowuxrkj\",\"name\":\"vdwxfzwi\",\"type\":\"vwzjbhyz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,22 +31,22 @@ public final class NeuroShieldSummariesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeuroShieldSummary response = manager.neuroShieldSummaries()
-            .getWithResponse("lqbhsf", "obl", com.azure.core.util.Context.NONE)
+            .getWithResponse("y", "pgogtqxepny", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(2053949685, response.properties().protectedCount());
-        Assertions.assertEquals(627733683, response.properties().scannedProtectedCount());
-        Assertions.assertEquals(857226054, response.properties().activeFindings());
-        Assertions.assertEquals(293726964, response.properties().criticalFindings());
-        Assertions.assertEquals(1336387683, response.properties().highFindings());
-        Assertions.assertEquals(1854550992, response.properties().mediumFindings());
-        Assertions.assertEquals(1562521656, response.properties().lowFindings());
-        Assertions.assertEquals(121264437, response.properties().unreachableFindings());
-        Assertions.assertEquals(520113589, response.properties().awaitingApprovalMitigations());
-        Assertions.assertEquals(889591338, response.properties().queuedMitigations());
-        Assertions.assertEquals(1577221415, response.properties().inProgressMitigations());
-        Assertions.assertEquals(1359376561, response.properties().succeededMitigations());
-        Assertions.assertEquals(1139203375, response.properties().failedMitigations());
-        Assertions.assertEquals(455035351, response.properties().rollbackInProgressMitigations());
+        Assertions.assertEquals(1449086974, response.properties().protectedCount());
+        Assertions.assertEquals(1407382097, response.properties().scannedProtectedCount());
+        Assertions.assertEquals(347721012, response.properties().activeFindings());
+        Assertions.assertEquals(998565327, response.properties().criticalFindings());
+        Assertions.assertEquals(781075850, response.properties().highFindings());
+        Assertions.assertEquals(1631944105, response.properties().mediumFindings());
+        Assertions.assertEquals(1430433647, response.properties().lowFindings());
+        Assertions.assertEquals(2027275706, response.properties().unreachableFindings());
+        Assertions.assertEquals(21548435, response.properties().awaitingApprovalMitigations());
+        Assertions.assertEquals(279762954, response.properties().queuedMitigations());
+        Assertions.assertEquals(1326013393, response.properties().inProgressMitigations());
+        Assertions.assertEquals(839049702, response.properties().succeededMitigations());
+        Assertions.assertEquals(1633052469, response.properties().failedMitigations());
+        Assertions.assertEquals(746925062, response.properties().rollbackInProgressMitigations());
     }
 }

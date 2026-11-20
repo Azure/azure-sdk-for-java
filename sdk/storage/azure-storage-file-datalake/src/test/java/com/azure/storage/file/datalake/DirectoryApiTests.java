@@ -3011,6 +3011,26 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void createIfNotExistsFileOnSubDir() {
+        String pathName = generatePathName();
+        dc.createSubdirectory(pathName);
+
+        DataLakeStorageException e
+            = assertThrows(DataLakeStorageException.class, () -> dc.createFileIfNotExists(pathName));
+        assertExceptionStatusCodeAndMessage(e, 409, "PathConflict");
+    }
+
+    @Test
+    public void createIfNotExistsSubDirOnFile() {
+        String pathName = generatePathName();
+        dc.createFile(pathName);
+
+        DataLakeStorageException e
+            = assertThrows(DataLakeStorageException.class, () -> dc.createSubdirectoryIfNotExists(pathName));
+        assertExceptionStatusCodeAndMessage(e, 409, "PathConflict");
+    }
+
+    @Test
     public void createIfNotExistsSubDirDefaults() {
         Response<?> createResponse = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), null, null, null);
 

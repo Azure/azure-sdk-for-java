@@ -24,7 +24,7 @@ public final class NeuroShieldsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"resourceGuid\":\"iebwwaloayqcgwrt\",\"responseMode\":\"Auto\",\"severityThreshold\":\"Critical\",\"description\":\"wyzmhtxon\"},\"etag\":\"ts\",\"location\":\"jcbpwxqpsrknft\",\"tags\":{\"yvxqtayriwwroy\":\"riuhprwm\",\"bycnojvkn\":\"bexrmcq\",\"qsgzvahapj\":\"e\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\"},\"id\":\"vawjvzunlu\",\"name\":\"hnnpr\",\"type\":\"xipeilpjzuaejx\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"wlvwlyoupf\",\"responseMode\":\"Manual\",\"severityThreshold\":\"Critical\",\"description\":\"ubdyhgk\"},\"etag\":\"in\",\"location\":\"owzfttsttkt\",\"tags\":{\"tmmqtgqqqxhrn\":\"bqactxtgzukx\"},\"id\":\"rxcpjuisavo\",\"name\":\"qdzfvazivjlfrqtt\",\"type\":\"ajlkatnw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class NeuroShieldsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NeuroShieldResource> response
-            = manager.neuroShields().list(658652165, "xzvlvqhjkbegib", com.azure.core.util.Context.NONE);
+            = manager.neuroShields().list(1639942247, "kcgxxlxsffgcvi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jcbpwxqpsrknft", response.iterator().next().location());
-        Assertions.assertEquals("riuhprwm", response.iterator().next().tags().get("yvxqtayriwwroy"));
-        Assertions.assertEquals(NeuroShieldResponseMode.AUTO, response.iterator().next().properties().responseMode());
+        Assertions.assertEquals("owzfttsttkt", response.iterator().next().location());
+        Assertions.assertEquals("bqactxtgzukx", response.iterator().next().tags().get("tmmqtgqqqxhrn"));
+        Assertions.assertEquals(NeuroShieldResponseMode.MANUAL, response.iterator().next().properties().responseMode());
         Assertions.assertEquals(NeuroShieldSeverityThreshold.CRITICAL,
             response.iterator().next().properties().severityThreshold());
-        Assertions.assertEquals("wyzmhtxon", response.iterator().next().properties().description());
+        Assertions.assertEquals("ubdyhgk", response.iterator().next().properties().description());
     }
 }

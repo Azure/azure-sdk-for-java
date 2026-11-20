@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
 import com.azure.resourcemanager.cognitiveservices.models.AccountProperties;
 import com.azure.resourcemanager.cognitiveservices.models.CertificateBundleReference;
+import com.azure.resourcemanager.cognitiveservices.models.CostControlConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import com.azure.resourcemanager.cognitiveservices.models.TrustedCertificateSource;
 import com.azure.resourcemanager.cognitiveservices.models.TrustedCertificateSourceType;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-11-01/UpdateAccountClearTrustedCertificateSources.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateAccountClearTrustedCertificateSources.json
      */
     /**
      * Sample code: Clear account private CA trust using an empty array.
@@ -37,7 +38,7 @@ public final class AccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/UpdateAccount.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateAccount.json
      */
     /**
      * Sample code: Update Account.
@@ -48,11 +49,16 @@ public final class AccountsUpdateSamples {
         Account resource = manager.accounts()
             .getByResourceGroupWithResponse("bvttest", "bingSearch", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withProperties(new AccountProperties()).withSku(new Sku().withName("S2")).apply();
+        resource.update()
+            .withProperties(new AccountProperties()
+                .withCostControlConnections(new CostControlConnections().withAppInsightsConnectionId(
+                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myAppInsightsConnection")))
+            .withSku(new Sku().withName("S2"))
+            .apply();
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/UpdateAccountPreserveTrustedCertificateSources.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateAccountPreserveTrustedCertificateSources.json
      */
     /**
      * Sample code: Update account tags while preserving private CA trust with null.
@@ -68,7 +74,7 @@ public final class AccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-11-01/UpdateAccountRotateTrustedCertificateSources.json
+     * x-ms-original-file: 2026-11-15-preview/UpdateAccountRotateTrustedCertificateSources.json
      */
     /**
      * Sample code: Rotate a pinned CA bundle while retaining other references.

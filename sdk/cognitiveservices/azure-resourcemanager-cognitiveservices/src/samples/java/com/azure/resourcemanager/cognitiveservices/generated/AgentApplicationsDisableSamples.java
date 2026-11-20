@@ -9,7 +9,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
  */
 public final class AgentApplicationsDisableSamples {
     /*
-     * x-ms-original-file: 2026-11-01/AgentApplication/disable.json
+     * x-ms-original-file: 2026-11-15-preview/AgentApplication/disable.json
      */
     /**
      * Sample code: Disable Agent Application.

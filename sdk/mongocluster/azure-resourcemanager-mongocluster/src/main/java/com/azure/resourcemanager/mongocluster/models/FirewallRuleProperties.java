@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The properties of a mongo cluster firewall rule.
+ * The properties of a DocumentDB cluster firewall rule.
  */
 @Fluent
 public final class FirewallRuleProperties implements JsonSerializable<FirewallRuleProperties> {
@@ -22,12 +22,12 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     private ProvisioningState provisioningState;
 
     /*
-     * The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * The start IP address of the DocumentDB cluster firewall rule. Must be IPv4 format.
      */
     private String startIpAddress;
 
     /*
-     * The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * The end IP address of the DocumentDB cluster firewall rule. Must be IPv4 format.
      */
     private String endIpAddress;
 
@@ -47,7 +47,8 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Get the startIpAddress property: The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * Get the startIpAddress property: The start IP address of the DocumentDB cluster firewall rule. Must be IPv4
+     * format.
      * 
      * @return the startIpAddress value.
      */
@@ -56,7 +57,8 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Set the startIpAddress property: The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * Set the startIpAddress property: The start IP address of the DocumentDB cluster firewall rule. Must be IPv4
+     * format.
      * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
@@ -67,7 +69,7 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Get the endIpAddress property: The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * Get the endIpAddress property: The end IP address of the DocumentDB cluster firewall rule. Must be IPv4 format.
      * 
      * @return the endIpAddress value.
      */
@@ -76,7 +78,7 @@ public final class FirewallRuleProperties implements JsonSerializable<FirewallRu
     }
 
     /**
-     * Set the endIpAddress property: The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
+     * Set the endIpAddress property: The end IP address of the DocumentDB cluster firewall rule. Must be IPv4 format.
      * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleProperties object itself.
