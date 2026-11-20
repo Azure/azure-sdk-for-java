@@ -19,35 +19,35 @@ public final class PlaywrightWorkspaceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"elluwfziton\",\"tenantId\":\"qfpjk\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"inuvamiheogn\":{\"principalId\":\"pdvhpfxxypin\",\"clientId\":\"mayhuybbkpodepoo\"},\"yevc\":{\"principalId\":\"xzxtheo\",\"clientId\":\"si\"}}},\"tags\":{\"bwjzr\":\"ihnhun\"},\"properties\":{\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Disabled\",\"reporting\":\"Disabled\",\"storageUri\":\"emv\"}}")
+            "{\"identity\":{\"principalId\":\"ofpdvh\",\"tenantId\":\"xxypininmay\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zxtheotusivyevcc\":{\"principalId\":\"kpode\",\"clientId\":\"oginuvamiheognar\"},\"mvtzfkufub\":{\"principalId\":\"ihnhun\",\"clientId\":\"wjzrnfygxgisp\"}}},\"tags\":{\"aeqjhqjbasvms\":\"fxqeof\"},\"properties\":{\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Disabled\",\"reporting\":\"Disabled\",\"storageUri\":\"tnb\"}}")
             .toObject(PlaywrightWorkspaceUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ihnhun", model.tags().get("bwjzr"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("fxqeof", model.tags().get("aeqjhqjbasvms"));
         Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().localAuth());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().reporting());
-        Assertions.assertEquals("emv", model.properties().storageUri());
+        Assertions.assertEquals("tnb", model.properties().storageUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlaywrightWorkspaceUpdate model = new PlaywrightWorkspaceUpdate()
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf("inuvamiheogn", new UserAssignedIdentity(), "yevc", new UserAssignedIdentity())))
-            .withTags(mapOf("bwjzr", "ihnhun"))
-            .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)
-                .withLocalAuth(EnablementStatus.DISABLED)
-                .withReporting(EnablementStatus.DISABLED)
-                .withStorageUri("emv"));
+        PlaywrightWorkspaceUpdate model
+            = new PlaywrightWorkspaceUpdate()
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("zxtheotusivyevcc", new UserAssignedIdentity(), "mvtzfkufub",
+                        new UserAssignedIdentity())))
+                .withTags(mapOf("aeqjhqjbasvms", "fxqeof"))
+                .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)
+                    .withLocalAuth(EnablementStatus.DISABLED)
+                    .withReporting(EnablementStatus.DISABLED)
+                    .withStorageUri("tnb"));
         model = BinaryData.fromObject(model).toObject(PlaywrightWorkspaceUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("ihnhun", model.tags().get("bwjzr"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("fxqeof", model.tags().get("aeqjhqjbasvms"));
         Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().localAuth());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().reporting());
-        Assertions.assertEquals("emv", model.properties().storageUri());
+        Assertions.assertEquals("tnb", model.properties().storageUri());
     }
 
     // Use "Map.of" if available

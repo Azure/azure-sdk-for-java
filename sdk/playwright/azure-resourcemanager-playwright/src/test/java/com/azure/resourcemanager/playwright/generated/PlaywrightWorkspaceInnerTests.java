@@ -19,7 +19,7 @@ public final class PlaywrightWorkspaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"dataplaneUri\":\"pzvgnwzsymglzufc\",\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"bihanuf\",\"reporting\":\"Enabled\",\"storageUri\":\"jysagith\"},\"identity\":{\"principalId\":\"abifpikxwczbys\",\"tenantId\":\"pqxu\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"br\":{\"principalId\":\"n\",\"clientId\":\"b\"}}},\"location\":\"vd\",\"tags\":{\"xgaudccs\":\"grtfwvu\",\"jcny\":\"h\",\"kryhtnapczwlokj\":\"j\"},\"id\":\"emkkvnipjox\",\"name\":\"jnchgej\",\"type\":\"podmailzydehojwy\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"dataplaneUri\":\"pzvgnwzsymglzufc\",\"regionalAffinity\":\"Enabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"bihanuf\",\"reporting\":\"Enabled\",\"storageUri\":\"jysagith\",\"subnetId\":\"hab\"},\"identity\":{\"principalId\":\"ikxwc\",\"tenantId\":\"yscnpqxu\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"br\":{\"principalId\":\"n\",\"clientId\":\"b\"}}},\"location\":\"vd\",\"tags\":{\"xgaudccs\":\"grtfwvu\",\"jcny\":\"h\",\"kryhtnapczwlokj\":\"j\"},\"id\":\"emkkvnipjox\",\"name\":\"jnchgej\",\"type\":\"podmailzydehojwy\"}")
             .toObject(PlaywrightWorkspaceInner.class);
         Assertions.assertEquals("vd", model.location());
         Assertions.assertEquals("grtfwvu", model.tags().get("xgaudccs"));
@@ -27,6 +27,7 @@ public final class PlaywrightWorkspaceInnerTests {
         Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().localAuth());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().reporting());
         Assertions.assertEquals("jysagith", model.properties().storageUri());
+        Assertions.assertEquals("hab", model.properties().subnetId());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
@@ -37,7 +38,8 @@ public final class PlaywrightWorkspaceInnerTests {
             .withProperties(new PlaywrightWorkspaceProperties().withRegionalAffinity(EnablementStatus.ENABLED)
                 .withLocalAuth(EnablementStatus.ENABLED)
                 .withReporting(EnablementStatus.ENABLED)
-                .withStorageUri("jysagith"))
+                .withStorageUri("jysagith")
+                .withSubnetId("hab"))
             .withIdentity(
                 new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf("br", new UserAssignedIdentity())));
@@ -48,6 +50,7 @@ public final class PlaywrightWorkspaceInnerTests {
         Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().localAuth());
         Assertions.assertEquals(EnablementStatus.ENABLED, model.properties().reporting());
         Assertions.assertEquals("jysagith", model.properties().storageUri());
+        Assertions.assertEquals("hab", model.properties().subnetId());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
