@@ -3,11 +3,13 @@
 
 package com.azure.core.http.netty;
 
+import com.azure.core.credential.ClientCertificateBinding;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
+import com.azure.core.http.netty.implementation.ClientCertificateBoundClients;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyUtility;
@@ -26,10 +28,12 @@ import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyConnectException;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
@@ -50,9 +54,11 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
+import java.security.cert.Certificate;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
 /**
@@ -105,6 +111,7 @@ class NettyAsyncHttpClient implements HttpClient {
     final boolean disableBufferCopy;
     final boolean addProxyHandler;
     final reactor.netty.http.client.HttpClient nettyClient;
+    final ClientCertificateBoundClients boundClients;
 
     /**
      * Creates NettyAsyncHttpClient with provided http client.
@@ -112,12 +119,14 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param nettyClient the reactor-netty http client
      * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      * @param addProxyHandler Whether the custom proxy handler was added to the Netty pipeline.
+     * @param boundClients The clients for requests bound to a TLS client certificate.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
-        boolean addProxyHandler) {
+        boolean addProxyHandler, ClientCertificateBoundClients boundClients) {
         this.nettyClient = nettyClient;
         this.disableBufferCopy = disableBufferCopy;
         this.addProxyHandler = addProxyHandler;
+        this.boundClients = boundClients;
     }
 
     /**
@@ -126,6 +135,11 @@ class NettyAsyncHttpClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         return send(request, Context.NONE);
+    }
+
+    @Override
+    public boolean supportsClientCertificateBinding() {
+        return true;
     }
 
     @Override
@@ -142,23 +156,34 @@ class NettyAsyncHttpClient implements HttpClient {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(null);
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        Contexts contexts = Contexts.with(context);
+        ProgressReporter progressReporter = contexts.getHttpRequestProgressReporter();
         AtomicBoolean expectContinueReceived = context.getData(EXPECT_CONTINUE_RECEIVED_KEY)
             .filter(AtomicBoolean.class::isInstance)
             .map(AtomicBoolean.class::cast)
             .orElse(null);
 
-        return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted, responseTimeout,
-            progressReporter, expectContinueReceived, false);
+        // A request whose access token is bound to a client certificate goes through the client for that certificate.
+        ClientCertificateBinding binding = contexts.getClientCertificateBinding();
+        reactor.netty.http.client.HttpClient client;
+        try {
+            client = binding == null ? nettyClient : boundClients.getClient(binding);
+        } catch (RuntimeException e) {
+            return Mono.error(LOGGER.logExceptionAsError(e));
+        }
+
+        return attemptAsync(client, binding, request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
+            responseTimeout, progressReporter, expectContinueReceived, false);
     }
 
-    private Mono<HttpResponse> attemptAsync(HttpRequest request, boolean eagerlyReadResponse,
-        boolean ignoreResponseBody, boolean headersEagerlyConverted, Long responseTimeout,
-        ProgressReporter progressReporter, AtomicBoolean expectContinueReceived, boolean proxyRetry) {
+    private Mono<HttpResponse> attemptAsync(reactor.netty.http.client.HttpClient client,
+        ClientCertificateBinding binding, HttpRequest request, boolean eagerlyReadResponse, boolean ignoreResponseBody,
+        boolean headersEagerlyConverted, Long responseTimeout, ProgressReporter progressReporter,
+        AtomicBoolean expectContinueReceived, boolean proxyRetry) {
         Flux<Tuple2<HttpResponse, HttpHeaders>> nettyRequest
-            = nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
+            = client.request(toReactorNettyHttpMethod(request.getHttpMethod()))
                 .uri(request.getUrl().toString())
-                .send(bodySendDelegate(request))
+                .send(bodySendDelegate(request, binding))
                 .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse,
                     ignoreResponseBody, headersEagerlyConverted));
 
@@ -178,16 +203,16 @@ class NettyAsyncHttpClient implements HttpClient {
                         "Failed to connect to proxy. Status: 407", responseAndHeaders.getT2()));
                 } else {
                     // Retry the request.
-                    return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
-                        responseTimeout, progressReporter, expectContinueReceived, true);
+                    return attemptAsync(client, binding, request, eagerlyReadResponse, ignoreResponseBody,
+                        headersEagerlyConverted, responseTimeout, progressReporter, expectContinueReceived, true);
                 }
             } else {
                 return Mono.just(response);
             }
         })
             .onErrorResume(throwable -> shouldRetryProxyError(proxyRetry, throwable)
-                ? attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
-                    responseTimeout, progressReporter, expectContinueReceived, true)
+                ? attemptAsync(client, binding, request, eagerlyReadResponse, ignoreResponseBody,
+                    headersEagerlyConverted, responseTimeout, progressReporter, expectContinueReceived, true)
                 : Mono.error(throwable));
     }
 
@@ -221,11 +246,24 @@ class NettyAsyncHttpClient implements HttpClient {
      * Delegate to send the request content.
      *
      * @param restRequest the Rest request contains the body to be sent
+     * @param binding the client certificate the request's access token is bound to, or null
      * @return a delegate upon invocation sets the request body in reactor-netty outbound object
      */
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>>
-        bodySendDelegate(final HttpRequest restRequest) {
+        bodySendDelegate(final HttpRequest restRequest, final ClientCertificateBinding binding) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
+            if (binding != null) {
+                // Nothing has been written yet, so failing here sends nothing over a connection that didn't present
+                // the certificate, and the connection stays usable. Don't mark it as non-persistent: Reactor Netty
+                // only fails the response with this error while the connection is persistent.
+                AtomicReference<RuntimeException> mismatch = new AtomicReference<>();
+                reactorNettyOutbound.withConnection(
+                    connection -> mismatch.set(checkClientCertificate(connection, binding, restRequest)));
+                if (mismatch.get() != null) {
+                    return Mono.error(mismatch.get());
+                }
+            }
+
             for (HttpHeader hdr : restRequest.getHeaders()) {
                 // Get the Netty headers from Reactor Netty and work with the Netty headers directly. This removes the
                 // need to do contains checks to determine if headers added by Reactor Netty need to be overwritten.
@@ -260,6 +298,39 @@ class NettyAsyncHttpClient implements HttpClient {
                 return reactorNettyOutbound;
             }
         };
+    }
+
+    /*
+     * Checks that the connection's TLS session presented the client certificate the request's access token is bound
+     * to. Returns the error to fail the request with, or null if the request can be sent.
+     */
+    private static RuntimeException checkClientCertificate(Connection connection, ClientCertificateBinding binding,
+        HttpRequest request) {
+        Certificate presented = getPresentedClientCertificate(connection.channel());
+        if (binding.getCertificate().equals(presented)) {
+            return null;
+        }
+
+        String problem
+            = presented == null ? "didn't present a client certificate" : "presented a different client certificate";
+        return LOGGER.logExceptionAsError(new IllegalStateException("The connection to '" + request.getUrl().getHost()
+            + "' " + problem + ", but the request's access token is bound to the client certificate with key ID '"
+            + binding.getKeyId() + "', so the request wasn't sent."));
+    }
+
+    // Gets the client certificate the connection's TLS session presented. A resumed session keeps the certificate
+    // presented when the session was created, since the client doesn't present it again. With HTTP/2, the TLS handler
+    // is on the parent connection of the stream.
+    private static Certificate getPresentedClientCertificate(Channel channel) {
+        for (Channel current = channel; current != null; current = current.parent()) {
+            SslHandler sslHandler = current.pipeline().get(SslHandler.class);
+            if (sslHandler != null) {
+                Certificate[] certificates = sslHandler.engine().getSession().getLocalCertificates();
+                return certificates == null || certificates.length == 0 ? null : certificates[0];
+            }
+        }
+
+        return null;
     }
 
     private static NettyOutbound sendFile(HttpRequest restRequest, NettyOutbound reactorNettyOutbound,

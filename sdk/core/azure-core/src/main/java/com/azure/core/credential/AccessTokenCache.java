@@ -4,6 +4,7 @@
 package com.azure.core.credential;
 
 import com.azure.core.implementation.AccessTokenCacheInfo;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -42,6 +43,14 @@ import java.util.function.Supplier;
  * {@link TokenRequestContext} (scopes, tenant ID, claims) against the context used to acquire the current cached
  * token. A mismatch causes an immediate token refresh regardless of expiry. This is the mechanism used to support
  * Continuous Access Evaluation (CAE) claims challenges.
+ * </p>
+ *
+ * <p>
+ * The comparison also keeps bearer and proof-of-possession tokens apart: switching between a context with
+ * {@link ProofOfPossessionOptions} and one without them refreshes the token. A proof-of-possession token signed over a
+ * request is only valid for that request's URL, method and nonce, so it's refreshed when any of them changes. A token
+ * bound to a TLS client certificate isn't tied to them, and neither is a bearer token returned for a
+ * proof-of-possession request, so those are reused across requests.
  * </p>
  *
  * <p>
@@ -126,7 +135,8 @@ public final class AccessTokenCache {
      *
      * @param tokenRequestContext The request context for token acquisition.
      * @param refreshOnContextChange When {@code true}, compares the incoming {@link TokenRequestContext} against the
-     *     one used to acquire the current cached token. If the scopes, tenant ID, or claims differ, a fresh token is
+     *     one used to acquire the current cached token. If the scopes, tenant ID, or claims differ, or the
+     *     proof-of-possession options differ as described in the class documentation, a fresh token is
      *     fetched immediately regardless of expiry. Pass {@code false} to always use the cached token when it is
      *     still valid.
      * @return a {@link Mono} that emits the cached or newly acquired {@link AccessToken}.
@@ -144,7 +154,8 @@ public final class AccessTokenCache {
      *
      * @param tokenRequestContext The request context for token acquisition.
      * @param refreshOnContextChange When {@code true}, compares the incoming {@link TokenRequestContext} against the
-     *     one used to acquire the current cached token. If the scopes, tenant ID, or claims differ, a fresh token is
+     *     one used to acquire the current cached token. If the scopes, tenant ID, or claims differ, or the
+     *     proof-of-possession options differ as described in the class documentation, a fresh token is
      *     fetched immediately regardless of expiry. Pass {@code false} to always use the cached token when it is
      *     still valid.
      * @return the cached or newly acquired {@link AccessToken}.
@@ -180,12 +191,15 @@ public final class AccessTokenCache {
                     // Check if the incoming token request context is different from the cached one. A different
                     // token request context requires fetching a new token as the cached one won't work for the
                     // passed in token request context.
-                    boolean forceRefresh = (refreshOnContextChange && checkIfForceRefreshRequired(tokenRequestContext))
-                        || this.tokenRequestContext == null;
+                    boolean forceRefresh
+                        = (refreshOnContextChange && checkIfForceRefreshRequired(tokenRequestContext, cachedToken))
+                            || this.tokenRequestContext == null;
 
                     if (forceRefresh) {
-                        this.tokenRequestContext = tokenRequestContext;
-                        tokenRefresh = Mono.defer(() -> tokenCredential.getToken(this.tokenRequestContext));
+                        // The context is stored once a token is acquired for it, so that a failed acquisition leaves
+                        // the cached token under the context it was acquired for.
+                        tokenRefresh = Mono.defer(() -> tokenCredential.getToken(tokenRequestContext))
+                            .doOnNext(ignored -> this.tokenRequestContext = tokenRequestContext);
                         fallback = Mono.empty();
                     } else if (cachedToken != null && !shouldRefresh.test(cachedToken)) {
                         // fresh cache & no need to refresh
@@ -262,12 +276,18 @@ public final class AccessTokenCache {
             // Check if the incoming token request context is different from the cached one. A different
             // token request context requires fetching a new token as the cached one won't work for the
             // passed in token request context.
-            boolean forceRefresh = (refreshOnContextChange && checkIfForceRefreshRequired(tokenRequestContext))
-                || this.tokenRequestContext == null;
+            boolean forceRefresh
+                = (refreshOnContextChange && checkIfForceRefreshRequired(tokenRequestContext, cachedToken))
+                    || this.tokenRequestContext == null;
 
             if (forceRefresh) {
-                this.tokenRequestContext = tokenRequestContext;
-                tokenRefresh = tokenSupplierSync;
+                // The context is stored once a token is acquired for it, so that a failed acquisition leaves the
+                // cached token under the context it was acquired for.
+                tokenRefresh = () -> {
+                    AccessToken token = tokenCredential.getTokenSync(tokenRequestContext);
+                    this.tokenRequestContext = tokenRequestContext;
+                    return token;
+                };
                 fallback = null;
             } else if (cachedToken != null && !shouldRefresh.test(cachedToken)) {
                 // fresh cache & no need to refresh
@@ -332,7 +352,7 @@ public final class AccessTokenCache {
         });
     }
 
-    private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
+    private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext, AccessToken cachedToken) {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null
                 ? tokenRequestContext.getClaims() == null
@@ -342,7 +362,40 @@ public final class AccessTokenCache {
                 ? tokenRequestContext.getTenantId() == null
                 : (tokenRequestContext.getTenantId() != null
                     && tokenRequestContext.getTenantId().equals(this.tokenRequestContext.getTenantId())))
-            && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
+            && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes())
+            && canReuseForProofOfPossession(this.tokenRequestContext.getProofOfPossessionOptions(),
+                tokenRequestContext.getProofOfPossessionOptions(), cachedToken));
+    }
+
+    private static boolean canReuseForProofOfPossession(ProofOfPossessionOptions cachedOptions,
+        ProofOfPossessionOptions requestedOptions, AccessToken cachedToken) {
+        if (cachedOptions == null || requestedOptions == null) {
+            // Bearer and proof-of-possession tokens are never mixed.
+            return cachedOptions == requestedOptions;
+        }
+
+        if (isSameRequest(cachedOptions, requestedOptions)) {
+            return true;
+        }
+
+        // Only a token signed over a request depends on its URL, method and nonce. Without a cached token, the kind of
+        // token isn't known yet, so it's acquired for the new request.
+        return cachedToken != null && !isSignedOverRequest(cachedToken);
+    }
+
+    private static boolean isSameRequest(ProofOfPossessionOptions first, ProofOfPossessionOptions second) {
+        // Compares URLs as strings, since URL.equals resolves host names.
+        return Objects.equals(Objects.toString(first.getRequestUrl(), null),
+            Objects.toString(second.getRequestUrl(), null))
+            && first.getRequestMethod() == second.getRequestMethod()
+            && Objects.equals(first.getProofOfPossessionNonce(), second.getProofOfPossessionNonce());
+    }
+
+    private static boolean isSignedOverRequest(AccessToken token) {
+        String tokenType = token.getTokenType();
+        return token.getClientCertificateBinding() == null
+            && !CoreUtils.isNullOrEmpty(tokenType)
+            && !"Bearer".equalsIgnoreCase(tokenType);
     }
 
     private Function<Signal<AccessToken>, Mono<? extends AccessToken>>

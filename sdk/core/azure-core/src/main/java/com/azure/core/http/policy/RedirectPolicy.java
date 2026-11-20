@@ -11,7 +11,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
+import java.net.URL;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -36,6 +38,11 @@ import java.util.Set;
  * </pre>
  * <!-- end com.azure.core.http.policy.RedirectPolicy.constructor -->
  *
+ * <p>Before following a redirect, the policy removes the request's Authorization header and any client certificate
+ * binding (see {@link com.azure.core.util.Contexts#getClientCertificateBinding()}). If a
+ * {@link BearerTokenAuthenticationPolicy} runs after this policy, it doesn't send a token bound to a client certificate
+ * to a host other than the one the request was first sent to.</p>
+ *
  * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline
@@ -45,6 +52,9 @@ import java.util.Set;
  * @see com.azure.core.http.policy.DefaultRedirectStrategy
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
+    // Context key under which the policy records the host and port the request was sent to before its first redirect.
+    private static final String REDIRECT_ORIGIN_KEY = "azure-redirect-origin-authority";
+
     private final RedirectStrategy redirectStrategy;
 
     /**
@@ -86,10 +96,13 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         final HttpRequest originalHttpRequest, final int redirectAttempt, Set<String> attemptedRedirectUrls) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
+        if (redirectAttempt == 1) {
+            clearRedirectOrigin(context);
+        }
 
         return next.clone().process().flatMap(httpResponse -> {
             if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
-                HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
+                HttpRequest redirectRequestCopy = createRedirectRequest(context, httpResponse, redirectAttempt);
                 return attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
             } else {
                 return Mono.just(httpResponse);
@@ -106,24 +119,57 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         Set<String> attemptedRedirectUrls) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
+        if (redirectAttempt == 1) {
+            clearRedirectOrigin(context);
+        }
 
         HttpResponse httpResponse = next.clone().processSync();
 
         if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
-            HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
+            HttpRequest redirectRequestCopy = createRedirectRequest(context, httpResponse, redirectAttempt);
             return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
         } else {
             return httpResponse;
         }
     }
 
-    private HttpRequest createRedirectRequest(HttpResponse redirectResponse) {
+    private HttpRequest createRedirectRequest(HttpPipelineCallContext context, HttpResponse redirectResponse,
+        int redirectAttempt) {
+        if (redirectAttempt == 1) {
+            context.setData(REDIRECT_ORIGIN_KEY, getAuthority(redirectResponse.getRequest().getUrl()));
+        }
+
         // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
         // causing it to leak your authorization token to.
         redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+        // The client certificate binding belongs to the token in the authorization header.
+        BearerTokenAuthenticationPolicy.setClientCertificateBinding(context, null);
         HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
         redirectResponse.close();
 
         return redirectRequestCopy;
+    }
+
+    /**
+     * Gets whether this policy redirected the request to a host other than the one it was first sent to.
+     *
+     * @param context The request context.
+     * @return Whether the request was redirected to another host.
+     */
+    static boolean isRedirectedToAnotherHost(HttpPipelineCallContext context) {
+        Object origin = context.getData(REDIRECT_ORIGIN_KEY).orElse(null);
+        return origin != null && !origin.equals(getAuthority(context.getHttpRequest().getUrl()));
+    }
+
+    private static void clearRedirectOrigin(HttpPipelineCallContext context) {
+        // A retry that runs this policy again starts from the original request.
+        if (context.getData(REDIRECT_ORIGIN_KEY).isPresent()) {
+            context.setData(REDIRECT_ORIGIN_KEY, null);
+        }
+    }
+
+    private static String getAuthority(URL url) {
+        int port = url.getPort() == -1 ? url.getDefaultPort() : url.getPort();
+        return url.getHost().toLowerCase(Locale.ROOT) + ":" + port;
     }
 }

@@ -63,6 +63,11 @@ public final class AssertingClient implements HttpClient {
         return delegate.sendSync(request, context);
     }
 
+    @Override
+    public boolean supportsClientCertificateBinding() {
+        return delegate.supportsClientCertificateBinding();
+    }
+
     private void skipRequest(HttpRequest request, List<Predicate<HttpRequest>> assertions, Context context) {
 
         if (skipRequestBiFunction != null && skipRequestBiFunction.apply(request, context) && !assertions.isEmpty()) {

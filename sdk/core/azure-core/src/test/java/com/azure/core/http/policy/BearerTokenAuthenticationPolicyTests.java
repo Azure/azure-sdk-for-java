@@ -4,33 +4,47 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.ClientCertificateBinding;
+import com.azure.core.credential.ProofOfPossessionOptions;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
 import com.azure.core.implementation.http.policy.AuthorizationChallengeParser;
 import com.azure.core.util.Context;
+import com.azure.core.util.Contexts;
+import com.azure.core.validation.http.MtlsTestCertificates;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BearerTokenAuthenticationPolicyTests {
+    private static final ClientCertificateBinding BINDING
+        = MtlsTestCertificates.loadBinding(MtlsTestCertificates.CLIENT_A);
+    private static final String URL = "https://vault.example.com/secrets/a";
 
     @ParameterizedTest
     @MethodSource("caeTestArguments")
@@ -128,5 +142,190 @@ public class BearerTokenAuthenticationPolicyTests {
             Arguments.of("Bearer claims=\"\" error=\"insufficient_claims\"", 401, null, ""), // empty claims
             Arguments.of("Bearer error=\"insufficient_claims\"", 401, null, "") // missing claims
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("authorizationSchemeArguments")
+    public void authorizationScheme(boolean requestProofOfPossession, String tokenType,
+        ClientCertificateBinding binding, String expectedScheme) {
+        AccessToken token = new AccessToken("token", OffsetDateTime.now().plusHours(1), null, tokenType, binding);
+        CapturingHttpClient client = new CapturingHttpClient(null, null);
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(createPolicy(request -> Mono.just(token), requestProofOfPossession))
+                .httpClient(client)
+                .build();
+
+        send(pipeline, URL, Context.NONE, false);
+        send(pipeline, URL, Context.NONE, true);
+
+        for (SentRequest sent : client.sent) {
+            assertEquals(expectedScheme + " token", sent.authorization);
+            assertSame(binding, sent.binding);
+        }
+    }
+
+    private static Stream<Arguments> authorizationSchemeArguments() {
+        return Stream.of(
+            // Requests that don't ask for proof-of-possession keep sending Bearer, whatever type a credential sets.
+            Arguments.of(false, "Bearer", null, "Bearer"), Arguments.of(false, "SharedAccessSignature", null, "Bearer"),
+            Arguments.of(false, "PoP", null, "Bearer"),
+            // A token bound to a certificate always uses its type.
+            Arguments.of(false, "mtls_pop", BINDING, "mtls_pop"), Arguments.of(true, "mtls_pop", BINDING, "mtls_pop"),
+            Arguments.of(true, "PoP", null, "PoP"), Arguments.of(true, null, null, "Bearer"),
+            Arguments.of(true, "", null, "Bearer"), Arguments.of(true, "bearer", null, "Bearer"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void unboundTokenClearsEarlierBinding(boolean sync) {
+        AccessToken token = new AccessToken("token", OffsetDateTime.now().plusHours(1));
+        CapturingHttpClient client = new CapturingHttpClient(null, null);
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new BearerTokenAuthenticationPolicy(request -> Mono.just(token), "scope"))
+            .httpClient(client)
+            .build();
+
+        send(pipeline, URL, Contexts.empty().setClientCertificateBinding(BINDING).getContext(), sync);
+
+        assertEquals("Bearer token", client.sent.get(0).authorization);
+        assertNull(client.sent.get(0).binding);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void boundTokenIsNotSentToAnotherHostAfterRedirect(boolean sync) {
+        CapturingHttpClient client = new CapturingHttpClient(URL, "https://other.example.com/secrets/a");
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RedirectPolicy(), new BearerTokenAuthenticationPolicy(boundCredential(), "scope"))
+            .httpClient(client)
+            .build();
+
+        send(pipeline, URL, Context.NONE, sync);
+
+        assertEquals(2, client.sent.size());
+        assertEquals("mtls_pop token", client.sent.get(0).authorization);
+        assertSame(BINDING, client.sent.get(0).binding);
+        assertNull(client.sent.get(1).authorization);
+        assertNull(client.sent.get(1).binding);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void boundTokenIsSentAfterRedirectToSameHost(boolean sync) {
+        CapturingHttpClient client = new CapturingHttpClient(URL, "https://vault.example.com/secrets/b");
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RedirectPolicy(), new BearerTokenAuthenticationPolicy(boundCredential(), "scope"))
+            .httpClient(client)
+            .build();
+
+        send(pipeline, URL, Context.NONE, sync);
+
+        assertEquals(2, client.sent.size());
+        assertEquals("mtls_pop token", client.sent.get(1).authorization);
+        assertSame(BINDING, client.sent.get(1).binding);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void redirectPolicyClearsBindingWithAuthorization(boolean sync) {
+        CapturingHttpClient client = new CapturingHttpClient(URL, "https://vault.example.com/secrets/b");
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new BearerTokenAuthenticationPolicy(boundCredential(), "scope"), new RedirectPolicy())
+            .httpClient(client)
+            .build();
+
+        send(pipeline, URL, Context.NONE, sync);
+
+        assertEquals(2, client.sent.size());
+        assertNull(client.sent.get(1).authorization);
+        assertNull(client.sent.get(1).binding);
+    }
+
+    private static TokenCredential boundCredential() {
+        return request -> Mono
+            .just(new AccessToken("token", OffsetDateTime.now().plusHours(1), null, "mtls_pop", BINDING));
+    }
+
+    private static BearerTokenAuthenticationPolicy createPolicy(TokenCredential credential,
+        boolean requestProofOfPossession) {
+        if (!requestProofOfPossession) {
+            return new BearerTokenAuthenticationPolicy(credential, "scope");
+        }
+
+        return new BearerTokenAuthenticationPolicy(credential, "scope") {
+            @Override
+            public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
+                return setAuthorizationHeader(context, createProofOfPossessionContext(context));
+            }
+
+            @Override
+            public void authorizeRequestSync(HttpPipelineCallContext context) {
+                setAuthorizationHeaderSync(context, createProofOfPossessionContext(context));
+            }
+        };
+    }
+
+    private static TokenRequestContext createProofOfPossessionContext(HttpPipelineCallContext context) {
+        HttpRequest request = context.getHttpRequest();
+        return new TokenRequestContext().addScopes("scope")
+            .setProofOfPossessionOptions(new ProofOfPossessionOptions().setRequestUrl(request.getUrl())
+                .setRequestMethod(request.getHttpMethod()));
+    }
+
+    private static void send(HttpPipeline pipeline, String url, Context context, boolean sync) {
+        if (sync) {
+            try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, url), context)) {
+                assertEquals(200, response.getStatusCode());
+            }
+        } else {
+            StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, url), context))
+                .assertNext(response -> assertEquals(200, response.getStatusCode()))
+                .verifyComplete();
+        }
+    }
+
+    // Records what each request carried, and redirects requests for one URL to another.
+    private static final class CapturingHttpClient implements HttpClient {
+        private final List<SentRequest> sent = new CopyOnWriteArrayList<>();
+        private final String redirectFrom;
+        private final String redirectTo;
+
+        CapturingHttpClient(String redirectFrom, String redirectTo) {
+            this.redirectFrom = redirectFrom;
+            this.redirectTo = redirectTo;
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            return send(request, Context.NONE);
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
+            sent.add(new SentRequest(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION),
+                Contexts.with(context).getClientCertificateBinding()));
+
+            if (request.getUrl().toString().equals(redirectFrom)) {
+                return Mono.just(
+                    new MockHttpResponse(request, 302, new HttpHeaders().set(HttpHeaderName.LOCATION, redirectTo)));
+            }
+
+            return Mono.just(new MockHttpResponse(request, 200));
+        }
+
+        @Override
+        public boolean supportsClientCertificateBinding() {
+            return true;
+        }
+    }
+
+    private static final class SentRequest {
+        private final String authorization;
+        private final ClientCertificateBinding binding;
+
+        SentRequest(String authorization, ClientCertificateBinding binding) {
+            this.authorization = authorization;
+            this.binding = binding;
+        }
     }
 }

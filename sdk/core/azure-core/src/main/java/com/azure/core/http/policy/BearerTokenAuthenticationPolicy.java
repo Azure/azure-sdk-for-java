@@ -4,16 +4,17 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.ClientCertificateBinding;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.credential.AccessTokenCache;
 import com.azure.core.implementation.http.policy.AuthorizationChallengeParser;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -42,6 +43,14 @@ import java.util.Objects;
  *     &quot;https:&#47;&#47;management.azure.com&#47;.default&quot;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
+ *
+ * <p>The Authorization header uses the {@code Bearer} scheme, except for proof-of-possession: when the
+ * {@link TokenRequestContext} asks for a proof-of-possession token, or the token is bound to a TLS client certificate,
+ * the policy uses the token's type as the scheme, such as {@code mtls_pop}. For a token bound to a certificate, the
+ * policy also passes the certificate to the HTTP client with the request (see
+ * {@link com.azure.core.util.Contexts#getClientCertificateBinding()}), so that the token is only sent over a TLS
+ * connection that presents it. A token bound to a certificate isn't sent when a {@link RedirectPolicy} before this
+ * policy redirects the request to another host.</p>
  *
  * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
@@ -187,7 +196,10 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
+     * Authorizes the request with the access token acquired using the specified {@code tokenRequestContext}.
+     * <p>
+     * The class documentation describes the authorization scheme and the client certificate binding the request is
+     * sent with.
      *
      * @param context the HTTP pipeline context.
      * @param tokenRequestContext the token request context to be used for token acquisition.
@@ -198,7 +210,10 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
+     * Authorizes the request with the access token acquired using the specified {@code tokenRequestContext}.
+     * <p>
+     * The class documentation describes the authorization scheme and the client certificate binding the request is
+     * sent with.
      *
      * @param context the HTTP pipeline context.
      * @param tokenRequestContext the token request context to be used for token acquisition.
@@ -210,7 +225,7 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context,
         TokenRequestContext tokenRequestContext, boolean refreshOnContextChange) {
         return cache.getToken(tokenRequestContext, refreshOnContextChange).flatMap(token -> {
-            setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
+            setAuthorization(context, tokenRequestContext, token);
             return Mono.empty();
         });
     }
@@ -218,11 +233,49 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,
         TokenRequestContext tokenRequestContext, boolean refreshOnContextChange) {
         AccessToken token = cache.getTokenSync(tokenRequestContext, refreshOnContextChange);
-        setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
+        setAuthorization(context, tokenRequestContext, token);
     }
 
-    private static void setAuthorizationHeader(HttpHeaders headers, String token) {
-        headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
+    private static void setAuthorization(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext,
+        AccessToken token) {
+        ClientCertificateBinding binding = token.getClientCertificateBinding();
+        if (binding != null && RedirectPolicy.isRedirectedToAnotherHost(context)) {
+            // A token bound to a certificate is only sent to the host it was requested for.
+            context.getHttpRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+            setClientCertificateBinding(context, null);
+            return;
+        }
+
+        context.getHttpRequest()
+            .getHeaders()
+            .set(HttpHeaderName.AUTHORIZATION,
+                getAuthorizationScheme(tokenRequestContext, token) + " " + token.getToken());
+        setClientCertificateBinding(context, binding);
+    }
+
+    // Only proof-of-possession uses the token's type as the scheme, so other requests keep sending "Bearer" whatever
+    // type a credential sets.
+    private static String getAuthorizationScheme(TokenRequestContext tokenRequestContext, AccessToken token) {
+        String tokenType = token.getTokenType();
+        boolean proofOfPossession
+            = tokenRequestContext.getProofOfPossessionOptions() != null || token.getClientCertificateBinding() != null;
+
+        return !proofOfPossession || CoreUtils.isNullOrEmpty(tokenType) || BEARER.equalsIgnoreCase(tokenType)
+            ? BEARER
+            : tokenType;
+    }
+
+    /**
+     * Sets the client certificate binding the request is sent with, or clears one set earlier, for example by an
+     * earlier try of the request.
+     *
+     * @param context The request context.
+     * @param binding The client certificate binding, or null to clear it.
+     */
+    static void setClientCertificateBinding(HttpPipelineCallContext context, ClientCertificateBinding binding) {
+        if (binding != null || context.getData(HttpUtils.AZURE_CLIENT_CERTIFICATE_BINDING).isPresent()) {
+            context.setData(HttpUtils.AZURE_CLIENT_CERTIFICATE_BINDING, binding);
+        }
     }
 
     private TokenRequestContext getTokenRequestContextForCaeChallenge(HttpResponse response) {

@@ -6,6 +6,7 @@ package com.azure.core.http;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.implementation.http.HttpPipelineNextSyncPolicyHelper;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * <p>A class that invokes the next policy in the HTTP pipeline in a synchronous manner.</p>
@@ -22,6 +23,7 @@ import com.azure.core.implementation.http.HttpPipelineNextSyncPolicyHelper;
  * @see HttpPipelineCallState
  */
 public class HttpPipelineNextSyncPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextSyncPolicy.class);
     private final HttpPipelineCallState state;
 
     static {
@@ -42,10 +44,17 @@ public class HttpPipelineNextSyncPolicy {
      * Invokes the next {@link HttpPipelinePolicy}.
      *
      * @return The response.
+     * @throws IllegalStateException If the request's access token is bound to a TLS client certificate and the
+     * pipeline's HTTP client can't present it. See {@link HttpClient#supportsClientCertificateBinding()}.
      */
     public HttpResponse processSync() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
         if (nextPolicy == null) {
+            IllegalStateException bindingError = this.state.getClientCertificateBindingError();
+            if (bindingError != null) {
+                throw LOGGER.logExceptionAsError(bindingError);
+            }
+
             return this.state.getPipeline()
                 .getHttpClient()
                 .sendSync(this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());

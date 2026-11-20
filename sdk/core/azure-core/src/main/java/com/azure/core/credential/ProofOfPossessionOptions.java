@@ -8,7 +8,27 @@ import com.azure.core.http.HttpMethod;
 import java.net.URL;
 
 /**
- * Specifies Options for Pop Token authentication.
+ * <p>
+ * Specifies options for proof-of-possession (PoP) token authentication.
+ * </p>
+ *
+ * <p>
+ * Setting these options on a {@link TokenRequestContext} asks the credential for a PoP token instead of a bearer
+ * token. Each credential decides which kind of PoP token it returns:
+ * </p>
+ *
+ * <ul>
+ * <li>A token signed over the request, for example from a broker. It's only valid for the request URL, method and
+ * nonce set in these options.</li>
+ * <li>A token bound to a TLS client certificate (mutual TLS, or mTLS, proof-of-possession), for example for a managed
+ * identity. It's only valid over a TLS connection that presents that certificate, which the {@link AccessToken}
+ * carries in {@link AccessToken#getClientCertificateBinding()}. It isn't tied to the request URL, method or
+ * nonce.</li>
+ * </ul>
+ *
+ * <p>
+ * A credential that can't return a PoP token may return a bearer token instead.
+ * </p>
  */
 public class ProofOfPossessionOptions {
 
