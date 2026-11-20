@@ -87,7 +87,7 @@ public class GetDocumentStatus {
                 System.out.println("Document ID is: " + documentStatus.getId());
                 System.out.println("Document Status is: " + documentStatus.getStatus().toString());
                 System.out.println("Characters Charged is: "
-                    + documentStatus.getCharacterCharged().toString());
+                    + documentStatus.getCharacterChargedCount().toString());
                 System.out.println("Document path is: " + documentStatus.getPath());
                 System.out.println("Document source path is: " + documentStatus.getSourcePath());
             }

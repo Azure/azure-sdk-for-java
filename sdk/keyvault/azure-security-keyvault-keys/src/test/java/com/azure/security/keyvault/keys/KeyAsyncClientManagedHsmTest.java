@@ -6,6 +6,9 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -24,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @EnabledIf("shouldRunHsmTest")
 public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements KeyClientManagedHsmTestBase {
     public KeyAsyncClientManagedHsmTest() {
-        this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
         this.runManagedHsmTest = shouldRunHsmTest();
+        this.isHsmEnabled = this.runManagedHsmTest;
     }
 
     public static boolean shouldRunHsmTest() {
@@ -41,6 +44,169 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     @MethodSource("getTestParameters")
     public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         super.createRsaKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a key can be created in the key vault.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.createKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a key can be created in the key vault while using a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createKeyWithMultipleTenants(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.createKeyWithMultipleTenants(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a key is able to be updated when it exists.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.updateKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a key is not able to be updated when it is disabled. 403 error is expected.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.updateDisabledKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that an existing key can be retrieved.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a specific version of the key can be retrieved.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getKeySpecificVersion(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that an existing key can be deleted.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void deleteKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.deleteKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getDeletedKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a deleted key can be recovered on a soft-delete enabled vault.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void recoverDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.recoverDeletedKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that keys can be listed in the key vault.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.listKeys(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that key versions can be listed in the key vault.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listKeyVersions(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.listKeyVersions(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that deleted keys can be listed in the key vault.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.listDeletedKeys(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a key can be backed up in the key vault.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void backupKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.backupKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a key can be backed up in the key vault.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void restoreKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.restoreKey(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that a {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} can be created for a given
+     * key using a {@link KeyClient}. Also tests that cryptographic operations can be performed with said cryptography
+     * client.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientAndEncryptDecrypt(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getCryptographyAsyncClientAndEncryptDecrypt(httpClient, serviceVersion);
+    }
+
+    /**
+     * Tests that fetching the key rotation policy of a non-existent key throws.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.getKeyRotationPolicyWithNoPolicySet(httpClient, serviceVersion);
     }
 
     /**
@@ -159,6 +325,36 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
                 assertTrue(keyAttestation.getPublicKeyAttestation().length > 0);
                 assertNotNull(keyAttestation.getVersion());
             }).verifyComplete();
+        });
+    }
+
+    /**
+     * Tests that an external key can be registered, retrieved, and deleted on a Managed HSM.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void externalKeyLifecycle(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        createExternalKeyRunner((keyToCreate) -> {
+            StepVerifier.create(keyAsyncClient.createExternalKey(keyToCreate)).assertNext(createdKey -> {
+                assertEquals(keyToCreate.getName(), createdKey.getName());
+                assertNotNull(createdKey.getProperties().getExternalKey());
+                assertNotNull(createdKey.getProperties().getExternalKey().getId());
+            }).verifyComplete();
+
+            StepVerifier.create(keyAsyncClient.getKey(keyToCreate.getName())).assertNext(retrievedKey -> {
+                assertEquals(keyToCreate.getName(), retrievedKey.getName());
+                assertNotNull(retrievedKey.getProperties().getExternalKey());
+                assertNotNull(retrievedKey.getProperties().getExternalKey().getId());
+            }).verifyComplete();
+
+            PollerFlux<DeletedKey, Void> poller
+                = setPlaybackPollerFluxPollInterval(keyAsyncClient.beginDeleteKey(keyToCreate.getName()));
+
+            StepVerifier.create(poller.last().map(AsyncPollResponse::getValue))
+                .assertNext(deletedKey -> assertEquals(keyToCreate.getName(), deletedKey.getName()))
+                .verifyComplete();
         });
     }
 }

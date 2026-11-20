@@ -11,10 +11,12 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cloudhealth.CloudHealthManager;
+import com.azure.resourcemanager.cloudhealth.models.AggregationType;
+import com.azure.resourcemanager.cloudhealth.models.AggregationUnit;
 import com.azure.resourcemanager.cloudhealth.models.AlertSeverity;
-import com.azure.resourcemanager.cloudhealth.models.DependenciesAggregationType;
 import com.azure.resourcemanager.cloudhealth.models.Entity;
 import com.azure.resourcemanager.cloudhealth.models.EntityImpact;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +27,7 @@ public final class EntitiesListByHealthModelMockTests {
     @Test
     public void testListByHealthModel() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"fiakpjpqqm\",\"kind\":\"d\",\"canvasPosition\":{\"x\":23.946302596011293,\"y\":23.23506119623675},\"icon\":{\"iconName\":\"yeozphvwauyqncy\",\"customData\":\"p\"},\"healthObjective\":47.120863278217264,\"impact\":\"Limited\",\"labels\":{\"upev\":\"wx\",\"lmcuvhixb\":\"hfstotxhojujbyp\"},\"signals\":{\"azureResource\":{\"signalAssignments\":[{\"signalDefinitions\":[]}],\"authenticationSetting\":\"n\",\"azureResourceId\":\"lrcoolsttpki\"},\"azureLogAnalytics\":{\"signalAssignments\":[{\"signalDefinitions\":[]},{\"signalDefinitions\":[]},{\"signalDefinitions\":[]},{\"signalDefinitions\":[]}],\"authenticationSetting\":\"nujrywvtyl\",\"logAnalyticsWorkspaceResourceId\":\"fpncurdo\"},\"azureMonitorWorkspace\":{\"signalAssignments\":[{\"signalDefinitions\":[]},{\"signalDefinitions\":[]}],\"authenticationSetting\":\"thtywub\",\"azureMonitorWorkspaceResourceId\":\"cbihwqk\"},\"dependencies\":{\"aggregationType\":\"Thresholds\",\"degradedThreshold\":\"twjchrdg\",\"unhealthyThreshold\":\"hxumwctondzj\"}},\"discoveredBy\":\"udfdlwgg\",\"deletionDate\":\"2021-07-30T14:09:03Z\",\"healthState\":\"Healthy\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev2\",\"description\":\"tgseinqfiufxqkn\",\"actionGroupIds\":[\"gnepttwqmsni\",\"fcdmqnrojlpijn\",\"rxfrddhc\",\"atiz\"]},\"degraded\":{\"severity\":\"Sev1\",\"description\":\"asxifto\",\"actionGroupIds\":[\"zh\",\"tw\",\"sgogczhonnxk\",\"lgnyhmo\"]}}},\"id\":\"xkk\",\"name\":\"thrrgh\",\"type\":\"jbdhqxvc\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"whixmonstsh\",\"canvasPosition\":{\"x\":99.18026673622929,\"y\":48.65454815218525},\"icon\":{\"iconName\":\"fclduccbirdsv\",\"customData\":\"cobiegstmninwjiz\"},\"healthObjective\":94.08674609452152,\"impact\":\"Limited\",\"tags\":{\"jjtbxqmuluxlxqz\":\"h\",\"cucrwnamikze\":\"nersb\",\"fuhok\":\"rqbsmswziq\"},\"signalGroups\":{\"azureResource\":{\"authenticationSetting\":\"swhvhczznvfbycj\",\"azureResourceId\":\"xjww\",\"azureResourceKind\":\"z\",\"signals\":[{\"signalKind\":\"AzureResourceMetric\",\"name\":\"wmxqhndvnoamlds\"},{\"signalKind\":\"AzureResourceMetric\",\"name\":\"haohdjhhflzokxc\"},{\"signalKind\":\"AzureResourceMetric\",\"name\":\"xpelnjetagltsx\"},{\"signalKind\":\"AzureResourceMetric\",\"name\":\"atftgzpnpbsw\"}],\"resourceHealth\":{\"enabled\":\"Disabled\",\"signalName\":\"ccsrmozihmipgaw\",\"status\":{}}},\"azureLogAnalytics\":{\"authenticationSetting\":\"pkyjcxcjxgrytfm\",\"logAnalyticsWorkspaceResourceId\":\"cy\",\"signals\":[{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"rmcaykgg\"},{\"signalKind\":\"LogAnalyticsQuery\",\"name\":\"oxuztrksx\"}]},\"azureMonitorWorkspace\":{\"authenticationSetting\":\"ndfcpfn\",\"azureMonitorWorkspaceResourceId\":\"nthjtwkjaosrxuzv\",\"signals\":[{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"ktcqio\"},{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"mgbzahgxqdlyrtl\"},{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"laprlt\"},{\"signalKind\":\"PrometheusMetricsQuery\",\"name\":\"katbhjm\"}]},\"dependencies\":{\"aggregationType\":\"MinHealthy\",\"degradedThreshold\":4.730972994250049,\"unhealthyThreshold\":9.818321267752506,\"unit\":\"Percentage\",\"ignoreUnknown\":true},\"external\":{\"signals\":[{\"signalKind\":\"External\",\"name\":\"gunbtgfebwlnbm\"},{\"signalKind\":\"External\",\"name\":\"yreeudz\"},{\"signalKind\":\"External\",\"name\":\"av\"}]}},\"signalAggregationGroups\":[{\"name\":\"qmjxlyyzglgouwtl\",\"displayName\":\"jyuojqtobaxkjeyt\",\"aggregationType\":\"BestOf\",\"members\":[\"fjkwrusnkq\",\"hsyrqunj\"],\"degradedThreshold\":33.63806034202471,\"unhealthyThreshold\":99.7423681786305,\"unit\":\"Absolute\",\"ignoreUnknown\":true,\"aggregatedHealthState\":\"Healthy\",\"unresolvedMembers\":[\"ifmjnn\",\"wtqabpxuckp\"]},{\"name\":\"gqoweyirdhlisn\",\"displayName\":\"fl\",\"aggregationType\":\"BestOf\",\"members\":[\"izruwnpqxpxiwfc\",\"gjsaasiixtm\",\"zjvkviirhgfgrws\",\"pgratzvzbglbyvi\"],\"degradedThreshold\":89.43453339924339,\"unhealthyThreshold\":89.8065606170501,\"unit\":\"Absolute\",\"ignoreUnknown\":true,\"aggregatedHealthState\":\"Unhealthy\",\"unresolvedMembers\":[\"fmsh\"]}],\"discoveredBy\":\"fbkgozxwopdby\",\"healthState\":\"Unknown\",\"alerts\":{\"unhealthy\":{\"severity\":\"Sev3\",\"description\":\"lnapxbiygn\",\"actionGroupIds\":[\"knfsmfcttuxuuyil\"]},\"degraded\":{\"severity\":\"Sev4\",\"description\":\"iquvrehm\",\"actionGroupIds\":[\"hvsujztc\",\"ytqj\",\"w\"]}}},\"id\":\"uunfprnjletlxsm\",\"name\":\"pddouifamowaziyn\",\"type\":\"nlqwzdvpiwhx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,51 +37,83 @@ public final class EntitiesListByHealthModelMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Entity> response = manager.entities()
-            .listByHealthModel("aays", "kixqtnqtt", OffsetDateTime.parse("2021-01-22T12:04:18Z"),
+            .listByHealthModel("imrt", "xokffqyin", OffsetDateTime.parse("2021-08-02T11:19:23Z"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fiakpjpqqm", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("d", response.iterator().next().properties().kind());
-        Assertions.assertEquals(23.946302596011293, response.iterator().next().properties().canvasPosition().x());
-        Assertions.assertEquals(23.23506119623675, response.iterator().next().properties().canvasPosition().y());
-        Assertions.assertEquals("yeozphvwauyqncy", response.iterator().next().properties().icon().iconName());
-        Assertions.assertEquals("p", response.iterator().next().properties().icon().customData());
-        Assertions.assertEquals(47.120863278217264D, response.iterator().next().properties().healthObjective());
+        Assertions.assertEquals("whixmonstsh", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(99.18026673622929, response.iterator().next().properties().canvasPosition().x());
+        Assertions.assertEquals(48.65454815218525, response.iterator().next().properties().canvasPosition().y());
+        Assertions.assertEquals("fclduccbirdsv", response.iterator().next().properties().icon().iconName());
+        Assertions.assertEquals("cobiegstmninwjiz", response.iterator().next().properties().icon().customData());
+        Assertions.assertEquals(94.08674609452152D, response.iterator().next().properties().healthObjective());
         Assertions.assertEquals(EntityImpact.LIMITED, response.iterator().next().properties().impact());
-        Assertions.assertEquals("wx", response.iterator().next().properties().labels().get("upev"));
-        Assertions.assertEquals("n",
-            response.iterator().next().properties().signals().azureResource().authenticationSetting());
-        Assertions.assertEquals("lrcoolsttpki",
-            response.iterator().next().properties().signals().azureResource().azureResourceId());
-        Assertions.assertEquals("nujrywvtyl",
-            response.iterator().next().properties().signals().azureLogAnalytics().authenticationSetting());
-        Assertions.assertEquals("fpncurdo",
-            response.iterator().next().properties().signals().azureLogAnalytics().logAnalyticsWorkspaceResourceId());
-        Assertions.assertEquals("thtywub",
-            response.iterator().next().properties().signals().azureMonitorWorkspace().authenticationSetting());
-        Assertions.assertEquals("cbihwqk",
+        Assertions.assertEquals("h", response.iterator().next().properties().tags().get("jjtbxqmuluxlxqz"));
+        Assertions.assertEquals("swhvhczznvfbycj",
+            response.iterator().next().properties().signalGroups().azureResource().authenticationSetting());
+        Assertions.assertEquals("xjww",
+            response.iterator().next().properties().signalGroups().azureResource().azureResourceId());
+        Assertions.assertEquals("z",
+            response.iterator().next().properties().signalGroups().azureResource().azureResourceKind());
+        Assertions.assertEquals("wmxqhndvnoamlds",
+            response.iterator().next().properties().signalGroups().azureResource().signals().get(0).name());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.DISABLED,
+            response.iterator().next().properties().signalGroups().azureResource().resourceHealth().enabled());
+        Assertions.assertEquals("pkyjcxcjxgrytfm",
+            response.iterator().next().properties().signalGroups().azureLogAnalytics().authenticationSetting());
+        Assertions.assertEquals("cy",
             response.iterator()
                 .next()
                 .properties()
-                .signals()
+                .signalGroups()
+                .azureLogAnalytics()
+                .logAnalyticsWorkspaceResourceId());
+        Assertions.assertEquals("rmcaykgg",
+            response.iterator().next().properties().signalGroups().azureLogAnalytics().signals().get(0).name());
+        Assertions.assertEquals("ndfcpfn",
+            response.iterator().next().properties().signalGroups().azureMonitorWorkspace().authenticationSetting());
+        Assertions.assertEquals("nthjtwkjaosrxuzv",
+            response.iterator()
+                .next()
+                .properties()
+                .signalGroups()
                 .azureMonitorWorkspace()
                 .azureMonitorWorkspaceResourceId());
-        Assertions.assertEquals(DependenciesAggregationType.THRESHOLDS,
-            response.iterator().next().properties().signals().dependencies().aggregationType());
-        Assertions.assertEquals("twjchrdg",
-            response.iterator().next().properties().signals().dependencies().degradedThreshold());
-        Assertions.assertEquals("hxumwctondzj",
-            response.iterator().next().properties().signals().dependencies().unhealthyThreshold());
-        Assertions.assertEquals(AlertSeverity.SEV2,
+        Assertions.assertEquals("ktcqio",
+            response.iterator().next().properties().signalGroups().azureMonitorWorkspace().signals().get(0).name());
+        Assertions.assertEquals(AggregationType.MIN_HEALTHY,
+            response.iterator().next().properties().signalGroups().dependencies().aggregationType());
+        Assertions.assertEquals(4.730972994250049D,
+            response.iterator().next().properties().signalGroups().dependencies().degradedThreshold());
+        Assertions.assertEquals(9.818321267752506D,
+            response.iterator().next().properties().signalGroups().dependencies().unhealthyThreshold());
+        Assertions.assertEquals(AggregationUnit.PERCENTAGE,
+            response.iterator().next().properties().signalGroups().dependencies().unit());
+        Assertions.assertTrue(response.iterator().next().properties().signalGroups().dependencies().ignoreUnknown());
+        Assertions.assertEquals("qmjxlyyzglgouwtl",
+            response.iterator().next().properties().signalAggregationGroups().get(0).name());
+        Assertions.assertEquals("jyuojqtobaxkjeyt",
+            response.iterator().next().properties().signalAggregationGroups().get(0).displayName());
+        Assertions.assertEquals(AggregationType.BEST_OF,
+            response.iterator().next().properties().signalAggregationGroups().get(0).aggregationType());
+        Assertions.assertEquals("fjkwrusnkq",
+            response.iterator().next().properties().signalAggregationGroups().get(0).members().get(0));
+        Assertions.assertEquals(33.63806034202471D,
+            response.iterator().next().properties().signalAggregationGroups().get(0).degradedThreshold());
+        Assertions.assertEquals(99.7423681786305D,
+            response.iterator().next().properties().signalAggregationGroups().get(0).unhealthyThreshold());
+        Assertions.assertEquals(AggregationUnit.ABSOLUTE,
+            response.iterator().next().properties().signalAggregationGroups().get(0).unit());
+        Assertions.assertTrue(response.iterator().next().properties().signalAggregationGroups().get(0).ignoreUnknown());
+        Assertions.assertEquals(AlertSeverity.SEV3,
             response.iterator().next().properties().alerts().unhealthy().severity());
-        Assertions.assertEquals("tgseinqfiufxqkn",
+        Assertions.assertEquals("lnapxbiygn",
             response.iterator().next().properties().alerts().unhealthy().description());
-        Assertions.assertEquals("gnepttwqmsni",
+        Assertions.assertEquals("knfsmfcttuxuuyil",
             response.iterator().next().properties().alerts().unhealthy().actionGroupIds().get(0));
-        Assertions.assertEquals(AlertSeverity.SEV1,
+        Assertions.assertEquals(AlertSeverity.SEV4,
             response.iterator().next().properties().alerts().degraded().severity());
-        Assertions.assertEquals("asxifto", response.iterator().next().properties().alerts().degraded().description());
-        Assertions.assertEquals("zh",
+        Assertions.assertEquals("iquvrehm", response.iterator().next().properties().alerts().degraded().description());
+        Assertions.assertEquals("hvsujztc",
             response.iterator().next().properties().alerts().degraded().actionGroupIds().get(0));
     }
 }

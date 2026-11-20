@@ -6,12 +6,13 @@ package com.azure.resourcemanager.communication.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,23 +23,25 @@ public final class CommunicationServicesGetByResourceGroupWithResponseMockTests 
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"vmkfssxqu\",\"dataLocation\":\"kfplgmgsxnk\",\"notificationHubId\":\"kde\",\"version\":\"pvlopwiyighxpkd\",\"immutableResourceId\":\"baiuebbaumny\",\"linkedDomains\":[\"edeojnabc\"]},\"identity\":{\"principalId\":\"41328ceb-1c5c-4f3f-aff3-f016202e24e1\",\"tenantId\":\"fd3cfffb-5b93-4991-b9c0-d30b6bcdf524\",\"type\":\"None\",\"userAssignedIdentities\":{\"ebtfhvpesap\":{\"principalId\":\"3466bbfd-9bd7-4781-b1cc-7d6272bf9a11\",\"clientId\":\"f0c0b132-45ee-43aa-b761-937dc4bc37dd\"},\"dqmh\":{\"principalId\":\"03a7e60f-51af-42f4-80a3-ed5c9df8617a\",\"clientId\":\"93d8697c-01eb-4ab0-ae62-847c9b673772\"},\"htldwk\":{\"principalId\":\"269a836c-a765-492d-ae79-bf1f4b6c3ac6\",\"clientId\":\"f6fbb3f6-4a1c-47e9-b47b-f4533b9352c4\"}}},\"location\":\"xuutkncwscwsv\",\"tags\":{\"rupqsxvnmicy\":\"togt\",\"vei\":\"vce\",\"dhbt\":\"ovnotyfjfcnjbkcn\"},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"}";
+            = "{\"properties\":{\"provisioningState\":\"Moving\",\"hostName\":\"veekgpwozuhkfp\",\"dataLocation\":\"sjyofdx\",\"notificationHubId\":\"us\",\"version\":\"touwaboekqv\",\"immutableResourceId\":\"lns\",\"linkedDomains\":[\"xwyjsflhhc\",\"aln\",\"ixisxyawjoy\",\"qcslyjpkiid\"],\"publicNetworkAccess\":\"SecuredByPerimeter\",\"disableLocalAuth\":true},\"identity\":{\"principalId\":\"bf229f15-d810-4aeb-b9d6-699ad900dc08\",\"tenantId\":\"15cb783d-ddea-42d3-87e4-b1225f9db90d\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ztfolhbnxk\":{\"principalId\":\"2b8797d1-0741-4b23-ad7c-5944e3dabd1b\",\"clientId\":\"2c3e6383-c037-4b3a-9e49-c0744a42525f\"},\"aulppggd\":{\"principalId\":\"1c3272c3-61dd-49fc-9bd8-9385ad1d12f0\",\"clientId\":\"08f88d4f-4c7d-4a83-887e-945e6df6a0d4\"}}},\"location\":\"napnyiropuhpigv\",\"tags\":{\"txmedj\":\"lgqg\",\"lynqwwncwzzh\":\"c\",\"ellwptfdy\":\"gktrmgucnapkte\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\"},\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CommunicationServiceResource response = manager.communicationServices()
-            .getByResourceGroupWithResponse("ovplw", "bhvgy", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("nxipeil", "jzuaejxdultskzbb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xuutkncwscwsv", response.location());
-        Assertions.assertEquals("togt", response.tags().get("rupqsxvnmicy"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("kfplgmgsxnk", response.dataLocation());
-        Assertions.assertEquals("edeojnabc", response.linkedDomains().get(0));
+        Assertions.assertEquals("napnyiropuhpigv", response.location());
+        Assertions.assertEquals("lgqg", response.tags().get("txmedj"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("sjyofdx", response.dataLocation());
+        Assertions.assertEquals("xwyjsflhhc", response.linkedDomains().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, response.publicNetworkAccess());
+        Assertions.assertTrue(response.disableLocalAuth());
     }
 }

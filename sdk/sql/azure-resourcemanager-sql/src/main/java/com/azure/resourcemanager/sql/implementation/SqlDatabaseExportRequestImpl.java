@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -66,26 +67,37 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     private Mono<Indexable> getOrCreateStorageAccountContainer(final StorageAccount storageAccount,
         final String containerName, final String fileName, final FunctionalTaskItem.Context context) {
         final SqlDatabaseExportRequestImpl self = this;
+        self.inner.withStorageUri(
+            String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
+        BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
+        Mono<Indexable> container
+            = blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
+                .map(blobContainer -> (Indexable) blobContainer)
+                .onErrorResume(error -> {
+                    if (error instanceof ManagementException) {
+                        if (((ManagementException) error).getResponse().getStatusCode() == 404) {
+                            return blobContainers.defineContainer(containerName)
+                                .withExistingStorageAccount(parent().resourceGroupName(), storageAccount.name())
+                                .withPublicAccess(PublicAccess.NONE)
+                                .createAsync()
+                                .map(blobContainer -> (Indexable) blobContainer);
+                        }
+                    }
+                    return Mono.error(error);
+                });
+
+        if (!storageAccount.isSharedKeyAccessAllowed()
+            // self.inner.storageKey could be set before, e.g. with managed identity ID
+            || !CoreUtils.isNullOrEmpty(self.inner.storageKey())) {
+            return container;
+        }
+
         return storageAccount.getKeysAsync()
             .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
             .flatMap(storageAccountKey -> {
-                self.inner.withStorageUri(
-                    String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
                 self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
                 self.inner.withStorageKey(storageAccountKey.value());
-                BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
-                return blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
-                    .onErrorResume(error -> {
-                        if (error instanceof ManagementException) {
-                            if (((ManagementException) error).getResponse().getStatusCode() == 404) {
-                                return blobContainers.defineContainer(containerName)
-                                    .withExistingStorageAccount(parent().resourceGroupName(), storageAccount.name())
-                                    .withPublicAccess(PublicAccess.NONE)
-                                    .createAsync();
-                            }
-                        }
-                        return Mono.error(error);
-                    });
+                return container;
             });
     }
 
@@ -156,6 +168,20 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         String administratorPassword) {
         this.inner.withAuthenticationType(AuthenticationType.ADPASSWORD.toString());
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
+    }
+
+    @Override
+    public SqlDatabaseExportRequestImpl withManagedIdentity(String managedIdentityResourceId) {
+        Objects.requireNonNull(managedIdentityResourceId);
+        this.inner.withAuthenticationType(AuthenticationType.MANAGED_IDENTITY.toString());
+        this.inner.withAdministratorLogin(managedIdentityResourceId);
+        // No administrator password is required for managed identity authentication.
+        this.inner.withAdministratorLoginPassword(null);
+
+        // Use the same MI for storage account access.
+        this.inner.withStorageKeyType(StorageKeyType.MANAGED_IDENTITY);
+        this.inner.withStorageKey(managedIdentityResourceId);
+        return this;
     }
 
     SqlDatabaseExportRequestImpl withLoginAndPassword(String administratorLogin, String administratorPassword) {

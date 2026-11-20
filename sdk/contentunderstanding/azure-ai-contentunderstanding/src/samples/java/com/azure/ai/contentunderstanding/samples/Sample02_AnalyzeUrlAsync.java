@@ -1,0 +1,688 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.AudioVisualContent;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentPage;
+import com.azure.ai.contentunderstanding.models.DocumentTable;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Sample demonstrating how to analyze documents from URL using Content Understanding service.
+ * This sample shows:
+ * 1. Providing a URL to a document
+ * 2. Analyzing the document
+ * 3. Extracting markdown content
+ * 4. Accessing document properties (pages, tables, etc.)
+ *
+ * <p>Use {@code beginAnalyze} with {@link AnalysisInput} for publicly accessible URL inputs. Use
+ * {@code beginAnalyzeBinary} for local binary data. Use {@code prebuilt-imageSearch} for standalone image
+ * descriptions; for images containing printed or handwritten text, use {@code prebuilt-documentSearch}.</p>
+ *
+ * <p>This sample uses long-running operations, which support the RAG analyzers shown here, larger inputs, and
+ * persisted results. For inline analysis without polling or persisted results, see Sample19_AnalyzeInlineAsync. Inline
+ * analysis supports document analyzers without field schemas or figure analysis: {@code prebuilt-digitalParse},
+ * {@code prebuilt-read}, {@code prebuilt-layout}, or a custom document analyzer without fields.</p>
+ *
+ * <p>Document ranges use 1-based page numbers. Audio and video ranges use millisecond offsets; the top-level
+ * {@code AudioVisualContent} start and end times remain relative to the original media and are not rebased to the
+ * requested range.</p>
+ */
+public class Sample02_AnalyzeUrlAsync {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample02Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample02Async.buildClient
+
+        System.out.println("--- Document Analysis Example ---");
+        analyzeDocumentUrl(client);
+
+        System.out.println("\n--- Video Analysis Example ---");
+        analyzeVideoUrl(client);
+
+        System.out.println("\n--- Audio Analysis Example ---");
+        analyzeAudioUrl(client);
+
+        System.out.println("\n--- Image Analysis Example ---");
+        analyzeImageUrl(client);
+
+        System.out.println("\n--- Document URL with ContentRange Example ---");
+        analyzeDocumentUrlWithContentRange(client);
+
+        System.out.println("\n--- Video URL with ContentRange Example ---");
+        analyzeVideoUrlWithContentRange(client);
+
+        System.out.println("\n--- Audio URL with ContentRange Example ---");
+        analyzeAudioUrlWithContentRange(client);
+    }
+
+    /**
+     * Sample demonstrating how to analyze documents from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to a document
+     * 2. Analyzing the document
+     * 3. Extracting markdown content
+     * 4. Accessing document properties (pages, tables, etc.)
+     */
+    public static void analyzeDocumentUrl(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeUrlAsyncAsync
+        // Using a publicly accessible sample file from Azure-Samples GitHub repository
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
+
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(uriSource);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
+
+        operation.last()
+            .flatMap(pollResponse -> pollResponse.getFinalResult().thenReturn(pollResponse.getValue()))
+            .doOnNext(operationStatus -> {
+                AnalysisResult result = operationStatus.getResult();
+                UsageDetails usage = operationStatus.getUsage();
+                System.out.println("Polling completed successfully");
+                System.out.println("Analysis operation completed");
+                System.out.println("Analysis result contains "
+                    + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
+                if (usage != null) {
+                    System.out.println("Document pages (standard): " + usage.getDocumentPagesStandard());
+                    System.out.println("Contextualization tokens: " + usage.getContextualizationTokens());
+                }
+
+                // A PDF file has only one content element even if it contains multiple pages
+                AnalysisContent content = null;
+                if (result.getContents() == null || result.getContents().isEmpty()) {
+                    System.out.println("(No content returned from analysis)");
+                } else {
+                    content = result.getContents().get(0);
+                    if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+                        System.out.println(content.getMarkdown());
+                    } else {
+                        System.out.println("(No markdown content available)");
+                    }
+                }
+
+                if (content != null && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+                    System.out.println("Markdown content extracted successfully ("
+                        + content.getMarkdown().length() + " characters)");
+                }
+
+                // Check if this is document content to access document-specific properties
+                if (content instanceof DocumentContent) {
+                    DocumentContent documentContent = (DocumentContent) content;
+                    System.out.println("Document type: "
+                        + (documentContent.getMimeType() != null ? documentContent.getMimeType() : "(unknown)"));
+                    System.out.println("Start page: " + documentContent.getStartPageNumber());
+                    System.out.println("End page: " + documentContent.getEndPageNumber());
+                    System.out.println("Total pages: "
+                        + (documentContent.getEndPageNumber() - documentContent.getStartPageNumber() + 1));
+
+                    // Check for pages
+                    if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
+                        System.out.println("Number of pages: " + documentContent.getPages().size());
+                        for (DocumentPage page : documentContent.getPages()) {
+                            String unit
+                                = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
+                            System.out.println("  Page " + page.getPageNumber() + ": " + page.getWidth() + " x "
+                                + page.getHeight() + " " + unit);
+                        }
+                    }
+
+                    // Check for tables
+                    if (documentContent.getTables() != null && !documentContent.getTables().isEmpty()) {
+                        System.out.println("Number of tables: " + documentContent.getTables().size());
+                        int tableCounter = 1;
+                        for (DocumentTable table : documentContent.getTables()) {
+                            System.out.println("  Table " + tableCounter + ": " + table.getRowCount() + " rows x "
+                                + table.getColumnCount() + " columns");
+                            tableCounter++;
+                        }
+                    }
+                } else {
+                    System.out.println("Content is AnalysisContent (not document-specific), skipping document properties");
+                }
+
+                System.out.println("\nURL document analysis completed successfully");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .block();
+        // END:ContentUnderstandingAnalyzeUrlAsyncAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze video from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to a video file
+     * 2. Analyzing the video with prebuilt-videoSearch analyzer
+     * 3. Iterating through video segments
+     * 4. Accessing audio/visual properties (timing, summary, frame size)
+     */
+    public static void analyzeVideoUrl(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
+
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(uriSource);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
+
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                // prebuilt-videoSearch can detect video segments, so we should iterate through all segments
+                int segmentIndex = 1;
+                for (AnalysisContent media : result.getContents()) {
+                    // Cast AnalysisContent to AudioVisualContent to access audio/visual-specific properties
+                    // AudioVisualContent derives from AnalysisContent and provides additional properties
+                    // to access full information about audio/video, including timing, transcript phrases, and many others
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println("--- Segment " + segmentIndex + " ---");
+                    System.out.println("Markdown:");
+                    System.out.println(videoContent.getMarkdown());
+
+                    String summary = videoContent.getFields() != null && videoContent.getFields().containsKey("Summary")
+                        ? (videoContent.getFields().get("Summary").getValue() != null
+                            ? videoContent.getFields().get("Summary").getValue().toString()
+                            : "")
+                        : "";
+                    System.out.println("Summary: " + summary);
+
+                    System.out.println("Start: " + videoContent.getStartTime().toMillis() + " ms, End: "
+                        + videoContent.getEndTime().toMillis() + " ms");
+                    System.out.println("Frame size: " + videoContent.getWidth() + " x " + videoContent.getHeight());
+
+                    System.out.println("---------------------");
+                    segmentIndex++;
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .block();
+        // END:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze audio from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to an audio file
+     * 2. Analyzing the audio with prebuilt-audioSearch analyzer
+     * 3. Accessing audio/visual properties (timing, summary, transcript)
+     */
+    public static void analyzeAudioUrl(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
+
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(uriSource);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input));
+
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                // Cast AnalysisContent to AudioVisualContent to access audio/visual-specific properties
+                // AudioVisualContent derives from AnalysisContent and provides additional properties
+                // to access full information about audio/video, including timing, transcript phrases, and many others
+                AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("Markdown:");
+                System.out.println(audioContent.getMarkdown());
+
+                String summary = audioContent.getFields() != null && audioContent.getFields().containsKey("Summary")
+                    ? (audioContent.getFields().get("Summary").getValue() != null
+                        ? audioContent.getFields().get("Summary").getValue().toString()
+                        : "")
+                    : "";
+                System.out.println("Summary: " + summary);
+
+                // Example: Access an additional field in AudioVisualContent (transcript phrases)
+                List<TranscriptPhrase> transcriptPhrases = audioContent.getTranscriptPhrases();
+                if (transcriptPhrases != null && !transcriptPhrases.isEmpty()) {
+                    System.out.println("Transcript (first two phrases):");
+                    int count = 0;
+                    for (TranscriptPhrase phrase : transcriptPhrases) {
+                        if (count >= 2) {
+                            break;
+                        }
+                        System.out.println("  [" + phrase.getSpeaker() + "] " + phrase.getStartTime().toMillis() + " ms: "
+                            + phrase.getText());
+                        count++;
+                    }
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .block();
+        // END:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze image from URL using Content Understanding service.
+     * This sample shows:
+     * 1. Providing a URL to an image file
+     * 2. Analyzing the image with prebuilt-imageSearch analyzer
+     * 3. Accessing image properties (markdown, summary)
+     */
+    public static void analyzeImageUrl(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
+
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(uriSource);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = client.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
+
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AnalysisContent content = result.getContents().get(0);
+                System.out.println("Markdown:");
+                System.out.println(content.getMarkdown());
+
+                String summary = content.getFields() != null && content.getFields().containsKey("Summary")
+                    ? (content.getFields().get("Summary").getValue() != null
+                        ? content.getFields().get("Summary").getValue().toString()
+                        : "")
+                    : "";
+                System.out.println("Summary: " + summary);
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+                error.printStackTrace();
+            })
+            .block();
+        // END:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze a document URL with page-based ContentRange.
+     */
+    public static void analyzeDocumentUrlWithContentRange(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeDocumentUrlWithContentRangeAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
+
+        // Analyze only page 1 using ContentRange
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(uriSource);
+        input.setContentRange(ContentRange.page(1));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(input));
+
+        operation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent document = (DocumentContent) result.getContents().get(0);
+                System.out.println("Page(1): returned " + document.getPages().size() + " page"
+                    + " (page " + document.getStartPageNumber() + ")");
+                System.out.println("Markdown length: " + document.getMarkdown().length() + " characters");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.pages(1, 3),
+            ContentRange.page(5),
+            ContentRange.pagesFrom(9)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
+
+        combineOperation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent combineDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Combine(1-3, 5, 9-): returned " + combineDoc.getPages().size() + " pages"
+                    + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
+                System.out.println("Markdown length: " + combineDoc.getMarkdown().length() + " characters");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+        // END:ContentUnderstandingAnalyzeDocumentUrlWithContentRangeAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze a video URL with time-based ContentRange.
+     */
+    public static void analyzeVideoUrlWithContentRange(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithContentRangeAsync
+        String videoUrl
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
+
+        // Analyze the first 5 seconds of the video
+        AnalysisInput input1 = new AnalysisInput();
+        input1.setUrl(videoUrl);
+        input1.setContentRange(ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(5)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation1
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input1));
+
+        operation1.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                for (AnalysisContent media : result.getContents()) {
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println("TimeRange(0, 5s): Start=" + videoContent.getStartTime().toMillis()
+                        + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+
+        // Analyze from 10 seconds onward using ContentRange.timeRangeFrom()
+        AnalysisInput input2 = new AnalysisInput();
+        input2.setUrl(videoUrl);
+        input2.setContentRange(ContentRange.timeRangeFrom(Duration.ofSeconds(10)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation2
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input2));
+
+        operation2.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                for (AnalysisContent media : result.getContents()) {
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println("TimeRangeFrom(10s): Start=" + videoContent.getStartTime().toMillis()
+                        + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+
+        // Analyze with sub-second precision using milliseconds
+        AnalysisInput input3 = new AnalysisInput();
+        input3.setUrl(videoUrl);
+        input3.setContentRange(
+            ContentRange.timeRange(Duration.ofMillis(1200), Duration.ofMillis(3651)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation3
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input3));
+
+        operation3.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                for (AnalysisContent media : result.getContents()) {
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println("TimeRange(1200ms, 3651ms): Start=" + videoContent.getStartTime().toMillis()
+                        + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+
+        // Analyze with combined time ranges
+        AnalysisInput input4 = new AnalysisInput();
+        input4.setUrl(videoUrl);
+        input4.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation4
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input4));
+
+        operation4.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                int segmentIndex = 1;
+                for (AnalysisContent media : result.getContents()) {
+                    AudioVisualContent videoContent = (AudioVisualContent) media;
+                    System.out.println(
+                        "Combined segment " + segmentIndex + ": Start="
+                            + videoContent.getStartTime().toMillis()
+                            + " ms, End="
+                            + videoContent.getEndTime().toMillis()
+                            + " ms");
+                    segmentIndex++;
+                }
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+        // END:ContentUnderstandingAnalyzeVideoUrlWithContentRangeAsync
+    }
+
+    /**
+     * Sample demonstrating how to analyze an audio URL with time-based ContentRange.
+     */
+    public static void analyzeAudioUrlWithContentRange(ContentUnderstandingAsyncClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithContentRangeAsync
+        String audioUrl
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
+
+        // Analyze from 5 seconds onward
+        AnalysisInput input1 = new AnalysisInput();
+        input1.setUrl(audioUrl);
+        input1.setContentRange(ContentRange.timeRangeFrom(Duration.ofSeconds(5)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation1
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input1));
+
+        operation1.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent audioContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("TimeRangeFrom(5s): Start=" + audioContent.getStartTime().toMillis()
+                    + " ms, End=" + audioContent.getEndTime().toMillis() + " ms");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+
+        // Analyze a specific time range (2s to 8s)
+        AnalysisInput input2 = new AnalysisInput();
+        input2.setUrl(audioUrl);
+        input2.setContentRange(ContentRange.timeRange(Duration.ofSeconds(2), Duration.ofSeconds(8)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation2
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input2));
+
+        operation2.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent windowContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("TimeRange(2s, 8s): Start=" + windowContent.getStartTime().toMillis()
+                    + " ms, End=" + windowContent.getEndTime().toMillis() + " ms");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+
+        // Analyze with sub-second precision using milliseconds
+        AnalysisInput input3 = new AnalysisInput();
+        input3.setUrl(audioUrl);
+        input3.setContentRange(
+            ContentRange.timeRange(Duration.ofMillis(1200), Duration.ofMillis(3651)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation3
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input3));
+
+        operation3.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent subSecondContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("TimeRange(1200ms, 3651ms): Start=" + subSecondContent.getStartTime().toMillis()
+                    + " ms, End=" + subSecondContent.getEndTime().toMillis() + " ms");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .block();
+
+        // Combine multiple time ranges
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(audioUrl);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(combineInput));
+
+        combineOperation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent combineContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("Combined time ranges: Start=" + combineContent.getStartTime().toMillis()
+                    + " ms, End=" + combineContent.getEndTime().toMillis() + " ms");
+            })
+            .doOnError(error -> System.err.println("Error occurred: " + error.getMessage()))
+            .block();
+        // END:ContentUnderstandingAnalyzeAudioUrlWithContentRangeAsync
+    }
+}

@@ -6,7 +6,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.HashMap;
@@ -22,9 +21,8 @@ import java.util.Map;
  * in RequestOptions, CosmosClient or the default consistency level for an account unless
  * ReadConsistencyStrategy `DEFAULT` is used.
  * <p>
- * NOTE: The ReadConsistencyStrategy is currently only working when using direct mode
+ * NOTE: The ReadConsistencyStrategy is honored across all connection modes.
  */
-@Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum ReadConsistencyStrategy {
 
     /**

@@ -12,8 +12,8 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"jbpzvgnwzsymg\",\"isDataAction\":false,\"display\":{\"provider\":\"yzkohdbihanuf\",\"resource\":\"cbjy\",\"operation\":\"git\",\"description\":\"qhabifpikxwcz\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"q\",\"isDataAction\":false,\"display\":{\"provider\":\"y\",\"resource\":\"iwbybrkxvdumjg\",\"operation\":\"fwvuk\",\"description\":\"audccsnhs\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"hkryhtn\",\"isDataAction\":true,\"display\":{\"provider\":\"lokjyemkk\",\"resource\":\"ipjoxzjnchgejs\",\"operation\":\"dmailzydehojw\",\"description\":\"huxinpmqnj\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"sprozvcput\",\"isDataAction\":false,\"display\":{\"provider\":\"mfdatscmdvpj\",\"resource\":\"lsuuvmkjozkrwfnd\",\"operation\":\"djpslw\",\"description\":\"dpvwryoqpsoaccta\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"ahbc\"}")
+            "{\"value\":[{\"name\":\"hfcbjysa\",\"isDataAction\":false,\"display\":{\"provider\":\"qhabifpikxwcz\",\"resource\":\"scnpqxuhivy\",\"operation\":\"iwbybrkxvdumjg\",\"description\":\"fwvuk\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"cs\",\"isDataAction\":false,\"display\":{\"provider\":\"nyejhkryhtnap\",\"resource\":\"wlokjyem\",\"operation\":\"vnipjox\",\"description\":\"nchgej\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"ilzyd\",\"isDataAction\":false,\"display\":{\"provider\":\"yahux\",\"resource\":\"pmqnja\",\"operation\":\"ixjsprozvcputeg\",\"description\":\"wmfdatscmdvpjhul\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"jozkrwfndiod\"}")
             .toObject(OperationListResult.class);
-        Assertions.assertEquals("ahbc", model.nextLink());
+        Assertions.assertEquals("jozkrwfndiod", model.nextLink());
     }
 }

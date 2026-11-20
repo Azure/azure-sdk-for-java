@@ -23,7 +23,7 @@ public final class StandbyVirtualMachinePoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":5310628995485261293,\"minReadyCapacity\":2691769915516552060},\"virtualMachineState\":\"Hibernated\",\"attachedVirtualMachineScaleSetId\":\"azyxoegukg\",\"provisioningState\":\"Succeeded\"},\"location\":\"ucgygevqz\",\"tags\":{\"p\":\"pmr\"},\"id\":\"zcdrqjsdpydnfyhx\",\"name\":\"eoejzic\",\"type\":\"ifsjttgzfbishcb\"}]}";
+            = "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":9083271895139408409,\"minReadyCapacity\":2070061147805091696,\"postProvisioningDelay\":\"oskg\",\"dynamicSizing\":{\"enabled\":true}},\"virtualMachineState\":\"Hibernated\",\"attachedVirtualMachineScaleSetId\":\"mjmvxieduugidyjr\",\"provisioningState\":\"Succeeded\"},\"location\":\"aos\",\"tags\":{\"slkevle\":\"csonpclhoco\"},\"id\":\"gz\",\"name\":\"buhfmvfaxkffeiit\",\"type\":\"lvmezyvshxmzsbbz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,15 +35,18 @@ public final class StandbyVirtualMachinePoolsListMockTests {
         PagedIterable<StandbyVirtualMachinePoolResource> response
             = manager.standbyVirtualMachinePools().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ucgygevqz", response.iterator().next().location());
-        Assertions.assertEquals("pmr", response.iterator().next().tags().get("p"));
-        Assertions.assertEquals(5310628995485261293L,
+        Assertions.assertEquals("aos", response.iterator().next().location());
+        Assertions.assertEquals("csonpclhoco", response.iterator().next().tags().get("slkevle"));
+        Assertions.assertEquals(9083271895139408409L,
             response.iterator().next().properties().elasticityProfile().maxReadyCapacity());
-        Assertions.assertEquals(2691769915516552060L,
+        Assertions.assertEquals(2070061147805091696L,
             response.iterator().next().properties().elasticityProfile().minReadyCapacity());
+        Assertions.assertEquals("oskg",
+            response.iterator().next().properties().elasticityProfile().postProvisioningDelay());
+        Assertions.assertTrue(response.iterator().next().properties().elasticityProfile().dynamicSizing().enabled());
         Assertions.assertEquals(VirtualMachineState.HIBERNATED,
             response.iterator().next().properties().virtualMachineState());
-        Assertions.assertEquals("azyxoegukg",
+        Assertions.assertEquals("mjmvxieduugidyjr",
             response.iterator().next().properties().attachedVirtualMachineScaleSetId());
     }
 }

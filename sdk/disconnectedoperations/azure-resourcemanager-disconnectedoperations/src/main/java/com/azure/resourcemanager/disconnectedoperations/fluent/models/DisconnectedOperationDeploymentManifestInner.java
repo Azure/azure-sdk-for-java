@@ -9,6 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlans;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingConfiguration;
 import com.azure.resourcemanager.disconnectedoperations.models.BillingModel;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
 import java.io.IOException;
@@ -53,6 +55,16 @@ public final class DisconnectedOperationDeploymentManifestInner
      * The cloud in which the resource is registered
      */
     private String cloud;
+
+    /*
+     * The billing configuration
+     */
+    private BillingConfiguration billingConfiguration;
+
+    /*
+     * The benefit plans
+     */
+    private BenefitPlans benefitPlans;
 
     /**
      * Creates an instance of DisconnectedOperationDeploymentManifestInner class.
@@ -124,6 +136,24 @@ public final class DisconnectedOperationDeploymentManifestInner
     }
 
     /**
+     * Get the billingConfiguration property: The billing configuration.
+     * 
+     * @return the billingConfiguration value.
+     */
+    public BillingConfiguration billingConfiguration() {
+        return this.billingConfiguration;
+    }
+
+    /**
+     * Get the benefitPlans property: The benefit plans.
+     * 
+     * @return the benefitPlans value.
+     */
+    public BenefitPlans benefitPlans() {
+        return this.benefitPlans;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -165,6 +195,12 @@ public final class DisconnectedOperationDeploymentManifestInner
                         = ConnectionIntent.fromString(reader.getString());
                 } else if ("cloud".equals(fieldName)) {
                     deserializedDisconnectedOperationDeploymentManifestInner.cloud = reader.getString();
+                } else if ("billingConfiguration".equals(fieldName)) {
+                    deserializedDisconnectedOperationDeploymentManifestInner.billingConfiguration
+                        = BillingConfiguration.fromJson(reader);
+                } else if ("benefitPlans".equals(fieldName)) {
+                    deserializedDisconnectedOperationDeploymentManifestInner.benefitPlans
+                        = BenefitPlans.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -1,9 +1,19 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.impl;
 
-import com.azure.xml.implementation.stax2.ri.Stax2Util;
-
 import javax.xml.XMLConstants;
+
+import static javax.xml.stream.XMLStreamConstants.CDATA;
+import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
+import static javax.xml.stream.XMLStreamConstants.COMMENT;
+import static javax.xml.stream.XMLStreamConstants.DTD;
+import static javax.xml.stream.XMLStreamConstants.END_DOCUMENT;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.ENTITY_REFERENCE;
+import static javax.xml.stream.XMLStreamConstants.PROCESSING_INSTRUCTION;
+import static javax.xml.stream.XMLStreamConstants.SPACE;
+import static javax.xml.stream.XMLStreamConstants.START_DOCUMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
 /**
  * This class contains various String constants used for error reporting.
@@ -82,17 +92,6 @@ public final class ErrorConsts {
 
     public static String WERR_NAME_EMPTY = "Illegal to pass empty name";
 
-    // // // Warning-related:
-
-    // // Types of warnings we issue via XMLReporter
-
-    public static String WT_XML_DECL = "xml declaration";
-
-    // // Warning messages:
-
-    public static String W_MIXED_ENCODINGS
-        = "Inconsistent text encoding; declared as \"{0}\" in xml declaration, application had passed \"{1}\"";
-
     /*
     ////////////////////////////////////////////////////
     // Utility methods
@@ -100,7 +99,41 @@ public final class ErrorConsts {
      */
 
     public static String tokenTypeDesc(int type) {
-        return Stax2Util.eventTypeDesc(type);
+        switch (type) {
+            case START_ELEMENT:
+                return "START_ELEMENT";
+
+            case END_ELEMENT:
+                return "END_ELEMENT";
+
+            case START_DOCUMENT:
+                return "START_DOCUMENT";
+
+            case END_DOCUMENT:
+                return "END_DOCUMENT";
+
+            case CHARACTERS:
+                return "CHARACTERS";
+
+            case CDATA:
+                return "CDATA";
+
+            case SPACE:
+                return "SPACE";
+
+            case COMMENT:
+                return "COMMENT";
+
+            case PROCESSING_INSTRUCTION:
+                return "PROCESSING_INSTRUCTION";
+
+            case DTD:
+                return "DTD";
+
+            case ENTITY_REFERENCE:
+                return "ENTITY_REFERENCE";
+        }
+        return "[" + type + "]";
     }
 
     public static void throwInternalError() {

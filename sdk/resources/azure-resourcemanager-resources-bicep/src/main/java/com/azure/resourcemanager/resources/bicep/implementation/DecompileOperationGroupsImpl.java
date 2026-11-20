@@ -31,12 +31,8 @@ public final class DecompileOperationGroupsImpl implements DecompileOperationGro
         bicepWithResponse(DecompileOperationRequest decompileOperationRequest, Context context) {
         Response<DecompileOperationSuccessResponseInner> inner
             = this.serviceClient().bicepWithResponse(decompileOperationRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DecompileOperationSuccessResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DecompileOperationSuccessResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DecompileOperationSuccessResponse bicep(DecompileOperationRequest decompileOperationRequest) {

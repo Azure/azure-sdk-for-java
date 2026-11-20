@@ -149,10 +149,18 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     CacheImpl(CacheInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.cacheName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "caches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "resourceGroupName");
+        this.accountName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "accountName");
+        this.poolName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "poolName");
+        this.cacheName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "cacheName");
     }
 
     public Cache refresh() {
@@ -180,12 +188,20 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         return serviceManager.caches().listPeeringPassphrases(resourceGroupName, accountName, poolName, cacheName);
     }
 
-    public void poolChange(PoolChangeRequest body) {
-        serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
+    public Cache poolChange(PoolChangeRequest body) {
+        return serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
     }
 
-    public void poolChange(PoolChangeRequest body, Context context) {
-        serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
+    public Cache poolChange(PoolChangeRequest body, Context context) {
+        return serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
+    }
+
+    public Cache resetSmbPassword() {
+        return serviceManager.caches().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName);
+    }
+
+    public Cache resetSmbPassword(Context context) {
+        return serviceManager.caches().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context);
     }
 
     public CacheImpl withRegion(Region location) {

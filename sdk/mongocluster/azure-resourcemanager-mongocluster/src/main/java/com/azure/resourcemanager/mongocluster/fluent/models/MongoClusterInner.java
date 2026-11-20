@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Represents a mongo cluster resource.
+ * Represents a DocumentDB cluster resource.
  */
 @Fluent
 public final class MongoClusterInner extends Resource {

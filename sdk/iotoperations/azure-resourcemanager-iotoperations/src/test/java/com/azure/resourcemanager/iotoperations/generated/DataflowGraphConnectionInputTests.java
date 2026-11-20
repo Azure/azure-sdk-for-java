@@ -14,25 +14,24 @@ public final class DataflowGraphConnectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphConnectionInput model = BinaryData
-            .fromString(
-                "{\"name\":\"kfzbeyvpnqicvi\",\"schema\":{\"serializationFormat\":\"Delta\",\"schemaRef\":\"xdxr\"}}")
+            .fromString("{\"name\":\"vxb\",\"schema\":{\"serializationFormat\":\"Json\",\"schemaRef\":\"utncorm\"}}")
             .toObject(DataflowGraphConnectionInput.class);
-        Assertions.assertEquals("kfzbeyvpnqicvi", model.name());
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.DELTA,
+        Assertions.assertEquals("vxb", model.name());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.JSON,
             model.schema().serializationFormat());
-        Assertions.assertEquals("xdxr", model.schema().schemaRef());
+        Assertions.assertEquals("utncorm", model.schema().schemaRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphConnectionInput model = new DataflowGraphConnectionInput().withName("kfzbeyvpnqicvi")
+        DataflowGraphConnectionInput model = new DataflowGraphConnectionInput().withName("vxb")
             .withSchema(new DataflowGraphConnectionSchemaSettings()
-                .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.DELTA)
-                .withSchemaRef("xdxr"));
+                .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.JSON)
+                .withSchemaRef("utncorm"));
         model = BinaryData.fromObject(model).toObject(DataflowGraphConnectionInput.class);
-        Assertions.assertEquals("kfzbeyvpnqicvi", model.name());
-        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.DELTA,
+        Assertions.assertEquals("vxb", model.name());
+        Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.JSON,
             model.schema().serializationFormat());
-        Assertions.assertEquals("xdxr", model.schema().schemaRef());
+        Assertions.assertEquals("utncorm", model.schema().schemaRef());
     }
 }

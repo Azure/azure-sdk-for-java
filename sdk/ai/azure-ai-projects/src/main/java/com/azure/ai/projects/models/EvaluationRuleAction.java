@@ -79,8 +79,12 @@ public class EvaluationRuleAction implements JsonSerializable<EvaluationRuleActi
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("continuousEvaluation".equals(discriminatorValue)) {
                     return ContinuousEvaluationRuleAction.fromJson(readerToUse.reset());
-                } else if ("humanEvaluation".equals(discriminatorValue)) {
-                    return HumanEvaluationRuleAction.fromJson(readerToUse.reset());
+                } else if ("traceEvaluation".equals(discriminatorValue)) {
+                    return TraceEvaluationRuleAction.fromJson(readerToUse.reset());
+                } else if ("datasetEvaluation".equals(discriminatorValue)) {
+                    return DatasetEvaluationRuleAction.fromJson(readerToUse.reset());
+                } else if ("humanEvaluationPreview".equals(discriminatorValue)) {
+                    return HumanEvaluationPreviewRuleAction.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

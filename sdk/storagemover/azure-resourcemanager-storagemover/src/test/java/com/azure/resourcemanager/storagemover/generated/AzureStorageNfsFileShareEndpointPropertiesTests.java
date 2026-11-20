@@ -6,28 +6,32 @@ package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagemover.models.AzureStorageNfsFileShareEndpointProperties;
+import com.azure.resourcemanager.storagemover.models.EndpointKind;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureStorageNfsFileShareEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageNfsFileShareEndpointProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"AzureStorageNfsFileShare\",\"storageAccountResourceId\":\"wmdwzjeiachboo\",\"fileShareName\":\"flnrosfqpteehzz\",\"description\":\"pyqr\",\"provisioningState\":\"Succeeded\"}")
+            "{\"endpointType\":\"AzureStorageNfsFileShare\",\"storageAccountResourceId\":\"obnbdxkqpxokaj\",\"fileShareName\":\"onpimexgstxg\",\"description\":\"odgmaajrmvdjwz\",\"endpointKind\":\"Target\",\"provisioningState\":\"Succeeded\"}")
             .toObject(AzureStorageNfsFileShareEndpointProperties.class);
-        Assertions.assertEquals("pyqr", model.description());
-        Assertions.assertEquals("wmdwzjeiachboo", model.storageAccountResourceId());
-        Assertions.assertEquals("flnrosfqpteehzz", model.fileShareName());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.description());
+        Assertions.assertEquals(EndpointKind.TARGET, model.endpointKind());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.storageAccountResourceId());
+        Assertions.assertEquals("onpimexgstxg", model.fileShareName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureStorageNfsFileShareEndpointProperties model
-            = new AzureStorageNfsFileShareEndpointProperties().withDescription("pyqr")
-                .withStorageAccountResourceId("wmdwzjeiachboo")
-                .withFileShareName("flnrosfqpteehzz");
+            = new AzureStorageNfsFileShareEndpointProperties().withDescription("odgmaajrmvdjwz")
+                .withEndpointKind(EndpointKind.TARGET)
+                .withStorageAccountResourceId("obnbdxkqpxokaj")
+                .withFileShareName("onpimexgstxg");
         model = BinaryData.fromObject(model).toObject(AzureStorageNfsFileShareEndpointProperties.class);
-        Assertions.assertEquals("pyqr", model.description());
-        Assertions.assertEquals("wmdwzjeiachboo", model.storageAccountResourceId());
-        Assertions.assertEquals("flnrosfqpteehzz", model.fileShareName());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.description());
+        Assertions.assertEquals(EndpointKind.TARGET, model.endpointKind());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.storageAccountResourceId());
+        Assertions.assertEquals("onpimexgstxg", model.fileShareName());
     }
 }

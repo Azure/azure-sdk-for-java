@@ -28,6 +28,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -113,6 +114,31 @@ public class BatchApiTests extends BlobBatchTestBase {
         Response<Void> response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT);
         Response<Void> response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL);
         batchClient.submitBatch(batch);
+
+        assertEquals(200, response1.getStatusCode());
+        assertEquals(200, response2.getStatusCode());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
+    public void setBlobAccessTierSmart() {
+        String containerName = generateContainerName();
+        String blobName1 = generateBlobName();
+        String blobName2 = generateBlobName();
+        BlobBatchClient premiumBatchClient = new BlobBatchClientBuilder(premiumStorageBlobServiceClient).buildClient();
+        BlobBatch batch = premiumBatchClient.getBlobBatch();
+        BlobContainerClient containerClient = premiumStorageBlobServiceClient.createBlobContainer(containerName);
+        containerClient.getBlobClient(blobName1)
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        containerClient.getBlobClient(blobName2)
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        Response<Void> response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.SMART);
+        Response<Void> response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.SMART);
+        premiumBatchClient.submitBatch(batch);
 
         assertEquals(200, response1.getStatusCode());
         assertEquals(200, response2.getStatusCode());

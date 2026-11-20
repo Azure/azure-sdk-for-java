@@ -173,6 +173,12 @@ class ServiceBusNamespaceImpl
         return this;
     }
 
+    @Override
+    public ServiceBusNamespaceImpl enableLocalAuth() {
+        this.innerModel().withDisableLocalAuth(false);
+        return this;
+    }
+
     private void initChildrenOperationsCache() {
         this.queuesToCreate = new ArrayList<>();
         this.topicsToCreate = new ArrayList<>();

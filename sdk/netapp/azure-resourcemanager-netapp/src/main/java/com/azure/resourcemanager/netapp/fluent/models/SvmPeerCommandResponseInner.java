@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponseProperties;
 import java.io.IOException;
 
 /**
@@ -17,10 +18,9 @@ import java.io.IOException;
 @Immutable
 public final class SvmPeerCommandResponseInner implements JsonSerializable<SvmPeerCommandResponseInner> {
     /*
-     * A command that needs to be run on the external ONTAP to accept svm peering. Will only be present if
-     * <code>svmPeeringStatus</code> is <code>pending</code>
+     * Represents the properties of the SVM peer command response.
      */
-    private String svmPeeringCommand;
+    private SvmPeerCommandResponseProperties properties;
 
     /**
      * Creates an instance of SvmPeerCommandResponseInner class.
@@ -29,13 +29,12 @@ public final class SvmPeerCommandResponseInner implements JsonSerializable<SvmPe
     }
 
     /**
-     * Get the svmPeeringCommand property: A command that needs to be run on the external ONTAP to accept svm peering.
-     * Will only be present if &lt;code&gt;svmPeeringStatus&lt;/code&gt; is &lt;code&gt;pending&lt;/code&gt;.
+     * Get the properties property: Represents the properties of the SVM peer command response.
      * 
-     * @return the svmPeeringCommand value.
+     * @return the properties value.
      */
-    public String svmPeeringCommand() {
-        return this.svmPeeringCommand;
+    public SvmPeerCommandResponseProperties properties() {
+        return this.properties;
     }
 
     /**
@@ -44,6 +43,9 @@ public final class SvmPeerCommandResponseInner implements JsonSerializable<SvmPe
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 
     /**
@@ -52,7 +54,7 @@ public final class SvmPeerCommandResponseInner implements JsonSerializable<SvmPe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("svmPeeringCommand", this.svmPeeringCommand);
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -71,8 +73,9 @@ public final class SvmPeerCommandResponseInner implements JsonSerializable<SvmPe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("svmPeeringCommand".equals(fieldName)) {
-                    deserializedSvmPeerCommandResponseInner.svmPeeringCommand = reader.getString();
+                if ("properties".equals(fieldName)) {
+                    deserializedSvmPeerCommandResponseInner.properties
+                        = SvmPeerCommandResponseProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

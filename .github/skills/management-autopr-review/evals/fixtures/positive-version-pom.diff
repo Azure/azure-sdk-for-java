@@ -1,0 +1,10 @@
+diff --git a/sdk/contosocompute/azure-resourcemanager-contosocompute/pom.xml b/sdk/contosocompute/azure-resourcemanager-contosocompute/pom.xml
+index 62b18aa..51196c0 100644
+--- a/sdk/contosocompute/azure-resourcemanager-contosocompute/pom.xml
++++ b/sdk/contosocompute/azure-resourcemanager-contosocompute/pom.xml
+@@ -7,4 +7,4 @@
+   <groupId>com.azure.resourcemanager</groupId>
+   <artifactId>azure-resourcemanager-contosocompute</artifactId>
+-  <version>2.0.0</version>
++  <version>2.1.0</version>
+ </project>

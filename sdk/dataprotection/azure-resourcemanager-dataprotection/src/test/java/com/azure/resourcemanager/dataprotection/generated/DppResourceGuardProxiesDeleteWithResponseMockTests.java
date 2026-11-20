@@ -28,7 +28,7 @@ public final class DppResourceGuardProxiesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.dppResourceGuardProxies()
-            .deleteWithResponse("sycxhxzgaz", "taboidvmf", "hppubowsepdfgkmt", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("dtfgxqbawpcbb", "zqcyknap", "ofyuicd", com.azure.core.util.Context.NONE);
 
     }
 }

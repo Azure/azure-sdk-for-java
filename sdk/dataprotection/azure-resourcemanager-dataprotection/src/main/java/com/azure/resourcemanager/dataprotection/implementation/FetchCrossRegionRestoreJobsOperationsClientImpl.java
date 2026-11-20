@@ -6,6 +6,7 @@ package com.azure.resourcemanager.dataprotection.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
@@ -85,6 +86,22 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CrossRegionRestoreJobsRequest parameters, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AzureBackupJobResourceList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AzureBackupJobResourceList> listNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -108,7 +125,7 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 resourceGroupName, this.client.getSubscriptionId(), location, filter, accept, parameters, context))
             .<PagedResponse<AzureBackupJobResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -127,7 +144,8 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBackupJobResourceInner> listAsync(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters, String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, location, parameters, filter));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, location, parameters, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -145,7 +163,8 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
     private PagedFlux<AzureBackupJobResourceInner> listAsync(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters) {
         final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, location, parameters, filter));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, location, parameters, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -168,7 +187,7 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
                 this.client.getSubscriptionId(), location, filter, accept, parameters, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -192,7 +211,7 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
                 this.client.getSubscriptionId(), location, filter, accept, parameters, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            null, null);
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -210,7 +229,8 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, location, parameters, filter));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, location, parameters, filter),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -229,6 +249,63 @@ public final class FetchCrossRegionRestoreJobsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AzureBackupJobResourceInner> list(String resourceGroupName, String location,
         CrossRegionRestoreJobsRequest parameters, String filter, Context context) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, location, parameters, filter, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, location, parameters, filter, context),
+            nextLink -> listNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AzureBackupJobResourceInner>> listNextSinglePageAsync(String nextLink) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AzureBackupJobResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureBackupJobResourceInner> listNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<AzureBackupJobResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of AzureBackup Job resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AzureBackupJobResourceInner> listNextSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<AzureBackupJobResourceList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

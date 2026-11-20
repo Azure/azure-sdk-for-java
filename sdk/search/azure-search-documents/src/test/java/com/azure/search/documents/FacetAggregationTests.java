@@ -3,14 +3,13 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -18,12 +17,10 @@ import com.azure.search.documents.indexes.models.SemanticConfiguration;
 import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
-import com.azure.search.documents.models.FacetResult;
-import com.azure.search.documents.models.QueryType;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SemanticSearchOptions;
-import com.azure.search.documents.util.SearchPagedIterable;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -34,15 +31,14 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.loadResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -80,11 +76,11 @@ public class FacetAggregationTests extends SearchTestBase {
     }
 
     @Test
-    public void facetRequestSerializationWithAllMetrics() {
+    public void facetRequestSerializationWithAllMetrics() throws IOException {
         SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min", "Rating, metric: max",
             "Rating, metric: avg", "Rating, metric: sum", "Category, metric: cardinality");
 
-        String serialized = BinaryData.fromObject(searchOptions).toString();
+        String serialized = SearchUtils.fromSearchOptions(searchOptions).toJsonString();
         assertTrue(serialized.contains("Rating, metric: min"), "Should serialize min metric");
         assertTrue(serialized.contains("Rating, metric: max"), "Should serialize max metric");
         assertTrue(serialized.contains("Rating, metric: avg"), "Should serialize avg metric");
@@ -94,14 +90,12 @@ public class FacetAggregationTests extends SearchTestBase {
 
     @Test
     public void facetRequestSerializationWithMultipleMetricsOnSameField() {
-
-        List<String> facets = Arrays.asList("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
-
-        SearchOptions searchOptions = new SearchOptions().setFacets(facets.toArray(new String[0]));
+        SearchOptions searchOptions
+            = new SearchOptions().setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
 
         List<String> serializedFacets = searchOptions.getFacets();
         assertNotNull(serializedFacets, "Facets should not be null");
-        assertEquals(serializedFacets.size(), 3, "Facet size should be 3");
+        assertEquals(3, serializedFacets.size(), "Facet size should be 3");
 
         assertTrue(serializedFacets.contains("Rating, metric: min"), "Should include min metric");
         assertTrue(serializedFacets.contains("Rating, metric: max"), "Should include max metric");
@@ -109,168 +103,66 @@ public class FacetAggregationTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithMinAggregation() {
-        SearchOptions searchOptions = new SearchOptions().setFacets(("Rating, metric : min"));
-
-        SearchPagedIterable results
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
-        Map<String, List<FacetResult>> facets = results.getFacets();
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
-
-        List<FacetResult> ratingFacets = facets.get("Rating");
-        assertNotNull(ratingFacets, "Rating facet results should not be null");
-
-        boolean hasMinMetric = ratingFacets.stream().anyMatch(facet -> facet.getMin() != null);
-        assertTrue(hasMinMetric, "Min metric should be present in facets response");
+        // Disabled: FacetResult.getMin() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithMaxAggregation() {
-        SearchOptions searchOptions = new SearchOptions().setFacets(("Rating, metric : max"));
-
-        SearchPagedIterable results
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
-        Map<String, List<FacetResult>> facets = results.getFacets();
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
-
-        List<FacetResult> ratingFacets = facets.get("Rating");
-        assertNotNull(ratingFacets, "Rating facet results should not be null");
-
-        boolean hasMaxMetric = ratingFacets.stream().anyMatch(facet -> facet.getMax() != null);
-        assertTrue(hasMaxMetric, "Max metric should be present in facets response");
+        // Disabled: FacetResult.getMax() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithAvgAggregation() {
-        SearchOptions searchOptions = new SearchOptions().setFacets(("Rating, metric : avg"));
-
-        SearchPagedIterable results
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
-        Map<String, List<FacetResult>> facets = results.getFacets();
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
-
-        List<FacetResult> ratingFacets = facets.get("Rating");
-        assertNotNull(ratingFacets, "Rating facet results should not be null");
-
-        boolean hasAvgMetric = ratingFacets.stream().anyMatch(facet -> facet.getAvg() != null);
-        assertTrue(hasAvgMetric, "Avg metric should be present in facets response");
+        // Disabled: FacetResult.getAvg() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithCardinalityAggregation() {
-        SearchOptions searchOptions = new SearchOptions().setFacets(("Category, metric : cardinality"));
-
-        SearchPagedIterable results
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
-        Map<String, List<FacetResult>> facets = results.getFacets();
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Category"), "Category facet should be present");
-
-        List<FacetResult> categoryFacets = facets.get("Category");
-        assertNotNull(categoryFacets, "Category facet results should not be null");
-
-        boolean hasCardinalityMetric = categoryFacets.stream().anyMatch(facet -> facet.getCardinality() != null);
-        assertTrue(hasCardinalityMetric, "Cardinality metric should be present in facets response");
+        // Disabled: FacetResult.getCardinality() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithMultipleMetricsOnSameFieldResponseShape() {
-        SearchOptions searchOptions
-            = new SearchOptions().setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
-
-        SearchPagedIterable results
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
-        Map<String, List<FacetResult>> facets = results.getFacets();
-
-        assertNotNull(facets);
-        assertTrue(facets.containsKey("Rating"));
-
-        List<FacetResult> ratingFacets = facets.get("Rating");
-
-        boolean hasMin = ratingFacets.stream().anyMatch(f -> f.getMin() != null);
-        boolean hasMax = ratingFacets.stream().anyMatch(f -> f.getMax() != null);
-        boolean hasAvg = ratingFacets.stream().anyMatch(f -> f.getAvg() != null);
-
-        assertTrue(hasMin, "Min metric should be present");
-        assertTrue(hasMax, "Max metric should be present");
-        assertTrue(hasAvg, "Avg metric should be present");
+        // Disabled: FacetResult.getMin/getMax/getAvg() were removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithCardinalityPrecisionThreshold() {
-        SearchOptions defaultThreshold = new SearchOptions().setFacets("Category, metric : cardinality");
-
-        SearchOptions maxThreshold
-            = new SearchOptions().setFacets("Category, metric : cardinality, precisionThreshold: 40000");
-
-        SearchPagedIterable defaultResults
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", defaultThreshold, null);
-        SearchPagedIterable maxResults
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", maxThreshold, null);
-
-        assertNotNull(defaultResults.getFacets().get("Category"));
-        assertNotNull(maxResults.getFacets().get("Category"));
-
-        boolean defaultHasCardinality
-            = defaultResults.getFacets().get("Category").stream().anyMatch(f -> f.getCardinality() != null);
-        boolean maxHasCardinality
-            = maxResults.getFacets().get("Category").stream().anyMatch(f -> f.getCardinality() != null);
-
-        assertTrue(defaultHasCardinality, "Default threshold should return cardinality");
-        assertTrue(maxHasCardinality, "Max threshold should return cardinality");
+        // Disabled: FacetResult.getCardinality() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetMetricsWithSemanticQuery() {
-        SearchOptions searchOptions = new SearchOptions()
-            .setFacets("Rating, metric: min", "Rating, metric: max", "Category, metric: cardinality")
-            .setQueryType(QueryType.SEMANTIC)
-            .setSemanticSearchOptions(new SemanticSearchOptions().setSemanticConfigurationName("semantic-config"));
-        SearchPagedIterable results
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient().search("*", searchOptions, null);
-        Map<String, List<FacetResult>> facets = results.getFacets();
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
-        assertTrue(facets.containsKey("Category"), "Category facet should be present");
-
-        boolean hasRatingMetrics
-            = facets.get("Rating").stream().anyMatch(facet -> facet.getMin() != null || facet.getMax() != null);
-        boolean hasCategoryMetrics = facets.get("Category").stream().anyMatch(facet -> facet.getCardinality() != null);
-
-        assertTrue(hasRatingMetrics, "Rating metrics should work with semantic query");
-        assertTrue(hasCategoryMetrics, "Category metrics should work with semantic query");
+        // Disabled: FacetResult.getMin/getMax/getCardinality() were removed in the 2026-04-01 API version.
     }
 
-    @Test
-    @Disabled("Issues with responses based on record or playback mode")
-    public void facetMetricsApiVersionCompatibility() {
-        SearchClient prevVersionClient
-            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).serviceVersion(SearchServiceVersion.V2025_09_01)
-                .buildClient();
-
-        SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min");
-
-        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
-            prevVersionClient.search("*", searchOptions, null).iterator().hasNext();
-        });
-
-        int statusCode = exception.getResponse().getStatusCode();
-        assertTrue(statusCode == 400 || statusCode == 401, "Should return 400 Bad Request or 401 Unauthorized");
-        assertTrue(
-            exception.getMessage().contains("'metric' faceting")
-                || exception.getMessage().contains("not supported")
-                || exception.getMessage().contains("401"),
-            "Should fail due to unsupported facet metrics in previous API version");
-
-    }
+    //    @Test
+    //    @Disabled("Issues with responses based on record or playback mode")
+    //    public void facetMetricsApiVersionCompatibility() {
+    //        SearchClient prevVersionClient
+    //            = getSearchClientBuilder(HOTEL_INDEX_NAME, true).serviceVersion(SearchServiceVersion.V2025_09_01)
+    //                .buildClient();
+    //
+    //        SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min");
+    //
+    //        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> prevVersionClient.search("*", searchOptions, null).iterator().hasNext());
+    //
+    //        int statusCode = exception.getResponse().getStatusCode();
+    //        assertTrue(statusCode == 400 || statusCode == 401, "Should return 400 Bad Request or 401 Unauthorized");
+    //        assertTrue(
+    //            exception.getMessage().contains("'metric' faceting")
+    //                || exception.getMessage().contains("not supported")
+    //                || exception.getMessage().contains("401"),
+    //            "Should fail due to unsupported facet metrics in previous API version");
+    //    }
 
     private static SearchIndexClient setupIndex() {
         try (JsonReader jsonReader = JsonProviders.createReader(loadResource(HOTELS_TESTS_INDEX_DATA_JSON))) {
@@ -282,14 +174,13 @@ public class FacetAggregationTests extends SearchTestBase {
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
-            List<SemanticConfiguration> semanticConfigurations
-                = Collections.singletonList(new SemanticConfiguration("semantic-config",
-                    new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
-                        .setContentFields(new SemanticField("Description"))
-                        .setKeywordsFields(new SemanticField("Category"))));
+            SemanticConfiguration semanticConfigurations = new SemanticConfiguration("semantic-config",
+                new SemanticPrioritizedFields().setTitleField(new SemanticField("HotelName"))
+                    .setContentFields(new SemanticField("Description"))
+                    .setKeywordsFields(new SemanticField("Category")));
             SemanticSearch semanticSearch = new SemanticSearch().setDefaultConfigurationName("semantic-config")
                 .setConfigurations(semanticConfigurations);
-            searchIndexClient.createOrUpdateIndex(
+            searchIndexClient.createIndex(
                 TestHelpers.createTestIndex(HOTEL_INDEX_NAME, baseIndex).setSemanticSearch(semanticSearch));
 
             return searchIndexClient;
@@ -308,7 +199,9 @@ public class FacetAggregationTests extends SearchTestBase {
                 createHotel("7", 4, null, "Missing Category Hotel") // Missing category for default value testing
             );
 
-            searchClient.uploadDocuments(hotels);
+            searchClient.index(new IndexDocumentsBatch(hotels.stream()
+                .map(hotel -> new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(hotel))
+                .collect(Collectors.toList())));
 
             // Wait for indexing to complete
             Thread.sleep(3000);

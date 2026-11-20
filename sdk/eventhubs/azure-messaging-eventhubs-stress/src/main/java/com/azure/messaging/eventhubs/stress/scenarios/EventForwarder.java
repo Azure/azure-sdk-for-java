@@ -4,6 +4,8 @@
 package com.azure.messaging.eventhubs.stress.scenarios;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
@@ -31,7 +33,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.blockingWait;
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.createMessagePayload;
-import static com.azure.messaging.eventhubs.stress.util.TestUtils.getBuilder;
 import static com.azure.messaging.eventhubs.stress.util.TestUtils.getProcessorBuilder;
 
 /**
@@ -52,9 +53,6 @@ public class EventForwarder extends EventHubsScenario {
 
     @Value("${ENABLE_CHECKPOINT:true}")
     private boolean enableCheckpoint;
-
-    @Value("${FORWARD_EVENTHUBS_CONNECTION_STRING:#{null}}")
-    private String forwardConnectionString;
 
     @Value("${FORWARD_EVENT_HUB_NAME:#{null}}")
     private String forwardEventHubName;
@@ -105,10 +103,13 @@ public class EventForwarder extends EventHubsScenario {
     }
 
     private EventHubProducerAsyncClient getForwardProducer() {
-        // Gets the builder then overwrites the previously set values with new forwarder ones.
-        final EventHubClientBuilder builder = getBuilder(options).connectionString(forwardConnectionString)
-            .eventHubName(forwardEventHubName)
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)));
+        final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .credential(options.getEventHubsFullyQualifiedNamespace(), forwardEventHubName,
+                tokenCredential)
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+            .transportType(options.getAmqpTransportType())
+            .consumerGroup(options.getEventHubsConsumerGroup());
 
         return toClose(builder.buildAsyncProducerClient());
     }

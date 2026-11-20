@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DataflowGraphSourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataflowGraphSourceSettings model
-            = BinaryData.fromString("{\"endpointRef\":\"gsexne\",\"dataSources\":[\"dnw\"],\"assetRef\":\"mewzsyyc\"}")
-                .toObject(DataflowGraphSourceSettings.class);
-        Assertions.assertEquals("gsexne", model.endpointRef());
-        Assertions.assertEquals("dnw", model.dataSources().get(0));
-        Assertions.assertEquals("mewzsyyc", model.assetRef());
+        DataflowGraphSourceSettings model = BinaryData
+            .fromString("{\"endpointRef\":\"kooebwnu\",\"dataSources\":[\"emmsbvdkc\",\"odtji\"],\"assetRef\":\"wj\"}")
+            .toObject(DataflowGraphSourceSettings.class);
+        Assertions.assertEquals("kooebwnu", model.endpointRef());
+        Assertions.assertEquals("emmsbvdkc", model.dataSources().get(0));
+        Assertions.assertEquals("wj", model.assetRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphSourceSettings model = new DataflowGraphSourceSettings().withEndpointRef("gsexne")
-            .withDataSources(Arrays.asList("dnw"))
-            .withAssetRef("mewzsyyc");
+        DataflowGraphSourceSettings model = new DataflowGraphSourceSettings().withEndpointRef("kooebwnu")
+            .withDataSources(Arrays.asList("emmsbvdkc", "odtji"))
+            .withAssetRef("wj");
         model = BinaryData.fromObject(model).toObject(DataflowGraphSourceSettings.class);
-        Assertions.assertEquals("gsexne", model.endpointRef());
-        Assertions.assertEquals("dnw", model.dataSources().get(0));
-        Assertions.assertEquals("mewzsyyc", model.assetRef());
+        Assertions.assertEquals("kooebwnu", model.endpointRef());
+        Assertions.assertEquals("emmsbvdkc", model.dataSources().get(0));
+        Assertions.assertEquals("wj", model.assetRef());
     }
 }

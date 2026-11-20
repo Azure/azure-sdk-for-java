@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.RegionNameNormalizer;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -461,7 +461,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         checkNotNull(regionNamesForRead, "regionNamesForRead cannot be null!");
 
         if (!regionNamesForRead.isEmpty()) {
-            return regionNamesForRead.get(0).toLowerCase(Locale.ROOT).trim().replace(" ", "");
+            return RegionNameNormalizer.normalize(regionNamesForRead.get(0));
         }
 
         throw new IllegalStateException("regionNamesForRead cannot be empty!");

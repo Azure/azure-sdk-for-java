@@ -23,7 +23,7 @@ public final class UsagesListByVaultsMockTests {
     @Test
     public void testListByVaults() throws Exception {
         String responseStr
-            = "{\"value\":[{\"unit\":\"Bytes\",\"quotaPeriod\":\"utwu\",\"nextResetTime\":\"2021-07-28T00:53:44Z\",\"currentValue\":7851561021443013055,\"limit\":1501475305067379063,\"name\":{\"value\":\"yqsluic\",\"localizedValue\":\"ggkzzlvmbmpa\"}}]}";
+            = "{\"value\":[{\"unit\":\"Count\",\"quotaPeriod\":\"allatmelwuipic\",\"nextResetTime\":\"2021-06-05T01:20:37Z\",\"currentValue\":518441316636125291,\"limit\":3293885561538827205,\"name\":{\"value\":\"nayrhyrnxxmueedn\",\"localizedValue\":\"dvstkw\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class UsagesListByVaultsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VaultUsage> response
-            = manager.usages().listByVaults("j", "vnhdldwmgxcxr", com.azure.core.util.Context.NONE);
+            = manager.usages().listByVaults("cikhnv", "amqgxqquezikyw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UsagesUnit.BYTES, response.iterator().next().unit());
-        Assertions.assertEquals("utwu", response.iterator().next().quotaPeriod());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T00:53:44Z"),
+        Assertions.assertEquals(UsagesUnit.COUNT, response.iterator().next().unit());
+        Assertions.assertEquals("allatmelwuipic", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-05T01:20:37Z"),
             response.iterator().next().nextResetTime());
-        Assertions.assertEquals(7851561021443013055L, response.iterator().next().currentValue());
-        Assertions.assertEquals(1501475305067379063L, response.iterator().next().limit());
-        Assertions.assertEquals("yqsluic", response.iterator().next().name().value());
-        Assertions.assertEquals("ggkzzlvmbmpa", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals(518441316636125291L, response.iterator().next().currentValue());
+        Assertions.assertEquals(3293885561538827205L, response.iterator().next().limit());
+        Assertions.assertEquals("nayrhyrnxxmueedn", response.iterator().next().name().value());
+        Assertions.assertEquals("dvstkw", response.iterator().next().name().localizedValue());
     }
 }

@@ -20,7 +20,7 @@ import java.util.Objects;
  * Default {@link JsonWriter} implementation.
  */
 public final class DefaultJsonWriter extends JsonWriter {
-    private static final JsonFactory FACTORY = JsonFactory.builder().build();
+    private static final JsonFactory FACTORY = new JsonFactory();
 
     private final JsonGenerator generator;
 

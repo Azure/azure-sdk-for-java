@@ -31,12 +31,8 @@ public final class StandbyContainerGroupPoolsImpl implements StandbyContainerGro
         String standbyContainerGroupPoolName, Context context) {
         Response<StandbyContainerGroupPoolResourceInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, standbyContainerGroupPoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StandbyContainerGroupPoolResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StandbyContainerGroupPoolResourceImpl(inner.getValue(), this.manager()));
     }
 
     public StandbyContainerGroupPoolResource getByResourceGroup(String resourceGroupName,
@@ -86,13 +82,16 @@ public final class StandbyContainerGroupPoolsImpl implements StandbyContainerGro
     }
 
     public StandbyContainerGroupPoolResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String standbyContainerGroupPoolName
-            = ResourceManagerUtils.getValueFromIdByName(id, "standbyContainerGroupPools");
+        String standbyContainerGroupPoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "standbyContainerGroupPoolName");
         if (standbyContainerGroupPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'standbyContainerGroupPools'.", id)));
@@ -102,13 +101,16 @@ public final class StandbyContainerGroupPoolsImpl implements StandbyContainerGro
     }
 
     public Response<StandbyContainerGroupPoolResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String standbyContainerGroupPoolName
-            = ResourceManagerUtils.getValueFromIdByName(id, "standbyContainerGroupPools");
+        String standbyContainerGroupPoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "standbyContainerGroupPoolName");
         if (standbyContainerGroupPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'standbyContainerGroupPools'.", id)));
@@ -117,13 +119,16 @@ public final class StandbyContainerGroupPoolsImpl implements StandbyContainerGro
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String standbyContainerGroupPoolName
-            = ResourceManagerUtils.getValueFromIdByName(id, "standbyContainerGroupPools");
+        String standbyContainerGroupPoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "standbyContainerGroupPoolName");
         if (standbyContainerGroupPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'standbyContainerGroupPools'.", id)));
@@ -132,13 +137,16 @@ public final class StandbyContainerGroupPoolsImpl implements StandbyContainerGro
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String standbyContainerGroupPoolName
-            = ResourceManagerUtils.getValueFromIdByName(id, "standbyContainerGroupPools");
+        String standbyContainerGroupPoolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}",
+            "standbyContainerGroupPoolName");
         if (standbyContainerGroupPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'standbyContainerGroupPools'.", id)));

@@ -15,21 +15,21 @@ public final class RetentionPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionPolicyProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":384573586,\"orchestrationState\":\"Failed\"}]}")
+            "{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":596140767,\"orchestrationState\":\"Canceled\"}]}")
             .toObject(RetentionPolicyProperties.class);
-        Assertions.assertEquals(384573586, model.retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.FAILED,
+        Assertions.assertEquals(596140767, model.retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
             model.retentionPolicies().get(0).orchestrationState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RetentionPolicyProperties model = new RetentionPolicyProperties()
-            .withRetentionPolicies(Arrays.asList(new RetentionPolicyDetails().withRetentionPeriodInDays(384573586)
-                .withOrchestrationState(PurgeableOrchestrationState.FAILED)));
+            .withRetentionPolicies(Arrays.asList(new RetentionPolicyDetails().withRetentionPeriodInDays(596140767)
+                .withOrchestrationState(PurgeableOrchestrationState.CANCELED)));
         model = BinaryData.fromObject(model).toObject(RetentionPolicyProperties.class);
-        Assertions.assertEquals(384573586, model.retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.FAILED,
+        Assertions.assertEquals(596140767, model.retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
             model.retentionPolicies().get(0).orchestrationState());
     }
 }

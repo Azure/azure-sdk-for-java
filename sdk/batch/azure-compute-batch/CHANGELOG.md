@@ -1,14 +1,83 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
-
-### Features Added
+## 1.0.0 (2026-08-17)
 
 ### Breaking Changes
 
+- Name changes for timeout methods:
+  - `getTimeOutInSeconds()` -> `getTimeout()`
+
+- Model suffix name change:
+  - `BatchAffinityInfo` -> `BatchAffinityDetails`
+  - `BatchJobExecutionInfo` -> `BatchJobExecutionDetails`
+  - All models following the `Batch[Object]Info` pattern -> `Batch[Object]Details`
+  - `VirtualMachineInfo` -> `VirtualMachineDetails`
+
+- Replaced the public `BatchFileProperties(HttpHeaders)` constructor with a static factory
+  `BatchFileProperties.fromHeaders(HttpHeaders)`.
+
 ### Bugs Fixed
 
+- Fixed a race condition that could cause bulk task creation to return before retrying tasks with server errors.
+
 ### Other Changes
+
+This is the first generally available release of the `azure-compute-batch` library. It includes all features and breaking changes introduced in `1.0.0-beta.6`.
+
+## 1.0.0-beta.6 (2026-02-25)
+
+### Features Added
+
+- Added Models:
+  - Added `BatchJobDefaultOrder`
+  - Added `BatchPoolIdentityReference`
+  - Added `DiskCustomerManagedKey`
+  - Added `DiskEncryptionSetParameters`
+  - Added `HostEndpointSettings`
+  - Added `HostEndpointSettingsModeTypes`
+  - Added `IPFamily`
+  - Added `IpTag`
+  - Added `ProxyAgentSettings`
+
+- Added Properties:
+  - Added `ipv6Address` to `BatchNode`
+  - Added `ipv6RemoteLoginIpAddress` and `ipv6RemoteLoginPort` to `BatchNodeRemoteLoginSettings`
+  - Added `ipFamilies` and `ipTags` to `BatchPublicAddressConfiguration`
+  - Added `JobDefaultOder` to `BatchTaskSchedulingPolicy`
+  - Added `ManagedDisk` to `DataDisk`
+  - Added `CustomerManagedKey` to `DiskEncryptionConfiguration`
+  - Added `DiskEncryptionSet` to `ManagedDisk`
+  - Added `ProxyAgentSetting` to `SecurityProfile`
+
+### Breaking Changes
+
+- Removed Certificate operations and properties
+  - `createCertificate`
+  - `getCertificate`
+  - `listCertificates`
+  - `beginDeleteCertificate`
+  - `cancelCertificateDeletion`
+Please migrate to use Azure Key Vault. For more information, see [Migrate Batch account certificates to Azure Key Vault](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide)
+
+- Removed models:
+  - `BatchCertificate`
+  - `BatchCertificateDeleteError`
+  - `BatchCertificateFormat`
+  - `BatchCertificateReference`
+  - `BatchCertificateState`
+  - `BatchCertificateStoreLocation`
+  - `BatchCertificateVisibility`
+  - `BatchNodeCommunicationMode`
+Transition Batch pools to the Simplified compute node communication model
+
+- Removed properties:
+  - Removed `CertificateReferences` from `BatchNode`
+  - Removed `ResourceTags` and `CertificateReferences` from `BatchPool`
+  - Removed `CertificateReferences`, `ResourceTags`, and `TargetNodeCommunicationMode` from `BatchPoolCreateOptions`
+  - Removed `CertificateReferences` and `TargetNodeCommunicationMode` from `BatchPoolReplaceOptions`
+  - Removed `CertificateReferences`, `ResourceTags`, and `TargetNodeCommunicationMode` from `BatchPoolSpecifications`
+  - Removed `CertificateReferences`, `ResourceTags`, and `TargetNodeCommunicationMode` from `BatchPoolUpdateOptions`
+  - Removed `CertificateReferences`, `ResourceTags`, and `TargetNodeCommunicationMode` from `ComputeBatchModelFactory`
 
 ## 1.0.0-beta.5 (2025-09-15)
 

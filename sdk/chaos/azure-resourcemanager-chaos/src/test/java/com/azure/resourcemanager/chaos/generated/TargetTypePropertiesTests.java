@@ -11,7 +11,7 @@ public final class TargetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TargetTypeProperties model = BinaryData.fromString(
-            "{\"displayName\":\"xkalla\",\"description\":\"elwuipi\",\"propertiesSchema\":\"jzkzi\",\"resourceTypes\":[\"vc\",\"ayrhyrnx\"]}")
+            "{\"displayName\":\"cvdsrhnj\",\"description\":\"olvtnovqfzge\",\"propertiesSchema\":\"dftuljltduce\",\"resourceTypes\":[\"mczuo\",\"ejwcwwqiok\",\"ssxmojms\",\"p\"]}")
             .toObject(TargetTypeProperties.class);
     }
 }

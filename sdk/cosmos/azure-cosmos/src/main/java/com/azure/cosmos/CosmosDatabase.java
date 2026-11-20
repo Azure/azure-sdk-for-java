@@ -358,7 +358,7 @@ public class CosmosDatabase {
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsProps -->
      * The throughput properties will only be used if the specified container
-     * does not exist and therefor a new container will be created.
+     * does not exist and therefore a new container will be created.
      *
      * @param containerProperties the container properties.
      * @param throughputProperties the throughput properties for the container.
@@ -409,7 +409,7 @@ public class CosmosDatabase {
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsProps -->
      * The throughput settings will only be used if the specified container
-     * does not exist and therefor a new container will be created.
+     * does not exist and therefore a new container will be created.
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.
@@ -438,7 +438,7 @@ public class CosmosDatabase {
      * </pre>
      * <!-- end com.azure.cosmos.CosmosDatabase.createContainerIfNotExistsPartitionKey -->
      * The throughput properties will only be used if the specified container
-     * does not exist and therefor a new container will be created.
+     * does not exist and therefore a new container will be created.
      *
      * @param id the id.
      * @param partitionKeyPath the partition key path.

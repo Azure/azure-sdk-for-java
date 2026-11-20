@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import com.azure.communication.callautomation.implementation.models.AddParticipantResponseInternal;
+import com.azure.communication.callautomation.implementation.models.MoveParticipantsResponse;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
@@ -48,6 +49,7 @@ public class CallAutomationUnitTestBase {
     static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
+    static final String CALL_FROM_CALL_CONNECTION_ID = "fromCallConnectionId";
     static final String CALL_PSTN_TARGET_ID = "+11234567890";
     static final String CALL_TRANSFEREE_ID = "transfereeId";
     static final String CALL_CONNECTION_STATE = "connected";
@@ -125,6 +127,16 @@ public class CallAutomationUnitTestBase {
                 .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
 
         return serializeObject(addParticipantsResponseInternal);
+    }
+
+    public static String generateMoveParticipantsResponse() {
+        MoveParticipantsResponse moveParticipantsResponseInternal
+            = new MoveParticipantsResponse().setOperationContext(CALL_OPERATION_CONTEXT)
+                .setFromCall(CALL_FROM_CALL_CONNECTION_ID)
+                .setParticipants(new ArrayList<>(Collections
+                    .singletonList(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false))));
+
+        return serializeObject(moveParticipantsResponseInternal);
     }
 
     public static CallAutomationAsyncClient

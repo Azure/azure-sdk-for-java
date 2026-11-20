@@ -3266,6 +3266,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of available area codes.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3287,6 +3289,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of available area codes.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3308,6 +3312,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of available area codes.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3323,6 +3329,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of available area codes.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3340,6 +3348,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of supported countries.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3347,8 +3357,8 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return the list of supported countries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesNextSinglePageAsync(String nextLink,
@@ -3362,6 +3372,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of supported countries.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3370,8 +3382,8 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return the list of supported countries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesNextSinglePageAsync(String nextLink,
@@ -3383,6 +3395,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of supported countries.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3390,7 +3404,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries along with {@link PagedResponse}.
+     * @return the list of supported countries along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<PhoneNumberCountry> listAvailableCountriesNextSinglePage(String nextLink,
@@ -3399,6 +3413,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of supported countries.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3407,7 +3423,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries along with {@link PagedResponse}.
+     * @return the list of supported countries along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<PhoneNumberCountry> listAvailableCountriesNextSinglePage(String nextLink,
@@ -3416,6 +3432,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of cities or towns with available phone numbers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3423,7 +3441,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of cities or towns along with {@link PagedResponse} on successful
+     * @return the list of cities or towns with available phone numbers along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3438,6 +3456,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of cities or towns with available phone numbers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3446,7 +3466,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of cities or towns along with {@link PagedResponse} on successful
+     * @return the list of cities or towns with available phone numbers along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3459,6 +3479,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of cities or towns with available phone numbers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3466,7 +3488,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of cities or towns along with {@link PagedResponse}.
+     * @return the list of cities or towns with available phone numbers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<PhoneNumberLocality> listAvailableLocalitiesNextSinglePage(String nextLink,
@@ -3475,6 +3497,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of cities or towns with available phone numbers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3483,7 +3507,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of cities or towns along with {@link PagedResponse}.
+     * @return the list of cities or towns with available phone numbers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<PhoneNumberLocality> listAvailableLocalitiesNextSinglePage(String nextLink,
@@ -3492,6 +3516,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * List available offerings of capabilities with rates for the given country.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3513,6 +3539,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * List available offerings of capabilities with rates for the given country.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3534,6 +3562,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * List available offerings of capabilities with rates for the given country.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3549,6 +3579,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * List available offerings of capabilities with rates for the given country.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3566,6 +3598,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Lists all reservations.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3585,6 +3619,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Lists all reservations.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3605,6 +3641,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Lists all reservations.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3619,6 +3657,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Lists all reservations.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3634,13 +3674,15 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of all purchased phone numbers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of purchased phone numbers along with {@link PagedResponse} on successful completion of
+     * @return the list of all purchased phone numbers along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3653,6 +3695,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of all purchased phone numbers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3660,7 +3704,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of purchased phone numbers along with {@link PagedResponse} on successful completion of
+     * @return the list of all purchased phone numbers along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3673,13 +3717,15 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of all purchased phone numbers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of purchased phone numbers along with {@link PagedResponse}.
+     * @return the list of all purchased phone numbers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<PurchasedPhoneNumber> listPhoneNumbersNextSinglePage(String nextLink) {
@@ -3687,6 +3733,8 @@ public final class PhoneNumbersImpl {
     }
 
     /**
+     * Gets the list of all purchased phone numbers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3694,7 +3742,7 @@ public final class PhoneNumbersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of purchased phone numbers along with {@link PagedResponse}.
+     * @return the list of all purchased phone numbers along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<PurchasedPhoneNumber> listPhoneNumbersNextSinglePage(String nextLink, Context context) {

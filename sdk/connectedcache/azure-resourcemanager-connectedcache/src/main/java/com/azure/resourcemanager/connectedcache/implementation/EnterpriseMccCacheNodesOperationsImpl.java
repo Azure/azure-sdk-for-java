@@ -39,12 +39,8 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         String customerResourceName, String cacheNodeResourceName, Context context) {
         Response<EnterpriseMccCacheNodeResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new EnterpriseMccCacheNodeResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EnterpriseMccCacheNodeResourceImpl(inner.getValue(), this.manager()));
     }
 
     public EnterpriseMccCacheNodeResource get(String resourceGroupName, String customerResourceName,
@@ -88,12 +84,8 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         Response<MccCacheNodeInstallDetailsInner> inner = this.serviceClient()
             .getCacheNodeInstallDetailsWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MccCacheNodeInstallDetailsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MccCacheNodeInstallDetailsImpl(inner.getValue(), this.manager()));
     }
 
     public MccCacheNodeInstallDetails getCacheNodeInstallDetails(String resourceGroupName, String customerResourceName,
@@ -112,12 +104,8 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         Response<MccCacheNodeAutoUpdateHistoryInner> inner = this.serviceClient()
             .getCacheNodeAutoUpdateHistoryWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MccCacheNodeAutoUpdateHistoryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MccCacheNodeAutoUpdateHistoryImpl(inner.getValue(), this.manager()));
     }
 
     public MccCacheNodeAutoUpdateHistory getCacheNodeAutoUpdateHistory(String resourceGroupName,
@@ -136,12 +124,8 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         Response<MccCacheNodeIssueHistoryInner> inner = this.serviceClient()
             .getCacheNodeMccIssueDetailsHistoryWithResponse(resourceGroupName, customerResourceName,
                 cacheNodeResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MccCacheNodeIssueHistoryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MccCacheNodeIssueHistoryImpl(inner.getValue(), this.manager()));
     }
 
     public MccCacheNodeIssueHistory getCacheNodeMccIssueDetailsHistory(String resourceGroupName,
@@ -160,12 +144,8 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         Response<MccCacheNodeTlsCertificateHistoryInner> inner = this.serviceClient()
             .getCacheNodeTlsCertificateHistoryWithResponse(resourceGroupName, customerResourceName,
                 cacheNodeResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MccCacheNodeTlsCertificateHistoryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MccCacheNodeTlsCertificateHistoryImpl(inner.getValue(), this.manager()));
     }
 
     public MccCacheNodeTlsCertificateHistory getCacheNodeTlsCertificateHistory(String resourceGroupName,
@@ -180,17 +160,23 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
     }
 
     public EnterpriseMccCacheNodeResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
+        String customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName");
         if (customerResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
         }
-        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCacheNodes");
+        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName");
         if (cacheNodeResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCacheNodes'.", id)));
@@ -200,17 +186,23 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
     }
 
     public Response<EnterpriseMccCacheNodeResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
+        String customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName");
         if (customerResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
         }
-        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCacheNodes");
+        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName");
         if (cacheNodeResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCacheNodes'.", id)));
@@ -219,17 +211,23 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
+        String customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName");
         if (customerResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
         }
-        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCacheNodes");
+        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName");
         if (cacheNodeResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCacheNodes'.", id)));
@@ -238,17 +236,23 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String customerResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCustomers");
+        String customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName");
         if (customerResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCustomers'.", id)));
         }
-        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(id, "enterpriseMccCacheNodes");
+        String cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName");
         if (cacheNodeResourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'enterpriseMccCacheNodes'.", id)));

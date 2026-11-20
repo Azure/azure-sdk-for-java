@@ -19,6 +19,7 @@
   <suppress files="com.azure.core.http.policy.HttpLoggingPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.core.implementation.AccessTokenCache.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.core.implementation.AccessibleByteArrayOutputStream.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.implementation.FluxInputStream.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.core.implementation.http.rest.SyncRestProxy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.core.implementation.jackson.MemberNameConverterImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />

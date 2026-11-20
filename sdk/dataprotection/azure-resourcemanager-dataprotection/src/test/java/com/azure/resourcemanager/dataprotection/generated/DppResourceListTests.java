@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Assertions;
 public final class DppResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DppResourceList model
-            = BinaryData.fromString("{\"nextLink\":\"erhhbcsglumm\"}").toObject(DppResourceList.class);
-        Assertions.assertEquals("erhhbcsglumm", model.nextLink());
+        DppResourceList model = BinaryData.fromString("{\"nextLink\":\"iwqvhkh\"}").toObject(DppResourceList.class);
+        Assertions.assertEquals("iwqvhkh", model.nextLink());
     }
 }

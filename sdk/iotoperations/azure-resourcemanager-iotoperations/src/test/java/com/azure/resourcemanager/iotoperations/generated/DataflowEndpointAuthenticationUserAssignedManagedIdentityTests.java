@@ -12,22 +12,22 @@ public final class DataflowEndpointAuthenticationUserAssignedManagedIdentityTest
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointAuthenticationUserAssignedManagedIdentity model
-            = BinaryData.fromString("{\"clientId\":\"opkwhojv\",\"scope\":\"jqg\",\"tenantId\":\"ysmocmbqfqvmkcxo\"}")
+            = BinaryData.fromString("{\"clientId\":\"wbwo\",\"scope\":\"washr\",\"tenantId\":\"dtkcnqxwbpokulp\"}")
                 .toObject(DataflowEndpointAuthenticationUserAssignedManagedIdentity.class);
-        Assertions.assertEquals("opkwhojv", model.clientId());
-        Assertions.assertEquals("jqg", model.scope());
-        Assertions.assertEquals("ysmocmbqfqvmkcxo", model.tenantId());
+        Assertions.assertEquals("wbwo", model.clientId());
+        Assertions.assertEquals("washr", model.scope());
+        Assertions.assertEquals("dtkcnqxwbpokulp", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointAuthenticationUserAssignedManagedIdentity model
-            = new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("opkwhojv")
-                .withScope("jqg")
-                .withTenantId("ysmocmbqfqvmkcxo");
+            = new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("wbwo")
+                .withScope("washr")
+                .withTenantId("dtkcnqxwbpokulp");
         model = BinaryData.fromObject(model).toObject(DataflowEndpointAuthenticationUserAssignedManagedIdentity.class);
-        Assertions.assertEquals("opkwhojv", model.clientId());
-        Assertions.assertEquals("jqg", model.scope());
-        Assertions.assertEquals("ysmocmbqfqvmkcxo", model.tenantId());
+        Assertions.assertEquals("wbwo", model.clientId());
+        Assertions.assertEquals("washr", model.scope());
+        Assertions.assertEquals("dtkcnqxwbpokulp", model.tenantId());
     }
 }

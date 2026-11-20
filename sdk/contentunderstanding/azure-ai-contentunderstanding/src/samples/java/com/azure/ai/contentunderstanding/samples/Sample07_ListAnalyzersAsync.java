@@ -1,0 +1,96 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+/**
+ * Sample demonstrating how to list all analyzers asynchronously.
+ * This sample shows:
+ * 1. Listing all available analyzers (both prebuilt and custom)
+ * 2. Iterating through paginated results
+ * 3. Displaying analyzer properties
+ */
+public class Sample07_ListAnalyzersAsync {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample07Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample07Async.buildClient
+
+        // BEGIN:ContentUnderstandingListAnalyzersAsync
+        // List all analyzers
+        System.out.println("Listing all analyzers:");
+        System.out.println("======================");
+
+        List<ContentAnalyzer> analyzers = collectAnalyzers(client.listAnalyzers()).block();
+        int prebuiltCount = 0;
+        int customCount = 0;
+
+        for (int index = 0; index < analyzers.size(); index++) {
+            ContentAnalyzer analyzer = analyzers.get(index);
+            boolean isPrebuilt = analyzer.getAnalyzerId().startsWith("prebuilt-");
+            if (isPrebuilt) {
+                prebuiltCount++;
+            } else {
+                customCount++;
+            }
+
+            System.out.println("\nAnalyzer #" + (index + 1) + ":");
+            System.out.println("  ID: " + analyzer.getAnalyzerId());
+            System.out.println("  Type: " + (isPrebuilt ? "Prebuilt" : "Custom"));
+
+            if (analyzer.getDescription() != null && !analyzer.getDescription().trim().isEmpty()) {
+                System.out.println("  Description: " + analyzer.getDescription());
+            }
+            if (analyzer.getBaseAnalyzerId() != null) {
+                System.out.println("  Base Analyzer: " + analyzer.getBaseAnalyzerId());
+            }
+            if (analyzer.getStatus() != null) {
+                System.out.println("  Status: " + analyzer.getStatus());
+            }
+            if (analyzer.getCreatedAt() != null) {
+                System.out.println("  Created: " + analyzer.getCreatedAt());
+            }
+            if (analyzer.getLastModifiedAt() != null) {
+                System.out.println("  Last Modified: " + analyzer.getLastModifiedAt());
+            }
+            if (analyzer.getFieldSchema() != null && analyzer.getFieldSchema().getFields() != null) {
+                System.out.println(
+                    "  Fields: " + analyzer.getFieldSchema().getFields().size() + " field(s) defined");
+            }
+        }
+
+        System.out.println("\n======================");
+        System.out.println("Total analyzers: " + analyzers.size());
+        System.out.println("  Prebuilt: " + prebuiltCount);
+        System.out.println("  Custom: " + customCount);
+        // END:ContentUnderstandingListAnalyzersAsync
+    }
+
+    static Mono<List<ContentAnalyzer>> collectAnalyzers(Flux<ContentAnalyzer> analyzers) {
+        return analyzers.collectList();
+    }
+}

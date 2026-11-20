@@ -6,12 +6,12 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
@@ -25,6 +25,7 @@ import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
@@ -32,8 +33,10 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobOutputStreamOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -182,7 +185,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream() {
-        return getBlobOutputStream(null);
+        return getBlobOutputStream((AppendBlobRequestConditions) null);
     }
 
     /**
@@ -216,6 +219,18 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     public BlobOutputStream getBlobOutputStream(AppendBlobRequestConditions requestConditions) {
         return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the append blob.
+     *
+     * @param options {@link AppendBlobOutputStreamOptions}
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     */
+    public BlobOutputStream getBlobOutputStream(AppendBlobOutputStreamOptions options) {
+        options = options == null ? new AppendBlobOutputStreamOptions() : options;
+        return BlobOutputStream.appendBlobOutputStream(appendBlobAsyncClient, options.getRequestConditions(),
+            options.getContentValidationAlgorithm());
     }
 
     /**
@@ -410,6 +425,8 @@ public final class AppendBlobClient extends BlobClientBase {
      * contains the {@link AppendBlobItem} containing information about the append blob. If {@link Response}'s status
      * code is 201, a new append blob was successfully created. If status code is 409, an append blob already existed at
      * this location.
+     * @throws BlobStorageException If the blob could not be created for any other reason, for example when a blob of a
+     * different type already exists at this location (status code 409, error code InvalidBlobType).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout,
@@ -420,7 +437,7 @@ public final class AppendBlobClient extends BlobClientBase {
         try {
             return createWithResponse(finalOptions, timeout, context);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 409) {
+            if (ModelHelper.isConflictWithErrorCode(e, BlobErrorCode.BLOB_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {
@@ -433,9 +450,8 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.</p>
      *
      * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
      * size is 4 MB. For more information, see the
@@ -464,9 +480,8 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Commits a new block of data to the end of the existing append blob.
-     * <p>
-     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.</p>
      *
      * For service versions 2022-11-02 and later, the max block size is 100 MB. For previous versions, the max block
      * size is 4 MB. For more information, see the
@@ -501,21 +516,61 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the append blob operation.
-     * @throws UnexpectedLengthException when the length of data does not match the input {@code length}.
      * @throws NullPointerException if the input data is null.
+     * @deprecated Use {@link #appendBlockWithResponse(AppendBlobAppendBlockOptions, Duration,
+     * Context)}. The data and optional parameters are now carried by {@link AppendBlobAppendBlockOptions}, which is also
+     * forward-compatible with future optional settings.
      */
+    @Deprecated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
-        Flux<ByteBuffer> fbb;
+        StorageImplUtils.assertNotNull("data", data);
 
-        // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service versions
-        // support up to 4MB
-        fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
+        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, getMaxAppendBlockBytes(), true);
 
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb, length, contentMd5,
-            appendBlobRequestConditions, context);
+        Mono<Response<AppendBlobItem>> response = BinaryData.fromFlux(fbb, length, false)
+            .flatMap(binaryData -> appendBlobAsyncClient
+                .appendBlockWithResponseInternal(new AppendBlobAppendBlockOptions(binaryData).setContentMd5(contentMd5)
+                    .setRequestConditions(appendBlobRequestConditions), context));
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Commits a new block of data to the end of the existing append blob with options.
+     * <p>Note that the data passed must be replayable if retries are enabled (the default),
+     * see {@link BinaryData#isReplayable()}.
+     * <p>For service versions 2022-11-02 and later, the maximum block size is 100 MB. For earlier service versions,
+     * the maximum block size is 4 MB. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/append-block">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#AppendBlobAppendBlockOptions-Duration-Context -->
+     * <pre>
+     * BinaryData data = BinaryData.fromString&#40;&quot;data&quot;&#41;;
+     * AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions&#40;data&#41;
+     *     .setContentValidationAlgorithm&#40;ContentValidationAlgorithm.CRC64&#41;;
+     * Context context = new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     *
+     * AppendBlobItem item = client.appendBlockWithResponse&#40;options, timeout, context&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, item.getBlobCommittedBlockCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#AppendBlobAppendBlockOptions-Duration-Context -->
+     *
+     * @param options {@link AppendBlobAppendBlockOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the append blob operation.
+     * @throws NullPointerException if {@code options} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AppendBlobItem> appendBlockWithResponse(AppendBlobAppendBlockOptions options, Duration timeout,
+        Context context) {
+        Objects.requireNonNull(options, "options must not be null");
+
+        Mono<Response<AppendBlobItem>> response
+            = appendBlobAsyncClient.appendBlockWithResponseInternal(options, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

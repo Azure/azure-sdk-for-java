@@ -15,18 +15,18 @@ public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkProfile model = BinaryData.fromString(
-            "{\"subnet\":{\"resourceId\":\"tfz\"},\"networkInterfaces\":[{\"resourceId\":\"v\",\"privateIpAddress\":\"ur\"}]}")
+            "{\"subnet\":{\"resourceId\":\"ivpdtiir\"},\"networkInterfaces\":[{\"resourceId\":\"oaxoruzfgsqu\",\"privateIpAddress\":\"xrxxlep\"}]}")
             .toObject(NetworkProfile.class);
-        Assertions.assertEquals("tfz", model.subnet().resourceId());
-        Assertions.assertEquals("ur", model.networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("ivpdtiir", model.subnet().resourceId());
+        Assertions.assertEquals("xrxxlep", model.networkInterfaces().get(0).privateIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfile model = new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("tfz"))
-            .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("ur")));
+        NetworkProfile model = new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("ivpdtiir"))
+            .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("xrxxlep")));
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
-        Assertions.assertEquals("tfz", model.subnet().resourceId());
-        Assertions.assertEquals("ur", model.networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("ivpdtiir", model.subnet().resourceId());
+        Assertions.assertEquals("xrxxlep", model.networkInterfaces().get(0).privateIpAddress());
     }
 }

@@ -12,8 +12,9 @@ public final class TaskHubListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskHubListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"dashboardUrl\":\"tnhxbn\"},\"id\":\"iksqr\",\"name\":\"lssai\",\"type\":\"qpjwnzlljfm\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"dashboardUrl\":\"vmgxsab\"},\"id\":\"qduujitcjczdz\",\"name\":\"vndhkrwpdapp\",\"type\":\"sbdkvwr\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"dashboardUrl\":\"snhu\"},\"id\":\"eltmrldhugjzzdat\",\"name\":\"xhocdgeablgphuti\",\"type\":\"ndv\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"dashboardUrl\":\"yiftyhxhuro\"},\"id\":\"tyxolniwpwc\",\"name\":\"kjfkg\",\"type\":\"awxklr\"}],\"nextLink\":\"lwckbasyypnddhs\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"dashboardUrl\":\"dmhdlxyjr\",\"capabilities\":[\"gafcnihgwqapnedg\",\"bcvkcvqvpkeq\",\"cvdrhvoodsot\",\"obzdopcjwvnhdl\"]},\"id\":\"mgxcxrslpm\",\"name\":\"twuoegrpkhjwni\",\"type\":\"qsluicp\"},{\"properties\":{\"provisioningState\":\"Failed\",\"dashboardUrl\":\"zl\",\"capabilities\":[\"mpaxmodfvuefywsb\",\"fvmwy\",\"rfouyftaakcpw\"]},\"id\":\"zvqtmnubexkp\",\"name\":\"ksmond\",\"type\":\"mquxvypo\"}],\"nextLink\":\"kopkwhojvpajqgx\"}")
             .toObject(TaskHubListResult.class);
-        Assertions.assertEquals("lwckbasyypnddhs", model.nextLink());
+        Assertions.assertEquals("gafcnihgwqapnedg", model.value().get(0).properties().capabilities().get(0));
+        Assertions.assertEquals("kopkwhojvpajqgx", model.nextLink());
     }
 }

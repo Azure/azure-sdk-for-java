@@ -193,7 +193,7 @@ abstract class AppServiceBaseImpl<FluentT extends WebAppBase, FluentImplT extend
         return manager().serviceClient()
             .getWebApps()
             .listPublishingProfileXmlWithSecretsAsync(resourceGroupName(), name(), new CsmPublishingProfileOptions())
-            .map(binaryData -> new PublishingProfileImpl(binaryData.toString(), this));
+            .map(xmlString -> new PublishingProfileImpl(xmlString, this));
     }
 
     @Override
@@ -456,6 +456,39 @@ abstract class AppServiceBaseImpl<FluentT extends WebAppBase, FluentImplT extend
         withAppSetting(SETTING_REGISTRY_USERNAME, username);
         withAppSetting(SETTING_REGISTRY_PASSWORD, password);
         return (FluentImplT) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public FluentImplT withManagedIdentityCredentials() {
+        ensureRegistryServerForManagedIdentity();
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAcrUseManagedIdentityCreds(true);
+        siteConfig.withAcrUserManagedIdentityId(null);
+        return (FluentImplT) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public FluentImplT withManagedIdentityCredentials(String userAssignedManagedIdentityClientId) {
+        ensureRegistryServerForManagedIdentity();
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withAcrUseManagedIdentityCreds(true);
+        siteConfig.withAcrUserManagedIdentityId(userAssignedManagedIdentityClientId);
+        return (FluentImplT) this;
+    }
+
+    // Managed identity image pull is an Azure Container Registry (private registry) feature. It is meaningless for a
+    // Docker Hub image, where no registry server is configured, so fail fast instead of producing an invalid config.
+    private void ensureRegistryServerForManagedIdentity() {
+        if (appSettingsToAdd == null || !appSettingsToAdd.containsKey(SETTING_REGISTRY_SERVER)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Managed identity image pull is only supported for a private container registry (e.g. Azure Container"
+                    + " Registry) configured via withPrivateRegistryImage(imageAndTag, serverUrl); it cannot be used"
+                    + " with a Docker Hub image."));
+        }
     }
 
     protected abstract void cleanUpContainerSettings();

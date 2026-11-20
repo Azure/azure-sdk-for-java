@@ -19,6 +19,10 @@ import java.util.Map;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class RequestHelper {
+    private static ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.ReadConsistencyStrategyAccessor readConsistencyStrategyAccessor() {
+        return ImplementationBridgeHelpers.ReadConsistencyStrategyHelper.getReadConsistencyStrategyAccessor();
+    }
+
     public static ReadConsistencyStrategy getReadConsistencyStrategyToUse(
         GatewayServiceConfigurationReader serviceConfigReader,
         RxDocumentServiceRequest request) {
@@ -52,9 +56,7 @@ public class RequestHelper {
 
             if (!Strings.isNullOrEmpty(requestReadConsistencyStrategyHeaderValue)) {
                 requestLevelReadConsistencyStrategy =
-                    ImplementationBridgeHelpers
-                        .ReadConsistencyStrategyHelper
-                        .getReadConsistencyStrategyAccessor()
+                    readConsistencyStrategyAccessor()
                         .createFromServiceSerializedFormat(requestReadConsistencyStrategyHeaderValue);
 
                 if (requestLevelReadConsistencyStrategy == null) {

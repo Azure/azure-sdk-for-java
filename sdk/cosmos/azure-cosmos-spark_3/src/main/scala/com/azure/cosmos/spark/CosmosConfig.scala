@@ -7,8 +7,8 @@ import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy, spark}
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
-import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosContainerIdentity, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
+import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings, Utils}
+import com.azure.cosmos.models.{CosmosAdditionalHeaderName, CosmosChangeFeedRequestOptions, CosmosContainerIdentity, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
 import java.util
 import java.util.{Locale, ServiceLoader}
+import scala.collection.JavaConverters._ // scalastyle:ignore underscore.import
 import scala.collection.concurrent.TrieMap
 import scala.collection.immutable.{HashSet, List, Map}
 import scala.collection.mutable
@@ -52,6 +53,7 @@ private[spark] object CosmosConfigNames {
   val AzureEnvironment = "spark.cosmos.account.azureEnvironment"
   val AzureEnvironmentAAD = "spark.cosmos.account.azureEnvironment.aad"
   val AzureEnvironmentManagement = "spark.cosmos.account.azureEnvironment.management"
+  val AzureEnvironmentManagementScope = "spark.cosmos.account.azureEnvironment.management.scope"
   val AuthType = "spark.cosmos.auth.type"
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ResourceId = "spark.cosmos.auth.aad.resourceId"
@@ -91,6 +93,9 @@ private[spark] object CosmosConfigNames {
   val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
   val ReadRuntimeFilteringEnabled = "spark.cosmos.read.runtimeFiltering.enabled"
   val ReadManyFilteringEnabled = "spark.cosmos.read.readManyFiltering.enabled"
+  val ReadManyByPkNullHandling = "spark.cosmos.read.readManyByPk.nullHandling"
+  val ReadManyByPkMaxConcurrentBatchPrefetch = "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch"
+  val ReadManyByPkMaxBatchSize = "spark.cosmos.read.readManyByPk.maxBatchSize"
   val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
   val DiagnosticsMode = "spark.cosmos.diagnostics"
   val DiagnosticsSamplingMaxCount = "spark.cosmos.diagnostics.sampling.maxCount"
@@ -113,12 +118,15 @@ private[spark] object CosmosConfigNames {
   val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled" // keep this to avoid breaking changes
   val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint" // keep this to avoid breaking changes
   val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
+  val WriteBulkTransactional = "spark.cosmos.write.bulk.transactional"
   val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
   val WriteBulkMaxBatchSize = "spark.cosmos.write.bulk.maxBatchSize"
   val WriteBulkMinTargetBatchSize = "spark.cosmos.write.bulk.minTargetBatchSize"
   val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
   val WriteBulkPayloadSizeInBytes = "spark.cosmos.write.bulk.targetedPayloadSizeInBytes"
   val WriteBulkInitialBatchSize = "spark.cosmos.write.bulk.initialBatchSize"
+  val WriteBulkTransactionalMaxOperationsConcurrency = "spark.cosmos.write.bulk.transactional.maxOperationsConcurrency"
+  val WriteBulkTransactionalMaxBatchesConcurrency = "spark.cosmos.write.bulk.transactional.maxBatchesConcurrency"
   val WritePointMaxConcurrency = "spark.cosmos.write.point.maxConcurrency"
   val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
   val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
@@ -146,6 +154,11 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
   val ThroughputControlPriorityLevel = "spark.cosmos.throughputControl.priorityLevel"
+  val ThroughputControlThroughputBucket = "spark.cosmos.throughputControl.throughputBucket"
+  // Additional HTTP headers to attach to all Cosmos DB requests (e.g., workload-id for resource governance).
+  // Value is a JSON string like: {"x-ms-cosmos-workload-id": "15"}
+  // Flows through to CosmosClientBuilder.additionalHeaders().
+  val AdditionalHeaders = "spark.cosmos.additionalHeaders"
   val ThroughputControlGlobalControlDatabase = "spark.cosmos.throughputControl.globalControl.database"
   val ThroughputControlGlobalControlContainer = "spark.cosmos.throughputControl.globalControl.container"
   val ThroughputControlGlobalControlRenewalIntervalInMS =
@@ -188,6 +201,7 @@ private[spark] object CosmosConfigNames {
     AzureEnvironment,
     AzureEnvironmentAAD,
     AzureEnvironmentManagement,
+    AzureEnvironmentManagementScope,
     Database,
     Container,
     PreferredRegionsList,
@@ -220,6 +234,9 @@ private[spark] object CosmosConfigNames {
     ReadPartitioningFeedRangeFilter,
     ReadRuntimeFilteringEnabled,
     ReadManyFilteringEnabled,
+    ReadManyByPkNullHandling,
+    ReadManyByPkMaxConcurrentBatchPrefetch,
+    ReadManyByPkMaxBatchSize,
     ViewsRepositoryPath,
     DiagnosticsMode,
     DiagnosticsSamplingIntervalInSeconds,
@@ -242,10 +259,13 @@ private[spark] object CosmosConfigNames {
     ClientTelemetryEnabled,
     ClientTelemetryEndpoint,
     WriteBulkEnabled,
+    WriteBulkTransactional,
     WriteBulkMaxPendingOperations,
     WriteBulkMaxConcurrentPartitions,
     WriteBulkPayloadSizeInBytes,
     WriteBulkInitialBatchSize,
+    WriteBulkTransactionalMaxOperationsConcurrency,
+    WriteBulkTransactionalMaxBatchesConcurrency,
     WriteBulkMaxBatchSize,
     WriteBulkMinTargetBatchSize,
     WritePointMaxConcurrency,
@@ -272,6 +292,7 @@ private[spark] object CosmosConfigNames {
     ThroughputControlTargetThroughput,
     ThroughputControlTargetThroughputThreshold,
     ThroughputControlPriorityLevel,
+    ThroughputControlThroughputBucket,
     ThroughputControlGlobalControlDatabase,
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
@@ -287,7 +308,8 @@ private[spark] object CosmosConfigNames {
     WriteOnRetryCommitInterceptor,
     WriteFlushCloseIntervalInSeconds,
     WriteMaxNoProgressIntervalInSeconds,
-    WriteMaxRetryNoProgressIntervalInSeconds
+    WriteMaxRetryNoProgressIntervalInSeconds,
+    AdditionalHeaders
   )
 
   def validateConfigName(name: String): Unit = {
@@ -530,7 +552,10 @@ private case class CosmosAccountConfig(endpoint: String,
                                        resourceGroupName: Option[String],
                                        azureEnvironmentEndpoints: java.util.Map[String, String],
                                        clientBuilderInterceptors: Option[List[CosmosClientBuilder => CosmosClientBuilder]],
-                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                        clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
+                                        // Optional additional HTTP headers (e.g., workload-id) parsed from
+                                        // spark.cosmos.additionalHeaders JSON config, passed to CosmosClientBuilder.additionalHeaders()
+                                        additionalHeaders: Option[Map[String, String]]
                                       )
 
 private object CosmosAccountConfig extends BasicLoggingTrait {
@@ -680,6 +705,12 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     parseFromStringFunction = managementUri => managementUri,
     helpMessage = "The ARM management endpoint to be used when selecting AzureEnvironment `Custom`.")
 
+  private val AzureEnvironmentManagementScope = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentManagementScope,
+    defaultValue = None,
+    mandatory = false,
+    parseFromStringFunction = scope => scope,
+    helpMessage = "The audience/scope for the ARM management endpoint to be used when selecting AzureEnvironment `Custom`.")
+
   private val AzureEnvironmentAadUri = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentAAD,
     defaultValue = None,
     mandatory = false,
@@ -710,6 +741,40 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     mandatory = false,
     parseFromStringFunction = clientInterceptorFQDN => clientInterceptorFQDN,
     helpMessage = "CosmosAsyncClient interceptors (comma separated) - FQDNs of the service implementing the 'CosmosClientInterceptor' trait.")
+
+  // Config entry for custom HTTP headers (e.g., workload-id). Parses a JSON string like
+  // {"x-ms-cosmos-workload-id": "15"} into a Scala Map[String, String] using Jackson.
+  // These headers are converted to Map[CosmosAdditionalHeaderName, String] and passed to
+  // CosmosClientBuilder.additionalHeaders() in CosmosClientCache.
+  //
+  // Validation: After JSON parsing, every header name is validated against the known headers map
+  // to fail fast at config-parse time rather than at runtime during client creation.
+  // This prevents Spark jobs from starting, allocating cluster resources, and only failing
+  // later when CosmosClientCache tries to convert String keys to CosmosAdditionalHeaderName instances.
+  private val AdditionalHeadersConfig = CosmosConfigEntry[Map[String, String]](
+    key = CosmosConfigNames.AdditionalHeaders,
+    mandatory = false,
+    parseFromStringFunction = headersJson => {
+      try {
+        val typeRef = new com.fasterxml.jackson.core.`type`.TypeReference[java.util.Map[String, String]]() {}
+        val parsed = Utils.getSimpleObjectMapperWithAllowDuplicates.readValue(headersJson, typeRef).asScala.toMap
+
+        // Fail fast: validate every header name is a known CosmosAdditionalHeaderName at parse time.
+        // Without this, unknown headers like {"x-bad-header": "value"} would parse successfully
+        // and only blow up at runtime in CosmosClientCache when building the client.
+        for (key <- parsed.keys) {
+          CosmosClientCache.resolveHeaderName(key) // throws IllegalArgumentException for unknown headers
+        }
+
+        parsed
+      } catch {
+        case e: IllegalArgumentException => throw e
+        case e: Exception => throw new IllegalArgumentException(
+          s"Invalid JSON for '${CosmosConfigNames.AdditionalHeaders}': '$headersJson'. " +
+            "Expected format: {\"x-ms-cosmos-workload-id\": \"15\"}", e)
+      }
+    },
+    helpMessage = "Optional additional headers as JSON map. Example: {\"x-ms-cosmos-workload-id\": \"15\"}")
 
   private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
     val result = new java.util.ArrayList[CosmosContainerIdentity]
@@ -745,6 +810,8 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
     val clientBuilderInterceptors = CosmosConfigEntry.parse(cfg, ClientBuilderInterceptors)
     val clientInterceptors = CosmosConfigEntry.parse(cfg, ClientInterceptors)
+    // Parse optional additional HTTP headers from JSON config (e.g., {"x-ms-cosmos-workload-id": "15"})
+    val additionalHeaders = CosmosConfigEntry.parse(cfg, AdditionalHeadersConfig)
 
     val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
@@ -759,13 +826,21 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
         && "Custom".equalsIgnoreCase(kvp._2))) {
 
       val endpoints: util.Map[String, String] = new util.HashMap[String, String]()
-      val mgmtEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementUri)
-      if (mgmtEndpoint.isDefined) {
-        endpoints.put("resourceManagerEndpointUrl", mgmtEndpoint.get)
+      val resMgrEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementUri)
+      if (resMgrEndpoint.isDefined) {
+        endpoints.put("resourceManagerEndpointUrl", resMgrEndpoint.get)
       } else {
         throw new IllegalArgumentException(
           s"The configuration '${CosmosConfigNames.AzureEnvironmentManagement}' is required when "
             + "choosing AzureEnvironment 'Custom'.")
+      }
+
+      val mgmtScope = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementScope)
+      if (mgmtScope.isDefined) {
+        endpoints.put("managementEndpointUrl", mgmtScope.get)
+      } else {
+        logError(s"The configuration '${CosmosConfigNames.AzureEnvironmentManagementScope}' is missing. "
+            + "This config is required  for Spark catalog integration when choosing AzureEnvironment 'Custom'.")
       }
 
       val aadEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentAadUri)
@@ -856,7 +931,8 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
       resourceGroupNameOpt,
       azureEnvironmentOpt.get,
       if (clientBuilderInterceptorsList.nonEmpty) { Some(clientBuilderInterceptorsList.toList) } else { None },
-      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None })
+      if (clientInterceptorsList.nonEmpty) { Some(clientInterceptorsList.toList) } else { None },
+      additionalHeaders)
   }
 }
 
@@ -1018,7 +1094,10 @@ private case class CosmosReadConfig(readConsistencyStrategy: ReadConsistencyStra
                                     throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
                                     runtimeFilteringEnabled: Boolean,
                                     readManyFilteringConfig: CosmosReadManyFilteringConfig,
-                                    responseContinuationTokenLimitInKb: Option[Int] = None)
+                                    responseContinuationTokenLimitInKb: Option[Int] = None,
+                                    readManyByPkTreatNullAsNone: Boolean = false,
+                                    readManyByPkMaxConcurrentBatchPrefetch: Option[Int] = None,
+                                    readManyByPkMaxBatchSize: Option[Int] = None)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -1112,6 +1191,44 @@ private object CosmosReadConfig {
     helpMessage = " Indicates whether dynamic partition pruning filters will be pushed down when applicable."
   )
 
+  private val ReadManyByPkNullHandling = CosmosConfigEntry[String](
+    key = CosmosConfigNames.ReadManyByPkNullHandling,
+    mandatory = false,
+    defaultValue = Some("Null"),
+    parseFromStringFunction = value => value,
+    helpMessage = "Determines how null values in partition key columns are treated for " +
+      "readManyByPartitionKeys. 'Null' (default) maps null to a JSON null via addNullValue(), which " +
+      "is appropriate when the document field exists with an explicit null value. 'None' maps null " +
+      "to PartitionKey.NONE via addNoneValue(), which is only supported for single-path partition keys " +
+      "and should only be used when the partition key path does not exist at all in the document. " +
+      "Hierarchical partition keys reject this mode. These two semantics hash to DIFFERENT physical " +
+      "partitions - picking the wrong mode for your data will silently return zero rows."
+  )
+
+  private val ReadManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadManyByPkMaxConcurrentBatchPrefetch,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => Math.min(64, Math.max(1, value.toInt)),
+    helpMessage = "The maximum number of per-physical-partition batches whose first page is prefetched " +
+      "concurrently inside a single Spark task by the SDK's readManyByPartitionKeys execution. When " +
+      "not set, the SDK default (`min(cpuCnt, 8)`) is used. Max is `64`, because Spark already " +
+      "parallelises across tasks - increase this when individual tasks span many physical partitions " +
+      "and additional intra-task prefetch is desired."
+  )
+
+  private val ReadManyByPkMaxBatchSize = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadManyByPkMaxBatchSize,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = value => Math.max(1, value.toInt),
+    helpMessage = "The maximum number of partition key values per batch query sent to a single " +
+      "physical partition. When not set, the SDK default (currently `100`, overridable via the " +
+      "`COSMOS.READ_MANY_BY_PK_MAX_BATCH_SIZE` system property / environment variable) is used. " +
+      "Increasing this value reduces the number of batches (and round-trips) but produces larger " +
+      "IN-clause queries that consume more RUs per request."
+  )
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val readConsistencyStrategyOverride = CosmosConfigEntry.parse(cfg, ReadConsistencyStrategyOverride)
@@ -1134,6 +1251,10 @@ private object CosmosReadConfig {
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
     val runtimeFilteringEnabled = CosmosConfigEntry.parse(cfg, ReadRuntimeFilteringEnabled)
     val readManyFilteringConfig = CosmosReadManyFilteringConfig.parseCosmosReadManyFilterConfig(cfg)
+    val readManyByPkNullHandling = CosmosConfigEntry.parse(cfg, ReadManyByPkNullHandling)
+    val readManyByPkTreatNullAsNone = readManyByPkNullHandling.getOrElse("Null").equalsIgnoreCase("None")
+    val readManyByPkMaxConcurrentBatchPrefetch = CosmosConfigEntry.parse(cfg, ReadManyByPkMaxConcurrentBatchPrefetch)
+    val readManyByPkMaxBatchSize = CosmosConfigEntry.parse(cfg, ReadManyByPkMaxBatchSize)
 
     val effectiveReadConsistencyStrategy = if (readConsistencyStrategyOverride.getOrElse(ReadConsistencyStrategy.DEFAULT) != ReadConsistencyStrategy.DEFAULT) {
       readConsistencyStrategyOverride.get
@@ -1165,7 +1286,10 @@ private object CosmosReadConfig {
       throughputControlConfigOpt,
       runtimeFilteringEnabled.get,
       readManyFilteringConfig,
-      responseContinuationTokenLimitInKb)
+      responseContinuationTokenLimitInKb,
+      readManyByPkTreatNullAsNone,
+      readManyByPkMaxConcurrentBatchPrefetch,
+      readManyByPkMaxBatchSize)
   }
 }
 
@@ -1462,19 +1586,30 @@ private case class CosmosPatchConfigs(columnConfigsMap: TrieMap[String, CosmosPa
 private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxRetryCount: Int,
                                      bulkEnabled: Boolean,
+                                     bulkTransactional: Boolean,
+                                     bulkExecutionConfigs: Option[CosmosWriteBulkExecutionConfigsBase] = None,
                                      bulkMaxPendingOperations: Option[Int] = None,
                                      pointMaxConcurrency: Option[Int] = None,
-                                     maxConcurrentCosmosPartitions: Option[Int] = None,
                                      patchConfigs: Option[CosmosPatchConfigs] = None,
                                      throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
-                                     maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
-                                     initialMicroBatchSize: Option[Int] = None,
-                                     maxMicroBatchSize: Option[Int] = None,
-                                     minTargetMicroBatchSize: Option[Int] = None,
                                      flushCloseIntervalInSeconds: Int = 60,
                                      maxInitialNoProgressIntervalInSeconds: Int = 180,
                                      maxRetryNoProgressIntervalInSeconds: Int = 45 * 60,
                                      retryCommitInterceptor: Option[WriteOnRetryCommitInterceptor] = None)
+
+private trait CosmosWriteBulkExecutionConfigsBase {}
+
+private case class CosmosWriteBulkExecutionConfigs(
+                                                    maxConcurrentCosmosPartitions: Option[Int] = None,
+                                                    maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
+                                                    initialMicroBatchSize: Option[Int] = None,
+                                                    maxMicroBatchSize: Option[Int] = None,
+                                                    minTargetMicroBatchSize: Option[Int] = None) extends CosmosWriteBulkExecutionConfigsBase
+
+private case class CosmosWriteTransactionalBulkExecutionConfigs(
+                                                                 maxConcurrentCosmosPartitions: Option[Int] = None,
+                                                                 maxConcurrentOperations: Option[Int] = None,
+                                                                 maxConcurrentBatches: Option[Int] = None) extends CosmosWriteBulkExecutionConfigsBase
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
@@ -1485,6 +1620,13 @@ private object CosmosWriteConfig {
     mandatory = false,
     parseFromStringFunction = bulkEnabledAsString => bulkEnabledAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk enabled")
+
+  private val bulkTransactional = CosmosConfigEntry[Boolean](key = CosmosConfigNames.WriteBulkTransactional,
+    mandatory = false,
+    defaultValue = Option.apply(false),
+    parseFromStringFunction = bulkTransactionalAsString => bulkTransactionalAsString.toBoolean,
+    helpMessage = "Cosmos DB Item Write bulk transactional batch mode enabled - requires bulk write to be enabled. " +
+      "Requires Spark 3.5 or later.")
 
   private val microBatchPayloadSizeInBytes = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkPayloadSizeInBytes,
     defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES),
@@ -1513,7 +1655,7 @@ private object CosmosWriteConfig {
       "when the number of documents enqueued exceeds this size - or the target payload size is met. The micro batch " +
       "size is getting automatically tuned based on the throttling rate. By default the " +
       "max micro batch size is 100. Reduce this when you want to avoid that requests consume " +
-      "too many RUs and you cannot enable thoughput control. NOTE: using throuhgput control is preferred and will." +
+      "too many RUs and you cannot enable thoughput control. NOTE: using throughput control is preferred and will." +
       "result in better throughput while still limiting the RU/s used.")
 
   private val minTargetMicroBatchSize = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkMinTargetBatchSize,
@@ -1542,6 +1684,22 @@ private object CosmosWriteConfig {
       s" data. So this config can be used to make bulk processing more efficient when input data in Spark has been" +
       s" repartitioned to balance to how many Cosmos partitions each Spark partition needs to write. This is mainly" +
       s" useful for very large containers (with hundreds of physical partitions).")
+
+  private val bulkTransactionalMaxOpsConcurrency = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.WriteBulkTransactionalMaxOperationsConcurrency,
+    defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY),
+    mandatory = false,
+    parseFromStringFunction = maxOpsConcurrency => maxOpsConcurrency.toInt,
+    helpMessage = "Max number of in-flight operations per Cosmos partition for transactional bulk mode. " +
+      "Higher values increase parallelism (and RU usage) but can cause throttling; default ~100.")
+
+  private val bulkTransactionalMaxBatchesConcurrency = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.WriteBulkTransactionalMaxBatchesConcurrency,
+    defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_CONCURRENCY),
+    mandatory = false,
+    parseFromStringFunction = maxBatchesConcurrency => maxBatchesConcurrency.toInt,
+    helpMessage = "Max concurrent transactional batches per Cosmos partition (1..5). Controls batch-level parallelism; default 5." +
+        "Each batch may contain multiple operations; tune together with 'spark.cosmos.write.bulk.transactional.maxOperationsConcurrency' to balance throughput and throttling.")
 
   private val pointWriteConcurrency = CosmosConfigEntry[Int](key = CosmosConfigNames.WritePointMaxConcurrency,
     mandatory = false,
@@ -1658,9 +1816,9 @@ private object CosmosWriteConfig {
              // ([.]path[(](.*)[)])*: mapping path match, it is optional
              // [.]op[(](.*)[)]: patch operation mapping
              // (.rawJson$|$): optional .rawJson suffix to indicate that the col(column) contains raw json
-             val operationConfigaRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)](.rawJson$|$)""".r
+             val operationConfigRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)](.rawJson$|$)""".r
              columnConfigString match {
-               case operationConfigaRegx(columnName, _, path, operationTypeString, rawJsonSuffix) =>
+               case operationConfigRegx(columnName, _, path, operationTypeString, rawJsonSuffix) =>
                  assertNotNullOrEmpty(columnName, "columnName")
                  assertNotNullOrEmpty(operationTypeString, "operationTypeString")
 
@@ -1758,12 +1916,10 @@ private object CosmosWriteConfig {
     val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
+    val bulkTransactionalOpt = CosmosConfigEntry.parse(cfg, bulkTransactional)
     var patchConfigsOpt = Option.empty[CosmosPatchConfigs]
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
-    val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
-    val initialBatchSizeOpt = CosmosConfigEntry.parse(cfg, initialMicroBatchSize)
-    val maxBatchSizeOpt = CosmosConfigEntry.parse(cfg, maxMicroBatchSize)
-    val minTargetBatchSizeOpt = CosmosConfigEntry.parse(cfg, minTargetMicroBatchSize)
+
     val writeRetryCommitInterceptor = CosmosConfigEntry
       .parse(cfg, writeOnRetryCommitInterceptor).flatten
 
@@ -1784,19 +1940,51 @@ private object CosmosWriteConfig {
       case _ =>
     }
 
+    var bulkExecutionConfigsOpt: Option[CosmosWriteBulkExecutionConfigsBase] = None
+    if (bulkEnabledOpt.isDefined && bulkEnabledOpt.get) {
+
+      if (bulkTransactionalOpt.isDefined && bulkTransactionalOpt.get) {
+        // Validate write strategy for transactional batches
+        assert(itemWriteStrategyOpt.get == ItemWriteStrategy.ItemOverwrite,
+          s"Transactional batches only support ItemOverwrite (upsert) write strategy. Requested: ${itemWriteStrategyOpt.get}")
+
+        val maxConcurrentCosmosPartitionsOpt = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions)
+        val maxBulkTransactionalOpsConcurrencyOpt = CosmosConfigEntry.parse(cfg, bulkTransactionalMaxOpsConcurrency)
+        val maxBulkTransactionalBatchesConcurrencyOpt = CosmosConfigEntry.parse(cfg, bulkTransactionalMaxBatchesConcurrency)
+
+        bulkExecutionConfigsOpt = Some(CosmosWriteTransactionalBulkExecutionConfigs(
+          maxConcurrentCosmosPartitionsOpt,
+          maxBulkTransactionalOpsConcurrencyOpt,
+          maxBulkTransactionalBatchesConcurrencyOpt
+        ))
+
+      } else {
+        // non-transactional batch
+        val maxConcurrentCosmosPartitionsOpt = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions)
+        val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
+        val initialBatchSizeOpt = CosmosConfigEntry.parse(cfg, initialMicroBatchSize)
+        val maxBatchSizeOpt = CosmosConfigEntry.parse(cfg, maxMicroBatchSize)
+        val minTargetBatchSizeOpt = CosmosConfigEntry.parse(cfg, minTargetMicroBatchSize)
+
+        bulkExecutionConfigsOpt = Some(CosmosWriteBulkExecutionConfigs(
+          maxConcurrentCosmosPartitionsOpt,
+          microBatchPayloadSizeInBytesOpt,
+          initialBatchSizeOpt,
+          maxBatchSizeOpt,
+          minTargetBatchSizeOpt))
+      }
+    }
+
     CosmosWriteConfig(
       itemWriteStrategyOpt.get,
       maxRetryCountOpt.get,
       bulkEnabled = bulkEnabledOpt.get,
+      bulkTransactional = bulkTransactionalOpt.get,
+      bulkExecutionConfigs = bulkExecutionConfigsOpt,
       bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
       pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency),
-      maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions),
       patchConfigs = patchConfigsOpt,
       throughputControlConfig = throughputControlConfigOpt,
-      maxMicroBatchPayloadSizeInBytes = microBatchPayloadSizeInBytesOpt,
-      initialMicroBatchSize = initialBatchSizeOpt,
-      maxMicroBatchSize = maxBatchSizeOpt,
-      minTargetMicroBatchSize = minTargetBatchSizeOpt,
       flushCloseIntervalInSeconds = CosmosConfigEntry.parse(cfg, flushCloseIntervalInSeconds).get,
       maxInitialNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxInitialNoProgressIntervalInSeconds).get,
       maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxRetryNoProgressIntervalInSeconds).get,
@@ -2309,16 +2497,26 @@ private object CosmosChangeFeedConfig {
   }
 }
 
-private case class CosmosThroughputControlConfig(cosmosAccountConfig: CosmosAccountConfig,
-                                                 groupName: String,
-                                                 targetThroughput: Option[Int],
-                                                 targetThroughputThreshold: Option[Double],
-                                                 priorityLevel: Option[PriorityLevel],
-                                                 globalControlDatabase: Option[String],
-                                                 globalControlContainer: Option[String],
-                                                 globalControlRenewInterval: Option[Duration],
-                                                 globalControlExpireInterval: Option[Duration],
-                                                 globalControlUseDedicatedContainer: Boolean)
+private trait CosmosThroughputControlConfig {
+  def groupName: String
+}
+
+private case class CosmosSDKThroughputControlConfig(
+                                                  override val groupName: String,
+                                                  cosmosAccountConfig: CosmosAccountConfig,
+                                                  targetThroughput: Option[Int],
+                                                  targetThroughputThreshold: Option[Double],
+                                                  priorityLevel: Option[PriorityLevel],
+                                                  globalControlDatabase: Option[String],
+                                                  globalControlContainer: Option[String],
+                                                  globalControlRenewInterval: Option[Duration],
+                                                  globalControlExpireInterval: Option[Duration],
+                                                  globalControlUseDedicatedContainer: Boolean) extends CosmosThroughputControlConfig
+
+private case class CosmosServerThroughputControlConfig(
+                                                  override val groupName: String,
+                                                  throughputBucket: Int,
+                                                  priorityLevel: Option[PriorityLevel]) extends CosmosThroughputControlConfig
 
 private object CosmosThroughputControlConfig {
     private val throughputControlEnabledSupplier = CosmosConfigEntry[Boolean](
@@ -2370,6 +2568,12 @@ private object CosmosThroughputControlConfig {
         parseFromStringFunction = priorityLevel => CosmosConfigEntry.parseEnumeration(priorityLevel, PriorityLevels),
         helpMessage = "Throughput control group priority level. The value can be High or Low. ")
 
+    private val throughputBucketSupplier = CosmosConfigEntry[Int](
+      key = CosmosConfigNames.ThroughputControlThroughputBucket,
+      mandatory = false,
+      parseFromStringFunction = throughputBucket => throughputBucket.toInt,
+      helpMessage = "Throughput bucket value. Please refer here for full context: https://learn.microsoft.com/azure/cosmos-db/throughput-buckets?tabs=dotnet")
+
     private val globalControlDatabaseSupplier = CosmosConfigEntry[String](
         key = CosmosConfigNames.ThroughputControlGlobalControlDatabase,
         mandatory = false,
@@ -2410,67 +2614,112 @@ private object CosmosThroughputControlConfig {
         val throughputControlEnabled = CosmosConfigEntry.parse(cfg, throughputControlEnabledSupplier).get
 
         if (throughputControlEnabled) {
-            // we will allow the customer to provide a different database account for throughput control
-            val throughputControlCosmosAccountConfig =
-              CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier) match {
-                case Some(_) => parseThroughputControlAccountConfig(cfg)
-                case None => CosmosAccountConfig.parseCosmosAccountConfig(cfg)
-              }
-
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
-            val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
-            val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
-            val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
-            val globalControlDatabase = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
-            val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
-            val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
-            val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
-            val globalControlUseDedicatedContainer = CosmosConfigEntry.parse(cfg, globalControlUseDedicatedContainerSupplier)
+            val throughputBucket = CosmosConfigEntry.parse(cfg, throughputBucketSupplier)
 
-            if (groupName.isEmpty) {
-              throw new IllegalArgumentException(
-                s"Configuration option '${CosmosConfigNames.ThroughputControlName}' must not be empty.")
-            }
             assert(groupName.isDefined, s"Parameter '${CosmosConfigNames.ThroughputControlName}' is missing.")
 
-            if (globalControlUseDedicatedContainer.isEmpty) {
-              throw new IllegalArgumentException(
-                s"Configuration option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' must not be empty.")
-            }
-            assert(
-              globalControlUseDedicatedContainer.isDefined,
-              s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is missing.")
+            if (throughputBucket.isDefined && throughputBucket.get > 0) {
+                Some(parseServerThroughputControlConfig(groupName.get, throughputBucket.get, cfg))
+            } else {
 
-            if (globalControlUseDedicatedContainer.get) {
-              if (globalControlDatabase.isEmpty || globalControlContainer.isEmpty) {
+              // If a non-positive throughputBucket was provided treat it as invalid
+              if (throughputBucket.isDefined && throughputBucket.get <= 0) {
                 throw new IllegalArgumentException(
-                  s"Configuration options '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' and " +
-                    s"'${CosmosConfigNames.ThroughputControlGlobalControlContainer}' must not be empty if " +
-                    s" option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is true.")
+                  s"Mixed throughput control configuration detected: " +
+                    s"Invalid '${CosmosConfigNames.ThroughputControlThroughputBucket}' value '${throughputBucket.get}'. It must be greater than 0 or omitted.")
               }
-              assert(
-                globalControlDatabase.isDefined,
-                s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' is missing.")
-              assert(
-                globalControlContainer.isDefined,
-                s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlContainer}' is missing.")
-            }
 
-            Some(CosmosThroughputControlConfig(
-                throughputControlCosmosAccountConfig,
-                groupName.get,
-                targetThroughput,
-                targetThroughputThreshold,
-                priorityLevel,
-                globalControlDatabase,
-                globalControlContainer,
-                globalControlItemRenewInterval,
-                globalControlItemExpireInterval,
-                globalControlUseDedicatedContainer.get))
+                // if throughput bucket is defined, then use server side throughput bucket control
+                // else validate SDK global throughput control config
+                Some(parseSDKThroughputControlConfig(groupName.get, cfg))
+            }
         } else {
             None
         }
     }
+
+  private[spark] def parseServerThroughputControlConfig(
+                                                         groupName: String,
+                                                         throughputBucket: Int,
+                                                         cfg: Map[String, String]): CosmosServerThroughputControlConfig = {
+
+    // Detect presence of SDK/global throughput control options
+    val targetThroughputOpt = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
+    val targetThroughputThresholdOpt = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
+    val throughputControlAccountEndpointOpt = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
+    val throughputControlAccountKeyOpt = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
+    val globalControlDatabaseOpt = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
+    val globalControlContainerOpt = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
+
+    val sdkThroughputControlConfigsPresent = targetThroughputOpt.isDefined ||
+      targetThroughputThresholdOpt.isDefined ||
+      throughputControlAccountEndpointOpt.isDefined ||
+      throughputControlAccountKeyOpt.isDefined ||
+      globalControlDatabaseOpt.isDefined ||
+      globalControlContainerOpt.isDefined
+
+    if (sdkThroughputControlConfigsPresent) {
+      throw new IllegalArgumentException(
+        "Mixed throughput control configuration detected: 'throughputBucket' cannot be used together with " +
+          "['targetThroughput', 'targetThroughputThreshold', 'throughputControl.accountEndpoint', 'throughputControl.accountKey', " +
+          "'throughputControl.globalControl.database', 'throughputControl.globalControl.container']")
+    }
+
+    val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
+    CosmosServerThroughputControlConfig(groupName, throughputBucket, priorityLevel)
+  }
+
+  private[spark] def parseSDKThroughputControlConfig(
+                                                         groupName: String,
+                                                         cfg: Map[String, String]): CosmosSDKThroughputControlConfig = {
+    // we will allow the customer to provide a different database account for throughput control
+    val throughputControlCosmosAccountConfig =
+      CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier) match {
+        case Some(_) => parseThroughputControlAccountConfig(cfg)
+        case None => CosmosAccountConfig.parseCosmosAccountConfig(cfg)
+      }
+
+    val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
+    val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
+    val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
+    val globalControlDatabase = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
+    val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
+    val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
+    val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
+    val globalControlUseDedicatedContainer = CosmosConfigEntry.parse(cfg, globalControlUseDedicatedContainerSupplier)
+
+    assert(
+      globalControlUseDedicatedContainer.isDefined,
+      s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is missing.")
+
+    if (globalControlUseDedicatedContainer.get) {
+      if (globalControlDatabase.isEmpty || globalControlContainer.isEmpty) {
+        throw new IllegalArgumentException(
+          s"Configuration options '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' and " +
+            s"'${CosmosConfigNames.ThroughputControlGlobalControlContainer}' must not be empty if " +
+            s" option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is true.")
+      }
+      assert(
+        globalControlDatabase.isDefined,
+        s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' is missing.")
+      assert(
+        globalControlContainer.isDefined,
+        s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlContainer}' is missing.")
+    }
+
+    CosmosSDKThroughputControlConfig(
+      groupName,
+      throughputControlCosmosAccountConfig,
+      targetThroughput,
+      targetThroughputThreshold,
+      priorityLevel,
+      globalControlDatabase,
+      globalControlContainer,
+      globalControlItemRenewInterval,
+      globalControlItemExpireInterval,
+      globalControlUseDedicatedContainer.get)
+  }
 
   private[spark] def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)

@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-storageactions</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -80,7 +80,7 @@ storageTask = storageActionsManager.storageTasks()
     .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
     .withProperties(new StorageTaskProperties()
         .withAction(new StorageTaskAction()
-            .withIfProperty(new IfCondition().withCondition("[[[equals(AccessTier, 'Cool')]]")
+            .withIfProperty(new IfCondition().withCondition("[[equals(AccessTier, 'Cool')]]")
                 .withOperations(Arrays
                     .asList(new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
                         .withParameters(operationMap)

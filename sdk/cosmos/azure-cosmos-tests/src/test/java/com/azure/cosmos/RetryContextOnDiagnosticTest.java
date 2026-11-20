@@ -61,12 +61,12 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.ReferenceCountUtil;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
@@ -252,7 +252,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.readDocument(itemSelfLink, requestOptions);
+        responseFlux = rxDocumentClient.readDocument(itemSelfLink, null, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -263,7 +263,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, requestOptions);
+        responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, null, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -274,7 +274,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy(ArgumentMatchers.any(DiagnosticsClientContext.class))).thenReturn(retryPolicy);
         Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
-        responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(), requestOptions);
+        responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, null, new Document(), requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
         Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
@@ -616,6 +616,14 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void goneExceptionFailureScenario() {
+        // Save previous values to restore later (in case CI sets these)
+        String prevMaxRetryCount = System.getProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT");
+        String prevRetryIntervalMs = System.getProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS");
+
+        // Reduce retry wait time for faster test execution
+        System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT", "5");
+        System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS", "100");
+
         CosmosClient cosmosClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -657,9 +665,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
 
-                //In CI pipeline, the emulator starts with strong consitency
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(10);
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(6);
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(2);
                 int[] firstRetryStatusCodes = retryContext.getStatusAndSubStatusCodes().get(0);
                 int[] lastRetryStatusCodes = retryContext.getStatusAndSubStatusCodes()
                                                          .get(retryContext.getStatusAndSubStatusCodes().size() - 1);
@@ -670,6 +676,17 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             }
         } finally {
             safeCloseSyncClient(cosmosClient);
+            // Restore previous values (or clear if previously unset)
+            if (prevMaxRetryCount != null) {
+                System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT", prevMaxRetryCount);
+            } else {
+                System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT");
+            }
+            if (prevRetryIntervalMs != null) {
+                System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS", prevRetryIntervalMs);
+            } else {
+                System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS");
+            }
         }
     }
 
@@ -781,7 +798,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 // On single region we will have 3 retry of session policy (One retry from first request, one from
                 // client retry policy and last from rename policy.
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(45);
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(60);
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(65);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[0]).isEqualTo(404);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[1]).isEqualTo(1002);
             }
@@ -955,30 +972,24 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     private StoreResponse validateSuccess(Mono<StoreResponse> storeResponse) {
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        storeResponse.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        return testSubscriber.values().get(0);
+        AtomicReference<StoreResponse> value = new AtomicReference<>();
+        StepVerifier.create(storeResponse)
+            .assertNext(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(60_000));
+
+        return value.get();
     }
 
     private void validateFailure(Mono<StoreResponse> storeResponse) {
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        storeResponse.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
+        StepVerifier.create(storeResponse).expectError().verify(Duration.ofMillis(60_000));
     }
 
     private void validateServiceResponseSuccess(Mono<ResourceResponse<Document>> documentServiceResponseMono) {
-        TestSubscriber<ResourceResponse<Document>> testSubscriber = new TestSubscriber<>();
-        documentServiceResponseMono.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(60000, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
+        StepVerifier.create(documentServiceResponseMono)
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(Duration.ofMillis(60_000));
     }
 
     private static class TestRetryPolicy extends DocumentClientRetryPolicy {

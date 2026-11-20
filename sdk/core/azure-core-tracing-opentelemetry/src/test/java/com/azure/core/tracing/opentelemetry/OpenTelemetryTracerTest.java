@@ -49,14 +49,13 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
@@ -86,6 +85,10 @@ public class OpenTelemetryTracerTest {
     private static final String ENTITY_PATH_VALUE = "test";
     private static final String AZ_NAMESPACE_VALUE = "Microsoft.Eventhub";
     private static final Long MESSAGE_ENQUEUED_VALUE = Instant.ofEpochSecond(561639205).getEpochSecond();
+    private static final AttributeKey<String> AZ_NAMESPACE = AttributeKey.stringKey("az.namespace");
+    private static final AttributeKey<String> AZURE_RESOURCE_PROVIDER_NAMESPACE
+        = AttributeKey.stringKey("azure.resource_provider.namespace");
+    private static final AttributeKey<Long> MESSAGE_ENQUEUED_TIME = AttributeKey.longKey("x-opt-enqueued-time");
     private static final int TRACEPARENT_DELIMITER_SIZE = 1;
     private static final int TRACE_ID_HEX_SIZE = TraceId.getLength();
     private static final int SPAN_ID_HEX_SIZE = SpanId.getLength();
@@ -95,25 +98,16 @@ public class OpenTelemetryTracerTest {
     private OpenTelemetryTracer openTelemetryTracer;
     private Tracer tracer;
     private InMemorySpanExporter testExporter;
-    private SpanProcessor spanProcessor;
     private Context tracingContext;
     private Span parentSpan;
-    private SdkTracerProvider tracerProvider;
     private OpenTelemetry openTelemetry;
-
-    private final HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
-        {
-            put("messaging.destination.name", ENTITY_PATH_VALUE);
-            put("server.address", HOSTNAME_VALUE);
-            put("az.namespace", AZ_NAMESPACE_VALUE);
-        }
-    };
+    private HashMap<String, Object> expectedAttributeMap;
 
     @BeforeEach
     public void setUp() {
         testExporter = InMemorySpanExporter.create();
-        spanProcessor = SimpleSpanProcessor.create(testExporter);
-        tracerProvider = SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build();
+        SpanProcessor spanProcessor = SimpleSpanProcessor.create(testExporter);
+        SdkTracerProvider tracerProvider = SdkTracerProvider.builder().addSpanProcessor(spanProcessor).build();
 
         openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
 
@@ -127,6 +121,12 @@ public class OpenTelemetryTracerTest {
         openTelemetryTracer = new OpenTelemetryTracer(
             new LibraryTelemetryOptions("test").setResourceProviderNamespace(AZ_NAMESPACE_VALUE),
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
+
+        expectedAttributeMap = new LinkedHashMap<>();
+        expectedAttributeMap.put("messaging.destination.name", ENTITY_PATH_VALUE);
+        expectedAttributeMap.put("server.address", HOSTNAME_VALUE);
+        expectedAttributeMap.put(AZ_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE);
+        expectedAttributeMap.put(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE);
     }
 
     @AfterEach
@@ -154,7 +154,8 @@ public class OpenTelemetryTracerTest {
         final SpanData spanData = assertSpanWithExplicitParent(span, parentSpanId).toSpanData();
         assertEquals(SpanKind.INTERNAL, spanData.getKind());
         final Attributes attributeMap = spanData.getAttributes();
-        assertEquals(attributeMap.get(AttributeKey.stringKey("az.namespace")), AZ_NAMESPACE_VALUE);
+        assertEquals(AZ_NAMESPACE_VALUE, attributeMap.get(AZ_NAMESPACE));
+        assertEquals(AZ_NAMESPACE_VALUE, attributeMap.get(AZURE_RESOURCE_PROVIDER_NAMESPACE));
     }
 
     @Test
@@ -179,7 +180,8 @@ public class OpenTelemetryTracerTest {
         // Add additional metadata to spans for SEND
         final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
             .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
-            .addData("az.namespace", "ignored");
+            .addData(AZ_NAMESPACE.getKey(), "ignored")
+            .addData(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), "ignored");
 
         // Start user parent span.
         final Context withBuilder = openTelemetryTracer.getSharedSpanBuilder(METHOD_NAME, traceContext);
@@ -228,12 +230,14 @@ public class OpenTelemetryTracerTest {
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
 
         // Act
-        final Context span = noAzTracer.start(METHOD_NAME, new Context("az.namespace", "foo"));
+        final Context span = noAzTracer.start(METHOD_NAME,
+            new Context(AZ_NAMESPACE.getKey(), "foo").addData(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), "foo"));
 
         // Assert
         SpanData spanData = getSpan(span).toSpanData();
-        assertEquals(1, spanData.getAttributes().size());
-        assertEquals("foo", spanData.getAttributes().get(AttributeKey.stringKey("az.namespace")));
+        assertEquals(2, spanData.getAttributes().size());
+        assertEquals("foo", spanData.getAttributes().get(AZ_NAMESPACE));
+        assertEquals("foo", spanData.getAttributes().get(AZURE_RESOURCE_PROVIDER_NAMESPACE));
     }
 
     @Test
@@ -324,7 +328,8 @@ public class OpenTelemetryTracerTest {
         final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
             .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
             .addData(SPAN_BUILDER_KEY, spanBuilder)
-            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+            .addData(AZ_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE)
+            .addData(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE);
 
         // Act
         final Context updatedContext
@@ -348,7 +353,8 @@ public class OpenTelemetryTracerTest {
         final String parentSpanId = parentSpan.getSpanContext().getSpanId();
         final Context contextWithAttributes = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
             .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
-            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+            .addData(AZ_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE)
+            .addData(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE);
 
         // Act
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, contextWithAttributes,
@@ -375,8 +381,9 @@ public class OpenTelemetryTracerTest {
         // Add additional metadata to spans for PROCESS
         final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
             .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
-            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
-            .addData(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE); // only in PROCESS
+            .addData(AZ_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE)
+            .addData(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE)
+            .addData(MESSAGE_ENQUEUED_TIME.getKey(), MESSAGE_ENQUEUED_VALUE); // only in PROCESS
 
         // Act
         final Context updatedContext
@@ -395,8 +402,9 @@ public class OpenTelemetryTracerTest {
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
 
         // additional only in process spans.
-        expectedAttributeMap.put(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE);
-        expectedAttributeMap.put(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+        expectedAttributeMap.put(MESSAGE_ENQUEUED_TIME.getKey(), MESSAGE_ENQUEUED_VALUE);
+        expectedAttributeMap.put(AZ_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE);
+        expectedAttributeMap.put(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE);
 
         verifySpanAttributes(expectedAttributeMap, attributeMap);
     }
@@ -440,7 +448,7 @@ public class OpenTelemetryTracerTest {
 
         openTelemetryTracer.addLink(spanBuilder.addData(SPAN_CONTEXT_KEY, link1.getSpanContext()));
         openTelemetryTracer.addLink(spanBuilder.addData(SPAN_CONTEXT_KEY, link2.getSpanContext())
-            .addData(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE));
+            .addData(MESSAGE_ENQUEUED_TIME.getKey(), MESSAGE_ENQUEUED_VALUE));
 
         // Act
         final Context spanCtx
@@ -459,7 +467,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(link2.getSpanContext().getSpanId(), links.get(1).getSpanContext().getSpanId());
         Attributes linkAttributes = links.get(1).getAttributes();
         assertEquals(1, linkAttributes.size());
-        assertEquals(MESSAGE_ENQUEUED_VALUE, linkAttributes.get(AttributeKey.longKey(MESSAGE_ENQUEUED_TIME)));
+        assertEquals(MESSAGE_ENQUEUED_VALUE, linkAttributes.get(MESSAGE_ENQUEUED_TIME));
     }
 
     @Test
@@ -481,7 +489,7 @@ public class OpenTelemetryTracerTest {
         // Assert
         ReadableSpan span = getSpan(spanCtx);
         assertEquals(1, span.toSpanData().getLinks().size());
-        assertEquals(span.getLatencyNanos() / 1000_000_000d, 1000d, 10);
+        assertEquals(1000d, span.getLatencyNanos() / 1000_000_000d, 10);
     }
 
     @Test
@@ -535,7 +543,7 @@ public class OpenTelemetryTracerTest {
 
         // Assert
         // verify no links were added
-        assertEquals(span1.toSpanData().getLinks().size(), 0);
+        assertEquals(0, span1.toSpanData().getLinks().size());
     }
 
     @Test
@@ -550,7 +558,7 @@ public class OpenTelemetryTracerTest {
 
         // Assert
         // verify no links were added
-        assertEquals(span1.toSpanData().getLinks().size(), 0);
+        assertEquals(0, span1.toSpanData().getLinks().size());
     }
 
     @Test
@@ -625,7 +633,7 @@ public class OpenTelemetryTracerTest {
 
         // Assert
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        assertEquals(attributeMap.get(AttributeKey.stringKey(firstKey)), firstKeyValue);
+        assertEquals(firstKeyValue, attributeMap.get(AttributeKey.stringKey(firstKey)));
     }
 
     @Test
@@ -642,8 +650,9 @@ public class OpenTelemetryTracerTest {
         // Assert
         final Attributes attributeMap = readableSpan.toSpanData().getAttributes();
         assertNull(attributeMap.get(AttributeKey.stringKey(firstKey)));
-        assertEquals(attributeMap.size(), 1);
-        assertEquals(AZ_NAMESPACE_VALUE, attributeMap.get(AttributeKey.stringKey("az.namespace")));
+        assertEquals(2, attributeMap.size());
+        assertEquals(AZ_NAMESPACE_VALUE, attributeMap.get(AZ_NAMESPACE));
+        assertEquals(AZ_NAMESPACE_VALUE, attributeMap.get(AZURE_RESOURCE_PROVIDER_NAMESPACE));
     }
 
     @Test
@@ -707,22 +716,19 @@ public class OpenTelemetryTracerTest {
     public void addEventWithAttributes() {
         // Arrange
         final String eventName = "event-0";
-        Map<String, Object> input = new HashMap<String, Object>() {
-            {
-                put("attr1", "value1");
-                put("attr2", true);
-                put("attr3", 1L);
-                put("attr4", 2);
-                put("attr5", (short) 3);
-                put("attr6", (byte) 4);
-                put("attr7", 1.0);
-                put("attr8", 2F);
-                put("attr9", new double[] { 1.0, 2.0, 3.0 });
-                put("attr10", new long[] { 1L, 2L, 3L });
-                put("attr11", new boolean[] { true });
-                put("attr12", null);
-            }
-        };
+        Map<String, Object> input = new HashMap<>();
+        input.put("attr1", "value1");
+        input.put("attr2", true);
+        input.put("attr3", 1L);
+        input.put("attr4", 2);
+        input.put("attr5", (short) 3);
+        input.put("attr6", (byte) 4);
+        input.put("attr7", 1.0);
+        input.put("attr8", 2F);
+        input.put("attr9", new double[] { 1.0, 2.0, 3.0 });
+        input.put("attr10", new long[] { 1L, 2L, 3L });
+        input.put("attr11", new boolean[] { true });
+        input.put("attr12", null);
 
         // Act
         openTelemetryTracer.addEvent(eventName, input, null, tracingContext);
@@ -820,8 +826,9 @@ public class OpenTelemetryTracerTest {
         assertEquals(SpanKind.INTERNAL, span.getKind());
 
         assertEquals("0000000000000000", spanData.getParentSpanId());
-        assertEquals(1, spanData.getAttributes().size());
-        assertEquals(AZ_NAMESPACE_VALUE, spanData.getAttributes().get(AttributeKey.stringKey("az.namespace")));
+        assertEquals(2, spanData.getAttributes().size());
+        assertEquals(AZ_NAMESPACE_VALUE, spanData.getAttributes().get(AZ_NAMESPACE));
+        assertEquals(AZ_NAMESPACE_VALUE, spanData.getAttributes().get(AZURE_RESOURCE_PROVIDER_NAMESPACE));
     }
 
     @Test
@@ -894,7 +901,8 @@ public class OpenTelemetryTracerTest {
             .put("I", 1)
             .put("D", 0.1d)
             .put("B", true)
-            .put("az.namespace", AZ_NAMESPACE_VALUE)
+            .put(AZ_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE)
+            .put(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE)
             .build();
 
         final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
@@ -927,7 +935,8 @@ public class OpenTelemetryTracerTest {
             .put("I", 1)
             .put("D", 0.1d)
             .put("B", true)
-            .put("az.namespace", AZ_NAMESPACE_VALUE)
+            .put(AZ_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE)
+            .put(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE)
             .build();
 
         Context spanCtx = openTelemetryTracer.start(METHOD_NAME, tracingContext);
@@ -1121,13 +1130,11 @@ public class OpenTelemetryTracerTest {
         SpanData outerSpan = testExporter.getFinishedSpanItems().get(0);
         assertEquals("outer", outerSpan.getName());
 
-        Map<String, Object> outerAttributesExpected = new HashMap<String, Object>() {
-            {
-                put("outer1", "foo");
-                put("outer2", "bar");
-                put("az.namespace", AZ_NAMESPACE_VALUE);
-            }
-        };
+        Map<String, Object> outerAttributesExpected = new HashMap<>();
+        outerAttributesExpected.put("outer1", "foo");
+        outerAttributesExpected.put("outer2", "bar");
+        outerAttributesExpected.put(AZ_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE);
+        outerAttributesExpected.put(AZURE_RESOURCE_PROVIDER_NAMESPACE.getKey(), AZ_NAMESPACE_VALUE);
 
         verifySpanAttributes(outerAttributesExpected, outerSpan.getAttributes());
     }
@@ -1336,7 +1343,7 @@ public class OpenTelemetryTracerTest {
         return span;
     }
 
-    private static ReadableSpan assertSpanWithRemoteParent(Context context, String parentSpanId) {
+    private static void assertSpanWithRemoteParent(Context context, String parentSpanId) {
         final ReadableSpan span = getSpan(context);
 
         assertEquals(METHOD_NAME, span.getName());
@@ -1345,7 +1352,6 @@ public class OpenTelemetryTracerTest {
         // verify span started with remote parent
         assertTrue(span.toSpanData().getParentSpanContext().isRemote());
         assertEquals(parentSpanId, span.toSpanData().getParentSpanId());
-        return span;
     }
 
     private static void verifySpanAttributes(Map<String, Object> expectedMap, Attributes actualAttributeMap) {

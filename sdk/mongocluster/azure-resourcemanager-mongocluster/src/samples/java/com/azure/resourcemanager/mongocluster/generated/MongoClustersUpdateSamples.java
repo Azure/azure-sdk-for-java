@@ -20,6 +20,7 @@ import com.azure.resourcemanager.mongocluster.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mongocluster.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdateProperties;
+import com.azure.resourcemanager.mongocluster.models.NetworkBypassMode;
 import com.azure.resourcemanager.mongocluster.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mongocluster.models.ShardingProperties;
 import com.azure.resourcemanager.mongocluster.models.StorageProperties;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchEnableEntraIDAuth.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchEnableEntraIDAuth.json
      */
     /**
      * Sample code: Updates the allowed authentication modes to include Microsoft Entra ID authentication.
@@ -54,7 +55,42 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_ResetPassword.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchTags.json
+     */
+    /**
+     * Sample code: Updates string-valued resource tags without changing the existing PremiumSSD storage type.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesStringValuedResourceTagsWithoutChangingTheExistingPremiumSSDStorageType(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("environment", "production", "costCenter", "1234")).apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchSSDv2.json
+     */
+    /**
+     * Sample code: Updates the Premium SSDv2 size on a DocumentDB cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesThePremiumSSDv2SizeOnADocumentDBClusterResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties()
+                .withStorage(new StorageProperties().withSizeGb(128L).withType(StorageType.PREMIUM_SSDV2)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_ResetPassword.json
      */
     /**
      * Sample code: Resets the administrator login password.
@@ -73,14 +109,33 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchCMK.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchDisableNativeAuth.json
      */
     /**
-     * Sample code: Updates the customer managed encryption key on a mongo cluster resource.
+     * Sample code: Updates the allowed authentication modes to remove Native authentication.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void updatesTheCustomerManagedEncryptionKeyOnAMongoClusterResource(
+    public static void updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withAuthConfig(
+                new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchCMK.json
+     */
+    /**
+     * Sample code: Updates the customer managed encryption key on a DocumentDB cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void updatesTheCustomerManagedEncryptionKeyOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
@@ -101,34 +156,15 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDisableNativeAuth.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchDiskSize.json
      */
     /**
-     * Sample code: Updates the allowed authentication modes to remove Native authentication.
+     * Sample code: Updates the disk size on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication(
+    public static void updatesTheDiskSizeOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        MongoCluster resource = manager.mongoClusters()
-            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new MongoClusterUpdateProperties().withAuthConfig(
-                new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID))))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDiskSize.json
-     */
-    /**
-     * Sample code: Updates the disk size on a Mongo Cluster resource.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void
-        updatesTheDiskSizeOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
             .getValue();
@@ -138,52 +174,35 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchPrivateNetworkAccess.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchNetworkBypassMode.json
      */
     /**
-     * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        MongoCluster resource = manager.mongoClusters()
-            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new MongoClusterUpdateProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchSSDv2.json
-     */
-    /**
-     * Sample code: Updates the Premium SSDv2 size on a Mongo Cluster resource.
-     * 
-     * @param manager Entry point to MongoClusterManager.
-     */
-    public static void updatesThePremiumSSDv2SizeOnAMongoClusterResource(
-        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
-        MongoCluster resource = manager.mongoClusters()
-            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new MongoClusterUpdateProperties()
-                .withStorage(new StorageProperties().withSizeGb(128L).withType(StorageType.PREMIUM_SSDV2)))
-            .apply();
-    }
-
-    /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_PatchDataApi.json
-     */
-    /**
-     * Sample code: Enables data API on a mongo cluster resource.
+     * Sample code: Enables network bypass mode on an Azure DocumentDB Cluster resource to allow the Azure Cosmos DB
+     * service to bypass network restrictions.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        enablesDataAPIOnAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        enablesNetworkBypassModeOnAnAzureDocumentDBClusterResourceToAllowTheAzureCosmosDBServiceToBypassNetworkRestrictions(
+            com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withNetworkBypassMode(NetworkBypassMode.AZURE_COSMOS_DB))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchDataApi.json
+     */
+    /**
+     * Sample code: Enables data API on a DocumentDB cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        enablesDataAPIOnADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
             .getValue();
@@ -194,15 +213,33 @@ public final class MongoClustersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01/MongoClusters_Update.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PatchPrivateNetworkAccess.json
      */
     /**
-     * Sample code: Updates a Mongo Cluster resource.
+     * Sample code: Disables public network access on a DocumentDB cluster resource with a private endpoint connection.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void disablesPublicNetworkAccessOnADocumentDBClusterResourceWithAPrivateEndpointConnection(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/MongoClusters_Update.json
+     */
+    /**
+     * Sample code: Updates a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
     public static void
-        updatesAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        updatesADocumentDBClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         MongoCluster resource = manager.mongoClusters()
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
             .getValue();
@@ -212,7 +249,7 @@ public final class MongoClustersUpdateSamples {
                 .withServerVersion("5.0")
                 .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                 .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.SAME_ZONE))
-                .withStorage(new StorageProperties().withSizeGb(256L).withType(StorageType.PREMIUM_SSD))
+                .withStorage(new StorageProperties().withSizeGb(256L).withType(StorageType.PREMIUM_SSDV2))
                 .withSharding(new ShardingProperties().withShardCount(4))
                 .withCompute(new ComputeProperties().withTier("M50"))
                 .withDataApi(new DataApiProperties().withMode(DataApiMode.DISABLED))

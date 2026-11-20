@@ -2,18 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.models;
 
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * ConfigurationSetting is a resource identified by unique combination of {@link #getKey() key} and {@link #getLabel()
@@ -35,6 +35,7 @@ public class ConfigurationSetting implements JsonSerializable<ConfigurationSetti
     private OffsetDateTime lastModified;
     private boolean readOnly;
     private Map<String, String> tags;
+    private String description;
 
     static {
         ConfigurationSettingHelper.setAccessor(new ConfigurationSettingHelper.ConfigurationSettingAccessor() {
@@ -208,6 +209,26 @@ public class ConfigurationSetting implements JsonSerializable<ConfigurationSetti
         return this;
     }
 
+    /**
+     * Gets the description of this configuration setting.
+     *
+     * @return The description of this configuration setting.
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Sets the description of this configuration setting.
+     *
+     * @param description The description of this configuration setting.
+     * @return The updated ConfigurationSetting object.
+     */
+    public ConfigurationSetting setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
     @Override
     public String toString() {
         return String.format("ConfigurationSetting(key=%s, label=%s, value=%s, etag=%s)", this.key, this.label,
@@ -225,6 +246,7 @@ public class ConfigurationSetting implements JsonSerializable<ConfigurationSetti
         jsonWriter.writeStringField("last_modified", Objects.toString(this.lastModified, null));
         jsonWriter.writeBooleanField("locked", readOnly);
         jsonWriter.writeMapField("tags", tags, JsonWriter::writeString);
+        jsonWriter.writeStringField("description", description);
         return jsonWriter.writeEndObject();
     }
 
@@ -261,6 +283,8 @@ public class ConfigurationSetting implements JsonSerializable<ConfigurationSetti
                     setting.setReadOnly(reader.getBoolean());
                 } else if ("tags".equals(fieldName)) {
                     setting.setTags(reader.readMap(JsonReader::getString));
+                } else if ("description".equals(fieldName)) {
+                    setting.setDescription(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

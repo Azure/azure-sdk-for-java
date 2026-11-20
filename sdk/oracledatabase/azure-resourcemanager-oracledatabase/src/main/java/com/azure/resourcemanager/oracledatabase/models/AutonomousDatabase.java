@@ -271,7 +271,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase switchover(PeerDbDetails body);
 
@@ -283,7 +283,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase switchover(PeerDbDetails body, Context context);
 
@@ -294,7 +294,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase failover(PeerDbDetails body);
 
@@ -306,7 +306,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase failover(PeerDbDetails body, Context context);
 
@@ -341,7 +341,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase restore(RestoreAutonomousDatabaseDetails body);
 
@@ -353,7 +353,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase restore(RestoreAutonomousDatabaseDetails body, Context context);
 
@@ -362,7 +362,7 @@ public interface AutonomousDatabase {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase shrink();
 
@@ -373,7 +373,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase shrink(Context context);
 
@@ -384,7 +384,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase changeDisasterRecoveryConfiguration(DisasterRecoveryConfigurationDetails body);
 
@@ -396,7 +396,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase changeDisasterRecoveryConfiguration(DisasterRecoveryConfigurationDetails body, Context context);
 
@@ -407,7 +407,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase action(AutonomousDatabaseLifecycleAction body);
 
@@ -419,7 +419,7 @@ public interface AutonomousDatabase {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return autonomous Database resource model.
      */
     AutonomousDatabase action(AutonomousDatabaseLifecycleAction body, Context context);
 }

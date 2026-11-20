@@ -17,12 +17,6 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FilesGetSymbolicLinkHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The ETag property.
      */
     @Generated
@@ -35,22 +29,28 @@ public final class FilesGetSymbolicLinkHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-link-text property.
-     */
-    @Generated
-    private String xMsLinkText;
-
-    /*
      * The x-ms-request-id property.
      */
     @Generated
     private String xMsRequestId;
 
     /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-link-text property.
+     */
+    @Generated
+    private String xMsLinkText;
 
     /*
      * The x-ms-client-request-id property.
@@ -69,7 +69,6 @@ public final class FilesGetSymbolicLinkHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesGetSymbolicLinkHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -77,37 +76,16 @@ public final class FilesGetSymbolicLinkHeaders {
         } else {
             this.lastModified = null;
         }
-        this.xMsLinkText = rawHeaders.getValue(X_MS_LINK_TEXT);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
+        this.xMsLinkText = rawHeaders.getValue(X_MS_LINK_TEXT);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the FilesGetSymbolicLinkHeaders object itself.
-     */
-    @Generated
-    public FilesGetSymbolicLinkHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
     }
 
     /**
@@ -162,28 +140,6 @@ public final class FilesGetSymbolicLinkHeaders {
     }
 
     /**
-     * Get the xMsLinkText property: The x-ms-link-text property.
-     * 
-     * @return the xMsLinkText value.
-     */
-    @Generated
-    public String getXMsLinkText() {
-        return this.xMsLinkText;
-    }
-
-    /**
-     * Set the xMsLinkText property: The x-ms-link-text property.
-     * 
-     * @param xMsLinkText the xMsLinkText value to set.
-     * @return the FilesGetSymbolicLinkHeaders object itself.
-     */
-    @Generated
-    public FilesGetSymbolicLinkHeaders setXMsLinkText(String xMsLinkText) {
-        this.xMsLinkText = xMsLinkText;
-        return this;
-    }
-
-    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      * 
      * @return the xMsRequestId value.
@@ -202,6 +158,28 @@ public final class FilesGetSymbolicLinkHeaders {
     @Generated
     public FilesGetSymbolicLinkHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the FilesGetSymbolicLinkHeaders object itself.
+     */
+    @Generated
+    public FilesGetSymbolicLinkHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -231,6 +209,28 @@ public final class FilesGetSymbolicLinkHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsLinkText property: The x-ms-link-text property.
+     * 
+     * @return the xMsLinkText value.
+     */
+    @Generated
+    public String getXMsLinkText() {
+        return this.xMsLinkText;
+    }
+
+    /**
+     * Set the xMsLinkText property: The x-ms-link-text property.
+     * 
+     * @param xMsLinkText the xMsLinkText value to set.
+     * @return the FilesGetSymbolicLinkHeaders object itself.
+     */
+    @Generated
+    public FilesGetSymbolicLinkHeaders setXMsLinkText(String xMsLinkText) {
+        this.xMsLinkText = xMsLinkText;
         return this;
     }
 

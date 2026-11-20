@@ -5,11 +5,13 @@
 module com.azure.ai.projects {
     requires transitive com.azure.core;
     requires com.azure.storage.blob;
-    requires openai.java.core;
-    requires openai.java.client.okhttp;
+    requires transitive openai.java.core;
+    requires transitive openai.java.client.okhttp;
+    requires com.azure.ai.agents;
 
     exports com.azure.ai.projects;
     exports com.azure.ai.projects.models;
 
     opens com.azure.ai.projects.models to com.azure.core;
+    opens com.azure.ai.projects.implementation.models to com.azure.core;
 }

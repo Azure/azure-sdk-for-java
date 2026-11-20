@@ -4,26 +4,20 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
-import com.azure.search.documents.indexes.models.SearchIndexStatistics;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchPagedIterable;
+import com.azure.search.documents.models.SuggestDocumentsResult;
 import com.azure.search.documents.models.SuggestOptions;
-import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.util.AutocompletePagedResponse;
-import com.azure.search.documents.util.SearchPagedIterable;
-import com.azure.search.documents.util.SuggestPagedResponse;
-
-import java.util.Iterator;
 
 /**
  * This scenario assumes an existing search solution, with index and an indexer setup (see LifecycleSetupExample)
@@ -48,8 +42,9 @@ public class RunningSearchSolutionExample {
         SearchClient indexClient = createSearchClient();
 
         // get index statistics
-        SearchIndexStatistics indexStatistics = searchIndexClient.getIndexStatistics(INDEX_NAME);
-        System.out.printf("Index %s: Document Count = %d, Storage Size = %d%n", INDEX_NAME, indexStatistics.getDocumentCount(), indexStatistics.getStorageSize());
+        GetIndexStatisticsResult indexStatistics = searchIndexClient.getIndexStatistics(INDEX_NAME);
+        System.out.printf("Index %s: Document Count = %d, Storage Size = %d%n", INDEX_NAME,
+            indexStatistics.getDocumentCount(), indexStatistics.getStorageSize());
 
         // run indexer
         searchIndexerClient.runIndexer(INDEXER_NAME);
@@ -70,49 +65,36 @@ public class RunningSearchSolutionExample {
     }
 
     private static void suggestQuery(SearchClient client) {
-
-        SuggestOptions suggestOptions = new SuggestOptions()
+        SuggestOptions suggestOptions = new SuggestOptions("vew", SUGGESTER_NAME)
             .setUseFuzzyMatching(true);
 
-        PagedIterableBase<SuggestResult, SuggestPagedResponse> suggestResult = client.suggest("vew",
-            SUGGESTER_NAME, suggestOptions, Context.NONE);
-        Iterator<SuggestPagedResponse> iterator = suggestResult.iterableByPage().iterator();
+        SuggestDocumentsResult  suggestResult = client.suggest(suggestOptions);
 
         System.out.println("Suggest with fuzzy matching:");
-        iterator.forEachRemaining(
-            r -> r.getValue().forEach(
-                res -> System.out.printf("      Found match to: %s, match = %s%n", (String) res
-                    .getDocument(SearchDocument.class).get("HotelName"), res.getText())
-            )
-        );
+        suggestResult.getResults().forEach(res -> System.out.printf("      Found match to: %s, match = %s%n",
+            res.getAdditionalProperties().get("HotelName"), res.getText()));
     }
 
     private static void autocompleteQuery(SearchClient client) {
+        AutocompleteOptions params = new AutocompleteOptions("co", SUGGESTER_NAME)
+            .setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
-        AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
-            AutocompleteMode.ONE_TERM_WITH_CONTEXT);
-
-        PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client.autocomplete("co",
-            SUGGESTER_NAME, params, Context.NONE);
+        AutocompleteResult results = client.autocomplete(params);
 
         System.out.println("Autocomplete with one term context results:");
-        results.forEach(result -> System.out.println(result.getText()));
+        results.getResults().forEach(result -> System.out.println(result.getText()));
     }
 
     private static void searchQuery(SearchClient client) {
-
         // search=Resort&searchfields=HotelName&$count=true
-        SearchOptions searchOptions = new SearchOptions()
+        SearchOptions searchOptions = new SearchOptions().setSearchText("Resort")
             .setIncludeTotalCount(true)
             .setSearchFields("HotelName");
-        SearchPagedIterable searchResults = client.search("Resort", searchOptions, Context.NONE);
+        SearchPagedIterable searchResults = client.search(searchOptions);
 
         System.out.println("Search query results:");
-        searchResults.forEach(result -> {
-            SearchDocument doc = result.getDocument(SearchDocument.class);
-            String hotelName = (String) doc.get("HotelName");
-            System.out.printf("     Hotel: %s%n", hotelName);
-        });
+        searchResults.forEach(result ->
+            System.out.printf("     Hotel: %s%n", result.getAdditionalProperties().get("HotelName")));
     }
 
     private static SearchClient createSearchClient() {

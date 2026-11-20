@@ -1,0 +1,162 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Async sample demonstrates how to delete analysis results after they are no longer needed.
+ */
+public class Sample13_DeleteResultAsyncTest extends ContentUnderstandingClientTestBase {
+
+    /**
+     * Asynchronous sample for analyzing a document and then deleting the result.
+     */
+    @Test
+    public void testDeleteResultAsync() {
+
+        // BEGIN: com.azure.ai.contentunderstanding.deleteResultAsync
+        // Step 1: Analyze a document
+        String documentUrl
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/invoice.pdf";
+
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(documentUrl);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
+        setPlaybackPollerFluxPollInterval(poller);
+
+        // Wait for operation to complete to get a result ID
+        System.out.println("Started analysis operation");
+
+        Map.Entry<String, AnalysisResult> analysis = poller.last()
+            .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(), pollResponse.getFinalResult(),
+                "Invoice analysis").map(result -> {
+                    String operationId = pollResponse.getValue() == null ? null : pollResponse.getValue().getId();
+                    if (operationId == null || operationId.trim().isEmpty()) {
+                        throw new IllegalStateException("Invoice analysis completed without an operation ID.");
+                    }
+                    return new AbstractMap.SimpleImmutableEntry<>(operationId, result);
+                }))
+            .block();
+        if (analysis == null) {
+            throw new IllegalStateException("Invoice analysis completed without an operation result.");
+        }
+
+        String operationId = analysis.getKey();
+        AnalysisResult result = analysis.getValue();
+        System.out.println("Analysis completed successfully!");
+        System.out.println("Operation ID: " + operationId);
+
+        // Display some sample results using getValue() convenience method
+        if (result.getContents() != null && !result.getContents().isEmpty()) {
+            Object firstContent = result.getContents().get(0);
+            if (firstContent instanceof DocumentContent) {
+                DocumentContent docContent = (DocumentContent) firstContent;
+                Map<String, ContentField> fields = docContent.getFields();
+                if (fields != null) {
+                    System.out.println("Total fields extracted: " + fields.size());
+                    ContentField customerNameField = fields.get("CustomerName");
+                    if (customerNameField != null) {
+                        // Use getValue() instead of casting to ContentStringField
+                        String customerName = (String) customerNameField.getValue();
+                        System.out.println("Customer Name: " + (customerName != null ? customerName : "(not found)"));
+                    }
+                }
+            }
+        }
+
+        // Step 2: Delete the analysis result using the operation ID
+        // This cleans up the server-side resources (including keyframe images for video analysis)
+        System.out.println("Deleting analysis result (Operation ID: " + operationId + ")...");
+        Response<Void> deleteResponse
+            = contentUnderstandingAsyncClient.deleteResultWithResponse(operationId, new RequestOptions()).block();
+        System.out.println("Analysis result deleted successfully!");
+        // END: com.azure.ai.contentunderstanding.deleteResultAsync
+
+        // Verify operation
+        System.out.println("\n📋 Analysis Operation Verification:");
+        assertNotNull(documentUrl, "Document URL should not be null");
+        System.out.println("Document URL: " + documentUrl);
+        assertNotNull(operationId, "Operation ID should not be null");
+        assertFalse(operationId.trim().isEmpty(), "Operation ID should not be empty");
+        assertFalse(operationId.contains(" "), "Operation ID should not contain spaces");
+        System.out.println("Analysis operation completed successfully");
+
+        // Verify result
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result should contain contents");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertEquals(1, result.getContents().size(), "Invoice should have exactly one content element");
+        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+
+        // Verify document content
+        Object firstContent = result.getContents().get(0);
+        assertTrue(firstContent instanceof DocumentContent, "Content should be DocumentContent");
+        DocumentContent documentContent = (DocumentContent) firstContent;
+        assertNotNull(documentContent.getFields(), "Document content should have fields");
+        System.out.println("Document content has " + documentContent.getFields().size() + " field(s)");
+
+        if (result.getAnalyzerId() != null && !result.getAnalyzerId().trim().isEmpty()) {
+            assertEquals("prebuilt-invoice", result.getAnalyzerId(), "Analyzer ID should match the request");
+        }
+
+        // Verify the initial deletion response.
+        assertNotNull(deleteResponse, "Delete response should not be null");
+        assertEquals(204, deleteResponse.getStatusCode(), "Initial deletion should return 204 No Content");
+
+        // A repeated deletion may be idempotent or report that the result no longer exists.
+        try {
+            Response<Void> secondDeleteResponse
+                = contentUnderstandingAsyncClient.deleteResultWithResponse(operationId, new RequestOptions()).block();
+            assertNotNull(secondDeleteResponse, "Repeated delete response should not be null");
+            assertEquals(204, secondDeleteResponse.getStatusCode(),
+                "An idempotent repeated deletion should return 204 No Content");
+            System.out.println("Repeated deletion succeeded idempotently.");
+        } catch (ResourceNotFoundException exception) {
+            assertNotNull(exception.getResponse(), "Not-found deletion should include an HTTP response");
+            assertEquals(404, exception.getResponse().getStatusCode(),
+                "An already deleted result should return 404 Not Found");
+            System.out.println("Repeated deletion returned 404 because the result was already deleted.");
+        }
+
+        // Summary
+        System.out.println("\n✅ DeleteResult API pattern demonstrated:");
+        System.out.println("  Analysis: Completed successfully");
+        System.out.println("  Fields extracted: " + documentContent.getFields().size());
+        System.out.println("  Initial deletion status: " + deleteResponse.getStatusCode());
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+}

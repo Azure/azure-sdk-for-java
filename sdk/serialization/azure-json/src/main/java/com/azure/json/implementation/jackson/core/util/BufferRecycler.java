@@ -33,14 +33,6 @@ public class BufferRecycler {
     public final static int BYTE_WRITE_CONCAT_BUFFER = 2;
 
     /**
-     * Buffer used for concatenating binary data that is either being
-     * encoded as base64 output, or decoded from base64 input.
-     *
-     * @since 2.1
-     */
-    public final static int BYTE_BASE64_CODEC_BUFFER = 3;
-
-    /**
      * Buffer used as input buffer for tokenization for character-based parsers.
      */
     public final static int CHAR_TOKEN_BUFFER = 0;
@@ -54,10 +46,7 @@ public class BufferRecycler {
 
     /**
      * Used through {@link TextBuffer}: directly by parsers (to concatenate
-     * String values)
-     *  and indirectly via
-     * {@link com.azure.json.implementation.jackson.core.io.SegmentedStringWriter}
-     * when serializing (databind level {@code ObjectMapper} and
+     * String values) when serializing (databind level {@code ObjectMapper} and
      * {@code ObjectWriter}). In both cases used as segments (and not for whole value),
      * but may result in retention of larger chunks for big content
      * (long text values during parsing; bigger output documents for generation).

@@ -34,12 +34,8 @@ public final class ExperimentsImpl implements Experiments {
         Context context) {
         Response<ExperimentInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, experimentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ExperimentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ExperimentImpl(inner.getValue(), this.manager()));
     }
 
     public Experiment getByResourceGroup(String resourceGroupName, String experimentName) {
@@ -101,12 +97,8 @@ public final class ExperimentsImpl implements Experiments {
         String executionId, Context context) {
         Response<ExperimentExecutionInner> inner
             = this.serviceClient().getExecutionWithResponse(resourceGroupName, experimentName, executionId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ExperimentExecutionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ExperimentExecutionImpl(inner.getValue(), this.manager()));
     }
 
     public ExperimentExecution getExecution(String resourceGroupName, String experimentName, String executionId) {
@@ -136,12 +128,8 @@ public final class ExperimentsImpl implements Experiments {
         String experimentName, String executionId, Context context) {
         Response<ExperimentExecutionDetailsInner> inner = this.serviceClient()
             .executionDetailsWithResponse(resourceGroupName, experimentName, executionId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ExperimentExecutionDetailsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ExperimentExecutionDetailsImpl(inner.getValue(), this.manager()));
     }
 
     public ExperimentExecutionDetails executionDetails(String resourceGroupName, String experimentName,
@@ -156,12 +144,16 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public Experiment getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
+        String experimentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName");
         if (experimentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
@@ -170,12 +162,16 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public Response<Experiment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
+        String experimentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName");
         if (experimentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
@@ -184,12 +180,16 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
+        String experimentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName");
         if (experimentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
@@ -198,12 +198,16 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
+        String experimentName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName");
         if (experimentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));

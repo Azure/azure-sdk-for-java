@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.55.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,98 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.55.0-beta.1 (2026-11-06)
+
+### Features Added
+
+- Supported `disableLocalAuth()` and `enableLocalAuth()` in `EventHubNamespace`.
+
+### Other Changes
+
+- Update `api-version` to `2026-07-01-preview`.
+
+## 2.54.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+- Upgraded `azure-resourcemanager-storage` from `2.58.2` to version `2.60.1`.
+
+## 2.53.13 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-storage` from `2.58.1` to version `2.58.2`.
+
+## 2.53.12 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.57.2` to version `2.58.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+
+## 2.53.11 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.57.1` to version `2.57.2`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+
+## 2.53.10 (2026-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-resourcemanager-storage` from `2.56.0` to version `2.57.1`.
+
+## 2.53.9 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.55.5` to version `2.56.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+
+
+## 2.53.8 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.55.3` to version `2.55.5`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+
+## 2.53.7 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.5` to version `2.54.0`.
+- Upgraded `azure-resourcemanager-storage` from `2.55.2` to version `2.55.4`.
+
+
+## 2.53.6 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-storage` from `2.55.1` to version `2.55.2`.
 
 ## 2.53.5 (2025-11-24)
 

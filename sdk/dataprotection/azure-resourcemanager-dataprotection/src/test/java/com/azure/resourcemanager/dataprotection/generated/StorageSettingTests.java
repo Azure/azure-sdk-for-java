@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageSetting model = BinaryData.fromString("{\"datastoreType\":\"VaultStore\",\"type\":\"GeoRedundant\"}")
+        StorageSetting model = BinaryData.fromString("{\"datastoreType\":\"VaultStore\",\"type\":\"LocallyRedundant\"}")
             .toObject(StorageSetting.class);
         Assertions.assertEquals(StorageSettingStoreTypes.VAULT_STORE, model.datastoreType());
-        Assertions.assertEquals(StorageSettingTypes.GEO_REDUNDANT, model.type());
+        Assertions.assertEquals(StorageSettingTypes.LOCALLY_REDUNDANT, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageSetting model = new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
-            .withType(StorageSettingTypes.GEO_REDUNDANT);
+            .withType(StorageSettingTypes.LOCALLY_REDUNDANT);
         model = BinaryData.fromObject(model).toObject(StorageSetting.class);
         Assertions.assertEquals(StorageSettingStoreTypes.VAULT_STORE, model.datastoreType());
-        Assertions.assertEquals(StorageSettingTypes.GEO_REDUNDANT, model.type());
+        Assertions.assertEquals(StorageSettingTypes.LOCALLY_REDUNDANT, model.type());
     }
 }

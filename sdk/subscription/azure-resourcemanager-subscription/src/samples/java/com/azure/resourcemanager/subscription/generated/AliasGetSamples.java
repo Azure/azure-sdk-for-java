@@ -10,7 +10,7 @@ package com.azure.resourcemanager.subscription.generated;
 public final class AliasGetSamples {
     /*
      * x-ms-original-file:
-     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2020-09-01/examples/getAlias.json
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2021-10-01/examples/getAlias.json
      */
     /**
      * Sample code: GetAlias.

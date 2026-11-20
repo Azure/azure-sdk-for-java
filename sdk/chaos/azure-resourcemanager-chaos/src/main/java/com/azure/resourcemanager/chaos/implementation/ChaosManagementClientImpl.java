@@ -26,14 +26,26 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.chaos.fluent.ActionVersionsClient;
+import com.azure.resourcemanager.chaos.fluent.ActionsClient;
 import com.azure.resourcemanager.chaos.fluent.CapabilitiesClient;
 import com.azure.resourcemanager.chaos.fluent.CapabilityTypesClient;
 import com.azure.resourcemanager.chaos.fluent.ChaosManagementClient;
+import com.azure.resourcemanager.chaos.fluent.ConnectionsClient;
+import com.azure.resourcemanager.chaos.fluent.DiscoveredResourcesClient;
 import com.azure.resourcemanager.chaos.fluent.ExperimentsClient;
 import com.azure.resourcemanager.chaos.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.chaos.fluent.OperationsClient;
+import com.azure.resourcemanager.chaos.fluent.ScenarioConfigurationsClient;
+import com.azure.resourcemanager.chaos.fluent.ScenarioRunsClient;
+import com.azure.resourcemanager.chaos.fluent.ScenarioTemplateVersionsClient;
+import com.azure.resourcemanager.chaos.fluent.ScenarioTemplatesClient;
+import com.azure.resourcemanager.chaos.fluent.ScenariosClient;
 import com.azure.resourcemanager.chaos.fluent.TargetTypesClient;
 import com.azure.resourcemanager.chaos.fluent.TargetsClient;
+import com.azure.resourcemanager.chaos.fluent.WorkspaceDiscoveriesClient;
+import com.azure.resourcemanager.chaos.fluent.WorkspaceEvaluationsClient;
+import com.azure.resourcemanager.chaos.fluent.WorkspacesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -203,6 +215,34 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
+     * The ActionsClient object to access its operations.
+     */
+    private final ActionsClient actions;
+
+    /**
+     * Gets the ActionsClient object to access its operations.
+     * 
+     * @return the ActionsClient object.
+     */
+    public ActionsClient getActions() {
+        return this.actions;
+    }
+
+    /**
+     * The ActionVersionsClient object to access its operations.
+     */
+    private final ActionVersionsClient actionVersions;
+
+    /**
+     * Gets the ActionVersionsClient object to access its operations.
+     * 
+     * @return the ActionVersionsClient object.
+     */
+    public ActionVersionsClient getActionVersions() {
+        return this.actionVersions;
+    }
+
+    /**
      * The TargetTypesClient object to access its operations.
      */
     private final TargetTypesClient targetTypes;
@@ -231,6 +271,146 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
     }
 
     /**
+     * The WorkspacesClient object to access its operations.
+     */
+    private final WorkspacesClient workspaces;
+
+    /**
+     * Gets the WorkspacesClient object to access its operations.
+     * 
+     * @return the WorkspacesClient object.
+     */
+    public WorkspacesClient getWorkspaces() {
+        return this.workspaces;
+    }
+
+    /**
+     * The WorkspaceDiscoveriesClient object to access its operations.
+     */
+    private final WorkspaceDiscoveriesClient workspaceDiscoveries;
+
+    /**
+     * Gets the WorkspaceDiscoveriesClient object to access its operations.
+     * 
+     * @return the WorkspaceDiscoveriesClient object.
+     */
+    public WorkspaceDiscoveriesClient getWorkspaceDiscoveries() {
+        return this.workspaceDiscoveries;
+    }
+
+    /**
+     * The WorkspaceEvaluationsClient object to access its operations.
+     */
+    private final WorkspaceEvaluationsClient workspaceEvaluations;
+
+    /**
+     * Gets the WorkspaceEvaluationsClient object to access its operations.
+     * 
+     * @return the WorkspaceEvaluationsClient object.
+     */
+    public WorkspaceEvaluationsClient getWorkspaceEvaluations() {
+        return this.workspaceEvaluations;
+    }
+
+    /**
+     * The DiscoveredResourcesClient object to access its operations.
+     */
+    private final DiscoveredResourcesClient discoveredResources;
+
+    /**
+     * Gets the DiscoveredResourcesClient object to access its operations.
+     * 
+     * @return the DiscoveredResourcesClient object.
+     */
+    public DiscoveredResourcesClient getDiscoveredResources() {
+        return this.discoveredResources;
+    }
+
+    /**
+     * The ScenariosClient object to access its operations.
+     */
+    private final ScenariosClient scenarios;
+
+    /**
+     * Gets the ScenariosClient object to access its operations.
+     * 
+     * @return the ScenariosClient object.
+     */
+    public ScenariosClient getScenarios() {
+        return this.scenarios;
+    }
+
+    /**
+     * The ScenarioTemplatesClient object to access its operations.
+     */
+    private final ScenarioTemplatesClient scenarioTemplates;
+
+    /**
+     * Gets the ScenarioTemplatesClient object to access its operations.
+     * 
+     * @return the ScenarioTemplatesClient object.
+     */
+    public ScenarioTemplatesClient getScenarioTemplates() {
+        return this.scenarioTemplates;
+    }
+
+    /**
+     * The ScenarioTemplateVersionsClient object to access its operations.
+     */
+    private final ScenarioTemplateVersionsClient scenarioTemplateVersions;
+
+    /**
+     * Gets the ScenarioTemplateVersionsClient object to access its operations.
+     * 
+     * @return the ScenarioTemplateVersionsClient object.
+     */
+    public ScenarioTemplateVersionsClient getScenarioTemplateVersions() {
+        return this.scenarioTemplateVersions;
+    }
+
+    /**
+     * The ScenarioConfigurationsClient object to access its operations.
+     */
+    private final ScenarioConfigurationsClient scenarioConfigurations;
+
+    /**
+     * Gets the ScenarioConfigurationsClient object to access its operations.
+     * 
+     * @return the ScenarioConfigurationsClient object.
+     */
+    public ScenarioConfigurationsClient getScenarioConfigurations() {
+        return this.scenarioConfigurations;
+    }
+
+    /**
+     * The ScenarioRunsClient object to access its operations.
+     */
+    private final ScenarioRunsClient scenarioRuns;
+
+    /**
+     * Gets the ScenarioRunsClient object to access its operations.
+     * 
+     * @return the ScenarioRunsClient object.
+     */
+    public ScenarioRunsClient getScenarioRuns() {
+        return this.scenarioRuns;
+    }
+
+    /**
+     * The ConnectionsClient object to access its operations.
+     */
+    private final ConnectionsClient connections;
+
+    /**
+     * Gets the ConnectionsClient object to access its operations.
+     * 
+     * @return the ConnectionsClient object.
+     */
+    public ConnectionsClient getConnections() {
+        return this.connections;
+    }
+
+    /**
      * Initializes an instance of ChaosManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -247,14 +427,26 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-01-01";
+        this.apiVersion = "2026-11-01";
         this.capabilities = new CapabilitiesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.targets = new TargetsClientImpl(this);
         this.capabilityTypes = new CapabilityTypesClientImpl(this);
         this.experiments = new ExperimentsClientImpl(this);
+        this.actions = new ActionsClientImpl(this);
+        this.actionVersions = new ActionVersionsClientImpl(this);
         this.targetTypes = new TargetTypesClientImpl(this);
         this.operationStatuses = new OperationStatusesClientImpl(this);
+        this.workspaces = new WorkspacesClientImpl(this);
+        this.workspaceDiscoveries = new WorkspaceDiscoveriesClientImpl(this);
+        this.workspaceEvaluations = new WorkspaceEvaluationsClientImpl(this);
+        this.discoveredResources = new DiscoveredResourcesClientImpl(this);
+        this.scenarios = new ScenariosClientImpl(this);
+        this.scenarioTemplates = new ScenarioTemplatesClientImpl(this);
+        this.scenarioTemplateVersions = new ScenarioTemplateVersionsClientImpl(this);
+        this.scenarioConfigurations = new ScenarioConfigurationsClientImpl(this);
+        this.scenarioRuns = new ScenarioRunsClientImpl(this);
+        this.connections = new ConnectionsClientImpl(this);
     }
 
     /**
@@ -368,7 +560,7 @@ public final class ChaosManagementClientImpl implements ChaosManagementClient {
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

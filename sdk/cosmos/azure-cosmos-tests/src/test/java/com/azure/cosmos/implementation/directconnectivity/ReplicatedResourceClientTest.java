@@ -11,16 +11,15 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import io.reactivex.subscribers.TestSubscriber;
-import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
@@ -64,14 +63,8 @@ public class ReplicatedResourceClientTest {
     }
 
     public static void validateFailure(Mono<StoreResponse> single, FailureValidator validator, long timeout) {
-
-        TestSubscriber<StoreResponse> testSubscriber = new TestSubscriber<>();
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        Assertions.assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        Throwable throwable = Exceptions.unwrap(testSubscriber.errors().get(0));
-        validator.validate(throwable);
+        StepVerifier.create(single)
+            .expectErrorSatisfies(thrown -> validator.validate(Exceptions.unwrap(thrown)))
+            .verify(Duration.ofMillis(timeout));
     }
 }

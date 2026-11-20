@@ -1588,7 +1588,8 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return model representing the result of the export dependencies asynchronous operation along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> exportDependenciesWithResponseAsync(String resourceGroupName,
@@ -1610,7 +1611,8 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return model representing the result of the export dependencies asynchronous operation along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> exportDependenciesWithResponse(String resourceGroupName, String mapName,
@@ -1631,7 +1633,8 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return model representing the result of the export dependencies asynchronous operation along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> exportDependenciesWithResponse(String resourceGroupName, String mapName,
@@ -1651,7 +1654,8 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of model representing the result of the export dependencies
+     * asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
@@ -1671,7 +1675,8 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of model representing the result of the export dependencies
+     * asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
@@ -1692,7 +1697,8 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of model representing the result of the export dependencies
+     * asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
@@ -1713,7 +1719,8 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return model representing the result of the export dependencies asynchronous operation on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExportDependenciesOperationResultInner> exportDependenciesAsync(String resourceGroupName,
@@ -1731,7 +1738,7 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return model representing the result of the export dependencies asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,
@@ -1749,7 +1756,7 @@ public final class MapsClientImpl implements MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return model representing the result of the export dependencies asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,

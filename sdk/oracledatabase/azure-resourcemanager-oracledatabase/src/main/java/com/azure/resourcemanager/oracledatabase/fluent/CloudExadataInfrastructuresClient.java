@@ -285,7 +285,7 @@ public interface CloudExadataInfrastructuresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
@@ -300,7 +300,7 @@ public interface CloudExadataInfrastructuresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner>
@@ -314,7 +314,7 @@ public interface CloudExadataInfrastructuresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cloudExadataInfrastructure resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CloudExadataInfrastructureInner addStorageCapacity(String resourceGroupName, String cloudexadatainfrastructurename);
@@ -328,7 +328,7 @@ public interface CloudExadataInfrastructuresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cloudExadataInfrastructure resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CloudExadataInfrastructureInner addStorageCapacity(String resourceGroupName, String cloudexadatainfrastructurename,
@@ -343,7 +343,7 @@ public interface CloudExadataInfrastructuresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner> beginConfigureExascale(
@@ -360,7 +360,7 @@ public interface CloudExadataInfrastructuresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of cloudExadataInfrastructure resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudExadataInfrastructureInner>, CloudExadataInfrastructureInner> beginConfigureExascale(
@@ -376,7 +376,7 @@ public interface CloudExadataInfrastructuresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cloudExadataInfrastructure resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CloudExadataInfrastructureInner configureExascale(String resourceGroupName, String cloudexadatainfrastructurename,
@@ -392,7 +392,7 @@ public interface CloudExadataInfrastructuresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return cloudExadataInfrastructure resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CloudExadataInfrastructureInner configureExascale(String resourceGroupName, String cloudexadatainfrastructurename,

@@ -17,6 +17,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -56,8 +58,10 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeGetTagsOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.DataLakeSetTagsOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathGetSystemPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
@@ -455,6 +459,10 @@ public class DataLakePathClient {
     /**
      * Creates a resource if a path does not exist.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.createIfNotExists -->
@@ -469,6 +477,8 @@ public class DataLakePathClient {
      * Docs</a></p>
      *
      * @return {@link PathInfo} that contains information about the created resource.
+     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path
+     * of a different type already exists at this location (status code 409, error code PathConflict).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathInfo createIfNotExists() {
@@ -477,6 +487,10 @@ public class DataLakePathClient {
 
     /**
      * Creates a resource if a path does not exist.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -514,6 +528,8 @@ public class DataLakePathClient {
      * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
      * {@link PathInfo} containing information about the resource. If {@link Response}'s status code is 201, a new
      * resource was successfully created. If status code is 409, a resource already existed at this location.
+     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path
+     * of a different type already exists at this location (status code 409, error code PathConflict).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathInfo> createIfNotExistsWithResponse(DataLakePathCreateOptions options, Duration timeout,
@@ -525,7 +541,7 @@ public class DataLakePathClient {
 
             return createWithResponse(options, timeout, context);
         } catch (DataLakeStorageException e) {
-            if (e.getStatusCode() == 409) {
+            if (DataLakeImplUtils.isConflictWithErrorCode(e, DataLakeImplUtils.PATH_ALREADY_EXISTS_ERROR_CODE)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {
@@ -1437,7 +1453,13 @@ public class DataLakePathClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
 
-        return new DataLakePathClient(dataLakePathAsyncClient,
+        // Build an async client rooted at the destination path so that operations delegated to the async client (for
+        // example file upload/append/flush or directory child/ACL clients) target the destination rather than the
+        // original source path.
+        DataLakePathAsyncClient destinationAsyncClient
+            = dataLakePathAsyncClient.getPathAsyncClient(destinationFileSystem, destinationPath);
+
+        return new DataLakePathClient(destinationAsyncClient,
             dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath)
                 .buildBlockBlobClient(),
             getHttpPipeline(), getAccountUrl(), serviceVersion, accountName, destinationFileSystem, destinationPath,
@@ -1834,5 +1856,70 @@ public class DataLakePathClient {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
             PathResourceType.DIRECTORY.equals(this.pathResourceType))
                 .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    /**
+     * Gets the tags associated with the underlying path.
+     *
+     * @return The path's tags.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Map<String, String> getTags() {
+        return this.getTagsWithResponse(new DataLakeGetTagsOptions(), null, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the tags associated with the underlying path.
+     *
+     * @param options {@link DataLakeGetTagsOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The path's tags.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Map<String, String>> getTagsWithResponse(DataLakeGetTagsOptions options, Duration timeout,
+        Context context) {
+        options = (options == null) ? new DataLakeGetTagsOptions() : options;
+        DataLakeRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new DataLakeRequestConditions()
+            : options.getRequestConditions();
+        BlobGetTagsOptions blobGetTagsOptions
+            = new BlobGetTagsOptions().setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
+
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blockBlobClient.getTagsWithResponse(blobGetTagsOptions, timeout, context), LOGGER);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * @param tags Tags to associate with the path.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setTags(Map<String, String> tags) {
+        this.setTagsWithResponse(new DataLakeSetTagsOptions(tags), null, Context.NONE);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * @param options {@link DataLakeSetTagsOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setTagsWithResponse(DataLakeSetTagsOptions options, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        DataLakeRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new DataLakeRequestConditions()
+            : options.getRequestConditions();
+        BlobSetTagsOptions blobSetTagsOptions = new BlobSetTagsOptions(options.getTags())
+            .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
+
+        return DataLakeImplUtils.returnOrConvertException(
+            () -> blockBlobClient.setTagsWithResponse(blobSetTagsOptions, timeout, context), LOGGER);
     }
 }

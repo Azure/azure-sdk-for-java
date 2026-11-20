@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
@@ -14,8 +16,11 @@ import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareMetrics;
+import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareRetentionPolicy;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareServiceProperties;
@@ -23,6 +28,7 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +37,7 @@ import java.io.RandomAccessFile;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
@@ -43,11 +50,20 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileShareTestHelper {
     private static final ClientLogger LOGGER = new ClientLogger(FileShareTestHelper.class);
+    private static final HttpHeaderName X_MS_FILE_ENABLE_CHANGE_FEED
+        = HttpHeaderName.fromString("x-ms-file-enable-change-feed");
+    private static final HttpHeaderName X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS
+        = HttpHeaderName.fromString("x-ms-file-change-feed-retention-in-days");
+    private static final HttpHeaderName X_MS_FILE_BLOB_CONTAINER_FOR_XFILES_CHANGE_FEED
+        = HttpHeaderName.fromString("x-ms-file-blob-container-for-xfiles-change-feed");
 
     static String getRandomString(int size) {
         byte[] array = new byte[size];
@@ -66,6 +82,52 @@ public class FileShareTestHelper {
     protected static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
+    }
+
+    static Stream<Arguments> createShareChangeFeedSupplier() {
+        return Stream.of(Arguments.of(true, 7), Arguments.of(true, null), Arguments.of(false, null),
+            Arguments.of(null, null));
+    }
+
+    static Stream<Arguments> setPropertiesShareChangeFeedSupplier() {
+        return Stream.of(Arguments.of(true, 14), Arguments.of(true, null), Arguments.of(false, null),
+            Arguments.of(null, 14), Arguments.of(null, null));
+    }
+
+    static void assertShareChangeFeedRequestHeaders(Response<?> response, Boolean enabled, Integer retentionInDays) {
+        HttpHeaders headers = response.getRequest().getHeaders();
+        assertEquals(enabled == null ? null : enabled.toString(), headers.getValue(X_MS_FILE_ENABLE_CHANGE_FEED));
+        assertEquals(retentionInDays == null ? null : retentionInDays.toString(),
+            headers.getValue(X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS));
+    }
+
+    static void assertShareChangeFeedProperties(Response<ShareProperties> response, Boolean enabled,
+        Integer retentionInDays) {
+        assertEquals(200, response.getStatusCode());
+        HttpHeaders headers = response.getHeaders();
+        ShareProperties properties = response.getValue();
+        String enabledHeader = headers.getValue(X_MS_FILE_ENABLE_CHANGE_FEED);
+        String retentionHeader = headers.getValue(X_MS_FILE_CHANGE_FEED_RETENTION_IN_DAYS);
+        String containerHeader = headers.getValue(X_MS_FILE_BLOB_CONTAINER_FOR_XFILES_CHANGE_FEED);
+
+        // Omitted options may be defaulted by the service; their raw headers must still map to the public properties.
+        assertEquals(enabledHeader == null ? null : Boolean.valueOf(enabledHeader), properties.isChangeFeedEnabled());
+        assertEquals(retentionHeader == null ? null : Integer.valueOf(retentionHeader),
+            properties.getChangeFeedRetentionInDays());
+        assertEquals(containerHeader, properties.getChangeFeedBlobContainerName());
+        if (enabled != null) {
+            assertNotNull(enabledHeader);
+            assertEquals(enabled, Boolean.valueOf(enabledHeader));
+            assertEquals(enabled, properties.isChangeFeedEnabled());
+        }
+        if (retentionInDays != null) {
+            assertEquals(retentionInDays.toString(), retentionHeader);
+            assertEquals(retentionInDays, properties.getChangeFeedRetentionInDays());
+        }
+        if (Boolean.TRUE.equals(enabled)) {
+            assertNotNull(containerHeader);
+            assertFalse(containerHeader.isEmpty());
+        }
     }
 
     /**
@@ -100,6 +162,34 @@ public class FileShareTestHelper {
             clearRanges.add(range);
         }
         return clearRanges;
+    }
+
+    protected static ShareFileRange rangeFromOffsetAndLength(long offset, long length) {
+        return new ShareFileRange(offset, offset + length - 1);
+    }
+
+    protected static ShareFileRange rangeFromLength(long length) {
+        return rangeFromOffsetAndLength(0, length);
+    }
+
+    protected static ClearRange clearRangeFromOffsetAndLength(long offset, long length) {
+        return new ClearRange().setStart(offset).setEnd(offset + length - 1);
+    }
+
+    protected static void assertFileRangeEquals(ShareFileRange expected, ShareFileRange actual) {
+        assertEquals(expected.getStart(), actual.getStart());
+        assertEquals(expected.getEnd(), actual.getEnd());
+    }
+
+    protected static void assertFileRangeItemEquals(ShareFileRange expected, ShareFileRangeItem actual) {
+        assertFalse(actual.isClear());
+        assertFileRangeEquals(expected, actual.getRange());
+    }
+
+    protected static void assertClearRangeItemEquals(ClearRange expected, ShareFileRangeItem actual) {
+        assertTrue(actual.isClear());
+        assertEquals(expected.getStart(), actual.getRange().getStart());
+        assertEquals(expected.getEnd(), actual.getRange().getEnd());
     }
 
     protected static InputStream getInputStream(byte[] data) {
@@ -379,9 +469,64 @@ public class FileShareTestHelper {
             Arguments.of((Object) null));
     }
 
+    // Expected values are hard-coded on purpose; they must not be computed with the encoder under test.
+    protected static Stream<Arguments> directoryRenameSourceEncodingSupplier() {
+        return Stream.of(Arguments.of("plain", "plain"), Arguments.of("parent/child", "parent%2Fchild"),
+            Arguments.of("a b", "a%20b"), Arguments.of("a+b", "a%2Bb"), Arguments.of("100%done", "100%25done"),
+            Arguments.of("a#b", "a%23b"), Arguments.of("100%25done", "100%2525done"), Arguments.of("a%20b", "a%2520b"),
+            Arguments.of("a%2Fb", "a%252Fb"), Arguments.of("caf\u00e9", "caf%C3%A9"),
+            Arguments.of("a\u200Bb c", "a%E2%80%8Bb%20c"), Arguments.of("\uD83D\uDE00", "%F0%9F%98%80"),
+            Arguments.of("parent/child dir", "parent%2Fchild%20dir"), Arguments.of("parent/a#b", "parent%2Fa%23b"),
+            Arguments.of("a~b!c'd(e)f,g;h=i@j&k$l", "a%7Eb%21c%27d%28e%29f%2Cg%3Bh%3Di%40j%26k%24l"));
+    }
+
+    protected static Stream<Arguments> directoryRenameDecoySupplier() {
+        return Stream.of(Arguments.of("plain", null), Arguments.of("a b", null), Arguments.of("a+b", null),
+            Arguments.of("100%done", null), Arguments.of("a#b", "a"), Arguments.of("100%25done", "100%done"),
+            Arguments.of("a%20b", "a b"), Arguments.of("a%2Fb", "a/b"), Arguments.of("caf\u00e9", null),
+            Arguments.of("a\u200Bb c", null), Arguments.of("\uD83D\uDE00", null),
+            Arguments.of("parent/child dir", null), Arguments.of("parent/a#b", "parent/a"),
+            Arguments.of("a~b!c'd(e)f,g;h=i@j&k$l", null));
+    }
+
+    // Creates every directory along the path (tolerating existing ones) and puts a marker file in the last one.
+    protected static void createDirectoryChainWithMarker(ShareClient shareClient, String path, String content) {
+        StringBuilder current = new StringBuilder();
+        for (String segment : path.split("/")) {
+            current.append(current.length() == 0 ? "" : "/").append(segment);
+            shareClient.getDirectoryClient(current.toString()).createIfNotExists();
+        }
+        byte[] data = content.getBytes(StandardCharsets.UTF_8);
+        ShareFileClient marker = shareClient.getDirectoryClient(path).getFileClient("marker");
+        marker.create(data.length);
+        marker.uploadRange(new ByteArrayInputStream(data), data.length);
+    }
+
+    protected static String readDirectoryMarker(ShareClient shareClient, String path) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        shareClient.getDirectoryClient(path).getFileClient("marker").download(output);
+        return new String(output.toByteArray(), StandardCharsets.UTF_8);
+    }
+
     protected static void assertSmbPropertiesNull(FileSmbProperties smbProperties) {
         assertNull(smbProperties.getFilePermissionKey());
         assertNull(smbProperties.getNtfsFileAttributes());
+    }
+
+    protected static Stream<Arguments> renameSourceEncodingSupplier() {
+        String prefix = "https://account.file.core.windows.net/share%2F";
+        return Stream.of(Arguments.of("plain.txt", prefix + "plain.txt"), Arguments.of("a b.txt", prefix + "a%20b.txt"),
+            Arguments.of("a#b.txt", prefix + "a%23b.txt"), Arguments.of("a+b.txt", prefix + "a%2Bb.txt"),
+            Arguments.of("caf\u00e9.txt", prefix + "caf%C3%A9.txt"),
+            Arguments.of("a\u200Bb c.txt", prefix + "a%E2%80%8Bb%20c.txt"),
+            Arguments.of("dir/sub dir/f.txt", prefix + "dir%2Fsub%20dir%2Ff.txt"),
+            Arguments.of("100%done.txt", prefix + "100%25done.txt"), Arguments.of("50%", prefix + "50%25"),
+            Arguments.of("%G1.txt", prefix + "%25G1.txt"), Arguments.of("%e.txt", prefix + "%25e.txt"),
+            Arguments.of("a%20b.txt", prefix + "a%2520b.txt"),
+            Arguments.of("100%25done.txt", prefix + "100%2525done.txt"),
+            Arguments.of("x%2Fy.txt", prefix + "x%252Fy.txt"),
+            Arguments.of("caf%C3%A9.txt", prefix + "caf%25C3%25A9.txt"), Arguments.of("%FF.txt", prefix + "%25FF.txt"),
+            Arguments.of("dir 100%/sub%2F/f%25.txt", prefix + "dir%20100%25%2Fsub%252F%2Ff%2525.txt"));
     }
 
     protected static Stream<Arguments> filePropertySemanticsSupplier() {

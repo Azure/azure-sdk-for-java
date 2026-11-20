@@ -11,11 +11,15 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.AdditionalN
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EvictionPolicyType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FrontendConfiguration;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.HostEndpointSettings;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.IpConfiguration;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.IpConfigurationPublicIpAddressConfiguration;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.IpTag;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.PrivateIpAddressVersion;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ProxyAgentSettings;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.PublicIpAddressVersion;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicy;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicyMode;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultCertificate;
@@ -37,7 +41,7 @@ import java.util.Map;
  */
 public final class NodeTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypePutOperationStateless_example.json
+     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationStateless_example.json
      */
     /**
      * Sample code: Put an stateless node type with temporary disk for service fabric.
@@ -72,7 +76,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypePutOperation_example_max.json
+     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperation_example_max.json
      */
     /**
      * Sample code: Put a node type with maximum parameters.
@@ -184,11 +188,20 @@ public final class NodeTypesCreateOrUpdateSamples {
                 .withVmGalleryTags("{\"Tag1\":\"Value1\",\"Tag2\":\"Value2\"}")
                 .withTreatFailureAsDeploymentFailure(false)))
             .withIsOutboundOnly(true)
+            .withEnableResilientEphemeralOsDisk(true)
+            .withScaleInPolicy(new ScaleInPolicy().withMode(ScaleInPolicyMode.DEFAULT))
+            .withProxyAgentSettings(new ProxyAgentSettings().withEnabled(true)
+                .withKeyIncarnationId(17)
+                .withWireServer(new HostEndpointSettings().withMode("Audit")
+                    .withInVMAccessControlProfileReferenceId("someReferenceId"))
+                .withImds(new HostEndpointSettings().withMode("Audit")
+                    .withInVMAccessControlProfileReferenceId("someReferenceId"))
+                .withAddProxyAgentExtension(true))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypePutOperationAutoScale_example.json
+     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationAutoScale_example.json
      */
     /**
      * Sample code: Put a node type with auto-scale parameters.
@@ -234,7 +247,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypePutOperation_example_min.json
+     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperation_example_min.json
      */
     /**
      * Sample code: Put a node type with minimum parameters.
@@ -258,7 +271,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypePutOperationDedicatedHost_example.json
+     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationDedicatedHost_example.json
      */
     /**
      * Sample code: Put node type with dedicated hosts.
@@ -288,7 +301,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypePutOperationVmImagePlan_example.json
+     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationVmImagePlan_example.json
      */
     /**
      * Sample code: Put node type with vm image plan.
@@ -315,7 +328,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
+     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
      */
     /**
      * Sample code: Put node type with shared galleries custom vm image.
@@ -337,7 +350,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypePutOperationCustomImage_example.json
+     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationCustomImage_example.json
      */
     /**
      * Sample code: Put node type with custom vm image.

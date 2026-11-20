@@ -20,7 +20,7 @@ public final class ArtifactsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"artifactOrder\":3147535,\"title\":\"dyggdtjixhbku\",\"description\":\"fqweykhmene\",\"size\":6284869776595243708},\"id\":\"fwhybcibvy\",\"name\":\"dcsi\",\"type\":\"ynnaam\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"artifactOrder\":801364840,\"title\":\"ocmnyyazttbtwwrq\",\"description\":\"uedck\",\"size\":1121588290251110557},\"id\":\"exzfeyue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ArtifactsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Artifact response = manager.artifacts()
-            .getWithResponse("xzdmohctb", "vudwx", "ndnvo", "gujjugwdkcglh", com.azure.core.util.Context.NONE)
+            .getWithResponse("qidybyx", "zfcl", "aaxdbabphlwrq", "fkts", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

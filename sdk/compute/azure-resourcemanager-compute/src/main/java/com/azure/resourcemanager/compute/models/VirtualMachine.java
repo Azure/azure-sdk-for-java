@@ -287,7 +287,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
      * Gets the URI to the VHD file backing this virtual machine's operating system disk.
      *
      * @return the URI to the VHD file backing this virtual machine's operating system disk
+     * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+     * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+     * deprecation</a>.
      */
+    @Deprecated
     String osUnmanagedDiskVhdUri();
 
     /**
@@ -357,7 +361,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
      * Gets the unmanaged data disks associated with this virtual machine, indexed by LUN number.
      *
      * @return the unmanaged data disks associated with this virtual machine, indexed by LUN number
+     * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+     * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+     * deprecation</a>.
      */
+    @Deprecated
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
     /**
@@ -1002,7 +1010,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @param osDiskUrl osDiskUrl the URL to the OS disk in the Azure Storage account
              * @param osType the OS type
              * @return the next stage of the definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             WithUnmanagedCreate withSpecializedOSUnmanagedDisk(String osDiskUrl, OperatingSystemTypes osType);
 
             /**
@@ -1180,7 +1192,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * Specifies that unmanaged disks will be used.
              *
              * @return the next stage of the definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             WithFromImageCreateOptionsUnmanaged withUnmanagedDisks();
         }
 
@@ -1282,7 +1298,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * Enables unmanaged disk support on this virtual machine.
              *
              * @return the next stage of the definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             WithWindowsCreateUnmanaged withUnmanagedDisks();
         }
 
@@ -1474,7 +1494,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              *
              * @param sizeInGB the disk size in GB
              * @return the next stage of the definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             WithUnmanagedCreate withNewUnmanagedDataDisk(Integer sizeInGB);
 
             /**
@@ -1484,7 +1508,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @param containerName the name of the container holding the VHD file
              * @param vhdName the name for the VHD file
              * @return the next stage of the definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             WithUnmanagedCreate withExistingUnmanagedDataDisk(String storageAccountName, String containerName,
                 String vhdName);
 
@@ -1493,7 +1521,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              *
              * @param name the name for the data disk
              * @return the first stage of an unmanaged data disk definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             VirtualMachineUnmanagedDataDisk.DefinitionStages.Blank<WithUnmanagedCreate>
                 defineUnmanagedDataDisk(String name);
         }
@@ -2249,7 +2281,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              *
              * @param sizeInGB the disk size in GB
              * @return the stage representing creatable VM definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             Update withNewUnmanagedDataDisk(Integer sizeInGB);
 
             /**
@@ -2259,7 +2295,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              * @param containerName the name of the container holding the VHD file
              * @param vhdName the name for the VHD file
              * @return the stage representing creatable VM definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             Update withExistingUnmanagedDataDisk(String storageAccountName, String containerName, String vhdName);
 
             /**
@@ -2268,7 +2308,11 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              *
              * @param name the name for the data disk
              * @return the first stage of the data disk definition
+             * @deprecated Unmanaged disks are deprecated by Azure and being retired. Use managed disks instead. See
+             * <a href="https://learn.microsoft.com/azure/virtual-machines/unmanaged-disks-deprecation">Unmanaged disks
+             * deprecation</a>.
              */
+            @Deprecated
             VirtualMachineUnmanagedDataDisk.UpdateDefinitionStages.Blank<Update> defineUnmanagedDataDisk(String name);
 
             /**

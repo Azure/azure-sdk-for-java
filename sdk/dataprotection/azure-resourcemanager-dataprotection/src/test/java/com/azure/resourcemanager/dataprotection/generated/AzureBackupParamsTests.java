@@ -12,15 +12,15 @@ public final class AzureBackupParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupParams model
-            = BinaryData.fromString("{\"objectType\":\"AzureBackupParams\",\"backupType\":\"fnjhfjxwmszkkfo\"}")
+            = BinaryData.fromString("{\"objectType\":\"AzureBackupParams\",\"backupType\":\"sdbnwdcfhucqdpf\"}")
                 .toObject(AzureBackupParams.class);
-        Assertions.assertEquals("fnjhfjxwmszkkfo", model.backupType());
+        Assertions.assertEquals("sdbnwdcfhucqdpf", model.backupType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBackupParams model = new AzureBackupParams().withBackupType("fnjhfjxwmszkkfo");
+        AzureBackupParams model = new AzureBackupParams().withBackupType("sdbnwdcfhucqdpf");
         model = BinaryData.fromObject(model).toObject(AzureBackupParams.class);
-        Assertions.assertEquals("fnjhfjxwmszkkfo", model.backupType());
+        Assertions.assertEquals("sdbnwdcfhucqdpf", model.backupType());
     }
 }

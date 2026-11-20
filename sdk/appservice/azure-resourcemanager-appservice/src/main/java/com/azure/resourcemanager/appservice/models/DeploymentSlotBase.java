@@ -86,6 +86,33 @@ public interface DeploymentSlotBase<FluentT> extends WebAppBase, Updatable<Deplo
              * @return the next stage of the web app update
              */
             Update<FluentT> withCredentials(String username, String password);
+
+            /**
+             * Specifies that the deployment slot's system-assigned managed identity is used to authenticate (pull) the
+             * image from the container registry, instead of a username and password. This is the recommended,
+             * passwordless way to pull from Azure Container Registry: enable the slot's system-assigned managed identity
+             * and grant it the {@code AcrPull} role on the registry.
+             *
+             * @return the next stage of the web app update
+             */
+            default Update<FluentT> withManagedIdentityCredentials() {
+                throw new UnsupportedOperationException(
+                    "[withManagedIdentityCredentials] is not supported in " + getClass());
+            }
+
+            /**
+             * Specifies that the given user-assigned managed identity is used to authenticate (pull) the image from the
+             * container registry, instead of a username and password. This is the recommended, passwordless way to pull
+             * from Azure Container Registry: assign the user-assigned managed identity to the slot and grant it the
+             * {@code AcrPull} role on the registry.
+             *
+             * @param userAssignedManagedIdentityClientId the client ID of the user-assigned managed identity
+             * @return the next stage of the web app update
+             */
+            default Update<FluentT> withManagedIdentityCredentials(String userAssignedManagedIdentityClientId) {
+                throw new UnsupportedOperationException(
+                    "[withManagedIdentityCredentials] is not supported in " + getClass());
+            }
         }
 
         /**

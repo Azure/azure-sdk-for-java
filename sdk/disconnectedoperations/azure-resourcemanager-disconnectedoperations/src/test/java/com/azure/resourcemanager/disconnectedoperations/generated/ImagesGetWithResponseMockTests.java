@@ -20,7 +20,7 @@ public final class ImagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"releaseVersion\":\"lcuiywgqywgndr\",\"releaseDisplayName\":\"ynhz\",\"releaseNotes\":\"pphrcgynco\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"fvm\",\"coofsxlzev\"]},\"id\":\"m\",\"name\":\"jqabcypmivkwlzuv\",\"type\":\"c\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"releaseVersion\":\"zrnkcqvyxlwh\",\"releaseDisplayName\":\"lsicohoqqnwv\",\"releaseNotes\":\"ryavwhheunmmqh\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"konocu\"],\"updateProperties\":{\"systemReboot\":\"NotRequired\",\"securityUpdates\":\"lyaxuc\",\"osVersion\":\"nuqszfkbey\",\"agentVersion\":\"ewrmjmwvvjektc\",\"featureUpdates\":\"senhwlrs\"}},\"id\":\"rzpwvlqdqgbiq\",\"name\":\"lihkaetcktvfc\",\"type\":\"vf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ImagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Image response = manager.images()
-            .getWithResponse("tthzrvqd", "abhjybi", "ehoqfbowskan", com.azure.core.util.Context.NONE)
+            .getWithResponse("kix", "bin", "eputtmrywnuzoqf", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

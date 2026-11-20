@@ -339,14 +339,15 @@ public final class ParticipantsImpl {
     }
 
     /**
+     * Get participants in a room.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of participants in a room along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return participants in a room along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoomParticipant>> listNextSinglePageAsync(String nextLink) {
@@ -357,6 +358,8 @@ public final class ParticipantsImpl {
     }
 
     /**
+     * Get participants in a room.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -364,8 +367,7 @@ public final class ParticipantsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of participants in a room along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return participants in a room along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoomParticipant>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -376,13 +378,15 @@ public final class ParticipantsImpl {
     }
 
     /**
+     * Get participants in a room.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of participants in a room along with {@link PagedResponse}.
+     * @return participants in a room along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomParticipant> listNextSinglePage(String nextLink) {
@@ -394,6 +398,8 @@ public final class ParticipantsImpl {
     }
 
     /**
+     * Get participants in a room.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -401,7 +407,7 @@ public final class ParticipantsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of participants in a room along with {@link PagedResponse}.
+     * @return participants in a room along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomParticipant> listNextSinglePage(String nextLink, Context context) {

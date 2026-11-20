@@ -28,6 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
@@ -189,6 +190,10 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     public DataLakeServiceClientBuilder credential(StorageSharedKeyCredential credential) {
         blobServiceClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.tokenCredential != null || this.azureSasCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "StorageSharedKeyCredential");
+        }
         this.tokenCredential = null;
         this.azureSasCredential = null;
         return this;
@@ -220,8 +225,11 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     public DataLakeServiceClientBuilder credential(TokenCredential credential) {
         blobServiceClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "TokenCredential");
+        }
         this.storageSharedKeyCredential = null;
-        this.azureSasCredential = null;
         return this;
     }
 
@@ -237,8 +245,11 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
         blobServiceClientBuilder.sasToken(sasToken);
         this.azureSasCredential
             = new AzureSasCredential(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "sasToken");
+        }
         this.storageSharedKeyCredential = null;
-        this.tokenCredential = null;
         return this;
     }
 
@@ -540,6 +551,32 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
         if (audience != null) {
             blobServiceClientBuilder.audience(BlobAudience.fromString(audience.toString()));
         }
+        return this;
+    }
+
+    /**
+     * Sets the {@link SessionContext} used for session-based authentication by the underlying Blob clients of file system
+     * and path clients derived from this service client. Sessions are not used by the DFS pipeline.
+     * <p>
+     * Applies when this builder constructs a pipeline with a {@link TokenCredential}. The default session mode,
+     * {@link SessionContext.SessionMode#AUTO}, currently disables sessions. Set the context's session mode to
+     * {@link SessionContext.SessionMode#ENABLED} to enable session authentication for eligible GET blob requests.
+     * Other requests, and requests for which session acquisition fails, use bearer token authentication.
+     * <p>
+     * Session-enabled clients built with the same context instance share a session cache, including independently built
+     * clients. Each client acquires sessions through its own Blob pipeline. The context can override the endpoint and
+     * credential used for session acquisition without changing the client's settings for other requests. Share the context
+     * only across clients targeting the same endpoint with compatible identity and network contexts, or use separate
+     * instances for independent caches.
+     * <p>
+     * The session mode and account name are captured when the client is built. Changing them on the context affects only
+     * clients built afterward; the session cache remains shared.
+     *
+     * @param sessionContext The session context for the HTTP pipeline, or {@code null} to reset to a new default context.
+     * @return the updated DataLakeServiceClientBuilder object.
+     */
+    public DataLakeServiceClientBuilder sessionContext(SessionContext sessionContext) {
+        blobServiceClientBuilder.sessionContext(sessionContext);
         return this;
     }
 }

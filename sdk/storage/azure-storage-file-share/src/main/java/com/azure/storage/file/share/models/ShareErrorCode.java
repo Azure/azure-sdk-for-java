@@ -441,6 +441,55 @@ public final class ShareErrorCode extends ExpandableStringEnum<ShareErrorCode> {
     public static final ShareErrorCode SHARE_SNAPSHOT_NOT_FOUND = fromString("ShareSnapshotNotFound");
 
     /**
+     * Static value FileShareProvisionedIopsInvalid for ShareErrorCode.
+     */
+    @Generated
+    public static final ShareErrorCode FILE_SHARE_PROVISIONED_IOPS_INVALID
+        = fromString("FileShareProvisionedIopsInvalid");
+
+    /**
+     * Static value FileShareProvisionedBandwidthInvalid for ShareErrorCode.
+     */
+    @Generated
+    public static final ShareErrorCode FILE_SHARE_PROVISIONED_BANDWIDTH_INVALID
+        = fromString("FileShareProvisionedBandwidthInvalid");
+
+    /**
+     * Static value FileShareProvisionedStorageInvalid for ShareErrorCode.
+     */
+    @Generated
+    public static final ShareErrorCode FILE_SHARE_PROVISIONED_STORAGE_INVALID
+        = fromString("FileShareProvisionedStorageInvalid");
+
+    /**
+     * Static value TotalSharesProvisionedCapacityExceedsAccountLimit for ShareErrorCode.
+     */
+    @Generated
+    public static final ShareErrorCode TOTAL_SHARES_PROVISIONED_CAPACITY_EXCEEDS_ACCOUNT_LIMIT
+        = fromString("TotalSharesProvisionedCapacityExceedsAccountLimit");
+
+    /**
+     * Static value TotalSharesProvisionedIopsExceedsAccountLimit for ShareErrorCode.
+     */
+    @Generated
+    public static final ShareErrorCode TOTAL_SHARES_PROVISIONED_IOPS_EXCEEDS_ACCOUNT_LIMIT
+        = fromString("TotalSharesProvisionedIopsExceedsAccountLimit");
+
+    /**
+     * Static value TotalSharesProvisionedBandwidthExceedsAccountLimit for ShareErrorCode.
+     */
+    @Generated
+    public static final ShareErrorCode TOTAL_SHARES_PROVISIONED_BANDWIDTH_EXCEEDS_ACCOUNT_LIMIT
+        = fromString("TotalSharesProvisionedBandwidthExceedsAccountLimit");
+
+    /**
+     * Static value TotalSharesCountExceedsAccountLimit for ShareErrorCode.
+     */
+    @Generated
+    public static final ShareErrorCode TOTAL_SHARES_COUNT_EXCEEDS_ACCOUNT_LIMIT
+        = fromString("TotalSharesCountExceedsAccountLimit");
+
+    /**
      * Creates a new instance of ShareErrorCode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

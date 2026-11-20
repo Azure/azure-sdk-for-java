@@ -167,8 +167,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getFileAsyncClient#String -->
      *
-     * @param fileName A {@code String} representing the name of the file. If the path name contains special characters,
-     * pass in the url encoded version of the path name.
+     * @param fileName A {@code String} representing the name of the file. Pass the name unencoded; the client
+     * percent-encodes it when building the request URL.
      * @return A new {@link DataLakeFileAsyncClient} object which references the file with the specified name in this
      * file system.
      */
@@ -197,8 +197,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getDirectoryAsyncClient#String -->
      *
-     * @param directoryName A {@code String} representing the name of the directory. If the path name contains special
-     * characters, pass in the url encoded version of the path name.
+     * @param directoryName A {@code String} representing the name of the directory.
+     *     Pass the name unencoded; the client percent-encodes it when building the request URL.
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the directory with the specified name
      * in this file system.
      */
@@ -356,6 +356,11 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new file system within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>Only a 409 {@code ContainerAlreadyExists} is treated as the file system already existing. If the file system
+     * is being deleted, the call fails with a {@link DataLakeStorageException} (409 {@code ContainerBeingDeleted}):
+     * after a delete, a file system with the same name can't be created for at least 30 seconds, and possibly longer if
+     * the service is still processing the request.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createIfNotExists -->
@@ -382,6 +387,11 @@ public class DataLakeFileSystemAsyncClient {
     /**
      * Creates a new file system within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>Only a 409 {@code ContainerAlreadyExists} is treated as the file system already existing. If the file system
+     * is being deleted, the call fails with a {@link DataLakeStorageException} (409 {@code ContainerBeingDeleted}):
+     * after a delete, a file system with the same name can't be created for at least 30 seconds, and possibly longer if
+     * the service is still processing the request.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -412,7 +422,6 @@ public class DataLakeFileSystemAsyncClient {
             BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
                 .setPublicAccessType(Transforms.toBlobPublicAccessType(accessType));
             return blobContainerAsyncClient.createIfNotExistsWithResponse(options)
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -423,6 +432,14 @@ public class DataLakeFileSystemAsyncClient {
      * Marks the specified file system for deletion. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -445,6 +462,14 @@ public class DataLakeFileSystemAsyncClient {
      * Marks the specified file system for deletion. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -475,6 +500,14 @@ public class DataLakeFileSystemAsyncClient {
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteIfExists -->
@@ -501,6 +534,14 @@ public class DataLakeFileSystemAsyncClient {
      * Marks the specified file system for deletion if it exists. The file system and any files/directories contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a file system is deleted, a file system with the same name can't be created for at least 30 seconds. The
+     * file system might not be available for more than 30 seconds if the service is still processing the request. While
+     * the file system is being deleted, attempts to create a file system of the same name fail with status code 409
+     * (Conflict). The service indicates that the file system is being deleted. Operations on paths within the file
+     * system, including reads and writes, may continue to succeed for up to 30 seconds after the delete request is
+     * accepted. After this period, all operations on the file system and its paths fail with status code 404 (Not
+     * Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -534,7 +575,6 @@ public class DataLakeFileSystemAsyncClient {
             options = options == null ? new DataLakePathDeleteOptions() : options;
             return blobContainerAsyncClient
                 .deleteIfExistsWithResponse(Transforms.toBlobRequestConditions(options.getRequestConditions()))
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1010,6 +1050,10 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new file within a file system if it does not exist. For more
      * information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createFileIfNotExists#String -->
@@ -1030,6 +1074,10 @@ public class DataLakeFileSystemAsyncClient {
     /**
      * Creates a new file within a file system if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1072,7 +1120,7 @@ public class DataLakeFileSystemAsyncClient {
             new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
             return createFileWithResponse(fileName, options).onErrorResume(
-                t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+                t -> DataLakeImplUtils.isConflictWithErrorCode(t, DataLakeImplUtils.PATH_ALREADY_EXISTS_ERROR_CODE),
                 t -> {
                     HttpResponse response = ((DataLakeStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -1220,8 +1268,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
@@ -1243,8 +1291,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectory#String-boolean -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param overwrite Whether to overwrite, should a directory exist.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
@@ -1282,8 +1330,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
@@ -1347,8 +1395,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryWithResponse#String-DataLakePathCreateOptions -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathCreateOptions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the directory created.
@@ -1370,6 +1418,10 @@ public class DataLakeFileSystemAsyncClient {
      * Creates a new directory within a file system if it does not exist.
      * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String -->
@@ -1378,8 +1430,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExists#String -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A {@link Mono} containing a {@link DataLakeDirectoryAsyncClient} used to interact with the directory
      * created.
      */
@@ -1392,6 +1444,10 @@ public class DataLakeFileSystemAsyncClient {
     /**
      * Creates a new directory within a file system if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1418,8 +1474,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.createDirectoryIfNotExistsWithResponse#String-DataLakePathCreateOptions -->
      *
-     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to create. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathCreateOptions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
      * {@link DataLakeDirectoryAsyncClient} used to interact with the directory created. If {@link Response}'s status
@@ -1434,7 +1490,7 @@ public class DataLakeFileSystemAsyncClient {
             new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
         try {
             return createDirectoryWithResponse(directoryName, options).onErrorResume(
-                t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+                t -> DataLakeImplUtils.isConflictWithErrorCode(t, DataLakeImplUtils.PATH_ALREADY_EXISTS_ERROR_CODE),
                 t -> {
                     HttpResponse response = ((DataLakeStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -1459,8 +1515,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectory#String -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return A reactive response signalling completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1486,8 +1542,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param recursive Whether to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing status code and HTTP headers
@@ -1524,8 +1580,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExists#String -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @return a reactive response signaling completion. {@code true} indicates that the specified directory was
      * successfully deleted, {@code false} indicates that the specified directory did not exist.
      */
@@ -1560,8 +1616,8 @@ public class DataLakeFileSystemAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.deleteDirectoryIfExistsWithResponse#String-DataLakePathDeleteOptions -->
      *
-     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
-     * url encoded version of the path name.
+     * @param directoryName Name of the directory to delete. Pass the name unencoded; the client percent-encodes it when
+     * building the request URL.
      * @param options {@link DataLakePathDeleteOptions}
      * @return A reactive response signaling completion. If {@link Response}'s status code is 200, the file was
      * successfully deleted. If status code is 404, the file does not exist.

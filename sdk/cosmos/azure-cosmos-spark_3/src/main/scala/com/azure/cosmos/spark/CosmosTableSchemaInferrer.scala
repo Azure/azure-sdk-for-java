@@ -163,7 +163,7 @@ private object CosmosTableSchemaInferrer
         .limit(cosmosInferenceConfig.inferSchemaSamplingSize)
         .collect(Collectors.toList[ObjectNode]())
 
-        schema = Some(inferSchema(feedResponseList.asScala,
+        schema = Some(inferSchema(feedResponseList.asScala.toSeq,
             cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeSystemProperties,
             cosmosInferenceConfig.inferSchemaQuery.isDefined || cosmosInferenceConfig.includeTimestamp,
             cosmosInferenceConfig.allowNullForInferredProperties))

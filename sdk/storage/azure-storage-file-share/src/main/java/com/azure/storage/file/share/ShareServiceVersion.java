@@ -152,7 +152,27 @@ public enum ShareServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2026-02-06}.
      */
-    V2026_02_06("2026-02-06");
+    V2026_02_06("2026-02-06"),
+
+    /**
+     * Service version {@code 2026-04-06}.
+     */
+    V2026_04_06("2026-04-06"),
+
+    /**
+     * Service version {@code 2026-06-06}.
+     */
+    V2026_06_06("2026-06-06"),
+
+    /**
+     * Service version {@code 2026-10-06}.
+     */
+    V2026_10_06("2026-10-06"),
+
+    /**
+     * Service version {@code 2027-03-07}.
+     */
+    V2027_03_07("2027-03-07");
 
     private final String version;
 
@@ -174,6 +194,6 @@ public enum ShareServiceVersion implements ServiceVersion {
      * @return the latest {@link ShareServiceVersion}
      */
     public static ShareServiceVersion getLatest() {
-        return V2026_02_06;
+        return V2027_03_07;
     }
 }

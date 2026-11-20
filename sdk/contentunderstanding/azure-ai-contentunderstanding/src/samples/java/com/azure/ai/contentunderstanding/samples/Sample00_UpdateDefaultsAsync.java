@@ -1,0 +1,131 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.util.Map;
+import java.util.concurrent.TimeoutException;
+
+/**
+ * Sample demonstrating how to configure and manage default settings for Content Understanding service.
+ * This sample shows:
+ * 1. Getting current default configuration
+ * 2. Updating default configuration with your model deployments
+ * 3. Verifying the updated configuration
+ *
+ * <p><b>Prerequisites:</b></p>
+ * <ol>
+ *   <li>Create a Microsoft Foundry resource (see README.md).</li>
+ *   <li>Deploy completion and embedding models.</li>
+ *   <li>Set these environment variables:
+ *     <ul>
+ *       <li>{@code CONTENTUNDERSTANDING_ENDPOINT}: Your Foundry resource endpoint.</li>
+ *       <li>{@code CONTENTUNDERSTANDING_KEY}: Optional API key.</li>
+ *       <li>{@code CU_COMPLETION_MODEL_DEPLOYMENT}: Completion model deployment name.</li>
+ *       <li>{@code CU_EMBEDDING_DEPLOYMENT}: Embedding model deployment name.</li>
+ *       <li>{@code CU_COMPLETION_MODEL}: Optional completion model name; defaults to {@code gpt-5.2}.</li>
+ *       <li>{@code CU_COMPLETION_MODEL_MINI}: Optional mini completion model name; defaults to
+ *           {@code CU_COMPLETION_MODEL}.</li>
+ *       <li>{@code CU_COMPLETION_MINI_DEPLOYMENT}: Optional mini deployment; defaults to
+ *           {@code CU_COMPLETION_MODEL_DEPLOYMENT}.</li>
+ *       <li>{@code CU_EMBEDDING_MODEL}: Optional embedding model name; defaults to
+ *           {@code text-embedding-3-large}.</li>
+ *     </ul>
+ *   </li>
+ * </ol>
+ *
+ * <p>This sample demonstrates the one-time setup required to map your deployed models
+ * to those required by prebuilt and custom analyzers.</p>
+ *
+ * <p>Create the Microsoft Foundry resource in a region that supports Content Understanding. When authenticating with
+ * {@link DefaultAzureCredentialBuilder}, assign yourself the Cognitive Services User role before updating defaults;
+ * this role is required even for a resource owner. Map both concrete model names and the prebuilt analyzer aliases,
+ * even when several aliases use the same deployment.</p>
+ *
+ * <p>API key authentication is intended for testing with test resources. For production, use
+ * {@link DefaultAzureCredentialBuilder} or another secure token credential.</p>
+ */
+public class Sample00_UpdateDefaultsAsync {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample00Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample00Async.buildClient
+
+        // Step 1: Get current defaults to see what's configured
+        System.out.println("Getting current default configuration...");
+
+        // Chain all operations reactively
+        Mono<Void> operation = client.getDefaults()
+            .doOnNext(currentDefaults -> {
+                System.out.println("Current defaults retrieved successfully.");
+                System.out.println("Current model deployments: " + currentDefaults.getModelDeployments());
+            })
+            .flatMap(currentDefaults -> {
+                // Step 2: Configure model deployments from environment variables
+                // These map model names to your deployed model names in Azure AI Foundry
+                System.out.println("\nConfiguring model deployments from environment variables...");
+
+                Map<String, String> modelDeployments = SampleModelConfiguration.getDefaultModelDeployments();
+
+                System.out.println("Model deployments to configure:");
+                for (Map.Entry<String, String> deployment : modelDeployments.entrySet()) {
+                    System.out.println("  " + deployment.getKey() + " -> " + deployment.getValue());
+                }
+
+                // Step 3: Update defaults with the new configuration
+                System.out.println("\nUpdating default configuration...");
+                return client.updateDefaults(modelDeployments);
+            })
+            .doOnNext(updatedConfig -> {
+                System.out.println("Defaults updated successfully.");
+                System.out.println("Updated model deployments: " + updatedConfig.getModelDeployments());
+            })
+            .flatMap(updatedConfig -> {
+                // Step 4: Verify the updated configuration
+                System.out.println("\nVerifying updated configuration...");
+                return client.getDefaults();
+            })
+            .doOnNext(updatedDefaults -> {
+                System.out.println("Updated defaults verified successfully.");
+                System.out.println("Updated model deployments: " + updatedDefaults.getModelDeployments());
+                System.out.println("\nConfiguration management completed.");
+            })
+            .then();
+
+        // Wait for terminal completion so errors reach the caller. A timeout cancels the upstream subscription.
+        waitForCompletion(operation, Duration.ofSeconds(30));
+    }
+
+    static void waitForCompletion(Mono<Void> operation, Duration timeout) {
+        try {
+            operation.block(timeout);
+        } catch (IllegalStateException exception) {
+            if (exception.getCause() instanceof TimeoutException) {
+                throw new IllegalStateException("Timed out waiting for async operations to complete.",
+                    exception.getCause());
+            }
+            throw exception;
+        }
+    }
+}

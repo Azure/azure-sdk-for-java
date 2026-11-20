@@ -11,7 +11,7 @@ public final class ProvisionedNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProvisionedNetworkInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"addressPrefix\":\"ccymvaolpsslql\",\"networkType\":\"hcxManagement\"},\"id\":\"n\",\"name\":\"bglzpswi\",\"type\":\"d\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"addressPrefix\":\"rx\",\"networkType\":\"hcxManagement\"},\"id\":\"zvaytdwkqbr\",\"name\":\"ubpaxhe\",\"type\":\"iilivpdtiirqtd\"}")
             .toObject(ProvisionedNetworkInner.class);
     }
 }

@@ -19,6 +19,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -62,8 +64,10 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeGetTagsOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.DataLakeSetTagsOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathGetSystemPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
@@ -479,6 +483,10 @@ public class DataLakePathAsyncClient {
     /**
      * Creates a resource if it does not exist.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.createIfNotExists -->
@@ -501,6 +509,10 @@ public class DataLakePathAsyncClient {
 
     /**
      * Creates a resource if it does not exist.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -552,7 +564,7 @@ public class DataLakePathAsyncClient {
             options.setRequestConditions(
                 new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD));
             return createWithResponse(options, context).onErrorResume(
-                t -> t instanceof DataLakeStorageException && ((DataLakeStorageException) t).getStatusCode() == 409,
+                t -> DataLakeImplUtils.isConflictWithErrorCode(t, DataLakeImplUtils.PATH_ALREADY_EXISTS_ERROR_CODE),
                 t -> {
                     HttpResponse response = ((DataLakeStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -1949,5 +1961,66 @@ public class DataLakePathAsyncClient {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
             PathResourceType.DIRECTORY.equals(this.pathResourceType))
                 .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    /**
+     * Gets the tags associated with the underlying path.
+     *
+     * @return The path's tags.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Map<String, String>> getTags() {
+        return this.getTagsWithResponse(new DataLakeGetTagsOptions()).map(Response::getValue);
+    }
+
+    /**
+     * Gets the tags associated with the underlying path.
+     *
+     * @param options {@link DataLakeGetTagsOptions}
+     * @return The path's tags.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Map<String, String>>> getTagsWithResponse(DataLakeGetTagsOptions options) {
+        options = (options == null) ? new DataLakeGetTagsOptions() : options;
+        DataLakeRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new DataLakeRequestConditions()
+            : options.getRequestConditions();
+        BlobGetTagsOptions blobGetTagsOptions
+            = new BlobGetTagsOptions().setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
+
+        return this.blockBlobAsyncClient.getTagsWithResponse(blobGetTagsOptions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * @param tags Tags to associate with the path.
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setTags(Map<String, String> tags) {
+        return this.setTagsWithResponse(new DataLakeSetTagsOptions(tags)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * @param options {@link DataLakeSetTagsOptions}
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setTagsWithResponse(DataLakeSetTagsOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
+        DataLakeRequestConditions requestConditions = (options.getRequestConditions() == null)
+            ? new DataLakeRequestConditions()
+            : options.getRequestConditions();
+        BlobSetTagsOptions blobSetTagsOptions = new BlobSetTagsOptions(options.getTags())
+            .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions));
+
+        return this.blockBlobAsyncClient.setTagsWithResponse(blobSetTagsOptions)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 }

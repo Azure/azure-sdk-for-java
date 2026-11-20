@@ -1,0 +1,116 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * Sample demonstrating how to analyze documents and get raw JSON response using protocol methods asynchronously.
+ * This sample shows:
+ * 1. Using protocol method to get raw JSON response instead of strongly-typed objects
+ * 2. Parsing raw JSON response
+ * 3. Pretty-printing and saving JSON to file
+ *
+ * Note: For production use, prefer the object model approach (beginAnalyzeBinary with typed parameters)
+ * which returns AnalysisResult objects that are easier to work with.
+ */
+public class Sample11_AnalyzeReturnRawJsonAsync {
+
+    public static void main(String[] args) throws IOException {
+        // BEGIN: com.azure.ai.contentunderstanding.sample11Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample11Async.buildClient
+
+        System.out.println("Client initialized successfully");
+
+        // BEGIN:ContentUnderstandingAnalyzeReturnRawJsonAsync
+        // Load local sample file
+        Path filePath = Paths.get("src/samples/resources/sample_invoice.pdf");
+        byte[] fileBytes = Files.readAllBytes(filePath);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
+
+        // Use the binary protocol method to get the raw JSON response without Base64-encoding the input
+        // Note: For production use, prefer the object model approach (beginAnalyze with typed parameters)
+        // which returns AnalysisResult objects that are easier to work with
+        PollerFlux<BinaryData, BinaryData> operation
+            = client.beginAnalyzeBinary("prebuilt-documentSearch", "application/octet-stream", binaryData,
+                new RequestOptions());
+
+        BinaryData responseData = operation.last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Document analysis"))
+            .block();
+        // END:ContentUnderstandingAnalyzeReturnRawJsonAsync
+
+        System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
+        System.out.println("Response data size: " + String.format("%,d", responseData.toBytes().length) + " bytes");
+
+        // BEGIN:ContentUnderstandingParseRawJsonAsync
+        // Parse the raw JSON response
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(responseData.toBytes());
+        if (jsonNode == null) {
+            throw new IOException("Analysis response did not contain a JSON document.");
+        }
+
+        // Pretty-print the JSON
+        String prettyJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+        byte[] prettyJsonBytes = prettyJson.getBytes(StandardCharsets.UTF_8);
+
+        // Create output directory if it doesn't exist
+        Path outputDir = Paths.get("target/sample_output");
+        Files.createDirectories(outputDir);
+
+        // Save to file
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String outputFileName = "analyze_result_" + timestamp + ".json";
+        Path outputPath = outputDir.resolve(outputFileName);
+        Files.write(outputPath, prettyJsonBytes);
+
+        System.out.println("Raw JSON response saved to: " + outputPath);
+        System.out.println("File size: " + String.format("%,d", prettyJsonBytes.length) + " bytes");
+        // END:ContentUnderstandingParseRawJsonAsync
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono.error(
+                new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+}

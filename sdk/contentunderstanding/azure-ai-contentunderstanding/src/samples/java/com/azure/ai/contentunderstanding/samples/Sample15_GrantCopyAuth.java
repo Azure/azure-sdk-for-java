@@ -1,0 +1,268 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.CopyAuthorization;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Supplier;
+
+/**
+ * Sample demonstrates how to grant copy authorization and copy an analyzer from a source
+ * Microsoft Foundry resource to a target Microsoft Foundry resource (cross-resource copying).
+ *
+ * <p>For same-resource copying, see Sample14_CopyAnalyzer.</p>
+ *
+ * <p>Cross-resource copying supports multi-region deployment, resource migration, subscription-to-subscription
+ * copying, and environment promotion. The source resource grants a time-limited authorization, and the target
+ * resource performs the copy before that authorization expires.</p>
+ *
+ * <p>Required environment variables:</p>
+ * <ul>
+ *   <li>CONTENTUNDERSTANDING_ENDPOINT: Source resource endpoint</li>
+ *   <li>CONTENTUNDERSTANDING_KEY (optional): API key for source resource</li>
+ *   <li>CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID: Azure resource ID of the source resource</li>
+ *   <li>CONTENTUNDERSTANDING_SOURCE_REGION: Region of the source resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_ENDPOINT: Endpoint of the target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_KEY (optional): API key for target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_RESOURCE_ID: Azure resource ID of the target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_REGION: Region of the target resource</li>
+ * </ul>
+ *
+ * <p>Note: If API keys are not provided, DefaultAzureCredential will be used.
+ * Cross-resource copying with DefaultAzureCredential requires 'Cognitive Services User' role
+ * on both source and target resources.</p>
+ *
+ * <p>Configure model deployment defaults on both resources before running this sample. See
+ * {@link Sample00_UpdateDefaults}.</p>
+ */
+public class Sample15_GrantCopyAuth {
+
+    public static void main(String[] args) {
+        // Get configuration from environment variables
+        String sourceEndpoint = requireEnvironmentValue("CONTENTUNDERSTANDING_ENDPOINT",
+            System.getenv("CONTENTUNDERSTANDING_ENDPOINT"));
+        String sourceKey = System.getenv("CONTENTUNDERSTANDING_KEY");
+        String sourceResourceId = requireEnvironmentValue("CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID",
+            System.getenv("CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID"));
+        String sourceRegion = requireEnvironmentValue("CONTENTUNDERSTANDING_SOURCE_REGION",
+            System.getenv("CONTENTUNDERSTANDING_SOURCE_REGION"));
+        String targetEndpoint = requireEnvironmentValue("CONTENTUNDERSTANDING_TARGET_ENDPOINT",
+            System.getenv("CONTENTUNDERSTANDING_TARGET_ENDPOINT"));
+        String targetKey = System.getenv("CONTENTUNDERSTANDING_TARGET_KEY");
+        String targetResourceId = requireEnvironmentValue("CONTENTUNDERSTANDING_TARGET_RESOURCE_ID",
+            System.getenv("CONTENTUNDERSTANDING_TARGET_RESOURCE_ID"));
+        String targetRegion = requireEnvironmentValue("CONTENTUNDERSTANDING_TARGET_REGION",
+            System.getenv("CONTENTUNDERSTANDING_TARGET_REGION"));
+
+        // BEGIN: com.azure.ai.contentunderstanding.grantCopyAuth
+        // Build source client with appropriate authentication
+        ContentUnderstandingClientBuilder sourceBuilder
+            = new ContentUnderstandingClientBuilder().endpoint(sourceEndpoint);
+        ContentUnderstandingClient sourceClient;
+        if (sourceKey != null && !sourceKey.trim().isEmpty()) {
+            sourceClient = sourceBuilder.credential(new AzureKeyCredential(sourceKey)).buildClient();
+        } else {
+            sourceClient = sourceBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        // Build target client with appropriate authentication
+        ContentUnderstandingClientBuilder targetBuilder
+            = new ContentUnderstandingClientBuilder().endpoint(targetEndpoint);
+        ContentUnderstandingClient targetClient;
+        if (targetKey != null && !targetKey.trim().isEmpty()) {
+            targetClient = targetBuilder.credential(new AzureKeyCredential(targetKey)).buildClient();
+        } else {
+            targetClient = targetBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+
+        String sourceAnalyzerId = "copy_source_" + UUID.randomUUID().toString().replace("-", "");
+        String targetAnalyzerId = "copy_target_" + UUID.randomUUID().toString().replace("-", "");
+
+        // Step 1: Create the source analyzer
+        ContentAnalyzerConfig config = new ContentAnalyzerConfig();
+        config.setFormulaEnabled(false);
+        config.setLayoutEnabled(true);
+        config.setOcrEnabled(true);
+        config.setEstimateFieldSourceAndConfidence(true);
+        config.setReturnDetails(true);
+
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        ContentFieldDefinition companyNameField = new ContentFieldDefinition();
+        companyNameField.setType(ContentFieldType.STRING);
+        companyNameField.setMethod(GenerationMethod.EXTRACT);
+        companyNameField.setDescription("Name of the company");
+        fields.put("company_name", companyNameField);
+
+        ContentFieldDefinition totalAmountField = new ContentFieldDefinition();
+        totalAmountField.setType(ContentFieldType.NUMBER);
+        totalAmountField.setMethod(GenerationMethod.EXTRACT);
+        totalAmountField.setDescription("Total amount on the document");
+        fields.put("total_amount", totalAmountField);
+
+        ContentFieldSchema fieldSchema = new ContentFieldSchema();
+        fieldSchema.setName("company_schema");
+        fieldSchema.setDescription("Schema for extracting company information");
+        fieldSchema.setFields(fields);
+
+        ContentAnalyzer sourceAnalyzer = new ContentAnalyzer();
+        sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
+        sourceAnalyzer.setDescription("Source analyzer for cross-resource copying");
+        sourceAnalyzer.setConfig(config);
+        sourceAnalyzer.setFieldSchema(fieldSchema);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+        sourceAnalyzer.setModels(models);
+
+        try {
+            SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+                = sourceClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
+            ContentAnalyzer sourceResult
+                = requireSuccessfulResult(createPoller.waitForCompletion().getStatus(), createPoller::getFinalResult,
+                    "Source analyzer creation");
+            System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
+
+            // Step 2: Grant copy authorization on source client
+            CopyAuthorization copyAuth = sourceClient.grantCopyAuthorization(
+                sourceAnalyzerId, targetResourceId, targetRegion);
+            requireNotNull(copyAuth, "copy authorization");
+            requireEqual(targetResourceId, copyAuth.getTargetAzureResourceId(), "target Azure resource ID");
+            OffsetDateTime expiresAt = requireNotNull(copyAuth.getExpiresAt(), "copy authorization expiration");
+            if (!expiresAt.isAfter(OffsetDateTime.now())) {
+                throw new IllegalStateException("Copy authorization has already expired at " + expiresAt + ".");
+            }
+
+            System.out.println("Copy authorization granted successfully!");
+            System.out.println("  Target Azure Resource ID: " + copyAuth.getTargetAzureResourceId());
+            System.out.println("  Target Region: " + targetRegion);
+            System.out.println("  Expires at: " + copyAuth.getExpiresAt());
+
+            // Step 3: Copy analyzer to target resource using target client
+            SyncPoller<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                = targetClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, false,
+                    sourceResourceId, sourceRegion);
+
+            ContentAnalyzer targetResult
+                = requireSuccessfulResult(copyPoller.waitForCompletion().getStatus(), copyPoller::getFinalResult,
+                    "Cross-resource analyzer copy");
+            verifyCopiedAnalyzer(sourceResult, targetResult);
+            System.out.println("Target analyzer '" + targetAnalyzerId + "' copied successfully!");
+            System.out.println("  Description: " + targetResult.getDescription());
+
+            ContentAnalyzer copiedAnalyzer = targetClient.getAnalyzer(targetAnalyzerId);
+            verifyCopiedAnalyzer(targetResult, copiedAnalyzer);
+            System.out.println("Cross-resource copy properties verified.");
+            // END: com.azure.ai.contentunderstanding.grantCopyAuth
+
+        } finally {
+            // Cleanup: delete both analyzers
+            try {
+                sourceClient.deleteAnalyzer(sourceAnalyzerId);
+                System.out.println("Source analyzer '" + sourceAnalyzerId + "' deleted.");
+            } catch (RuntimeException e) {
+                System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
+            }
+
+            try {
+                targetClient.deleteAnalyzer(targetAnalyzerId);
+                System.out.println("Target analyzer '" + targetAnalyzerId + "' deleted.");
+            } catch (RuntimeException e) {
+                System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
+            }
+        }
+    }
+
+    static String requireEnvironmentValue(String name, String value) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalStateException("Cross-resource copying requires environment variable " + name + ".");
+        }
+        return value.trim();
+    }
+
+    static <T> T requireSuccessfulResult(LongRunningOperationStatus status, Supplier<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            throw new IllegalStateException(operationName + " completed unsuccessfully with status: " + status);
+        }
+        T result = finalResult.get();
+        if (result == null) {
+            throw new IllegalStateException(operationName + " completed without a final result.");
+        }
+        return result;
+    }
+
+    private static void verifyCopiedAnalyzer(ContentAnalyzer expected, ContentAnalyzer actual) {
+        requireNotNull(expected, "expected analyzer");
+        requireNotNull(actual, "copied analyzer");
+        requireEqual(expected.getBaseAnalyzerId(), actual.getBaseAnalyzerId(), "base analyzer ID");
+        requireEqual(expected.getDescription(), actual.getDescription(), "description");
+
+        ContentFieldSchema expectedSchema = requireNotNull(expected.getFieldSchema(), "expected field schema");
+        ContentFieldSchema actualSchema = requireNotNull(actual.getFieldSchema(), "copied field schema");
+        requireEqual(expectedSchema.getName(), actualSchema.getName(), "field schema name");
+        requireEqual(expectedSchema.getDescription(), actualSchema.getDescription(), "field schema description");
+        Map<String, ContentFieldDefinition> expectedFields
+            = requireNotNull(expectedSchema.getFields(), "expected fields");
+        Map<String, ContentFieldDefinition> actualFields = requireNotNull(actualSchema.getFields(), "copied fields");
+        requireEqual(expectedFields.size(), actualFields.size(), "field count");
+        for (Map.Entry<String, ContentFieldDefinition> expectedField : expectedFields.entrySet()) {
+            ContentFieldDefinition actualField
+                = requireNotNull(actualFields.get(expectedField.getKey()), expectedField.getKey());
+            requireEqual(expectedField.getValue().getType(), actualField.getType(),
+                expectedField.getKey() + " field type");
+            requireEqual(expectedField.getValue().getMethod(), actualField.getMethod(),
+                expectedField.getKey() + " generation method");
+            requireEqual(expectedField.getValue().getDescription(), actualField.getDescription(),
+                expectedField.getKey() + " description");
+        }
+
+        ContentAnalyzerConfig expectedConfig = requireNotNull(expected.getConfig(), "expected config");
+        ContentAnalyzerConfig actualConfig = requireNotNull(actual.getConfig(), "copied config");
+        requireEqual(expectedConfig.isFormulaEnabled(), actualConfig.isFormulaEnabled(), "formula setting");
+        requireEqual(expectedConfig.isLayoutEnabled(), actualConfig.isLayoutEnabled(), "layout setting");
+        requireEqual(expectedConfig.isOcrEnabled(), actualConfig.isOcrEnabled(), "OCR setting");
+        requireEqual(expectedConfig.isEstimateFieldSourceAndConfidence(),
+            actualConfig.isEstimateFieldSourceAndConfidence(), "field source and confidence setting");
+        requireEqual(expectedConfig.isReturnDetails(), actualConfig.isReturnDetails(), "return details setting");
+
+        Map<String, String> expectedModels = requireNotNull(expected.getModels(), "expected models");
+        Map<String, String> actualModels = requireNotNull(actual.getModels(), "copied models");
+        for (Map.Entry<String, String> expectedModel : expectedModels.entrySet()) {
+            requireEqual(expectedModel.getValue(), actualModels.get(expectedModel.getKey()),
+                expectedModel.getKey() + " model");
+        }
+    }
+
+    private static <T> T requireNotNull(T value, String property) {
+        if (value == null) {
+            throw new IllegalStateException(property + " was not returned.");
+        }
+        return value;
+    }
+
+    private static void requireEqual(Object expected, Object actual, String property) {
+        if (!Objects.equals(expected, actual)) {
+            throw new IllegalStateException(property + " did not match. Expected '" + expected + "' but got '"
+                + actual + "'.");
+        }
+    }
+}

@@ -18,7 +18,11 @@
 ## PlaywrightWorkspaces
 
 - [CheckNameAvailability](#playwrightworkspaces_checknameavailability)
+- [CreateOrUpdate](#playwrightworkspaces_createorupdate)
 - [Delete](#playwrightworkspaces_delete)
+- [GetByResourceGroup](#playwrightworkspaces_getbyresourcegroup)
+- [List](#playwrightworkspaces_list)
+- [ListByResourceGroup](#playwrightworkspaces_listbyresourcegroup)
 - [Update](#playwrightworkspaces_update)
 ### Operations_List
 
@@ -28,7 +32,7 @@
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-09-01/Operations_List.json
+     * x-ms-original-file: 2026-02-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -51,7 +55,7 @@ import com.azure.resourcemanager.playwright.models.QuotaName;
  */
 public final class PlaywrightQuotasGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightQuotas_Get.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightQuotas_Get.json
      */
     /**
      * Sample code: PlaywrightQuotas_Get.
@@ -73,7 +77,7 @@ public final class PlaywrightQuotasGetSamples {
  */
 public final class PlaywrightQuotasListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightQuotas_ListBySubscription.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightQuotas_ListBySubscription.json
      */
     /**
      * Sample code: PlaywrightQuotas_ListBySubscription.
@@ -97,7 +101,7 @@ import com.azure.resourcemanager.playwright.models.QuotaName;
  */
 public final class PlaywrightWorkspaceQuotasGetSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaceQuotas_Get.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaceQuotas_Get.json
      */
     /**
      * Sample code: PlaywrightWorkspaceQuotas_Get.
@@ -119,7 +123,7 @@ public final class PlaywrightWorkspaceQuotasGetSamples {
  */
 public final class PlaywrightWorkspaceQuotasListByPlaywrightWorkspaceSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
      */
     /**
      * Sample code: PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.
@@ -144,7 +148,7 @@ import com.azure.resourcemanager.playwright.models.CheckNameAvailabilityRequest;
  */
 public final class PlaywrightWorkspacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaces_CheckNameAvailability.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_CheckNameAvailability.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_CheckNameAvailability.
@@ -160,6 +164,54 @@ public final class PlaywrightWorkspacesCheckNameAvailabilitySamples {
 }
 ```
 
+### PlaywrightWorkspaces_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.playwright.models.EnablementStatus;
+import com.azure.resourcemanager.playwright.models.PlaywrightWorkspaceProperties;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for PlaywrightWorkspaces CreateOrUpdate.
+ */
+public final class PlaywrightWorkspacesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: PlaywrightWorkspaces_CreateOrUpdate.
+     * 
+     * @param manager Entry point to PlaywrightManager.
+     */
+    public static void
+        playwrightWorkspacesCreateOrUpdate(com.azure.resourcemanager.playwright.PlaywrightManager manager) {
+        manager.playwrightWorkspaces()
+            .define("myWorkspace")
+            .withRegion("westus3")
+            .withExistingResourceGroup("dummyrg")
+            .withTags(mapOf("Team", "Dev Exp"))
+            .withProperties(new PlaywrightWorkspaceProperties().withRegionalAffinity(EnablementStatus.ENABLED)
+                .withLocalAuth(EnablementStatus.ENABLED)
+                .withReporting(EnablementStatus.ENABLED)
+                .withStorageUri("https://examplestorageaccount.blob.core.windows.net"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
 ### PlaywrightWorkspaces_Delete
 
 ```java
@@ -168,7 +220,7 @@ public final class PlaywrightWorkspacesCheckNameAvailabilitySamples {
  */
 public final class PlaywrightWorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaces_Delete.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_Delete.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_Delete.
@@ -177,6 +229,72 @@ public final class PlaywrightWorkspacesDeleteSamples {
      */
     public static void playwrightWorkspacesDelete(com.azure.resourcemanager.playwright.PlaywrightManager manager) {
         manager.playwrightWorkspaces().delete("dummyrg", "myWorkspace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PlaywrightWorkspaces_GetByResourceGroup
+
+```java
+/**
+ * Samples for PlaywrightWorkspaces GetByResourceGroup.
+ */
+public final class PlaywrightWorkspacesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_Get.json
+     */
+    /**
+     * Sample code: PlaywrightWorkspaces_Get.
+     * 
+     * @param manager Entry point to PlaywrightManager.
+     */
+    public static void playwrightWorkspacesGet(com.azure.resourcemanager.playwright.PlaywrightManager manager) {
+        manager.playwrightWorkspaces()
+            .getByResourceGroupWithResponse("dummyrg", "myWorkspace", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PlaywrightWorkspaces_List
+
+```java
+/**
+ * Samples for PlaywrightWorkspaces List.
+ */
+public final class PlaywrightWorkspacesListSamples {
+    /*
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_ListBySubscription.json
+     */
+    /**
+     * Sample code: PlaywrightWorkspaces_ListBySubscription.
+     * 
+     * @param manager Entry point to PlaywrightManager.
+     */
+    public static void
+        playwrightWorkspacesListBySubscription(com.azure.resourcemanager.playwright.PlaywrightManager manager) {
+        manager.playwrightWorkspaces().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PlaywrightWorkspaces_ListByResourceGroup
+
+```java
+/**
+ * Samples for PlaywrightWorkspaces ListByResourceGroup.
+ */
+public final class PlaywrightWorkspacesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: PlaywrightWorkspaces_ListByResourceGroup.
+     * 
+     * @param manager Entry point to PlaywrightManager.
+     */
+    public static void
+        playwrightWorkspacesListByResourceGroup(com.azure.resourcemanager.playwright.PlaywrightManager manager) {
+        manager.playwrightWorkspaces().listByResourceGroup("dummyrg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -195,7 +313,7 @@ import java.util.Map;
  */
 public final class PlaywrightWorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01/PlaywrightWorkspaces_Update.json
+     * x-ms-original-file: 2026-02-01-preview/PlaywrightWorkspaces_Update.json
      */
     /**
      * Sample code: PlaywrightWorkspaces_Update.
@@ -208,7 +326,8 @@ public final class PlaywrightWorkspacesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("Team", "Dev Exp", "Division", "LT"))
-            .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED))
+            .withProperties(new PlaywrightWorkspaceUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED)
+                .withReporting(EnablementStatus.DISABLED))
             .apply();
     }
 

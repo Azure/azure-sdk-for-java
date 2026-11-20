@@ -2,7 +2,7 @@
 
 Azure Resource Manager Secrets Store Extension client library for Java.
 
-This package contains Microsoft Azure SDK for Secrets Store Extension Management SDK. Microsoft.SecretSyncController resource provider. Package api-version 2024-08-21-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Secrets Store Extension Management SDK. Microsoft.SecretSyncController resource provider. Package api-version 2026-09-25-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

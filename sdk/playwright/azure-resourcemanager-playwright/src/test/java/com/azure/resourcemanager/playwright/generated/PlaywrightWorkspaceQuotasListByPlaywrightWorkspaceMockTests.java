@@ -21,7 +21,7 @@ public final class PlaywrightWorkspaceQuotasListByPlaywrightWorkspaceMockTests {
     @Test
     public void testListByPlaywrightWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-07-26T12:42:25Z\",\"expiryAt\":\"2021-08-28T07:05:13Z\",\"allocatedValue\":1998185224,\"usedValue\":86.719423214258,\"percentageUsed\":53.69874548651998},\"provisioningState\":\"Accepted\"},\"id\":\"hc\",\"name\":\"mnoh\",\"type\":\"t\"}]}";
+            = "{\"value\":[{\"properties\":{\"freeTrial\":{\"createdAt\":\"2021-03-28T02:13:16Z\",\"expiryAt\":\"2021-01-01T20:16:56Z\",\"allocatedValue\":798376166,\"usedValue\":65.41161636204728,\"percentageUsed\":26.60670164383164},\"provisioningState\":\"Canceled\"},\"id\":\"z\",\"name\":\"cugicjoox\",\"type\":\"j\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class PlaywrightWorkspaceQuotasListByPlaywrightWorkspaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PlaywrightWorkspaceQuota> response = manager.playwrightWorkspaceQuotas()
-            .listByPlaywrightWorkspace("sfqpteehz", "vypyqrimzinpv", com.azure.core.util.Context.NONE);
+            .listByPlaywrightWorkspace("dawkzbali", "urqhaka", com.azure.core.util.Context.NONE);
 
     }
 }

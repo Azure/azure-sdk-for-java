@@ -52,7 +52,7 @@ public class NetworkTests extends NetworkManagementTest {
             .getBastionHosts()
             .createOrUpdate(rgName, bastionName, new BastionHostInner().withLocation(REGIN.toString())
                 .withIpConfigurations(Collections.singletonList(new BastionHostIpConfiguration().withName("ipconfig1")
-                    .withSubnet(network.subnets().get("AzureBastionSubnet").innerModel())
+                    .withSubnet(new SubResource().withId(network.subnets().get("AzureBastionSubnet").innerModel().id()))
                     .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
                     .withPublicIpAddress(new SubResource().withId(publicIpBastion.id())))));
 

@@ -14,13 +14,17 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.UUIDs;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -81,13 +85,28 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *    For our use case, Sinks.many().unicast() will work.
  */
 public final class BulkExecutor<TContext> implements Disposable {
+    private static ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper.CosmosBulkExecutionThresholdsStateAccessor bulkExecutionThresholdsAccessor() {
+        return ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper.getBulkExecutionThresholdsAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor databaseAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor() {
+        return ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor() {
+        return ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
+    }
 
     private final static Logger logger = LoggerFactory.getLogger(BulkExecutor.class);
     private final static AtomicLong instanceCount = new AtomicLong(0);
-    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
-        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
-    private static final ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor =
-        ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
 
     private final CosmosAsyncContainer container;
     private final int maxMicroBatchPayloadSizeInBytes;
@@ -137,9 +156,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         this.bulkSpanName = "nonTransactionalBatch." + this.container.getId();
         this.inputOperations = inputOperations;
         this.docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
-        this.cosmosClient = ImplementationBridgeHelpers
-            .CosmosAsyncDatabaseHelper
-            .getCosmosAsyncDatabaseAccessor()
+        this.cosmosClient = databaseAccessor()
             .getCosmosAsyncClient(container.getDatabase());
         this.effectiveItemSerializer = this.docClientWrapper.getEffectiveItemSerializer(cosmosBulkOptions.getCustomItemSerializer());
 
@@ -149,8 +166,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         // different values when a new group is created.
         maxMicroBatchIntervalInMs = cosmosBulkExecutionOptions.getMaxMicroBatchInterval().toMillis();
         batchContext = (TContext) cosmosBulkExecutionOptions.getLegacyBatchScopedContext();
-        this.partitionScopeThresholds = ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
-            .getBulkExecutionThresholdsAccessor()
+        this.partitionScopeThresholds = bulkExecutionThresholdsAccessor()
             .getPartitionScopeThresholds(cosmosBulkExecutionOptions.getThresholdsState());
         operationListener = cosmosBulkExecutionOptions.getOperationContextAndListenerTuple();
         if (operationListener != null &&
@@ -312,9 +328,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         Integer nullableMaxConcurrentCosmosPartitions = cosmosBulkExecutionOptions.getMaxConcurrentCosmosPartitions();
         Mono<Integer> maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ?
             Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
-            ImplementationBridgeHelpers
-                .CosmosAsyncContainerHelper
-                .getCosmosAsyncContainerAccessor()
+            containerAccessor()
                 .getFeedRanges(this.container, false).map(ranges -> Math.max(256, ranges.size() * 2));
 
         return
@@ -387,7 +401,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                                 getThreadInfo());
 
                             // resolve partition key range id again for operations which comes in main sink due to gone retry.
-                            return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation)
+                            return this.resolvePartitionKeyRangeId(operation)
                                                    .map((String pkRangeId) -> {
                                                        PartitionScopeThresholds partitionScopeThresholds =
                                                            this.partitionScopeThresholds.computeIfAbsent(
@@ -455,6 +469,47 @@ public final class BulkExecutor<TContext> implements Disposable {
                         }
                     });
             });
+    }
+
+    private Mono<String> resolvePartitionKeyRangeId(CosmosItemOperation operation) {
+        checkNotNull(operation, "expected non-null operation");
+        if (!(operation instanceof ItemBulkOperation<?, ?>)) {
+            throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
+        }
+
+        ItemBulkOperation<?, ?> itemOperation = (ItemBulkOperation<?, ?>) operation;
+        return BulkExecutorUtil.resolvePartitionKeyRangeId(
+            this.docClientWrapper,
+            this.container,
+            operation.getPartitionKeyValue(),
+            (partitionKeyDefinition, partitionKeyInternal) -> {
+                PartitionKeyInternal completedPartitionKey =
+                    PartitionKeyHelper.completePartitionKeyInternalWithIdIfNeededLazy(
+                        partitionKeyDefinition,
+                        partitionKeyInternal,
+                        () -> resolveItemId(itemOperation, this.effectiveItemSerializer));
+                itemOperation.setPartitionKeyJson(completedPartitionKey.toJson());
+                return completedPartitionKey;
+            });
+    }
+
+    static String resolveItemId(
+        ItemBulkOperation<?, ?> operation,
+        CosmosItemSerializer effectiveItemSerializer) {
+
+        if (StringUtils.isNotEmpty(operation.getId())) {
+            return operation.getId();
+        }
+
+        Object item = operation.getItemInternal();
+        if (item == null) {
+            return null;
+        }
+
+        checkNotNull(effectiveItemSerializer, "expected non-null effectiveItemSerializer");
+        Map<String, Object> serializedItem = operation.serializeAndCacheItem(effectiveItemSerializer);
+        Object idValue = serializedItem.get(Constants.Properties.ID);
+        return idValue == null ? null : idValue.toString();
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executePartitionedGroup(
@@ -662,11 +717,17 @@ public final class BulkExecutor<TContext> implements Disposable {
             this.operationContextText,
             getThreadInfo());
 
+        ItemBulkOperation<?, ?> itemBulkOperation = null;
+        if (itemOperation instanceof ItemBulkOperation<?, ?>) {
+            itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+            itemBulkOperation
+                .getStatusTracker()
+                .recordStatusCode(operationResult.getStatusCode(), operationResult.getSubStatusCode());
+        }
+
         if (!operationResult.isSuccessStatusCode()) {
 
-            if (itemOperation instanceof ItemBulkOperation<?, ?>) {
-
-                ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+            if (itemBulkOperation != null) {
                 return itemBulkOperation.getRetryPolicy().shouldRetry(operationResult).flatMap(
                     result -> {
                         if (result.shouldRetry) {
@@ -759,6 +820,10 @@ public final class BulkExecutor<TContext> implements Disposable {
             CosmosException cosmosException = (CosmosException) exception;
             ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
 
+            itemBulkOperation.getStatusTracker().recordStatusCode(
+                cosmosException.getStatusCode(),
+                cosmosException.getSubStatusCode());
+
             // First check if it failed due to split, so the operations need to go in a different pk range group. So
             // add it in the mainSink.
 
@@ -798,6 +863,12 @@ public final class BulkExecutor<TContext> implements Disposable {
         }
 
         TContext actualContext = this.getActualContext(itemOperation);
+
+        if (itemOperation instanceof ItemBulkOperation<?, ?>) {
+            // record for non-cosmos exception
+            ((ItemBulkOperation<?, ?>) itemOperation).getStatusTracker().recordStatusCode(-1, -1);
+        }
+
         return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, actualContext));
     }
 
@@ -848,6 +919,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         options.setThroughputControlGroupName(cosmosBulkExecutionOptions.getThroughputControlGroupName());
         options.setExcludedRegions(cosmosBulkExecutionOptions.getExcludedRegions());
         options.setKeywordIdentifiers(cosmosBulkExecutionOptions.getKeywordIdentifiers());
+        options.setEffectiveItemSerializer(this.effectiveItemSerializer);
 
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicySnapshot =
             cosmosBulkExecutionOptions.getCosmosEndToEndLatencyPolicyConfig();
@@ -898,26 +970,27 @@ public final class BulkExecutor<TContext> implements Disposable {
                             serverRequest,
                             options,
                             false,
-                            true) // disable the staled resource exception handling as it is being handled in the BulkOperationRetryPolicy
+                            true, // disable the staled resource exception handling as it is being handled in the BulkOperationRetryPolicy
+                            true)
                     .flatMap(cosmosBatchResponse -> {
 
-                        cosmosBatchResponseAccessor.setGlobalOpCount(
+                        cosmosBatchResponseAccessor().setGlobalOpCount(
                             cosmosBatchResponse, partitionScopeThresholds.getTotalOperationCountSnapshot());
 
                         PartitionScopeThresholds.CurrentIntervalThresholds currentIntervalThresholdsSnapshot
                             = partitionScopeThresholds.getCurrentThresholds();
 
-                        cosmosBatchResponseAccessor.setOpCountPerEvaluation(
+                        cosmosBatchResponseAccessor().setOpCountPerEvaluation(
                             cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentOperationCount.get());
-                        cosmosBatchResponseAccessor.setRetriedOpCountPerEvaluation(
+                        cosmosBatchResponseAccessor().setRetriedOpCountPerEvaluation(
                             cosmosBatchResponse, currentIntervalThresholdsSnapshot.currentRetriedOperationCount.get());
-                        cosmosBatchResponseAccessor.setTargetMaxMicroBatchSize(
+                        cosmosBatchResponseAccessor().setTargetMaxMicroBatchSize(
                             cosmosBatchResponse, partitionScopeThresholds.getTargetMicroBatchSizeSnapshot());
 
                         return Mono.just(cosmosBatchResponse);
                     });
 
-            return clientAccessor.getDiagnosticsProvider(this.cosmosClient)
+            return clientAccessor().getDiagnosticsProvider(this.cosmosClient)
                 .traceEnabledBatchResponsePublisher(
                     responseMono,
                     context,

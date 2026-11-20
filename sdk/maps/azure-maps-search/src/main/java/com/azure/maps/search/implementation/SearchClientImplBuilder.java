@@ -197,16 +197,18 @@ public final class SearchClientImplBuilder
 
     /*
      * Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents a
-     * unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
-     * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
+     * unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. For
+     * more information on using Microsoft Entra ID security in Azure Maps, see [Manage authentication in Azure
+     * Maps](/azure/azure-maps/how-to-manage-authentication).
      */
     @Generated
     private String clientId;
 
     /**
      * Sets Specifies which account is intended for usage in conjunction with the Azure AD security model. It represents
-     * a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. To
-     * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
+     * a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management plane Account API. For
+     * more information on using Microsoft Entra ID security in Azure Maps, see [Manage authentication in Azure
+     * Maps](/azure/azure-maps/how-to-manage-authentication).
      * 
      * @param clientId the clientId value.
      * @return the SearchClientImplBuilder.

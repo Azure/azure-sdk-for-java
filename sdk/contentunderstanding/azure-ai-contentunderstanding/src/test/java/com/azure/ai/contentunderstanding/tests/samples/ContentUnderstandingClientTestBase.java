@@ -1,0 +1,135 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+// The Java test files under 'generated' package are generated for your reference.
+// If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
+// See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.ContentUnderstandingServiceVersion;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.Arrays;
+import java.util.Collections;
+
+class ContentUnderstandingClientTestBase extends TestProxyTestBase {
+    private static final ContentUnderstandingLiveTestSetup LIVE_TEST_SETUP = new ContentUnderstandingLiveTestSetup();
+
+    protected ContentUnderstandingClient contentUnderstandingClient;
+    protected ContentUnderstandingAsyncClient contentUnderstandingAsyncClient;
+    private ContentUnderstandingModelProfile modelProfile;
+
+    // Sanitizer IDs to remove:
+    // - AZSDK2003, AZSDK2030: Replace Location/Operation-Location headers with "https://example.com"
+    //   which breaks LRO polling that relies on Operation-Location header URLs
+    // - AZSDK3423: Replaces $..source field with "Sanitized", breaking field source validation
+    // - AZSDK3430: Replaces $..id field with "Sanitized"
+    // - AZSDK3493: Replaces $..name field with "Sanitized", breaking fieldSchema.name validation
+    private static final String[] REMOVE_SANITIZER_ID
+        = { "AZSDK2003", "AZSDK2030", "AZSDK3423", "AZSDK3430", "AZSDK3493" };
+
+    private static final String SANITIZED_RESOURCE_ID
+        = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/REDACTED"
+            + "/providers/Microsoft.CognitiveServices/accounts/REDACTED";
+
+    @Override
+    protected void beforeTest() {
+        modelProfile = null;
+        String endpoint = Configuration.getGlobalConfiguration().get("CONTENTUNDERSTANDING_ENDPOINT");
+        if (endpoint == null || endpoint.isEmpty()) {
+            if (getTestMode() == TestMode.PLAYBACK) {
+                // In PLAYBACK, requests go through the test proxy; endpoint is only used for URL construction.
+                endpoint = "https://localhost";
+            } else {
+                throw new IllegalStateException(
+                    "Content Understanding endpoint is required. Set CONTENTUNDERSTANDING_ENDPOINT as an environment variable "
+                        + "or system property (e.g. export CONTENTUNDERSTANDING_ENDPOINT=... or mvn test -DCONTENTUNDERSTANDING_ENDPOINT=...).");
+            }
+        }
+        // Strip trailing slash to prevent double-slash in URLs
+        if (endpoint.endsWith("/")) {
+            endpoint = endpoint.substring(0, endpoint.length() - 1);
+        }
+
+        ContentUnderstandingClientBuilder contentUnderstandingClientbuilder
+            = new ContentUnderstandingClientBuilder().endpoint(endpoint)
+                .serviceVersion(getServiceVersion())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            contentUnderstandingClientbuilder.credential(new MockTokenCredential());
+        } else if (getTestMode() == TestMode.RECORD) {
+            contentUnderstandingClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            contentUnderstandingClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        contentUnderstandingClient = contentUnderstandingClientbuilder.buildClient();
+        contentUnderstandingAsyncClient = contentUnderstandingClientbuilder.buildAsyncClient();
+
+        if (getTestMode() == TestMode.LIVE) {
+            ContentUnderstandingClient defaultsClient
+                = getServiceVersion() == ContentUnderstandingServiceVersion.V2026_06_01_PREVIEW
+                    ? contentUnderstandingClient
+                    : contentUnderstandingClientbuilder
+                        .serviceVersion(ContentUnderstandingServiceVersion.V2026_06_01_PREVIEW)
+                        .buildClient();
+            LIVE_TEST_SETUP.ensureConfigured(name -> Configuration.getGlobalConfiguration().get(name),
+                defaultsClient::getDefaults, defaultsClient::updateDefaults);
+        }
+
+        // Remove sanitizers that break LRO polling by replacing entire URLs
+        if (getTestMode() != TestMode.LIVE) {
+            interceptorManager.addSanitizers(Arrays.asList(
+                new TestProxySanitizer("$..targetAzureResourceId", null, SANITIZED_RESOURCE_ID,
+                    TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..sourceAzureResourceId", null, SANITIZED_RESOURCE_ID,
+                    TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..targetRegion", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("$..sourceRegion", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+                new TestProxySanitizer("https://[^/]+[.]services[.]ai[.]azure[.]com",
+                    "https://REDACTED.services.ai.azure.com", TestProxySanitizerType.URL),
+                new TestProxySanitizer("https://[^/]+[.]services[.]ai[.]azure[.]com",
+                    "https://REDACTED.services.ai.azure.com", TestProxySanitizerType.BODY_REGEX)));
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+        }
+    }
+
+    protected ContentUnderstandingServiceVersion getServiceVersion() {
+        return ContentUnderstandingServiceVersion.V2025_11_01;
+    }
+
+    protected synchronized ContentUnderstandingModelProfile getModelProfile() {
+        if (modelProfile != null) {
+            return modelProfile;
+        }
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            modelProfile
+                = ContentUnderstandingModelProfile.fromRecordedVariables(interceptorManager.getProxyVariableSupplier());
+            if (modelProfile == null) {
+                // Recordings created before model-profile persistence have no profile variables to restore.
+                modelProfile
+                    = ContentUnderstandingModelProfile.forServiceVersion(getServiceVersion(), Collections.emptyMap());
+            }
+        } else {
+            modelProfile = ContentUnderstandingModelProfile.forServiceVersion(getServiceVersion());
+            if (getTestMode() == TestMode.RECORD) {
+                modelProfile.recordVariables(interceptorManager.getProxyVariableConsumer());
+            }
+        }
+        return modelProfile;
+    }
+}

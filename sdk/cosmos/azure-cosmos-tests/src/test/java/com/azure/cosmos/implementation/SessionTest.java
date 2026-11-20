@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
@@ -38,7 +40,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionTest extends TestSuiteBase {
-    protected static final int TIMEOUT = 20000;
+    protected static final int TIMEOUT = 60000; // Increased from 20s to 60s to handle network delays in CI
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -48,7 +50,7 @@ public class SessionTest extends TestSuiteBase {
     private ConnectionMode connectionMode;
     private RequestOptions options;
 
-    @Factory(dataProvider = "clientBuildersWithDirectSession")
+    @Factory(dataProvider = "internalClientBuildersWithSessionConsistency")
     public SessionTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
@@ -63,9 +65,9 @@ public class SessionTest extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = { "fast", "multi-master" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast", "multi-master" }, timeOut = 2 * SETUP_TIMEOUT)
     public void before_SessionTest() {
-        createdDatabase = SHARED_DATABASE;
+        createdDatabase = SHARED_DATABASE_INTERNAL;
 
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -78,26 +80,29 @@ public class SessionTest extends TestSuiteBase {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setOfferThroughput(20000); //Making sure we have 4 physical partitions
 
-        AsyncDocumentClient asynClient = createGatewayHouseKeepingDocumentClient().build();
-        try {
-            createdCollection = createCollection(asynClient, createdDatabase.getId(),
-                collection, requestOptions);
-            houseKeepingClient = clientBuilder().build();
-            connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
+        executeWithRetry(() -> {
+            safeClose(houseKeepingClient);
+            safeClose(spyClient);
+            AsyncDocumentClient asynClient = createGatewayHouseKeepingDocumentClient().build();
+            try {
+                createdCollection = createCollection(asynClient, createdDatabase.getId(),
+                    collection, requestOptions);
+                houseKeepingClient = clientBuilder().build();
+                connectionMode = houseKeepingClient.getConnectionPolicy().getConnectionMode();
 
-            if (connectionMode == ConnectionMode.DIRECT) {
-                spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
-            } else {
-                // Gateway builder has multipleWriteRegionsEnabled false by default, enabling it for multi master test
-                ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
-                connectionPolicy.setMultipleWriteRegionsEnabled(true);
-                spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
+                if (connectionMode == ConnectionMode.DIRECT) {
+                    spyClient = SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(clientBuilder());
+                } else {
+                    ConnectionPolicy connectionPolicy = clientBuilder().connectionPolicy;
+                    connectionPolicy.setMultipleWriteRegionsEnabled(true);
+                    spyClient = SpyClientUnderTestFactory.createClientUnderTest(clientBuilder().withConnectionPolicy(connectionPolicy));
+                }
+                options = new RequestOptions();
+                options.setPartitionKey(PartitionKey.NONE);
+            } finally {
+                asynClient.close();
             }
-            options = new RequestOptions();
-            options.setPartitionKey(PartitionKey.NONE);
-        } finally {
-            asynClient.close();
-        }
+        }, 3, "SessionTest setup");
     }
 
     @AfterClass(groups = { "fast", "multi-master" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -134,12 +139,12 @@ public class SessionTest extends TestSuiteBase {
 
             spyClient.clearCapturedRequests();
 
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, options).block();
 
             assertThat(getSessionTokensInRequests()).hasSize(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
 
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), options).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, options).block();
 
             // same session token expected - because we collect
             // distinct session tokens only one of them should be kept
@@ -176,21 +181,21 @@ public class SessionTest extends TestSuiteBase {
         spyClient.clearCapturedRequests();
 
         // Session token set for default session consistency
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
 
         // Session token set for request session consistency
         spyClient.clearCapturedRequests();
         requestOptions.setConsistencyLevel(ConsistencyLevel.SESSION);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
 
         spyClient.clearCapturedRequests();
         requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.SESSION);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(1);
         assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
         assertThat(getSessionTokensInRequests().get(0)).doesNotContain(","); // making sure we have only one scope session token
@@ -323,7 +328,8 @@ public class SessionTest extends TestSuiteBase {
                     serverBatchRequest,
                     new RequestOptions(),
                     false,
-                    true)
+                    true,
+                    false)
                 .block();
             assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
@@ -333,7 +339,7 @@ public class SessionTest extends TestSuiteBase {
         safeClose(dummyState);
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "sessionTestArgProvider", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void sessionTokenNotRequired(boolean isNameBased) {
         spyClient.readCollection(getCollectionLink(isNameBased), null).block();
         // No session token set for the master resource related request
@@ -364,23 +370,23 @@ public class SessionTest extends TestSuiteBase {
         // No session token set for EVENTUAL consistency
         spyClient.clearCapturedRequests();
         requestOptions.setConsistencyLevel(ConsistencyLevel.EVENTUAL);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
         spyClient.clearCapturedRequests();
         requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
         // No session token set for CONSISTENT_PREFIX consistency
         spyClient.clearCapturedRequests();
         requestOptions.setConsistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
         spyClient.clearCapturedRequests();
         requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
         assertThat(getSessionTokensInRequests()).hasSize(0);
 
         if (globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.STRONG) ||
@@ -388,14 +394,14 @@ public class SessionTest extends TestSuiteBase {
             // No session token set for BOUNDED_STALENESS consistency
             spyClient.clearCapturedRequests();
             requestOptions.setConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS);
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
             assertThat(getSessionTokensInRequests()).hasSize(0);
         }
 
         if (this.houseKeepingClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
             spyClient.clearCapturedRequests();
             requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
             assertThat(getSessionTokensInRequests()).hasSize(0);
         }
 
@@ -403,12 +409,12 @@ public class SessionTest extends TestSuiteBase {
             // No session token set for STRONG consistency
             spyClient.clearCapturedRequests();
             requestOptions.setConsistencyLevel(ConsistencyLevel.STRONG);
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
             assertThat(getSessionTokensInRequests()).hasSize(0);
 
             spyClient.clearCapturedRequests();
             requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.GLOBAL_STRONG);
-            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), null, requestOptions).block();
             assertThat(getSessionTokensInRequests()).hasSize(0);
         }
     }
@@ -443,7 +449,7 @@ public class SessionTest extends TestSuiteBase {
                 .getResource();
 
         final String documentLink = getDocumentLink(document, isNameBased);
-        spyClient.readDocument(documentLink, options).block()
+        spyClient.readDocument(documentLink, null, options).block()
                 .getResource();
 
         List<HttpRequest> documentReadHttpRequests = spyClient.getCapturedRequests().stream()

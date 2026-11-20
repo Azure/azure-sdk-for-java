@@ -5,7 +5,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.util.Beta;
 
 import java.util.List;
 import java.util.Set;
@@ -44,7 +43,6 @@ public final class CosmosRequestContext {
      *
      * @return the read consistency strategy. It could be null if not defined or called on an irrelevant operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_71_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getReadConsistencyStrategy() {
         return requestOptions.getReadConsistencyStrategy();
     }
@@ -167,6 +165,15 @@ public final class CosmosRequestContext {
     }
 
     /**
+     * Gets the query advice enabled.
+     *
+     * @return the query advice enabled. It could be null if not defined or called on an irrelevant operation.
+     */
+    public Boolean isQueryAdviceEnabled() {
+        return requestOptions.isQueryAdviceEnabled();
+    }
+
+    /**
      * Gets the query name.
      *
      * @return the query name. It could be null if not defined or called on an irrelevant operation.
@@ -194,6 +201,15 @@ public final class CosmosRequestContext {
         return requestOptions.getKeywordIdentifiers();
     }
 
+    /**
+     * Gets the custom item serializer.
+     *
+     * @return the custom item serializer. It could be null if not defined or called on an irrelevant operation.
+     */
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return requestOptions.getCustomItemSerializer();
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -208,4 +224,6 @@ public final class CosmosRequestContext {
                 }
                 );
     }
+
+    static { initialize(); }
 }

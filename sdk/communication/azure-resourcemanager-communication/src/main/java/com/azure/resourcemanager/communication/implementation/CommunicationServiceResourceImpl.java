@@ -16,6 +16,7 @@ import com.azure.resourcemanager.communication.models.CommunicationServicesProvi
 import com.azure.resourcemanager.communication.models.LinkNotificationHubParameters;
 import com.azure.resourcemanager.communication.models.LinkedNotificationHub;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
 import java.util.Collections;
 import java.util.List;
@@ -91,6 +92,14 @@ public final class CommunicationServiceResourceImpl implements CommunicationServ
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public Boolean disableLocalAuth() {
+        return this.innerModel().disableLocalAuth();
     }
 
     public Region region() {
@@ -267,7 +276,27 @@ public final class CommunicationServiceResourceImpl implements CommunicationServ
         }
     }
 
+    public CommunicationServiceResourceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public CommunicationServiceResourceImpl withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisableLocalAuth(disableLocalAuth);
+            return this;
+        } else {
+            this.updateParameters.withDisableLocalAuth(disableLocalAuth);
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -45,6 +45,10 @@ import static java.time.temporal.ChronoUnit.MILLIS;
  * Implementation for {@link PartitionProcessor}.
  */
 class PartitionProcessorImpl implements PartitionProcessor {
+    private static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(PartitionProcessorImpl.class);
 
     private final ProcessorSettings settings;
@@ -78,7 +82,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
         this.options.setMaxItemCount(settings.getMaxItemCount());
         // For pk version, merge is not support, exclude it from the capabilities header
-        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+        changeFeedOptionsAccessor()
             .setHeader(
                 this.options,
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,

@@ -1,24 +1,221 @@
 # Release History
 
-## 12.31.0-beta.2 (Unreleased)
+## 12.34.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
+- File and directory rename operations now treat percent-encoded-looking source paths literally instead of decoding
+  them. For example, a client path of `a%20b` now renames the literal `a%20b` resource, not `a b`.
+  Applications that supplied pre-encoded source paths, including through `ShareFileClientBuilder.endpoint`, must
+  instead supply the raw path using `resourcePath("a b")`, `getFileClient("a b")`, or `getDirectoryClient("a b")`.
+
 ### Bugs Fixed
+- Fixed `ShareFileAsyncClient.rename`/`renameWithResponse` and `ShareDirectoryAsyncClient.rename`/`renameWithResponse`
+  returning a client whose path was URL-encoded a second time, so paths containing `/` or characters that need
+  encoding addressed the wrong resource.
+- Fixed `ShareFileAsyncClient.beginCopy` throwing invalid-argument and unsupported-operation errors directly instead
+  of emitting them through the returned `PollerFlux`.
+- Fixed `ShareFileClient.beginCopy` and `ShareFileAsyncClient.beginCopy` sending a file permission without a
+  `PermissionCopyModeType`, which the service rejects. They now fail with `IllegalArgumentException` before sending the
+  request, as they already did for a file permission key or for `PermissionCopyModeType.SOURCE`.
+- Fixed `ShareFileClient` and `ShareFileAsyncClient` rename operations for files whose names contain a literal `%`.
+  Previously the source path was decoded before being encoded, so such renames could fail or move a different file
+  (for example, a file named `a%20b` was treated as `a b`). The source path is now encoded once, without decoding.
+- Fixed `ShareDirectoryClient` and `ShareDirectoryAsyncClient` rename operations for directories whose names contain
+  `#`, a `%` sequence, or non-ASCII characters. Previously the rename-source header was sent unencoded, so such
+  renames could fail or move a different directory. The source path is now URL-encoded in the header.
+- Fixed `createIfNotExists`, `createDirectoryIfNotExists`, and `createSubdirectoryIfNotExists` (and their `WithResponse`
+  variants) on `ShareAsyncClient` and `ShareDirectoryAsyncClient` treating every 409 as "already exists". Like the
+  synchronous clients, they now do so only for `ShareAlreadyExists` and `ResourceAlreadyExists`, and emit
+  `ShareStorageException` for other conflicts, such as `ShareBeingDeleted` or `ResourceTypeMismatch`.
 
 ### Other Changes
 
-## 12.29.0-beta.2 (Unreleased)
+## 12.34.0-beta.1 (2026-11-05)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for retrieving file and directory properties by file ID
+- Added support for retrieving a file's hard links by file ID on SMB shares.
+- Added support for change feed on premium file shares. Added `ShareCreateOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` and `ShareSetPropertiesOptions.setChangeFeedEnabled`,
+  `setChangeFeedRetentionInDays` to enable and configure change feed.
+- Added `ShareProperties.isChangeFeedEnabled()`, `getChangeFeedRetentionInDays()` and
+  `getChangeFeedBlobContainerName()`.
+- Added `ShareProperties.getCreationTime()` and `ShareProperties.setCreationTime(OffsetDateTime)` to expose the share
+  creation time returned in list and get properties responses.
+- Added support for service version 2027-03-07.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.2` to version `12.37.0-beta.1`.
+
+## 12.33.2 (2026-11-03)
+
+### Bugs Fixed
+- Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using
+  `ShareFileUploadOptions` that were split into ranges also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the range size.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.1` to version `12.36.2`.
+
+## 12.33.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.36.1`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 12.32.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where `ShareFileClient` and `ShareFileAsyncClient` uploads from a `Flux<ByteBuffer>` using
+  `ShareFileUploadOptions` that were split into ranges also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the range size.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.35.1`.
+
+## 12.32.0 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added support for sync `ShareFileClient.listAllRanges()` and `ShareFileClient.listAllRangesDiff()` APIs, and async counterparts.
+
+### Other Changes
+- Deprecated the `listRanges` overloads, `listRangesDiff`, and `listRangesDiffWithResponse` on `ShareFileClient` and `ShareFileAsyncClient`.
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
+
+## 12.31.2 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.34.1` to version `12.34.2`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 12.31.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-storage-common` from `12.34.0` to version `12.34.1`.
+
+## 12.32.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added support for `ShareFileClient.listAllRanges()` and `ShareFileClient.listAllRangesDiff()` APIs.
+
+## 12.31.0 (2026-06-11)
+
+### Features Added
+- Added support for uploading up to 4 MiB of data with create file APIs.
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.30.0 (2026-05-14)
+
+### Features Added
+- Added support for improved error handling for file share provisioning.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.32.3` to version `12.33.0`.
+
+## 12.29.3 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.32.2` to version `12.32.3`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 12.31.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for uploading up to 4 MiB of data with create file APIs.
+- Added support for service version 2026-06-06.
+
+## 12.30.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added support for improved error handling for file share provisioning.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+## 12.29.2 (2026-02-05)
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.1` to `12.33.2` in `azure-storage-blob`.
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+  This is a _potentially breaking_ change if users were incorrectly applying multiple credentials
+
+## 12.29.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-storage-common` from `12.32.0` to version `12.32.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 12.29.0 (2026-01-15)
+
+### Features Added
+- Added support for User Delegation SAS.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for the `ShareServiceProperties.Protocol.SMB.EncryptionInTransit` parameter on `ShareServiceClient.setProperties()` APIs.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
 
 ## 12.29.0-beta.1 (2025-12-03)
 
@@ -736,11 +933,11 @@ and
 ## 12.0.0-preview.5 (2019-10-31)
 - Renamed FileReference to StorageFileItem
 - Changed response of ShareClient.listFilesAndDirectories FileReference to StorageFileItem
-- FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModidified()
+- FileUploadRangeFromUrlInfo eTag() changed to getETag() and lastModified() changed to getLastModified()
 - Changed response of FileAsyncClient.download() from Mono<FileDownloadInfo> to Flux<ByteBuffer>
 - Renamed FileAsyncClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
 - Removed FileAsyncClient.uploadWithResponse(Flux<ByteBuffer>, long, long)
-- Changed response of FileClient.download() from FileDownloadInfo to voif
+- Changed response of FileClient.download() from FileDownloadInfo to void
 - Renamed FileClient.downloadWithPropertiesWithResponse to downloadLoadWithResponse
 - Changed FileClient upload methods to take InputStreams instead of ByteBuffers
 - Removed FileClient.uploadWithResponse(ByteBuffer, long, long)

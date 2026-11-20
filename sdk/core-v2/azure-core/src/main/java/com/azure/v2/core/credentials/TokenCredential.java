@@ -29,7 +29,8 @@ public interface TokenCredential {
 
     /**
      * Get a token for a given resource/audience.
-     * You may call this method directly, but you must also handle token caching and token refreshing.
+     * You may call this method directly, but you must also handle token caching and token refreshing, for example by
+     * wrapping this credential in an {@link AccessTokenCache}.
      *
      * @param request the details of the token request
      * @return The Access Token

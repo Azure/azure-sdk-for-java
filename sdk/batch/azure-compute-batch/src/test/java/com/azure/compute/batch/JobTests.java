@@ -48,7 +48,7 @@ public class JobTests extends BatchClientTestBase {
         // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        BatchPoolDetails poolInfo = new BatchPoolDetails();
         poolInfo.setPoolId(poolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
 
@@ -91,7 +91,7 @@ public class JobTests extends BatchClientTestBase {
         sleepIfRunningAgainstService(1000);
 
         // DELETE using LRO
-        SyncPoller<BatchJob, Void> poller
+        SyncPoller<BatchJob, BatchJob> poller
             = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
@@ -107,9 +107,11 @@ public class JobTests extends BatchClientTestBase {
         // Wait for LRO to finish
         poller.waitForCompletion();
 
-        // Final result should be null after successful deletion
+        // Final result should expose the last observed job state (the DELETING snapshot) after deletion
         PollResponse<BatchJob> finalResponse = poller.poll();
-        Assertions.assertNull(finalResponse.getValue(), "Expected final result to be null after successful deletion");
+        Assertions.assertNotNull(finalResponse.getValue(),
+            "Expected final result to expose the last observed job state after deletion");
+        Assertions.assertEquals(jobId, finalResponse.getValue().getId());
 
         // Confirm job is no longer retrievable
         try {
@@ -126,122 +128,119 @@ public class JobTests extends BatchClientTestBase {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState" + testModeSuffix);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo().setPoolId(poolId);
+        BatchPoolDetails poolInfo = new BatchPoolDetails().setPoolId(poolId);
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
 
         // CREATE
         SyncAsyncExtension.execute(() -> batchClient.createJob(jobToCreate),
             () -> batchAsyncClient.createJob(jobToCreate));
 
-        try {
-            // GET
-            BatchJob job
-                = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
+        // GET
+        BatchJob job
+            = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+        Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
-            // REPLACE
-            Integer maxTaskRetryCount = 3;
-            Integer priority = 500;
-            BatchJob replacementJob = job;
-            replacementJob.setPriority(priority);
-            replacementJob.setConstraints(new BatchJobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
-            replacementJob.getPoolInfo().setPoolId(poolId);
+        // REPLACE
+        Integer maxTaskRetryCount = 3;
+        Integer priority = 500;
+        BatchJob replacementJob = job;
+        replacementJob.setPriority(priority);
+        replacementJob.setConstraints(new BatchJobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
+        replacementJob.getPoolDetails().setPoolId(poolId);
 
-            SyncAsyncExtension.execute(() -> batchClient.replaceJob(jobId, replacementJob),
-                () -> batchAsyncClient.replaceJob(jobId, replacementJob));
+        SyncAsyncExtension.execute(() -> batchClient.replaceJob(jobId, replacementJob),
+            () -> batchAsyncClient.replaceJob(jobId, replacementJob));
 
-            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(priority, job.getPriority());
-            Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
+        job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+        Assertions.assertEquals(priority, job.getPriority());
+        Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
 
-            // DISABLE
-            BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
+        // DISABLE
+        BatchJobDisableParameters disableParams = new BatchJobDisableParameters(DisableBatchJobOption.REQUEUE);
 
-            SyncPoller<BatchJob, BatchJob> disablePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(
-                () -> batchClient.beginDisableJob(jobId, disableParams),
+        SyncPoller<BatchJob, BatchJob> disablePoller = setPlaybackSyncPollerPollInterval(
+            SyncAsyncExtension.execute(() -> batchClient.beginDisableJob(jobId, disableParams),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDisableJob(jobId, disableParams).getSyncPoller())));
 
-            // Inspect first poll
-            PollResponse<BatchJob> disableFirst = disablePoller.poll();
-            if (disableFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchJob disableDuringPoll = disableFirst.getValue();
-                Assertions.assertNotNull(disableDuringPoll);
-                Assertions.assertEquals(jobId, disableDuringPoll.getId());
-                Assertions.assertEquals(BatchJobState.DISABLING, disableDuringPoll.getState());
-            }
+        // Inspect first poll
+        PollResponse<BatchJob> disableFirst = disablePoller.poll();
+        if (disableFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJob disableDuringPoll = disableFirst.getValue();
+            Assertions.assertNotNull(disableDuringPoll);
+            Assertions.assertEquals(jobId, disableDuringPoll.getId());
+            Assertions.assertEquals(BatchJobState.DISABLING, disableDuringPoll.getState());
+        }
 
-            disablePoller.waitForCompletion();
+        disablePoller.waitForCompletion();
 
-            BatchJob disabledJob = disablePoller.getFinalResult();
-            Assertions.assertNotNull(disabledJob);
-            Assertions.assertEquals(BatchJobState.DISABLED, disabledJob.getState());
-            Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, disabledJob.getAllTasksCompleteMode());
+        BatchJob disabledJob = disablePoller.getFinalResult();
+        Assertions.assertNotNull(disabledJob);
+        Assertions.assertEquals(BatchJobState.DISABLED, disabledJob.getState());
+        Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, disabledJob.getAllTasksCompleteMode());
 
-            // UPDATE
-            BatchJobUpdateParameters updateParams
-                = new BatchJobUpdateParameters().setAllTasksCompleteMode(BatchAllTasksCompleteMode.TERMINATE_JOB);
-            SyncAsyncExtension.execute(() -> batchClient.updateJob(jobId, updateParams),
-                () -> batchAsyncClient.updateJob(jobId, updateParams));
+        // UPDATE
+        BatchJobUpdateParameters updateParams
+            = new BatchJobUpdateParameters().setAllTasksCompleteMode(BatchAllTasksCompleteMode.TERMINATE_JOB);
+        SyncAsyncExtension.execute(() -> batchClient.updateJob(jobId, updateParams),
+            () -> batchAsyncClient.updateJob(jobId, updateParams));
 
-            job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
-            Assertions.assertEquals(BatchAllTasksCompleteMode.TERMINATE_JOB, job.getAllTasksCompleteMode());
+        job = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
+        Assertions.assertEquals(BatchAllTasksCompleteMode.TERMINATE_JOB, job.getAllTasksCompleteMode());
 
-            // ENABLE
-            SyncPoller<BatchJob, BatchJob> enablePoller
-                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginEnableJob(jobId),
-                    () -> Mono.fromCallable(() -> batchAsyncClient.beginEnableJob(jobId).getSyncPoller())));
+        // ENABLE
+        SyncPoller<BatchJob, BatchJob> enablePoller
+            = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginEnableJob(jobId),
+                () -> Mono.fromCallable(() -> batchAsyncClient.beginEnableJob(jobId).getSyncPoller())));
 
-            // Inspect first poll
-            PollResponse<BatchJob> enableFirst = enablePoller.poll();
-            if (enableFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchJob enableDuringPoll = enableFirst.getValue();
-                Assertions.assertNotNull(enableDuringPoll);
-                Assertions.assertEquals(jobId, enableDuringPoll.getId());
-                Assertions.assertEquals(BatchJobState.ENABLING, enableDuringPoll.getState());
-            }
+        // Inspect first poll
+        PollResponse<BatchJob> enableFirst = enablePoller.poll();
+        if (enableFirst.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJob enableDuringPoll = enableFirst.getValue();
+            Assertions.assertNotNull(enableDuringPoll);
+            Assertions.assertEquals(jobId, enableDuringPoll.getId());
+            Assertions.assertEquals(BatchJobState.ENABLING, enableDuringPoll.getState());
+        }
 
-            enablePoller.waitForCompletion();
+        enablePoller.waitForCompletion();
 
-            BatchJob enabledJob = enablePoller.getFinalResult();
-            Assertions.assertNotNull(enabledJob);
-            Assertions.assertEquals(BatchJobState.ACTIVE, enabledJob.getState());
+        BatchJob enabledJob = enablePoller.getFinalResult();
+        Assertions.assertNotNull(enabledJob);
+        Assertions.assertEquals(BatchJobState.ACTIVE, enabledJob.getState());
 
-            // TERMINATE
-            BatchJobTerminateParameters terminateParams
-                = new BatchJobTerminateParameters().setTerminationReason("myreason");
-            BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
+        // TERMINATE
+        BatchJobTerminateParameters terminateParams
+            = new BatchJobTerminateParameters().setTerminationReason("myreason");
+        BatchJobTerminateOptions terminateOptions = new BatchJobTerminateOptions().setParameters(terminateParams);
 
-            SyncPoller<BatchJob, BatchJob> terminatePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension
-                .execute(() -> batchClient.beginTerminateJob(jobId, terminateOptions, null), () -> Mono.fromCallable(
-                    () -> batchAsyncClient.beginTerminateJob(jobId, terminateOptions, null).getSyncPoller())));
+        SyncPoller<BatchJob, BatchJob> terminatePoller = setPlaybackSyncPollerPollInterval(SyncAsyncExtension
+            .execute(() -> batchClient.beginTerminateJob(jobId, terminateOptions, null), () -> Mono.fromCallable(
+                () -> batchAsyncClient.beginTerminateJob(jobId, terminateOptions, null).getSyncPoller())));
 
-            // Inspect the first poll
-            PollResponse<BatchJob> first = terminatePoller.poll();
-            if (first.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-                BatchJob pollingJob = first.getValue();
-                Assertions.assertNotNull(pollingJob);
-                Assertions.assertEquals(jobId, pollingJob.getId());
-                Assertions.assertEquals(BatchJobState.TERMINATING, pollingJob.getState());
-            }
+        // Inspect the first poll
+        PollResponse<BatchJob> first = terminatePoller.poll();
+        if (first.getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
+            BatchJob pollingJob = first.getValue();
+            Assertions.assertNotNull(pollingJob);
+            Assertions.assertEquals(jobId, pollingJob.getId());
+            Assertions.assertEquals(BatchJobState.TERMINATING, pollingJob.getState());
+        }
 
-            terminatePoller.waitForCompletion();
+        terminatePoller.waitForCompletion();
 
-            BatchJob finalJob = terminatePoller.getFinalResult();
-            Assertions.assertNotNull(finalJob);
-            Assertions.assertEquals(BatchJobState.COMPLETED, finalJob.getState());
+        BatchJob finalJob = terminatePoller.getFinalResult();
+        Assertions.assertNotNull(finalJob);
+        Assertions.assertEquals(BatchJobState.COMPLETED, finalJob.getState());
 
-        } finally {
-            // DELETE
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+        // DELETE
+        try {
+            SyncPoller<BatchJob, BatchJob> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 
@@ -249,7 +248,6 @@ public class JobTests extends BatchClientTestBase {
     public void canCRUDJobWithPoolNodeCommunicationMode() {
         String testModeSuffix = SyncAsyncExtension.execute(() -> "sync", () -> Mono.just("async"));
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm" + testModeSuffix);
-        BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
         BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
             .setOffer("windowsserver")
@@ -258,10 +256,9 @@ public class JobTests extends BatchClientTestBase {
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.windows amd64");
 
         BatchPoolSpecification poolSpec
-            = new BatchPoolSpecification("STANDARD_D1_V2").setVirtualMachineConfiguration(configuration)
-                .setTargetNodeCommunicationMode(targetMode);
+            = new BatchPoolSpecification("STANDARD_D1_V2").setVirtualMachineConfiguration(configuration);
 
-        BatchPoolInfo poolInfo = new BatchPoolInfo()
+        BatchPoolDetails poolInfo = new BatchPoolDetails()
             .setAutoPoolSpecification(new BatchAutoPoolSpecification(BatchPoolLifetimeOption.JOB).setPool(poolSpec));
 
         BatchJobCreateParameters jobToCreate = new BatchJobCreateParameters(jobId, poolInfo);
@@ -275,11 +272,9 @@ public class JobTests extends BatchClientTestBase {
             = SyncAsyncExtension.execute(() -> batchClient.getJob(jobId), () -> batchAsyncClient.getJob(jobId));
         Assertions.assertNotNull(job);
         Assertions.assertEquals(jobId, job.getId());
-        Assertions.assertEquals(targetMode,
-            job.getPoolInfo().getAutoPoolSpecification().getPool().getTargetNodeCommunicationMode());
 
         // DELETE using LRO
-        SyncPoller<BatchJob, Void> poller
+        SyncPoller<BatchJob, BatchJob> poller
             = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
                 () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
 

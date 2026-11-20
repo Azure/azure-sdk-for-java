@@ -1133,6 +1133,33 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the skipManagedNsgAssignment property: Determines whether to skip the assignment of the managed network
+     * security group (SF-NSG) to the cluster subnet when using a bring-your-own virtual network (BYOVNET)
+     * configuration. The default value is false.
+     * 
+     * @return the skipManagedNsgAssignment value.
+     */
+    public Boolean skipManagedNsgAssignment() {
+        return this.innerProperties() == null ? null : this.innerProperties().skipManagedNsgAssignment();
+    }
+
+    /**
+     * Set the skipManagedNsgAssignment property: Determines whether to skip the assignment of the managed network
+     * security group (SF-NSG) to the cluster subnet when using a bring-your-own virtual network (BYOVNET)
+     * configuration. The default value is false.
+     * 
+     * @param skipManagedNsgAssignment the skipManagedNsgAssignment value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withSkipManagedNsgAssignment(Boolean skipManagedNsgAssignment) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withSkipManagedNsgAssignment(skipManagedNsgAssignment);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

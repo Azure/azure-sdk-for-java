@@ -72,4 +72,17 @@ public final class EvaluatorDefinitionType extends ExpandableStringEnum<Evaluato
     public static Collection<EvaluatorDefinitionType> values() {
         return values(EvaluatorDefinitionType.class);
     }
+
+    /**
+     * Rubric-based evaluator definition. Stores dimensions (the scoring blueprint) for both quality and safety
+     * evaluators. Can be created via the generate API or manually via createVersion.
+     */
+    @Generated
+    public static final EvaluatorDefinitionType RUBRIC = fromString("rubric");
+
+    /**
+     * Endpoint-based evaluator definition. References a customer-owned HTTP endpoint via a Project Connection.
+     */
+    @Generated
+    public static final EvaluatorDefinitionType ENDPOINT = fromString("endpoint");
 }

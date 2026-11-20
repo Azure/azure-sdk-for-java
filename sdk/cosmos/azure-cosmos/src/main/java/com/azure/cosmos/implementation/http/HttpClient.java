@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.Http2ConnectionConfig;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.Http2AllocationStrategy;
@@ -52,6 +53,9 @@ public interface HttpClient {
         }
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
+        if (Configs.isNettyHttpClientMetricsEnabled()) {
+            fixedConnectionProviderBuilder.metrics(true);
+        }
 
         ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();

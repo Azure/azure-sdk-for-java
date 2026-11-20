@@ -1,0 +1,12 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/implementation/WidgetsClientImpl.java b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/implementation/WidgetsClientImpl.java
+index 2a40901..b552031 100644
+--- a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/implementation/WidgetsClientImpl.java
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/src/main/java/com/azure/resourcemanager/contosowidgets/implementation/WidgetsClientImpl.java
+@@ -202,6 +202,14 @@ public final class WidgetsClientImpl {
++    public Response<WidgetListResult> listWithResponse(Context context) { ... }
++
++    Mono<Response<WidgetListResultInner>> list(
++        String subscriptionId, String apiVersion, Context context);
++
++    private Mono<PagedResponse<WidgetInner>> listSinglePageAsync(Context context) { ... }
+ }

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.cloudhealth.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,37 +14,17 @@ import java.io.IOException;
 /**
  * HealthModel properties.
  */
-@Fluent
+@Immutable
 public final class HealthModelProperties implements JsonSerializable<HealthModelProperties> {
-    /*
-     * The data plane endpoint for interacting with health data
-     */
-    private String dataplaneEndpoint;
-
     /*
      * The status of the last operation.
      */
     private HealthModelProvisioningState provisioningState;
 
-    /*
-     * Configure to automatically discover entities from a given scope, such as a Service Group. The discovered entities
-     * will be linked to the root entity of the health model.
-     */
-    private ModelDiscoverySettings discovery;
-
     /**
      * Creates an instance of HealthModelProperties class.
      */
     public HealthModelProperties() {
-    }
-
-    /**
-     * Get the dataplaneEndpoint property: The data plane endpoint for interacting with health data.
-     * 
-     * @return the dataplaneEndpoint value.
-     */
-    public String dataplaneEndpoint() {
-        return this.dataplaneEndpoint;
     }
 
     /**
@@ -57,34 +37,11 @@ public final class HealthModelProperties implements JsonSerializable<HealthModel
     }
 
     /**
-     * Get the discovery property: Configure to automatically discover entities from a given scope, such as a Service
-     * Group. The discovered entities will be linked to the root entity of the health model.
-     * 
-     * @return the discovery value.
-     */
-    public ModelDiscoverySettings discovery() {
-        return this.discovery;
-    }
-
-    /**
-     * Set the discovery property: Configure to automatically discover entities from a given scope, such as a Service
-     * Group. The discovered entities will be linked to the root entity of the health model.
-     * 
-     * @param discovery the discovery value to set.
-     * @return the HealthModelProperties object itself.
-     */
-    public HealthModelProperties withDiscovery(ModelDiscoverySettings discovery) {
-        this.discovery = discovery;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("discovery", this.discovery);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,13 +60,9 @@ public final class HealthModelProperties implements JsonSerializable<HealthModel
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataplaneEndpoint".equals(fieldName)) {
-                    deserializedHealthModelProperties.dataplaneEndpoint = reader.getString();
-                } else if ("provisioningState".equals(fieldName)) {
+                if ("provisioningState".equals(fieldName)) {
                     deserializedHealthModelProperties.provisioningState
                         = HealthModelProvisioningState.fromString(reader.getString());
-                } else if ("discovery".equals(fieldName)) {
-                    deserializedHealthModelProperties.discovery = ModelDiscoverySettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

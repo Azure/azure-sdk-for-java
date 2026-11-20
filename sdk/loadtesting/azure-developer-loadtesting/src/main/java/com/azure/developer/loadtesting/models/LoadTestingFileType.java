@@ -49,6 +49,19 @@ public final class LoadTestingFileType extends ExpandableStringEnum<LoadTestingF
     public static final LoadTestingFileType TEST_SCRIPT = fromString("TEST_SCRIPT");
 
     /**
+     * If the file is a browser recording of interactions with web applications.
+     */
+    @Generated
+    public static final LoadTestingFileType BROWSER_RECORDING = fromString("BROWSER_RECORDING");
+
+    /**
+     * If the file is an AI Recommendations file created by the system containing recommendations to create a load test
+     * plan from browser recording.
+     */
+    @Generated
+    public static final LoadTestingFileType TEST_PLAN_RECOMMENDATIONS = fromString("TEST_PLAN_RECOMMENDATIONS");
+
+    /**
      * Creates a new instance of LoadTestingFileType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

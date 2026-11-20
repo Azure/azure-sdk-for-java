@@ -103,8 +103,14 @@ public final class SpanDataMapper {
                 if (value instanceof List) {
                     telemetryBuilder.addProperty(key, Mappings.join((List<?>) value));
                 }
+            })
+            .prefix("db.query.parameter.", (telemetryBuilder, key, value) -> {
+                if (value instanceof String) {
+                    telemetryBuilder.addProperty(key, (String) value);
+                }
             });
 
+        CustomMeasurementsMapper.register(mappingsBuilder);
         applyCommonTags(mappingsBuilder);
 
         MAPPINGS = mappingsBuilder.build();

@@ -19,6 +19,7 @@ public class ServerThroughputControlGroup implements IThroughputControlGroup {
     private final CosmosAsyncContainer targetContainer;
     private final PriorityLevel priorityLevel;
     private final Integer throughputBucket;
+    private final String id;
 
     public ServerThroughputControlGroup(
         String groupName,
@@ -39,6 +40,11 @@ public class ServerThroughputControlGroup implements IThroughputControlGroup {
         this.targetContainer = targetContainer;
         this.priorityLevel = priorityLevel;
         this.throughputBucket = throughputBucket;
+        this.id = String.format(
+            "%s/%s/%s",
+            this.targetContainer.getDatabase().getId(),
+            this.targetContainer.getId(),
+            this.groupName);
     }
 
     public String getGroupName() {
@@ -66,8 +72,7 @@ public class ServerThroughputControlGroup implements IThroughputControlGroup {
         if (o == null || getClass() != o.getClass()) return false;
         ServerThroughputControlGroup that = (ServerThroughputControlGroup) o;
         return isDefault == that.isDefault
-            && Objects.equals(groupName, that.groupName)
-            && Objects.equals(targetContainer, that.targetContainer)
+            && Objects.equals(id, that.id)
             && Objects.equals(priorityLevel, that.priorityLevel)
             && Objects.equals(throughputBucket, that.throughputBucket);
     }

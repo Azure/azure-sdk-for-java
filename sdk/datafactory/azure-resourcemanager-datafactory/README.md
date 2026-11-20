@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-datafactory</artifactId>
-    <version>1.3.0-beta.2</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -99,8 +99,8 @@ blobClient.upload(BinaryData.fromString("data"));
 // data factory
 Factory dataFactory = manager.factories()
     .define(DATA_FACTORY)
-    .withRegion(REGION)
     .withExistingResourceGroup(resourceGroup)
+    .withRegion(REGION)
     .create();
 
 // linked service

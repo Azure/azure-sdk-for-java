@@ -56,13 +56,15 @@ import static com.azure.cosmos.models.ModelBridgeInternal.getPartitionKeyRangeId
  * This is meant to be internally used only by our sdk.
  */
 public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecutionContextBase<T> {
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private final AtomicInteger retries = new AtomicInteger(-1);
 
     private final SchedulingStopwatch fetchSchedulingMetrics;
     private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
     private static final String DEFAULT_PARTITION_RANGE = "00-FF";
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private final CosmosItemSerializer itemSerializer;
 
     public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
@@ -92,7 +94,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
     }
 
     protected PartitionKeyDefinition getPartitionKeyDefinition() {
-        return queryRequestOptionsAccessor.getPartitionKeyDefinition(this.cosmosQueryRequestOptions);
+        return queryRequestOptionsAccessor().getPartitionKeyDefinition(this.cosmosQueryRequestOptions);
     }
 
     @Override
@@ -102,9 +104,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
             cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         }
 
-        CosmosQueryRequestOptions newCosmosQueryRequestOptions = ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
+        CosmosQueryRequestOptions newCosmosQueryRequestOptions = queryRequestOptionsAccessor()
             .clone(cosmosQueryRequestOptions);
 
         // We can not go to backend with the composite continuation token,
@@ -168,7 +168,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                 partitionKeyRangeCache,
                 PathsHelper.getCollectionPath(super.resourceLink),
                 retryPolicyInstance,
-                queryRequestOptionsAccessor.getProperties(this.cosmosQueryRequestOptions));
+                queryRequestOptionsAccessor().getProperties(this.cosmosQueryRequestOptions));
         }
 
         return retryPolicyInstance;

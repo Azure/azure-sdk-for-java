@@ -18,6 +18,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import reactor.core.publisher.Mono;
@@ -41,13 +42,17 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
  * A {@link HttpPipelinePolicy} for redirecting traffic through the test proxy for recording.
+ * If sanitizer registration fails, further recording requests are rejected and stopping the session discards it.
  */
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(TestProxyRecordPolicy.class);
     private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
+    private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
     private final HttpClient client;
     private final URL proxyUrl;
     private final boolean skipRecordingRequestBody;
     private String xRecordingId;
+    private volatile boolean sanitizationFailed;
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
     public static final String RECORD_MODE = "record";
@@ -70,7 +75,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      *
      * @param recordFile The name of the file to save the recording to.
      * @param testClassPath the test class path
-     * @throws RuntimeException Failed to serialize body payload.
+     * @throws RuntimeException If the payload cannot be serialized or sanitizer registration fails.
      */
     public void startRecording(File recordFile, Path testClassPath) {
         try {
@@ -88,6 +93,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                 this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
             }
 
+            this.sanitizationFailed = false;
             addProxySanitization(this.sanitizers);
             setDefaultRecordingOptions();
         } catch (IOException e) {
@@ -111,7 +117,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/record/stop")
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             .setHeader(X_RECORDING_ID, xRecordingId)
-            .setBody(serializeVariables(variables));
+            .setBody(sanitizationFailed ? "{}" : serializeVariables(variables));
+        if (sanitizationFailed) {
+            request.setHeader(X_RECORDING_SKIP, "request-response");
+        }
 
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
@@ -158,6 +167,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @param context The request context.
      */
     private void beforeSendingRequest(HttpPipelineCallContext context) {
+        ensureSanitizationSucceeded();
         TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, RECORD_MODE,
             skipRecordingRequestBody);
     }
@@ -191,13 +201,30 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     /**
      * Add a list of {@link TestProxySanitizer} to the current recording session.
      * @param sanitizers The sanitizers to add.
+     * @throws RuntimeException If a sanitizer is invalid or sanitizer registration fails. The recording session will be
+     * discarded when stopped.
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
+        ensureSanitizationSucceeded();
         if (isRecording()) {
-            HttpRequest request
-                = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
-
-            client.sendSync(request, Context.NONE).close();
+            boolean registrationSucceeded = false;
+            try {
+                HttpRequest request
+                    = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
+                try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+                    checkForTestProxyErrors(response);
+                    if (response.getStatusCode() < 200 || response.getStatusCode() >= 300) {
+                        throw LOGGER.logExceptionAsError(
+                            new IllegalStateException("Test proxy sanitizer registration failed with status code "
+                                + response.getStatusCode() + "."));
+                    }
+                }
+                registrationSucceeded = true;
+            } finally {
+                if (!registrationSucceeded) {
+                    sanitizationFailed = true;
+                }
+            }
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -205,6 +232,13 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     private boolean isRecording() {
         return xRecordingId != null;
+    }
+
+    private void ensureSanitizationSucceeded() {
+        if (sanitizationFailed) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Recording cannot continue after test proxy sanitizer registration failed."));
+        }
     }
 
     /**

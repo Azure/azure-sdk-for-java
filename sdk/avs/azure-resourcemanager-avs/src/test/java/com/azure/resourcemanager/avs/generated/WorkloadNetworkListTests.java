@@ -12,8 +12,8 @@ public final class WorkloadNetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"nbkfezzxscy\",\"name\":\"wzdgirujbzbo\",\"type\":\"vzzbtdcq\"}],\"nextLink\":\"niyujv\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"ubiipuipwoqonma\",\"name\":\"jeknizshq\",\"type\":\"cimpevfg\"},{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"ilbywdxsm\",\"name\":\"ccwr\",\"type\":\"fscjfnynszquji\"},{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"ytibyow\",\"name\":\"blgyavutpthj\",\"type\":\"xoi\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"bpimlqoljxkcgxxl\",\"name\":\"sffgcvizqzd\",\"type\":\"l\"}],\"nextLink\":\"lyoupfgfbkju\"}")
             .toObject(WorkloadNetworkList.class);
-        Assertions.assertEquals("niyujv", model.nextLink());
+        Assertions.assertEquals("lyoupfgfbkju", model.nextLink());
     }
 }

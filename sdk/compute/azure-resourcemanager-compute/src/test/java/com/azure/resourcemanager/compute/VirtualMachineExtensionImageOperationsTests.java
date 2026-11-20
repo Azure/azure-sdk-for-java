@@ -15,10 +15,12 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVers
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineExtensionImageOperationsTests extends ComputeManagementTest {
 
+    @Disabled("error SubscriptionRequestsThrottled")
     @Test
     @DoNotRecord(skipInPlayback = true) // This test took over 1 minute to finish in playback
     public void canListExtensionImages() throws Exception {

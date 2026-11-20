@@ -1,0 +1,7 @@
+[
+  {
+    "id": 71105,
+    "user": {"login": "github-actions[bot]"},
+    "body": "<!-- management-autopr-review -->\n## Automated management AutoPR review\n\n- Head SHA: `1111111111111111111111111111111111111111`\n\n### Blocking\n\n- `[MGMT-API-VERSION-OVERLAP]` New — `sdk/contosowidgets/azure-resourcemanager-contosowidgets/CHANGELOG.md` release `1.2.0-beta.1` contains package API versions `2026-06-01-preview` and `2026-08-01-preview`. Verify which API-version generation should remain and whether the earlier package should be released or removed."
+  }
+]

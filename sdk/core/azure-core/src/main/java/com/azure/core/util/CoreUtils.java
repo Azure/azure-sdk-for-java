@@ -54,8 +54,6 @@ public final class CoreUtils {
     // CoreUtils is a commonly used utility, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
-    private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
-
     // Used to check if the ISO8601 date time doesn't have a colon in the offset.
     private static final Pattern ISO8601_COLONLESS_OFFSET = Pattern.compile("([+-][0-9]{2})([0-9]{2})(?=\\[|$)");
 
@@ -304,14 +302,14 @@ public final class CoreUtils {
     }
 
     /**
-     * Attempts to load an environment configured default timeout.
+     * Attempts to load a configured default timeout, checking explicit configuration before environment settings.
      * <p>
      * If the environment default timeout isn't configured, {@code defaultTimeout} will be returned. If the environment
      * default timeout is a string that isn't parseable by {@link Long#parseLong(String)}, {@code defaultTimeout} will
      * be returned. If the environment default timeout is less than 0, {@link Duration#ZERO} will be returned indicated
      * that there is no timeout period.
      *
-     * @param configuration The environment configurations.
+     * @param configuration The configuration store.
      * @param timeoutPropertyName The default timeout property name.
      * @param defaultTimeout The fallback timeout to be used.
      * @param logger A {@link ClientLogger} to log exceptions.
@@ -319,7 +317,11 @@ public final class CoreUtils {
      */
     public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
         Duration defaultTimeout, ClientLogger logger) {
-        String environmentTimeout = configuration.get(timeoutPropertyName);
+        String environmentTimeout
+            = configuration.get(ConfigurationPropertyBuilder.ofString(timeoutPropertyName).shared(true).build());
+        if (environmentTimeout == null) {
+            environmentTimeout = configuration.get(timeoutPropertyName);
+        }
 
         // Environment wasn't configured with the timeout property.
         if (CoreUtils.isNullOrEmpty(environmentTimeout)) {
@@ -465,21 +467,7 @@ public final class CoreUtils {
             return "";
         }
 
-        // Hex uses 4 bits, converting a byte to hex will double its size.
-        char[] hexString = new char[bytes.length * 2];
-
-        for (int i = 0; i < bytes.length; i++) {
-            // Convert the byte into an integer, masking all but the last 8 bits (the byte).
-            int b = bytes[i] & 0xFF;
-
-            // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
-            hexString[i * 2] = LOWERCASE_HEX_CHARACTERS[b >>> 4];
-
-            // Mask all but the last 4 bits and get the corresponding hex character.
-            hexString[i * 2 + 1] = LOWERCASE_HEX_CHARACTERS[b & 0x0F];
-        }
-
-        return new String(hexString);
+        return HexEncoding.toHexString(bytes);
     }
 
     /**
@@ -514,13 +502,21 @@ public final class CoreUtils {
                 + "formatted and didn't contain a '/size' segment. The 'contentRange' was: " + contentRange));
         }
 
-        String sizeString = contentRange.substring(index + 1).trim();
-        if ("*".equals(sizeString)) {
+        // Match String.trim(), including control characters, rather than Unicode whitespace stripping.
+        int start = index + 1;
+        int end = contentRange.length();
+        while (start < end && contentRange.charAt(start) <= ' ') {
+            start++;
+        }
+        while (start < end && contentRange.charAt(end - 1) <= ' ') {
+            end--;
+        }
+        if (end - start == 1 && contentRange.charAt(start) == '*') {
             // Size unknown to the Content-Range header.
             return -1;
         }
 
-        return Long.parseLong(sizeString);
+        return LongParser.parse(contentRange, start, end);
     }
 
     /**
@@ -657,10 +653,14 @@ public final class CoreUtils {
      * the shutdown hook with privileged permissions.
      * <p>
      * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     * <p>
+     * If the JVM is already shutting down a shutdown hook can no longer be registered, and one registered now could
+     * never run. Rather than failing the caller's work, which may be an in-flight request draining during shutdown,
+     * this method returns null to indicate that no hook was registered.
      *
      * @param shutdownThread The {@link Thread} that will be added as a
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
-     * @return The {@link Thread} that was passed in.
+     * @return The {@link Thread} that was passed in, or null if it was null or the JVM is already shutting down.
      */
     public static Thread addShutdownHookSafely(Thread shutdownThread) {
         return ImplUtils.addShutdownHookSafely(shutdownThread);

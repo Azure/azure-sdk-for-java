@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for TranscriptionResultTypeInternal.
+ * Transcription result types.
  */
 public final class TranscriptionResultTypeInternal extends ExpandableStringEnum<TranscriptionResultTypeInternal> {
     /**

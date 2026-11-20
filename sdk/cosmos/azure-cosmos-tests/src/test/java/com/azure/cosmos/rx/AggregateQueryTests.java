@@ -113,7 +113,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
     public void bulkInsert() {
         generateTestData();
-        voidBulkInsertBlocking(createdCollection, docs);
+        voidInsertAllItemsBlocking(createdCollection, docs, true);
     }
 
     public void generateTestData() {
@@ -266,7 +266,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         try {
-            truncateCollection(createdCollection);
+            cleanUpContainer(createdCollection);
         } catch (Throwable throwable) {
             throwable = Exceptions.unwrap(throwable);
             if (!(throwable instanceof CosmosException)) {

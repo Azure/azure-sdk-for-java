@@ -260,6 +260,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
      *
      */
     @Test
+    @Disabled("TODO: restore the test after resources lib release. Playback URI casing changed from resourceGroups to resourcegroups.")
     public void testGenericResources() {
         // Create some resources
         NetworkSecurityGroup nsg = azureResourceManager.networkSecurityGroups()
@@ -1086,6 +1087,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         new TestRedis().runTest(azureResourceManager.redisCaches(), azureResourceManager.resourceGroups());
     }
 
+    @Disabled("CDN deprecated all Microsoft based Sku. Now it uses Azure Front Door in Sku")
     @Test
     public void testCdnManager() throws Exception {
         new TestCdn().runTest(azureResourceManager.cdnProfiles(), azureResourceManager.resourceGroups());
@@ -1096,6 +1098,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         new TestDns().runTest(azureResourceManager.dnsZones(), azureResourceManager.resourceGroups());
     }
 
+    @Disabled("Temporarily disabled, due to change of path param of ALL to aLL")
     @Test
     public void testPrivateDnsZones() throws Exception {
         new TestPrivateDns().runTest(azureResourceManager.privateDnsZones(), azureResourceManager.resourceGroups());
@@ -1237,6 +1240,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertFalse(containerGroupOperations.isEmpty());
     }
 
+    @Disabled("Diff on 'Accept' header. Live test is good, re-enable the test after publish new container registry lib.")
     @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(),

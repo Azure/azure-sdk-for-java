@@ -13,16 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchResourceGuardInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchResourceGuardInput model
-            = BinaryData.fromString("{\"tags\":{\"sotftpvj\":\"w\"}}").toObject(PatchResourceGuardInput.class);
-        Assertions.assertEquals("w", model.tags().get("sotftpvj"));
+        PatchResourceGuardInput model = BinaryData
+            .fromString(
+                "{\"tags\":{\"w\":\"vvqfovljxyws\",\"dsytgadgvr\":\"yrs\",\"neqn\":\"ea\",\"jfqka\":\"arrwlquu\"}}")
+            .toObject(PatchResourceGuardInput.class);
+        Assertions.assertEquals("vvqfovljxyws", model.tags().get("w"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchResourceGuardInput model = new PatchResourceGuardInput().withTags(mapOf("sotftpvj", "w"));
+        PatchResourceGuardInput model = new PatchResourceGuardInput()
+            .withTags(mapOf("w", "vvqfovljxyws", "dsytgadgvr", "yrs", "neqn", "ea", "jfqka", "arrwlquu"));
         model = BinaryData.fromObject(model).toObject(PatchResourceGuardInput.class);
-        Assertions.assertEquals("w", model.tags().get("sotftpvj"));
+        Assertions.assertEquals("vvqfovljxyws", model.tags().get("w"));
     }
 
     // Use "Map.of" if available

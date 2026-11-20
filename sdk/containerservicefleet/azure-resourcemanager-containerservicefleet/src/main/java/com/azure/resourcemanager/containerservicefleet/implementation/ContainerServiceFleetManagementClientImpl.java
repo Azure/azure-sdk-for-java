@@ -28,12 +28,14 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfileOperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfilesClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.ClusterMeshProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetManagedNamespacesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.GatesClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.IdentityBindingProfilesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.UpdateRunsClient;
 import java.io.IOException;
@@ -149,6 +151,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
     }
 
     /**
+     * The ClusterMeshProfilesClient object to access its operations.
+     */
+    private final ClusterMeshProfilesClient clusterMeshProfiles;
+
+    /**
+     * Gets the ClusterMeshProfilesClient object to access its operations.
+     * 
+     * @return the ClusterMeshProfilesClient object.
+     */
+    public ClusterMeshProfilesClient getClusterMeshProfiles() {
+        return this.clusterMeshProfiles;
+    }
+
+    /**
      * The FleetsClient object to access its operations.
      */
     private final FleetsClient fleets;
@@ -202,6 +218,20 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
      */
     public GatesClient getGates() {
         return this.gates;
+    }
+
+    /**
+     * The IdentityBindingProfilesClient object to access its operations.
+     */
+    private final IdentityBindingProfilesClient identityBindingProfiles;
+
+    /**
+     * Gets the IdentityBindingProfilesClient object to access its operations.
+     * 
+     * @return the IdentityBindingProfilesClient object.
+     */
+    public IdentityBindingProfilesClient getIdentityBindingProfiles() {
+        return this.identityBindingProfiles;
     }
 
     /**
@@ -277,12 +307,14 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-08-01-preview";
+        this.apiVersion = "2026-11-02-preview";
         this.operations = new OperationsClientImpl(this);
+        this.clusterMeshProfiles = new ClusterMeshProfilesClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
         this.fleetManagedNamespaces = new FleetManagedNamespacesClientImpl(this);
         this.gates = new GatesClientImpl(this);
+        this.identityBindingProfiles = new IdentityBindingProfilesClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
         this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);
         this.autoUpgradeProfiles = new AutoUpgradeProfilesClientImpl(this);
@@ -400,7 +432,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

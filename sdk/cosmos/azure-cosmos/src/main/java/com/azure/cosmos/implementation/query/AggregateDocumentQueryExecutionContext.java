@@ -26,13 +26,14 @@ import java.util.function.BiFunction;
 
 public class AggregateDocumentQueryExecutionContext
     implements IDocumentQueryExecutionComponent<Document>{
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     public static final String PAYLOAD_PROPERTY_NAME = "payload";
     private final boolean isValueAggregateQuery;
     private final IDocumentQueryExecutionComponent<Document> component;
@@ -71,13 +72,13 @@ public class AggregateDocumentQueryExecutionContext
 
                     for(FeedResponse<Document> page : superList) {
                         diagnosticsList.addAll(
-                            diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
+                            diagAccessor().getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
 
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-                            FeedResponse<Document> frp = feedResponseAccessor.createFeedResponse(
+                            FeedResponse<Document> frp = feedResponseAccessor().createFeedResponse(
                                 aggregateResults, headers, null);
-                            diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                            diagAccessor().addClientSideDiagnosticsToFeed(
                                 frp.getCosmosDiagnostics(), diagnosticsList);
                             return frp;
                         }
@@ -100,14 +101,14 @@ public class AggregateDocumentQueryExecutionContext
                     }
 
                     headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-                    FeedResponse<Document> frp = feedResponseAccessor.createFeedResponse(
+                    FeedResponse<Document> frp = feedResponseAccessor().createFeedResponse(
                         aggregateResults, headers, null);
                     if(!queryMetricsMap.isEmpty()) {
                         for(Map.Entry<String, QueryMetrics> entry: queryMetricsMap.entrySet()) {
                             BridgeInternal.putQueryMetricsIntoMap(frp, entry.getKey(), entry.getValue());
                         }
                     }
-                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    diagAccessor().addClientSideDiagnosticsToFeed(
                         frp.getCosmosDiagnostics(), diagnosticsList);
                     return frp;
                 }).flux();

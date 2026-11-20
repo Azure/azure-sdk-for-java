@@ -15,7 +15,7 @@ Client Core OkHttp HTTP client is a plugin for the `io.clientcore.core` HTTP cli
 <dependency>
     <groupId>io.clientcore</groupId>
     <artifactId>http-okhttp3</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

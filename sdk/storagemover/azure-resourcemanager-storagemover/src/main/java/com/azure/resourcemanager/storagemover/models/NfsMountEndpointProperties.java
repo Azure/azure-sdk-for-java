@@ -35,6 +35,11 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
      */
     private String export;
 
+    /*
+     * Source type to differentiate NFSMount and FSX-SMB endpoints. Default is NFSMount.
+     */
+    private NfsMountSourceType sourceType;
+
     /**
      * Creates an instance of NfsMountEndpointProperties class.
      */
@@ -112,6 +117,26 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
     }
 
     /**
+     * Get the sourceType property: Source type to differentiate NFSMount and FSX-SMB endpoints. Default is NFSMount.
+     * 
+     * @return the sourceType value.
+     */
+    public NfsMountSourceType sourceType() {
+        return this.sourceType;
+    }
+
+    /**
+     * Set the sourceType property: Source type to differentiate NFSMount and FSX-SMB endpoints. Default is NFSMount.
+     * 
+     * @param sourceType the sourceType value to set.
+     * @return the NfsMountEndpointProperties object itself.
+     */
+    public NfsMountEndpointProperties withSourceType(NfsMountSourceType sourceType) {
+        this.sourceType = sourceType;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -124,13 +149,24 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
      * {@inheritDoc}
      */
     @Override
+    public NfsMountEndpointProperties withEndpointKind(EndpointKind endpointKind) {
+        super.withEndpointKind(endpointKind);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("endpointKind", endpointKind() == null ? null : endpointKind().toString());
         jsonWriter.writeStringField("host", this.host);
         jsonWriter.writeStringField("export", this.export);
         jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
         jsonWriter.writeStringField("nfsVersion", this.nfsVersion == null ? null : this.nfsVersion.toString());
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -152,6 +188,9 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
 
                 if ("description".equals(fieldName)) {
                     deserializedNfsMountEndpointProperties.withDescription(reader.getString());
+                } else if ("endpointKind".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties
+                        .withEndpointKind(EndpointKind.fromString(reader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNfsMountEndpointProperties
                         .withProvisioningState(ProvisioningState.fromString(reader.getString()));
@@ -163,6 +202,9 @@ public final class NfsMountEndpointProperties extends EndpointBaseProperties {
                     deserializedNfsMountEndpointProperties.endpointType = EndpointType.fromString(reader.getString());
                 } else if ("nfsVersion".equals(fieldName)) {
                     deserializedNfsMountEndpointProperties.nfsVersion = NfsVersion.fromString(reader.getString());
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedNfsMountEndpointProperties.sourceType
+                        = NfsMountSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

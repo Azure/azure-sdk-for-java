@@ -17,34 +17,34 @@ public final class SchemaRegistryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryInner model = BinaryData.fromString(
-            "{\"properties\":{\"uuid\":\"xcjzhqizxfpxt\",\"namespace\":\"qscjavftjuh\",\"displayName\":\"azkmtgguwp\",\"description\":\"r\",\"storageAccountContainerUrl\":\"jcivmmg\",\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"wrxgkneuvy\",\"tenantId\":\"zqodfvpgshox\",\"type\":\"SystemAssigned\"},\"location\":\"bpfgzdj\",\"tags\":{\"qvlgafcqusrdvetn\":\"zflbqvg\",\"uzhyrmewipmvekdx\":\"sdtutnwlduyc\"},\"id\":\"kuqgsjjxundxgket\",\"name\":\"zhhzjhfjmhvvmu\",\"type\":\"gpmuneqsxvmhfbuz\"}")
+            "{\"properties\":{\"uuid\":\"njdgkynscliq\",\"namespace\":\"zvhxnk\",\"displayName\":\"tkubotppn\",\"description\":\"xz\",\"storageAccountContainerUrl\":\"hihfrbbcevqagtlt\",\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"qojpy\",\"tenantId\":\"gtrd\",\"type\":\"SystemAssigned\"},\"location\":\"fmzzsdymbrny\",\"tags\":{\"rafwgckhocxvdf\":\"m\",\"pavehhr\":\"fwafqrouda\"},\"id\":\"kbunzoz\",\"name\":\"dhcxgkmoy\",\"type\":\"cdyuibhmfdnbzyd\"}")
             .toObject(SchemaRegistryInner.class);
-        Assertions.assertEquals("bpfgzdj", model.location());
-        Assertions.assertEquals("zflbqvg", model.tags().get("qvlgafcqusrdvetn"));
-        Assertions.assertEquals("qscjavftjuh", model.properties().namespace());
-        Assertions.assertEquals("azkmtgguwp", model.properties().displayName());
-        Assertions.assertEquals("r", model.properties().description());
-        Assertions.assertEquals("jcivmmg", model.properties().storageAccountContainerUrl());
+        Assertions.assertEquals("fmzzsdymbrny", model.location());
+        Assertions.assertEquals("m", model.tags().get("rafwgckhocxvdf"));
+        Assertions.assertEquals("zvhxnk", model.properties().namespace());
+        Assertions.assertEquals("tkubotppn", model.properties().displayName());
+        Assertions.assertEquals("xz", model.properties().description());
+        Assertions.assertEquals("hihfrbbcevqagtlt", model.properties().storageAccountContainerUrl());
         Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaRegistryInner model = new SchemaRegistryInner().withLocation("bpfgzdj")
-            .withTags(mapOf("qvlgafcqusrdvetn", "zflbqvg", "uzhyrmewipmvekdx", "sdtutnwlduyc"))
-            .withProperties(new SchemaRegistryProperties().withNamespace("qscjavftjuh")
-                .withDisplayName("azkmtgguwp")
-                .withDescription("r")
-                .withStorageAccountContainerUrl("jcivmmg"))
+        SchemaRegistryInner model = new SchemaRegistryInner().withLocation("fmzzsdymbrny")
+            .withTags(mapOf("rafwgckhocxvdf", "m", "pavehhr", "fwafqrouda"))
+            .withProperties(new SchemaRegistryProperties().withNamespace("zvhxnk")
+                .withDisplayName("tkubotppn")
+                .withDescription("xz")
+                .withStorageAccountContainerUrl("hihfrbbcevqagtlt"))
             .withIdentity(
                 new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryInner.class);
-        Assertions.assertEquals("bpfgzdj", model.location());
-        Assertions.assertEquals("zflbqvg", model.tags().get("qvlgafcqusrdvetn"));
-        Assertions.assertEquals("qscjavftjuh", model.properties().namespace());
-        Assertions.assertEquals("azkmtgguwp", model.properties().displayName());
-        Assertions.assertEquals("r", model.properties().description());
-        Assertions.assertEquals("jcivmmg", model.properties().storageAccountContainerUrl());
+        Assertions.assertEquals("fmzzsdymbrny", model.location());
+        Assertions.assertEquals("m", model.tags().get("rafwgckhocxvdf"));
+        Assertions.assertEquals("zvhxnk", model.properties().namespace());
+        Assertions.assertEquals("tkubotppn", model.properties().displayName());
+        Assertions.assertEquals("xz", model.properties().description());
+        Assertions.assertEquals("hihfrbbcevqagtlt", model.properties().storageAccountContainerUrl());
         Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 

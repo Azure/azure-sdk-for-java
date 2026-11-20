@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
 import com.azure.resourcemanager.chaos.models.ChaosTargetSelector;
+import com.azure.resourcemanager.chaos.models.CustomerDataStorageProperties;
 import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import com.azure.resourcemanager.chaos.models.ResourceIdentity;
 import java.io.IOException;
@@ -197,6 +198,31 @@ public final class ExperimentInner extends Resource {
             this.innerProperties = new ExperimentProperties();
         }
         this.innerProperties().withSelectors(selectors);
+        return this;
+    }
+
+    /**
+     * Get the customerDataStorage property: Optional customer-managed Storage account where Experiment schema will be
+     * stored.
+     * 
+     * @return the customerDataStorage value.
+     */
+    public CustomerDataStorageProperties customerDataStorage() {
+        return this.innerProperties() == null ? null : this.innerProperties().customerDataStorage();
+    }
+
+    /**
+     * Set the customerDataStorage property: Optional customer-managed Storage account where Experiment schema will be
+     * stored.
+     * 
+     * @param customerDataStorage the customerDataStorage value to set.
+     * @return the ExperimentInner object itself.
+     */
+    public ExperimentInner withCustomerDataStorage(CustomerDataStorageProperties customerDataStorage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExperimentProperties();
+        }
+        this.innerProperties().withCustomerDataStorage(customerDataStorage);
         return this;
     }
 

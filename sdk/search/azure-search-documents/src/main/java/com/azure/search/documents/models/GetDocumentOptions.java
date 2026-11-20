@@ -5,119 +5,85 @@ package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Additional parameters for getDocument operation.
- * 
- * @param <T> The type of the document to retrieve.
+ * Options for retrieving a document from an Azure AI Search index.
+ * These options configure request headers and query parameters, not a request body.
  */
 @Fluent
-public final class GetDocumentOptions<T> {
-    /*
-     * The key of the document to retrieve.
-     */
-    private final String key;
-
-    /*
-     * The model class converts search result.
-     */
-    private final Class<T> modelClass;
-
-    /*
-     * The list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema are included.
-     */
+public class GetDocumentOptions {
+    private String querySourceAuthorization;
+    private Boolean enableElevatedRead;
     private List<String> selectedFields;
 
-    /*
-     * A value that specifies whether to enable elevated read for the document retrieval.
-     * Elevated read allows the request to read the latest committed index changes and bypass standard ACL filtering.
-     */
-    private Boolean enableElevatedRead;
-
     /**
-     * Creates an instance of {@link GetDocumentOptions} with required parameters.
-     *
-     * @param key The key of the document to retrieve.
-     * @param modelClass The model class converts search result.
+     * Creates an instance of {@link GetDocumentOptions}.
      */
-    public GetDocumentOptions(String key, Class<T> modelClass) {
-        this.key = key;
-        this.modelClass = modelClass;
+    public GetDocumentOptions() {
     }
 
     /**
-     * Get the key property: The key of the document to retrieve.
+     * Gets the token identifying the user for whom the query is executed.
+     * The token is sent in the {@code x-ms-query-source-authorization} header to enforce document permissions.
      *
-     * @return the key value.
+     * @return the authorization token, or null if not set.
      */
-    public String getKey() {
-        return this.key;
+    public String getQuerySourceAuthorization() {
+        return querySourceAuthorization;
     }
 
     /**
-     * Get the modelClass property: The model class converts search result.
+     * Sets the token identifying the user for whom the query is executed.
+     * The token is sent in the {@code x-ms-query-source-authorization} header to enforce document permissions.
      *
-     * @return the modelClass value.
+     * @param querySourceAuthorization the authorization token, or null to leave the header unset.
+     * @return the updated GetDocumentOptions object.
      */
-    public Class<T> getModelClass() {
-        return this.modelClass;
+    public GetDocumentOptions setQuerySourceAuthorization(String querySourceAuthorization) {
+        this.querySourceAuthorization = querySourceAuthorization;
+        return this;
     }
 
     /**
-     * Get the selectedFields property: The list of fields to retrieve. If unspecified, all fields marked as 
-     * retrievable in the schema are included.
+     * Gets whether elevated read is enabled to bypass document-level permission checks.
      *
-     * @return the selectedFields value.
+     * @return whether elevated read is enabled, or null to use the service default.
+     */
+    public Boolean isEnableElevatedRead() {
+        return enableElevatedRead;
+    }
+
+    /**
+     * Sets whether elevated read is enabled to bypass document-level permission checks.
+     * This value is sent in the {@code x-ms-enable-elevated-read} header.
+     *
+     * @param enableElevatedRead whether elevated read is enabled, or null to use the service default.
+     * @return the updated GetDocumentOptions object.
+     */
+    public GetDocumentOptions setEnableElevatedRead(Boolean enableElevatedRead) {
+        this.enableElevatedRead = enableElevatedRead;
+        return this;
+    }
+
+    /**
+     * Gets the fields to retrieve for the document.
+     *
+     * @return the selected fields, or null to leave field selection to the service.
      */
     public List<String> getSelectedFields() {
-        return this.selectedFields;
+        return selectedFields;
     }
 
     /**
-     * Set the selectedFields property: The list of fields to retrieve. If unspecified, all fields marked as 
-     * retrievable in the schema are included.
+     * Sets the fields to retrieve for the document using the {@code $select} query parameter.
+     * Fields not selected will be missing from the returned document.
      *
-     * @param selectedFields the selectedFields value to set.
-     * @return the GetDocumentOptions object itself.
+     * @param selectedFields the fields to retrieve, or null to leave field selection to the service.
+     * @return the updated GetDocumentOptions object.
      */
-    public GetDocumentOptions<T> setSelectedFields(String... selectedFields) {
-        this.selectedFields = (selectedFields == null) ? null : Arrays.asList(selectedFields);
-        return this;
-    }
-
-    /**
-     * Set the selectedFields property: The list of fields to retrieve. If unspecified, all fields marked as 
-     * retrievable in the schema are included.
-     *
-     * @param selectedFields the selectedFields value to set.
-     * @return the GetDocumentOptions object itself.
-     */
-    public GetDocumentOptions<T> setSelectedFields(List<String> selectedFields) {
+    public GetDocumentOptions setSelectedFields(List<String> selectedFields) {
         this.selectedFields = selectedFields;
-        return this;
-    }
-
-    /**
-     * Get the enableElevatedRead property: A value that specifies whether to enable elevated read for the document 
-     * retrieval. Elevated read allows the request to read the latest committed index changes and bypass standard ACL filtering.
-     *
-     * @return the enableElevatedRead value.
-     */
-    public Boolean isElevatedReadEnabled() {
-        return this.enableElevatedRead;
-    }
-
-    /**
-     * Set the enableElevatedRead property: A value that specifies whether to enable elevated read for the document 
-     * retrieval. Elevated read allows the request to read the latest committed index changes and bypass standard ACL filtering.
-     *
-     * @param enableElevatedRead the enableElevatedRead value to set.
-     * @return the GetDocumentOptions object itself.
-     */
-    public GetDocumentOptions<T> setElevatedReadEnabled(Boolean enableElevatedRead) {
-        this.enableElevatedRead = enableElevatedRead;
         return this;
     }
 }

@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import org.apache.kafka.connect.sink.SinkRecord;
@@ -49,7 +50,11 @@ public class CosmosSinkTask extends SinkTask {
                     this.sinkTaskConfig.getClientMetadataCachesSnapshot());
             LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
             this.throughputControlClientItem = this.getThroughputControlCosmosClient();
-            this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
+
+            this.sinkRecordTransformer = new SinkRecordTransformer(
+                this.sinkTaskConfig,
+                this.context.errantRecordReporter(),
+                this.sinkTaskConfig.getWriteConfig().getToleranceOnErrorLevel());
 
             if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
                 this.cosmosWriter =
@@ -74,15 +79,18 @@ public class CosmosSinkTask extends SinkTask {
 
     private CosmosClientCacheItem getThroughputControlCosmosClient() {
         if (this.sinkTaskConfig.getThroughputControlConfig().isThroughputControlEnabled()
-            && this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
-            // throughput control is using a different database account config
-            return CosmosClientCache.getCosmosClient(
-                this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
-                this.sinkTaskConfig.getTaskId(),
-                this.sinkTaskConfig.getThroughputControlClientMetadataCachesSnapshot());
-        } else {
-            return this.cosmosClientItem;
+            && this.sinkTaskConfig.getThroughputControlConfig() instanceof CosmosSDKThroughputControlConfig) {
+            CosmosSDKThroughputControlConfig sdkConfig =
+                (CosmosSDKThroughputControlConfig) this.sinkTaskConfig.getThroughputControlConfig();
+            if (sdkConfig.getThroughputControlAccountConfig() != null) {
+                // throughput control is using a different database account config
+                return CosmosClientCache.getCosmosClient(
+                    sdkConfig.getThroughputControlAccountConfig(),
+                    this.sinkTaskConfig.getTaskId(),
+                    this.sinkTaskConfig.getThroughputControlClientMetadataCachesSnapshot());
+            }
         }
+        return this.cosmosClientItem;
     }
 
     @Override
@@ -125,7 +133,7 @@ public class CosmosSinkTask extends SinkTask {
             List<SinkRecord> transformedRecords = sinkRecordTransformer.transform(containerName, entry.getValue());
             this.cosmosWriter.write(container, transformedRecords);
 
-            totalWrittenRecordsPerContainer.merge(containerName, (long) entry.getValue().size(), Long::sum);
+            totalWrittenRecordsPerContainer.merge(containerName, (long) transformedRecords.size(), Long::sum);
         }
 
         logWrittenRecordCount();

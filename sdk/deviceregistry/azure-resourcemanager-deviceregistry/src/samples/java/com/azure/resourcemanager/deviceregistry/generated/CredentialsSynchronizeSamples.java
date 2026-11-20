@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class CredentialsSynchronizeSamples {
     /*
-     * x-ms-original-file: 2025-11-01-preview/Credentials_Synchronize.json
+     * x-ms-original-file: 2026-03-01-preview/Credentials_Synchronize.json
      */
     /**
      * Sample code: Credentials_Synchronize.

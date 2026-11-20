@@ -11,7 +11,7 @@ public final class EndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Endpoints model = BinaryData.fromString(
-            "{\"nsxtManager\":\"zovawjvz\",\"vcsa\":\"luthn\",\"hcxCloudManager\":\"rnxipei\",\"nsxtManagerIp\":\"jzuaejxdultskzbb\",\"vcenterIp\":\"zumveekgpwo\",\"hcxCloudManagerIp\":\"hkfpbs\"}")
+            "{\"nsxtManager\":\"hqkvpuvksgplsak\",\"vcsa\":\"n\",\"hcxCloudManager\":\"ynl\",\"nsxtManagerIp\":\"huopxodlqiynto\",\"vcenterIp\":\"ihleos\",\"hcxCloudManagerIp\":\"w\"}")
             .toObject(Endpoints.class);
     }
 }

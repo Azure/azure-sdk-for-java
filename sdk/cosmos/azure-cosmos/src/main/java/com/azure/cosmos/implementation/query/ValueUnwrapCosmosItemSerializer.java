@@ -12,6 +12,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.Map;
 
 public final class ValueUnwrapCosmosItemSerializer extends CosmosItemSerializer {
+    private static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    }
+
     private static ValueUnwrapCosmosItemSerializer EnableUnwrapSingletonInstance = new ValueUnwrapCosmosItemSerializer(true);
     private static ValueUnwrapCosmosItemSerializer DisableUnwrapSingletonInstance = new ValueUnwrapCosmosItemSerializer(false);
 
@@ -23,13 +27,14 @@ public final class ValueUnwrapCosmosItemSerializer extends CosmosItemSerializer 
         return DisableUnwrapSingletonInstance;
     }
 
-
     private final boolean shouldUnwrapValue;
     private ValueUnwrapCosmosItemSerializer(boolean shouldUnwrapValue) {
+        itemSerializerAccessor()
+            .setShouldWrapSerializationExceptions(this, false);
         ImplementationBridgeHelpers
             .CosmosItemSerializerHelper
             .getCosmosItemSerializerAccessor()
-            .setShouldWrapSerializationExceptions(this, false);
+            .setCanSerialize(this, false);
         this.shouldUnwrapValue = shouldUnwrapValue;
     }
 

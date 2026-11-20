@@ -1,0 +1,12 @@
+diff --git a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/pom.xml b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/pom.xml
+index 3302ee4..d404601 100644
+--- a/sdk/contosowidgets/azure-resourcemanager-contosowidgets/pom.xml
++++ b/sdk/contosowidgets/azure-resourcemanager-contosowidgets/pom.xml
+@@ -8,6 +8,6 @@
+   <artifactId>azure-resourcemanager-contosowidgets</artifactId>
+   <version>1.3.0-beta.2</version>
+   <properties>
+-    <azure-core-management.version>1.18.0</azure-core-management.version>
++    <azure-core-management.version>1.19.0</azure-core-management.version>
+   </properties>
+ </project>

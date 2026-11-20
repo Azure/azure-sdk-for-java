@@ -5,12 +5,9 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelUpdate;
-import com.azure.resourcemanager.cloudhealth.models.HealthModelUpdateProperties;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.cloudhealth.models.ModelDiscoverySettings;
 import com.azure.resourcemanager.cloudhealth.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,14 +17,10 @@ public final class HealthModelUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthModelUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"sainqpjwnzl\",\"tenantId\":\"fmppe\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"vndhkrwpdapp\":{\"principalId\":\"xsabkyqdu\",\"clientId\":\"itcjczdz\"},\"je\":{\"principalId\":\"bdkvwrwjf\",\"clientId\":\"snhu\"}}},\"tags\":{\"hugjzzdatqxhoc\":\"rl\",\"ozwyiftyhxhuro\":\"geablgphuticndvk\"},\"properties\":{\"discovery\":{\"scope\":\"yxolniwp\",\"addRecommendedSignals\":\"Enabled\",\"identity\":\"kjfkg\"}}}")
+            "{\"identity\":{\"principalId\":\"jkjlxofpdvhpfx\",\"tenantId\":\"pini\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"ognarxzxtheotus\":{\"principalId\":\"uybbkpodep\",\"clientId\":\"ginuvamih\"},\"nhungbw\":{\"principalId\":\"yevc\",\"clientId\":\"qi\"},\"eofjaeqjh\":{\"principalId\":\"rnfygxgispem\",\"clientId\":\"zfkufubljofx\"}}},\"tags\":{\"mjqulngsn\":\"asvm\"}}")
             .toObject(HealthModelUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("rl", model.tags().get("hugjzzdatqxhoc"));
-        Assertions.assertEquals("yxolniwp", model.properties().discovery().scope());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
-            model.properties().discovery().addRecommendedSignals());
-        Assertions.assertEquals("kjfkg", model.properties().discovery().identity());
+        Assertions.assertEquals("asvm", model.tags().get("mjqulngsn"));
     }
 
     @org.junit.jupiter.api.Test
@@ -35,20 +28,12 @@ public final class HealthModelUpdateTests {
         HealthModelUpdate model = new HealthModelUpdate()
             .withIdentity(
                 new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf("vndhkrwpdapp", new UserAssignedIdentity(), "je", new UserAssignedIdentity())))
-            .withTags(mapOf("hugjzzdatqxhoc", "rl", "ozwyiftyhxhuro", "geablgphuticndvk"))
-            .withProperties(
-                new HealthModelUpdateProperties().withDiscovery(new ModelDiscoverySettings().withScope("yxolniwp")
-                    .withAddRecommendedSignals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED)
-                    .withIdentity("kjfkg")));
+                    .withUserAssignedIdentities(mapOf("ognarxzxtheotus", new UserAssignedIdentity(), "nhungbw",
+                        new UserAssignedIdentity(), "eofjaeqjh", new UserAssignedIdentity())))
+            .withTags(mapOf("mjqulngsn", "asvm"));
         model = BinaryData.fromObject(model).toObject(HealthModelUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("rl", model.tags().get("hugjzzdatqxhoc"));
-        Assertions.assertEquals("yxolniwp", model.properties().discovery().scope());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
-            model.properties().discovery().addRecommendedSignals());
-        Assertions.assertEquals("kjfkg", model.properties().discovery().identity());
+        Assertions.assertEquals("asvm", model.tags().get("mjqulngsn"));
     }
 
     // Use "Map.of" if available

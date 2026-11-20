@@ -4,18 +4,32 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.ModeCopyMode;
 import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
@@ -33,9 +47,11 @@ import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFileLinks;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileRangeItem;
 import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
@@ -50,6 +66,7 @@ import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
+import com.azure.storage.file.share.options.ShareFileListRangesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
@@ -58,7 +75,10 @@ import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -78,17 +98,24 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE_HEADER_NAME;
@@ -103,10 +130,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("deprecation")
 public class FileAsyncApiTests extends FileShareTestBase {
+    private static final String FILE_ID_TEST_CONTENT = "file-id properties";
+    private static final HttpHeaderName X_MS_FILE_RENAME_SOURCE = HttpHeaderName.fromString("x-ms-file-rename-source");
+    private static final HttpHeaderName X_MS_FILE_RENAME_REPLACE_IF_EXISTS
+        = HttpHeaderName.fromString("x-ms-file-rename-replace-if-exists");
+    private static final String RENAME_FAKE_SAS
+        = "sv=2025-01-05&ss=f&srt=o&sp=rwdc&se=2099-01-01T00%3A00%3A00Z&sig=fakeSignature";
+
     private ShareFileAsyncClient primaryFileAsyncClient;
     private ShareAsyncClient shareAsyncClient;
     private String shareName;
     private String filePath;
+    private String fileId;
     private static Map<String, String> testMetadata;
     private static ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
@@ -114,7 +149,11 @@ public class FileAsyncApiTests extends FileShareTestBase {
         = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
     @BeforeEach
-    public void setup() {
+    public void setup(TestInfo testInfo) {
+        if (testInfo.getTags().contains("file-id-mock") || testInfo.getTags().contains("rename-mock")) {
+            return;
+        }
+
         shareName = generateShareName();
         filePath = generatePathName();
         shareAsyncClient = shareBuilderHelper(shareName).buildAsyncClient();
@@ -123,6 +162,15 @@ public class FileAsyncApiTests extends FileShareTestBase {
         testMetadata = Collections.singletonMap("testmetadata", "value");
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en").setContentType("application/octet-stream");
         smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
+
+        if (testInfo.getTags().contains("file-id-integration")) {
+            byte[] content = FILE_ID_TEST_CONTENT.getBytes(StandardCharsets.UTF_8);
+            primaryFileAsyncClient.create(content.length).block();
+            primaryFileAsyncClient.upload(Flux.just(ByteBuffer.wrap(content)), content.length).block();
+            ShareFileProperties properties = Objects.requireNonNull(primaryFileAsyncClient.getProperties().block());
+            fileId = Objects.requireNonNull(properties.getSmbProperties()).getFileId();
+            Assertions.assertNotNull(fileId);
+        }
     }
 
     @Test
@@ -133,6 +181,125 @@ public class FileAsyncApiTests extends FileShareTestBase {
         String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, filePath);
         String fileURL = primaryFileAsyncClient.getFileUrl();
         assertEquals(expectURL, fileURL);
+    }
+
+    @Tag("file-id-integration")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncFilePropertiesById() {
+        ShareFileAsyncClient factoryClient = shareAsyncClient.getFileClientByFileId(fileId);
+        ShareFileAsyncClient builderClient = instrument(new ShareFileClientBuilder())
+            .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
+            .shareName(shareName)
+            .fileId(fileId)
+            .buildFileAsyncClient();
+
+        for (ShareFileAsyncClient fileIdClient : Arrays.asList(factoryClient, builderClient)) {
+            ShareFileProperties properties = fileIdClient.getProperties().block();
+            Assertions.assertEquals(filePath, properties.getFileName());
+            Assertions.assertEquals(FILE_ID_TEST_CONTENT.length(), properties.getContentLength());
+            Assertions.assertEquals(fileId, properties.getSmbProperties().getFileId());
+        }
+    }
+
+    @Tag("file-id-integration")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncFileLinksById() {
+        ShareFileLinks links = shareAsyncClient.getFileClientByFileId(fileId).getFileLinks().block();
+
+        assertEquals(FILE_ID_TEST_CONTENT.length(), links.getProperties().getContentLength());
+        assertEquals(fileId, links.getProperties().getSmbProperties().getFileId());
+        assertEquals(1, links.getLinks().size());
+        assertEquals(filePath, links.getLinks().get(0).getName());
+        assertEquals(links.getProperties().getSmbProperties().getParentId(), links.getLinks().get(0).getParentId());
+    }
+
+    @Tag("file-id-integration")
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncFilePropertiesByIdLive() {
+        StepVerifier.create(shareAsyncClient.getFileClientByFileId(fileId).getProperties()).assertNext(properties -> {
+            assertEquals(filePath, properties.getFileName());
+            assertEquals(FILE_ID_TEST_CONTENT.length(), properties.getContentLength());
+            assertEquals(fileId, properties.getSmbProperties().getFileId());
+        }).verifyComplete();
+    }
+
+    @Tag("file-id-integration")
+    @LiveOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncFileLinksByIdLive() {
+        StepVerifier.create(shareAsyncClient.getFileClientByFileId(fileId).getFileLinks()).assertNext(links -> {
+            assertEquals(fileId, links.getProperties().getSmbProperties().getFileId());
+            assertEquals(1, links.getLinks().size());
+            assertEquals(filePath, links.getLinks().get(0).getName());
+        }).verifyComplete();
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void asyncFileLinksMapPropertiesAndDecodeLinkNames() {
+        AtomicReference<String> requestUrl = new AtomicReference<>();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            Assertions.assertEquals(HttpMethod.GET, request.getHttpMethod());
+            requestUrl.set(request.getUrl().toString());
+            String body = "<HardLinks><HardLink><FileName Encoded=\"true\">file%20name.txt</FileName>"
+                + "<ParentId>parent-id</ParentId>" + "</HardLink></HardLinks>";
+            HttpHeaders headers
+                = FileIdTestHelper.fileHeaders("file.txt").set(HttpHeaderName.CONTENT_TYPE, "application/xml");
+            return Mono.just(new MockHttpResponse(request, 200, headers, body.getBytes(StandardCharsets.UTF_8)));
+        }).build();
+
+        ShareAsyncClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+        ShareFileLinks links = testShareClient.getFileClientByFileId(FileIdTestHelper.FILE_ID).getFileLinks().block();
+
+        Assertions.assertEquals("file.txt", links.getProperties().getFileName());
+        Assertions.assertEquals("en", links.getProperties().getContentLanguage());
+        Assertions.assertEquals("gzip", links.getProperties().getContentEncoding());
+        FileIdTestHelper.assertSmbProperties(links.getProperties().getSmbProperties());
+        Assertions.assertEquals(1, links.getLinks().size());
+        Assertions.assertEquals("file name.txt", links.getLinks().get(0).getName());
+        Assertions.assertEquals("parent-id", links.getLinks().get(0).getParentId());
+        Assertions.assertTrue(requestUrl.get().contains("comp=hardlinks"));
+        Assertions.assertTrue(requestUrl.get().contains("fileid=" + FileIdTestHelper.FILE_ID));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2027-03-07")
+    @Test
+    public void asyncPropertiesByIdMapServiceErrors() {
+        ShareStorageException exception = Assertions.assertThrows(ShareStorageException.class,
+            () -> shareAsyncClient.getFileClientByFileId("invalid-file-id").getProperties().block());
+        assertEquals(400, exception.getStatusCode());
+        assertEquals(ShareErrorCode.INVALID_QUERY_PARAMETER_VALUE, exception.getErrorCode());
+    }
+
+    @DoNotRecord
+    @Tag("file-id-mock")
+    @Test
+    public void asyncFileLinksRequireFileId() {
+        AtomicReference<Boolean> requestSent = new AtomicReference<>(false);
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            requestSent.set(true);
+            return Mono.just(new MockHttpResponse(request, 200));
+        }).build();
+
+        ShareAsyncClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(pipeline)
+            .serviceVersion(ShareServiceVersion.V2027_03_07)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+        IllegalStateException linksException = Assertions.assertThrows(IllegalStateException.class,
+            () -> testShareClient.getFileClient("path/file").getFileLinks().block());
+        Assertions.assertEquals("getFileLinks requires a file-ID-addressed client.", linksException.getMessage());
+        Assertions.assertFalse(requestSent.get());
     }
 
     @Test
@@ -637,7 +804,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }
         outFile.deleteOnExit();
 
-        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5);
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5, 1);
 
         // Create a ShareFileAsyncClient for download using the custom pipeline
         ShareFileAsyncClient downloadClient = getFileAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
@@ -687,7 +854,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }
         outFile.deleteOnExit();
 
-        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6);
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6, 1);
 
         // Create a ShareFileAsyncClient for download using the custom pipeline
         ShareFileAsyncClient downloadClient = getFileAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
@@ -1281,8 +1448,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .setSmbPropertiesToCopy(list);
 
         StepVerifier
-            .create(createFileMono.then(Mono.fromRunnable(
-                () -> setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null)))))
+            .create(createFileMono.thenMany(
+                setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null))))
             .verifyError(IllegalArgumentException.class);
     }
 
@@ -1591,6 +1758,92 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRanges(@TempDir Path tempDir) throws IOException {
+        int uploadFileSize = Constants.MB;
+        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(Constants.KB));
+        ShareFileRange offsetRange = FileShareTestHelper.rangeFromOffsetAndLength(Constants.KB, Constants.KB);
+        ShareFileRange startRange = FileShareTestHelper.rangeFromLength(uploadFileSize);
+        ShareFileListRangesOptions options = new ShareFileListRangesOptions().setRange(startRange);
+
+        StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
+            .then(uploadRangeFromFile(uploadFilePath, offsetRange))
+            .thenMany(primaryFileAsyncClient.listAllRanges(options))
+            .collectList()).assertNext(ranges -> {
+                assertEquals(1, ranges.size());
+                assertFalse(ranges.get(0).isClear());
+                FileShareTestHelper.assertFileRangeEquals(offsetRange, ranges.get(0).getRange());
+            }).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRangesAccessConditions(@TempDir Path tempDir) throws IOException {
+        int uploadFileSize = Constants.MB;
+        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(Constants.KB));
+        ShareFileRange offsetRange = FileShareTestHelper.rangeFromOffsetAndLength(Constants.KB, Constants.KB);
+        ShareFileRange startRange = FileShareTestHelper.rangeFromLength(uploadFileSize);
+
+        StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
+            .then(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID))
+            .flatMapMany(leaseId -> {
+                ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(leaseId);
+                ShareFileListRangesOptions options
+                    = new ShareFileListRangesOptions().setRange(startRange).setRequestConditions(conditions);
+                return uploadRangeFromFile(uploadFilePath, offsetRange, conditions)
+                    .thenMany(primaryFileAsyncClient.listAllRanges(options).byPage());
+            })
+            .collectList()).assertNext(pages -> assertFalse(pages.isEmpty())).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRangesAccessConditionsFails() {
+        int uploadFileSize = Constants.MB;
+        ShareFileRange startRange = FileShareTestHelper.rangeFromLength(uploadFileSize);
+        ShareRequestConditions conditions = new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid());
+        ShareFileListRangesOptions options
+            = new ShareFileListRangesOptions().setRange(startRange).setRequestConditions(conditions);
+
+        StepVerifier
+            .create(
+                primaryFileAsyncClient.create(uploadFileSize).thenMany(primaryFileAsyncClient.listAllRanges(options)))
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals("LeaseNotPresentWithFileOperation", e.getErrorCode().getValue());
+            });
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRangesPagedByPage(@TempDir Path tempDir) throws IOException {
+        int uploadFileSize = Constants.MB;
+        int rangeLength = Constants.KB;
+        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
+        ShareFileRange firstRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        ShareFileRange secondRange = FileShareTestHelper.rangeFromOffsetAndLength(2L * rangeLength, rangeLength);
+        ShareFileRange thirdRange = FileShareTestHelper.rangeFromOffsetAndLength(4L * rangeLength, rangeLength);
+
+        StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
+            .then(uploadRangeFromFile(uploadFilePath, firstRange))
+            .then(uploadRangeFromFile(uploadFilePath, secondRange))
+            .then(uploadRangeFromFile(uploadFilePath, thirdRange))
+            .thenMany(primaryFileAsyncClient.listAllRanges().byPage(1))
+            .collectList()).assertNext(pages -> {
+                assertEquals(3, pages.size());
+                assertEquals(1, pages.get(0).getValue().size());
+                FileShareTestHelper.assertFileRangeItemEquals(firstRange, pages.get(0).getValue().get(0));
+                assertFalse(CoreUtils.isNullOrEmpty(pages.get(0).getContinuationToken()));
+                assertEquals(1, pages.get(1).getValue().size());
+                FileShareTestHelper.assertFileRangeItemEquals(secondRange, pages.get(1).getValue().get(0));
+                assertFalse(CoreUtils.isNullOrEmpty(pages.get(1).getContinuationToken()));
+                assertEquals(1, pages.get(2).getValue().size());
+                FileShareTestHelper.assertFileRangeItemEquals(thirdRange, pages.get(2).getValue().get(0));
+                assertNull(pages.get(2).getContinuationToken());
+            }).verifyComplete();
+    }
+
+    @Test
     public void listRangesWithRange() throws IOException {
         Mono<Void> createFileMono = primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).then();
         String fileName = generatePathName();
@@ -1681,6 +1934,133 @@ public class FileAsyncApiTests extends FileShareTestBase {
                     assertEquals(expectedRange.getEnd(), actualRange.getEnd());
                 }
             }).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRangesDiffPopulatedAndCleared(@TempDir Path tempDir) throws IOException {
+        int rangeLength = Constants.KB;
+        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
+        ShareFileRange initialPopulatedRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        ShareFileRange populatedRange = FileShareTestHelper.rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
+        ClearRange clearedSubrange
+            = FileShareTestHelper.clearRangeFromOffsetAndLength(initialPopulatedRange.getStart(), 512);
+
+        StepVerifier.create(primaryFileAsyncClient.create(Constants.MB)
+            .then(uploadRangeFromFile(uploadFilePath, initialPopulatedRange))
+            .then(shareAsyncClient.createSnapshot())
+            .flatMap(previousSnapshot -> uploadRangeFromFile(uploadFilePath, populatedRange)
+                .then(primaryFileAsyncClient.clearRangeWithResponse(512, clearedSubrange.getStart()))
+                .then(shareAsyncClient.createSnapshot())
+                .flatMap(snapshot -> {
+                    ShareFileAsyncClient snapshotFileClient
+                        = fileBuilderHelper(shareName, filePath).snapshot(snapshot.getSnapshot())
+                            .buildFileAsyncClient();
+                    return snapshotFileClient
+                        .listAllRangesDiff(new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()))
+                        .collectList();
+                })))
+            .assertNext(rangeItems -> {
+                List<ShareFileRangeItem> populated
+                    = rangeItems.stream().filter(item -> !item.isClear()).collect(Collectors.toList());
+                List<ShareFileRangeItem> cleared
+                    = rangeItems.stream().filter(ShareFileRangeItem::isClear).collect(Collectors.toList());
+                assertEquals(1, populated.size());
+                FileShareTestHelper.assertFileRangeItemEquals(populatedRange, populated.get(0));
+                assertEquals(1, cleared.size());
+                FileShareTestHelper.assertClearRangeItemEquals(clearedSubrange, cleared.get(0));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRangesDiffPagedByPage(@TempDir Path tempDir) throws IOException {
+        int rangeLength = Constants.KB;
+        Path uploadFilePath = Files.write(tempDir.resolve(generatePathName()), getRandomByteArray(rangeLength));
+        ShareFileRange initialPopulatedRange = FileShareTestHelper.rangeFromOffsetAndLength(0, rangeLength);
+        ShareFileRange firstPopulatedRange
+            = FileShareTestHelper.rangeFromOffsetAndLength(3L * Constants.KB, rangeLength);
+        ShareFileRange secondPopulatedRange
+            = FileShareTestHelper.rangeFromOffsetAndLength(5L * Constants.KB, rangeLength);
+        ClearRange clearedSubrange
+            = FileShareTestHelper.clearRangeFromOffsetAndLength(initialPopulatedRange.getStart(), 512);
+
+        StepVerifier.create(primaryFileAsyncClient.create(Constants.MB)
+            .then(uploadRangeFromFile(uploadFilePath, initialPopulatedRange))
+            .then(shareAsyncClient.createSnapshot())
+            .flatMap(previousSnapshot -> uploadRangeFromFile(uploadFilePath, firstPopulatedRange)
+                .then(uploadRangeFromFile(uploadFilePath, secondPopulatedRange))
+                .then(primaryFileAsyncClient.clearRangeWithResponse(512, clearedSubrange.getStart()))
+                .then(shareAsyncClient.createSnapshot())
+                .flatMap(snapshot -> {
+                    ShareFileAsyncClient snapshotFileClient
+                        = fileBuilderHelper(shareName, filePath).snapshot(snapshot.getSnapshot())
+                            .buildFileAsyncClient();
+                    ShareFileListRangesDiffOptions options
+                        = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot());
+
+                    return snapshotFileClient.listAllRangesDiff(options).byPage(1).collectList();
+                })))
+            .assertNext(pages -> {
+                assertEquals(3, pages.size());
+                pages.forEach(page -> assertEquals(1, page.getValue().size()));
+                assertFalse(CoreUtils.isNullOrEmpty(pages.get(0).getContinuationToken()));
+                assertFalse(CoreUtils.isNullOrEmpty(pages.get(1).getContinuationToken()));
+                assertNull(pages.get(2).getContinuationToken());
+
+                List<ShareFileRangeItem> rangeItems
+                    = pages.stream().flatMap(page -> page.getValue().stream()).collect(Collectors.toList());
+                List<ShareFileRangeItem> populated
+                    = rangeItems.stream().filter(item -> !item.isClear()).collect(Collectors.toList());
+                List<ShareFileRangeItem> cleared
+                    = rangeItems.stream().filter(ShareFileRangeItem::isClear).collect(Collectors.toList());
+                assertEquals(2, populated.size());
+                FileShareTestHelper.assertFileRangeItemEquals(firstPopulatedRange, populated.get(0));
+                FileShareTestHelper.assertFileRangeItemEquals(secondPopulatedRange, populated.get(1));
+                assertEquals(1, cleared.size());
+                FileShareTestHelper.assertClearRangeItemEquals(clearedSubrange, cleared.get(0));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRangesDiffAccessConditions() {
+        int uploadFileSize = Constants.MB;
+        ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
+
+        StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
+            .then(shareAsyncClient.createSnapshot())
+            .flatMapMany(previousSnapshot -> setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID)
+                .flatMapMany(leaseId -> {
+                    ShareFileListRangesDiffOptions options
+                        = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
+                            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
+                    return primaryFileAsyncClient.listAllRangesDiff(options).byPage();
+                }))
+            .collectList()).assertNext(pages -> assertFalse(pages.isEmpty())).verifyComplete();
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2026-10-06")
+    public void listAllRangesDiffAccessConditionsFail() {
+        int uploadFileSize = Constants.MB;
+        ShareFileRange uploadRange = FileShareTestHelper.rangeFromOffsetAndLength(0L, uploadFileSize);
+
+        StepVerifier.create(primaryFileAsyncClient.create(uploadFileSize)
+            .then(shareAsyncClient.createSnapshot())
+            .flatMapMany(previousSnapshot -> setupFileLeaseCondition(primaryFileAsyncClient, GARBAGE_LEASE_ID)
+                .flatMapMany(leaseId -> {
+                    ShareFileListRangesDiffOptions options
+                        = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot()).setRange(uploadRange)
+                            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
+                    return primaryFileAsyncClient.listAllRangesDiff(options);
+                })))
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals("LeaseIdMismatchWithFileOperation", e.getErrorCode().getValue());
+            });
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
@@ -1774,6 +2154,24 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
+    @Test
+    @DoNotRecord
+    @Tag("rename-mock")
+    public void asyncFileRenameReturnsClientForDestinationPath() {
+        RenameDestinationTestHelper helper = new RenameDestinationTestHelper();
+        ShareFileAsyncClient source = helper.createBuilder().resourcePath("source.txt").buildFileAsyncClient();
+
+        ShareFileAsyncClient destination
+            = source.renameWithResponse(new ShareFileRenameOptions(RenameDestinationTestHelper.DESTINATION))
+                .block()
+                .getValue();
+        destination.delete().block();
+        String actualUrl = helper.lastRequestUrl();
+
+        assertEquals(helper.expectedFileDeleteUrl(), actualUrl);
+        assertEquals(RenameDestinationTestHelper.DESTINATION, destination.getFilePath());
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
@@ -1792,6 +2190,95 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(response)
             .assertNext(r -> assertNotNull(r.getSmbProperties().getFilePermissionKey()))
             .verifyComplete();
+    }
+
+    @DoNotRecord
+    @Tag("rename-mock")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#renameSourceEncodingSupplier")
+    public void renameSourceHeaderEncodesRawPathOnce(String sourcePath, String expectedHeader) {
+        List<HttpRequest> requests = new ArrayList<>();
+        ShareAsyncClient testShareClient = new ShareServiceClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .pipeline(renameCapturePipeline(requests))
+            .serviceVersion(ShareServiceVersion.V2025_01_05)
+            .buildAsyncClient()
+            .getShareAsyncClient(FileIdTestHelper.SHARE_NAME);
+        ShareFileAsyncClient source = testShareClient.getFileClient(sourcePath);
+        ShareFileAsyncClient destination = testShareClient.getFileClient("dest dir/dest.txt");
+
+        StepVerifier.create(source.renameWithResponse(new ShareFileRenameOptions(destination.getFilePath())))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        assertRenameRequest(requests, expectedHeader);
+        String header = requests.get(0).getHeaders().getValue(X_MS_FILE_RENAME_SOURCE);
+        assertEquals("/" + source.getShareName() + "/" + source.getFilePath(),
+            Utility.urlDecode(UrlBuilder.parse(header).getPath()));
+        if (sourcePath.indexOf('%') < 0) {
+            assertEquals(Utility.encodeUrlPath(source.getFileUrl()), header);
+        }
+    }
+
+    @DoNotRecord
+    @Tag("rename-mock")
+    @Test
+    public void renameSourceHeaderPreservesSasAndSnapshotQuery() {
+        List<HttpRequest> requests = new ArrayList<>();
+        ShareFileAsyncClient sasSource = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .shareName(FileIdTestHelper.SHARE_NAME)
+            .resourcePath("100%done.txt")
+            .sasToken(RENAME_FAKE_SAS)
+            .httpClient(request -> {
+                requests.add(request);
+                return Mono.just(new MockHttpResponse(request, 200));
+            })
+            .serviceVersion(ShareServiceVersion.V2025_01_05)
+            .buildFileAsyncClient();
+
+        StepVerifier
+            .create(
+                sasSource.renameWithResponse(new ShareFileRenameOptions("dest dir/dest.txt").setReplaceIfExists(true)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        assertRenameRequest(requests,
+            "https://account.file.core.windows.net/share%2F100%25done.txt?" + RENAME_FAKE_SAS);
+        assertEquals("true", requests.get(0).getHeaders().getValue(X_MS_FILE_RENAME_REPLACE_IF_EXISTS));
+
+        List<HttpRequest> snapshotRequests = new ArrayList<>();
+        ShareFileAsyncClient snapshotSource = new ShareFileClientBuilder().endpoint(FileIdTestHelper.ENDPOINT)
+            .shareName(FileIdTestHelper.SHARE_NAME)
+            .resourcePath("plain.txt")
+            .snapshot("2026-01-01T00:00:00.0000000Z")
+            .pipeline(renameCapturePipeline(snapshotRequests))
+            .serviceVersion(ShareServiceVersion.V2025_01_05)
+            .buildFileAsyncClient();
+
+        StepVerifier.create(snapshotSource.renameWithResponse(new ShareFileRenameOptions("dest dir/dest.txt")))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        String snapshotHeader = snapshotRequests.get(0).getHeaders().getValue(X_MS_FILE_RENAME_SOURCE);
+        assertEquals(
+            "https://account.file.core.windows.net/share%2Fplain.txt?sharesnapshot=2026-01-01T00:00:00.0000000Z",
+            snapshotHeader);
+        assertEquals(Utility.encodeUrlPath(snapshotSource.getFileUrl()), snapshotHeader);
+    }
+
+    private static HttpPipeline renameCapturePipeline(List<HttpRequest> requests) {
+        return new HttpPipelineBuilder().httpClient(request -> {
+            requests.add(request);
+            return Mono.just(new MockHttpResponse(request, 200));
+        }).build();
+    }
+
+    private static void assertRenameRequest(List<HttpRequest> requests, String expectedHeader) {
+        assertEquals(1, requests.size());
+        HttpRequest request = requests.get(0);
+        assertEquals(HttpMethod.PUT, request.getHttpMethod());
+        assertEquals("/share/dest%20dir%2Fdest.txt", request.getUrl().getPath());
+        assertTrue(request.getUrl().getQuery().contains("comp=rename"));
+        assertEquals(expectedHeader, request.getHeaders().getValue(X_MS_FILE_RENAME_SOURCE));
     }
 
     @Test
@@ -2217,20 +2704,19 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    /* PULLED FROM RELEASE
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
     public void createFileFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
         ShareFileCreateOptions options
             = new ShareFileCreateOptions(Constants.KB).setFilePropertySemantics(filePropertySemantics);
-    
+
         // For Create File and Directory with FilePropertySemantics == Restore,
         // the File Permission property must be provided, otherwise FilePropertySemantics will default to new.
         if (filePropertySemantics == FilePropertySemantics.RESTORE) {
             options.setFilePermission(FILE_PERMISSION);
         }
-    
+
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(options)).assertNext(r -> {
             HttpHeader retrievedHeader = r.getRequest().getHeaders().get(X_MS_FILE_PROPERTY_SEMANTICS);
             if (filePropertySemantics != null) {
@@ -2240,34 +2726,34 @@ public class FileAsyncApiTests extends FileShareTestBase {
             }
         }).verifyComplete();
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryData() {
         ShareFileCreateOptions options
             = new ShareFileCreateOptions(DATA.getDefaultDataSize()).setData(DATA.getDefaultBinaryData());
-    
+
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
                 .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
             .assertNext(bytes -> assertArrayEquals(DATA.getDefaultBytes(), bytes))
             .verifyComplete();
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataFail() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
-    
+
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(options))
             .verifyError(ShareStorageException.class);
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataPartiallyEmpty() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
-    
+
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
                 .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
@@ -2277,84 +2763,103 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 Arrays.copyOfRange(bytes, 0, DATA.getDefaultDataSize())))
             .verifyComplete();
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryData() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
-    
+
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setData(data);
-    
+
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
                 .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
             .assertNext(bytes -> assertArrayEquals(randomByteArray, bytes))
             .verifyComplete();
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataBackedByFlux() {
         ByteBuffer randomByteBuffer = getRandomByteBuffer(Constants.MB * 4);
-    
+
         Mono<byte[]> response
             = BinaryData.fromFlux(Flux.just(randomByteBuffer), Constants.MB * 4L, false).flatMap(data -> {
                 ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 4).setData(data);
                 return primaryFileAsyncClient.createWithResponse(options)
                     .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download()));
             });
-    
+
         StepVerifier.create(response)
             .assertNext(bytes -> assertArrayEquals(randomByteBuffer.array(), bytes))
             .verifyComplete();
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataPartiallyEmpty() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
-    
+
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
-    
+
         StepVerifier
             .create(primaryFileAsyncClient.createWithResponse(options)
                 .then(FluxUtil.collectBytesInByteBufferStream(primaryFileAsyncClient.download())))
             .assertNext(bytes -> assertArrayEquals(randomByteArray, Arrays.copyOfRange(bytes, 0, Constants.MB * 4)))
             .verifyComplete();
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataMD5() throws NoSuchAlgorithmException {
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
-    
+
         MessageDigest md5Digest = MessageDigest.getInstance("MD5");
         byte[] expectedMd5 = md5Digest.digest(DATA.getDefaultText().getBytes());
-    
+
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(options)).assertNext(response -> {
             String contentMD5 = response.getRequest().getHeaders().get(HttpHeaderName.CONTENT_MD5).getValue();
             byte[] decodedContentMd5 = Base64.getDecoder().decode(contentMD5);
             assertArrayEquals(expectedMd5, decodedContentMd5);
         }).verifyComplete();
     }
-    
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
         BinaryData data = BinaryData.fromBytes(randomByteArray);
-    
+
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.MB * 5).setData(data);
-    
+
         MessageDigest md5Digest = MessageDigest.getInstance("MD5");
         byte[] expectedMd5 = md5Digest.digest(randomByteArray);
-    
+
         StepVerifier.create(primaryFileAsyncClient.createWithResponse(options)).assertNext(response -> {
             String contentMD5 = response.getRequest().getHeaders().get(HttpHeaderName.CONTENT_MD5).getValue();
             byte[] decodedContentMd5 = Base64.getDecoder().decode(contentMD5);
             assertArrayEquals(expectedMd5, decodedContentMd5);
         }).verifyComplete();
-    } */
+    }
+
+    private Mono<Response<ShareFileUploadInfo>> uploadRangeFromFile(Path uploadFilePath, ShareFileRange range) {
+        return uploadRangeFromFile(uploadFilePath, range, null);
+    }
+
+    private Mono<Response<ShareFileUploadInfo>> uploadRangeFromFile(Path uploadFilePath, ShareFileRange range,
+        ShareRequestConditions conditions) {
+        return Mono.fromCallable(() -> Files.readAllBytes(uploadFilePath)).flatMap(uploadContent -> {
+            long length = range.getEnd() - range.getStart() + 1;
+            ShareFileUploadRangeOptions uploadRangeOptions
+                = new ShareFileUploadRangeOptions(Flux.defer(() -> Flux.just(ByteBuffer.wrap(uploadContent))), length)
+                    .setOffset(range.getStart());
+            if (conditions != null) {
+                uploadRangeOptions.setRequestConditions(conditions);
+            }
+
+            return primaryFileAsyncClient.uploadRangeWithResponse(uploadRangeOptions);
+        });
+    }
 }

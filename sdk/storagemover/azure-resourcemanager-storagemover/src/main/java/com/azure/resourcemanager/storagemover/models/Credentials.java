@@ -72,6 +72,8 @@ public class Credentials implements JsonSerializable<Credentials> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("AzureKeyVaultSmb".equals(discriminatorValue)) {
                     return AzureKeyVaultSmbCredentials.fromJson(readerToUse.reset());
+                } else if ("AzureKeyVaultS3WithHMAC".equals(discriminatorValue)) {
+                    return AzureKeyVaultS3WithHmacCredentials.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

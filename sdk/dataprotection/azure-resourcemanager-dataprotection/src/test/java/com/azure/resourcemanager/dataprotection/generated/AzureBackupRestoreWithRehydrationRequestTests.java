@@ -18,44 +18,43 @@ public final class AzureBackupRestoreWithRehydrationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBackupRestoreWithRehydrationRequest model = BinaryData.fromString(
-            "{\"objectType\":\"AzureBackupRestoreWithRehydrationRequest\",\"rehydrationPriority\":\"Invalid\",\"rehydrationRetentionDuration\":\"ectehf\",\"recoveryPointId\":\"qsc\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"pvhez\"},\"sourceDataStoreType\":\"OperationalStore\",\"sourceResourceId\":\"q\",\"resourceGuardOperationRequests\":[\"refovgmkqsleyyvx\",\"qjpkcattpngjcrc\",\"zsqpjhvmdajvny\",\"ounqecano\"],\"identityDetails\":{\"useSystemAssignedIdentity\":false,\"userAssignedIdentityArmUrl\":\"hy\"}}")
+            "{\"objectType\":\"AzureBackupRestoreWithRehydrationRequest\",\"rehydrationPriority\":\"Invalid\",\"rehydrationRetentionDuration\":\"iuxhqyudxorr\",\"recoveryPointId\":\"nbpoczvyifqrvkdv\",\"restoreTargetInfo\":{\"objectType\":\"RestoreTargetInfoBase\",\"recoveryOption\":\"FailIfExists\",\"restoreLocation\":\"lrmv\"},\"sourceDataStoreType\":\"ArchiveStore\",\"sourceResourceId\":\"watkpnpulexxb\",\"resourceGuardOperationRequests\":[\"truwiqzb\",\"j\",\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\"],\"identityDetails\":{\"useSystemAssignedIdentity\":true,\"userAssignedIdentityArmUrl\":\"wwzjuqkhrsajiwku\"}}")
             .toObject(AzureBackupRestoreWithRehydrationRequest.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("pvhez", model.restoreTargetInfo().restoreLocation());
-        Assertions.assertEquals(SourceDataStoreType.OPERATIONAL_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("q", model.sourceResourceId());
-        Assertions.assertEquals("refovgmkqsleyyvx", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertFalse(model.identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("hy", model.identityDetails().userAssignedIdentityArmUrl());
-        Assertions.assertEquals("qsc", model.recoveryPointId());
+        Assertions.assertEquals("lrmv", model.restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("watkpnpulexxb", model.sourceResourceId());
+        Assertions.assertEquals("truwiqzb", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertTrue(model.identityDetails().useSystemAssignedIdentity());
+        Assertions.assertEquals("wwzjuqkhrsajiwku", model.identityDetails().userAssignedIdentityArmUrl());
+        Assertions.assertEquals("nbpoczvyifqrvkdv", model.recoveryPointId());
         Assertions.assertEquals(RehydrationPriority.INVALID, model.rehydrationPriority());
-        Assertions.assertEquals("ectehf", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("iuxhqyudxorr", model.rehydrationRetentionDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBackupRestoreWithRehydrationRequest model = new AzureBackupRestoreWithRehydrationRequest()
             .withRestoreTargetInfo(new RestoreTargetInfoBase().withRecoveryOption(RecoveryOption.FAIL_IF_EXISTS)
-                .withRestoreLocation("pvhez"))
-            .withSourceDataStoreType(SourceDataStoreType.OPERATIONAL_STORE)
-            .withSourceResourceId("q")
-            .withResourceGuardOperationRequests(
-                Arrays.asList("refovgmkqsleyyvx", "qjpkcattpngjcrc", "zsqpjhvmdajvny", "ounqecano"))
-            .withIdentityDetails(
-                new IdentityDetails().withUseSystemAssignedIdentity(false).withUserAssignedIdentityArmUrl("hy"))
-            .withRecoveryPointId("qsc")
+                .withRestoreLocation("lrmv"))
+            .withSourceDataStoreType(SourceDataStoreType.ARCHIVE_STORE)
+            .withSourceResourceId("watkpnpulexxb")
+            .withResourceGuardOperationRequests(Arrays.asList("truwiqzb", "j", "sovmyokacspkwl", "zdobpxjmflbvvnch"))
+            .withIdentityDetails(new IdentityDetails().withUseSystemAssignedIdentity(true)
+                .withUserAssignedIdentityArmUrl("wwzjuqkhrsajiwku"))
+            .withRecoveryPointId("nbpoczvyifqrvkdv")
             .withRehydrationPriority(RehydrationPriority.INVALID)
-            .withRehydrationRetentionDuration("ectehf");
+            .withRehydrationRetentionDuration("iuxhqyudxorr");
         model = BinaryData.fromObject(model).toObject(AzureBackupRestoreWithRehydrationRequest.class);
         Assertions.assertEquals(RecoveryOption.FAIL_IF_EXISTS, model.restoreTargetInfo().recoveryOption());
-        Assertions.assertEquals("pvhez", model.restoreTargetInfo().restoreLocation());
-        Assertions.assertEquals(SourceDataStoreType.OPERATIONAL_STORE, model.sourceDataStoreType());
-        Assertions.assertEquals("q", model.sourceResourceId());
-        Assertions.assertEquals("refovgmkqsleyyvx", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertFalse(model.identityDetails().useSystemAssignedIdentity());
-        Assertions.assertEquals("hy", model.identityDetails().userAssignedIdentityArmUrl());
-        Assertions.assertEquals("qsc", model.recoveryPointId());
+        Assertions.assertEquals("lrmv", model.restoreTargetInfo().restoreLocation());
+        Assertions.assertEquals(SourceDataStoreType.ARCHIVE_STORE, model.sourceDataStoreType());
+        Assertions.assertEquals("watkpnpulexxb", model.sourceResourceId());
+        Assertions.assertEquals("truwiqzb", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertTrue(model.identityDetails().useSystemAssignedIdentity());
+        Assertions.assertEquals("wwzjuqkhrsajiwku", model.identityDetails().userAssignedIdentityArmUrl());
+        Assertions.assertEquals("nbpoczvyifqrvkdv", model.recoveryPointId());
         Assertions.assertEquals(RehydrationPriority.INVALID, model.rehydrationPriority());
-        Assertions.assertEquals("ectehf", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("iuxhqyudxorr", model.rehydrationRetentionDuration());
     }
 }

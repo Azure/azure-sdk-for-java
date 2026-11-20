@@ -23,6 +23,10 @@
 - [Get](#configurations_get)
 - [List](#configurations_list)
 
+## DefaultWafPolicy
+
+- [List](#defaultwafpolicy_list)
+
 ## Deployments
 
 - [CreateOrUpdate](#deployments_createorupdate)
@@ -32,9 +36,20 @@
 - [ListByResourceGroup](#deployments_listbyresourcegroup)
 - [Update](#deployments_update)
 
+## NginxDeploymentWafPolicies
+
+- [Analysis](#nginxdeploymentwafpolicies_analysis)
+
 ## Operations
 
 - [List](#operations_list)
+
+## WafPolicy
+
+- [Create](#wafpolicy_create)
+- [Delete](#wafpolicy_delete)
+- [Get](#wafpolicy_get)
+- [List](#wafpolicy_list)
 ### ApiKeys_CreateOrUpdate
 
 ```java
@@ -43,9 +58,7 @@
  */
 public final class ApiKeysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/ApiKeys_CreateOrUpdate.
-     * json
+     * x-ms-original-file: 2025-11-01/ApiKeys_CreateOrUpdate.json
      */
     /**
      * Sample code: ApiKeys_CreateOrUpdate.
@@ -66,8 +79,7 @@ public final class ApiKeysCreateOrUpdateSamples {
  */
 public final class ApiKeysDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/ApiKeys_Delete.json
+     * x-ms-original-file: 2025-11-01/ApiKeys_Delete.json
      */
     /**
      * Sample code: ApiKeys_Delete.
@@ -89,8 +101,7 @@ public final class ApiKeysDeleteSamples {
  */
 public final class ApiKeysGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/ApiKeys_Get.json
+     * x-ms-original-file: 2025-11-01/ApiKeys_Get.json
      */
     /**
      * Sample code: ApiKeys_Get.
@@ -112,8 +123,7 @@ public final class ApiKeysGetSamples {
  */
 public final class ApiKeysListSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/ApiKeys_List.json
+     * x-ms-original-file: 2025-11-01/ApiKeys_List.json
      */
     /**
      * Sample code: ApiKeys_List.
@@ -134,8 +144,7 @@ public final class ApiKeysListSamples {
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
-     * Certificates_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/Certificates_CreateOrUpdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
@@ -159,8 +168,7 @@ public final class CertificatesCreateOrUpdateSamples {
  */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Certificates_Delete.json
+     * x-ms-original-file: 2025-11-01/Certificates_Delete.json
      */
     /**
      * Sample code: Certificates_Delete.
@@ -181,8 +189,7 @@ public final class CertificatesDeleteSamples {
  */
 public final class CertificatesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Certificates_Get.json
+     * x-ms-original-file: 2025-11-01/Certificates_Get.json
      */
     /**
      * Sample code: Certificates_Get.
@@ -204,8 +211,7 @@ public final class CertificatesGetSamples {
  */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Certificates_List.json
+     * x-ms-original-file: 2025-11-01/Certificates_List.json
      */
     /**
      * Sample code: Certificates_List.
@@ -227,9 +233,7 @@ public final class CertificatesListSamples {
  */
 public final class ConfigurationsAnalysisSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_Analysis.
-     * json
+     * x-ms-original-file: 2025-11-01/Configurations_Analysis.json
      */
     /**
      * Sample code: Configurations_Analysis.
@@ -251,8 +255,7 @@ public final class ConfigurationsAnalysisSamples {
  */
 public final class ConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
-     * Configurations_CreateOrUpdate.json
+     * x-ms-original-file: 2025-11-01/Configurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Configurations_CreateOrUpdate.
@@ -276,9 +279,7 @@ public final class ConfigurationsCreateOrUpdateSamples {
  */
 public final class ConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_Delete.
-     * json
+     * x-ms-original-file: 2025-11-01/Configurations_Delete.json
      */
     /**
      * Sample code: Configurations_Delete.
@@ -299,8 +300,7 @@ public final class ConfigurationsDeleteSamples {
  */
 public final class ConfigurationsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_Get.json
+     * x-ms-original-file: 2025-11-01/Configurations_Get.json
      */
     /**
      * Sample code: Configurations_Get.
@@ -322,8 +322,7 @@ public final class ConfigurationsGetSamples {
  */
 public final class ConfigurationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_List.json
+     * x-ms-original-file: 2025-11-01/Configurations_List.json
      */
     /**
      * Sample code: Configurations_List.
@@ -336,6 +335,28 @@ public final class ConfigurationsListSamples {
 }
 ```
 
+### DefaultWafPolicy_List
+
+```java
+/**
+ * Samples for DefaultWafPolicy List.
+ */
+public final class DefaultWafPolicyListSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/DefaultWafPolicy_List.json
+     */
+    /**
+     * Sample code: DefaultWafPolicy_List.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void defaultWafPolicyList(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.defaultWafPolicies()
+            .listWithResponse("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Deployments_CreateOrUpdate
 
 ```java
@@ -344,8 +365,7 @@ public final class ConfigurationsListSamples {
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Create.json
+     * x-ms-original-file: 2025-11-01/Deployments_Create.json
      */
     /**
      * Sample code: Deployments_Create.
@@ -370,8 +390,7 @@ public final class DeploymentsCreateOrUpdateSamples {
  */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Delete.json
+     * x-ms-original-file: 2025-11-01/Deployments_Delete.json
      */
     /**
      * Sample code: Deployments_Delete.
@@ -392,8 +411,7 @@ public final class DeploymentsDeleteSamples {
  */
 public final class DeploymentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Get.json
+     * x-ms-original-file: 2025-11-01/Deployments_Get.json
      */
     /**
      * Sample code: Deployments_Get.
@@ -406,8 +424,7 @@ public final class DeploymentsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
-     * Deployments_Get_AutoScale.json
+     * x-ms-original-file: 2025-11-01/Deployments_Get_AutoScale.json
      */
     /**
      * Sample code: Deployments_Get_AutoScale.
@@ -429,8 +446,7 @@ public final class DeploymentsGetByResourceGroupSamples {
  */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_List.json
+     * x-ms-original-file: 2025-11-01/Deployments_List.json
      */
     /**
      * Sample code: Deployments_List.
@@ -451,8 +467,7 @@ public final class DeploymentsListSamples {
  */
 public final class DeploymentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
-     * Deployments_ListByResourceGroup.json
+     * x-ms-original-file: 2025-11-01/Deployments_ListByResourceGroup.json
      */
     /**
      * Sample code: Deployments_ListByResourceGroup.
@@ -475,8 +490,7 @@ import com.azure.resourcemanager.nginx.models.NginxDeployment;
  */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Update.json
+     * x-ms-original-file: 2025-11-01/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
@@ -491,9 +505,7 @@ public final class DeploymentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_UpdateSubnet
-     * .json
+     * x-ms-original-file: 2025-11-01/Deployments_UpdateSubnet.json
      */
     /**
      * Sample code: Deployments_UpdateSubnet.
@@ -509,6 +521,30 @@ public final class DeploymentsUpdateSamples {
 }
 ```
 
+### NginxDeploymentWafPolicies_Analysis
+
+```java
+
+/**
+ * Samples for NginxDeploymentWafPolicies Analysis.
+ */
+public final class NginxDeploymentWafPoliciesAnalysisSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/NginxDeploymentWafPolicies_Analysis.json
+     */
+    /**
+     * Sample code: NginxDeploymentWafPolicies_Analysis.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void nginxDeploymentWafPoliciesAnalysis(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.nginxDeploymentWafPolicies()
+            .analysisWithResponse("myResourceGroup", "myDeployment", "myWafPolicy", null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Operations_List
 
 ```java
@@ -517,8 +553,7 @@ public final class DeploymentsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Operations_List.json
+     * x-ms-original-file: 2025-11-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -527,6 +562,95 @@ public final class OperationsListSamples {
      */
     public static void operationsList(com.azure.resourcemanager.nginx.NginxManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WafPolicy_Create
+
+```java
+/**
+ * Samples for WafPolicy Create.
+ */
+public final class WafPolicyCreateSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/WafPolicy_Create.json
+     */
+    /**
+     * Sample code: WafPolicy_Create.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void wafPolicyCreate(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.wafPolicies()
+            .define("myWafPolicy")
+            .withExistingNginxDeployment("myResourceGroup", "myDeployment")
+            .create();
+    }
+}
+```
+
+### WafPolicy_Delete
+
+```java
+/**
+ * Samples for WafPolicy Delete.
+ */
+public final class WafPolicyDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/WafPolicy_Delete.json
+     */
+    /**
+     * Sample code: WafPolicy_Delete.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void wafPolicyDelete(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.wafPolicies()
+            .delete("myResourceGroup", "myDeployment", "myWafPolicy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WafPolicy_Get
+
+```java
+/**
+ * Samples for WafPolicy Get.
+ */
+public final class WafPolicyGetSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/WafPolicy_Get.json
+     */
+    /**
+     * Sample code: WafPolicy_Get.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void wafPolicyGet(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.wafPolicies()
+            .getWithResponse("myResourceGroup", "myDeployment", "myWafPolicy", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WafPolicy_List
+
+```java
+/**
+ * Samples for WafPolicy List.
+ */
+public final class WafPolicyListSamples {
+    /*
+     * x-ms-original-file: 2025-11-01/WafPolicy_List.json
+     */
+    /**
+     * Sample code: WafPolicy_List.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void wafPolicyList(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.wafPolicies().list("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE);
     }
 }
 ```

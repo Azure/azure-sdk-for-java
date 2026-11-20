@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -408,10 +409,10 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     .feedContainer(feedContainer)
                     .leaseContainer(leaseContainer)
                     .options(new ChangeFeedProcessorOptions()
-                        .setLeaseRenewInterval(Duration.ofSeconds(20))
-                        .setLeaseAcquireInterval(Duration.ofSeconds(10))
-                        .setLeaseExpirationInterval(Duration.ofSeconds(30))
-                        .setFeedPollDelay(Duration.ofSeconds(2))
+                        .setLeaseRenewInterval(Duration.ofSeconds(5))
+                        .setLeaseAcquireInterval(Duration.ofSeconds(2))
+                        .setLeaseExpirationInterval(Duration.ofSeconds(10))
+                        .setFeedPollDelay(Duration.ofMillis(500))
                         .setLeasePrefix("TEST")
                         .setMaxItemCount(10)
                         .setStartFromBeginning(true)
@@ -424,10 +425,14 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                         .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .subscribe();
 
-                    // Wait for the feed processor to receive and process the documents.
-                    Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                    // Poll until CFP is started instead of fixed sleep
+                    long deadline = System.currentTimeMillis() + 2 * CHANGE_FEED_PROCESSOR_TIMEOUT;
+                    while (System.currentTimeMillis() < deadline && !changeFeedProcessor.isStarted()) {
+                        Thread.sleep(200);
+                    }
                     assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
+                    // Poll until all documents are received
                     long remainingWork = 2 * CHANGE_FEED_PROCESSOR_TIMEOUT;
                     while (remainingWork > 0 && receivedDocuments.size() < createdDocuments.size()) {
                         remainingWork -= 100;
@@ -440,10 +445,14 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                 } finally {
                     changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-                    // Wait for the feed processor to shutdown.
+                    // Poll until CFP is stopped instead of fixed sleep
                     try {
-                        Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+                        long stopDeadline = System.currentTimeMillis() + CHANGE_FEED_PROCESSOR_TIMEOUT;
+                        while (System.currentTimeMillis() < stopDeadline && changeFeedProcessor.isStarted()) {
+                            Thread.sleep(200);
+                        }
                     } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                     }
                 }
 
@@ -628,9 +637,46 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     createdItems.add(testObject);
                 }
 
-                container.executeBulkOperations(Flux.fromIterable(itemOperations)).blockLast();
+                // Collect bulk responses and verify all operations succeeded
+                List<CosmosBulkOperationResponse<Object>> responses =
+                    container.executeBulkOperations(Flux.fromIterable(itemOperations)).collectList().block();
 
+                // Retry any failed operations (e.g., due to 429 throttling)
+                if (responses != null) {
+                    List<CosmosItemOperation> failedOps = new ArrayList<>();
+                    for (CosmosBulkOperationResponse<Object> response : responses) {
+                        if (response.getResponse() == null || response.getResponse().getStatusCode() >= 400) {
+                            failedOps.add(response.getOperation());
+                        }
+                    }
+                    if (!failedOps.isEmpty()) {
+                        logger.warn("Retrying {} failed bulk operations", failedOps.size());
+                        try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                        container.executeBulkOperations(Flux.fromIterable(failedOps)).blockLast();
+                    }
+                }
+
+                // Poll until all items are queryable
                 String query = "select * from c";
+                int maxRetries = 20;
+                int retryCount = 0;
+                boolean indexingComplete = false;
+                while (retryCount < maxRetries && !indexingComplete) {
+                    CosmosPagedFlux<TestObject> pollFlux = container.queryItems(query, TestObject.class);
+                    long count = pollFlux.byPage().flatMap(page -> Flux.fromIterable(page.getResults())).count().block();
+                    if (count >= createdItems.size()) {
+                        indexingComplete = true;
+                    } else {
+                        retryCount++;
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+
                 CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, TestObject.class);
                 FeedResponseListValidator<TestObject> queryValidator = new FeedResponseListValidator.Builder<TestObject>()
                     .totalSize(createdItems.size())
@@ -853,7 +899,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             partitionKeyDef.setPaths(paths);
 
             CosmosContainerProperties containerProperties = getCollectionDefinition(testContainerId, partitionKeyDef);
-            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), ruBeforeDelete);
+            container = createCollectionWithFreshProbeClient(containerProperties, ruBeforeDelete);
 
             // Step2: execute func
             validateFunc.accept(container, getPkBeforeDelete, false);
@@ -866,7 +912,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             partitionKeyDef.setPaths(Arrays.asList(pkPathAfterRecreate));
 
             containerProperties = getCollectionDefinition(testContainerId, partitionKeyDef);
-            container = createCollection(this.createdDatabase, containerProperties, new CosmosContainerRequestOptions(), ruAfterRecreate);
+            container = createCollectionWithFreshProbeClient(containerProperties, ruAfterRecreate);
 
             // step5: same as step2.
             // This part will confirm the cache refreshed correctly
@@ -891,7 +937,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
             partitionKeyDefinition.setPaths(Arrays.asList(pkPathBeforeDelete));
             CosmosContainerProperties feedContainerProperties = getCollectionDefinition(feedContainerId, partitionKeyDefinition);
-            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions(), ruBeforeDelete);
+            feedContainer = createCollectionWithFreshProbeClient(feedContainerProperties, ruBeforeDelete);
 
             String leaseContainerId = UUID.randomUUID().toString();
             CosmosContainerProperties leaseContainerProperties = getCollectionDefinition(leaseContainerId);
@@ -908,7 +954,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             // step 4: recreate the feed container with same id as step 1
             partitionKeyDefinition.setPaths(Arrays.asList(pkPathAfterRecreate));
             feedContainerProperties = getCollectionDefinition(feedContainerId, partitionKeyDefinition);
-            feedContainer = createCollection(this.createdDatabase, feedContainerProperties, new CosmosContainerRequestOptions(), ruAfterRecreate);
+            feedContainer = createCollectionWithFreshProbeClient(feedContainerProperties, ruAfterRecreate);
 
             // step5: recreate the lease container and lease container with same ids as step1
             leaseContainer = createLeaseContainer(leaseContainerProperties.getId());
@@ -922,6 +968,25 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         }
     }
 
+    private CosmosAsyncContainer createCollectionWithFreshProbeClient(
+        CosmosContainerProperties containerProperties,
+        int throughput) {
+
+        // A fresh throwaway client runs each post-create readiness probe so it does not warm this test's main
+        // client cache and does not carry old collection metadata across same-name delete/recreate boundaries.
+        CosmosAsyncClient probeClient = getClientBuilder().buildAsyncClient();
+        try {
+            return createCollection(
+                this.createdDatabase,
+                containerProperties,
+                new CosmosContainerRequestOptions(),
+                throughput,
+                probeClient);
+        } finally {
+            safeClose(probeClient);
+        }
+    }
+
     private void setupReadFeedDocuments(List<TestObject> createdDocuments, CosmosAsyncContainer feedContainer, long count) {
         List<TestObject> docDefList = new ArrayList<>();
 
@@ -929,7 +994,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
             docDefList.add(TestObject.creatNewTestObject());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedContainer, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedContainer, docDefList, true));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

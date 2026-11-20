@@ -75,7 +75,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>12.0.0-beta.1</version>
+    <version>12.3.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -316,11 +316,9 @@ Let's explore them with a search for a "luxury" hotel.
 enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
 ```java readme-sample-searchWithDynamicType
-for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
-    SearchDocument doc = searchResult.getDocument(SearchDocument.class);
-    String id = (String) doc.get("hotelId");
-    String name = (String) doc.get("hotelName");
-    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
+for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchOptions().setSearchText("luxury"))) {
+    Map<String, Object> doc = searchResult.getAdditionalProperties();
+    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("HotelId"), doc.get("HotelName"));
 }
 ```
 
@@ -330,9 +328,7 @@ Define a `Hotel` class.
 
 ```java readme-sample-hotelclass
 public static class Hotel {
-    @SimpleField(isKey = true, isFilterable = true, isSortable = true)
     private String id;
-    @SearchableField(isFilterable = true, isSortable = true)
     private String name;
 
     public String getId() {
@@ -358,11 +354,9 @@ public static class Hotel {
 Use it in place of `SearchDocument` when querying.
 
 ```java readme-sample-searchWithStronglyType
-for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
-    Hotel doc = searchResult.getDocument(Hotel.class);
-    String id = doc.getId();
-    String name = doc.getName();
-    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", id, name);
+for (SearchResult searchResult : SEARCH_CLIENT.search(new SearchOptions().setSearchText("luxury"))) {
+    Map<String, Object> doc = searchResult.getAdditionalProperties();
+    System.out.printf("This is hotelId %s, and this is hotel name %s.%n", doc.get("Id"), doc.get("Name"));
 }
 ```
 
@@ -375,11 +369,11 @@ The `SearchOptions` provide powerful control over the behavior of our queries.
 Let's search for the top 5 luxury hotels with a good rating.
 
 ```java readme-sample-searchWithSearchOptions
-SearchOptions options = new SearchOptions()
+SearchOptions options = new SearchOptions().setSearchText("luxury")
     .setFilter("rating ge 4")
     .setOrderBy("rating desc")
     .setTop(5);
-SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search("luxury", options, Context.NONE);
+SearchPagedIterable searchResultsIterable = SEARCH_CLIENT.search(options);
 // ...
 ```
 
@@ -394,7 +388,7 @@ There are multiple ways of preparing search fields for a search index. For basic
 to configure the field of model class.
 
 ```java readme-sample-createIndexUseFieldBuilder
-List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
+List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class);
 SEARCH_INDEX_CLIENT.createIndex(new SearchIndex("index", searchFields));
 ```
 
@@ -402,50 +396,48 @@ For advanced scenarios, we can build search fields using `SearchField` directly.
 
 ```java readme-sample-createIndex
 List<SearchField> searchFieldList = new ArrayList<>();
-searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
+searchFieldList.add(new SearchField("HotelId", SearchFieldDataType.STRING)
     .setKey(true)
     .setFilterable(true)
     .setSortable(true));
-
-searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
+searchFieldList.add(new SearchField("HotelName", SearchFieldDataType.STRING)
     .setSearchable(true)
     .setFilterable(true)
     .setSortable(true));
-searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
+searchFieldList.add(new SearchField("Description", SearchFieldDataType.STRING)
     .setSearchable(true)
     .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
-searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+searchFieldList.add(new SearchField("Tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
     .setSearchable(true)
     .setFilterable(true)
     .setFacetable(true));
-searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
-    .setFields(new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
-        new SearchField("city", SearchFieldDataType.STRING)
+searchFieldList.add(new SearchField("Address", SearchFieldDataType.COMPLEX)
+    .setFields(new SearchField("StreetAddress", SearchFieldDataType.STRING).setSearchable(true),
+        new SearchField("City", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
             .setSortable(true),
-        new SearchField("stateProvince", SearchFieldDataType.STRING)
+        new SearchField("StateProvince", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
             .setSortable(true),
-        new SearchField("country", SearchFieldDataType.STRING)
+        new SearchField("Country", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
             .setSortable(true),
-        new SearchField("postalCode", SearchFieldDataType.STRING)
+        new SearchField("PostalCode", SearchFieldDataType.STRING)
             .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
-            .setSortable(true)
-    ));
+            .setSortable(true)));
 
 // Prepare suggester.
-SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
+SearchSuggester suggester = new SearchSuggester("sg", "hotelName");
 // Prepare SearchIndex with index name and search fields.
-SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(suggester);
+SearchIndex index = new SearchIndex("hotels", searchFieldList).setSuggesters(suggester);
 // Create an index
 SEARCH_INDEX_CLIENT.createIndex(index);
 ```
@@ -457,8 +449,22 @@ your index if you already know the key. You could get the key from a query, for 
 information about it or navigate your customer to that document.
 
 ```java readme-sample-retrieveDocuments
-Hotel hotel = SEARCH_CLIENT.getDocument("1", Hotel.class);
-System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+Map<String, Object> hotel = SEARCH_CLIENT.getDocument("1").getAdditionalProperties();
+System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
+```
+
+Use `GetDocumentOptions` to select fields or supply a query-source authorization token for document-level permissions.
+The three-argument `getDocumentWithResponse` overload is available on both synchronous and asynchronous clients.
+Explicit headers in `RequestOptions` override the operation options; query parameters in `RequestOptions` are appended.
+
+```java readme-sample-retrieveDocumentWithOptions
+GetDocumentOptions options = new GetDocumentOptions()
+    .setQuerySourceAuthorization(querySourceToken)
+    .setEnableElevatedRead(false)
+    .setSelectedFields(Arrays.asList("Id", "Name"));
+Map<String, Object> hotel = SEARCH_CLIENT.getDocumentWithResponse("1", options, null)
+    .getValue().getAdditionalProperties();
+System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
 ```
 
 ### Adding documents to your index
@@ -468,9 +474,16 @@ There are [a few special rules for merging](https://learn.microsoft.com/rest/api
 to be aware of.
 
 ```java readme-sample-batchDocumentsOperations
-IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
-batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
-batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
+Map<String, Object> hotel = new LinkedHashMap<>();
+hotel.put("Id", "783");
+hotel.put("Name", "Upload Inn");
+
+Map<String, Object> hotel2 = new LinkedHashMap<>();
+hotel2.put("Id", "12");
+hotel2.put("Name", "Renovated Ranch");
+IndexDocumentsBatch batch = new IndexDocumentsBatch(
+    new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(hotel),
+    new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(hotel2));
 SEARCH_CLIENT.indexDocuments(batch);
 ```
 
@@ -484,10 +497,10 @@ The examples so far have been using synchronous APIs, but we provide full suppor
 to use [SearchAsyncClient](#create-a-searchclient).
 
 ```java readme-sample-searchWithAsyncClient
-SEARCH_ASYNC_CLIENT.search("luxury")
+SEARCH_ASYNC_CLIENT.search(new SearchOptions().setSearchText("luxury"))
     .subscribe(result -> {
-        Hotel hotel = result.getDocument(Hotel.class);
-        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+        Map<String, Object> hotel = result.getAdditionalProperties();
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.get("Id"), hotel.get("Name"));
     });
 ```
 
@@ -528,7 +541,7 @@ Any Search API operation that fails will throw an [`HttpResponseException`][Http
 
 ```java readme-sample-handleErrorsWithSyncClient
 try {
-    Iterable<SearchResult> results = SEARCH_CLIENT.search("hotel");
+    Iterable<SearchResult> results = SEARCH_CLIENT.search(new SearchOptions().setSearchText("hotel"));
 } catch (HttpResponseException ex) {
     // The exception contains the HTTP status code and the detailed message
     // returned from the search service
@@ -545,7 +558,7 @@ the service.
 
 Azure SDKs for Java provide a consistent logging story to help aid in troubleshooting application errors and expedite
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+locate the root issue. View the [logging][logging] documentation for guidance about enabling logging.
 
 ### Default HTTP Client
 
@@ -553,6 +566,33 @@ By default, a Netty based HTTP client will be used. The [HTTP clients wiki](http
 provides more information on configuring or changing the HTTP client.
 
 ## Next steps
+
+### November 2026 preview
+
+The unreleased beta defaults to `SearchServiceVersion.V2026_11_01_PREVIEW`.
+Set `serviceVersion` on a client builder to continue using a previously supported API version.
+The preview includes graph querying and diagnostics, knowledge source graph extraction and enrichment caches,
+vector topic graph retrieval, automatic facet-backed filter hints, and random scoring.
+
+Use `SearchClient.graph` or `SearchAsyncClient.graph` with `GraphOptions` to query an existing graph index.
+A plan-only request must request at least one explain stage.
+See the [preview samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/PreviewSearchSamples.java).
+These APIs require a service that supports the preview; the samples do not provision resources.
+
+The preview preserves the October GA knowledge base streaming APIs. `KnowledgeBaseRetrievalClient.retrieveStream`
+returns a `CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>`; use try-with-resources, especially when stopping
+early. `KnowledgeBaseRetrievalAsyncClient.retrieveStream` returns a `Flux<KnowledgeBaseRetrievalStreamEvent>` directly,
+without `ServerSentEvent` envelopes. Known events expose typed payloads through `getValue()`; unknown events expose
+only their names, not their payloads. Event wrappers are SDK-created envelopes; serialize their typed payloads instead.
+Completion status codes remain nullable integers.
+See the [streaming sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/KnowledgeBaseRetrievalStreamExample.java),
+which provisions uniquely named sample resources and removes them afterward.
+
+Set `KnowledgeBaseRetrievalOptions.setQuerySourceAuthorization` to send query-source authorization as a header,
+never as JSON. An explicit non-null authorization argument overrides the option; null falls back to it.
+The three-argument retrieval and streaming overloads also support November's Work IQ authorization.
+Typed listing overloads accept `RequestOptions` and preserve service continuation links. File delete and update APIs
+take the knowledge source `name` before `fileId`. SQL references use the GA `getDocumentUrl()` getter.
 
 * Samples are explained in detail [here][samples_readme].
 * Read more about the [Azure AI Search service](https://learn.microsoft.com/azure/search/search-what-is-azure-search)
@@ -581,7 +621,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src/samples/
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
@@ -594,5 +634,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 [status_codes]: https://learn.microsoft.com/rest/api/searchservice/http-status-codes
 [search-get-started-portal]: https://learn.microsoft.com/azure/search/search-get-started-portal
-
-

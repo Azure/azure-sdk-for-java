@@ -6,28 +6,28 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeQuotaRulesProperties;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import org.junit.jupiter.api.Assertions;
 
 public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Updating\",\"quotaSizeInKiBs\":2248907093975297235,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"hmouwqlgzrfze\"}")
+            "{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":5817084203386777544,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"rmaequ\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(2248907093975297235L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("hmouwqlgzrfze", model.quotaTarget());
+        Assertions.assertEquals(5817084203386777544L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(QuotaType.DEFAULT_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("rmaequ", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(2248907093975297235L)
-            .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
-            .withQuotaTarget("hmouwqlgzrfze");
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(5817084203386777544L)
+            .withQuotaType(QuotaType.DEFAULT_USER_QUOTA)
+            .withQuotaTarget("rmaequ");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(2248907093975297235L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("hmouwqlgzrfze", model.quotaTarget());
+        Assertions.assertEquals(5817084203386777544L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(QuotaType.DEFAULT_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("rmaequ", model.quotaTarget());
     }
 }

@@ -18,10 +18,57 @@ import java.util.List;
 @Fluent
 public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     /*
+     * 
      * Name of the group.
      * It must match a group name of an existing fleet member.
      */
     private String name;
+
+    /*
+     * 
+     * Limits the number of member (cluster) upgrade failures tolerated within this group.
+     * Failures are evaluated over members within this group only.
+     * Accepts either:
+     * • A fixed count n, where n >= 0
+     * • A percentage p%, where 0 <= p <= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this group at scope start.
+     * Examples:
+     * • "3" --> up to 3 member upgrade failures are tolerated within this group. The 4th failure causes the group to
+     * fail.
+     * • "25%" --> up to 25% of the members in this group can fail their upgrade before the group is considered failed.
+     */
+    private String maxAllowedFailures;
+
+    /*
+     * 
+     * The max number of upgrades that can run concurrently in this specific group.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
+     * Group maxConcurrency has a min value of "1". The max value is min(number of clusters in the group, the stage
+     * maxConcurrency).
+     * If no value is provided, defaults to 1.
+     * Accepts either:
+     * • A fixed count, e.g. "3"
+     * • A percentage, e.g. "25%" (range 1–100). Percentage is of the number of clusters in the group.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --> up to 3 members from this group upgrade at once.
+     * • "100%" --> “all at once”, up to all members for this group upgrade at the same time.
+     * • "25%" --> up to 25% of the members in the group will be upgraded at the same time.
+     */
+    private String maxConcurrency;
+
+    /*
+     * 
+     * Select the members of the group.
+     * * If specified, label-based selection will override group name based selection,
+     * and Name is only used as an identifier.
+     * * If not specified, group name based selection will be used, and Name must match a
+     * group name of an existing fleet member.
+     */
+    private MemberSelector memberSelector;
 
     /*
      * A list of Gates that will be created before this Group is executed.
@@ -40,7 +87,8 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     }
 
     /**
-     * Get the name property: Name of the group.
+     * Get the name property:
+     * Name of the group.
      * It must match a group name of an existing fleet member.
      * 
      * @return the name value.
@@ -50,7 +98,8 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     }
 
     /**
-     * Set the name property: Name of the group.
+     * Set the name property:
+     * Name of the group.
      * It must match a group name of an existing fleet member.
      * 
      * @param name the name value to set.
@@ -58,6 +107,130 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
      */
     public UpdateGroup withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the maxAllowedFailures property:
+     * Limits the number of member (cluster) upgrade failures tolerated within this group.
+     * Failures are evaluated over members within this group only.
+     * Accepts either:
+     * • A fixed count n, where n &gt;= 0
+     * • A percentage p%, where 0 &lt;= p &lt;= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this group at scope start.
+     * Examples:
+     * • "3" --&gt; up to 3 member upgrade failures are tolerated within this group. The 4th failure causes the group to
+     * fail.
+     * • "25%" --&gt; up to 25% of the members in this group can fail their upgrade before the group is considered
+     * failed.
+     * 
+     * @return the maxAllowedFailures value.
+     */
+    public String maxAllowedFailures() {
+        return this.maxAllowedFailures;
+    }
+
+    /**
+     * Set the maxAllowedFailures property:
+     * Limits the number of member (cluster) upgrade failures tolerated within this group.
+     * Failures are evaluated over members within this group only.
+     * Accepts either:
+     * • A fixed count n, where n &gt;= 0
+     * • A percentage p%, where 0 &lt;= p &lt;= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this group at scope start.
+     * Examples:
+     * • "3" --&gt; up to 3 member upgrade failures are tolerated within this group. The 4th failure causes the group to
+     * fail.
+     * • "25%" --&gt; up to 25% of the members in this group can fail their upgrade before the group is considered
+     * failed.
+     * 
+     * @param maxAllowedFailures the maxAllowedFailures value to set.
+     * @return the UpdateGroup object itself.
+     */
+    public UpdateGroup withMaxAllowedFailures(String maxAllowedFailures) {
+        this.maxAllowedFailures = maxAllowedFailures;
+        return this;
+    }
+
+    /**
+     * Get the maxConcurrency property:
+     * The max number of upgrades that can run concurrently in this specific group.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
+     * Group maxConcurrency has a min value of "1". The max value is min(number of clusters in the group, the stage
+     * maxConcurrency).
+     * If no value is provided, defaults to 1.
+     * Accepts either:
+     * • A fixed count, e.g. "3"
+     * • A percentage, e.g. "25%" (range 1–100). Percentage is of the number of clusters in the group.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --&gt; up to 3 members from this group upgrade at once.
+     * • "100%" --&gt; “all at once”, up to all members for this group upgrade at the same time.
+     * • "25%" --&gt; up to 25% of the members in the group will be upgraded at the same time.
+     * 
+     * @return the maxConcurrency value.
+     */
+    public String maxConcurrency() {
+        return this.maxConcurrency;
+    }
+
+    /**
+     * Set the maxConcurrency property:
+     * The max number of upgrades that can run concurrently in this specific group.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
+     * Group maxConcurrency has a min value of "1". The max value is min(number of clusters in the group, the stage
+     * maxConcurrency).
+     * If no value is provided, defaults to 1.
+     * Accepts either:
+     * • A fixed count, e.g. "3"
+     * • A percentage, e.g. "25%" (range 1–100). Percentage is of the number of clusters in the group.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --&gt; up to 3 members from this group upgrade at once.
+     * • "100%" --&gt; “all at once”, up to all members for this group upgrade at the same time.
+     * • "25%" --&gt; up to 25% of the members in the group will be upgraded at the same time.
+     * 
+     * @param maxConcurrency the maxConcurrency value to set.
+     * @return the UpdateGroup object itself.
+     */
+    public UpdateGroup withMaxConcurrency(String maxConcurrency) {
+        this.maxConcurrency = maxConcurrency;
+        return this;
+    }
+
+    /**
+     * Get the memberSelector property:
+     * Select the members of the group.
+     * * If specified, label-based selection will override group name based selection,
+     * and Name is only used as an identifier.
+     * * If not specified, group name based selection will be used, and Name must match a
+     * group name of an existing fleet member.
+     * 
+     * @return the memberSelector value.
+     */
+    public MemberSelector memberSelector() {
+        return this.memberSelector;
+    }
+
+    /**
+     * Set the memberSelector property:
+     * Select the members of the group.
+     * * If specified, label-based selection will override group name based selection,
+     * and Name is only used as an identifier.
+     * * If not specified, group name based selection will be used, and Name must match a
+     * group name of an existing fleet member.
+     * 
+     * @param memberSelector the memberSelector value to set.
+     * @return the UpdateGroup object itself.
+     */
+    public UpdateGroup withMemberSelector(MemberSelector memberSelector) {
+        this.memberSelector = memberSelector;
         return this;
     }
 
@@ -108,6 +281,9 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("maxAllowedFailures", this.maxAllowedFailures);
+        jsonWriter.writeStringField("maxConcurrency", this.maxConcurrency);
+        jsonWriter.writeJsonField("memberSelector", this.memberSelector);
         jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -131,6 +307,12 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
 
                 if ("name".equals(fieldName)) {
                     deserializedUpdateGroup.name = reader.getString();
+                } else if ("maxAllowedFailures".equals(fieldName)) {
+                    deserializedUpdateGroup.maxAllowedFailures = reader.getString();
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedUpdateGroup.maxConcurrency = reader.getString();
+                } else if ("memberSelector".equals(fieldName)) {
+                    deserializedUpdateGroup.memberSelector = MemberSelector.fromJson(reader);
                 } else if ("beforeGates".equals(fieldName)) {
                     List<GateConfiguration> beforeGates
                         = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));

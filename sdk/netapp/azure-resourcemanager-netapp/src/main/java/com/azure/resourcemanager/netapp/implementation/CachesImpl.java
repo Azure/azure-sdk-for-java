@@ -33,12 +33,8 @@ public final class CachesImpl implements Caches {
         String cacheName, Context context) {
         Response<CacheInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CacheImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CacheImpl(inner.getValue(), this.manager()));
     }
 
     public Cache get(String resourceGroupName, String accountName, String poolName, String cacheName) {
@@ -59,16 +55,13 @@ public final class CachesImpl implements Caches {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, cacheName, context);
     }
 
-    public PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName) {
-        PagedIterable<CacheInner> inner
-            = this.serviceClient().listByCapacityPools(resourceGroupName, accountName, poolName);
+    public PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName) {
+        PagedIterable<CacheInner> inner = this.serviceClient().list(resourceGroupName, accountName, poolName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CacheImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Cache> listByCapacityPools(String resourceGroupName, String accountName, String poolName,
-        Context context) {
-        PagedIterable<CacheInner> inner
-            = this.serviceClient().listByCapacityPools(resourceGroupName, accountName, poolName, context);
+    public PagedIterable<Cache> list(String resourceGroupName, String accountName, String poolName, Context context) {
+        PagedIterable<CacheInner> inner = this.serviceClient().list(resourceGroupName, accountName, poolName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CacheImpl(inner1, this.manager()));
     }
 
@@ -76,12 +69,8 @@ public final class CachesImpl implements Caches {
         String poolName, String cacheName, Context context) {
         Response<PeeringPassphrasesInner> inner = this.serviceClient()
             .listPeeringPassphrasesWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PeeringPassphrasesImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PeeringPassphrasesImpl(inner.getValue(), this.manager()));
     }
 
     public PeeringPassphrases listPeeringPassphrases(String resourceGroupName, String accountName, String poolName,
@@ -95,33 +84,72 @@ public final class CachesImpl implements Caches {
         }
     }
 
-    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public Cache poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body) {
-        this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
+        CacheInner inner = this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
+    public Cache poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context) {
-        this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
+        CacheInner inner
+            = this.serviceClient().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Cache resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName) {
+        CacheInner inner = this.serviceClient().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Cache resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
+        Context context) {
+        CacheInner inner
+            = this.serviceClient().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context);
+        if (inner != null) {
+            return new CacheImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Cache getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "accountName");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "poolName");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String cacheName = ResourceManagerUtils.getValueFromIdByName(id, "caches");
+        String cacheName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "cacheName");
         if (cacheName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -130,22 +158,30 @@ public final class CachesImpl implements Caches {
     }
 
     public Response<Cache> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "accountName");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "poolName");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String cacheName = ResourceManagerUtils.getValueFromIdByName(id, "caches");
+        String cacheName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "cacheName");
         if (cacheName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -154,22 +190,30 @@ public final class CachesImpl implements Caches {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "accountName");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "poolName");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String cacheName = ResourceManagerUtils.getValueFromIdByName(id, "caches");
+        String cacheName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "cacheName");
         if (cacheName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -178,22 +222,30 @@ public final class CachesImpl implements Caches {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "netAppAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "accountName");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
-        String poolName = ResourceManagerUtils.getValueFromIdByName(id, "capacityPools");
+        String poolName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "poolName");
         if (poolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
-        String cacheName = ResourceManagerUtils.getValueFromIdByName(id, "caches");
+        String cacheName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}",
+            "cacheName");
         if (cacheName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));

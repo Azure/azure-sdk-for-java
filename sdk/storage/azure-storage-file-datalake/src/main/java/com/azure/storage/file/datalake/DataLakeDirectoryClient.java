@@ -17,7 +17,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
@@ -57,7 +56,6 @@ import java.util.stream.Collectors;
  *
  * <p>
  * Please refer to the
- *
  * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">Azure
  * Docs</a> for more information.
  */
@@ -78,8 +76,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         super(dataLakePathClient.dataLakePathAsyncClient, dataLakePathClient.blockBlobClient,
             dataLakePathClient.getHttpPipeline(), dataLakePathClient.getAccountUrl(),
             dataLakePathClient.getServiceVersion(), dataLakePathClient.getAccountName(),
-            dataLakePathClient.getFileSystemName(), Utility.urlEncode(dataLakePathClient.pathName),
-            PathResourceType.DIRECTORY, dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
+            dataLakePathClient.getFileSystemName(), dataLakePathClient.pathName, PathResourceType.DIRECTORY,
+            dataLakePathClient.getSasToken(), dataLakePathClient.getCpkInfo(),
             dataLakePathClient.isTokenCredentialAuthenticated());
         this.dataLakeDirectoryAsyncClient
             = new DataLakeDirectoryAsyncClient(dataLakePathClient.dataLakePathAsyncClient);
@@ -483,6 +481,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.createFileIfNotExists#String -->
@@ -493,6 +495,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * @param fileName Name of the file to create.
      * @return A {@link DataLakeFileClient} used to interact with the file created.
+     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path
+     * of a different type already exists at this location (status code 409, error code PathConflict).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileClient createFileIfNotExists(String fileName) {
@@ -502,6 +506,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     /**
      * Creates a new file within a directory if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -535,6 +543,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileAsyncClient}
      * used to interact with the file created. If {@link Response}'s status code is 201, a new file was successfully
      * created. If status code is 409, a file with the same name already existed at this location.
+     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path
+     * of a different type already exists at this location (status code 409, error code PathConflict).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileClient> createFileIfNotExistsWithResponse(String fileName,
@@ -846,6 +856,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * Creates a new sub-directory if it does not exist within a directory. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectoryIfNotExists#String -->
@@ -856,6 +870,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * @param subdirectoryName Name of the subdirectory to create.
      * @return A {@link DataLakeDirectoryClient} used to interact with the subdirectory created.
+     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path
+     * of a different type already exists at this location (status code 409, error code PathConflict).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeDirectoryClient createSubdirectoryIfNotExists(String subdirectoryName) {
@@ -866,6 +882,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     /**
      * Creates a new sub-directory within a directory if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p>Only a 409 {@code PathAlreadyExists} is treated as the path already existing. Any other conflict, such as
+     * {@code PathConflict} when a path of a different type exists at the location, fails with a
+     * {@link DataLakeStorageException}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -900,6 +920,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeDirectoryClient}
      * used to interact with the subdirectory created. If {@link Response}'s status code is 201, a new subdirectory was
      * successfully created. If status code is 409, a subdirectory with the same name already existed at this location.
+     * @throws DataLakeStorageException If the path could not be created for any other reason, for example when a path
+     * of a different type already exists at this location (status code 409, error code PathConflict).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeDirectoryClient> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
@@ -1153,7 +1175,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         ListPathsOptions options = new ListPathsOptions().setRecursive(recursive)
             .setUserPrincipalNameReturned(userPrincipleNameReturned)
             .setMaxResults(maxResults);
-        return listPaths(options, timeout);
+        return listPaths(options, timeout, Context.NONE);
     }
 
     /**
@@ -1165,10 +1187,11 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * iterating by page, the page size passed to byPage methods such as
      * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The list of files/directories.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
+    public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout, Context context) {
         ListPathsOptions finalOptions = options == null ? new ListPathsOptions() : options;
         Integer maxResults = finalOptions.getMaxResults();
         boolean recursive = finalOptions.isRecursive();
@@ -1179,7 +1202,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
             Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
                 = () -> this.fileSystemDataLakeStorage.getFileSystems()
                     .listPathsWithResponse(recursive, null, null, marker, getDirectoryPath(),
-                        pageSize == null ? maxResults : pageSize, upn, beginFrom, Context.NONE);
+                        pageSize == null ? maxResults : pageSize, upn, beginFrom, context);
 
             ResponseBase<FileSystemsListPathsHeaders, PathList> response
                 = StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);

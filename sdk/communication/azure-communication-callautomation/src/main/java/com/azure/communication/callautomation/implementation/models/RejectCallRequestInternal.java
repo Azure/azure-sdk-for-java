@@ -24,7 +24,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
     private String incomingCallContext;
 
     /*
-     * The rejection reason.
+     * Reason of rejecting a call
      */
     @Generated
     private CallRejectReasonInternal callRejectReason;
@@ -59,7 +59,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
     }
 
     /**
-     * Get the callRejectReason property: The rejection reason.
+     * Get the callRejectReason property: Reason of rejecting a call.
      * 
      * @return the callRejectReason value.
      */
@@ -69,7 +69,7 @@ public final class RejectCallRequestInternal implements JsonSerializable<RejectC
     }
 
     /**
-     * Set the callRejectReason property: The rejection reason.
+     * Set the callRejectReason property: Reason of rejecting a call.
      * 
      * @param callRejectReason the callRejectReason value to set.
      * @return the RejectCallRequestInternal object itself.

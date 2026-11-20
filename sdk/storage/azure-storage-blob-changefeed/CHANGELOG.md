@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.37 (Unreleased)
+## 12.0.0-beta.42 (Unreleased)
 
 ### Features Added
 
@@ -10,15 +10,67 @@
 
 ### Other Changes
 
-## 12.0.0-beta.34 (Unreleased)
+## 12.0.0-beta.41 (2026-11-05)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for service version 2027-03-07.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-storage-blob` from `12.36.0` to version `12.38.0-beta.1`.
+
+## 12.0.0-beta.40 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.35.0` to version `12.36.0`.
+- Upgraded `azure-core` from `1.58.1` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.8`.
+
+## 12.0.0-beta.39 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+## 12.0.0-beta.38 (2026-06-11)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.34.0` to version `12.35.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.0.0-beta.37 (2026-05-14)
+
+### Features Added
+- Added support for service version 2026-04-06.
+
+## 12.0.0-beta.36 (2026-03-25)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+## 12.0.0-beta.35 (2026-02-19)
+
+### Features Added
+- Added support for service version 2026-04-06.
+
+## 12.0.0-beta.34 (2026-01-15)
+
+### Features Added
+- Added support for service version 2026-02-06.
 
 ## 12.0.0-beta.33 (2025-12-03)
 

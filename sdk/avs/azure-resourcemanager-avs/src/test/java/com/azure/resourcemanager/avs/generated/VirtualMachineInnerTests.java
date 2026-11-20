@@ -11,7 +11,7 @@ public final class VirtualMachineInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"fbshrnsvbuswd\",\"moRefId\":\"yybyc\",\"folderPath\":\"nvjsrtkfa\",\"restrictMovement\":\"Disabled\"},\"id\":\"qg\",\"name\":\"kyzirtxdyux\",\"type\":\"ejnt\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"sze\",\"moRefId\":\"nb\",\"folderPath\":\"rxgibbd\",\"restrictMovement\":\"Disabled\"},\"id\":\"nfo\",\"name\":\"auorsukokw\",\"type\":\"qplhlvnu\"}")
             .toObject(VirtualMachineInner.class);
     }
 }

@@ -8,21 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.implementation.models.DiscoveryRuleListResult;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRelationshipDiscoveryBehavior;
+import com.azure.resourcemanager.cloudhealth.models.ResourceHealthAvailabilityStateSignalBehavior;
 import org.junit.jupiter.api.Assertions;
 
 public final class DiscoveryRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"kvpuvksgplsaknyn\",\"resourceGraphQuery\":\"synljphuopxodl\",\"authenticationSetting\":\"iyntorzihle\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Disabled\",\"deletionDate\":\"2021-11-21T17:53:40Z\",\"errorMessage\":\"rmslyzrpzbchckqq\",\"numberOfDiscoveredEntities\":893832741,\"entityName\":\"ox\"},\"id\":\"suiizynkedyat\",\"name\":\"wyhqmibzyhwits\",\"type\":\"ypyynpcdpumnzg\"}],\"nextLink\":\"z\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"qdrfegcealzxwhc\",\"authenticationSetting\":\"nsymoyqhlwigd\",\"discoverRelationships\":\"Disabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Enabled\",\"error\":{\"message\":\"gomfajuwasq\",\"context\":[\"e\",\"y\"]},\"entityName\":\"xakjsqzhzb\"},\"id\":\"kgimsidxasic\",\"name\":\"dyvvjskgfmocwahp\",\"type\":\"gat\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"hvjhhnakzyb\",\"authenticationSetting\":\"jjidjk\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Disabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Disabled\",\"error\":{\"message\":\"vxevblb\",\"context\":[\"nljlageuaulx\"]},\"entityName\":\"smjbnkppxyn\"},\"id\":\"lsvxeizz\",\"name\":\"wklnsrmffeyc\",\"type\":\"ckt\"},{\"properties\":{\"provisioningState\":\"Creating\",\"displayName\":\"rteeamm\",\"authenticationSetting\":\"qiekkkzddrt\",\"discoverRelationships\":\"Enabled\",\"addRecommendedSignals\":\"Enabled\",\"specification\":{\"kind\":\"DiscoveryRuleSpecification\"},\"addResourceHealthSignal\":\"Disabled\",\"error\":{\"message\":\"mxvavrefdee\",\"context\":[\"cuijpxt\",\"s\",\"wprtu\"]},\"entityName\":\"sawddjibabxvi\"},\"id\":\"tvtzeexavoxtfg\",\"name\":\"ecdmdqbwpy\",\"type\":\"q\"}],\"nextLink\":\"sfj\"}")
             .toObject(DiscoveryRuleListResult.class);
-        Assertions.assertEquals("kvpuvksgplsaknyn", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("synljphuopxodl", model.value().get(0).properties().resourceGraphQuery());
-        Assertions.assertEquals("iyntorzihle", model.value().get(0).properties().authenticationSetting());
-        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.ENABLED,
+        Assertions.assertEquals("qdrfegcealzxwhc", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("nsymoyqhlwigd", model.value().get(0).properties().authenticationSetting());
+        Assertions.assertEquals(DiscoveryRuleRelationshipDiscoveryBehavior.DISABLED,
             model.value().get(0).properties().discoverRelationships());
         Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.DISABLED,
             model.value().get(0).properties().addRecommendedSignals());
-        Assertions.assertEquals("z", model.nextLink());
+        Assertions.assertEquals(ResourceHealthAvailabilityStateSignalBehavior.ENABLED,
+            model.value().get(0).properties().addResourceHealthSignal());
+        Assertions.assertEquals("sfj", model.nextLink());
     }
 }

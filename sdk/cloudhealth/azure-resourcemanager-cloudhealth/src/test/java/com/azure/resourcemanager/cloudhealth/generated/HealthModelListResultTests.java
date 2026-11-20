@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cloudhealth.implementation.models.HealthModelListResult;
-import com.azure.resourcemanager.cloudhealth.models.DiscoveryRuleRecommendedSignalsBehavior;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentityType;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,15 +13,12 @@ public final class HealthModelListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthModelListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"dataplaneEndpoint\":\"gcbacphejkot\",\"provisioningState\":\"Failed\",\"discovery\":{\"scope\":\"oulzndlikwyq\",\"addRecommendedSignals\":\"Enabled\",\"identity\":\"gibma\"}},\"identity\":{\"principalId\":\"keqsrxybzqqedq\",\"tenantId\":\"bciqfouflm\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"uqktap\":{\"principalId\":\"modmglougpb\",\"clientId\":\"tmut\"}}},\"location\":\"wgcu\",\"tags\":{\"bbjfddgmbmbexp\":\"umkdosvqwhbmd\",\"gbquxigj\":\"bhtqqrolfpfpsa\",\"lnerkujysvleju\":\"jgzjaoyfhrtx\",\"kcprbnw\":\"fqawrlyxw\"},\"id\":\"xgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"},{\"properties\":{\"dataplaneEndpoint\":\"wzwbnguitn\",\"provisioningState\":\"Succeeded\",\"discovery\":{\"scope\":\"gazxuf\",\"addRecommendedSignals\":\"Enabled\",\"identity\":\"ckyfih\"}},\"identity\":{\"principalId\":\"dfvzwdzuhty\",\"tenantId\":\"isdkfthwxmnteiw\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ezcxtbzsgfyccsne\":{\"principalId\":\"mijcmmxdcufufs\",\"clientId\":\"ymzidn\"},\"osfqpteehzzv\":{\"principalId\":\"dwzjeiach\",\"clientId\":\"osfln\"},\"dqxhcrmnohjtckwh\":{\"principalId\":\"yqrimzin\",\"clientId\":\"swjdkirso\"},\"vsnb\":{\"principalId\":\"oifiyipjxsqwpgr\",\"clientId\":\"znorcj\"}}},\"location\":\"qabnmoc\",\"tags\":{\"c\":\"shurzafbljjgpbto\"},\"id\":\"mkljavb\",\"name\":\"idtqajzyu\",\"type\":\"pku\"}],\"nextLink\":\"krlkhbzhfepg\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\"},\"identity\":{\"principalId\":\"gc\",\"tenantId\":\"wclxxwrl\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"hxbnjbiksqrg\":{\"principalId\":\"kcqvkocrc\",\"clientId\":\"kwt\"},\"bvmgxsabkyqduuji\":{\"principalId\":\"sainqpjwnzl\",\"clientId\":\"fmppe\"},\"rwjfe\":{\"principalId\":\"jczdzevndh\",\"clientId\":\"wpdappdsbdkv\"}}},\"location\":\"nhutjeltmrldhugj\",\"tags\":{\"dgeablgphu\":\"atqxho\",\"xhurok\":\"icndvkaozwyifty\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\"},\"id\":\"ypnddhsgcb\",\"name\":\"cph\",\"type\":\"jkot\"},{\"properties\":{\"provisioningState\":\"Creating\"},\"identity\":{\"principalId\":\"l\",\"tenantId\":\"dlikwyqkgfgibma\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"kzsmodm\":{\"principalId\":\"qsrxybzqqed\",\"clientId\":\"tbciqfouflmm\"},\"umkdosvqwhbmd\":{\"principalId\":\"ougpbkwt\",\"clientId\":\"tduqktapspwgcuer\"},\"q\":{\"principalId\":\"bjf\",\"clientId\":\"gmbmbexppbh\"},\"igjyjg\":{\"principalId\":\"ol\",\"clientId\":\"fpsalgbqu\"}}},\"location\":\"aoyfhrtxilnerkuj\",\"tags\":{\"juvf\":\"l\",\"jkcpr\":\"awrlyx\",\"nruj\":\"nwbxgjvtbvpyssz\"},\"id\":\"guhmuouqfpr\",\"name\":\"zw\",\"type\":\"nguitnwuizgazxu\"},{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"y\",\"tenantId\":\"hr\",\"type\":\"None\",\"userAssignedIdentities\":{\"i\":{\"principalId\":\"zwdzuh\",\"clientId\":\"mwisdkfthwxmnt\"},\"fsrpymzidnse\":{\"principalId\":\"opvkmijcm\",\"clientId\":\"dcuf\"},\"oosflnr\":{\"principalId\":\"xtbzsgfyccsne\",\"clientId\":\"dwzjeiach\"}}},\"location\":\"fqpte\",\"tags\":{\"swjdkirso\":\"zvypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\",\"cyshurzafbljjgp\":\"qabnmoc\"},\"id\":\"toqcjmklja\",\"name\":\"bqidtqaj\",\"type\":\"yulpkudjkr\"},{\"properties\":{\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"fepgzgq\",\"tenantId\":\"zloc\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"nbdxk\":{\"principalId\":\"ierhhbcsglummaj\",\"clientId\":\"aodxo\"},\"odgmaajrmvdjwz\":{\"principalId\":\"xo\",\"clientId\":\"jionpimexgstxgc\"}}},\"location\":\"ovmclwhijcoejct\",\"tags\":{\"bkbfkgukdkex\":\"qsqsy\",\"ocjjxhvpmouexh\":\"ppofmxaxcfjpgdd\",\"xqbzvddntwnd\":\"zxibqeoj\"},\"id\":\"icbtwnpzao\",\"name\":\"vuhrhcffcyddgl\",\"type\":\"jthjqkwpyei\"}],\"nextLink\":\"mqc\"}")
             .toObject(HealthModelListResult.class);
-        Assertions.assertEquals("wgcu", model.value().get(0).location());
-        Assertions.assertEquals("umkdosvqwhbmd", model.value().get(0).tags().get("bbjfddgmbmbexp"));
-        Assertions.assertEquals("oulzndlikwyq", model.value().get(0).properties().discovery().scope());
-        Assertions.assertEquals(DiscoveryRuleRecommendedSignalsBehavior.ENABLED,
-            model.value().get(0).properties().discovery().addRecommendedSignals());
-        Assertions.assertEquals("gibma", model.value().get(0).properties().discovery().identity());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("krlkhbzhfepg", model.nextLink());
+        Assertions.assertEquals("nhutjeltmrldhugj", model.value().get(0).location());
+        Assertions.assertEquals("atqxho", model.value().get(0).tags().get("dgeablgphu"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            model.value().get(0).identity().type());
+        Assertions.assertEquals("mqc", model.nextLink());
     }
 }

@@ -34,6 +34,12 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     private String messageId;
 
     /*
+     * Optional. The BSUID of the sender.
+     */
+    @Generated
+    private String fromBsuid;
+
+    /*
      * Required. The message channel type
      */
     @Generated
@@ -116,6 +122,16 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     @Generated
     public String getMessageId() {
         return this.messageId;
+    }
+
+    /**
+     * Get the fromBsuid property: Optional. The BSUID of the sender.
+     *
+     * @return the fromBsuid value.
+     */
+    @Generated
+    public String getFromBsuid() {
+        return this.fromBsuid;
     }
 
     /**
@@ -217,6 +233,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
         jsonWriter.writeStringField("messageType", this.messageType);
         jsonWriter.writeStringField("content", this.content);
         jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("fromBSUID", this.fromBsuid);
         jsonWriter.writeJsonField("media", this.mediaContent);
         jsonWriter.writeJsonField("reaction", this.reaction);
         jsonWriter.writeJsonField("context", this.context);
@@ -245,6 +262,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
             String messageType = null;
             String content = null;
             String messageId = null;
+            String fromBsuid = null;
             AcsMessageMediaContent mediaContent = null;
             AcsMessageReactionContent reaction = null;
             AcsMessageContext context = null;
@@ -270,6 +288,8 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                     content = reader.getString();
                 } else if ("messageId".equals(fieldName)) {
                     messageId = reader.getString();
+                } else if ("fromBSUID".equals(fieldName)) {
+                    fromBsuid = reader.getString();
                 } else if ("media".equals(fieldName)) {
                     mediaContent = AcsMessageMediaContent.fromJson(reader);
                 } else if ("reaction".equals(fieldName)) {
@@ -289,6 +309,7 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
             deserializedAcsMessageReceivedEventData.error = error;
             deserializedAcsMessageReceivedEventData.content = content;
             deserializedAcsMessageReceivedEventData.messageId = messageId;
+            deserializedAcsMessageReceivedEventData.fromBsuid = fromBsuid;
             deserializedAcsMessageReceivedEventData.mediaContent = mediaContent;
             deserializedAcsMessageReceivedEventData.reaction = reaction;
             deserializedAcsMessageReceivedEventData.context = context;

@@ -1,0 +1,18 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "new": "(class|interface|enum|method|parameter) com\\.azure\\.cosmos\\..*",
+          "annotationType": "com\\.azure\\.cosmos\\.util\\.Beta",
+          "justification": "Cosmos SDK removes the Beta annotation to GA its APIs. Only Beta annotation removals are permitted; removal of any other annotation (Deprecated, Jackson, etc.) will still fail the build."
+        }
+      ]
+    }
+  }
+]

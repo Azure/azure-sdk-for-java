@@ -6,7 +6,7 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeQuotaRuleInner;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -15,28 +15,29 @@ public final class VolumeQuotaRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRuleInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":8747326600288664838,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"cizsjqlhkrribdei\"},\"location\":\"ipqkghvxndzwm\",\"tags\":{\"nyhgbijtji\":\"fajpjorwk\",\"wfsdjpvkvpbj\":\"fxzsjabibsyst\"},\"id\":\"bkzbzkd\",\"name\":\"ncj\",\"type\":\"budurgkakmo\"}")
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":5082029566266572596,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"a\"},\"location\":\"hrskdsnfd\",\"tags\":{\"wpusdsttwvogv\":\"akgtdlmkkzevdlh\",\"qqmoaku\":\"bejdcn\",\"zr\":\"gm\",\"enuuzkopbm\":\"rdgrtw\"},\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}")
             .toObject(VolumeQuotaRuleInner.class);
-        Assertions.assertEquals("ipqkghvxndzwm", model.location());
-        Assertions.assertEquals("fajpjorwk", model.tags().get("nyhgbijtji"));
-        Assertions.assertEquals(8747326600288664838L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("cizsjqlhkrribdei", model.quotaTarget());
+        Assertions.assertEquals("hrskdsnfd", model.location());
+        Assertions.assertEquals("akgtdlmkkzevdlh", model.tags().get("wpusdsttwvogv"));
+        Assertions.assertEquals(5082029566266572596L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("a", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRuleInner model = new VolumeQuotaRuleInner().withLocation("ipqkghvxndzwm")
-            .withTags(mapOf("nyhgbijtji", "fajpjorwk", "wfsdjpvkvpbj", "fxzsjabibsyst"))
-            .withQuotaSizeInKiBs(8747326600288664838L)
-            .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
-            .withQuotaTarget("cizsjqlhkrribdei");
+        VolumeQuotaRuleInner model = new VolumeQuotaRuleInner().withLocation("hrskdsnfd")
+            .withTags(
+                mapOf("wpusdsttwvogv", "akgtdlmkkzevdlh", "qqmoaku", "bejdcn", "zr", "gm", "enuuzkopbm", "rdgrtw"))
+            .withQuotaSizeInKiBs(5082029566266572596L)
+            .withQuotaType(QuotaType.DEFAULT_GROUP_QUOTA)
+            .withQuotaTarget("a");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRuleInner.class);
-        Assertions.assertEquals("ipqkghvxndzwm", model.location());
-        Assertions.assertEquals("fajpjorwk", model.tags().get("nyhgbijtji"));
-        Assertions.assertEquals(8747326600288664838L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("cizsjqlhkrribdei", model.quotaTarget());
+        Assertions.assertEquals("hrskdsnfd", model.location());
+        Assertions.assertEquals("akgtdlmkkzevdlh", model.tags().get("wpusdsttwvogv"));
+        Assertions.assertEquals(5082029566266572596L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("a", model.quotaTarget());
     }
 
     // Use "Map.of" if available

@@ -77,6 +77,11 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
             public void setKeyAttestation(KeyProperties keyProperties, KeyAttestation keyAttestation) {
                 keyProperties.keyAttestation = keyAttestation;
             }
+
+            @Override
+            public void setExternalKey(KeyProperties keyProperties, ExternalKey externalKey) {
+                keyProperties.externalKey = externalKey;
+            }
         });
     }
     /**
@@ -162,6 +167,11 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
      * The key attestation information.
      */
     private KeyAttestation keyAttestation;
+
+    /**
+     * A reference to the external key material backing this key, if this key was registered as an external key.
+     */
+    private ExternalKey externalKey;
 
     /**
      * Creates a new instance of {@link KeyProperties}.
@@ -391,6 +401,18 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
         return keyAttestation;
     }
 
+    /**
+     * Get the reference to the external key material backing this key.
+     *
+     * <p>This is only populated for keys that were registered as external keys on a Managed HSM configured to use
+     * External Key Management (EKM). It is {@code null} for all other keys.</p>
+     *
+     * @return The reference to the external key material, or {@code null} if this is not an external key.
+     */
+    public ExternalKey getExternalKey() {
+        return externalKey;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject()
@@ -450,6 +472,8 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
                             properties.recoverableDays = reader.getNullable(JsonReader::getInt);
                         } else if ("hsmPlatform".equals(fieldName)) {
                             properties.hsmPlatform = reader.getString();
+                        } else if ("external_key".equals(fieldName)) {
+                            properties.externalKey = ExternalKey.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

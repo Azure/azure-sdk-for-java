@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -139,6 +140,16 @@ public final class CapabilityInner extends ProxyResource {
      */
     public String urn() {
         return this.innerProperties() == null ? null : this.innerProperties().urn();
+    }
+
+    /**
+     * Get the provisioningState property: Resource provisioning state. Not currently in use because resource is created
+     * synchronously.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**

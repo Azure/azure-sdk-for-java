@@ -34,6 +34,7 @@ import com.azure.resourcemanager.dataprotection.implementation.DataProtectionMan
 import com.azure.resourcemanager.dataprotection.implementation.DataProtectionOperationsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.DataProtectionsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.DeletedBackupInstancesImpl;
+import com.azure.resourcemanager.dataprotection.implementation.DeletedBackupVaultsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.DppResourceGuardProxiesImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ExportJobsImpl;
 import com.azure.resourcemanager.dataprotection.implementation.ExportJobsOperationResultsImpl;
@@ -56,6 +57,7 @@ import com.azure.resourcemanager.dataprotection.models.BackupVaults;
 import com.azure.resourcemanager.dataprotection.models.DataProtectionOperations;
 import com.azure.resourcemanager.dataprotection.models.DataProtections;
 import com.azure.resourcemanager.dataprotection.models.DeletedBackupInstances;
+import com.azure.resourcemanager.dataprotection.models.DeletedBackupVaults;
 import com.azure.resourcemanager.dataprotection.models.DppResourceGuardProxies;
 import com.azure.resourcemanager.dataprotection.models.ExportJobs;
 import com.azure.resourcemanager.dataprotection.models.ExportJobsOperationResults;
@@ -88,6 +90,8 @@ public final class DataProtectionManager {
     private BackupInstances backupInstances;
 
     private BackupVaultOperationResults backupVaultOperationResults;
+
+    private DeletedBackupVaults deletedBackupVaults;
 
     private ResourceGuards resourceGuards;
 
@@ -378,6 +382,18 @@ public final class DataProtectionManager {
                 = new BackupVaultOperationResultsImpl(clientObject.getBackupVaultOperationResults(), this);
         }
         return backupVaultOperationResults;
+    }
+
+    /**
+     * Gets the resource collection API of DeletedBackupVaults.
+     * 
+     * @return Resource collection API of DeletedBackupVaults.
+     */
+    public DeletedBackupVaults deletedBackupVaults() {
+        if (this.deletedBackupVaults == null) {
+            this.deletedBackupVaults = new DeletedBackupVaultsImpl(clientObject.getDeletedBackupVaults(), this);
+        }
+        return deletedBackupVaults;
     }
 
     /**

@@ -42,6 +42,11 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     public static final EndpointType AZURE_STORAGE_NFS_FILE_SHARE = fromString("AzureStorageNfsFileShare");
 
     /**
+     * Static value S3WithHMAC for EndpointType.
+     */
+    public static final EndpointType S3WITH_HMAC = fromString("S3WithHMAC");
+
+    /**
      * Creates a new instance of EndpointType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

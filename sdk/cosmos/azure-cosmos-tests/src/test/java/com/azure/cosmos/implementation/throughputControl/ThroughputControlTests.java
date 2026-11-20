@@ -966,6 +966,29 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
+    public void throughputControl_server_enableMultipleTimes() {
+        this.ensureContainer();
+
+        // This test is verify that same throughput control group can be enabled multiple times
+
+        ThroughputControlGroupConfig serverGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-server" + UUID.randomUUID())
+                .throughputBucket(3)
+                .build();
+        container.enableServerThroughputControlGroup(serverGroupConfig);
+
+        CosmosAsyncContainer sameContainer =
+            client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
+        ThroughputControlGroupConfig sameServerGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName(serverGroupConfig.getGroupName())
+                .throughputBucket(serverGroupConfig.getThroughputBucket())
+                .build();
+        sameContainer.enableServerThroughputControlGroup(sameServerGroupConfig);
+    }
+
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
     public void throughputControl_noThroughputControlGroupEnabled() {
         this.ensureContainer();
 

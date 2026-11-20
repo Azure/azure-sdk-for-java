@@ -1,14 +1,90 @@
 # Release History
 
-## 1.14.0-beta.1 (Unreleased)
+## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback while preserving existing defaults.
+- Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.14.0 (2026-10-27)
+
+### Bugs Fixed
+
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults. Nonpositive call timeouts now disable the timeout instead of rejecting
+  negative values.
+- Prevented proxy authentication retries for HTTPS endpoint 407 responses while preserving CONNECT and cleartext HTTP proxy authentication.
+- Fixed response timeouts remaining active while reading the response body after an `Expect: 100-continue` handshake.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
+
+## 1.13.8 (2026-09-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+
+## 1.13.7 (2026-08-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to `1.59.1`.
+
+## 1.13.6 (2026-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.59.0`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
+- Upgraded `okio-jvm` from `3.16.0` to `3.18.1`.
+
+## 1.13.5 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Reactor from `3.7.17` to `3.7.18`.
+
+## 1.13.4 (2026-04-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
+- Upgraded Reactor from `3.7.14` to `3.7.17`.
+
+## 1.13.3 (2026-01-15)
+
+### Bugs Fixed
+
+- Fixed a bug where `OkHttpFluxRequestBody` didn't propagate the exception properly. ([#47170](https://github.com/Azure/azure-sdk-for-java/pull/47170))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.0` to `1.57.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
 
 ## 1.13.2 (2025-10-06)
 

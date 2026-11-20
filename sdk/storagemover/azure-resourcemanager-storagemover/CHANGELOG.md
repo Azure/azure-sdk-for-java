@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,15 +10,232 @@
 
 ### Other Changes
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0 (2026-09-08)
+
+- Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2026-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.SmbMountSourceType` was added
 
-### Bugs Fixed
+* `models.NfsMountSourceType` was added
+
+#### `models.JobDefinitions` was modified
+
+* `reconcileJobWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `reconcileJob(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.SmbMountEndpointProperties` was modified
+
+* `sourceType()` was added
+* `withSourceType(models.SmbMountSourceType)` was added
+
+#### `models.NfsVersion` was modified
+
+* `NFSV4_1` was added
+
+#### `models.AzureStorageSmbFileShareEndpointProperties` was modified
+
+* `allowedStorageAccounts()` was added
+* `withEnableCrossTenantTransfer(java.lang.Boolean)` was added
+* `enableCrossTenantTransfer()` was added
+* `withAllowedStorageAccounts(java.util.List)` was added
+
+#### `models.Frequency` was modified
+
+* `HOURLY` was added
+
+#### `models.JobDefinitionUpdateParameters` was modified
+
+* `syncMode()` was added
+* `withSyncMode(java.lang.String)` was added
+* `moverSyncedUntil()` was added
+* `withMoverSyncedUntil(java.time.OffsetDateTime)` was added
+
+#### `models.AzureStorageBlobContainerEndpointProperties` was modified
+
+* `withAllowedStorageAccounts(java.util.List)` was added
+* `enableCrossTenantTransfer()` was added
+* `allowedStorageAccounts()` was added
+* `withEnableCrossTenantTransfer(java.lang.Boolean)` was added
+
+#### `models.JobDefinition` was modified
+
+* `reconcileJobWithResponse(com.azure.core.util.Context)` was added
+* `isCrossTenantJob()` was added
+* `reconcileJob()` was added
+* `crossTenantEndpointResourceId()` was added
+* `moverSyncedUntil()` was added
+* `syncMode()` was added
+* `crossTenantEndpointTenantId()` was added
+
+#### `models.AzureStorageSmbFileShareEndpointUpdateProperties` was modified
+
+* `withAllowedStorageAccounts(java.util.List)` was added
+* `withEnableCrossTenantTransfer(java.lang.Boolean)` was added
+* `allowedStorageAccounts()` was added
+* `enableCrossTenantTransfer()` was added
+
+#### `models.JobDefinition$Update` was modified
+
+* `withMoverSyncedUntil(java.time.OffsetDateTime)` was added
+* `withSyncMode(java.lang.String)` was added
+
+#### `models.ScheduleInfo` was modified
+
+* `withRepeatInterval(java.lang.String)` was added
+* `repeatInterval()` was added
+
+#### `models.JobDefinition$Definition` was modified
+
+* `withSyncMode(java.lang.String)` was added
+* `withCrossTenantEndpointResourceId(java.lang.String)` was added
+* `withMoverSyncedUntil(java.time.OffsetDateTime)` was added
+* `withCrossTenantEndpointTenantId(java.lang.String)` was added
+* `withIsCrossTenantJob(java.lang.Boolean)` was added
+
+#### `models.AzureStorageBlobContainerEndpointUpdateProperties` was modified
+
+* `allowedStorageAccounts()` was added
+* `withAllowedStorageAccounts(java.util.List)` was added
+* `withEnableCrossTenantTransfer(java.lang.Boolean)` was added
+* `enableCrossTenantTransfer()` was added
+
+#### `models.JobType` was modified
+
+* `ON_PREM_TO_CLOUD_AGENT_LESS` was added
+
+#### `models.NfsMountEndpointProperties` was modified
+
+* `sourceType()` was added
+* `withSourceType(models.NfsMountSourceType)` was added
 
 ### Other Changes
+
+- Added Python-parity scenario and request-contract coverage for API version 2026-05-01, including cross-tenant settings,
+  hourly schedules, agentless jobs, FSX/NFS 4.1 serialization, synchronization fields, and reconciliation.
+- Added live-only shared-fixture overrides while keeping playback independent of local Azure credentials and settings.
+- Sanitized shared identities and signed ARM polling URLs in scenario recordings.
+
+## 1.5.0 (2026-04-06)
+
+- Azure Resource Manager Storage Mover client library for Java. This package contains Microsoft Azure SDK for Storage Mover Management SDK. The Azure Storage Mover REST API. Package api-version 2025-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.S3WithHmacEndpointProperties` was added
+
+* `models.Connection$UpdateStages` was added
+
+* `models.Connection$DefinitionStages` was added
+
+* `models.Connection$Update` was added
+
+* `models.TriggerType` was added
+
+* `models.Connection` was added
+
+* `models.SchedulerTime` was added
+
+* `models.AzureKeyVaultS3WithHmacCredentials` was added
+
+* `models.S3WithHmacEndpointUpdateProperties` was added
+
+* `models.Frequency` was added
+
+* `models.S3WithHmacSourceType` was added
+
+* `models.ConnectionProperties` was added
+
+* `models.EndpointKind` was added
+
+* `models.ScheduleInfo` was added
+
+* `models.ConnectionStatus` was added
+
+* `models.JobRunWarning` was added
+
+* `models.Connection$Definition` was added
+
+* `models.Connections` was added
+
+* `models.DataIntegrityValidation` was added
+
+#### `StorageMoverManager` was modified
+
+* `connections()` was added
+
+#### `models.SmbMountEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.EndpointBaseProperties` was modified
+
+* `endpointKind()` was added
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.AzureStorageNfsFileShareEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.AzureMultiCloudConnectorEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.AzureStorageSmbFileShareEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.JobDefinitionUpdateParameters` was modified
+
+* `dataIntegrityValidation()` was added
+* `schedule()` was added
+* `withSchedule(models.ScheduleInfo)` was added
+* `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
+* `connections()` was added
+* `withConnections(java.util.List)` was added
+
+#### `models.AzureStorageBlobContainerEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
+
+#### `models.JobDefinition` was modified
+
+* `dataIntegrityValidation()` was added
+* `preservePermissions()` was added
+* `schedule()` was added
+* `connections()` was added
+
+#### `models.JobDefinition$Update` was modified
+
+* `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
+* `withConnections(java.util.List)` was added
+* `withSchedule(models.ScheduleInfo)` was added
+
+#### `models.JobRun` was modified
+
+* `scheduledExecutionTime()` was added
+* `triggerType()` was added
+* `warnings()` was added
+
+#### `models.JobDefinition$Definition` was modified
+
+* `withDataIntegrityValidation(models.DataIntegrityValidation)` was added
+* `withConnections(java.util.List)` was added
+* `withSchedule(models.ScheduleInfo)` was added
+* `withPreservePermissions(java.lang.Boolean)` was added
+
+#### `models.EndpointType` was modified
+
+* `S3WITH_HMAC` was added
+
+#### `models.CredentialType` was modified
+
+* `AZURE_KEY_VAULT_S3WITH_HMAC` was added
+
+#### `models.NfsMountEndpointProperties` was modified
+
+* `withEndpointKind(models.EndpointKind)` was added
 
 ## 1.4.0 (2025-08-29)
 

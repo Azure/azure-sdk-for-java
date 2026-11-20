@@ -13,19 +13,25 @@ public final class PlaywrightWorkspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Accepted\",\"dataplaneUri\":\"wvukx\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Enabled\",\"workspaceId\":\"snhsjcnyejhkryh\"}")
+            "{\"provisioningState\":\"Failed\",\"dataplaneUri\":\"inpm\",\"regionalAffinity\":\"Disabled\",\"localAuth\":\"Disabled\",\"workspaceId\":\"ixjsprozvcputeg\",\"reporting\":\"Disabled\",\"storageUri\":\"fdatsc\"}")
             .toObject(PlaywrightWorkspaceProperties.class);
         Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
+        Assertions.assertEquals("fdatsc", model.storageUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlaywrightWorkspaceProperties model
             = new PlaywrightWorkspaceProperties().withRegionalAffinity(EnablementStatus.DISABLED)
-                .withLocalAuth(EnablementStatus.ENABLED);
+                .withLocalAuth(EnablementStatus.DISABLED)
+                .withReporting(EnablementStatus.DISABLED)
+                .withStorageUri("fdatsc");
         model = BinaryData.fromObject(model).toObject(PlaywrightWorkspaceProperties.class);
         Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.localAuth());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
+        Assertions.assertEquals("fdatsc", model.storageUri());
     }
 }

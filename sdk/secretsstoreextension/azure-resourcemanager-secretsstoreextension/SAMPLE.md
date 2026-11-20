@@ -25,6 +25,7 @@
 ### AzureKeyVaultSecretProviderClasses_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.secretsstoreextension.models.AzureCloudName;
 import com.azure.resourcemanager.secretsstoreextension.models.AzureKeyVaultSecretProviderClassProperties;
 import com.azure.resourcemanager.secretsstoreextension.models.ExtendedLocation;
 import com.azure.resourcemanager.secretsstoreextension.models.ExtendedLocationType;
@@ -36,7 +37,7 @@ import java.util.Map;
  */
 public final class AzureKeyVaultSecretProviderClassesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/AzureKeyVaultSecretProviderClasses_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/AzureKeyVaultSecretProviderClasses_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: AzureKeyVaultSecretProviderClasses_CreateOrUpdate.
@@ -51,6 +52,7 @@ public final class AzureKeyVaultSecretProviderClassesCreateOrUpdateSamples {
             .withExistingResourceGroup("rg-ssc-example")
             .withTags(mapOf("example-tag", "example-tag-value"))
             .withProperties(new AzureKeyVaultSecretProviderClassProperties().withKeyvaultName("fakeTokenPlaceholder")
+                .withCloudName(AzureCloudName.AZURE_PUBLIC_CLOUD)
                 .withClientId("00000000-0000-0000-0000-000000000000")
                 .withTenantId("00000000-0000-0000-0000-000000000000")
                 .withObjects(
@@ -83,7 +85,7 @@ public final class AzureKeyVaultSecretProviderClassesCreateOrUpdateSamples {
  */
 public final class AzureKeyVaultSecretProviderClassesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/AzureKeyVaultSecretProviderClasses_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/AzureKeyVaultSecretProviderClasses_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: AzureKeyVaultSecretProviderClasses_Delete.
@@ -106,7 +108,7 @@ public final class AzureKeyVaultSecretProviderClassesDeleteSamples {
  */
 public final class AzureKeyVaultSecretProviderClassesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/AzureKeyVaultSecretProviderClasses_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/AzureKeyVaultSecretProviderClasses_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AzureKeyVaultSecretProviderClasses_Get.
@@ -129,7 +131,7 @@ public final class AzureKeyVaultSecretProviderClassesGetByResourceGroupSamples {
  */
 public final class AzureKeyVaultSecretProviderClassesListSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/AzureKeyVaultSecretProviderClasses_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/AzureKeyVaultSecretProviderClasses_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: AzureKeyVaultSecretProviderClasses_ListBySubscription.
@@ -151,7 +153,7 @@ public final class AzureKeyVaultSecretProviderClassesListSamples {
  */
 public final class AzureKeyVaultSecretProviderClassesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/AzureKeyVaultSecretProviderClasses_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/AzureKeyVaultSecretProviderClasses_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: AzureKeyVaultSecretProviderClasses_ListByResourceGroup.
@@ -169,6 +171,7 @@ public final class AzureKeyVaultSecretProviderClassesListByResourceGroupSamples 
 ### AzureKeyVaultSecretProviderClasses_Update
 
 ```java
+import com.azure.resourcemanager.secretsstoreextension.models.AzureCloudName;
 import com.azure.resourcemanager.secretsstoreextension.models.AzureKeyVaultSecretProviderClass;
 import com.azure.resourcemanager.secretsstoreextension.models.AzureKeyVaultSecretProviderClassUpdateProperties;
 import java.util.HashMap;
@@ -179,7 +182,7 @@ import java.util.Map;
  */
 public final class AzureKeyVaultSecretProviderClassesUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/AzureKeyVaultSecretProviderClasses_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/AzureKeyVaultSecretProviderClasses_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: AzureKeyVaultSecretProviderClasses_Update.
@@ -195,6 +198,7 @@ public final class AzureKeyVaultSecretProviderClassesUpdateSamples {
             .withTags(mapOf("example-tag", "example-tag-value"))
             .withProperties(new AzureKeyVaultSecretProviderClassUpdateProperties()
                 .withKeyvaultName("fakeTokenPlaceholder")
+                .withCloudName(AzureCloudName.AZURE_PUBLIC_CLOUD)
                 .withClientId("00000000-0000-0000-0000-000000000000")
                 .withTenantId("00000000-0000-0000-0000-000000000000")
                 .withObjects(
@@ -224,7 +228,7 @@ public final class AzureKeyVaultSecretProviderClassesUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.
@@ -255,7 +259,7 @@ import java.util.Map;
  */
 public final class SecretSyncsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_CreateOrUpdate.
@@ -303,7 +307,7 @@ public final class SecretSyncsCreateOrUpdateSamples {
  */
 public final class SecretSyncsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_Delete.
@@ -325,7 +329,7 @@ public final class SecretSyncsDeleteSamples {
  */
 public final class SecretSyncsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_Get.
@@ -349,7 +353,7 @@ public final class SecretSyncsGetByResourceGroupSamples {
  */
 public final class SecretSyncsListSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_ListBySubscription.
@@ -371,7 +375,7 @@ public final class SecretSyncsListSamples {
  */
 public final class SecretSyncsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_ListByResourceGroup.
@@ -389,7 +393,6 @@ public final class SecretSyncsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.secretsstoreextension.models.KubernetesSecretObjectMapping;
-import com.azure.resourcemanager.secretsstoreextension.models.KubernetesSecretType;
 import com.azure.resourcemanager.secretsstoreextension.models.SecretSync;
 import com.azure.resourcemanager.secretsstoreextension.models.SecretSyncUpdateProperties;
 import java.util.Arrays;
@@ -401,7 +404,7 @@ import java.util.Map;
  */
 public final class SecretSyncsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_Update.
@@ -419,7 +422,6 @@ public final class SecretSyncsUpdateSamples {
             .withProperties(new SecretSyncUpdateProperties().withSecretProviderClassName("fakeTokenPlaceholder")
                 .withServiceAccountName(
                     "fcldqfdfpktndlntuoxicsftelhefevovmlycflfwzckvamiqjnjugandqaqqeccsbzztfmmeunvhsafgerbcsdbnmsyqivygornebbkusuvphwghgouxvcbvmbydqjzoxextnyowsnyymadniwdrrxtogeveldpejixmsrzzfqkquaxdpzwvecevqwasxgxxchrfa")
-                .withKubernetesSecretType(KubernetesSecretType.OPAQUE)
                 .withForceSynchronization("arbitrarystring")
                 .withObjectSecretMapping(Arrays.asList(new KubernetesSecretObjectMapping().withSourcePath(
                     "ssrzmbvdiomkvzrdsyilwlfzicfydnbjwjsnohrppkukjddrunfslkrnexunuckmghixdssposvndpiqchpqrkjuqbapoisvqdvgstvdonsmlpsmticfvuhqlofpaxfdg")

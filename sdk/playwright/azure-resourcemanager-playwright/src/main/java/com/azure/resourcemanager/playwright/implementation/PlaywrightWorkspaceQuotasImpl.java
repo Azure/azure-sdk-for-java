@@ -32,12 +32,8 @@ public final class PlaywrightWorkspaceQuotasImpl implements PlaywrightWorkspaceQ
         QuotaName quotaName, Context context) {
         Response<PlaywrightWorkspaceQuotaInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, playwrightWorkspaceName, quotaName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PlaywrightWorkspaceQuotaImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PlaywrightWorkspaceQuotaImpl(inner.getValue(), this.manager()));
     }
 
     public PlaywrightWorkspaceQuota get(String resourceGroupName, String playwrightWorkspaceName, QuotaName quotaName) {

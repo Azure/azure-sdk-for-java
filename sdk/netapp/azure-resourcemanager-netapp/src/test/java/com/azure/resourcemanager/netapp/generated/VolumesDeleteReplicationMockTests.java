@@ -27,7 +27,8 @@ public final class VolumesDeleteReplicationMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.volumes().deleteReplication("oytehqpuvjm", "qm", "dwckygroe", "n", com.azure.core.util.Context.NONE);
+        manager.volumes()
+            .deleteReplication("shejjtbxqm", "luxlxqzvnersby", "ucrwnami", "ze", com.azure.core.util.Context.NONE);
 
     }
 }

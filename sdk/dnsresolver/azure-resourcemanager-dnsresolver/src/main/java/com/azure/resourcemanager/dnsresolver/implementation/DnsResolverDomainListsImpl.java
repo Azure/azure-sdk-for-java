@@ -32,12 +32,8 @@ public final class DnsResolverDomainListsImpl implements DnsResolverDomainLists 
         String dnsResolverDomainListName, Context context) {
         Response<DnsResolverDomainListInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, dnsResolverDomainListName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DnsResolverDomainListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DnsResolverDomainListImpl(inner.getValue(), this.manager()));
     }
 
     public DnsResolverDomainList getByResourceGroup(String resourceGroupName, String dnsResolverDomainListName) {
@@ -103,12 +99,16 @@ public final class DnsResolverDomainListsImpl implements DnsResolverDomainLists 
     }
 
     public DnsResolverDomainList getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverDomainLists");
+        String dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "dnsResolverDomainListName");
         if (dnsResolverDomainListName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverDomainLists'.", id)));
@@ -118,12 +118,16 @@ public final class DnsResolverDomainListsImpl implements DnsResolverDomainLists 
     }
 
     public Response<DnsResolverDomainList> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverDomainLists");
+        String dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "dnsResolverDomainListName");
         if (dnsResolverDomainListName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverDomainLists'.", id)));
@@ -132,12 +136,16 @@ public final class DnsResolverDomainListsImpl implements DnsResolverDomainLists 
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverDomainLists");
+        String dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "dnsResolverDomainListName");
         if (dnsResolverDomainListName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverDomainLists'.", id)));
@@ -147,12 +155,16 @@ public final class DnsResolverDomainListsImpl implements DnsResolverDomainLists 
     }
 
     public void deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByName(id, "dnsResolverDomainLists");
+        String dnsResolverDomainListName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverDomainLists/{dnsResolverDomainListName}",
+            "dnsResolverDomainListName");
         if (dnsResolverDomainListName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'dnsResolverDomainLists'.", id)));

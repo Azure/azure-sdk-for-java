@@ -7,10 +7,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.util.SearchPagedFlux;
+
+import java.util.concurrent.CountDownLatch;
 
 /**
  * This example shows how to handle errors when the Azure AI Search service
@@ -31,7 +31,7 @@ public class HttpResponseExceptionExample {
 
     private static final String INDEX_NAME = "hotels-sample-index";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         handleErrorsWithSyncClient();
         handleErrorsWithAsyncClient();
     }
@@ -48,15 +48,12 @@ public class HttpResponseExceptionExample {
 
         try {
             // Perform a search on a non-existent field
-            SearchOptions searchOptions = new SearchOptions()
+            SearchOptions searchOptions = new SearchOptions().setSearchText("hotel")
                 .setFilter("Non_Existent_Field eq 'Luxury'");
 
-            Iterable<SearchResult> results = client.search("hotel",
-                searchOptions, Context.NONE);
-
-            for (SearchResult result : results) {
+            for (SearchResult result : client.search(searchOptions)) {
                 // normal results processing
-                System.out.printf("Found hotel: %s%n", result.getDocument(SearchDocument.class).get("HotelName"));
+                System.out.printf("Found hotel: %s%n", result.getAdditionalProperties().get("hotelName"));
             }
         } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
@@ -70,22 +67,22 @@ public class HttpResponseExceptionExample {
     /**
      * With the async client, errors need to be handled when subscribing to the stream
      */
-    private static void handleErrorsWithAsyncClient() {
+    private static void handleErrorsWithAsyncClient() throws InterruptedException {
         SearchAsyncClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildAsyncClient();
 
-        SearchOptions searchOptions = new SearchOptions()
+        SearchOptions searchOptions = new SearchOptions().setSearchText("hotel")
             .setFilter("Non_Existent_Field eq 'Luxury'");
 
-        SearchPagedFlux results = client.search("hotel", searchOptions);
-        results
+        CountDownLatch latch = new CountDownLatch(1);
+        client.search(searchOptions)
             .subscribe(
                 foo -> {
                     // normal results processing
-                    System.out.printf("Found hotel: %s%n", foo.getDocument(SearchDocument.class).get("HotelName"));
+                    System.out.printf("Found hotel: %s%n", foo.getAdditionalProperties().get("hotelName"));
                 },
                 err -> {
                     if (err instanceof HttpResponseException) {
@@ -102,12 +99,15 @@ public class HttpResponseExceptionExample {
                         throw new RuntimeException(err);
                     }
                 },
-                () -> System.out.println("completed"));
+                () -> {
+                    latch.countDown();
+                    System.out.println("completed");
+                });
 
         /*
         This will block until the above query has completed. This is strongly discouraged for use in production as
         it eliminates the benefits of asynchronous IO. It is used here to ensure the sample runs to completion.
         */
-        results.blockLast();
+        latch.await();
     }
 }

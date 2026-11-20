@@ -22,7 +22,7 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
     @Test
     public void testGetPortMirroringWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"yewnfnzhhhqos\",\"direction\":\"EGRESS\",\"source\":\"kutycyarnroohgua\",\"destination\":\"oghktdpycz\",\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":5499743059471221914},\"id\":\"qr\",\"name\":\"ttjzcfyjzpt\",\"type\":\"rl\"}";
+            = "{\"properties\":{\"displayName\":\"pfwwt\",\"direction\":\"EGRESS\",\"source\":\"esxxhmwcdbckyoi\",\"destination\":\"kxhnegknj\",\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":52999178106922181},\"id\":\"vukaobrlbpgsnb\",\"name\":\"gnc\",\"type\":\"jhgem\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkPortMirroring response = manager.workloadNetworks()
-            .getPortMirroringWithResponse("xwbjs", "dbirkfpksokdgo", "ewijymrhbguz", com.azure.core.util.Context.NONE)
+            .getPortMirroringWithResponse("zcmjhngxnoqrxt", "isn", "evhdlmydid", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yewnfnzhhhqos", response.displayName());
+        Assertions.assertEquals("pfwwt", response.displayName());
         Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, response.direction());
-        Assertions.assertEquals("kutycyarnroohgua", response.source());
-        Assertions.assertEquals("oghktdpycz", response.destination());
-        Assertions.assertEquals(5499743059471221914L, response.revision());
+        Assertions.assertEquals("esxxhmwcdbckyoi", response.source());
+        Assertions.assertEquals("kxhnegknj", response.destination());
+        Assertions.assertEquals(52999178106922181L, response.revision());
     }
 }

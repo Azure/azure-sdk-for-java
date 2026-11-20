@@ -256,6 +256,10 @@ public final class ShareServiceClientBuilder implements TokenCredentialTrait<Sha
      */
     public ShareServiceClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.tokenCredential != null || this.sasToken != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "StorageSharedKeyCredential");
+        }
         this.tokenCredential = null;
         this.sasToken = null;
         return this;
@@ -289,8 +293,11 @@ public final class ShareServiceClientBuilder implements TokenCredentialTrait<Sha
     @Override
     public ShareServiceClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'credential' cannot be null.");
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "TokenCredential");
+        }
         this.storageSharedKeyCredential = null;
-        this.sasToken = null;
         return this;
     }
 
@@ -304,6 +311,10 @@ public final class ShareServiceClientBuilder implements TokenCredentialTrait<Sha
      */
     public ShareServiceClientBuilder sasToken(String sasToken) {
         this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "sasToken");
+        }
         this.storageSharedKeyCredential = null;
         return this;
     }

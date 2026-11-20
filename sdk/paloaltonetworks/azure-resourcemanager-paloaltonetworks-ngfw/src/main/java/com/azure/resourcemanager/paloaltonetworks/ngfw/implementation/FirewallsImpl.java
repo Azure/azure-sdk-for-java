@@ -37,12 +37,8 @@ public final class FirewallsImpl implements Firewalls {
         Context context) {
         Response<FirewallResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, firewallName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FirewallResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FirewallResourceImpl(inner.getValue(), this.manager()));
     }
 
     public FirewallResource getByResourceGroup(String resourceGroupName, String firewallName) {
@@ -87,12 +83,8 @@ public final class FirewallsImpl implements Firewalls {
         Context context) {
         Response<GlobalRulestackInfoInner> inner
             = this.serviceClient().getGlobalRulestackWithResponse(resourceGroupName, firewallName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GlobalRulestackInfoImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GlobalRulestackInfoImpl(inner.getValue(), this.manager()));
     }
 
     public GlobalRulestackInfo getGlobalRulestack(String resourceGroupName, String firewallName) {
@@ -108,12 +100,8 @@ public final class FirewallsImpl implements Firewalls {
         Context context) {
         Response<LogSettingsInner> inner
             = this.serviceClient().getLogProfileWithResponse(resourceGroupName, firewallName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new LogSettingsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LogSettingsImpl(inner.getValue(), this.manager()));
     }
 
     public LogSettings getLogProfile(String resourceGroupName, String firewallName) {
@@ -129,12 +117,8 @@ public final class FirewallsImpl implements Firewalls {
         Context context) {
         Response<SupportInfoInner> inner
             = this.serviceClient().getSupportInfoWithResponse(resourceGroupName, firewallName, email, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SupportInfoImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SupportInfoImpl(inner.getValue(), this.manager()));
     }
 
     public SupportInfo getSupportInfo(String resourceGroupName, String firewallName) {
@@ -156,12 +140,16 @@ public final class FirewallsImpl implements Firewalls {
     }
 
     public FirewallResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String firewallName = ResourceManagerUtils.getValueFromIdByName(id, "firewalls");
+        String firewallName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "firewallName");
         if (firewallName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
@@ -170,12 +158,16 @@ public final class FirewallsImpl implements Firewalls {
     }
 
     public Response<FirewallResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String firewallName = ResourceManagerUtils.getValueFromIdByName(id, "firewalls");
+        String firewallName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "firewallName");
         if (firewallName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
@@ -184,12 +176,16 @@ public final class FirewallsImpl implements Firewalls {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String firewallName = ResourceManagerUtils.getValueFromIdByName(id, "firewalls");
+        String firewallName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "firewallName");
         if (firewallName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));
@@ -198,12 +194,16 @@ public final class FirewallsImpl implements Firewalls {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String firewallName = ResourceManagerUtils.getValueFromIdByName(id, "firewalls");
+        String firewallName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}",
+            "firewallName");
         if (firewallName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'firewalls'.", id)));

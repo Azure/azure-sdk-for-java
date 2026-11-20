@@ -8,6 +8,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionInner;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
  * An immutable client-side representation of JobDefinition.
@@ -157,6 +159,79 @@ public interface JobDefinition {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the connections property: List of connections associated to this job.
+     * 
+     * @return the connections value.
+     */
+    List<String> connections();
+
+    /**
+     * Gets the schedule property: Schedule information for the Job Definition.
+     * 
+     * @return the schedule value.
+     */
+    ScheduleInfo schedule();
+
+    /**
+     * Gets the dataIntegrityValidation property: The checksum validation mode for the job definition.
+     * 
+     * @return the dataIntegrityValidation value.
+     */
+    DataIntegrityValidation dataIntegrityValidation();
+
+    /**
+     * Gets the preservePermissions property: Boolean to preserve permissions or not.
+     * 
+     * @return the preservePermissions value.
+     */
+    Boolean preservePermissions();
+
+    /**
+     * Gets the isCrossTenantJob property: Indicates that this Job Definition is a cross-tenant job where the
+     * counterpart endpoint resides in a different Azure AD tenant. When true,
+     * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+     * provided. Defaults to false. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @return the isCrossTenantJob value.
+     */
+    Boolean isCrossTenantJob();
+
+    /**
+     * Gets the crossTenantEndpointTenantId property: The Azure AD tenant ID of the cross-tenant source endpoint.
+     * Required when
+     * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+     * created.
+     * 
+     * @return the crossTenantEndpointTenantId value.
+     */
+    String crossTenantEndpointTenantId();
+
+    /**
+     * Gets the crossTenantEndpointResourceId property: Full ARM resource ID of the cross-tenant (foreign) endpoint. On
+     * the
+     * source-tenant copy this is the TARGET endpoint; on the
+     * target-tenant copy this is the SOURCE endpoint.
+     * 
+     * @return the crossTenantEndpointResourceId value.
+     */
+    String crossTenantEndpointResourceId();
+
+    /**
+     * Gets the syncMode property: The synchronization mode for the Job Definition.
+     * 
+     * @return the syncMode value.
+     */
+    String syncMode();
+
+    /**
+     * Gets the moverSyncedUntil property: The last time the mover was synchronized.
+     * 
+     * @return the moverSyncedUntil value.
+     */
+    OffsetDateTime moverSyncedUntil();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -246,9 +321,13 @@ public interface JobDefinition {
          * The stage of the JobDefinition definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDescription, DefinitionStages.WithJobType, DefinitionStages.WithSourceSubpath,
-            DefinitionStages.WithTargetSubpath, DefinitionStages.WithAgentName, DefinitionStages.WithSourceTargetMap {
+        interface WithCreate extends DefinitionStages.WithDescription, DefinitionStages.WithJobType,
+            DefinitionStages.WithSourceSubpath, DefinitionStages.WithTargetSubpath, DefinitionStages.WithAgentName,
+            DefinitionStages.WithSourceTargetMap, DefinitionStages.WithConnections, DefinitionStages.WithSchedule,
+            DefinitionStages.WithDataIntegrityValidation, DefinitionStages.WithPreservePermissions,
+            DefinitionStages.WithIsCrossTenantJob, DefinitionStages.WithCrossTenantEndpointTenantId,
+            DefinitionStages.WithCrossTenantEndpointResourceId, DefinitionStages.WithSyncMode,
+            DefinitionStages.WithMoverSyncedUntil {
             /**
              * Executes the create request.
              * 
@@ -344,6 +423,143 @@ public interface JobDefinition {
              */
             WithCreate withSourceTargetMap(JobDefinitionPropertiesSourceTargetMap sourceTargetMap);
         }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify connections.
+         */
+        interface WithConnections {
+            /**
+             * Specifies the connections property: List of connections associated to this job.
+             * 
+             * @param connections List of connections associated to this job.
+             * @return the next definition stage.
+             */
+            WithCreate withConnections(List<String> connections);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify schedule.
+         */
+        interface WithSchedule {
+            /**
+             * Specifies the schedule property: Schedule information for the Job Definition..
+             * 
+             * @param schedule Schedule information for the Job Definition.
+             * @return the next definition stage.
+             */
+            WithCreate withSchedule(ScheduleInfo schedule);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify dataIntegrityValidation.
+         */
+        interface WithDataIntegrityValidation {
+            /**
+             * Specifies the dataIntegrityValidation property: The checksum validation mode for the job definition..
+             * 
+             * @param dataIntegrityValidation The checksum validation mode for the job definition.
+             * @return the next definition stage.
+             */
+            WithCreate withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify preservePermissions.
+         */
+        interface WithPreservePermissions {
+            /**
+             * Specifies the preservePermissions property: Boolean to preserve permissions or not..
+             * 
+             * @param preservePermissions Boolean to preserve permissions or not.
+             * @return the next definition stage.
+             */
+            WithCreate withPreservePermissions(Boolean preservePermissions);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify isCrossTenantJob.
+         */
+        interface WithIsCrossTenantJob {
+            /**
+             * Specifies the isCrossTenantJob property: Indicates that this Job Definition is a cross-tenant job where
+             * the
+             * counterpart endpoint resides in a different Azure AD tenant. When true,
+             * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+             * provided. Defaults to false. Cannot be modified after the Job Definition is
+             * created..
+             * 
+             * @param isCrossTenantJob Indicates that this Job Definition is a cross-tenant job where the
+             * counterpart endpoint resides in a different Azure AD tenant. When true,
+             * `crossTenantEndpointTenantId` and `crossTenantEndpointResourceId` must be
+             * provided. Defaults to false. Cannot be modified after the Job Definition is
+             * created.
+             * @return the next definition stage.
+             */
+            WithCreate withIsCrossTenantJob(Boolean isCrossTenantJob);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify crossTenantEndpointTenantId.
+         */
+        interface WithCrossTenantEndpointTenantId {
+            /**
+             * Specifies the crossTenantEndpointTenantId property: The Azure AD tenant ID of the cross-tenant source
+             * endpoint. Required when
+             * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+             * created..
+             * 
+             * @param crossTenantEndpointTenantId The Azure AD tenant ID of the cross-tenant source endpoint. Required
+             * when
+             * `isCrossTenantJob` is true. Cannot be modified after the Job Definition is
+             * created.
+             * @return the next definition stage.
+             */
+            WithCreate withCrossTenantEndpointTenantId(String crossTenantEndpointTenantId);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify crossTenantEndpointResourceId.
+         */
+        interface WithCrossTenantEndpointResourceId {
+            /**
+             * Specifies the crossTenantEndpointResourceId property: Full ARM resource ID of the cross-tenant (foreign)
+             * endpoint. On the
+             * source-tenant copy this is the TARGET endpoint; on the
+             * target-tenant copy this is the SOURCE endpoint..
+             * 
+             * @param crossTenantEndpointResourceId Full ARM resource ID of the cross-tenant (foreign) endpoint. On the
+             * source-tenant copy this is the TARGET endpoint; on the
+             * target-tenant copy this is the SOURCE endpoint.
+             * @return the next definition stage.
+             */
+            WithCreate withCrossTenantEndpointResourceId(String crossTenantEndpointResourceId);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify syncMode.
+         */
+        interface WithSyncMode {
+            /**
+             * Specifies the syncMode property: The synchronization mode for the Job Definition..
+             * 
+             * @param syncMode The synchronization mode for the Job Definition.
+             * @return the next definition stage.
+             */
+            WithCreate withSyncMode(String syncMode);
+        }
+
+        /**
+         * The stage of the JobDefinition definition allowing to specify moverSyncedUntil.
+         */
+        interface WithMoverSyncedUntil {
+            /**
+             * Specifies the moverSyncedUntil property: The last time the mover was synchronized..
+             * 
+             * @param moverSyncedUntil The last time the mover was synchronized.
+             * @return the next definition stage.
+             */
+            WithCreate withMoverSyncedUntil(OffsetDateTime moverSyncedUntil);
+        }
     }
 
     /**
@@ -356,7 +572,9 @@ public interface JobDefinition {
     /**
      * The template for JobDefinition update.
      */
-    interface Update extends UpdateStages.WithDescription, UpdateStages.WithCopyMode, UpdateStages.WithAgentName {
+    interface Update extends UpdateStages.WithDescription, UpdateStages.WithCopyMode, UpdateStages.WithAgentName,
+        UpdateStages.WithConnections, UpdateStages.WithDataIntegrityValidation, UpdateStages.WithSchedule,
+        UpdateStages.WithSyncMode, UpdateStages.WithMoverSyncedUntil {
         /**
          * Executes the update request.
          * 
@@ -415,6 +633,71 @@ public interface JobDefinition {
              */
             Update withAgentName(String agentName);
         }
+
+        /**
+         * The stage of the JobDefinition update allowing to specify connections.
+         */
+        interface WithConnections {
+            /**
+             * Specifies the connections property: List of connections associated to this job.
+             * 
+             * @param connections List of connections associated to this job.
+             * @return the next definition stage.
+             */
+            Update withConnections(List<String> connections);
+        }
+
+        /**
+         * The stage of the JobDefinition update allowing to specify dataIntegrityValidation.
+         */
+        interface WithDataIntegrityValidation {
+            /**
+             * Specifies the dataIntegrityValidation property: Data Integrity Validation mode..
+             * 
+             * @param dataIntegrityValidation Data Integrity Validation mode.
+             * @return the next definition stage.
+             */
+            Update withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation);
+        }
+
+        /**
+         * The stage of the JobDefinition update allowing to specify schedule.
+         */
+        interface WithSchedule {
+            /**
+             * Specifies the schedule property: Schedule information for the Job Definition..
+             * 
+             * @param schedule Schedule information for the Job Definition.
+             * @return the next definition stage.
+             */
+            Update withSchedule(ScheduleInfo schedule);
+        }
+
+        /**
+         * The stage of the JobDefinition update allowing to specify syncMode.
+         */
+        interface WithSyncMode {
+            /**
+             * Specifies the syncMode property: The synchronization mode for the Job Definition..
+             * 
+             * @param syncMode The synchronization mode for the Job Definition.
+             * @return the next definition stage.
+             */
+            Update withSyncMode(String syncMode);
+        }
+
+        /**
+         * The stage of the JobDefinition update allowing to specify moverSyncedUntil.
+         */
+        interface WithMoverSyncedUntil {
+            /**
+             * Specifies the moverSyncedUntil property: The last time the mover was synchronized..
+             * 
+             * @param moverSyncedUntil The last time the mover was synchronized.
+             * @return the next definition stage.
+             */
+            Update withMoverSyncedUntil(OffsetDateTime moverSyncedUntil);
+        }
     }
 
     /**
@@ -471,4 +754,24 @@ public interface JobDefinition {
      * @return response that identifies a Job Run.
      */
     JobRunResourceId stopJob();
+
+    /**
+     * Post action to reconcile the running job.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run along with {@link Response}.
+     */
+    Response<JobRunResourceId> reconcileJobWithResponse(Context context);
+
+    /**
+     * Post action to reconcile the running job.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response that identifies a Job Run.
+     */
+    JobRunResourceId reconcileJob();
 }

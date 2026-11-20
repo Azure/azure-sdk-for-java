@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.35.0-beta.2</version>
+    <version>12.38.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -169,6 +169,11 @@ https://myaccount.blob.core.windows.net/mycontainer/myblob
 ```
 
 Note that the above URIs may not hold for more advanced scenarios such as custom domain names.
+
+### Data locality routing and HTTP transports
+
+For transport-specific requirements when enabling data locality routing, see the
+[JDK HTTP transport's host override guidance][jdk_http_host_overrides].
 
 ## Examples
 
@@ -645,6 +650,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-
-
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/performance-tuning.md
+[jdk_http_host_overrides]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-jdk-httpclient/README.md#request-host-overrides

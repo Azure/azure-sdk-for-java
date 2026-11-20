@@ -1,0 +1,134 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
+
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.Map;
+
+/**
+ * Sample demonstrates how to delete analysis results after they are no longer needed
+ * using the async client.
+ *
+ * <p>Analysis results are automatically deleted after 24 hours. Delete a result earlier when it contains sensitive
+ * data or a shorter retention period is required. Deletion cannot be undone, so save any required data first.</p>
+ *
+ * <p>Before running this sample, configure the model deployment defaults as shown in
+ * {@link Sample00_UpdateDefaults}.</p>
+ */
+public class Sample13_DeleteResultAsync {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample13Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the async client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample13Async.buildClient
+
+        System.out.println("Client initialized successfully");
+
+        // BEGIN: com.azure.ai.contentunderstanding.deleteResultAsync
+        // Step 1: Analyze a document
+        String documentUrl
+            = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
+
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(documentUrl);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
+            = client.beginAnalyze("prebuilt-invoice", Arrays.asList(input));
+
+        // Wait for operation to complete
+        System.out.println("Started analysis operation");
+
+        Map.Entry<String, AnalysisResult> analysis = poller.last()
+            .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                pollResponse.getFinalResult(), "Invoice analysis").map(result -> {
+                    String operationId
+                        = pollResponse.getValue() == null ? null : pollResponse.getValue().getId();
+                    if (operationId == null || operationId.trim().isEmpty()) {
+                        throw new IllegalStateException("Invoice analysis completed without an operation ID.");
+                    }
+                    return new AbstractMap.SimpleImmutableEntry<>(operationId, result);
+                }))
+            .flatMap(entry -> {
+                String operationId = entry.getKey();
+                AnalysisResult result = entry.getValue();
+
+                System.out.println("Polling completed successfully");
+                System.out.println("Operation ID: " + operationId);
+                System.out.println("Analysis completed successfully!");
+
+                // Display some sample results using getValue() convenience method
+                if (result.getContents() != null && !result.getContents().isEmpty()) {
+                    Object firstContent = result.getContents().get(0);
+                    if (firstContent instanceof DocumentContent) {
+                        DocumentContent docContent = (DocumentContent) firstContent;
+                        Map<String, ContentField> fields = docContent.getFields();
+                        if (fields != null) {
+                            System.out.println("Total fields extracted: " + fields.size());
+                            ContentField customerNameField = fields.get("CustomerName");
+                            if (customerNameField != null) {
+                                // Use getValue() instead of casting to ContentStringField
+                                String customerName = (String) customerNameField.getValue();
+                                System.out.println("Customer Name: " + (customerName != null ? customerName : "(not found)"));
+                            }
+                        }
+                    }
+                }
+
+                // Step 2: Delete the analysis result using the operation ID
+                // This cleans up the server-side resources (including keyframe images for video analysis)
+                System.out.println("Deleting analysis result (Operation ID: " + operationId + ")...");
+                Mono<Void> deletion = client.deleteResult(operationId)
+                    .doOnSuccess(ignored -> System.out.println("Analysis result deleted successfully!"));
+                return completeAfterDeletion(deletion, entry);
+            })
+            .block();
+        if (analysis == null) {
+            throw new IllegalStateException("Invoice analysis completed without an operation result.");
+        }
+
+        System.out.println("\nSample completed successfully!");
+        // END: com.azure.ai.contentunderstanding.deleteResultAsync
+    }
+
+    static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    static <T> Mono<T> completeAfterDeletion(Mono<Void> deletion, T result) {
+        return deletion.thenReturn(result);
+    }
+}

@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.storagemover.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.storagemover.models.EndpointKind;
 import com.azure.resourcemanager.storagemover.models.NfsMountEndpointProperties;
+import com.azure.resourcemanager.storagemover.models.NfsMountSourceType;
 import com.azure.resourcemanager.storagemover.models.NfsVersion;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,24 +15,30 @@ public final class NfsMountEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NfsMountEndpointProperties model = BinaryData.fromString(
-            "{\"endpointType\":\"NfsMount\",\"host\":\"zw\",\"nfsVersion\":\"NFSv4\",\"export\":\"uitnwuiz\",\"description\":\"zxufiz\",\"provisioningState\":\"Succeeded\"}")
+            "{\"endpointType\":\"NfsMount\",\"host\":\"zvypyqrimzinp\",\"nfsVersion\":\"NFSauto\",\"export\":\"jdkirsoodqx\",\"sourceType\":\"NfsMount\",\"description\":\"nohjt\",\"endpointKind\":\"Target\",\"provisioningState\":\"Failed\"}")
             .toObject(NfsMountEndpointProperties.class);
-        Assertions.assertEquals("zxufiz", model.description());
-        Assertions.assertEquals("zw", model.host());
-        Assertions.assertEquals(NfsVersion.NFSV4, model.nfsVersion());
-        Assertions.assertEquals("uitnwuiz", model.export());
+        Assertions.assertEquals("nohjt", model.description());
+        Assertions.assertEquals(EndpointKind.TARGET, model.endpointKind());
+        Assertions.assertEquals("zvypyqrimzinp", model.host());
+        Assertions.assertEquals(NfsVersion.NFSAUTO, model.nfsVersion());
+        Assertions.assertEquals("jdkirsoodqx", model.export());
+        Assertions.assertEquals(NfsMountSourceType.NFS_MOUNT, model.sourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NfsMountEndpointProperties model = new NfsMountEndpointProperties().withDescription("zxufiz")
-            .withHost("zw")
-            .withNfsVersion(NfsVersion.NFSV4)
-            .withExport("uitnwuiz");
+        NfsMountEndpointProperties model = new NfsMountEndpointProperties().withDescription("nohjt")
+            .withEndpointKind(EndpointKind.TARGET)
+            .withHost("zvypyqrimzinp")
+            .withNfsVersion(NfsVersion.NFSAUTO)
+            .withExport("jdkirsoodqx")
+            .withSourceType(NfsMountSourceType.NFS_MOUNT);
         model = BinaryData.fromObject(model).toObject(NfsMountEndpointProperties.class);
-        Assertions.assertEquals("zxufiz", model.description());
-        Assertions.assertEquals("zw", model.host());
-        Assertions.assertEquals(NfsVersion.NFSV4, model.nfsVersion());
-        Assertions.assertEquals("uitnwuiz", model.export());
+        Assertions.assertEquals("nohjt", model.description());
+        Assertions.assertEquals(EndpointKind.TARGET, model.endpointKind());
+        Assertions.assertEquals("zvypyqrimzinp", model.host());
+        Assertions.assertEquals(NfsVersion.NFSAUTO, model.nfsVersion());
+        Assertions.assertEquals("jdkirsoodqx", model.export());
+        Assertions.assertEquals(NfsMountSourceType.NFS_MOUNT, model.sourceType());
     }
 }

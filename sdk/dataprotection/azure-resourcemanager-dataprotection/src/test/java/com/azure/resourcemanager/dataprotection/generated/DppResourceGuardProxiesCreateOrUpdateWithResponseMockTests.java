@@ -24,7 +24,7 @@ public final class DppResourceGuardProxiesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceGuardResourceId\":\"naquflq\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"hamzjrwdkqze\",\"defaultResourceRequest\":\"jleziunjx\"},{\"vaultCriticalOperation\":\"zantkwceg\",\"defaultResourceRequest\":\"mlbnseq\"},{\"vaultCriticalOperation\":\"jjvpilguooqja\",\"defaultResourceRequest\":\"d\"}],\"lastUpdatedTime\":\"gueiookjbsahrtdt\",\"description\":\"elqacslmot\"},\"id\":\"bnfxofvc\",\"name\":\"k\",\"type\":\"dirazf\"}";
+            = "{\"properties\":{\"resourceGuardResourceId\":\"c\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"rrmhwrbfdp\",\"defaultResourceRequest\":\"lubhvjg\"},{\"vaultCriticalOperation\":\"ocu\",\"defaultResourceRequest\":\"lw\"},{\"vaultCriticalOperation\":\"memhooclutnpq\",\"defaultResourceRequest\":\"mczjkm\"},{\"vaultCriticalOperation\":\"kyujxsglhsrrr\",\"defaultResourceRequest\":\"jylmbkzudnigr\"}],\"lastUpdatedTime\":\"hotj\",\"description\":\"lpxuzzjgnrefq\"},\"id\":\"qotoihiqakydiwfb\",\"name\":\"kwpzdqtvh\",\"type\":\"spodaqax\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,22 +34,26 @@ public final class DppResourceGuardProxiesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceGuardProxyBaseResource response = manager.dppResourceGuardProxies()
-            .define("uughtuqfecjxeyg")
-            .withExistingBackupVault("lvyjtcvuwkas", "zies")
-            .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("xu")
-                .withResourceGuardOperationDetails(
-                    Arrays.asList(new ResourceGuardOperationDetail().withVaultCriticalOperation("ewmrswnjlxu")
-                        .withDefaultResourceRequest("hwpusxj")))
-                .withLastUpdatedTime("qehgpd")
-                .withDescription("zjqatucoig"))
+            .define("kjxnqpvwgfstmhq")
+            .withExistingBackupVault("uqibsxtkcu", "fbsfarfsiow")
+            .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("zmdk")
+                .withResourceGuardOperationDetails(Arrays.asList(
+                    new ResourceGuardOperationDetail().withVaultCriticalOperation("fcluqvo")
+                        .withDefaultResourceRequest("ycjimryvwgcwwpbm"),
+                    new ResourceGuardOperationDetail().withVaultCriticalOperation("w")
+                        .withDefaultResourceRequest("ydsx"),
+                    new ResourceGuardOperationDetail().withVaultCriticalOperation("fo")
+                        .withDefaultResourceRequest("cbvopwndyqleallk")))
+                .withLastUpdatedTime("tkhlowkxxpvbr")
+                .withDescription("jmzsyzfh"))
             .create();
 
-        Assertions.assertEquals("naquflq", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("hamzjrwdkqze",
+        Assertions.assertEquals("c", response.properties().resourceGuardResourceId());
+        Assertions.assertEquals("rrmhwrbfdp",
             response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("jleziunjx",
+        Assertions.assertEquals("lubhvjg",
             response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("gueiookjbsahrtdt", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("elqacslmot", response.properties().description());
+        Assertions.assertEquals("hotj", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("lpxuzzjgnrefq", response.properties().description());
     }
 }

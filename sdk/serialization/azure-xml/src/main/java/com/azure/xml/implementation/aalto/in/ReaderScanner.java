@@ -1,19 +1,19 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.in;
 
-import java.io.*;
-
-import javax.xml.stream.Location;
-import javax.xml.stream.XMLStreamException;
-
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
-import com.azure.xml.implementation.aalto.impl.IoStreamException;
 import com.azure.xml.implementation.aalto.impl.LocationImpl;
+import com.azure.xml.implementation.aalto.impl.StreamExceptionBase;
 import com.azure.xml.implementation.aalto.util.DataUtil;
 import com.azure.xml.implementation.aalto.util.TextBuilder;
 import com.azure.xml.implementation.aalto.util.XmlCharTypes;
 import com.azure.xml.implementation.aalto.util.XmlChars;
 import com.azure.xml.implementation.aalto.util.XmlConsts;
+
+import javax.xml.stream.Location;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  * This is the concrete scanner implementation used when input comes
@@ -1359,7 +1359,7 @@ public final class ReaderScanner extends XmlScanner {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
                         }
-                        if (inputBuffer[_inputPtr] == CHAR_LF) {
+                        if (inputBuffer[_inputPtr] == XmlConsts.CHAR_LF) {
                             ++_inputPtr;
                         }
                         markLF();
@@ -2439,7 +2439,7 @@ public final class ReaderScanner extends XmlScanner {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
                         }
-                        if (inputBuffer[_inputPtr] == CHAR_LF) {
+                        if (inputBuffer[_inputPtr] == XmlConsts.CHAR_LF) {
                             ++_inputPtr;
                         }
                         markLF();
@@ -2514,7 +2514,7 @@ public final class ReaderScanner extends XmlScanner {
                         if (_inputPtr >= _inputEnd) {
                             loadMoreGuaranteed();
                         }
-                        if (inputBuffer[_inputPtr] == CHAR_LF) {
+                        if (inputBuffer[_inputPtr] == XmlConsts.CHAR_LF) {
                             ++_inputPtr;
                         }
                         markLF();
@@ -2616,7 +2616,7 @@ public final class ReaderScanner extends XmlScanner {
                             loadMoreGuaranteed();
                             ptr = _inputPtr;
                         }
-                        if (inputBuffer[ptr] == CHAR_LF) {
+                        if (inputBuffer[ptr] == XmlConsts.CHAR_LF) {
                             ++ptr;
                             ++_inputPtr;
                         }
@@ -2778,7 +2778,7 @@ public final class ReaderScanner extends XmlScanner {
         if (c == '\r') {
             // First a degenerate case, a lone \r:
             if (_inputPtr >= _inputEnd && !loadMore()) {
-                _textBuilder.resetWithIndentation(0, CHAR_SPACE);
+                _textBuilder.resetWithIndentation(0, XmlConsts.CHAR_SPACE);
                 return -1;
             }
             if (_inputBuffer[_inputPtr] == '\n') {
@@ -2844,7 +2844,7 @@ public final class ReaderScanner extends XmlScanner {
         if (c == '\r') {
             // First a degenerate case, a lone \r:
             if (_inputPtr >= _inputEnd && !loadMore()) {
-                _textBuilder.resetWithIndentation(0, CHAR_SPACE);
+                _textBuilder.resetWithIndentation(0, XmlConsts.CHAR_SPACE);
                 return -1;
             }
             if (_inputBuffer[_inputPtr] == '\n') {
@@ -2854,14 +2854,14 @@ public final class ReaderScanner extends XmlScanner {
         markLF();
         // Ok, indentation char?
         if (_inputPtr >= _inputEnd && !loadMore()) {
-            _textBuilder.resetWithIndentation(0, CHAR_SPACE);
+            _textBuilder.resetWithIndentation(0, XmlConsts.CHAR_SPACE);
             return -1;
         }
         c = _inputBuffer[_inputPtr]; // won't advance past the char yet
         if (c != ' ' && c != '\t') {
             // If lt, it's still indentation ok:
             if (c == '<') { // need
-                _textBuilder.resetWithIndentation(0, CHAR_SPACE);
+                _textBuilder.resetWithIndentation(0, XmlConsts.CHAR_SPACE);
                 return -1;
             }
             // Nope... something else
@@ -3213,7 +3213,7 @@ public final class ReaderScanner extends XmlScanner {
             _inputEnd = count;
             return true;
         } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
+            throw new StreamExceptionBase(ioe);
         }
     }
 
@@ -3258,7 +3258,7 @@ public final class ReaderScanner extends XmlScanner {
             } while (_inputEnd < 3);
             return true;
         } catch (IOException ioe) {
-            throw new IoStreamException(ioe);
+            throw new StreamExceptionBase(ioe);
         }
     }
 }

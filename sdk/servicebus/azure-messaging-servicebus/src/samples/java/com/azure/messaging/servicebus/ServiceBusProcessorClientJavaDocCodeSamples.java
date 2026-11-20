@@ -84,7 +84,6 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             .disableAutoComplete()  // Make sure to explicitly opt in to manual settlement (e.g. complete, abandon).
             .processMessage(processMessage)
             .processError(processError)
-            .disableAutoComplete()
             .buildProcessorClient();
 
         // Starts the processor in the background. Control returns immediately.
@@ -125,7 +124,6 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
         // Create the processor client via the builder and its sub-builder
         // 'fullyQualifiedNamespace' will look similar to "{your-namespace}.servicebus.windows.net"
-        // 'disableAutoComplete()' will opt in to manual settlement (e.g. complete, abandon).
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
             .credential(fullyQualifiedNamespace, tokenCredential)
             .processor()
@@ -133,7 +131,6 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .processMessage(processMessage)
             .processError(processError)
-            .disableAutoComplete()
             .buildProcessorClient();
 
         // Starts the processor in the background. Control returns immediately.

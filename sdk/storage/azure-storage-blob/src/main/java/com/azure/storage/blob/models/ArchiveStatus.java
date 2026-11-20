@@ -31,6 +31,12 @@ public final class ArchiveStatus extends ExpandableStringEnum<ArchiveStatus> {
     public static final ArchiveStatus REHYDRATE_PENDING_TO_COLD = fromString("rehydrate-pending-to-cold");
 
     /**
+     * Static value rehydrate-pending-to-smart for ArchiveStatus.
+     */
+    @Generated
+    public static final ArchiveStatus REHYDRATE_PENDING_TO_SMART = fromString("rehydrate-pending-to-smart");
+
+    /**
      * Creates a new instance of ArchiveStatus value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

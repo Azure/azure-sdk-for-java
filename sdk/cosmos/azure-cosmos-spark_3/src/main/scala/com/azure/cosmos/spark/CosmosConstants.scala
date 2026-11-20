@@ -32,19 +32,21 @@ private[cosmos] object CosmosConstants {
   object MetricNames {
     val BytesWritten = "bytesWritten"
     val RecordsWritten = "recordsWritten"
+    val RecordsSkipped = "cosmos.recordsSkipped"
     val TotalRequestCharge = "cosmos.totalRequestCharge"
 
     val ChangeFeedLsnRange = "cosmos.changeFeed.partition.lsnRange"
     val ChangeFeedItemsCnt = "cosmos.changeFeed.partition.itemsCnt"
     val ChangeFeedPartitionIndex = "cosmos.changeFeed.partition.index"
 
-    val KnownCustomMetricNames: Set[String] = Set(TotalRequestCharge)
+    val KnownCustomMetricNames: Set[String] = Set(TotalRequestCharge, RecordsSkipped)
   }
 
   object Properties {
     val Id = "id"
     val ETag = "_etag"
     val ItemIdentity = "_itemIdentity"
+    val PartitionKeyIdentity = "_partitionKeyIdentity"
   }
 
   object StatusCodes {
@@ -56,6 +58,10 @@ private[cosmos] object CosmosConstants {
     val PreconditionFailed: Int = HttpConstants.StatusCodes.PRECONDITION_FAILED
     val NotFound: Int = HttpConstants.StatusCodes.NOTFOUND
     val BadRequest: Int = HttpConstants.StatusCodes.BADREQUEST
+  }
+
+  object SubstatusCodes {
+    val PartitionKeyRangeGone: Int = HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
   }
 
   object SystemProperties {
@@ -70,6 +76,7 @@ private[cosmos] object CosmosConstants {
     val IndexingPolicy = "IndexingPolicy"
     val DefaultTtlInSeconds = "DefaultTtlInSeconds"
     val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
+    val VectorEmbeddingPolicy = "VectorEmbeddingPolicy"
   }
 
   object ChangeFeedMetricsConfigs {

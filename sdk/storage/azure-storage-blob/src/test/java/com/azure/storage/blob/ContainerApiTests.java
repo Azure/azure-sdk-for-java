@@ -3,10 +3,24 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.BinaryData;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -31,9 +45,12 @@ import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -45,21 +62,38 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
+
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
+import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.ListBlobsIncludeItem;
+import com.azure.core.http.rest.ResponseBase;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
@@ -70,10 +104,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -264,6 +300,37 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void createIfNotExistsOnContainerThatAlreadyExists() {
         assertFalse(cc.createIfNotExists());
+    }
+
+    @Test
+    public void createIfNotExistsOnContainerBeingDeleted() {
+        cc.delete();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, cc::createIfNotExists);
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    @Test
+    public void createOnContainerBeingDeleted() {
+        cc.delete();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, cc::create);
+        assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.CONTAINER_BEING_DELETED);
+    }
+
+    // Live only: it waits for the service to finish deleting the container, typically 30 to 60 seconds (see
+    // createAfterContainerDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterContainerDeleteCompletes() {
+        cc.delete();
+
+        Response<Boolean> response
+            = createAfterContainerDeleteCompletes(() -> cc.createIfNotExistsWithResponse(null, null, null));
+
+        assertResponseStatusCode(response, 201);
+        assertTrue(response.getValue());
+        assertTrue(cc.exists());
     }
 
     @Test
@@ -754,6 +821,60 @@ public class ContainerApiTests extends BlobTestBase {
         ccPremium.delete();
     }
 
+    @ParameterizedTest
+    @MethodSource("serializationFormatSupplier")
+    @DoNotRecord
+    public void listBlobsUsesResolvedSerializationFormat(ListBlobsOptions options, String expectedAcceptHeader) {
+        AtomicReference<String> acceptHeader = new AtomicReference<>();
+        BlobContainerClient client = createSerializationFormatClient(acceptHeader);
+
+        BlobStorageException exception = assertThrows(BlobStorageException.class,
+            () -> client.listBlobs(options, null).iterableByPage(1).iterator().hasNext());
+        assertEquals(500, exception.getStatusCode());
+        assertEquals(expectedAcceptHeader, acceptHeader.get());
+    }
+
+    @ParameterizedTest
+    @MethodSource("serializationFormatSupplier")
+    @DoNotRecord
+    public void listBlobsByHierarchyUsesResolvedSerializationFormat(ListBlobsOptions options,
+        String expectedAcceptHeader) {
+        AtomicReference<String> acceptHeader = new AtomicReference<>();
+        BlobContainerClient client = createSerializationFormatClient(acceptHeader);
+
+        BlobStorageException exception = assertThrows(BlobStorageException.class,
+            () -> client.listBlobsByHierarchy("/", options, null).iterableByPage(1).iterator().hasNext());
+        assertEquals(500, exception.getStatusCode());
+        assertEquals(expectedAcceptHeader, acceptHeader.get());
+    }
+
+    private static BlobContainerClient createSerializationFormatClient(AtomicReference<String> acceptHeader) {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            acceptHeader.set(request.getHeaders().getValue(HttpHeaderName.ACCEPT));
+            // Fail after capturing the request so the test doesn't need a format-specific response body.
+            return Mono.just(new MockHttpResponse(request, 500));
+        }).build();
+        return new BlobContainerClientBuilder().endpoint("https://account.blob.core.windows.net/container")
+            .credential(new MockTokenCredential())
+            .pipeline(pipeline)
+            .buildClient();
+    }
+
+    private static Stream<Arguments> serializationFormatSupplier() {
+        String arrowAcceptHeader
+            = Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM + ",application/xml";
+        return Stream.of(Arguments.of(null, arrowAcceptHeader), Arguments.of(new ListBlobsOptions(), arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.AUTO),
+                arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW),
+                arrowAcceptHeader),
+            Arguments.of(
+                new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML),
+                "application/xml"));
+    }
+
     @Test
     public void listBlobsFlatMin() {
         assertDoesNotThrow(() -> cc.listBlobs().iterator().hasNext());
@@ -1022,6 +1143,18 @@ public class ContainerApiTests extends BlobTestBase {
     @Test
     public void listBlobsFlatOptionsFail() {
         assertThrows(IllegalArgumentException.class, () -> new ListBlobsOptions().setMaxResultsPerPage(0));
+    }
+
+    @Test
+    public void listBlobsFlatEndBeforeRequiresArrow() {
+        ListBlobsOptions options = new ListBlobsOptions().setEndBefore("blob")
+            .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> cc.listBlobs(options, null));
+
+        assertEquals("The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.",
+            exception.getMessage());
     }
 
     @Test
@@ -1325,6 +1458,18 @@ public class ContainerApiTests extends BlobTestBase {
     private static Stream<Arguments> listBlobsHierOptionsFailSupplier() {
         return Stream.of(Arguments.of(true, 5, UnsupportedOperationException.class),
             Arguments.of(false, 0, IllegalArgumentException.class));
+    }
+
+    @Test
+    public void listBlobsHierEndBeforeRequiresArrow() {
+        ListBlobsOptions options = new ListBlobsOptions().setEndBefore("blob")
+            .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML);
+
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> cc.listBlobsByHierarchy("/", options, null));
+
+        assertEquals("The endBefore option is only supported when storageResponseSerializationFormat is set to ARROW.",
+            exception.getMessage());
     }
 
     @Test
@@ -2128,4 +2273,626 @@ public class ContainerApiTests extends BlobTestBase {
     //        then:
     //        assertThrows(BlobStorageException.class, () ->
     //    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowBasic() {
+        // Upload a test blob
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        assertNotNull(blobs.get(0).getProperties());
+        assertEquals(DATA.getDefaultDataSize(), blobs.get(0).getProperties().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, blobs.get(0).getProperties().getBlobType());
+        assertNotNull(blobs.get(0).getProperties().getLastModified());
+        assertNotNull(blobs.get(0).getProperties().getETag());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowWithTags() {
+        // Upload a blob and set tags
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tagkey", "tagvalue");
+        cc.getBlobClient(blobName).setTags(tags);
+
+        // List with Arrow + retrieveTags
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setDetails(new BlobListDetails().setRetrieveTags(true));
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        assertNotNull(blobs.get(0).getTags());
+        assertEquals("tagvalue", blobs.get(0).getTags().get("tagkey"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("listBlobsFlatRehydratePrioritySupplier")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowRehydratePriority(RehydratePriority rehydratePriority) {
+        String name = generateBlobName();
+        BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
+
+        bc.upload(DATA.getDefaultInputStream(), 7);
+
+        if (rehydratePriority != null) {
+            bc.setAccessTier(AccessTier.ARCHIVE);
+            bc.setAccessTierWithResponse(new BlobSetAccessTierOptions(AccessTier.HOT).setPriority(rehydratePriority),
+                null, null);
+        }
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        BlobItem item = cc.listBlobs(options, null).iterator().next();
+
+        assertEquals(rehydratePriority, item.getProperties().getRehydratePriority());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient(blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata, null, null,
+                null, null, null);
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertNotNull(blobs.get(0).getMetadata());
+        assertEquals("testvalue", blobs.get(0).getMetadata().get("testkey"));
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowPagination() {
+        // Upload 3 blobs
+        for (int i = 0; i < 4; i++) {
+            cc.getBlobClient("blob" + i)
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        }
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setMaxResultsPerPage(1);
+        List<BlobItem> allBlobs = new ArrayList<>();
+        for (PagedResponse<BlobItem> page : cc.listBlobs(options, null).iterableByPage()) {
+            assertTrue(page.getValue().size() <= 1);
+            allBlobs.addAll(page.getValue());
+        }
+
+        cc.listBlobs().iterableByPage(2).forEach(page -> {
+            assertEquals(2, page.getValue().size());
+        });
+
+        assertEquals(4, allBlobs.size());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowNullDefaultsToArrow() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions();
+        assertNull(options.getStorageResponseSerializationFormat());
+
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+    }
+
+    @LiveOnly
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowEncryptedBlob() {
+        // Upload a blob with CPK (customer-provided key)
+        String blobName = generateBlobName();
+        CustomerProvidedKey cpk = new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomKey()));
+        BlobClient cpkClient = cc.getBlobClient(blobName).getCustomerProvidedKeyClient(cpk);
+        cpkClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        // CPK blob should have server-encrypted = true
+        assertTrue(blobs.get(0).getProperties().isServerEncrypted());
+        // Metadata should be null (no metadata was set)
+        assertNull(blobs.get(0).getMetadata());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsArrowDeserializer() throws Exception {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient(blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(cc.getHttpPipeline())
+            .url(cc.getAccountUrl())
+            .version(BlobServiceVersion.getLatest().getVersion())
+            .buildClient();
+
+        // Call the Arrow endpoint
+        ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
+            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, include, null, null, null,
+                null, com.azure.core.util.Context.NONE);
+
+        ArrowBlobListDeserializer.ArrowListBlobsResult result;
+        try (InputStream body = response.getValue()) {
+            String contentType = response.getDeserializedHeaders().getContentType();
+            assertTrue(
+                StorageImplUtils.hasMatchingHeaderValue(contentType,
+                    Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM),
+                "Expected Arrow content type but got: " + contentType);
+            result = ArrowBlobListDeserializer.deserialize(body);
+        }
+
+        BlobProperties properties = cc.getBlobClient(blobName).getProperties();
+        assertNotNull(properties.getAccessTier());
+
+        // Verify pagination — single blob, no next page
+        assertNull(result.getNextMarker());
+
+        // Verify we got exactly one blob
+        assertEquals(1, result.getBlobItems().size());
+
+        com.azure.storage.blob.implementation.models.BlobItemInternal item = result.getBlobItems().get(0);
+
+        // Name
+        assertNotNull(item.getName());
+        assertEquals(blobName, item.getName().getContent());
+
+        // Properties
+        assertNotNull(item.getProperties());
+        assertEquals(7L, (long) item.getProperties().getContentLength());
+        assertEquals("application/octet-stream", item.getProperties().getContentType());
+        assertNotNull(item.getProperties().getETag());
+        assertNotNull(item.getProperties().getLastModified());
+        assertNotNull(item.getProperties().getCreationTime());
+        assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
+        assertEquals(properties.getAccessTier(), item.getProperties().getAccessTier());
+        assertTrue(item.getProperties().isAccessTierInferred());
+        assertTrue(item.getProperties().isServerEncrypted());
+        assertEquals(LeaseStateType.AVAILABLE, item.getProperties().getLeaseState());
+        assertEquals(LeaseStatusType.UNLOCKED, item.getProperties().getLeaseStatus());
+        assertNotNull(item.getProperties().getContentMd5());
+
+        // Metadata
+        assertNotNull(item.getMetadata());
+        assertEquals("testvalue", item.getMetadata().get("testkey"));
+
+        // Verify ModelHelper can convert to public BlobItem
+        BlobItem publicItem = ModelHelper.populateBlobItem(item);
+        assertEquals(blobName, publicItem.getName());
+        assertEquals(7L, (long) publicItem.getProperties().getContentLength());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsByHierarchyArrowBasic() {
+        // Upload blobs in a directory structure
+        cc.getBlobClient("dir/blob1")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        cc.getBlobClient("dir/blob2")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW);
+        List<BlobItem> items = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
+
+        // Root level: one prefix "dir/" and one blob "topblob"
+        assertEquals(2, items.size());
+
+        BlobItem prefixItem = items.stream().filter(BlobItem::isPrefix).findFirst().orElse(null);
+        BlobItem blobItem = items.stream().filter(i -> !i.isPrefix()).findFirst().orElse(null);
+
+        assertNotNull(prefixItem);
+        assertEquals("dir/", prefixItem.getName());
+        assertTrue(prefixItem.isPrefix());
+
+        assertNotNull(blobItem);
+        assertEquals("topblob", blobItem.getName());
+        assertFalse(blobItem.isPrefix());
+        assertNotNull(blobItem.getProperties());
+        assertEquals(DATA.getDefaultDataSize(), blobItem.getProperties().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, blobItem.getProperties().getBlobType());
+        assertNotNull(blobItem.getProperties().getLastModified());
+        assertNotNull(blobItem.getProperties().getETag());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsByHierarchyArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient("dir/" + blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata, null, null,
+                null, null, null);
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setPrefix("dir/")
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        List<BlobItem> blobs = cc.listBlobsByHierarchy("/", options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertFalse(blobs.get(0).isPrefix());
+        assertNotNull(blobs.get(0).getMetadata());
+        assertEquals("testvalue", blobs.get(0).getMetadata().get("testkey"));
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    public void listBlobsByHierarchyArrowPagination() {
+        // Upload blobs across multiple directories
+        for (int i = 0; i < 3; i++) {
+            cc.getBlobClient("dir" + i + "/blob")
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        }
+        cc.getBlobClient("topblob")
+            .getBlockBlobClient()
+            .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.ARROW)
+                .setMaxResultsPerPage(1);
+        List<BlobItem> allItems = new ArrayList<>();
+        for (PagedResponse<BlobItem> page : cc.listBlobsByHierarchy("/", options, null).iterableByPage()) {
+            assertTrue(page.getValue().size() <= 1);
+            allItems.addAll(page.getValue());
+        }
+
+        // 3 prefixes + 1 blob = 4 items
+        assertEquals(4, allItems.size());
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobOverSessionAuth() {
+        int blobCount = 5;
+        List<String> blobNames = new ArrayList<>();
+        for (int i = 0; i < blobCount; i++) {
+            String blobName = generateBlobName();
+            cc.getBlobClient(blobName)
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+            blobNames.add(blobName);
+        }
+
+        List<String> downloadAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String trimmed = path != null && path.startsWith("/") ? path.substring(1) : path;
+            if (auth != null && trimmed != null && trimmed.contains("/")) {
+                downloadAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobContainerClient sessionCc = sessionEnabledContainerClient(inspect);
+
+        for (String blobName : blobNames) {
+            BinaryData downloaded = sessionCc.getBlobClient(blobName).downloadContent();
+            assertEquals(DATA.getDefaultText(), downloaded.toString());
+        }
+
+        // Transport retries can produce more than one observed request per blob.
+        assertTrue(downloadAuthSchemes.size() >= blobCount,
+            "Expected to observe at least one download request per blob; saw " + downloadAuthSchemes);
+        assertTrue(downloadAuthSchemes.stream().allMatch("Session"::equals),
+            "Expected all blob downloads to be authenticated with Session scheme; saw " + downloadAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(new ByteArrayInputStream(data), data.length);
+
+        Map<String, List<String>> downloadAuthSchemesByRange = Collections.synchronizedMap(new HashMap<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                String range = req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+                if (range == null) {
+                    range = req.getHeaders().getValue(HttpHeaderName.fromString("Range"));
+                }
+                String rangeKey = range == null ? "<no range>" : range;
+                synchronized (downloadAuthSchemesByRange) {
+                    downloadAuthSchemesByRange.computeIfAbsent(rangeKey, ignored -> new ArrayList<>())
+                        .add(auth.startsWith("Session ") ? "Session" : "Bearer");
+                }
+            }
+        });
+
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+        File outFile = File.createTempFile(prefix, ".tmp");
+        outFile.deleteOnExit();
+        Files.deleteIfExists(outFile.toPath());
+
+        try {
+            sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null,
+                null, false, null, null);
+
+            assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+            assertTrue(downloadAuthSchemesByRange.size() > 1,
+                "Expected multiple chunked download ranges; saw " + downloadAuthSchemesByRange);
+            assertTrue(downloadAuthSchemesByRange.values().stream().allMatch(schemes -> schemes.contains("Session")),
+                "Expected every chunked blob download range to attempt Session auth; saw "
+                    + downloadAuthSchemesByRange);
+        } finally {
+            Files.deleteIfExists(outFile.toPath());
+        }
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Listing uses bearer authentication because List Blobs is a container-level GET, not an eligible blob GET.
+    public void listBlobsOverSessionEnabledClient() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        List<String> listAuthSchemes = Collections.synchronizedList(new ArrayList<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String query = req.getUrl().getQuery();
+            if (auth != null && query != null && query.contains("comp=list")) {
+                listAuthSchemes.add(auth.startsWith("Session ") ? "Session" : "Bearer");
+            }
+        });
+
+        BlobContainerClient sessionCc = sessionEnabledContainerClient(inspect);
+
+        assertTrue(sessionCc.listBlobs().stream().anyMatch(b -> b.getName().equals(blobName)));
+
+        assertFalse(listAuthSchemes.isEmpty(), "Expected to observe at least one list request");
+        assertTrue(listAuthSchemes.stream().allMatch("Bearer"::equals),
+            "Container list operation must use Bearer authorization; saw " + listAuthSchemes);
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Verifies token rotation while a client keeps issuing blob GET requests. Cache lookups trigger background
+    // refresh when due; they acquire a new credential if the cached one has expired. The test expects the
+    // service-issued session lifetime to be approximately five minutes.
+    public void sessionTokenRotates() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Issue small GET requests for longer than the expected session lifetime to observe token rotation.
+        long testDurationMillis = 6 * 60 * 1000L;
+        long pollIntervalMillis = 10 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // Each GET is small (the default test data) and must succeed with the expected content.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+            sleepIfRunningAgainstService(pollIntervalMillis);
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the test window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the test window; only saw " + distinctTokens.size()
+                + " distinct token(s)");
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Verifies that tokens rotate and downloads succeed during rapid, back-to-back blob GET requests.
+    // A session-signed 401 invalidates the rejected credential if still current and retries with bearer authentication;
+    // a later request can acquire a new session. The test asserts successful downloads, not the absence of
+    // wire-level authentication failures, which are retained for diagnostics.
+    public void sessionTokenRotatesWithoutInvalidTokenGets() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Issue back-to-back GET requests for longer than the expected five-minute session lifetime.
+        long testDurationMillis = 6 * 60 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // Each download must return the expected content, including when it falls back to bearer after a 401.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the test window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the test window; saw " + distinctTokens.size()
+                + " distinct token(s)" + " and transparently-recovered invalid-token responses "
+                + inspect.getInvalidAuthStatuses());
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    // Simulates a client issuing a blob GET roughly every 30 seconds, potentially missing session_expiring hints.
+    // Each cache lookup checks expiration: a usable credential can trigger background refresh, while an expired
+    // credential requires acquisition before signing. A session-signed 401 falls back to bearer for that request.
+    // Downloads must succeed and the observed session token must rotate over the test window.
+    public void sessionTokenRotatesWithSparsePolling() {
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        SessionGetInspectionPolicy inspect = new SessionGetInspectionPolicy(blobName);
+        BlobClient sessionBlob = sessionEnabledContainerClient(inspect).getBlobClient(blobName);
+
+        // Poll for longer than two expected five-minute lifetimes. Refresh times may pass during the idle gaps,
+        // but expiration and refresh eligibility are evaluated only when the cache is accessed.
+        long testDurationMillis = 11 * 60 * 1000L;
+        long pollIntervalMillis = 30 * 1000L;
+        long deadline = System.currentTimeMillis() + testDurationMillis;
+        int getCount = 0;
+
+        while (System.currentTimeMillis() < deadline) {
+            // Each download must return the expected content, whether it uses a cached or newly acquired session
+            // or falls back to bearer after a session-signed 401.
+            assertEquals(DATA.getDefaultText(), sessionBlob.downloadContent().toString());
+            getCount++;
+            sleepIfRunningAgainstService(pollIntervalMillis);
+        }
+
+        assertTrue(getCount > 1, "Expected to issue multiple blob GET requests over the sparse-polling window");
+        assertFalse(inspect.getSessionTokens().isEmpty(), "Expected blob GETs to be signed with Session tokens");
+
+        Set<String> distinctTokens = new HashSet<>(inspect.getSessionTokens());
+        assertTrue(distinctTokens.size() >= 2,
+            "Expected the session token to rotate at least once over the sparse-polling window; only saw "
+                + distinctTokens.size() + " distinct token(s)");
+    }
+
+    /**
+     * Test-only pipeline policy that watches blob-level GET requests for a single blob and records, at the wire
+     * level (PER_RETRY), the Session token used to sign each request and any HTTP 401/403 responses, including
+     * bearer responses. Used to assert token rotation and include authentication failures in diagnostics.
+     */
+    private static final class SessionGetInspectionPolicy implements HttpPipelinePolicy {
+        private final String blobName;
+        private final List<String> sessionTokens = Collections.synchronizedList(new ArrayList<>());
+        private final List<Integer> invalidAuthStatuses = Collections.synchronizedList(new ArrayList<>());
+
+        SessionGetInspectionPolicy(String blobName) {
+            this.blobName = blobName;
+        }
+
+        private boolean isBlobGet(HttpRequest request) {
+            String path = request.getUrl().getPath();
+            String query = request.getUrl().getQuery();
+            return request.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="));
+        }
+
+        private void onRequest(HttpRequest request) {
+            if (!isBlobGet(request)) {
+                return;
+            }
+            String auth = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            if (auth != null && auth.startsWith("Session ")) {
+                // Header form is "Session <sessionToken>:<signature>" - extract just the token.
+                int tokenStart = "Session ".length();
+                int sigSeparator = auth.indexOf(':', tokenStart);
+                sessionTokens
+                    .add(sigSeparator < 0 ? auth.substring(tokenStart) : auth.substring(tokenStart, sigSeparator));
+            }
+        }
+
+        private void onResponse(HttpRequest request, int statusCode) {
+            if (isBlobGet(request) && (statusCode == 401 || statusCode == 403)) {
+                invalidAuthStatuses.add(statusCode);
+            }
+        }
+
+        @Override
+        public HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_RETRY;
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            onRequest(context.getHttpRequest());
+            return next.process().doOnNext(response -> onResponse(context.getHttpRequest(), response.getStatusCode()));
+        }
+
+        @Override
+        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+            onRequest(context.getHttpRequest());
+            HttpResponse response = next.processSync();
+            onResponse(context.getHttpRequest(), response.getStatusCode());
+            return response;
+        }
+
+        List<String> getSessionTokens() {
+            return sessionTokens;
+        }
+
+        List<Integer> getInvalidAuthStatuses() {
+            return invalidAuthStatuses;
+        }
+    }
+
+    private BlobContainerClient sessionEnabledContainerClient(HttpPipelinePolicy... policies) {
+        return getOAuthServiceClient(sessionEnabledOptions(), policies)
+            .getBlobContainerClient(cc.getBlobContainerName());
+    }
+
+    private BlobContainerClient sessionEnabledContainerClient(HttpClient httpClient) {
+        return getOAuthServiceClient(sessionEnabledOptions(), httpClient)
+            .getBlobContainerClient(cc.getBlobContainerName());
+    }
+
+    private SessionContext sessionEnabledOptions() {
+        return new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(cc.getAccountName());
+    }
+
 }

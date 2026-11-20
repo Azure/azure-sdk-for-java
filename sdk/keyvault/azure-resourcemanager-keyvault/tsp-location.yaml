@@ -1,4 +1,4 @@
-directory: specification/keyvault/KeyVault.Management
-commit: 7eb7eaf5d0ebb12a9f0ade8e4433cfb0f6c32840
+directory: specification/keyvault/resource-manager/Microsoft.KeyVault/KeyVault
+commit: 67d7ae2c7878c896d0ddb588e45bd90726ea2044
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

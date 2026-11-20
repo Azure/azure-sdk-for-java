@@ -143,6 +143,7 @@ import com.azure.messaging.eventgrid.systemevents.models.KeyVaultKeyNewVersionCr
 import com.azure.messaging.eventgrid.systemevents.models.KeyVaultSecretExpiredEventData;
 import com.azure.messaging.eventgrid.systemevents.models.KeyVaultSecretNearExpiryEventData;
 import com.azure.messaging.eventgrid.systemevents.models.KeyVaultSecretNewVersionCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.models.LifecycleHookEventsEventData;
 import com.azure.messaging.eventgrid.systemevents.models.MachineLearningServicesDatasetDriftDetectedEventData;
 import com.azure.messaging.eventgrid.systemevents.models.MachineLearningServicesModelDeployedEventData;
 import com.azure.messaging.eventgrid.systemevents.models.MachineLearningServicesModelRegisteredEventData;
@@ -978,6 +979,12 @@ public final class SystemEventNames {
     public static final String KEY_VAULT_SECRET_NEW_VERSION_CREATED = "Microsoft.KeyVault.SecretNewVersionCreated";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Compute.VirtualMachineScaleSets.LifecycleHookEvents preview event.
+     */
+    public static final String LIFECYCLE_HOOK_EVENTS = "Microsoft.Compute.VirtualMachineScaleSets.LifecycleHookEvents";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.DatasetDriftDetected
      * event.
      */
@@ -1513,6 +1520,7 @@ public final class SystemEventNames {
         SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_SECRET_EXPIRED, KeyVaultSecretExpiredEventData.class);
         SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_SECRET_NEAR_EXPIRY, KeyVaultSecretNearExpiryEventData.class);
         SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_SECRET_NEW_VERSION_CREATED, KeyVaultSecretNewVersionCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(LIFECYCLE_HOOK_EVENTS, LifecycleHookEventsEventData.class);
         SYSTEM_EVENT_MAPPINGS.put(MACHINE_LEARNING_SERVICES_DATASET_DRIFT_DETECTED,
             MachineLearningServicesDatasetDriftDetectedEventData.class);
         SYSTEM_EVENT_MAPPINGS.put(MACHINE_LEARNING_SERVICES_MODEL_DEPLOYED,

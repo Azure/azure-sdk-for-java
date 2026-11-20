@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.models.CommunicationServicesProvisioningState;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -232,6 +233,56 @@ public final class CommunicationServiceResourceInner extends Resource {
             this.innerProperties = new CommunicationServiceProperties();
         }
         this.innerProperties().withLinkedDomains(linkedDomains);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Allow, disallow, or let network security perimeter configuration control
+     * public network access to the protected resource. Value is optional but if passed in, it must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow, disallow, or let network security perimeter configuration control
+     * public network access to the protected resource. Value is optional but if passed in, it must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationServiceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: Disable local authentication for the CommunicationService.
+     * 
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: Disable local authentication for the CommunicationService.
+     * 
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationServiceProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 

@@ -25,7 +25,7 @@ import java.util.Objects;
  * binding by URI being null). It is often included in
  * {@link PName} object.
  */
-final class NsBinding {
+public final class NsBinding {
     // // // Couple of immutable bindings:
 
     /**

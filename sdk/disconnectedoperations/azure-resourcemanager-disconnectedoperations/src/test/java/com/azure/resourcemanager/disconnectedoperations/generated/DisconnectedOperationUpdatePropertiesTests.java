@@ -5,8 +5,14 @@
 package com.azure.resourcemanager.disconnectedoperations.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.disconnectedoperations.models.AutoRenew;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlanStatus;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlans;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingConfiguration;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingPeriod;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperationUpdateProperties;
+import com.azure.resourcemanager.disconnectedoperations.models.PricingModel;
 import com.azure.resourcemanager.disconnectedoperations.models.RegistrationStatus;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,22 +20,41 @@ public final class DisconnectedOperationUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DisconnectedOperationUpdateProperties model = BinaryData.fromString(
-            "{\"connectionIntent\":\"Disconnected\",\"registrationStatus\":\"Registered\",\"deviceVersion\":\"mrvktsizntoc\"}")
+            "{\"connectionIntent\":\"Connected\",\"registrationStatus\":\"Registered\",\"deviceVersion\":\"kdtmlxhekuk\",\"billingConfiguration\":{\"autoRenew\":\"Enabled\",\"billingStatus\":\"Enabled\",\"current\":{\"cores\":1983903346,\"pricingModel\":\"Trial\"},\"upcoming\":{\"cores\":1422058480,\"pricingModel\":\"Annual\"}},\"benefitPlans\":{\"azureHybridWindowsServerBenefit\":\"Disabled\",\"windowsServerVmCount\":1654422017}}")
             .toObject(DisconnectedOperationUpdateProperties.class);
-        Assertions.assertEquals(ConnectionIntent.DISCONNECTED, model.connectionIntent());
+        Assertions.assertEquals(ConnectionIntent.CONNECTED, model.connectionIntent());
         Assertions.assertEquals(RegistrationStatus.REGISTERED, model.registrationStatus());
-        Assertions.assertEquals("mrvktsizntoc", model.deviceVersion());
+        Assertions.assertEquals("kdtmlxhekuk", model.deviceVersion());
+        Assertions.assertEquals(AutoRenew.ENABLED, model.billingConfiguration().autoRenew());
+        Assertions.assertEquals(1983903346, model.billingConfiguration().current().cores());
+        Assertions.assertEquals(PricingModel.TRIAL, model.billingConfiguration().current().pricingModel());
+        Assertions.assertEquals(1422058480, model.billingConfiguration().upcoming().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL, model.billingConfiguration().upcoming().pricingModel());
+        Assertions.assertEquals(BenefitPlanStatus.DISABLED, model.benefitPlans().azureHybridWindowsServerBenefit());
+        Assertions.assertEquals(1654422017, model.benefitPlans().windowsServerVmCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DisconnectedOperationUpdateProperties model
-            = new DisconnectedOperationUpdateProperties().withConnectionIntent(ConnectionIntent.DISCONNECTED)
+            = new DisconnectedOperationUpdateProperties().withConnectionIntent(ConnectionIntent.CONNECTED)
                 .withRegistrationStatus(RegistrationStatus.REGISTERED)
-                .withDeviceVersion("mrvktsizntoc");
+                .withDeviceVersion("kdtmlxhekuk")
+                .withBillingConfiguration(new BillingConfiguration().withAutoRenew(AutoRenew.ENABLED)
+                    .withCurrent(new BillingPeriod().withCores(1983903346).withPricingModel(PricingModel.TRIAL))
+                    .withUpcoming(new BillingPeriod().withCores(1422058480).withPricingModel(PricingModel.ANNUAL)))
+                .withBenefitPlans(new BenefitPlans().withAzureHybridWindowsServerBenefit(BenefitPlanStatus.DISABLED)
+                    .withWindowsServerVmCount(1654422017));
         model = BinaryData.fromObject(model).toObject(DisconnectedOperationUpdateProperties.class);
-        Assertions.assertEquals(ConnectionIntent.DISCONNECTED, model.connectionIntent());
+        Assertions.assertEquals(ConnectionIntent.CONNECTED, model.connectionIntent());
         Assertions.assertEquals(RegistrationStatus.REGISTERED, model.registrationStatus());
-        Assertions.assertEquals("mrvktsizntoc", model.deviceVersion());
+        Assertions.assertEquals("kdtmlxhekuk", model.deviceVersion());
+        Assertions.assertEquals(AutoRenew.ENABLED, model.billingConfiguration().autoRenew());
+        Assertions.assertEquals(1983903346, model.billingConfiguration().current().cores());
+        Assertions.assertEquals(PricingModel.TRIAL, model.billingConfiguration().current().pricingModel());
+        Assertions.assertEquals(1422058480, model.billingConfiguration().upcoming().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL, model.billingConfiguration().upcoming().pricingModel());
+        Assertions.assertEquals(BenefitPlanStatus.DISABLED, model.benefitPlans().azureHybridWindowsServerBenefit());
+        Assertions.assertEquals(1654422017, model.benefitPlans().windowsServerVmCount());
     }
 }

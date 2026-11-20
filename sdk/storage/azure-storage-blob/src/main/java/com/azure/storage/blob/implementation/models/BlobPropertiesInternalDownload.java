@@ -167,6 +167,11 @@ public final class BlobPropertiesInternalDownload implements BlobPropertiesInter
     }
 
     @Override
+    public AccessTier getSmartAccessTier() {
+        return null;
+    }
+
+    @Override
     public ArchiveStatus getArchiveStatus() {
         return null;
     }

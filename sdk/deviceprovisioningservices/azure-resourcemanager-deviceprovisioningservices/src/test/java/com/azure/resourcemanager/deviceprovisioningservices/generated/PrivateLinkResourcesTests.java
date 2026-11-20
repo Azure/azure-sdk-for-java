@@ -12,10 +12,10 @@ public final class PrivateLinkResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResources model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"kthfui\",\"requiredMembers\":[\"dsfcpkvxodpuoz\",\"yzydagfuaxbezyi\",\"okktwhrdxw\",\"ywqsmbsurexim\"],\"requiredZoneNames\":[\"ocfs\"]},\"id\":\"s\",\"name\":\"mddystkiiux\",\"type\":\"qyud\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"xgodebfqkkrbmp\",\"requiredMembers\":[\"riwflzlfb\"],\"requiredZoneNames\":[\"uzycispnqza\"]},\"id\":\"gkbrpyyd\",\"name\":\"ibnuqqkpik\",\"type\":\"drgvtqagn\"}]}")
             .toObject(PrivateLinkResources.class);
-        Assertions.assertEquals("kthfui", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.value().get(0).properties().requiredMembers().get(0));
-        Assertions.assertEquals("ocfs", model.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("xgodebfqkkrbmp", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("riwflzlfb", model.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("uzycispnqza", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

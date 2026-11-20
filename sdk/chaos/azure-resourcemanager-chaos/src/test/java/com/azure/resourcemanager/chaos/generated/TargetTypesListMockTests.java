@@ -21,7 +21,7 @@ public final class TargetTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"zivj\",\"description\":\"rqttbajlkatnw\",\"propertiesSchema\":\"iopid\",\"resourceTypes\":[\"fku\",\"s\",\"xkdmligo\",\"ibrxkp\"]},\"id\":\"oaz\",\"name\":\"ruocbgo\",\"type\":\"rb\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"fvfkak\",\"description\":\"ldtve\",\"propertiesSchema\":\"oclzhz\",\"resourceTypes\":[\"yuxgvttxpnrupz\"]},\"id\":\"mrdixtreki\",\"name\":\"swyskbruffg\",\"type\":\"lukkutvlxhrpqhvm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class TargetTypesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TargetType> response
-            = manager.targetTypes().list("isavok", "dzf", com.azure.core.util.Context.NONE);
+            = manager.targetTypes().list("mcyefoyzbam", "in", com.azure.core.util.Context.NONE);
 
     }
 }

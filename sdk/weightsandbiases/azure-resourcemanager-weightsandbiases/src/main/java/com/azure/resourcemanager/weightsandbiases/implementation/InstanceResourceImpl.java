@@ -135,8 +135,12 @@ public final class InstanceResourceImpl
         com.azure.resourcemanager.weightsandbiases.WeightsAndBiasesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.instancename = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WeightsAndBiases/instances/{instancename}",
+            "resourceGroupName");
+        this.instancename = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.WeightsAndBiases/instances/{instancename}",
+            "instancename");
     }
 
     public InstanceResource refresh() {

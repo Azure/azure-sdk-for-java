@@ -1,14 +1,6 @@
 # Code snippets and samples
 
 
-## MachinePools
-
-- [CreateOrUpdate](#machinepools_createorupdate)
-- [Delete](#machinepools_delete)
-- [Get](#machinepools_get)
-- [List](#machinepools_list)
-- [Update](#machinepools_update)
-
 ## OpenShiftClusters
 
 - [CreateOrUpdate](#openshiftclusters_createorupdate)
@@ -22,170 +14,20 @@
 
 ## OpenShiftVersions
 
+- [Get](#openshiftversions_get)
 - [List](#openshiftversions_list)
 
 ## Operations
 
 - [List](#operations_list)
 
-## Secrets
+## PlatformWorkloadIdentityRoleSetOperation
 
-- [CreateOrUpdate](#secrets_createorupdate)
-- [Delete](#secrets_delete)
-- [Get](#secrets_get)
-- [List](#secrets_list)
-- [Update](#secrets_update)
+- [Get](#platformworkloadidentityrolesetoperation_get)
 
-## SyncIdentityProviders
+## PlatformWorkloadIdentityRoleSets
 
-- [CreateOrUpdate](#syncidentityproviders_createorupdate)
-- [Delete](#syncidentityproviders_delete)
-- [Get](#syncidentityproviders_get)
-- [List](#syncidentityproviders_list)
-- [Update](#syncidentityproviders_update)
-
-## SyncSets
-
-- [CreateOrUpdate](#syncsets_createorupdate)
-- [Delete](#syncsets_delete)
-- [Get](#syncsets_get)
-- [List](#syncsets_list)
-- [Update](#syncsets_update)
-### MachinePools_CreateOrUpdate
-
-```java
-/**
- * Samples for MachinePools CreateOrUpdate.
- */
-public final class MachinePoolsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/MachinePools_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: Creates or updates a MachinePool with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void createsOrUpdatesAMachinePoolWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.machinePools()
-            .define("childResourceName")
-            .withExistingOpenshiftcluster("resourceGroup", "resourceName")
-            .withResources(
-                "ewogICAgImFwaVZlcnNpb24iOiAiaGl2ZS5vcGVuc2hpZnQuaW8vdjEiLAogICAgImtpbmQiOiAiTWFjaGluZVBvb2wiLAogICAgIm1ldGFkYXRhIjogewogICAgICAgICJuYW1lIjogInRlc3QtY2x1c3Rlci13b3JrZXIiLAogICAgICAgICJuYW1lc3BhY2UiOiAiYXJvLWY2MGFlOGEyLWJjYTEtNDk4Ny05MDU2LVhYWFhYWFhYWFhYWCIKICAgIH0sCiAgICAic3BlYyI6IHsKICAgICAgICAiY2x1c3RlckRlcGxveW1lbnRSZWYiOiB7CiAgICAgICAgICAgICJuYW1lIjogInRlc3QtY2x1c3RlciIKICAgICAgICB9LAogICAgICAgICJuYW1lIjogIndvcmtlciIsCiAgICAgICAgInBsYXRmb3JtIjogewogICAgICAgICAgICAiYXdzIjogewogICAgICAgICAgICAgICAgInJvb3RWb2x1bWUiOiB7CiAgICAgICAgICAgICAgICAgICAgImlvcHMiOiAwLAogICAgICAgICAgICAgICAgICAgICJzaXplIjogMzAwLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogImdwMyIKICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICAidHlwZSI6ICJtNS54bGFyZ2UiLAogICAgICAgICAgICAgICAgInpvbmVzIjogWwogICAgICAgICAgICAgICAgICAgICJ1cy1lYXN0LTFhIgogICAgICAgICAgICAgICAgXQogICAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgICAicmVwbGljYXMiOiAyCiAgICB9LAogICAgInN0YXR1cyI6IHsKICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICBdCiAgICB9Cn0K")
-            .create();
-    }
-}
-```
-
-### MachinePools_Delete
-
-```java
-/**
- * Samples for MachinePools Delete.
- */
-public final class MachinePoolsDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/MachinePools_Delete.json
-     */
-    /**
-     * Sample code: Deletes a MachinePool with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void deletesAMachinePoolWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.machinePools()
-            .deleteWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### MachinePools_Get
-
-```java
-/**
- * Samples for MachinePools Get.
- */
-public final class MachinePoolsGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/MachinePools_Get.json
-     */
-    /**
-     * Sample code: Gets a MachinePool with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void getsAMachinePoolWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.machinePools()
-            .getWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### MachinePools_List
-
-```java
-/**
- * Samples for MachinePools List.
- */
-public final class MachinePoolsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/MachinePools_List.json
-     */
-    /**
-     * Sample code: Lists MachinePools that belong to that Azure Red Hat OpenShift Cluster.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void listsMachinePoolsThatBelongToThatAzureRedHatOpenShiftCluster(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.machinePools().list("resourceGroup", "resourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### MachinePools_Update
-
-```java
-import com.azure.resourcemanager.redhatopenshift.models.MachinePool;
-
-/**
- * Samples for MachinePools Update.
- */
-public final class MachinePoolsUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/MachinePools_Update.json
-     */
-    /**
-     * Sample code: Updates a MachinePool with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void updatesAMachinePoolWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        MachinePool resource = manager.machinePools()
-            .getWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withResources(
-                "ewogICAgImFwaVZlcnNpb24iOiAiaGl2ZS5vcGVuc2hpZnQuaW8vdjEiLAogICAgImtpbmQiOiAiTWFjaGluZVBvb2wiLAogICAgIm1ldGFkYXRhIjogewogICAgICAgICJuYW1lIjogInRlc3QtY2x1c3Rlci13b3JrZXIiLAogICAgICAgICJuYW1lc3BhY2UiOiAiYXJvLWY2MGFlOGEyLWJjYTEtNDk4Ny05MDU2LVhYWFhYWFhYWFhYWCIKICAgIH0sCiAgICAic3BlYyI6IHsKICAgICAgICAiY2x1c3RlckRlcGxveW1lbnRSZWYiOiB7CiAgICAgICAgICAgICJuYW1lIjogInRlc3QtY2x1c3RlciIKICAgICAgICB9LAogICAgICAgICJuYW1lIjogIndvcmtlciIsCiAgICAgICAgInBsYXRmb3JtIjogewogICAgICAgICAgICAiYXdzIjogewogICAgICAgICAgICAgICAgInJvb3RWb2x1bWUiOiB7CiAgICAgICAgICAgICAgICAgICAgImlvcHMiOiAwLAogICAgICAgICAgICAgICAgICAgICJzaXplIjogMzAwLAogICAgICAgICAgICAgICAgICAgICJ0eXBlIjogImdwMyIKICAgICAgICAgICAgICAgIH0sCiAgICAgICAgICAgICAgICAidHlwZSI6ICJtNS54bGFyZ2UiLAogICAgICAgICAgICAgICAgInpvbmVzIjogWwogICAgICAgICAgICAgICAgICAgICJ1cy1lYXN0LTFhIgogICAgICAgICAgICAgICAgXQogICAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgICAicmVwbGljYXMiOiAyCiAgICB9LAogICAgInN0YXR1cyI6IHsKICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICBdCiAgICB9Cn0K")
-            .apply();
-    }
-}
-```
-
+- [List](#platformworkloadidentityrolesets_list)
 ### OpenShiftClusters_CreateOrUpdate
 
 ```java
@@ -197,10 +39,15 @@ import com.azure.resourcemanager.redhatopenshift.models.FipsValidatedModules;
 import com.azure.resourcemanager.redhatopenshift.models.IngressProfile;
 import com.azure.resourcemanager.redhatopenshift.models.LoadBalancerProfile;
 import com.azure.resourcemanager.redhatopenshift.models.ManagedOutboundIPs;
+import com.azure.resourcemanager.redhatopenshift.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.redhatopenshift.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.redhatopenshift.models.MasterProfile;
 import com.azure.resourcemanager.redhatopenshift.models.NetworkProfile;
+import com.azure.resourcemanager.redhatopenshift.models.PlatformWorkloadIdentity;
+import com.azure.resourcemanager.redhatopenshift.models.PlatformWorkloadIdentityProfile;
 import com.azure.resourcemanager.redhatopenshift.models.PreconfiguredNsg;
 import com.azure.resourcemanager.redhatopenshift.models.ServicePrincipalProfile;
+import com.azure.resourcemanager.redhatopenshift.models.UserAssignedIdentity;
 import com.azure.resourcemanager.redhatopenshift.models.Visibility;
 import com.azure.resourcemanager.redhatopenshift.models.WorkerProfile;
 import java.util.Arrays;
@@ -212,9 +59,7 @@ import java.util.Map;
  */
 public final class OpenShiftClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftClusters_CreateOrUpdate.json
+     * x-ms-original-file: 2025-07-25/OpenShiftClusters_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a OpenShift cluster with the specified subscription, resource group and resource
@@ -229,13 +74,18 @@ public final class OpenShiftClustersCreateOrUpdateSamples {
             .withRegion("location")
             .withExistingResourceGroup("resourceGroup")
             .withTags(mapOf("key", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("", new UserAssignedIdentity())))
             .withClusterProfile(new ClusterProfile().withPullSecret("fakeTokenPlaceholder")
                 .withDomain("cluster.location.aroapp.io")
-                .withResourceGroupId("/subscriptions/subscriptionId/resourceGroups/clusterResourceGroup")
+                .withResourceGroupId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clusterResourceGroup")
                 .withFipsValidatedModules(FipsValidatedModules.ENABLED))
             .withConsoleProfile(new ConsoleProfile())
             .withServicePrincipalProfile(
                 new ServicePrincipalProfile().withClientId("clientId").withClientSecret("fakeTokenPlaceholder"))
+            .withPlatformWorkloadIdentityProfile(new PlatformWorkloadIdentityProfile()
+                .withPlatformWorkloadIdentities(mapOf("", new PlatformWorkloadIdentity())))
             .withNetworkProfile(new NetworkProfile().withPodCidr("10.128.0.0/14")
                 .withServiceCidr("172.30.0.0/16")
                 .withLoadBalancerProfile(
@@ -243,13 +93,13 @@ public final class OpenShiftClustersCreateOrUpdateSamples {
                 .withPreconfiguredNsg(PreconfiguredNsg.DISABLED))
             .withMasterProfile(new MasterProfile().withVmSize("Standard_D8s_v3")
                 .withSubnetId(
-                    "/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/master")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/master")
                 .withEncryptionAtHost(EncryptionAtHost.ENABLED))
             .withWorkerProfiles(Arrays.asList(new WorkerProfile().withName("worker")
                 .withVmSize("Standard_D2s_v3")
                 .withDiskSizeGB(128)
                 .withSubnetId(
-                    "/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker")
                 .withCount(3)))
             .withApiserverProfile(new ApiServerProfile().withVisibility(Visibility.PUBLIC))
             .withIngressProfiles(
@@ -279,9 +129,7 @@ public final class OpenShiftClustersCreateOrUpdateSamples {
  */
 public final class OpenShiftClustersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftClusters_Delete.json
+     * x-ms-original-file: 2025-07-25/OpenShiftClusters_Delete.json
      */
     /**
      * Sample code: Deletes a OpenShift cluster with the specified subscription, resource group and resource name.
@@ -303,9 +151,7 @@ public final class OpenShiftClustersDeleteSamples {
  */
 public final class OpenShiftClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftClusters_Get.json
+     * x-ms-original-file: 2025-07-25/OpenShiftClusters_Get.json
      */
     /**
      * Sample code: Gets a OpenShift cluster with the specified subscription, resource group and resource name.
@@ -328,9 +174,7 @@ public final class OpenShiftClustersGetByResourceGroupSamples {
  */
 public final class OpenShiftClustersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftClusters_List.json
+     * x-ms-original-file: 2025-07-25/OpenShiftClusters_List.json
      */
     /**
      * Sample code: Lists OpenShift clusters in the specified subscription.
@@ -352,9 +196,7 @@ public final class OpenShiftClustersListSamples {
  */
 public final class OpenShiftClustersListAdminCredentialsSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftClusters_ListAdminCredentials.json
+     * x-ms-original-file: 2025-07-25/OpenShiftClusters_ListAdminCredentials.json
      */
     /**
      * Sample code: Lists admin kubeconfig of an OpenShift cluster with the specified subscription, resource group and
@@ -378,9 +220,7 @@ public final class OpenShiftClustersListAdminCredentialsSamples {
  */
 public final class OpenShiftClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftClusters_ListByResourceGroup.json
+     * x-ms-original-file: 2025-07-25/OpenShiftClusters_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists OpenShift clusters in the specified subscription and resource group.
@@ -402,9 +242,7 @@ public final class OpenShiftClustersListByResourceGroupSamples {
  */
 public final class OpenShiftClustersListCredentialsSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftClusters_ListCredentials.json
+     * x-ms-original-file: 2025-07-25/OpenShiftClusters_ListCredentials.json
      */
     /**
      * Sample code: Lists credentials of an OpenShift cluster with the specified subscription, resource group and
@@ -431,11 +269,16 @@ import com.azure.resourcemanager.redhatopenshift.models.FipsValidatedModules;
 import com.azure.resourcemanager.redhatopenshift.models.IngressProfile;
 import com.azure.resourcemanager.redhatopenshift.models.LoadBalancerProfile;
 import com.azure.resourcemanager.redhatopenshift.models.ManagedOutboundIPs;
+import com.azure.resourcemanager.redhatopenshift.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.redhatopenshift.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.redhatopenshift.models.MasterProfile;
 import com.azure.resourcemanager.redhatopenshift.models.NetworkProfile;
 import com.azure.resourcemanager.redhatopenshift.models.OpenShiftCluster;
+import com.azure.resourcemanager.redhatopenshift.models.PlatformWorkloadIdentity;
+import com.azure.resourcemanager.redhatopenshift.models.PlatformWorkloadIdentityProfile;
 import com.azure.resourcemanager.redhatopenshift.models.PreconfiguredNsg;
 import com.azure.resourcemanager.redhatopenshift.models.ServicePrincipalProfile;
+import com.azure.resourcemanager.redhatopenshift.models.UserAssignedIdentity;
 import com.azure.resourcemanager.redhatopenshift.models.Visibility;
 import com.azure.resourcemanager.redhatopenshift.models.WorkerProfile;
 import java.util.Arrays;
@@ -447,29 +290,33 @@ import java.util.Map;
  */
 public final class OpenShiftClustersUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftClusters_Update.json
+     * x-ms-original-file: 2025-07-25/OpenShiftClusters_Update.json
      */
     /**
-     * Sample code: Updates a OpenShift cluster with the specified subscription, resource group and resource name.
+     * Sample code: Creates or updates a OpenShift cluster with the specified subscription, resource group and resource
+     * name.
      * 
      * @param manager Entry point to RedHatOpenShiftManager.
      */
-    public static void updatesAOpenShiftClusterWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
+    public static void createsOrUpdatesAOpenShiftClusterWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
         com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
         OpenShiftCluster resource = manager.openShiftClusters()
             .getByResourceGroupWithResponse("resourceGroup", "resourceName", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withTags(mapOf("key", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("", new UserAssignedIdentity())))
             .withClusterProfile(new ClusterProfile().withPullSecret("fakeTokenPlaceholder")
                 .withDomain("cluster.location.aroapp.io")
-                .withResourceGroupId("/subscriptions/subscriptionId/resourceGroups/clusterResourceGroup")
+                .withResourceGroupId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/clusterResourceGroup")
                 .withFipsValidatedModules(FipsValidatedModules.ENABLED))
             .withConsoleProfile(new ConsoleProfile())
             .withServicePrincipalProfile(
                 new ServicePrincipalProfile().withClientId("clientId").withClientSecret("fakeTokenPlaceholder"))
+            .withPlatformWorkloadIdentityProfile(new PlatformWorkloadIdentityProfile()
+                .withPlatformWorkloadIdentities(mapOf("", new PlatformWorkloadIdentity())))
             .withNetworkProfile(new NetworkProfile().withPodCidr("10.128.0.0/14")
                 .withServiceCidr("172.30.0.0/16")
                 .withLoadBalancerProfile(
@@ -477,13 +324,13 @@ public final class OpenShiftClustersUpdateSamples {
                 .withPreconfiguredNsg(PreconfiguredNsg.DISABLED))
             .withMasterProfile(new MasterProfile().withVmSize("Standard_D8s_v3")
                 .withSubnetId(
-                    "/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/master")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/master")
                 .withEncryptionAtHost(EncryptionAtHost.ENABLED))
             .withWorkerProfiles(Arrays.asList(new WorkerProfile().withName("worker")
                 .withVmSize("Standard_D2s_v3")
                 .withDiskSizeGB(128)
                 .withSubnetId(
-                    "/subscriptions/subscriptionId/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vnetResourceGroup/providers/Microsoft.Network/virtualNetworks/vnet/subnets/worker")
                 .withCount(3)))
             .withApiserverProfile(new ApiServerProfile().withVisibility(Visibility.PUBLIC))
             .withIngressProfiles(
@@ -505,6 +352,28 @@ public final class OpenShiftClustersUpdateSamples {
 }
 ```
 
+### OpenShiftVersions_Get
+
+```java
+/**
+ * Samples for OpenShiftVersions Get.
+ */
+public final class OpenShiftVersionsGetSamples {
+    /*
+     * x-ms-original-file: 2025-07-25/OpenShiftVersions_Get.json
+     */
+    /**
+     * Sample code: Gets an available OpenShift version to install in the specified location.
+     * 
+     * @param manager Entry point to RedHatOpenShiftManager.
+     */
+    public static void getsAnAvailableOpenShiftVersionToInstallInTheSpecifiedLocation(
+        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
+        manager.openShiftVersions().getWithResponse("location", "4.14.40", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### OpenShiftVersions_List
 
 ```java
@@ -513,9 +382,7 @@ public final class OpenShiftClustersUpdateSamples {
  */
 public final class OpenShiftVersionsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/OpenShiftVersions_List.json
+     * x-ms-original-file: 2025-07-25/OpenShiftVersions_List.json
      */
     /**
      * Sample code: Lists all OpenShift versions available to install in the specified location.
@@ -537,9 +404,7 @@ public final class OpenShiftVersionsListSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/Operations_List.json
+     * x-ms-original-file: 2025-07-25/Operations_List.json
      */
     /**
      * Sample code: Lists all of the available RP operations.
@@ -553,403 +418,51 @@ public final class OperationsListSamples {
 }
 ```
 
-### Secrets_CreateOrUpdate
+### PlatformWorkloadIdentityRoleSetOperation_Get
 
 ```java
 /**
- * Samples for Secrets CreateOrUpdate.
+ * Samples for PlatformWorkloadIdentityRoleSetOperation Get.
  */
-public final class SecretsCreateOrUpdateSamples {
+public final class PlatformWorkloadIdentityRoleSetOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/Secrets_CreateOrUpdate.json
+     * x-ms-original-file: 2025-07-25/PlatformWorkloadIdentityRoleSet_Get.json
      */
     /**
-     * Sample code: Creates or updates a Secret with the specified subscription, resource group and resource name.
+     * Sample code: Gets a mapping of an OpenShift version to identity requirements, which includes operatorName,
+     * roleDefinitionName, roleDefinitionId, and serviceAccounts.
      * 
      * @param manager Entry point to RedHatOpenShiftManager.
      */
-    public static void createsOrUpdatesASecretWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.secrets()
-            .define("childResourceName")
-            .withExistingOpenshiftcluster("resourceGroup", "resourceName")
-            .create();
+    public static void
+        getsAMappingOfAnOpenShiftVersionToIdentityRequirementsWhichIncludesOperatorNameRoleDefinitionNameRoleDefinitionIdAndServiceAccounts(
+            com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
+        manager.platformWorkloadIdentityRoleSetOperations()
+            .getWithResponse("location", "4.14", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### Secrets_Delete
+### PlatformWorkloadIdentityRoleSets_List
 
 ```java
 /**
- * Samples for Secrets Delete.
+ * Samples for PlatformWorkloadIdentityRoleSets List.
  */
-public final class SecretsDeleteSamples {
+public final class PlatformWorkloadIdentityRoleSetsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/Secrets_Delete.json
+     * x-ms-original-file: 2025-07-25/PlatformWorkloadIdentityRoleSets_List.json
      */
     /**
-     * Sample code: Deletes a Secret with the specified subscription, resource group and resource name.
+     * Sample code: Lists a mapping of OpenShift versions to identity requirements, which include operatorName,
+     * roleDefinitionName, roleDefinitionId, and serviceAccounts.
      * 
      * @param manager Entry point to RedHatOpenShiftManager.
      */
-    public static void deletesASecretWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.secrets()
-            .deleteWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Secrets_Get
-
-```java
-/**
- * Samples for Secrets Get.
- */
-public final class SecretsGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/Secrets_Get.json
-     */
-    /**
-     * Sample code: Gets a Secret with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void getsASecretWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.secrets()
-            .getWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Secrets_List
-
-```java
-/**
- * Samples for Secrets List.
- */
-public final class SecretsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/Secrets_List.json
-     */
-    /**
-     * Sample code: Lists Secrets that belong to that Azure Red Hat OpenShift Cluster.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void listsSecretsThatBelongToThatAzureRedHatOpenShiftCluster(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.secrets().list("resourceGroup", "resourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Secrets_Update
-
-```java
-import com.azure.resourcemanager.redhatopenshift.models.Secret;
-
-/**
- * Samples for Secrets Update.
- */
-public final class SecretsUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/Secrets_Update.json
-     */
-    /**
-     * Sample code: Updates a Secret with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void updatesASecretWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        Secret resource = manager.secrets()
-            .getWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
-    }
-}
-```
-
-### SyncIdentityProviders_CreateOrUpdate
-
-```java
-/**
- * Samples for SyncIdentityProviders CreateOrUpdate.
- */
-public final class SyncIdentityProvidersCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncIdentityProviders_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: Creates or updates a SyncIdentityProvider with the specified subscription, resource group and
-     * resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void createsOrUpdatesASyncIdentityProviderWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.syncIdentityProviders()
-            .define("childResourceName")
-            .withExistingOpenshiftcluster("resourceGroup", "resourceName")
-            .withResources(
-                "ewogICAgImFwaVZlcnNpb24iOiAiaGl2ZS5vcGVuc2hpZnQuaW8vdjEiLAogICAgImtpbmQiOiAiU3luY0lkZW50aXR5UHJvdmlkZXIiLAogICAgIm1ldGFkYXRhIjogewogICAgICAgICJuYW1lIjogInRlc3QtY2x1c3RlciIsCiAgICAgICAgIm5hbWVzcGFjZSI6ICJhcm8tZjYwYWU4YTItYmNhMS00OTg3LTkwNTYtWFhYWFhYWFhYWFhYIgogICAgfSwKICAgICJzcGVjIjogewogICAgICAgICJjbHVzdGVyRGVwbG95bWVudFJlZnMiOiBbCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICJuYW1lIjogInRlc3QtY2x1c3RlciIKICAgICAgICAgICAgfQogICAgICAgIF0sCiAgICAgICAgImlkZW50aXR5UHJvdmlkZXJzIjogWwogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAiaHRwYXNzd2QiOiB7CiAgICAgICAgICAgICAgICAgICAgImZpbGVEYXRhIjogewogICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJodHBhc3N3ZC1zZWNyZXQiCiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgICJtYXBwaW5nTWV0aG9kIjogImNsYWltIiwKICAgICAgICAgICAgICAgICJuYW1lIjogIkhUUGFzc3dkIiwKICAgICAgICAgICAgICAgICJ0eXBlIjogIkhUUGFzc3dkIgogICAgICAgICAgICB9CiAgICAgICAgXQogICAgfSwKICAgICJzdGF0dXMiOiB7fQp9Cg==")
-            .create();
-    }
-}
-```
-
-### SyncIdentityProviders_Delete
-
-```java
-/**
- * Samples for SyncIdentityProviders Delete.
- */
-public final class SyncIdentityProvidersDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncIdentityProviders_Delete.json
-     */
-    /**
-     * Sample code: Deletes a SyncIdentityProvider with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void deletesASyncIdentityProviderWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.syncIdentityProviders()
-            .deleteWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SyncIdentityProviders_Get
-
-```java
-/**
- * Samples for SyncIdentityProviders Get.
- */
-public final class SyncIdentityProvidersGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncIdentityProviders_Get.json
-     */
-    /**
-     * Sample code: Gets a SyncIdentityProvider with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void getsASyncIdentityProviderWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.syncIdentityProviders()
-            .getWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SyncIdentityProviders_List
-
-```java
-/**
- * Samples for SyncIdentityProviders List.
- */
-public final class SyncIdentityProvidersListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncIdentityProviders_List.json
-     */
-    /**
-     * Sample code: Lists SyncIdentityProviders that belong to that Azure Red Hat OpenShift Cluster.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void listsSyncIdentityProvidersThatBelongToThatAzureRedHatOpenShiftCluster(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.syncIdentityProviders().list("resourceGroup", "resourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SyncIdentityProviders_Update
-
-```java
-import com.azure.resourcemanager.redhatopenshift.models.SyncIdentityProvider;
-
-/**
- * Samples for SyncIdentityProviders Update.
- */
-public final class SyncIdentityProvidersUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncIdentityProviders_Update.json
-     */
-    /**
-     * Sample code: Updates a SyncIdentityProvider with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void updatesASyncIdentityProviderWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        SyncIdentityProvider resource = manager.syncIdentityProviders()
-            .getWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withResources(
-                "ewogICAgImFwaVZlcnNpb24iOiAiaGl2ZS5vcGVuc2hpZnQuaW8vdjEiLAogICAgImtpbmQiOiAiU3luY0lkZW50aXR5UHJvdmlkZXIiLAogICAgIm1ldGFkYXRhIjogewogICAgICAgICJuYW1lIjogInRlc3QtY2x1c3RlciIsCiAgICAgICAgIm5hbWVzcGFjZSI6ICJhcm8tZjYwYWU4YTItYmNhMS00OTg3LTkwNTYtWFhYWFhYWFhYWFhYIgogICAgfSwKICAgICJzcGVjIjogewogICAgICAgICJjbHVzdGVyRGVwbG95bWVudFJlZnMiOiBbCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICJuYW1lIjogInRlc3QtY2x1c3RlciIKICAgICAgICAgICAgfQogICAgICAgIF0sCiAgICAgICAgImlkZW50aXR5UHJvdmlkZXJzIjogWwogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAiaHRwYXNzd2QiOiB7CiAgICAgICAgICAgICAgICAgICAgImZpbGVEYXRhIjogewogICAgICAgICAgICAgICAgICAgICAgICAibmFtZSI6ICJodHBhc3N3ZC1zZWNyZXQiCiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfSwKICAgICAgICAgICAgICAgICJtYXBwaW5nTWV0aG9kIjogImNsYWltIiwKICAgICAgICAgICAgICAgICJuYW1lIjogIkhUUGFzc3dkIiwKICAgICAgICAgICAgICAgICJ0eXBlIjogIkhUUGFzc3dkIgogICAgICAgICAgICB9CiAgICAgICAgXQogICAgfSwKICAgICJzdGF0dXMiOiB7fQp9Cg==")
-            .apply();
-    }
-}
-```
-
-### SyncSets_CreateOrUpdate
-
-```java
-/**
- * Samples for SyncSets CreateOrUpdate.
- */
-public final class SyncSetsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncSets_CreateOrUpdate.json
-     */
-    /**
-     * Sample code: Creates or updates a SyncSet with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void createsOrUpdatesASyncSetWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.syncSets()
-            .define("childResourceName")
-            .withExistingOpenshiftcluster("resourceGroup", "resourceName")
-            .withResources(
-                "eyAKICAiYXBpVmVyc2lvbiI6ICJoaXZlLm9wZW5zaGlmdC5pby92MSIsCiAgImtpbmQiOiAiU3luY1NldCIsCiAgIm1ldGFkYXRhIjogewogICAgIm5hbWUiOiAic2FtcGxlIiwKICAgICJuYW1lc3BhY2UiOiAiYXJvLWY2MGFlOGEyLWJjYTEtNDk4Ny05MDU2LWYyZjZhMTgzN2NhYSIKICB9LAogICJzcGVjIjogewogICAgImNsdXN0ZXJEZXBsb3ltZW50UmVmcyI6IFtdLAogICAgInJlc291cmNlcyI6IFsKICAgICAgewogICAgICAgICJhcGlWZXJzaW9uIjogInYxIiwKICAgICAgICAia2luZCI6ICJDb25maWdNYXAiLAogICAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAgICJuYW1lIjogIm15Y29uZmlnbWFwIgogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQo=")
-            .create();
-    }
-}
-```
-
-### SyncSets_Delete
-
-```java
-/**
- * Samples for SyncSets Delete.
- */
-public final class SyncSetsDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncSets_Delete.json
-     */
-    /**
-     * Sample code: Deletes a SyncSet with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void deletesASyncSetWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.syncSets()
-            .deleteWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SyncSets_Get
-
-```java
-/**
- * Samples for SyncSets Get.
- */
-public final class SyncSetsGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncSets_Get.json
-     */
-    /**
-     * Sample code: Gets a SyncSet with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void getsASyncSetWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.syncSets()
-            .getWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SyncSets_List
-
-```java
-/**
- * Samples for SyncSets List.
- */
-public final class SyncSetsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncSets_List.json
-     */
-    /**
-     * Sample code: Lists SyncSets that belong to that Azure Red Hat OpenShift Cluster.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void listsSyncSetsThatBelongToThatAzureRedHatOpenShiftCluster(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        manager.syncSets().list("resourceGroup", "resourceName", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SyncSets_Update
-
-```java
-import com.azure.resourcemanager.redhatopenshift.models.SyncSet;
-
-/**
- * Samples for SyncSets Update.
- */
-public final class SyncSetsUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/
-     * examples/SyncSets_Update.json
-     */
-    /**
-     * Sample code: Updates a SyncSet with the specified subscription, resource group and resource name.
-     * 
-     * @param manager Entry point to RedHatOpenShiftManager.
-     */
-    public static void updatesASyncSetWithTheSpecifiedSubscriptionResourceGroupAndResourceName(
-        com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
-        SyncSet resource = manager.syncSets()
-            .getWithResponse("resourceGroup", "resourceName", "childResourceName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withResources(
-                "eyAKICAiYXBpVmVyc2lvbiI6ICJoaXZlLm9wZW5zaGlmdC5pby92MSIsCiAgImtpbmQiOiAiU3luY1NldCIsCiAgIm1ldGFkYXRhIjogewogICAgIm5hbWUiOiAic2FtcGxlIiwKICAgICJuYW1lc3BhY2UiOiAiYXJvLWY2MGFlOGEyLWJjYTEtNDk4Ny05MDU2LWYyZjZhMTgzN2NhYSIKICB9LAogICJzcGVjIjogewogICAgImNsdXN0ZXJEZXBsb3ltZW50UmVmcyI6IFtdLAogICAgInJlc291cmNlcyI6IFsKICAgICAgewogICAgICAgICJhcGlWZXJzaW9uIjogInYxIiwKICAgICAgICAia2luZCI6ICJDb25maWdNYXAiLAogICAgICAgICJtZXRhZGF0YSI6IHsKICAgICAgICAgICJuYW1lIjogIm15Y29uZmlnbWFwIgogICAgICAgIH0KICAgICAgfQogICAgXQogIH0KfQo=")
-            .apply();
+    public static void
+        listsAMappingOfOpenShiftVersionsToIdentityRequirementsWhichIncludeOperatorNameRoleDefinitionNameRoleDefinitionIdAndServiceAccounts(
+            com.azure.resourcemanager.redhatopenshift.RedHatOpenShiftManager manager) {
+        manager.platformWorkloadIdentityRoleSets().list("location", com.azure.core.util.Context.NONE);
     }
 }
 ```

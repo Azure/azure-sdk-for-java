@@ -30,12 +30,8 @@ public final class DeploymentPreflightsImpl implements DeploymentPreflights {
         DeploymentPreflightModelInner body, Context context) {
         Response<DeploymentPreflightModelInner> inner
             = this.serviceClient().postWithResponse(resourceGroupName, deploymentId, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeploymentPreflightModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeploymentPreflightModelImpl(inner.getValue(), this.manager()));
     }
 
     public DeploymentPreflightModel post(String resourceGroupName, String deploymentId) {
