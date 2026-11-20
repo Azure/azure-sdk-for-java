@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -34,6 +35,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class RedirectPolicyTest {
+    private static final HttpHeaderName API_KEY = HttpHeaderName.fromString("api-key");
+
     @SyncAsyncTest
     public void noRedirectPolicyTest() throws Exception {
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
@@ -328,6 +331,57 @@ public class RedirectPolicyTest {
             () -> sendRequest(pipeline, HttpMethod.GET))) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
+    }
+
+    @SyncAsyncTest
+    public void crossAuthorityRedirectClearsKeyCredentialHeader() throws Exception {
+        assertCrossAuthorityRedirectClearsKeyCredentialHeader(new RedirectPolicy(),
+            new AzureKeyCredentialPolicy("api-key", new AzureKeyCredential("credential")));
+    }
+
+    @SyncAsyncTest
+    public void crossAuthorityRedirectClearsKeyCredentialHeaderWhenCredentialPolicyRunsFirst() throws Exception {
+        assertCrossAuthorityRedirectClearsKeyCredentialHeader(
+            new AzureKeyCredentialPolicy("api-key", new AzureKeyCredential("credential")), new RedirectPolicy());
+    }
+
+    @SyncAsyncTest
+    public void sameAuthorityRedirectPreservesKeyCredentialHeader() throws Exception {
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().getPath().equals("/")) {
+                return Mono.just(new MockHttpResponse(request, 308,
+                    new HttpHeaders().set(HttpHeaderName.LOCATION, "https://localhost/redirected")));
+            }
+            return Mono.just(new MockHttpResponse(request, 200));
+        });
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+            .policies(new RedirectPolicy(),
+                new AzureKeyCredentialPolicy("api-key", new AzureKeyCredential("credential")))
+            .build();
+
+        try (HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, createUrl("https://localhost/")), Context.NONE),
+            () -> pipeline.send(new HttpRequest(HttpMethod.GET, createUrl("https://localhost/"))))) {
+            assertEquals("credential", response.getRequest().getHeaders().getValue(API_KEY));
+        }
+    }
+
+    private static void assertCrossAuthorityRedirectClearsKeyCredentialHeader(HttpPipelinePolicy... policies)
+        throws Exception {
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().getHost().equals("localhost")) {
+                return Mono.just(new MockHttpResponse(request, 308,
+                    new HttpHeaders().set(HttpHeaderName.LOCATION, "https://redirecthost/")));
+            }
+            return Mono.just(new MockHttpResponse(request, 200));
+        });
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).policies(policies).build();
+
+        try (HttpResponse response = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, createUrl("https://localhost/")), Context.NONE),
+            () -> pipeline.send(new HttpRequest(HttpMethod.GET, createUrl("https://localhost/"))))) {
+            assertNull(response.getRequest().getHeaders().getValue(API_KEY));
         }
     }
 
