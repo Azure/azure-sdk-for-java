@@ -14,24 +14,30 @@ public final class ManifestCheckinSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManifestCheckinSpecification model = BinaryData.fromString(
-            "{\"manifestCheckinOption\":\"DoNotAttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"lnsrmffe\",\"baselineArmManifestLocation\":\"cxcktpi\"}}")
+            "{\"manifestCheckinOption\":\"DoNotAttemptAutomaticManifestCheckin\",\"manifestCheckinParams\":{\"environment\":\"xiw\",\"baselineArmManifestLocation\":\"cng\",\"swaggerUri\":\"aas\",\"checkinComment\":\"xtmkzjvkviir\"}}")
             .toObject(ManifestCheckinSpecification.class);
         Assertions.assertEquals(ManifestCheckinOption.DO_NOT_ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN,
             model.manifestCheckinOption());
-        Assertions.assertEquals("lnsrmffe", model.manifestCheckinParams().environment());
-        Assertions.assertEquals("cxcktpi", model.manifestCheckinParams().baselineArmManifestLocation());
+        Assertions.assertEquals("xiw", model.manifestCheckinParams().environment());
+        Assertions.assertEquals("cng", model.manifestCheckinParams().baselineArmManifestLocation());
+        Assertions.assertEquals("aas", model.manifestCheckinParams().swaggerUri());
+        Assertions.assertEquals("xtmkzjvkviir", model.manifestCheckinParams().checkinComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManifestCheckinSpecification model = new ManifestCheckinSpecification()
             .withManifestCheckinOption(ManifestCheckinOption.DO_NOT_ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN)
-            .withManifestCheckinParams(
-                new CheckinManifestParams().withEnvironment("lnsrmffe").withBaselineArmManifestLocation("cxcktpi"));
+            .withManifestCheckinParams(new CheckinManifestParams().withEnvironment("xiw")
+                .withBaselineArmManifestLocation("cng")
+                .withSwaggerUri("aas")
+                .withCheckinComment("xtmkzjvkviir"));
         model = BinaryData.fromObject(model).toObject(ManifestCheckinSpecification.class);
         Assertions.assertEquals(ManifestCheckinOption.DO_NOT_ATTEMPT_AUTOMATIC_MANIFEST_CHECKIN,
             model.manifestCheckinOption());
-        Assertions.assertEquals("lnsrmffe", model.manifestCheckinParams().environment());
-        Assertions.assertEquals("cxcktpi", model.manifestCheckinParams().baselineArmManifestLocation());
+        Assertions.assertEquals("xiw", model.manifestCheckinParams().environment());
+        Assertions.assertEquals("cng", model.manifestCheckinParams().baselineArmManifestLocation());
+        Assertions.assertEquals("aas", model.manifestCheckinParams().swaggerUri());
+        Assertions.assertEquals("xtmkzjvkviir", model.manifestCheckinParams().checkinComment());
     }
 }

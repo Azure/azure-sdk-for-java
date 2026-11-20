@@ -104,6 +104,16 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
      */
     @Override
     public CustomRolloutPropertiesSpecification
+        withRolloutOrchestrationMetadata(RolloutOrchestrationMetadata rolloutOrchestrationMetadata) {
+        super.withRolloutOrchestrationMetadata(rolloutOrchestrationMetadata);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CustomRolloutPropertiesSpecification
         withManifestCheckinSpecification(ManifestCheckinSpecification manifestCheckinSpecification) {
         super.withManifestCheckinSpecification(manifestCheckinSpecification);
         return this;
@@ -128,6 +138,9 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
         if (resourceTypeRegistrations() != null) {
             resourceTypeRegistrations().forEach(e -> e.validate());
         }
+        if (rolloutOrchestrationMetadata() != null) {
+            rolloutOrchestrationMetadata().validate();
+        }
         if (manifestCheckinSpecification() != null) {
             manifestCheckinSpecification().validate();
         }
@@ -148,6 +161,7 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
         jsonWriter.writeArrayField("resourceTypeRegistrations", resourceTypeRegistrations(),
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("rolloutId", rolloutId());
+        jsonWriter.writeJsonField("rolloutOrchestrationMetadata", rolloutOrchestrationMetadata());
         jsonWriter.writeJsonField("manifestCheckinSpecification", manifestCheckinSpecification());
         return jsonWriter.writeEndObject();
     }
@@ -193,6 +207,9 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
                         .withResourceTypeRegistrations(resourceTypeRegistrations);
                 } else if ("rolloutId".equals(fieldName)) {
                     deserializedCustomRolloutPropertiesSpecification.withRolloutId(reader.getString());
+                } else if ("rolloutOrchestrationMetadata".equals(fieldName)) {
+                    deserializedCustomRolloutPropertiesSpecification
+                        .withRolloutOrchestrationMetadata(RolloutOrchestrationMetadata.fromJson(reader));
                 } else if ("manifestCheckinSpecification".equals(fieldName)) {
                     deserializedCustomRolloutPropertiesSpecification
                         .withManifestCheckinSpecification(ManifestCheckinSpecification.fromJson(reader));

@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceGraphConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceGraphConfiguration model = BinaryData.fromString("{\"enabled\":true,\"apiVersion\":\"tgqscjavftjuh\"}")
-            .toObject(ResourceGraphConfiguration.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("tgqscjavftjuh", model.apiVersion());
+        ResourceGraphConfiguration model
+            = BinaryData.fromString("{\"enabled\":false,\"apiVersion\":\"inljqepqwhixmo\"}")
+                .toObject(ResourceGraphConfiguration.class);
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("inljqepqwhixmo", model.apiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceGraphConfiguration model
-            = new ResourceGraphConfiguration().withEnabled(true).withApiVersion("tgqscjavftjuh");
+            = new ResourceGraphConfiguration().withEnabled(false).withApiVersion("inljqepqwhixmo");
         model = BinaryData.fromObject(model).toObject(ResourceGraphConfiguration.class);
-        Assertions.assertTrue(model.enabled());
-        Assertions.assertEquals("tgqscjavftjuh", model.apiVersion());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("inljqepqwhixmo", model.apiVersion());
     }
 }

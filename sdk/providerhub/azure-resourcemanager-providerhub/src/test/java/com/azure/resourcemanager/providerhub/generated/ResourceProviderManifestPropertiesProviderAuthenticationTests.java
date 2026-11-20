@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderManifestPropertiesProviderAuthenticationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderManifestPropertiesProviderAuthentication model
-            = BinaryData.fromString("{\"allowedAudiences\":[\"o\",\"buffkmrqemvvhm\",\"tdrjfutacoebj\"]}")
-                .toObject(ResourceProviderManifestPropertiesProviderAuthentication.class);
-        Assertions.assertEquals("o", model.allowedAudiences().get(0));
+        ResourceProviderManifestPropertiesProviderAuthentication model = BinaryData
+            .fromString("{\"allowedAudiences\":[\"uhiosrsju\",\"vfcdisyirn\",\"zhczexrxzbujrtrh\",\"vwrevkhgnlnzon\"]}")
+            .toObject(ResourceProviderManifestPropertiesProviderAuthentication.class);
+        Assertions.assertEquals("uhiosrsju", model.allowedAudiences().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesProviderAuthentication model
             = new ResourceProviderManifestPropertiesProviderAuthentication()
-                .withAllowedAudiences(Arrays.asList("o", "buffkmrqemvvhm", "tdrjfutacoebj"));
+                .withAllowedAudiences(Arrays.asList("uhiosrsju", "vfcdisyirn", "zhczexrxzbujrtrh", "vwrevkhgnlnzon"));
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesProviderAuthentication.class);
-        Assertions.assertEquals("o", model.allowedAudiences().get(0));
+        Assertions.assertEquals("uhiosrsju", model.allowedAudiences().get(0));
     }
 }

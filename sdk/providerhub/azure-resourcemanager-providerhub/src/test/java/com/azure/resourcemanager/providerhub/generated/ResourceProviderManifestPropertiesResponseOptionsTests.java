@@ -13,17 +13,19 @@ public final class ResourceProviderManifestPropertiesResponseOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProviderManifestPropertiesResponseOptions model
-            = BinaryData.fromString("{\"serviceClientOptionsType\":\"NotSpecified\"}")
+            = BinaryData.fromString("{\"serviceClientOptionsType\":\"DisableAutomaticDecompression\"}")
                 .toObject(ResourceProviderManifestPropertiesResponseOptions.class);
-        Assertions.assertEquals(ServiceClientOptionsType.NOT_SPECIFIED, model.serviceClientOptionsType());
+        Assertions.assertEquals(ServiceClientOptionsType.DISABLE_AUTOMATIC_DECOMPRESSION,
+            model.serviceClientOptionsType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProviderManifestPropertiesResponseOptions model
             = new ResourceProviderManifestPropertiesResponseOptions()
-                .withServiceClientOptionsType(ServiceClientOptionsType.NOT_SPECIFIED);
+                .withServiceClientOptionsType(ServiceClientOptionsType.DISABLE_AUTOMATIC_DECOMPRESSION);
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestPropertiesResponseOptions.class);
-        Assertions.assertEquals(ServiceClientOptionsType.NOT_SPECIFIED, model.serviceClientOptionsType());
+        Assertions.assertEquals(ServiceClientOptionsType.DISABLE_AUTOMATIC_DECOMPRESSION,
+            model.serviceClientOptionsType());
     }
 }

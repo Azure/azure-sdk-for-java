@@ -39,6 +39,11 @@ public final class AppliedManifestInfo implements JsonSerializable<AppliedManife
      */
     private String appliedCommitId;
 
+    /*
+     * The root resource provider namespace.
+     */
+    private String rootProviderNamespace;
+
     /**
      * Creates an instance of AppliedManifestInfo class.
      */
@@ -126,6 +131,15 @@ public final class AppliedManifestInfo implements JsonSerializable<AppliedManife
     }
 
     /**
+     * Get the rootProviderNamespace property: The root resource provider namespace.
+     * 
+     * @return the rootProviderNamespace value.
+     */
+    public String rootProviderNamespace() {
+        return this.rootProviderNamespace;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -173,6 +187,8 @@ public final class AppliedManifestInfo implements JsonSerializable<AppliedManife
                     deserializedAppliedManifestInfo.previousCommitId = reader.getString();
                 } else if ("appliedCommitId".equals(fieldName)) {
                     deserializedAppliedManifestInfo.appliedCommitId = reader.getString();
+                } else if ("rootProviderNamespace".equals(fieldName)) {
+                    deserializedAppliedManifestInfo.rootProviderNamespace = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

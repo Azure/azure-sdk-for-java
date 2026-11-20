@@ -27,6 +27,11 @@ public final class SwaggerSpecification implements JsonSerializable<SwaggerSpeci
      */
     private String swaggerSpecFolderUri;
 
+    /*
+     * The swagger specification lifecycle information.
+     */
+    private SwaggerSpecificationLifecycleInfo lifecycleInfo;
+
     /**
      * Creates an instance of SwaggerSpecification class.
      */
@@ -74,11 +79,34 @@ public final class SwaggerSpecification implements JsonSerializable<SwaggerSpeci
     }
 
     /**
+     * Get the lifecycleInfo property: The swagger specification lifecycle information.
+     * 
+     * @return the lifecycleInfo value.
+     */
+    public SwaggerSpecificationLifecycleInfo lifecycleInfo() {
+        return this.lifecycleInfo;
+    }
+
+    /**
+     * Set the lifecycleInfo property: The swagger specification lifecycle information.
+     * 
+     * @param lifecycleInfo the lifecycleInfo value to set.
+     * @return the SwaggerSpecification object itself.
+     */
+    public SwaggerSpecification withLifecycleInfo(SwaggerSpecificationLifecycleInfo lifecycleInfo) {
+        this.lifecycleInfo = lifecycleInfo;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (lifecycleInfo() != null) {
+            lifecycleInfo().validate();
+        }
     }
 
     /**
@@ -89,6 +117,7 @@ public final class SwaggerSpecification implements JsonSerializable<SwaggerSpeci
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("apiVersions", this.apiVersions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("swaggerSpecFolderUri", this.swaggerSpecFolderUri);
+        jsonWriter.writeJsonField("lifecycleInfo", this.lifecycleInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -112,6 +141,8 @@ public final class SwaggerSpecification implements JsonSerializable<SwaggerSpeci
                     deserializedSwaggerSpecification.apiVersions = apiVersions;
                 } else if ("swaggerSpecFolderUri".equals(fieldName)) {
                     deserializedSwaggerSpecification.swaggerSpecFolderUri = reader.getString();
+                } else if ("lifecycleInfo".equals(fieldName)) {
+                    deserializedSwaggerSpecification.lifecycleInfo = SwaggerSpecificationLifecycleInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

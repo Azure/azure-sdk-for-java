@@ -28,7 +28,7 @@ public final class SkusDeleteNestedResourceTypeFirstWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.skus()
-            .deleteNestedResourceTypeFirstWithResponse("sotirei", "seob", "sxstcyilbvzmm", "cjzlquzexokjxebj",
+            .deleteNestedResourceTypeFirstWithResponse("udl", "vzske", "cgwfsgqkstyecu", "yu",
                 com.azure.core.util.Context.NONE);
 
     }

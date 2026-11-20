@@ -12,16 +12,16 @@ public final class SkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuCapability model
-            = BinaryData.fromString("{\"name\":\"ryjqgdkf\",\"value\":\"ozo\"}").toObject(SkuCapability.class);
-        Assertions.assertEquals("ryjqgdkf", model.name());
-        Assertions.assertEquals("ozo", model.value());
+            = BinaryData.fromString("{\"name\":\"jy\",\"value\":\"iqswbqer\"}").toObject(SkuCapability.class);
+        Assertions.assertEquals("jy", model.name());
+        Assertions.assertEquals("iqswbqer", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuCapability model = new SkuCapability().withName("ryjqgdkf").withValue("ozo");
+        SkuCapability model = new SkuCapability().withName("jy").withValue("iqswbqer");
         model = BinaryData.fromObject(model).toObject(SkuCapability.class);
-        Assertions.assertEquals("ryjqgdkf", model.name());
-        Assertions.assertEquals("ozo", model.value());
+        Assertions.assertEquals("jy", model.name());
+        Assertions.assertEquals("iqswbqer", model.value());
     }
 }

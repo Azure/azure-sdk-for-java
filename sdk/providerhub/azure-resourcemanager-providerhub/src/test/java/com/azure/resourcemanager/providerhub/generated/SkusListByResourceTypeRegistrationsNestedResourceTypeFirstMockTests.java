@@ -23,7 +23,7 @@ public final class SkusListByResourceTypeRegistrationsNestedResourceTypeFirstMoc
     @Test
     public void testListByResourceTypeRegistrationsNestedResourceTypeFirst() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"skuSettings\":[{\"name\":\"idnwceha\",\"tier\":\"do\",\"size\":\"l\",\"family\":\"iomqoqpepiaea\",\"kind\":\"sergdtpe\",\"locations\":[\"cyheqwbpqqncj\"],\"locationInfo\":[{\"location\":\"hjozf\"},{\"location\":\"mcwmbup\"}],\"requiredQuotaIds\":[\"yvliq\",\"ipsejbsvsia\",\"eswhd\",\"zydisnuep\"],\"requiredFeatures\":[\"jlnldpxottdiiaoc\"],\"capacity\":{\"minimum\":1704325965,\"maximum\":941415227,\"default\":2019962428,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"iphryvcjwqwo\"},{\"meterId\":\"sratjhdhzyb\"},{\"meterId\":\"pijhfrzgdkk\"},{\"meterId\":\"gv\"}],\"capabilities\":[{\"name\":\"hsusmmor\",\"value\":\"mzhwilzzhni\"},{\"name\":\"mriprlk\",\"value\":\"neyttl\"},{\"name\":\"cxiv\",\"value\":\"bkut\"}]}],\"provisioningState\":\"Canceled\"},\"id\":\"twjfluxynbp\",\"name\":\"zlqywauyqn\",\"type\":\"ckhmocgjshgouarh\"}]}";
+            = "{\"value\":[{\"properties\":{\"skuSettings\":[{\"name\":\"cmcokxizekuv\",\"tier\":\"jwucaonzva\",\"size\":\"vbnkrdemdidac\",\"family\":\"idgzwdydamis\",\"kind\":\"ztdivykpxkq\",\"locations\":[\"pjfojiunrls\",\"xuknsykdtoi\",\"oancdrco\",\"nvxuldxonckb\"],\"locationInfo\":[{\"location\":\"lfxlupibaqzizxzp\"},{\"location\":\"weghlwwbogvgfk\"},{\"location\":\"qiyndveqels\"},{\"location\":\"fvdstrkzxsgt\"}],\"requiredQuotaIds\":[\"vlrdsmovpi\",\"y\",\"dnox\",\"xn\"],\"requiredFeatures\":[\"qo\",\"nndx\",\"lousdvrgptqm\",\"wz\"],\"capacity\":{\"minimum\":324977074,\"maximum\":1768689786,\"default\":304985927,\"scaleType\":\"Automatic\"},\"costs\":[{\"meterId\":\"ctsdbtqgkujds\"},{\"meterId\":\"oxrqw\"},{\"meterId\":\"eurbtigapdyarik\"}],\"capabilities\":[{\"name\":\"d\",\"value\":\"dfhtwmmkfqbriqul\"},{\"name\":\"wtrjmeqkvyhzokp\",\"value\":\"yuoh\"},{\"name\":\"ensnaa\",\"value\":\"phmpoejnglpwsada\"},{\"name\":\"jsumxpezcoio\",\"value\":\"jrmfqzwqd\"}]}],\"provisioningState\":\"MovingResources\"},\"id\":\"e\",\"name\":\"c\",\"type\":\"wmywxfqzkvemy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,35 +33,35 @@ public final class SkusListByResourceTypeRegistrationsNestedResourceTypeFirstMoc
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SkuResource> response = manager.skus()
-            .listByResourceTypeRegistrationsNestedResourceTypeFirst("b", "inzabwmvoglj", "v",
+            .listByResourceTypeRegistrationsNestedResourceTypeFirst("jparda", "sjcfma", "pzdqw",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("idnwceha", response.iterator().next().properties().skuSettings().get(0).name());
-        Assertions.assertEquals("do", response.iterator().next().properties().skuSettings().get(0).tier());
-        Assertions.assertEquals("l", response.iterator().next().properties().skuSettings().get(0).size());
-        Assertions.assertEquals("iomqoqpepiaea", response.iterator().next().properties().skuSettings().get(0).family());
-        Assertions.assertEquals("sergdtpe", response.iterator().next().properties().skuSettings().get(0).kind());
-        Assertions.assertEquals("cyheqwbpqqncj",
+        Assertions.assertEquals("cmcokxizekuv", response.iterator().next().properties().skuSettings().get(0).name());
+        Assertions.assertEquals("jwucaonzva", response.iterator().next().properties().skuSettings().get(0).tier());
+        Assertions.assertEquals("vbnkrdemdidac", response.iterator().next().properties().skuSettings().get(0).size());
+        Assertions.assertEquals("idgzwdydamis", response.iterator().next().properties().skuSettings().get(0).family());
+        Assertions.assertEquals("ztdivykpxkq", response.iterator().next().properties().skuSettings().get(0).kind());
+        Assertions.assertEquals("pjfojiunrls",
             response.iterator().next().properties().skuSettings().get(0).locations().get(0));
-        Assertions.assertEquals("hjozf",
+        Assertions.assertEquals("lfxlupibaqzizxzp",
             response.iterator().next().properties().skuSettings().get(0).locationInfo().get(0).location());
-        Assertions.assertEquals("yvliq",
+        Assertions.assertEquals("vlrdsmovpi",
             response.iterator().next().properties().skuSettings().get(0).requiredQuotaIds().get(0));
-        Assertions.assertEquals("jlnldpxottdiiaoc",
+        Assertions.assertEquals("qo",
             response.iterator().next().properties().skuSettings().get(0).requiredFeatures().get(0));
-        Assertions.assertEquals(1704325965,
+        Assertions.assertEquals(324977074,
             response.iterator().next().properties().skuSettings().get(0).capacity().minimum());
-        Assertions.assertEquals(941415227,
+        Assertions.assertEquals(1768689786,
             response.iterator().next().properties().skuSettings().get(0).capacity().maximum());
-        Assertions.assertEquals(2019962428,
+        Assertions.assertEquals(304985927,
             response.iterator().next().properties().skuSettings().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(SkuScaleType.NONE,
+        Assertions.assertEquals(SkuScaleType.AUTOMATIC,
             response.iterator().next().properties().skuSettings().get(0).capacity().scaleType());
-        Assertions.assertEquals("iphryvcjwqwo",
+        Assertions.assertEquals("ctsdbtqgkujds",
             response.iterator().next().properties().skuSettings().get(0).costs().get(0).meterId());
-        Assertions.assertEquals("hsusmmor",
+        Assertions.assertEquals("d",
             response.iterator().next().properties().skuSettings().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("mzhwilzzhni",
+        Assertions.assertEquals("dfhtwmmkfqbriqul",
             response.iterator().next().properties().skuSettings().get(0).capabilities().get(0).value());
     }
 }

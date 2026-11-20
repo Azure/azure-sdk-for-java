@@ -12,18 +12,18 @@ public final class ResourceTypeRegistrationPropertiesResourceManagementOptionsNe
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceManagementOptionsNestedProvisioningSupport model
-            = BinaryData.fromString("{\"minimumApiVersion\":\"jbnkpp\"}")
+            = BinaryData.fromString("{\"minimumApiVersion\":\"syrq\"}")
                 .toObject(ResourceTypeRegistrationPropertiesResourceManagementOptionsNestedProvisioningSupport.class);
-        Assertions.assertEquals("jbnkpp", model.minimumApiVersion());
+        Assertions.assertEquals("syrq", model.minimumApiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesResourceManagementOptionsNestedProvisioningSupport model
             = new ResourceTypeRegistrationPropertiesResourceManagementOptionsNestedProvisioningSupport()
-                .withMinimumApiVersion("jbnkpp");
+                .withMinimumApiVersion("syrq");
         model = BinaryData.fromObject(model)
             .toObject(ResourceTypeRegistrationPropertiesResourceManagementOptionsNestedProvisioningSupport.class);
-        Assertions.assertEquals("jbnkpp", model.minimumApiVersion());
+        Assertions.assertEquals("syrq", model.minimumApiVersion());
     }
 }

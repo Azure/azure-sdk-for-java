@@ -27,6 +27,16 @@ public final class CheckinManifestParams implements JsonSerializable<CheckinMani
      */
     private String baselineArmManifestLocation;
 
+    /*
+     * The URI of the signed-off OpenAPI specification pull request associated with the manifest check-in.
+     */
+    private String swaggerUri;
+
+    /*
+     * The comment associated with the manifest check-in.
+     */
+    private String checkinComment;
+
     /**
      * Creates an instance of CheckinManifestParams class.
      */
@@ -76,6 +86,48 @@ public final class CheckinManifestParams implements JsonSerializable<CheckinMani
     }
 
     /**
+     * Get the swaggerUri property: The URI of the signed-off OpenAPI specification pull request associated with the
+     * manifest check-in.
+     * 
+     * @return the swaggerUri value.
+     */
+    public String swaggerUri() {
+        return this.swaggerUri;
+    }
+
+    /**
+     * Set the swaggerUri property: The URI of the signed-off OpenAPI specification pull request associated with the
+     * manifest check-in.
+     * 
+     * @param swaggerUri the swaggerUri value to set.
+     * @return the CheckinManifestParams object itself.
+     */
+    public CheckinManifestParams withSwaggerUri(String swaggerUri) {
+        this.swaggerUri = swaggerUri;
+        return this;
+    }
+
+    /**
+     * Get the checkinComment property: The comment associated with the manifest check-in.
+     * 
+     * @return the checkinComment value.
+     */
+    public String checkinComment() {
+        return this.checkinComment;
+    }
+
+    /**
+     * Set the checkinComment property: The comment associated with the manifest check-in.
+     * 
+     * @param checkinComment the checkinComment value to set.
+     * @return the CheckinManifestParams object itself.
+     */
+    public CheckinManifestParams withCheckinComment(String checkinComment) {
+        this.checkinComment = checkinComment;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -103,6 +155,8 @@ public final class CheckinManifestParams implements JsonSerializable<CheckinMani
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("environment", this.environment);
         jsonWriter.writeStringField("baselineArmManifestLocation", this.baselineArmManifestLocation);
+        jsonWriter.writeStringField("swaggerUri", this.swaggerUri);
+        jsonWriter.writeStringField("checkinComment", this.checkinComment);
         return jsonWriter.writeEndObject();
     }
 
@@ -126,6 +180,10 @@ public final class CheckinManifestParams implements JsonSerializable<CheckinMani
                     deserializedCheckinManifestParams.environment = reader.getString();
                 } else if ("baselineArmManifestLocation".equals(fieldName)) {
                     deserializedCheckinManifestParams.baselineArmManifestLocation = reader.getString();
+                } else if ("swaggerUri".equals(fieldName)) {
+                    deserializedCheckinManifestParams.swaggerUri = reader.getString();
+                } else if ("checkinComment".equals(fieldName)) {
+                    deserializedCheckinManifestParams.checkinComment = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
