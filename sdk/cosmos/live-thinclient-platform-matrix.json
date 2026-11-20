@@ -1,6 +1,7 @@
 {
   "displayNames": {
     "-Pthinclient": "ThinClient",
+    "-Pconsistency-overrides": "ConsistencyOverrides",
     "-Pquery": "Query",
     "Session": "",
     "ubuntu": "",
@@ -16,7 +17,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pthinclient", "-Pquery" ],
+      "ProfileFlag": [ "-Pthinclient", "-Pquery", "-Pconsistency-overrides" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       }

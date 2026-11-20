@@ -20,9 +20,9 @@ class GetCosmosItemIdentityValue extends UDF2[String, Object, String] {
     requireNotNull(partitionKeyValue, "partitionKeyValue")
 
     partitionKeyValue match {
-      // for subpartitions case
-      case wrappedArray: mutable.WrappedArray[Any] =>
-        CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, wrappedArray.map(_.asInstanceOf[Object]).toList)
+      // for subpartitions case - Seq covers both WrappedArray (Scala 2.12) and ArraySeq (Scala 2.13)
+      case seq: Seq[Any] =>
+        CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, seq.map(_.asInstanceOf[Object]).toList)
       case _ => CosmosItemIdentityHelper.getCosmosItemIdentityValueString(id, List(partitionKeyValue))
     }
   }

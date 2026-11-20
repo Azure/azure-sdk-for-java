@@ -60,4 +60,16 @@ private object Exceptions {
   def isBadRequestExceptionCore(statusCode: Int): Boolean = {
       statusCode == CosmosConstants.StatusCodes.BadRequest
   }
+
+  def isPartitionKeyRangeGoneException(throwable: Throwable): Boolean = {
+    throwable match {
+      case cosmosException: CosmosException =>
+        isPartitionKeyRangeGoneException(cosmosException.getStatusCode, cosmosException.getSubStatusCode)
+      case _ => false
+    }
+  }
+
+  def isPartitionKeyRangeGoneException(statusCode: Int, subStatusCode: Int): Boolean = {
+    statusCode == CosmosConstants.StatusCodes.Gone && subStatusCode == CosmosConstants.SubstatusCodes.PartitionKeyRangeGone
+  }
 }

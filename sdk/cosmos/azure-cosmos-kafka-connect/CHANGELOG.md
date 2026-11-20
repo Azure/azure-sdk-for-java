@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.10.0-beta.1 (Unreleased)
+### 2.13.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -8,17 +8,40 @@
 
 #### Bugs Fixed
 
+* Fixed `ItemPatch` writes to skip items excluded by `azure.cosmos.sink.write.patch.filter` instead of failing with `412 Precondition Failed`.
+* Disposed source metadata monitoring subscriptions during connector shutdown. - See [PR 50593](https://github.com/Azure/azure-sdk-for-java/pull/50593)
+* Prevented blocked source change-feed polls from retaining task and Cosmos client generations during connector restarts. - See [PR 50560](https://github.com/Azure/azure-sdk-for-java/pull/50560)
+
 #### Other Changes
 
-### 2.8.0-beta.1 (Unreleased)
+### 2.12.0 (2026-09-22)
 
-#### Features Added
+#### Other Changes
+* Updated `azure-cosmos` to version `4.83.0`.
 
-#### Breaking Changes
+### 2.11.0 (2026-06-08)
 
 #### Bugs Fixed
+* Fixed per-record error isolation in Kafka sink transformer to honor DLQ and tolerance settings, instead of failing the entire batch when a single record fails during transformation. - See [PR 49286](https://github.com/Azure/azure-sdk-for-java/pull/49286)
+* Guarded `ErrantRecordReporter.report()` in `CosmosWriterBase` against secondary failures so DLQ errors do not mask original write failures. - See [PR 49286](https://github.com/Azure/azure-sdk-for-java/pull/49286)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.81.0`.
+
+### 2.10.0 (2026-05-01)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.80.0`.
+  
+### 2.9.0 (2026-03-27)
+
+#### Features Added
+* Added support for throughput bucket. - See [PR 48009](https://github.com/Azure/azure-sdk-for-java/pull/48009)
+
+### 2.8.0 (2026-01-26)
+
+#### Bugs Fixed
+* Added filtering to deserialization of `"azure.cosmos.client.metadata.caches.snapshot"` - See [PR 47594](https://github.com/Azure/azure-sdk-for-java/pull/47594)
 
 ### 2.7.0 (2025-12-09)
 
@@ -31,6 +54,7 @@
 * Fixed duplicate processing in `CosmosSourceConnector` when task rebalance(pause/resume) happens - See [PR 47308](https://github.com/Azure/azure-sdk-for-java/pull/47308)
 
 ### 2.6.0 (2025-10-21)
+
 #### Other Changes
 * Updated `azure-cosmos` to version `4.75.0`.
 
@@ -43,7 +67,7 @@
 * Fixed warning logs for `java.lang.NoClassDefFoundError: io/micrometer/observation/ObservationHandler` - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
 
 #### Other Changes
-* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregrated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
+* Reduced log frequency in `CosmosSourceTask` and `CosmosSinkTask` to log aggregated logs every 1 min - See [PR 46396](https://github.com/Azure/azure-sdk-for-java/pull/46396)
 
 ### 2.5.0 (2025-07-31)
 
@@ -117,4 +141,3 @@
 * Added `ServicePrincipal` support - See [PR 39490](https://github.com/Azure/azure-sdk-for-java/pull/39490)
 * Added `ItemPatch support` in sink connector - See [PR 39558](https://github.com/Azure/azure-sdk-for-java/pull/39558)
 * Added support to use CosmosDB container for tracking metadata - See [PR 39634](https://github.com/Azure/azure-sdk-for-java/pull/39634)
-

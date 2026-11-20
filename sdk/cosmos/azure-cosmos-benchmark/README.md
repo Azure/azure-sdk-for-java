@@ -13,14 +13,14 @@ mvn clean package -f pom.xml -DskipTests -Dgpg.skip -Ppackage-assembly
 
 and then the package will be generated.
 
-## Run the WriteLatency workload
+## Run the WriteThroughput workload
 
 ```bash
 java -jar azure-cosmos-benchmark/target/azure-cosmos-benchmark-4.0.1-beta.1-jar-with-dependencies.jar \
  -serviceEndpoint $endpoint -masterKey $masterkey \
  -databaseId $dbname -collectionId $colname \
  -consistencyLevel Eventual -concurrency 10 -numberOfOperations 1000000 \
- -operation WriteLatency -connectionMode Direct
+ -operation WriteThroughput -connectionMode Direct
 ```
 
 ## Sample Report:
@@ -63,8 +63,6 @@ Latency
 
 ## Other Currently Supported Workloads
 
-* ReadLatency,
-* WriteLatency,
 * ReadThroughput,
 * WriteThroughput,
 * QueryInClauseParallel

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -63,6 +64,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -85,6 +87,7 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -264,6 +267,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         assertThat(cosmosDiagnosticsValueHolder.v).isNotNull();
         CosmosDiagnostics cosmosDiagnostics = cosmosDiagnosticsValueHolder.v;
+        getPpafBookmarks(responseWrapper);
 
         assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
         assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).isNotNull();
@@ -276,8 +280,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (expectedResponseCharacteristics.shouldFinalResponseHaveSuccess) {
             assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
-            assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode() >= HttpConstants.StatusCodes.OK
-                && cosmosDiagnostics.getDiagnosticsContext().getStatusCode() <= HttpConstants.StatusCodes.NOT_MODIFIED).isTrue();
+            int finalStatusCode = cosmosDiagnostics.getDiagnosticsContext().getStatusCode();
+            assertThat(finalStatusCode)
+                .as("final response status code should indicate success (2xx/304) but was %d (sub-status %d)",
+                    finalStatusCode, cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
+                .isBetween(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
         }
     };
 
@@ -464,7 +471,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"multi-region", "fi-thinclient-multi-region"})
     public void beforeClass() {
         this.sharedClient = getClientBuilder().buildAsyncClient();
 
@@ -484,7 +491,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         this.accountLevelLocationReadableLocationContext = getAccountLevelLocationContext(databaseAccountSnapshot, false);
     }
 
-    @AfterClass(groups = {"multi-region"})
+    @AfterClass(groups = {"multi-region", "fi-thinclient-multi-region"})
     public void afterClass() throws InterruptedException {
         safeClose(this.sharedClient);
         System.gc();
@@ -1258,7 +1265,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      *   <li>Success vs failure based on phase and configuration.</li>
      * </ul>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
         String testType,
         OperationType operationType,
@@ -1277,6 +1284,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (!allowedConnectionModes.contains(connectionMode)) {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && !Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         if (connectionMode == ConnectionMode.DIRECT) {
@@ -1380,6 +1392,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
+                JsonNode bookmarkAfterFailover = assertPpafOverride(responseAfterFailover, preferredRegions.get(1));
+                ResponseWrapper<?> responseWithReusedOverride = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithReusedOverride, expectedResponseCharacteristicsAfterFailover);
+                assertThat(assertPpafOverride(responseWithReusedOverride, preferredRegions.get(1)))
+                    .isEqualTo(bookmarkAfterFailover);
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -1439,9 +1456,19 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
                 String regionWithIssues = preferredRegions.get(0);
-                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
+                String baseEndpoint = readableRegionNameToEndpoint.get(regionWithIssues);
+
+                URI locationEndpointWithIssues = new URI(baseEndpoint + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
 
                 ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                // When thin client is enabled, data requests route through thinProxy (ThinClientStoreModel)
+                // which uses RNTBD binary encoding — incompatible with standard HTTP mock responses.
+                // Replace thinProxy with gatewayProxy so data requests use the same mocked HttpClient
+                // with standard HTTP encoding. PPAF retry/failover logic is transport-agnostic.
+                if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+                    ReflectionUtils.setThinProxy(rxDocumentClient, rxStoreModel);
+                }
 
                 setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccount, successStatusCode);
 
@@ -1484,6 +1511,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
+                JsonNode bookmarkAfterFailover = assertPpafOverride(responseAfterFailover, preferredRegions.get(1));
+                ResponseWrapper<?> responseWithReusedOverride = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseWithReusedOverride, expectedResponseCharacteristicsAfterFailover);
+                assertThat(assertPpafOverride(responseWithReusedOverride, preferredRegions.get(1)))
+                    .isEqualTo(bookmarkAfterFailover);
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -1521,7 +1553,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * <p>Expectations are provided by the data provider: when disabled, the request should not succeed;
      * when enabled, it should succeed. Works for both DIRECT and GATEWAY connection modes.</p>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafDynamicEnablement503Only")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafDynamicEnablement503Only")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodesWithPpafDynamicEnablement(
         String testType,
         OperationType operationType,
@@ -1540,6 +1572,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (!allowedConnectionModes.contains(connectionMode)) {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && !Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         // DIRECT flow: swap transport client, inject error for primary region/PK range, and verify phase-by-phase
@@ -1625,18 +1662,22 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 ResponseWrapper<?> responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+                assertThat(getPpafBookmarks(responseWithPpafDisabled)).allMatch(JsonNode::isEmpty);
 
                 // Phase 2: PPAF enabled -> expect characteristics provided for ENABLED
                 ppafEnabledRef.set(Boolean.TRUE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
+                JsonNode enabledBookmark = assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1));
 
                 // Phase 3: PPAF disabled again -> confirm behavior reverts
                 ppafEnabledRef.set(Boolean.FALSE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+                assertThat(getPpafBookmarks(responseWithPpafDisabled)).allMatch(JsonNode::isEmpty);
+                assertThat(assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1))).isEqualTo(enabledBookmark);
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -1690,10 +1731,20 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
                 String regionWithIssues = preferredRegions.get(0);
-                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
+                String baseEndpoint = readableRegionNameToEndpoint.get(regionWithIssues);
+
+                URI locationEndpointWithIssues = new URI(baseEndpoint + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
 
                 // Redirect gateway calls through our mocked HttpClient
                 ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                // When thin client is enabled, data requests route through thinProxy (ThinClientStoreModel)
+                // which uses RNTBD binary encoding — incompatible with standard HTTP mock responses.
+                // Replace thinProxy with gatewayProxy so data requests use the same mocked HttpClient
+                // with standard HTTP encoding. PPAF retry/failover logic is transport-agnostic.
+                if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+                    ReflectionUtils.setThinProxy(rxDocumentClient, rxStoreModel);
+                }
 
                 setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccountForResponses, successStatusCode);
 
@@ -1724,18 +1775,22 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 ResponseWrapper<?> responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+                assertThat(getPpafBookmarks(responseWithPpafDisabled)).allMatch(JsonNode::isEmpty);
 
                 // Phase 2: PPAF enabled -> expect characteristics provided for ENABLED
                 ppafEnabledRef.set(Boolean.TRUE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
+                JsonNode enabledBookmark = assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1));
 
                 // Phase 3: PPAF disabled again -> confirm behavior reverts
                 ppafEnabledRef.set(Boolean.FALSE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
                 responseWithPpafDisabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafDisabled, expectedResponseCharacteristicsWhenPpafIsDisabled);
+                assertThat(getPpafBookmarks(responseWithPpafDisabled)).allMatch(JsonNode::isEmpty);
+                assertThat(assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1))).isEqualTo(enabledBookmark);
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -1788,7 +1843,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * <p>Dynamic enablement is achieved by overriding GlobalEndpointManager's owner to
      * inject the PPAF flag into DatabaseAccount snapshots.</p>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void testFailoverBehaviorForNonWriteOperationsWithPpafDynamicEnablement(
         String testType,
         OperationType operationType,
@@ -1802,6 +1857,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (!allowedConnectionModes.contains(connectionMode)) {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && !Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         final int consecutiveFaults = 10;
@@ -2060,6 +2120,15 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     expectedDuringWindow,
                     expectedAfterWindow);
 
+                // Validate thin client endpoint was used when thin client is enabled
+                if (!Boolean.FALSE.equals(Configs.isThinClientEnabled()) && Configs.isHttp2Enabled()) {
+                    ResponseWrapper<?> probeResponse = dataPlaneOperation.apply(params);
+                    CosmosDiagnostics diag = extractDiagnostics(probeResponse);
+                    if (diag != null) {
+                        assertThinClientEndpointUsed(diag.getDiagnosticsContext());
+                    }
+                }
+
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -2087,6 +2156,66 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         // Stabilized post-window request
         ResponseWrapper<?> postWindow = dataPlaneOperation.apply(params);
         this.validateExpectedResponseCharacteristics.accept(postWindow, expectedAfterWindow);
+    }
+
+    private static List<JsonNode> getPpafBookmarks(ResponseWrapper<?> response) {
+        CosmosDiagnostics diagnostics = extractDiagnostics(response);
+        assertThat(diagnostics).isNotNull();
+        List<JsonNode> bookmarks = new ArrayList<>();
+        for (ClientSideRequestStatistics statistics : diagnostics.getClientSideRequestStatistics()) {
+            JsonNode statisticsJson = OBJECT_MAPPER.valueToTree(statistics);
+            for (String statisticsList : Arrays.asList("responseStatisticsList", "gatewayStatisticsList")) {
+                for (JsonNode attempt : statisticsJson.path(statisticsList)) {
+                    assertThat(attempt.has("perPartitionAutomaticFailoverInfoHolder")).isFalse();
+                    JsonNode bookmark = attempt.path("ppaf");
+                    assertThat(bookmark.isObject()).as("ppaf must be an object in %s", attempt).isTrue();
+                    if (!bookmark.isEmpty()) {
+                        assertThat(bookmark.size()).isEqualTo(3);
+                        assertThat(bookmark.path("currWriteRegion").isTextual()).isTrue();
+                        assertThat(bookmark.path("currWriteRegion").asText()).isNotBlank();
+                        JsonNode failedRegions = bookmark.path("failedRegions");
+                        assertThat(failedRegions.isArray()).isTrue();
+                        assertThat(failedRegions).isNotEmpty();
+                        for (JsonNode failedRegion : failedRegions) {
+                            assertThat(failedRegion.isTextual()).isTrue();
+                            assertThat(failedRegion.asText()).isNotBlank();
+                        }
+                        assertThat(bookmark.path("since").isTextual()).isTrue();
+                        assertThat(Instant.parse(bookmark.path("since").asText())).isBeforeOrEqualTo(Instant.now());
+                    }
+                    bookmarks.add(bookmark);
+                }
+            }
+        }
+        assertThat(bookmarks).as("PPAF attempt diagnostics must be present").isNotEmpty();
+        return bookmarks;
+    }
+
+    private static JsonNode assertPpafOverride(ResponseWrapper<?> response, String expectedRegion) {
+        List<JsonNode> populatedBookmarks = new ArrayList<>();
+        for (JsonNode bookmark : getPpafBookmarks(response)) {
+            if (!bookmark.isEmpty()) {
+                assertThat(bookmark.path("currWriteRegion").asText()).isEqualToIgnoringCase(expectedRegion);
+                populatedBookmarks.add(bookmark);
+            }
+        }
+        assertThat(populatedBookmarks).as("A designated PPAF override must be recorded").isNotEmpty();
+        JsonNode firstBookmark = populatedBookmarks.get(0);
+        assertThat(populatedBookmarks).allMatch(firstBookmark::equals);
+        return firstBookmark;
+    }
+
+    private static CosmosDiagnostics extractDiagnostics(ResponseWrapper<?> response) {
+        if (response.cosmosItemResponse != null) {
+            return response.cosmosItemResponse.getDiagnostics();
+        } else if (response.feedResponse != null) {
+            return response.feedResponse.getCosmosDiagnostics();
+        } else if (response.cosmosException != null) {
+            return response.cosmosException.getDiagnostics();
+        } else if (response.batchResponse != null) {
+            return response.batchResponse.getDiagnostics();
+        }
+        return null;
     }
 
     private static class DelegatingDatabaseAccountManagerInternal implements DatabaseAccountManagerInternal {

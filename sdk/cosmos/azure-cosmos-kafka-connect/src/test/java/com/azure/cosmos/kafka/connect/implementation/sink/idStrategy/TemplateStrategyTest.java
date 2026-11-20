@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,7 +35,7 @@ public class TemplateStrategyTest {
         when(record.key()).thenReturn("test");
 
         String id = strategy.generateId(record);
-        assertEquals("test", id);
+        assertThat(id).isEqualTo("test");
     }
 
     @Test(groups = { "unit" })
@@ -50,7 +50,7 @@ public class TemplateStrategyTest {
         when(record.kafkaOffset()).thenReturn(1L);
 
         String id = strategy.generateId(record);
-        assertEquals("mytopic-0-1", id);
+        assertThat(id).isEqualTo("mytopic-0-1");
     }
 
     @Test(groups = { "unit" })
@@ -61,7 +61,7 @@ public class TemplateStrategyTest {
 
         strategy.configure(map);
         String id = strategy.generateId(mock(SinkRecord.class));
-        assertEquals("${unknown}", id);
+        assertThat(id).isEqualTo("${unknown}");
     }
 
     @Test(groups = { "unit" })
@@ -87,9 +87,7 @@ public class TemplateStrategyTest {
         when(record.key()).thenReturn(value);
 
         String id = strategy.generateId(record);
-        assertEquals(
-            "{\"string_field\":\"value\",\"struct_field\":{\"nested_field\":\"a nest\"}}",
-            id);
+        assertThat(id).isEqualTo("{\"string_field\":\"value\",\"struct_field\":{\"nested_field\":\"a nest\"}}");
     }
 
     @Test(groups = { "unit" })
@@ -110,9 +108,7 @@ public class TemplateStrategyTest {
         when(record.key()).thenReturn(value);
 
         String id = strategy.generateId(record);
-        assertEquals(
-            "{\"string_field\":\"value\",\"int64_field\":0}",
-            id);
+        assertThat(id).isEqualTo("{\"string_field\":\"value\",\"int64_field\":0}");
     }
 
     @Test(groups = { "unit" })
@@ -129,7 +125,7 @@ public class TemplateStrategyTest {
         when(record.kafkaOffset()).thenReturn(1L);
 
         String id = strategy.generateId(record);
-        assertEquals("topic_0_1", id);
+        assertThat(id).isEqualTo("topic_0_1");
     }
 
     @Test(groups = { "unit" })
@@ -143,6 +139,6 @@ public class TemplateStrategyTest {
         SinkRecord record = mock(SinkRecord.class);
 
         String id = strategy.generateId(record);
-        assertEquals("_my_special_id_", id);
+        assertThat(id).isEqualTo("_my_special_id_");
     }
 }

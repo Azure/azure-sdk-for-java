@@ -80,7 +80,7 @@ private[spark] object CosmosClientMetrics extends BasicLoggingTrait {
 
           override protected def nullGaugeValue: java.lang.Double = Double.NaN
 
-          override protected def close(): Unit = {
+          override def close(): Unit = {
             super.close()
 
             slf4JReporter match {

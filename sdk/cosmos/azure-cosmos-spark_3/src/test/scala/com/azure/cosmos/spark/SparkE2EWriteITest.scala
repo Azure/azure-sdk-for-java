@@ -166,6 +166,12 @@ class SparkE2EWriteITest
           statusStore.executionsList().last.metricValues != null)
       }
 
+      // Wait for onTaskEnd callback to update snapshot variables
+      // The callback fires asynchronously after metrics are computed
+      eventually(timeout(10.seconds), interval(10.milliseconds)) {
+        assert(recordsWrittenSnapshot > 0)
+      }
+
       recordsWrittenSnapshot shouldEqual 1
       bytesWrittenSnapshot > 0 shouldEqual  true
       if (!spark.sparkContext.version.startsWith("3.1.")) {

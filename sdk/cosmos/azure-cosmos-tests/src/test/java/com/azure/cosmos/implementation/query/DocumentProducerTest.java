@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -26,6 +25,7 @@ import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -33,7 +33,6 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -42,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.time.Duration;
@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -87,6 +88,58 @@ public class DocumentProducerTest {
 
     private final String collectionRid = "myrid";
     private final String collectionLink = "/dbs/mydb/colls/mycol";
+
+    @DataProvider
+    public Object[][] narrowedChildRanges() {
+        return new Object[][] {
+            {"B", "E", true, false, "", "C", "B", "C", true, false},
+            {"B", "E", true, false, "C", "FF", "C", "E", true, false},
+            {"B", "E", false, true, "", "C", "B", "C", false, false},
+            {"B", "E", false, true, "C", "FF", "C", "E", true, true},
+            {"C", "E", false, true, "C", "E", "C", "E", false, false},
+            {"", "FF", true, false, "", "C", "", "C", true, false}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "narrowedChildRanges")
+    public void splitChildrenPreserveRequestedBounds(
+        String min, String max, boolean minInclusive, boolean maxInclusive,
+        String physicalMin, String physicalMax, String expectedMin, String expectedMax,
+        boolean expectedMinInclusive, boolean expectedMaxInclusive) {
+
+        FeedRangeEpkImpl requestedRange = new FeedRangeEpkImpl(new Range<>(min, max, minInclusive, maxInclusive));
+        PartitionKeyRange physicalRange = mockPartitionKeyRange(
+            "child", new Range<>(physicalMin, physicalMax, true, false));
+        IDocumentQueryClient client = mockQueryClient(Collections.singletonList(physicalRange));
+        RequestCreator requests = RequestCreator.simpleMock();
+        List<DocumentProducer<Document>> parents = Arrays.asList(
+            new DocumentProducer<>(client, collectionRid, null, requests, request -> Mono.empty(), collectionLink,
+                null, Document.class, null, 1, "continuation", -1, requestedRange, () -> "narrowed split"),
+            new OrderByDocumentProducer(null, client, collectionRid, null, requests, request -> Mono.empty(),
+                requestedRange, collectionLink, null, Document.class, null, 1, "continuation", -1,
+                new HashMap<>(), () -> "narrowed ordered split"));
+
+        for (DocumentProducer<Document> parent : parents) {
+            Range<String> requestedBounds = requestedRange.getRange();
+            Range<String> physicalBounds = physicalRange.toRange();
+            FeedRangeEpkImpl intersection = parent.intersectFeedRange(requestedBounds, physicalBounds);
+            assertThat(intersection.getRange())
+                .isEqualTo(new Range<>(expectedMin, expectedMax, expectedMinInclusive, expectedMaxInclusive))
+                .isNotSameAs(requestedBounds)
+                .isNotSameAs(physicalBounds);
+            assertThat(requestedBounds).isEqualTo(new Range<>(min, max, minInclusive, maxInclusive));
+            assertThat(physicalBounds).isEqualTo(new Range<>(physicalMin, physicalMax, true, false));
+            assertThat(parent.intersectFeedRange(physicalBounds, physicalBounds).getRange())
+                .as("Intersection must use its arguments rather than the producer's scope")
+                .isEqualTo(physicalBounds);
+
+            DocumentProducer<Document> child = parent.createChildDocumentProducerOnSplit(physicalRange, "continuation");
+            assertThat(child.feedRange.getRange())
+                .as("Replacement scope for %s", parent.getClass().getSimpleName())
+                .isEqualTo(new Range<>(expectedMin, expectedMax, expectedMinInclusive, expectedMaxInclusive));
+            assertThat(child instanceof OrderByDocumentProducer).isEqualTo(parent instanceof OrderByDocumentProducer);
+        }
+    }
 
     @DataProvider(name = "splitParamProvider")
     public Object[][] splitParamProvider() {
@@ -210,13 +263,10 @@ public class DocumentProducerTest {
                     range1,
                     () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
+            AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+            StepVerifier.create(documentProducer.produceAsync().collectList())
+                .consumeNextWith(value::set)
+                .verifyComplete();
 
             validateSplitCaptureRequests(
                     requestCreator.invocations,
@@ -233,7 +283,7 @@ public class DocumentProducerTest {
                     .distinct().collect(Collectors.toList())).containsExactlyElementsOf(Collections.singleton(initialPageSize));
 
             // expected results
-            validateSplitResults(subscriber.values(),
+            validateSplitResults(value.get(),
                                  parentPartitionId, leftChildPartitionId,
                                  rightChildPartitionId, resultFromParentPartition, resultFromLeftChildPartition,
                                  resultFromRightChildPartition, false);
@@ -327,13 +377,10 @@ public class DocumentProducerTest {
                         new HashMap<>(),
                         () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
+            AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+            StepVerifier.create(documentProducer.produceAsync().collectList())
+                .consumeNextWith(value::set)
+                .verifyComplete();
 
             validateSplitCaptureRequests(requestCreator.invocations, initialContinuationToken, parentPartitionId,
                                          leftChildPartitionId, rightChildPartitionId, resultFromParentPartition,
@@ -344,7 +391,7 @@ public class DocumentProducerTest {
             assertThat(requestCreator.invocations.stream().map(i -> i.maxItemCount).distinct().collect(Collectors.toList())).containsExactlyElementsOf(Collections.singleton(initialPageSize));
 
             // expected results
-            validateSplitResults(subscriber.values(),
+            validateSplitResults(value.get(),
                                  parentPartitionId, leftChildPartitionId,
                                  rightChildPartitionId, resultFromParentPartition, resultFromLeftChildPartition,
                                  resultFromRightChildPartition, true);
@@ -420,13 +467,10 @@ public class DocumentProducerTest {
             currentFeedRange,
             () -> "n/a");
 
-        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-        documentProducer.produceAsync().subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
+        AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+        StepVerifier.create(documentProducer.produceAsync().collectList())
+            .consumeNextWith(value::set)
+            .verifyComplete();
 
         validateMergeCaptureRequests(
             requestCreator.invocations,
@@ -510,13 +554,10 @@ public class DocumentProducerTest {
                 new HashMap<>(),
                 () -> "n/a");
 
-        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-        documentProducer.produceAsync().subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-
-        subscriber.assertNoErrors();
-        subscriber.assertComplete();
+        AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+        StepVerifier.create(documentProducer.produceAsync().collectList())
+            .consumeNextWith(value::set)
+            .verifyComplete();
 
         validateMergeCaptureRequests(
             requestCreator.invocations,
@@ -594,15 +635,9 @@ public class DocumentProducerTest {
                     range1,
                     () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
-
-            subscriber.assertValueCount(responses.size());
+            StepVerifier.create(documentProducer.produceAsync())
+                .expectNextCount(responses.size())
+                .verifyComplete();
 
             // requests match
             assertThat(requestCreator.invocations.stream().map(i -> i.invocationResult).collect(Collectors.toList()))
@@ -696,15 +731,13 @@ public class DocumentProducerTest {
                     feedRangeEpk,
                     () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
+            AtomicReference<List<DocumentProducer<Document>.DocumentProducerFeedResponse>> value = new AtomicReference<>();
+            StepVerifier.create(documentProducer.produceAsync().collectList())
+                .consumeNextWith(value::set)
+                .verifyComplete();
 
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertNoErrors();
-            subscriber.assertComplete();
-
-            subscriber.assertValueCount(responsesBeforeThrottle.size() + responsesAfterThrottle.size());
+            Assertions.assertThat(value.get().size())
+                .isEqualTo(responsesBeforeThrottle.size() + responsesAfterThrottle.size());
 
             // requested max page size match
             assertThat(requestCreator.invocations.stream().map(i -> i.maxItemCount).distinct().collect(Collectors.toList())).containsExactlyElementsOf(Collections.singleton(7));
@@ -719,7 +752,7 @@ public class DocumentProducerTest {
                 .containsExactlyElementsOf(Collections.singletonList(feedRangeEpk));
 
             List<String> resultContinuationToken =
-                    subscriber.values().stream().map(r -> r.pageResult.getContinuationToken()).collect(Collectors.toList());
+                    value.get().stream().map(r -> r.pageResult.getContinuationToken()).collect(Collectors.toList());
             List<String> beforeExceptionContinuationTokens =
                     responsesBeforeThrottle.stream().map(FeedResponse::getContinuationToken).collect(Collectors.toList());
             List<String> afterExceptionContinuationTokens =
@@ -802,13 +835,10 @@ public class DocumentProducerTest {
                     feedRangeEpk,
                     () -> "n/a");
 
-            TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
-
-            documentProducer.produceAsync().subscribe(subscriber);
-            subscriber.awaitTerminalEvent();
-
-            subscriber.assertError(throttlingException);
-            subscriber.assertValueCount(responsesBeforeThrottle.size());
+            List<DocumentProducer<Document>.DocumentProducerFeedResponse> values = new ArrayList<>();
+            StepVerifier.create(documentProducer.produceAsync())
+                .thenConsumeWhile(values::add)
+                .verifyErrorMatches(throttlingException::equals);
         }
 
     private CosmosException mockThrottlingException(Duration retriesAfterDuration) {

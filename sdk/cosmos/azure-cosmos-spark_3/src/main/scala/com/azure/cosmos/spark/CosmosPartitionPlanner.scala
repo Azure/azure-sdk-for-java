@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.extractContinuationTokensFromChangeFeedStateJson
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.changeFeedMetrics.ChangeFeedMetricsTracker
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.extractContinuationTokensFromChangeFeedStateJson
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.FeedRange
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver, requireNotNull}
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
@@ -14,15 +14,17 @@ import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.streaming.{ReadAllAvailable, ReadLimit, ReadMaxFiles, ReadMaxRows}
+import reactor.core.publisher.{Flux, Mono}
 import reactor.core.scala.publisher.SMono.PimpJMono
 import reactor.core.scala.publisher.{SFlux, SMono}
+import reactor.util.retry.Retry
 
 import java.time.Duration
 import java.util
-import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong}
 import java.util.concurrent.{ConcurrentHashMap, ConcurrentMap}
 import scala.collection.mutable
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -189,6 +191,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     assertOnSparkDriver()
     val lastContinuationTokens: ConcurrentMap[FeedRange, String] = new ConcurrentHashMap[FeedRange, String]()
+    val shouldRefreshFeedRangesInCache = new AtomicBoolean(false) // only need to refresh the cache if a partition split has been detected
 
     ContainerFeedRangesCache
       .getFeedRanges(container, containerConfig.feedRangeRefreshIntervalInSecondsOpt)
@@ -204,51 +207,124 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         })
       .flatMapMany(feedRanges => SFlux.fromIterable(feedRanges))
       .flatMap(feedRange => {
-        val requestOptions = changeFeedConfig.toRequestOptions(feedRange)
-        requestOptions.setMaxItemCount(1)
-        requestOptions.setMaxPrefetchPageCount(1)
-        requestOptions.setQuotaInfoEnabled(true)
+        TransientErrorsRetryPolicy.executeWithRetry(() => {
+          queryChangeFeedForInitialOffset(changeFeedConfig, feedRange, container)
+        })
+      })
+      .doOnNext(feedRangeContinuationMap => {
+        if (feedRangeContinuationMap.size > 1) {
+          // indicate a split has happened for the feed range
+          shouldRefreshFeedRangesInCache.set(true)
+        }
 
-        container
-          .queryChangeFeed(requestOptions, classOf[ObjectNode])
-          .handle(r => {
-            val lsnFromItems = getContinuationTokenLsnOfFirstItem(r.getElements.asScala)
-            val continuation = if (lsnFromItems.isDefined) {
-              SparkBridgeImplementationInternal
-                .overrideLsnInChangeFeedContinuation(r.getContinuationToken,lsnFromItems.get)
-            } else {
-              r.getContinuationToken
-            }
-
-            if (!Strings.isNullOrWhiteSpace(continuation)) {
-              if (lastContinuationTokens.putIfAbsent(feedRange, continuation) == null && isDebugLogEnabled) {
-                val stateJson = SparkBridgeImplementationInternal.changeFeedContinuationToJson(continuation)
-                val range = SparkBridgeImplementationInternal.toNormalizedRange(feedRange)
+        feedRangeContinuationMap
+          .foreach(entry => {
+            if (!Strings.isNullOrWhiteSpace(entry._2)) {
+              if (lastContinuationTokens.putIfAbsent(entry._1, entry._2) == null && isDebugLogEnabled) {
+                val stateJson = SparkBridgeImplementationInternal.changeFeedContinuationToJson(entry._2)
+                val range = SparkBridgeImplementationInternal.toNormalizedRange(entry._1)
                 logDebug(s"FeedRange '${range.min}-${range.max}': Set effective continuation '$stateJson")
               }
             }
           })
-          .take(1)
-          .collectList()
-          .asScala
       })
       .asJava()
       .collectList()
       .block()
 
+    if (shouldRefreshFeedRangesInCache.get()) {
+      logDebug("Feed range split has been detected, forcing refresh of the feed ranges in cache")
+      ContainerFeedRangesCache.getFeedRanges(container, Some(0)) // force to refresh now
+    }
+
     val offsetJsonBase64 = SparkBridgeImplementationInternal
       .mergeChangeFeedContinuations(lastContinuationTokens.values().asScala)
 
-    //if (isDebugLogEnabled) {
-      val offsetJson = SparkBridgeImplementationInternal.changeFeedContinuationToJson(offsetJsonBase64)
-      // scala style rule flaky - even complaining on partial log messages
-      // scalastyle:off multiple.string.literals
-      logInfo(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
-      // scalastyle:on multiple.string.literals
-    //}
+    val offsetJson = SparkBridgeImplementationInternal.changeFeedContinuationToJson(offsetJsonBase64)
+    // scala style rule flaky - even complaining on partial log messages
+    // scalastyle:off multiple.string.literals
+    logInfo(s"Initial offset of stream ${streamId.getOrElse("null")}: '$offsetJson'.")
+    // scalastyle:on multiple.string.literals
+
     offsetJsonBase64
   }
   // scalastyle:on method.length
+
+
+  private def queryChangeFeedForInitialOffset(
+    changeFeedConfig: CosmosChangeFeedConfig,
+    feedRangeFromCache: FeedRange,
+    container: CosmosAsyncContainer): SMono[mutable.Map[FeedRange, String]] = {
+
+    // this method will ensure for each change feed query request,
+    // it only targets a feed range that corresponds to a single physical partition at the time of the query,
+    // else it could cause not all child ranges will be populated with continuation tokens correctly
+
+    val feedRangeList = ListBuffer(feedRangeFromCache)
+    val feedRangeContinuationTokenMap = new ConcurrentHashMap[FeedRange, String]()
+
+    Flux.defer(() => Flux.fromIterable(feedRangeList.toList.asJava))
+      .flatMap(feedRange => {
+        if (feedRangeContinuationTokenMap.containsKey(feedRange)) {
+          Mono.empty()
+        } else {
+          val requestOptions = changeFeedConfig.toRequestOptions(feedRange)
+          requestOptions.setMaxItemCount(1)
+          requestOptions.setMaxPrefetchPageCount(1)
+          requestOptions.setQuotaInfoEnabled(true)
+          ImplementationBridgeHelpers
+            .CosmosChangeFeedRequestOptionsHelper
+            .getCosmosChangeFeedRequestOptionsAccessor
+            .disableSplitHandling(requestOptions)
+
+          container
+            .queryChangeFeed(requestOptions, classOf[ObjectNode])
+            .byPage()
+            .next()
+            .onErrorResume(throwable => {
+              if (Exceptions.isPartitionKeyRangeGoneException(throwable)) {
+                logWarning(s"Getting partition key range gone exception for feed range $feedRange")
+
+                // try to find the new feed ranges and then retry again
+                ImplementationBridgeHelpers
+                  .CosmosAsyncContainerHelper
+                  .getCosmosAsyncContainerAccessor
+                  .getOverlappingFeedRanges(container, feedRange, true)
+                  .doOnNext(newChildRanges => {
+                    logInfo(s"Finding new child ranges [$newChildRanges] for feed range $feedRange")
+                    feedRangeList -= feedRange
+                    feedRangeList ++= newChildRanges.asScala
+                  })
+                  .`then`(Mono.error(throwable))
+              } else {
+                Mono.error(throwable)
+              }
+            })
+            .doOnNext(r => {
+              val lsnFromItems = getContinuationTokenLsnOfFirstItem(r.getElements.asScala)
+              val continuation = if (lsnFromItems.isDefined) {
+                SparkBridgeImplementationInternal
+                  .overrideLsnInChangeFeedContinuation(r.getContinuationToken,lsnFromItems.get)
+              } else {
+                r.getContinuationToken
+              }
+
+              feedRangeContinuationTokenMap.put(feedRange, continuation)
+            })
+            .`then`(Mono.empty())
+        }
+      })
+      .retryWhen(
+        Retry
+          .indefinitely()
+          .filter(ex => Exceptions.isPartitionKeyRangeGoneException(ex))
+          .doBeforeRetry(_ => {
+            logWarning(s"Getting partition key range gone exception, will retry")
+          })
+      )
+      .`then`(Mono.just(feedRangeContinuationTokenMap.asScala))
+      .asScala
+  }
 
   // scalastyle:off parameter.number
   def getLatestOffset
@@ -338,6 +414,16 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       logDebug(endOffsetDebug.toString)
     }
 
+    createLatestOffset(startOffset, inputPartitions)
+  }
+  // scalastyle:on method.length
+  // scalastyle:on parameter.number
+
+  private[spark] def createLatestOffset
+  (
+    startOffset: ChangeFeedOffset,
+    inputPartitions: Array[CosmosInputPartition]
+  ): ChangeFeedOffset = {
     val changeFeedStateJson = SparkBridgeImplementationInternal
       .createChangeFeedStateJson(
         startOffset.changeFeedState,
@@ -345,10 +431,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     ChangeFeedOffset(changeFeedStateJson, Some(inputPartitions))
   }
-  // scalastyle:on method.length
-  // scalastyle:on parameter.number
 
-  private[this] def getOrderedPartitionMetadataWithStartLsn
+  private[spark] def getOrderedPartitionMetadataWithStartLsn
   (
     stateJson: String,
     latestPartitionMetadata: Array[PartitionMetadata]
@@ -758,12 +842,48 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
                   0,
                   None,
                   new AtomicLong(0),
-                  new AtomicLong(0)
+                  new AtomicLong(0),
+                  None
                 ))
               })
           .collectSeq()
+          .map(metadata =>
+            filterPartitionMetadataByFeedRanges(
+              expandPartitionMetadataByLatestLsn(metadata, isChangeFeed),
+              partitionConfig.feedRangeFiler))
       })
       .block()
       .toArray
+  }
+
+  private[spark] def expandPartitionMetadataByLatestLsn(
+    metadata: Seq[PartitionMetadata],
+    isChangeFeed: Boolean
+  ): Seq[PartitionMetadata] = {
+    if (isChangeFeed) {
+      metadata.foreach(partitionMetadata => {
+        if (partitionMetadata.fromNowContinuationState.isEmpty && partitionMetadata.latestLsn > 0) {
+          logWarning(
+            s"Change-feed metadata for range '${partitionMetadata.feedRange}' is missing the FromNow continuation " +
+              "state; composite split expansion cannot be performed.")
+        }
+      })
+      metadata.flatMap(_.splitByLatestLsn())
+    } else {
+      metadata
+    }
+  }
+
+  private[spark] def filterPartitionMetadataByFeedRanges(
+    metadata: Seq[PartitionMetadata],
+    feedRangeFilter: Option[Array[NormalizedRange]]
+  ): Seq[PartitionMetadata] = {
+    feedRangeFilter match {
+      case Some(epkRangesInScope) =>
+        metadata.filter(partitionMetadata =>
+          epkRangesInScope.exists(epk =>
+            SparkBridgeImplementationInternal.doRangesOverlap(epk, partitionMetadata.feedRange)))
+      case None => metadata
+    }
   }
 }

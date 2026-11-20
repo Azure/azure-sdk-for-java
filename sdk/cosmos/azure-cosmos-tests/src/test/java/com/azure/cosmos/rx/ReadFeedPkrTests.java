@@ -61,7 +61,9 @@ public class ReadFeedPkrTests extends TestSuiteBase {
     @AfterClass(groups = { "query" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteCollection(createdCollection);
-        client.close();
+        if (client != null) {
+            client.close();
+        }
     }
 
     private String getCollectionLink() {

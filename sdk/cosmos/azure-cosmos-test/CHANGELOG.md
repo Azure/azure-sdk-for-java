@@ -1,8 +1,10 @@
 ## Release History
 
-### 1.0.0-beta.19 (Unreleased)
+### 1.0.0-beta.22 (Unreleased)
 
 #### Features Added
+
+* Added support for injecting address-refresh request timeout, internal server, compute internal, partition failover, service unavailable, lease not found, channel closed, partition migration retry-limit, and read quorum errors.
 
 #### Breaking Changes
 
@@ -10,15 +12,33 @@
 
 #### Other Changes
 
-### 1.0.0-beta.17 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 1.0.0-beta.21 (2026-09-22)
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.83.0`.
+
+### 1.0.0-beta.20 (2026-08-26)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.82.0`.
+
+### 1.0.0-beta.19 (2026-06-08)
+
+#### Bugs Fixed
+* Fixed Netty ByteBuf leak in `GatewayServerErrorInjector` fault injection delay paths under HTTP/2. - See [PR 48880](https://github.com/Azure/azure-sdk-for-java/pull/48880)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.81.0`.
+  
+### 1.0.0-beta.18 (2026-03-27)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.79.0`.
+
+### 1.0.0-beta.17(2026-01-26)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.77.0`.
 
 ### 1.0.0-beta.16 (2025-12-09)
 
@@ -123,4 +143,3 @@
 ### 1.0.0-beta.1 (2023-03-17)
 #### Features Added
 * Added fault injection support - See [PR 33329](https://github.com/Azure/azure-sdk-for-java/pull/33329) 
-

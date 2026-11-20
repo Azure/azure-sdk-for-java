@@ -130,6 +130,47 @@ public interface FeedResponseValidator<T> {
             return this;
         }
 
+        public Builder<T> hasQueryAdvice() {
+            validators.add(new FeedResponseValidator<T>() {
+                @Override
+                public void validate(FeedResponse<T> feedPage) {
+                    String queryAdvice = feedPage.getQueryAdvice();
+                    assertThat(queryAdvice)
+                        .describedAs("query advice")
+                        .isNotNull()
+                        .isNotEmpty();
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> hasQueryAdviceContaining(final String expectedSubstring) {
+            validators.add(new FeedResponseValidator<T>() {
+                @Override
+                public void validate(FeedResponse<T> feedPage) {
+                    String queryAdvice = feedPage.getQueryAdvice();
+                    assertThat(queryAdvice)
+                        .describedAs("query advice")
+                        .isNotNull()
+                        .contains(expectedSubstring);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> noQueryAdvice() {
+            validators.add(new FeedResponseValidator<T>() {
+                @Override
+                public void validate(FeedResponse<T> feedPage) {
+                    String queryAdvice = feedPage.getQueryAdvice();
+                    assertThat(queryAdvice)
+                        .describedAs("query advice should be null when not enabled")
+                        .isNull();
+                }
+            });
+            return this;
+        }
+
         private <T> Resource getResource(T response) {
             if (response instanceof Resource
                 || response instanceof CosmosConflictProperties

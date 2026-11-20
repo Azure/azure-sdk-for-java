@@ -111,5 +111,39 @@ df.filter(col("isAlive") === true)
 
 // COMMAND ----------
 
+// Change Feed - micro-batch structured streaming
+// This exercises the ChangeFeedInitialOffsetWriter and HDFSMetadataLog code paths
+// that can break on certain Spark distributions (e.g. Databricks Runtime 17.3+)
+
+val changeFeedCfg = cfg ++ Map(
+  "spark.cosmos.read.inferSchema.enabled" -> "false",
+  "spark.cosmos.changeFeed.startFrom" -> "Beginning",
+  "spark.cosmos.changeFeed.mode" -> "Incremental"
+)
+
+val testId = java.util.UUID.randomUUID().toString.replace("-", "")
+
+val changeFeedDF = spark
+  .readStream
+  .format("cosmos.oltp.changeFeed")
+  .options(changeFeedCfg)
+  .load()
+
+val microBatchQuery = changeFeedDF
+  .writeStream
+  .format("memory")
+  .queryName(testId)
+  .outputMode("append")
+  .start()
+
+microBatchQuery.processAllAvailable()
+microBatchQuery.stop()
+
+val sinkCount = spark.sql(s"SELECT * FROM $testId").count()
+println(s"Change Feed micro-batch streaming: $sinkCount records read via change feed")
+assert(sinkCount >= 2, s"Expected at least 2 records from change feed but found $sinkCount")
+
+// COMMAND ----------
+
 // cleanup
 spark.sql(s"DROP TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName};")

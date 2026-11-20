@@ -604,7 +604,7 @@ class CosmosCatalogBase
                             v.viewName.equals(viewName)) match {
                             case Some(existingView) =>
                                 val updatedViewDefinitionsSnapshot: Array[ViewDefinition] =
-                                    (ArrayBuffer(viewDefinitions: _*) - existingView).toArray
+                                    ArrayBuffer(viewDefinitions: _*).filterNot(_ == existingView).toArray
 
                                 if (viewRepositorySnapshot.add(
                                     lastBatchId + 1,

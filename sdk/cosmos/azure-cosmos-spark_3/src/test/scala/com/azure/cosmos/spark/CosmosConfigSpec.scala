@@ -252,7 +252,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
         case otherError: Throwable => throw otherError
       }
 
-      val userCfgMissingArmEndpoint = userConfig.toMap.filterKeys(_ != "spark.cosmos.account.azureEnvironment.mANagement")
+      val userCfgMissingArmEndpoint = userConfig.toMap.filter(_._1 != "spark.cosmos.account.azureEnvironment.mANagement")
       try {
         CosmosAccountConfig.parseCosmosAccountConfig(userCfgMissingArmEndpoint)
         throw new IllegalStateException("Should never reach here when ARM endpoint config is missing")
@@ -457,6 +457,9 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.runtimeFilteringEnabled shouldBe true
     config.readManyFilteringConfig.readManyFilteringEnabled shouldBe false
     config.readManyFilteringConfig.readManyFilterProperty shouldEqual "_itemIdentity"
+    config.readManyByPkTreatNullAsNone shouldBe false
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe None
+    config.readManyByPkMaxBatchSize shouldBe None
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
@@ -630,6 +633,113 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.customQuery.get.queryText shouldBe queryText
   }
 
+  it should "parse readManyByPk nullHandling configuration" in {
+    // Default (not specified) should treat null as JSON null (addNullValue)
+    var userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
+    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe false
+
+    // Explicit "Null" should treat null as JSON null (addNullValue)
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.nullHandling" -> "Null"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe false
+
+    // Case-insensitive "null"
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.nullHandling" -> "null"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe false
+
+    // "None" should treat null as PartitionKey.NONE (addNoneValue)
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.nullHandling" -> "None"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe true
+
+    // Case-insensitive "none"
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.nullHandling" -> "none"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkTreatNullAsNone shouldBe true
+  }
+
+  it should "parse readManyByPk maxBatchSize configuration" in {
+    // Default (not specified) should be None - SDK applies its own default
+    var userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
+    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxBatchSize shouldBe None
+
+    // Explicit value
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxBatchSize" -> "50"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxBatchSize shouldBe Some(50)
+
+    // Value below 1 should be clamped to 1
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxBatchSize" -> "0"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxBatchSize shouldBe Some(1)
+
+    // Large value should be accepted
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxBatchSize" -> "500"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxBatchSize shouldBe Some(500)
+  }
+
+  it should "parse readManyByPk maxConcurrentBatchPrefetch configuration" in {
+    // Default (not specified) should be None - SDK applies its own default
+    var userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false"
+    )
+    var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe None
+
+    // Explicit value
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch" -> "4"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe Some(4)
+
+    // Value above 64 should be clamped to 64
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch" -> "100"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe Some(64)
+
+    // Value below 1 should be clamped to 1
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.readManyByPk.maxConcurrentBatchPrefetch" -> "0"
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readManyByPkMaxConcurrentBatchPrefetch shouldBe Some(1)
+  }
+
   it should "throw on invalid read configuration" in {
     val userConfig = Map(
       "spark.cosmos.read.schemaConversionMode" -> "not a valid value"
@@ -726,6 +836,26 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.bulkMaxPendingOperations.get shouldEqual 12
     config.maxInitialNoProgressIntervalInSeconds shouldEqual 180
     config.maxRetryNoProgressIntervalInSeconds shouldEqual 45 * 60
+  }
+
+  it should "parse transactional bulk write configs" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "true",
+      "spark.cosmos.write.bulk.transactional" -> "true",
+      "spark.cosmos.write.bulk.transactional.maxOperationsConcurrency" -> "123",
+      "spark.cosmos.write.bulk.transactional.maxBatchesConcurrency" -> "5"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig, StructType(Nil))
+
+    config.bulkTransactional shouldEqual true
+    config.bulkExecutionConfigs.isDefined shouldEqual true
+    val txConfigs = config.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteTransactionalBulkExecutionConfigs]
+    txConfigs.maxConcurrentOperations.isDefined shouldEqual true
+    txConfigs.maxConcurrentOperations.get shouldEqual 123
+    txConfigs.maxConcurrentBatches.isDefined shouldEqual true
+    txConfigs.maxConcurrentBatches.get shouldEqual 5
   }
 
   it should "parse partitioning config with custom Strategy" in {
@@ -976,9 +1106,11 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     )
     var writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
     writeConfig should not be null
-    writeConfig.maxMicroBatchPayloadSizeInBytes should not be null
-    writeConfig.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
-    writeConfig.maxMicroBatchPayloadSizeInBytes.get shouldEqual BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES
+    writeConfig.bulkExecutionConfigs should not be null
+    var bulkExecutorConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutionConfigs]
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes should not be null
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.get shouldEqual BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES
 
     userConfig = Map(
       "spark.cosmos.write.strategy" -> "ItemOverwrite",
@@ -988,9 +1120,11 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     writeConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
     writeConfig should not be null
-    writeConfig.maxMicroBatchPayloadSizeInBytes should not be null
-    writeConfig.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
-    writeConfig.maxMicroBatchPayloadSizeInBytes.get shouldEqual 1000000
+    writeConfig.bulkExecutionConfigs should not be null
+    bulkExecutorConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutionConfigs]
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes should not be null
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.isDefined shouldEqual true
+    bulkExecutorConfigs.maxMicroBatchPayloadSizeInBytes.get shouldEqual 1000000
   }
 
   "Config Parser" should "validate default operation types for patch configs" in {
@@ -1546,6 +1680,43 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     originalEndpointConfig.userAgentFormat shouldEqual UserAgentFormat.NoSparkEnv
     throughputEndpointConfig.endpoint shouldEqual sampleProdEndpoint
     throughputEndpointConfig.userAgentFormat shouldEqual UserAgentFormat.NoSparkEnv
+  }
+
+  "CosmosThroughputControlConfig" should "parse throughput bucket" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.throughputControl.throughputBucket" -> "2",
+      "spark.cosmos.throughputControl.enabled" -> "true",
+      "spark.cosmos.throughputControl.name" -> "test"
+    )
+
+    val throughputControlConfig = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
+    throughputControlConfig.isDefined shouldEqual true
+    throughputControlConfig.get match {
+      case serverThroughputControlConfig: CosmosServerThroughputControlConfig => serverThroughputControlConfig.throughputBucket shouldEqual 2
+      case other => fail(s"should get CosmosServerThroughputControlConfig config, but get ${other.getClass} config type")
+    }
+  }
+
+  it should "complain when both server and sdk throughput control configs are provided" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.throughputControl.throughputBucket" -> "2",
+      "spark.cosmos.throughputControl.enabled" -> "true",
+      "spark.cosmos.throughputControl.name" -> "test",
+      "spark.cosmos.throughputControl.targetThroughput" -> "10"
+    )
+
+    try {
+      CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
+      fail("should have failed due to mixed throughput control configuration")
+    } catch {
+      case e: IllegalArgumentException =>
+        e.getMessage should startWith("Mixed throughput control configuration detected")
+      case e: Exception => fail(s"Unexpected exception type: ${e.getClass}")
+    }
   }
 
   private case class PatchColumnConfigParameterTest

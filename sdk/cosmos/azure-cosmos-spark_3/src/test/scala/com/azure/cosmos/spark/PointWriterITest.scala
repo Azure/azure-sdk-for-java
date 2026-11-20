@@ -12,6 +12,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
 import org.apache.spark.MockTaskContext
 import org.apache.spark.sql.types.{BooleanType, DoubleType, FloatType, IntegerType, LongType, StringType, StructField, StructType}
+import org.scalatest.concurrent.Eventually.eventually
+import org.scalatest.concurrent.Waiters.{interval, timeout}
+import org.scalatest.time.SpanSugar.convertIntToGrainOfTime
 
 import scala.collection.concurrent.TrieMap
 import scala.collection.mutable
@@ -31,7 +34,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
@@ -73,7 +76,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
@@ -107,7 +110,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
     }
 
-    val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false)
+    val deleteConfig = CosmosWriteConfig(ItemWriteStrategy.ItemDelete, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val pointDeleter = new PointWriter(
       container,
@@ -133,7 +136,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -192,7 +195,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val deleteConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemDeleteIfNotModified,
       maxRetryCount = 3,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointDeleter = new PointWriter(
       container,
@@ -217,7 +221,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 0, bulkEnabled = false)
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
     val pointWriter = new PointWriter(
       container,
       partitionKeyDefinition,
@@ -253,7 +257,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
     val writeConfig = CosmosWriteConfig(
-      ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false)
+      ItemWriteStrategy.ItemOverwriteIfNotModified, maxRetryCount = 3, bulkEnabled = false, bulkTransactional = false)
 
     val metricsPublisher = new TestOutputMetricsPublisher
     var pointWriter = new PointWriter(
@@ -273,10 +277,19 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
 
     pointWriter.flushAndClose()
-    val allItems = readAllItems()
 
-    allItems should have size items.size
-    metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    // Poll until all items are indexed and visible via query
+    // readAllItems() uses a query which depends on indexing completion
+    var allItems = readAllItems()
+    eventually(timeout(10.seconds), interval(500.milliseconds)) {
+      allItems = readAllItems()
+      allItems should have size items.size
+    }
+
+    // Poll until metrics are fully recorded after flush
+    eventually(timeout(10.seconds), interval(100.milliseconds)) {
+      metricsPublisher.getRecordsWrittenSnapshot() shouldEqual items.size
+    }
     metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
     metricsPublisher.getTotalRequestChargeSnapshot() > 5 * items.size shouldEqual true
     metricsPublisher.getTotalRequestChargeSnapshot() < 10 * items.size shouldEqual true
@@ -301,6 +314,13 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
 
     pointWriter.flushAndClose()
+
+    // Wait for metrics to be fully aggregated after flush
+    // This prevents race conditions where metrics snapshot is taken before all writes are recorded
+    // Use eventually block to poll until the expected count is reached
+    eventually(timeout(10.seconds), interval(100.milliseconds)) {
+      metricsPublisher.getRecordsWrittenSnapshot() should be >= (2 * items.size).toLong
+    }
 
     metricsPublisher.getRecordsWrittenSnapshot() shouldEqual 2 * items.size
     metricsPublisher.getBytesWrittenSnapshot() > 0 shouldEqual true
@@ -372,7 +392,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val metricsPublisher = new TestOutputMetricsPublisher
     val pointWriter = new PointWriter(
@@ -501,7 +522,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -578,7 +600,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -637,7 +660,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -718,7 +742,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -794,6 +819,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           ItemWriteStrategy.ItemOverwrite,
           5,
           bulkEnabled = true,
+          bulkTransactional = false,
+          bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
           bulkMaxPendingOperations = Some(900)
         )
 
@@ -852,7 +879,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     }
   }
 
-  "Point Writer" can "patch item with condition" in {
+  "Point Writer" can "skip 412 for patch item with condition" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
@@ -860,7 +887,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
       ItemWriteStrategy.ItemOverwrite,
       5,
-      bulkEnabled = false)
+      bulkEnabled = false,
+      bulkTransactional = false)
 
     val pointWriter = new PointWriter(
       container,
@@ -877,7 +905,6 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
 
     pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
     pointWriter.flushAndClose()
-    // make sure the item exists
     val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
 
     // Cosmos patch does not support for system properties
@@ -899,25 +926,153 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
         field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", isRawJson = false)
     })
 
+    val patchMetricsPublisher = new TestOutputMetricsPublisher
     val pointWriterForPatch =
       CosmosPatchTestHelper.getPointWriterForPatch(
         columnConfigsMap,
         container,
         partitionKeyDefinition,
-        Some(s"from c where c.propInt > ${Integer.MAX_VALUE}")) // using a always false condition
+        Some(s"from c where c.propInt > ${Integer.MAX_VALUE}"), // using an always false condition
+        metricsPublisher = patchMetricsPublisher)
 
-    try {
-      pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
-      pointWriterForPatch.flushAndClose()
-      fail("Test should fail with 412 since the condition is false :" + originalItem.get("propInt").asInt())
-    } catch {
-      case e: CosmosException =>
-        e.getMessage.contains("\"statusCode\":412,\"subStatusCode\":1110") shouldEqual true
-    }
+    // the 412 raised by the always-false filter should be skipped, not thrown
+    pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+    pointWriterForPatch.flushAndClose()
 
-    // since the condition is always false, so the item should not be updated
+    // a skip must be accounted for as a skip - never as a written record - and its RU charge must
+    // still be attributed, exactly once
+    patchMetricsPublisher.getRecordsWrittenSnapshot() shouldEqual 0
+    patchMetricsPublisher.getRecordsSkippedSnapshot() shouldEqual 1
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() > 0 shouldEqual true
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() < 20 shouldEqual true
+
+    // since the condition is always false, the item should not be updated even though no exception was thrown
     val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
     objectMapper.writeValueAsString(updatedItem) shouldEqual objectMapper.writeValueAsString(originalItem)
+  }
+
+  "Point Writer" can "skip 412 for patchIfExists item with condition" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = false,
+      bulkTransactional = false)
+
+    val pointWriter = new PointWriter(
+      container,
+      partitionKeyDefinition,
+      writeConfig,
+      DiagnosticsConfig(),
+      MockTaskContext.mockTaskContext(),
+      new TestOutputMetricsPublisher)
+
+    // First create one item, as patch can only operate on existing items
+    val itemWithFullSchema = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+    val id = itemWithFullSchema.get("id").textValue()
+    val partitionKey = new PartitionKey(itemWithFullSchema.get(strippedPartitionKeyPath).textValue())
+
+    pointWriter.scheduleWrite(partitionKey, itemWithFullSchema)
+    pointWriter.flushAndClose()
+    val originalItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+
+    // Cosmos patch does not support for system properties
+    // if we send request to patch for them, server is going to return exception with "Invalid patch request: Cannot patch system property"
+    // so the test is to make sure we have skipped these properties and the request can succeed for other properties
+    val partialUpdateSchema = StructType(Seq(
+      StructField("propInt", IntegerType)
+    ))
+
+    val patchPartialUpdateItem =
+      CosmosPatchTestHelper.getPatchItemWithSchema(
+        strippedPartitionKeyPath,
+        partialUpdateSchema,
+        originalItem)
+
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    patchPartialUpdateItem.fields().asScala.foreach(field => {
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+        field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", isRawJson = false)
+    })
+
+    val patchMetricsPublisher = new TestOutputMetricsPublisher
+    val pointWriterForPatch =
+      CosmosPatchTestHelper.getPointWriterForPatch(
+        columnConfigsMap,
+        container,
+        partitionKeyDefinition,
+        Some(s"from c where c.propInt > ${Integer.MAX_VALUE}"), // using an always false condition
+        metricsPublisher = patchMetricsPublisher,
+        itemWriteStrategy = ItemWriteStrategy.ItemPatchIfExists)
+
+    // the item exists, so the predicate-412 OR-branch (not the not-found branch) is exercised here;
+    // the 412 raised by the always-false filter should be skipped, not thrown
+    pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+    pointWriterForPatch.flushAndClose()
+
+    patchMetricsPublisher.getRecordsWrittenSnapshot() shouldEqual 0
+    patchMetricsPublisher.getRecordsSkippedSnapshot() shouldEqual 1
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() > 0 shouldEqual true
+    patchMetricsPublisher.getTotalRequestChargeSnapshot() < 20 shouldEqual true
+
+    // since the condition is always false, the item should not be updated even though no exception was thrown
+    val updatedItem: ObjectNode = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem
+    objectMapper.writeValueAsString(updatedItem) shouldEqual objectMapper.writeValueAsString(originalItem)
+  }
+
+  "Point Writer" can "skip not-found for patchIfExists item when the item does not exist" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val strippedPartitionKeyPath = CosmosPatchTestHelper.getStrippedPartitionKeyPath(partitionKeyDefinition)
+
+    // an item that has never been created, so patchIfExists should hit the not-found OR-branch
+    val nonExistentItem = CosmosPatchTestHelper.getPatchItemWithFullSchema(UUID.randomUUID().toString, strippedPartitionKeyPath)
+    val id = nonExistentItem.get("id").textValue()
+    val partitionKey = new PartitionKey(nonExistentItem.get(strippedPartitionKeyPath).textValue())
+
+    val partialUpdateSchema = StructType(Seq(
+      StructField("propInt", IntegerType)
+    ))
+
+    val patchPartialUpdateItem =
+      CosmosPatchTestHelper.getPatchItemWithSchema(
+        strippedPartitionKeyPath,
+        partialUpdateSchema,
+        nonExistentItem)
+
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    patchPartialUpdateItem.fields().asScala.foreach(field => {
+      columnConfigsMap += field.getKey -> CosmosPatchColumnConfig(
+        field.getKey, CosmosPatchOperationTypes.Set, s"/${field.getKey}", isRawJson = false)
+    })
+
+    val patchMetricsPublisher = new TestOutputMetricsPublisher
+    val pointWriterForPatch =
+      CosmosPatchTestHelper.getPointWriterForPatch(
+        columnConfigsMap,
+        container,
+        partitionKeyDefinition,
+        metricsPublisher = patchMetricsPublisher,
+        itemWriteStrategy = ItemWriteStrategy.ItemPatchIfExists)
+
+    // the item was never created, so the not-found should be skipped rather than throwing
+    pointWriterForPatch.scheduleWrite(partitionKey, patchPartialUpdateItem)
+    pointWriterForPatch.flushAndClose()
+
+    patchMetricsPublisher.getRecordsWrittenSnapshot() shouldEqual 0
+    patchMetricsPublisher.getRecordsSkippedSnapshot() shouldEqual 1
+
+    // the item should still not exist since patchIfExists is a no-op for missing items
+    try {
+      container.readItem(id, partitionKey, classOf[ObjectNode]).block()
+      fail("Item should not exist since patchIfExists is a no-op for missing items")
+    } catch {
+      case e: CosmosException => e.getStatusCode shouldEqual 404
+    }
   }
 
   "Point Writer" should "throw exception if no valid operations are included in patch operation" in {
@@ -964,6 +1119,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           ItemWriteStrategy.ItemBulkUpdate,
           5,
           bulkEnabled = false,
+          bulkTransactional = false,
           bulkMaxPendingOperations = Some(900),
           patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())))
 
@@ -1011,6 +1167,7 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
           ItemWriteStrategy.ItemBulkUpdate,
           5,
           bulkEnabled = false,
+          bulkTransactional = false,
           bulkMaxPendingOperations = Some(900),
           patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]))
       )
@@ -1059,7 +1216,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
     val writeConfig = CosmosWriteConfig(
         ItemWriteStrategy.ItemOverwrite,
         5,
-        bulkEnabled = false)
+        bulkEnabled = false,
+        bulkTransactional = false)
 
     val pointWriter = new PointWriter(
         container,
@@ -1132,7 +1290,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
-          bulkEnabled = false)
+          bulkEnabled = false,
+          bulkTransactional = false)
 
       val pointWriter = new PointWriter(
           container,
@@ -1179,7 +1338,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
-          bulkEnabled = false)
+          bulkEnabled = false,
+          bulkTransactional = false)
 
       val pointWriter = new PointWriter(
           container,
@@ -1238,7 +1398,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
       val writeConfig = CosmosWriteConfig(
           ItemWriteStrategy.ItemOverwrite,
           5,
-          bulkEnabled = false)
+          bulkEnabled = false,
+          bulkTransactional = false)
 
       val pointWriter = new PointWriter(
           container,
@@ -1314,6 +1475,8 @@ class PointWriterITest extends IntegrationSpec with CosmosClient with AutoCleana
                   ItemWriteStrategy.ItemOverwrite,
                   5,
                   bulkEnabled = true,
+                  bulkTransactional = false,
+                  bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
                   bulkMaxPendingOperations = Some(900)
               )
 

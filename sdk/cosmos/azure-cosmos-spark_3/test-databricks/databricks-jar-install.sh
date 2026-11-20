@@ -3,7 +3,9 @@
 CLUSTER_NAME=$1
 AVOID_DBFS=$2
 JARPATH=$3
-STORAGE_ACCOUNT_KEY=$4
+STORAGE_ACCOUNT_NAME=$4
+STORAGE_ACCOUNT_KEY=$5
+JAR_NAME=$6
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$JARPATH" ]] && exit 1
 
@@ -37,7 +39,7 @@ JAR_CHECK_SUM="$(sha256sum -- "$JARPATH/$JARFILE")" || {
                 exit 1
               }
 JAR_CHECK_SUM="${JAR_CHECK_SUM%% *}"
-echo "CHECKSUM of the jar (used to ensure there are no concurrent live tests interfering) - $JAR_CHECK_SUM"
+echo "CHECKSUM of the jar $JARPATH/$JARFILE (used to ensure there are no concurrent live tests interfering) - $JAR_CHECK_SUM"
 echo "##vso[task.setvariable variable=JarCheckSum]$JAR_CHECK_SUM"
 
 echo "CLUSTER_NAME: $CLUSTER_NAME"
@@ -45,13 +47,13 @@ echo "Avoid DBFS: $AVOID_DBFS"
 # DATABRICKS_RUNTIME_VERSION is not populated in the environment and version comparison is messy in bash
 # Using cluster name for the cluster that was created with 16.4
 if [[ "${AVOID_DBFS,,}" == "true" ]]; then
-  account=oltpsparkcijarstore
+  account=$STORAGE_ACCOUNT_NAME
 
-  echo "Uploading jar '$JARPATH/$JARFILE' to Azure Storage account oltpsparkcijarstore (ephemeral tenant) container jarstore BLOB jars/azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar"
-  az storage blob upload --account-name oltpsparkcijarstore --account-key $STORAGE_ACCOUNT_KEY --container-name jarstore --name jars/azure-cosmos-spark_3-5_2-12-latest-ci-candidate.jar --file $JARPATH/$JARFILE --type block --overwrite true --only-show-errors
+  echo "Uploading jar '$JARPATH/$JARFILE' to Azure Storage account $STORAGE_ACCOUNT_NAME (ephemeral tenant) container jarstore BLOB jars/$JAR_NAME"
+  az storage blob upload --account-name $STORAGE_ACCOUNT_NAME --account-key $STORAGE_ACCOUNT_KEY --container-name jarstore --name jars/$JAR_NAME --file $JARPATH/$JARFILE --type block --overwrite true --only-show-errors
 
   if [ $? -eq 0 ]; then
-    echo "Successfully uploaded JAR to oltpsparkcijarstore (ephemeral tenant)."
+    echo "Successfully uploaded JAR to $STORAGE_ACCOUNT_NAME (ephemeral tenant)."
     echo "Rebooting cluster to install new library via init script"
   else
     echo "Failed to upload JAR to Workspace Files."

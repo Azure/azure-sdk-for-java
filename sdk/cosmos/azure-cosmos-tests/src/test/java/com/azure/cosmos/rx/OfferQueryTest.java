@@ -3,12 +3,12 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
+// Uses rx.TestSuiteBase (local package)
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -39,8 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OfferQueryTest extends TestSuiteBase {
 
-    public final static int SETUP_TIMEOUT = 40000;
-    public final String databaseId = DatabaseForTest.generateId();
+    public final String databaseId = CosmosDatabaseForTest.generateId();
 
     private List<DocumentCollection> createdCollections = new ArrayList<>();
 
@@ -50,7 +49,7 @@ public class OfferQueryTest extends TestSuiteBase {
         return TestUtils.getDatabaseNameLink(databaseId);
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public OfferQueryTest(Builder clientBuilder) {
         super(clientBuilder);
     }

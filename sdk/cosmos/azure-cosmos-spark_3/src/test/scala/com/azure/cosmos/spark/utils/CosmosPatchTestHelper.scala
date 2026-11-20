@@ -6,7 +6,7 @@ package com.azure.cosmos.spark.utils
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.PartitionKeyDefinition
-import com.azure.cosmos.spark.{BulkWriter, CosmosContainerConfig, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, OutputMetricsPublisherTrait, PointWriter}
+import com.azure.cosmos.spark.{BulkWriter, CosmosContainerConfig, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteBulkExecutionConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, OutputMetricsPublisherTrait, PointWriter}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
@@ -160,17 +160,21 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
   ))
 }
 
+  // TODO: wire up with transactional batch when patch is supported in transactional bulk writer
  def getBulkWriterForPatch(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                            container: CosmosAsyncContainer,
                            containerConfig: CosmosContainerConfig,
                            partitionKeyDefinition: PartitionKeyDefinition,
                            patchPredicateFilter: Option[String] = None,
-                           metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): BulkWriter = {
+                           metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher,
+                           itemWriteStrategy: ItemWriteStrategy.ItemWriteStrategy = ItemWriteStrategy.ItemPatch): BulkWriter = {
   val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
-   ItemWriteStrategy.ItemPatch,
+   itemWriteStrategy,
    5,
    bulkEnabled = true,
+   bulkTransactional = false,
+   bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
    patchConfigs = Some(patchConfigs))
 
   new BulkWriter(
@@ -183,6 +187,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
     1)
  }
 
+  // TODO: wire up with transactional bulk writer when patchBulkUpdate is supported in transactional bulk writer
  def getBulkWriterForPatchBulkUpdate(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                            container: CosmosAsyncContainer,
                            containerConfig: CosmosContainerConfig,
@@ -193,6 +198,8 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
          ItemWriteStrategy.ItemBulkUpdate,
          5,
          bulkEnabled = true,
+         bulkTransactional = false,
+         bulkExecutionConfigs = Some(CosmosWriteBulkExecutionConfigs()),
          patchConfigs = Some(patchConfigs))
 
      new BulkWriter(
@@ -209,13 +216,15 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
                             container: CosmosAsyncContainer,
                             partitionKeyDefinition: PartitionKeyDefinition,
                             patchPredicateFilter: Option[String] = None,
-                            metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): PointWriter = {
+                            metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher,
+                            itemWriteStrategy: ItemWriteStrategy.ItemWriteStrategy = ItemWriteStrategy.ItemPatch): PointWriter = {
 
   val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
-   ItemWriteStrategy.ItemPatch,
+   itemWriteStrategy,
    5,
    bulkEnabled = false,
+   bulkTransactional = false,
    patchConfigs = Some(patchConfigs))
 
   new PointWriter(
@@ -237,6 +246,7 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
          ItemWriteStrategy.ItemBulkUpdate,
          5,
          bulkEnabled = false,
+         bulkTransactional = false,
          patchConfigs = Some(patchConfigs))
 
      new PointWriter(
