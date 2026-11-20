@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -66,6 +67,8 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.Tags;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
@@ -1691,6 +1694,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
             Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
             Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+            FailoverMetricsTestHelper metrics = new FailoverMetricsTestHelper();
 
             try {
                 CosmosClientBuilder cosmosClientBuilder = getClientBuilder();
@@ -1699,7 +1703,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     cosmosClientBuilder.endToEndOperationLatencyPolicyConfig(THREE_SEC_E2E_TIMEOUT_POLICY);
                 }
 
-                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                CosmosAsyncClient asyncClient = cosmosClientBuilder
+                    .clientTelemetryConfig(metrics.createTelemetryConfig()).buildAsyncClient();
                 cosmosAsyncClientValueHolder.v = asyncClient;
 
                 CosmosAsyncContainer asyncContainer = asyncClient
@@ -1711,6 +1716,10 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
                 RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
                 RxStoreModel rxStoreModel = ReflectionUtils.getGatewayProxy(rxDocumentClient);
+                Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer =
+                    getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+                assertThat(partitionKeyRangesForContainer.v).isNotEmpty();
+                String partitionKeyRangeId = partitionKeyRangesForContainer.v.get(0).getId();
 
                 // Swap GlobalEndpointManager.owner to a delegating wrapper that toggles PPAF flag on DatabaseAccount
                 GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
@@ -1780,9 +1789,21 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 // Phase 2: PPAF enabled -> expect characteristics provided for ENABLED
                 ppafEnabledRef.set(Boolean.TRUE);
                 globalEndpointManager.refreshLocationAsync(null, true).block();
+                Map<Meter.Id, Double> baseline = metrics.snapshotRequestCounts();
                 ResponseWrapper<?> responseWithPpafEnabled = dataPlaneOperation.apply(operationInvocationParamsWrapper);
                 this.validateExpectedResponseCharacteristics.accept(responseWithPpafEnabled, expectedResponseCharacteristicsWhenPpafIsEnabled);
                 JsonNode enabledBookmark = assertPpafOverride(responseWithPpafEnabled, preferredRegions.get(1));
+                Tags partitionTags = Tags.of(TagName.PartitionKeyRangeId.toString(), partitionKeyRangeId,
+                    TagName.RequestOperationType.toString(), "Document/" + operationType);
+                metrics.assertRequestCountIncreased(connectionMode,
+                    partitionTags.and(FailoverMetricsTestHelper.regionTag(regionWithIssues))
+                        .and(TagName.RequestStatusCode.toString(), errorStatusCodeToMockFromPartitionInUnhealthyRegion
+                            + "/" + errorSubStatusCodeToMockFromPartitionInUnhealthyRegion),
+                    baseline);
+                metrics.assertRequestCountIncreased(connectionMode,
+                    partitionTags.and(FailoverMetricsTestHelper.regionTag(preferredRegions.get(1)))
+                        .and(TagName.RequestStatusCode.toString(), successStatusCode + "/0"),
+                    baseline);
 
                 // Phase 3: PPAF disabled again -> confirm behavior reverts
                 ppafEnabledRef.set(Boolean.FALSE);
@@ -1795,6 +1816,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
                 safeClose(cosmosAsyncClientValueHolder.v);
+                metrics.close();
             }
         }
     }

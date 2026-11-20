@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryCompatibilityMode;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
@@ -23,12 +24,15 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnosti
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosMetricCategory;
 import com.azure.cosmos.models.CosmosMetricTagName;
 import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.implementation.faultinjection.FaultInjectionServerErrorResultInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tag;
@@ -416,6 +420,158 @@ public class GatewayEndpointMetricsTest {
         }
     }
 
+    @DataProvider(name = "gatewayPartitionKeyRangeSources")
+    public Object[][] gatewayPartitionKeyRangeSources() {
+        return new Object[][] {
+            {200, null, "2", "1", "0", "2"},
+            {200, null, null, "1", "0", "1"},
+            {200, null, null, null, "0", "0"},
+            {200, null, null, null, null, "NONE"},
+            {503, "3", "2", "1", "0", "3"},
+            {503, null, "2", "1", "0", "2"},
+            {503, null, null, "1", "0", "1"},
+            {503, null, null, null, "0", "0"},
+            {503, " ", " ", " ", "0", "0"},
+            {503, null, null, null, null, "NONE"}
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "gatewayPartitionKeyRangeSources")
+    public void gatewayMetricsUseBestAvailablePartitionKeyRange(
+        int statusCode, String exceptionRangeId, String responseRangeId, String requestRangeId,
+        String resolvedRangeId, String expectedRangeId) throws Exception {
+
+        try (TestState state = new TestState(CosmosMetricTagName.PARTITION_KEY_RANGE_ID)) {
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
+            if (requestRangeId != null) {
+                request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, requestRangeId);
+            }
+            if (resolvedRangeId != null) {
+                request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(resolvedRangeId, "", "FF");
+            }
+            Map<String, String> responseHeaders = new HashMap<>();
+            if (responseRangeId != null) {
+                responseHeaders.put(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, responseRangeId);
+            }
+
+            StoreResponseDiagnostics diagnostics;
+            if (statusCode >= 400) {
+                CosmosException exception = new CosmosException(statusCode, "test failure", responseHeaders, null);
+                BridgeInternal.setPartitionKeyRangeId(exception, exceptionRangeId);
+                diagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(exception, request);
+            } else {
+                StoreResponse response = new StoreResponse("https://account.documents.azure.com", statusCode,
+                    responseHeaders, null, 0);
+                diagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(response, request);
+            }
+
+            state.recordGateway(diagnostics);
+
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .tag(TagName.PartitionKeyRangeId.toString(), expectedRangeId)
+                .counter().count()).isEqualTo(1);
+            assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID))
+                .isEqualTo(requestRangeId);
+        }
+    }
+
+    @Test(groups = {"unit"})
+    public void injectedGatewayFailuresSnapshotPartitionKeyRangeAcrossRetries() throws Exception {
+        try (TestState state = new TestState(CosmosMetricTagName.PARTITION_KEY_RANGE_ID)) {
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
+            FaultInjectionServerErrorResultInternal result = new FaultInjectionServerErrorResultInternal(
+                FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, null, null, true, 1.0);
+            request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("0", "", "FF");
+            StoreResponseDiagnostics first = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                result.getInjectedServerError(request), request);
+
+            request.requestContext.resolvedPartitionKeyRange =
+                new PartitionKeyRange("1", "", "FF", Collections.singletonList("0"));
+            StoreResponseDiagnostics retried = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                result.getInjectedServerError(request), request);
+
+            request.requestContext.resolvedPartitionKeyRange = null;
+            StoreResponseDiagnostics unresolved = StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                result.getInjectedServerError(request), request);
+
+            state.recordGateway(first);
+            state.recordGateway(retried);
+            state.recordGateway(unresolved);
+
+            assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                .counters()).hasSize(3);
+            for (String rangeId : new String[] {"0", "1", "NONE"}) {
+                assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                    .tag(TagName.PartitionKeyRangeId.toString(), rangeId).counter().count()).isEqualTo(1);
+            }
+        }
+    }
+
+    @DataProvider(name = "operationRegionAggregation")
+    public Object[][] operationRegionAggregation() {
+        return new Object[][] {{false}, {true}};
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "operationRegionAggregation")
+    public void gatewayRequestRegionsArePerAttemptWhileOperationRegionsStayAggregated(
+        boolean operationDetailsEnabled) throws Exception {
+
+        try (TestState state = new TestState(CosmosMetricTagName.ALL)) {
+            if (operationDetailsEnabled) {
+                state.options.setMetricCategories(CosmosMetricCategory.ALL);
+            }
+            GlobalEndpointManager endpointManager = mock(GlobalEndpointManager.class);
+            CosmosDiagnostics diagnostics = new CosmosDiagnostics(mock(DiagnosticsClientContext.class));
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                mock(DiagnosticsClientContext.class), OperationType.Read, ResourceType.Document);
+            request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, "7");
+            Map<String, String> originalHeaders = new HashMap<>(request.getHeaders());
+            String[] regions = {"east us", "west us"};
+            for (int i = 0; i < regions.length; i++) {
+                URI endpoint = URI.create("https://account-" + i + ".documents.azure.com/");
+                doReturn(regions[i]).when(endpointManager).getRegionName(endpoint, OperationType.Read, false);
+                RegionalRoutingContext routingContext = new RegionalRoutingContext(endpoint);
+                request.requestContext.regionalRoutingContextToRoute = routingContext;
+                StoreResponseDiagnostics response = i == 0
+                    ? StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                        new CosmosException(503, "test failure"), request)
+                    : StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                        new StoreResponse(endpoint.toString(), 200, Collections.emptyMap(), null, 0), request);
+                diagnostics.clientSideRequestStatistics().recordGatewayResponse(request, response, endpointManager);
+                assertThat(request.requestContext.regionalRoutingContextToRoute).isSameAs(routingContext);
+            }
+            request.requestContext.regionalRoutingContextToRoute = null;
+            diagnostics.clientSideRequestStatistics().recordGatewayResponse(request,
+                StoreResponseDiagnostics.createStoreResponseDiagnostics(
+                    new CosmosException(503, "unknown region"), request), endpointManager);
+
+            List<ClientSideRequestStatistics.GatewayStatistics> attempts =
+                diagnostics.clientSideRequestStatistics().getGatewayStatisticsList();
+            ObjectMapper mapper = new ObjectMapper();
+            assertThat(mapper.valueToTree(attempts.get(0)).path("regionName").asText()).isEqualTo("east us");
+            assertThat(mapper.valueToTree(attempts.get(1)).path("regionName").asText()).isEqualTo("west us");
+            assertThat(request.getHeaders()).isEqualTo(originalHeaders);
+            assertThat(request.requestContext.regionalRoutingContextToRoute).isNull();
+
+            state.record(diagnostics, 200);
+
+            String[] expectedRegions = {"east us", "west us", "NONE"};
+            String[] expectedStatuses = {"503/0", "200/0", "503/0"};
+            for (int i = 0; i < expectedRegions.length; i++) {
+                assertThat(state.registry.get(CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS.toString())
+                    .tag(TagName.PartitionKeyRangeId.toString(), "7")
+                    .tag(TagName.RegionName.toString(), expectedRegions[i])
+                    .tag(TagName.RequestStatusCode.toString(), expectedStatuses[i])
+                    .counter().count()).isEqualTo(1);
+            }
+            assertThat(state.registry.get(CosmosMetricName.OPERATION_SUMMARY_CALLS.toString())
+                .counter().getId().getTag(TagName.RegionName.toString()))
+                .isEqualTo(operationDetailsEnabled ? "east us, west us" : "NONE");
+        }
+    }
+
     @Test(groups = {"unit"})
     public void endpointTagIsDisabledByDefault() throws Exception {
         try (TestState state = new TestState(CosmosMetricTagName.DEFAULT)) {
@@ -645,6 +801,7 @@ public class GatewayEndpointMetricsTest {
             doReturn(ConsistencyLevel.SESSION).when(context).getEffectiveConsistencyLevel();
             doReturn(Duration.ofMillis(10)).when(context).getDuration();
             doReturn(Collections.singletonList(diagnostics)).when(context).getDiagnostics();
+            doReturn(diagnostics.getContactedRegionNames()).when(context).getContactedRegionNames();
             ClientTelemetryMetrics.recordOperation(this.client, context);
         }
 

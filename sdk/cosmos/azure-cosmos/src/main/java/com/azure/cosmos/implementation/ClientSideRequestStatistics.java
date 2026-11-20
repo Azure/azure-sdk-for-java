@@ -254,9 +254,10 @@ public class ClientSideRequestStatistics {
 
             this.recordRetryContextEndTime();
 
+            String regionName = null;
             if (regionalRoutingContext != null) {
                 URI locationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
-                String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
+                regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType(), rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest);
 
                 this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndpoint);
@@ -265,6 +266,7 @@ public class ClientSideRequestStatistics {
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
+            gatewayStatistics.regionName = regionName;
             if (rxDocumentServiceRequest != null) {
                 gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
                 gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
@@ -963,6 +965,7 @@ public class ClientSideRequestStatistics {
         private String sessionToken;
         private OperationType operationType;
         private ResourceType resourceType;
+        private String regionName;
         private int statusCode;
         private int subStatusCode;
         private double requestCharge;
@@ -1016,6 +1019,10 @@ public class ClientSideRequestStatistics {
 
         public ResourceType getResourceType() {
             return resourceType;
+        }
+
+        public String getRegionName() {
+            return regionName;
         }
 
         public String getPartitionKeyRangeId() {
@@ -1121,6 +1128,7 @@ public class ClientSideRequestStatistics {
                 jsonGenerator.writeNumberField("requestCharge", gatewayStatistics.getRequestCharge());
                 jsonGenerator.writeObjectField("requestTimeline", gatewayStatistics.getRequestTimeline());
                 jsonGenerator.writeStringField("partitionKeyRangeId", gatewayStatistics.getPartitionKeyRangeId());
+                this.writeNonNullStringField(jsonGenerator, "regionName", gatewayStatistics.getRegionName());
                 jsonGenerator.writeNumberField("responsePayloadSizeInBytes", gatewayStatistics.getResponsePayloadSizeInBytes());
                 jsonGenerator.writeStringField("httpNetworkResponseTimeout", gatewayStatistics.getHttpNetworkResponseTimeout());
                 this.writeNonNullStringField(jsonGenerator, "exceptionMessage", gatewayStatistics.getExceptionMessage());
