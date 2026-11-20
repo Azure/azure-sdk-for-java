@@ -68,6 +68,15 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
         = fromString("IncrementalCopyOfEarlierSnapshotNotAllowed");
 
     /**
+     * Static value IncrementalCopyOfEralierVersionSnapshotNotAllowed for BlobErrorCode.
+     *
+     * @deprecated Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED}
+     */
+    @Deprecated
+    public static final BlobErrorCode INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED
+        = fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
+
+    /**
      * Insufficient account permissions.
      */
     @Generated
@@ -651,6 +660,14 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static final BlobErrorCode SNAPSHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
 
     /**
+     * Static value SnapshotOperationRateExceeded for BlobErrorCode.
+     *
+     * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}
+     */
+    @Deprecated
+    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
+
+    /**
      * Snapshots present.
      */
     @Generated
@@ -766,21 +783,4 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static Collection<BlobErrorCode> values() {
         return values(BlobErrorCode.class);
     }
-
-    /**
-     * Static value SnapshotOperationRateExceeded for BlobErrorCode.
-     *
-     * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}
-     */
-    @Deprecated
-    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
-
-    /**
-     * Static value IncrementalCopyOfEralierVersionSnapshotNotAllowed for BlobErrorCode.
-     *
-     * @deprecated Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED}
-     */
-    @Deprecated
-    public static final BlobErrorCode INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED
-        = fromString("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
 }

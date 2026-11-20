@@ -12,13 +12,21 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.BinaryExpr;
+import com.github.javaparser.ast.expr.ConditionalExpr;
 import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.IntegerLiteralExpr;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.NullLiteralExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.modules.ModuleDirective;
 import com.github.javaparser.ast.modules.ModuleExportsDirective;
 import com.github.javaparser.ast.modules.ModuleOpensDirective;
@@ -31,6 +39,7 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.PrimitiveType;
 import com.github.javaparser.ast.type.Type;
 import com.github.javaparser.ast.type.UnknownType;
 import com.github.javaparser.javadoc.Javadoc;
@@ -56,13 +65,12 @@ public class BlobStorageCustomizations extends Customization {
 
     // Models that shipped as @Fluent (public no-arg ctor + setters) before the TypeSpec migration. With
     // required-fields-as-ctor-args:true these regenerate as @Immutable with a required-args ctor and no setters -- a
-    // breaking change. restoreFluentModels restores the shipped fluent shape per-model. Expand this list from the
-    // RevApi "method removed" report.
+    // breaking change. restoreFluentModels restores the shipped fluent shape per-model. Models the emitter already
+    // generates in the shipped shape (BlobAccessPolicy, BlockLookupList) aren't listed.
     private static final List<String> FLUENT_MODELS_TO_RESTORE = Arrays.asList(
-        "UserDelegationKey", "BlobCorsRule", "BlobAnalyticsLogging", "BlobRetentionPolicy", "BlobAccessPolicy",
-        "BlobSignedIdentifier", "BlobMetrics", "BlobServiceStatistics", "KeyInfo", "Block", "BlockList",
-        "BlobContainerItemProperties", "BlobContainerItem", "PageList", "BlockLookupList", "PageRange", "ClearRange",
-        "GeoReplication", "StaticWebsite");
+        "UserDelegationKey", "BlobCorsRule", "BlobAnalyticsLogging", "BlobRetentionPolicy", "BlobSignedIdentifier",
+        "BlobMetrics", "BlobServiceStatistics", "KeyInfo", "Block", "BlockList", "BlobContainerItemProperties",
+        "BlobContainerItem", "PageList", "PageRange", "ClearRange", "GeoReplication", "StaticWebsite");
 
     // Internal list models the hand-written BlobItem, BlobItemProperties and Arrow listing code populate through
     // setters, as they did before the migration.
@@ -402,20 +410,6 @@ public class BlobStorageCustomizations extends Customization {
     }
 
     /**
-     * Restores public model members the AutoRest layer shipped that the spec doesn't produce:
-     * <ul>
-     * <li>{@code Block}'s deprecated {@code int} size accessors, alongside the {@code long} ones;</li>
-     * <li>{@code BlobContainerItemProperties}' primitive {@code boolean} accessors for the encryption scope override,
-     * which treat an absent value as {@code false};</li>
-     * <li>two deprecated, misspelled {@code BlobErrorCode} constants kept for compatibility;</li>
-     * <li>{@code PageList}'s continuation marker, which stays private and is reached by the SDK through
-     * {@code PageListHelper}.</li>
-     * </ul>
-     *
-     * @param models The models package.
-     * @param logger The logger.
-     */
-    /**
      * Get Blob Layout answers 204 without a body for an empty blob, but the generated convenience methods deserialize
      * the body for every success status. A 204 now yields a null layout, which the hand-written paging treats as an
      * empty page.
@@ -429,46 +423,59 @@ public class BlobStorageCustomizations extends Customization {
                     .ifPresent(clazz -> clazz.getMethodsByName("getLayoutWithResponse")
                         .forEach(method -> method
                             .findAll(MethodCallExpr.class, call -> "toObject".equals(call.getNameAsString()))
-                            .forEach(call -> call.replace(StaticJavaParser
-                                .parseExpression("protocolMethodResponse.getStatusCode() == 204 ? null : " + call))))));
+                            .forEach(call -> call.replace(new ConditionalExpr(
+                                new BinaryExpr(
+                                    new MethodCallExpr(new NameExpr("protocolMethodResponse"), "getStatusCode"),
+                                    new IntegerLiteralExpr("204"), BinaryExpr.Operator.EQUALS),
+                                new NullLiteralExpr(), call.clone()))))));
         }
     }
 
+    /**
+     * Restores public model members the AutoRest layer shipped that the spec doesn't produce:
+     * <ul>
+     * <li>{@code Block}'s deprecated {@code int} size accessors, alongside the {@code long} ones;</li>
+     * <li>{@code BlobContainerItemProperties}' primitive {@code boolean} accessors for the encryption scope override,
+     * which treat an absent value as {@code false};</li>
+     * <li>two deprecated, misspelled {@code BlobErrorCode} constants kept for compatibility;</li>
+     * <li>{@code PageList}'s continuation marker, which stays private and is reached by the SDK through
+     * {@code PageListHelper}.</li>
+     * </ul>
+     *
+     * @param models The models package.
+     * @param logger The logger.
+     */
     private static void restoreShippedModelMembers(PackageCustomization models, Logger logger) {
         models.getClass("Block").customizeAst(ast -> ast.getClassByName("Block").ifPresent(clazz -> {
-            clazz.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n",
-                "/**",
-                " * Get the size property: The block size in bytes.",
-                " *",
-                " * @return the size value.",
-                " * @deprecated Use {@link #getSizeLong()}",
-                " */",
-                "@Deprecated",
-                "public int getSize() {",
-                "    return (int) this.sizeLong;",
-                "}")));
-            clazz.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n",
-                "/**",
-                " * Set the size property: The block size in bytes.",
-                " *",
-                " * @param size the size value to set.",
-                " * @return the Block object itself.",
-                " * @deprecated Use {@link #setSizeLong(long)}",
-                " */",
-                "@Deprecated",
-                "public Block setSize(int size) {",
-                "    return this.setSizeLong(size);",
-                "}")));
+            MethodDeclaration getSize = clazz.addMethod("getSize", Modifier.Keyword.PUBLIC);
+            getSize.setType(PrimitiveType.intType());
+            getSize.setBody(StaticJavaParser.parseBlock("{ return (int) this.sizeLong; }"));
+            getSize.addMarkerAnnotation("Deprecated");
+            getSize.setJavadocComment(
+                new Javadoc(JavadocDescription.parseText("Get the size property: The block size in bytes."))
+                    .addBlockTag("return", "the size value.")
+                    .addBlockTag("deprecated", "Use {@link #getSizeLong()}"));
+
+            MethodDeclaration setSize = clazz.addMethod("setSize", Modifier.Keyword.PUBLIC);
+            setSize.setType("Block");
+            setSize.addParameter(PrimitiveType.intType(), "size");
+            setSize.setBody(StaticJavaParser.parseBlock("{ return this.setSizeLong(size); }"));
+            setSize.addMarkerAnnotation("Deprecated");
+            setSize.setJavadocComment(
+                new Javadoc(JavadocDescription.parseText("Set the size property: The block size in bytes."))
+                    .addBlockTag("param", "size", "the size value to set.")
+                    .addBlockTag("return", "the Block object itself.")
+                    .addBlockTag("deprecated", "Use {@link #setSizeLong(long)}"));
         }));
 
         models.getClass("BlobContainerItemProperties")
             .customizeAst(ast -> ast.getClassByName("BlobContainerItemProperties").ifPresent(clazz -> {
                 clazz.getMethodsByName("isEncryptionScopeOverridePrevented").forEach(getter -> getter
-                    .setType("boolean")
+                    .setType(PrimitiveType.booleanType())
                     .setBody(StaticJavaParser.parseBlock(
                         "{ return Boolean.TRUE.equals(this.encryptionScopeOverridePrevented); }")));
                 clazz.getMethodsByName("setEncryptionScopeOverridePrevented")
-                    .forEach(setter -> setter.getParameter(0).setType("boolean"));
+                    .forEach(setter -> setter.getParameter(0).setType(PrimitiveType.booleanType()));
             }));
 
         models.getClass("BlobErrorCode").customizeAst(ast -> ast.getClassByName("BlobErrorCode").ifPresent(clazz -> {
@@ -482,37 +489,60 @@ public class BlobStorageCustomizations extends Customization {
             ast.addImport("com.azure.storage.blob.implementation.models.PageListHelper");
             clazz.getMethodsByName("getNextMarker").forEach(method -> method.setModifiers(Modifier.Keyword.PRIVATE));
             clazz.getMethodsByName("setNextMarker").forEach(method -> method.setModifiers(Modifier.Keyword.PRIVATE));
-            clazz.getMembers().addFirst(StaticJavaParser.parseBodyDeclaration(String.join("\n",
-                "static {",
-                "    PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {",
-                "        @Override",
-                "        public String getNextMarker(PageList pageList) {",
-                "            return pageList.getNextMarker();",
-                "        }",
-                "",
-                "        @Override",
-                "        public PageList setNextMarker(PageList pageList, String marker) {",
-                "            return pageList.setNextMarker(marker);",
-                "        }",
-                "    });",
-                "}")));
+
+            // static { PageListHelper.setAccessor(new PageListHelper.PageListAccessor() { ... }); }
+            MethodDeclaration getNextMarker = new MethodDeclaration();
+            getNextMarker.setName("getNextMarker");
+            getNextMarker.setModifiers(Modifier.Keyword.PUBLIC);
+            getNextMarker.setType("String");
+            getNextMarker.addParameter("PageList", "pageList");
+            getNextMarker.setBody(StaticJavaParser.parseBlock("{ return pageList.getNextMarker(); }"));
+            getNextMarker.addMarkerAnnotation("Override");
+
+            MethodDeclaration setNextMarker = new MethodDeclaration();
+            setNextMarker.setName("setNextMarker");
+            setNextMarker.setModifiers(Modifier.Keyword.PUBLIC);
+            setNextMarker.setType("PageList");
+            setNextMarker.addParameter("PageList", "pageList");
+            setNextMarker.addParameter("String", "marker");
+            setNextMarker.setBody(StaticJavaParser.parseBlock("{ return pageList.setNextMarker(marker); }"));
+            setNextMarker.addMarkerAnnotation("Override");
+
+            ObjectCreationExpr accessor = new ObjectCreationExpr(null,
+                StaticJavaParser.parseClassOrInterfaceType("PageListHelper.PageListAccessor"), new NodeList<>());
+            accessor.setAnonymousClassBody(new NodeList<>(getNextMarker, setNextMarker));
+            BlockStmt setAccessor = new BlockStmt()
+                .addStatement(new MethodCallExpr(new NameExpr("PageListHelper"), "setAccessor", new NodeList<>(accessor)));
+            clazz.getMembers().addFirst(new InitializerDeclaration(true, setAccessor));
         }));
         logger.info("Restored shipped members of Block, BlobContainerItemProperties, BlobErrorCode and PageList");
     }
 
+    /**
+     * Adds a deprecated {@code BlobErrorCode} constant after the constant that replaces it.
+     *
+     * @param clazz The BlobErrorCode class.
+     * @param constant The deprecated constant name.
+     * @param wireValue The error code the constant wraps.
+     * @param replacement The constant to use instead.
+     */
     private static void addDeprecatedErrorCode(ClassOrInterfaceDeclaration clazz, String constant, String wireValue,
         String replacement) {
         if (clazz.getFieldByName(constant).isPresent()) {
             return;
         }
-        clazz.addMember(StaticJavaParser.parseBodyDeclaration(String.join("\n",
-            "/**",
-            " * Static value " + wireValue + " for BlobErrorCode.",
-            " *",
-            " * @deprecated Please use {@link BlobErrorCode#" + replacement + "}",
-            " */",
-            "@Deprecated",
-            "public static final BlobErrorCode " + constant + " = fromString(\"" + wireValue + "\");")));
+        FieldDeclaration field = new FieldDeclaration(
+            new NodeList<>(Modifier.publicModifier(), Modifier.staticModifier(), Modifier.finalModifier()),
+            new VariableDeclarator(new ClassOrInterfaceType(null, "BlobErrorCode"), constant,
+                new MethodCallExpr("fromString", new StringLiteralExpr(wireValue))));
+        field.addMarkerAnnotation("Deprecated");
+        field.setJavadocComment(
+            new Javadoc(JavadocDescription.parseText("Static value " + wireValue + " for BlobErrorCode."))
+                .addBlockTag("deprecated", "Please use {@link BlobErrorCode#" + replacement + "}"));
+
+        NodeList<BodyDeclaration<?>> members = clazz.getMembers();
+        int replacementIndex = clazz.getFieldByName(replacement).map(members::indexOf).orElse(members.size() - 1);
+        members.add(replacementIndex + 1, field);
     }
 
     private static int indexOfFirstConstructor(NodeList<BodyDeclaration<?>> members) {
