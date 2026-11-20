@@ -16,24 +16,20 @@ public final class VirtualEnclaveApprovalSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualEnclaveApprovalSettings model = BinaryData.fromString(
-            "{\"enclaveEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":830818996,\"mandatoryApprovers\":[{\"approverEntraId\":\"vjxxjnsp\"}]},\"connectionCreation\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":1581089013,\"mandatoryApprovers\":[{\"approverEntraId\":\"kouknvudwtiu\"},{\"approverEntraId\":\"bldngkpoc\"}]},\"connectionUpdate\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":1866473569,\"mandatoryApprovers\":[{\"approverEntraId\":\"gukgjnpiucgygevq\"},{\"approverEntraId\":\"ntypmrbpizcdrqj\"},{\"approverEntraId\":\"dpydn\"}]},\"enclaveMaintenanceMode\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1665159346,\"mandatoryApprovers\":[{\"approverEntraId\":\"jzicwifsjt\"},{\"approverEntraId\":\"gzfbishcbk\"},{\"approverEntraId\":\"ajdeyeamdphaga\"}]}}")
+            "{\"enclaveEndpointUpdate\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1813223927,\"mandatoryApprovers\":[{\"approverEntraId\":\"b\"},{\"approverEntraId\":\"uofqwe\"},{\"approverEntraId\":\"kh\"}]},\"connectionCreation\":{\"approvalPolicy\":\"NotRequired\",\"minimumApproversRequired\":1963784255,\"mandatoryApprovers\":[{\"approverEntraId\":\"xfw\"},{\"approverEntraId\":\"ybcibvyvdcsit\"}]},\"connectionUpdate\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":1611277697,\"mandatoryApprovers\":[{\"approverEntraId\":\"ctehfiqscjey\"},{\"approverEntraId\":\"vhezrkgqhcj\"}]},\"enclaveMaintenanceMode\":{\"approvalPolicy\":\"Required\",\"minimumApproversRequired\":450468139,\"mandatoryApprovers\":[{\"approverEntraId\":\"qsl\"},{\"approverEntraId\":\"yyvxyqjpkcattpn\"},{\"approverEntraId\":\"jcrcczsqpjhvmda\"}]}}")
             .toObject(VirtualEnclaveApprovalSettings.class);
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.enclaveEndpointUpdate().approvalPolicy());
-        Assertions.assertEquals(830818996, model.enclaveEndpointUpdate().minimumApproversRequired());
-        Assertions.assertEquals("vjxxjnsp",
-            model.enclaveEndpointUpdate().mandatoryApprovers().get(0).approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.connectionCreation().approvalPolicy());
-        Assertions.assertEquals(1581089013, model.connectionCreation().minimumApproversRequired());
-        Assertions.assertEquals("kouknvudwtiu",
-            model.connectionCreation().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(1813223927, model.enclaveEndpointUpdate().minimumApproversRequired());
+        Assertions.assertEquals("b", model.enclaveEndpointUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.connectionCreation().approvalPolicy());
+        Assertions.assertEquals(1963784255, model.connectionCreation().minimumApproversRequired());
+        Assertions.assertEquals("xfw", model.connectionCreation().mandatoryApprovers().get(0).approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.connectionUpdate().approvalPolicy());
-        Assertions.assertEquals(1866473569, model.connectionUpdate().minimumApproversRequired());
-        Assertions.assertEquals("gukgjnpiucgygevq",
-            model.connectionUpdate().mandatoryApprovers().get(0).approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.enclaveMaintenanceMode().approvalPolicy());
-        Assertions.assertEquals(1665159346, model.enclaveMaintenanceMode().minimumApproversRequired());
-        Assertions.assertEquals("jzicwifsjt",
-            model.enclaveMaintenanceMode().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(1611277697, model.connectionUpdate().minimumApproversRequired());
+        Assertions.assertEquals("ctehfiqscjey", model.connectionUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveMaintenanceMode().approvalPolicy());
+        Assertions.assertEquals(450468139, model.enclaveMaintenanceMode().minimumApproversRequired());
+        Assertions.assertEquals("qsl", model.enclaveMaintenanceMode().mandatoryApprovers().get(0).approverEntraId());
     }
 
     @org.junit.jupiter.api.Test
@@ -41,39 +37,35 @@ public final class VirtualEnclaveApprovalSettingsTests {
         VirtualEnclaveApprovalSettings model = new VirtualEnclaveApprovalSettings()
             .withEnclaveEndpointUpdate(
                 new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
-                    .withMinimumApproversRequired(830818996)
-                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("vjxxjnsp"))))
-            .withConnectionCreation(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                .withMinimumApproversRequired(1581089013)
-                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("kouknvudwtiu"),
-                    new MandatoryApprover().withApproverEntraId("bldngkpoc"))))
+                    .withMinimumApproversRequired(1813223927)
+                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("b"),
+                        new MandatoryApprover().withApproverEntraId("uofqwe"),
+                        new MandatoryApprover().withApproverEntraId("kh"))))
+            .withConnectionCreation(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
+                .withMinimumApproversRequired(1963784255)
+                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("xfw"),
+                    new MandatoryApprover().withApproverEntraId("ybcibvyvdcsit"))))
             .withConnectionUpdate(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                .withMinimumApproversRequired(1866473569)
-                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("gukgjnpiucgygevq"),
-                    new MandatoryApprover().withApproverEntraId("ntypmrbpizcdrqj"),
-                    new MandatoryApprover().withApproverEntraId("dpydn"))))
-            .withEnclaveMaintenanceMode(
-                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)
-                    .withMinimumApproversRequired(1665159346)
-                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("jzicwifsjt"),
-                        new MandatoryApprover().withApproverEntraId("gzfbishcbk"),
-                        new MandatoryApprover().withApproverEntraId("ajdeyeamdphaga"))));
+                .withMinimumApproversRequired(1611277697)
+                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("ctehfiqscjey"),
+                    new MandatoryApprover().withApproverEntraId("vhezrkgqhcj"))))
+            .withEnclaveMaintenanceMode(new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                .withMinimumApproversRequired(450468139)
+                .withMandatoryApprovers(Arrays.asList(new MandatoryApprover().withApproverEntraId("qsl"),
+                    new MandatoryApprover().withApproverEntraId("yyvxyqjpkcattpn"),
+                    new MandatoryApprover().withApproverEntraId("jcrcczsqpjhvmda"))));
         model = BinaryData.fromObject(model).toObject(VirtualEnclaveApprovalSettings.class);
         Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.enclaveEndpointUpdate().approvalPolicy());
-        Assertions.assertEquals(830818996, model.enclaveEndpointUpdate().minimumApproversRequired());
-        Assertions.assertEquals("vjxxjnsp",
-            model.enclaveEndpointUpdate().mandatoryApprovers().get(0).approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.connectionCreation().approvalPolicy());
-        Assertions.assertEquals(1581089013, model.connectionCreation().minimumApproversRequired());
-        Assertions.assertEquals("kouknvudwtiu",
-            model.connectionCreation().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(1813223927, model.enclaveEndpointUpdate().minimumApproversRequired());
+        Assertions.assertEquals("b", model.enclaveEndpointUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.connectionCreation().approvalPolicy());
+        Assertions.assertEquals(1963784255, model.connectionCreation().minimumApproversRequired());
+        Assertions.assertEquals("xfw", model.connectionCreation().mandatoryApprovers().get(0).approverEntraId());
         Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.connectionUpdate().approvalPolicy());
-        Assertions.assertEquals(1866473569, model.connectionUpdate().minimumApproversRequired());
-        Assertions.assertEquals("gukgjnpiucgygevq",
-            model.connectionUpdate().mandatoryApprovers().get(0).approverEntraId());
-        Assertions.assertEquals(ApprovalPolicy.NOT_REQUIRED, model.enclaveMaintenanceMode().approvalPolicy());
-        Assertions.assertEquals(1665159346, model.enclaveMaintenanceMode().minimumApproversRequired());
-        Assertions.assertEquals("jzicwifsjt",
-            model.enclaveMaintenanceMode().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(1611277697, model.connectionUpdate().minimumApproversRequired());
+        Assertions.assertEquals("ctehfiqscjey", model.connectionUpdate().mandatoryApprovers().get(0).approverEntraId());
+        Assertions.assertEquals(ApprovalPolicy.REQUIRED, model.enclaveMaintenanceMode().approvalPolicy());
+        Assertions.assertEquals(450468139, model.enclaveMaintenanceMode().minimumApproversRequired());
+        Assertions.assertEquals("qsl", model.enclaveMaintenanceMode().mandatoryApprovers().get(0).approverEntraId());
     }
 }

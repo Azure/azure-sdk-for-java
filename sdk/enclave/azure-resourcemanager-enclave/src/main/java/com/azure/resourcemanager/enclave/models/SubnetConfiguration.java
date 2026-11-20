@@ -46,6 +46,11 @@ public final class SubnetConfiguration implements JsonSerializable<SubnetConfigu
      */
     private String networkSecurityGroupResourceId;
 
+    /*
+     * The purpose of the subnet, used to determine automatic configuration behavior.
+     */
+    private SubnetPurpose subnetPurpose;
+
     /**
      * Creates an instance of SubnetConfiguration class.
      */
@@ -140,6 +145,26 @@ public final class SubnetConfiguration implements JsonSerializable<SubnetConfigu
     }
 
     /**
+     * Get the subnetPurpose property: The purpose of the subnet, used to determine automatic configuration behavior.
+     * 
+     * @return the subnetPurpose value.
+     */
+    public SubnetPurpose subnetPurpose() {
+        return this.subnetPurpose;
+    }
+
+    /**
+     * Set the subnetPurpose property: The purpose of the subnet, used to determine automatic configuration behavior.
+     * 
+     * @param subnetPurpose the subnetPurpose value to set.
+     * @return the SubnetConfiguration object itself.
+     */
+    public SubnetConfiguration withSubnetPurpose(SubnetPurpose subnetPurpose) {
+        this.subnetPurpose = subnetPurpose;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -148,6 +173,7 @@ public final class SubnetConfiguration implements JsonSerializable<SubnetConfigu
         jsonWriter.writeStringField("subnetName", this.subnetName);
         jsonWriter.writeIntField("networkPrefixSize", this.networkPrefixSize);
         jsonWriter.writeStringField("subnetDelegation", this.subnetDelegation);
+        jsonWriter.writeStringField("subnetPurpose", this.subnetPurpose == null ? null : this.subnetPurpose.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -179,6 +205,8 @@ public final class SubnetConfiguration implements JsonSerializable<SubnetConfigu
                     deserializedSubnetConfiguration.addressPrefix = reader.getString();
                 } else if ("networkSecurityGroupResourceId".equals(fieldName)) {
                     deserializedSubnetConfiguration.networkSecurityGroupResourceId = reader.getString();
+                } else if ("subnetPurpose".equals(fieldName)) {
+                    deserializedSubnetConfiguration.subnetPurpose = SubnetPurpose.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

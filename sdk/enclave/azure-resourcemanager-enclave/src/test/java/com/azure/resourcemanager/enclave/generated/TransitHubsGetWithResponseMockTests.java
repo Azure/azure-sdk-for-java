@@ -24,7 +24,7 @@ public final class TransitHubsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"state\":\"PendingApproval\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":7593699893697928750,\"remoteVirtualNetworkId\":\"ixgy\"}},\"resourceCollection\":[\"lgmgbe\",\"lqtxnrflkndrn\",\"pgfjo\"],\"securityProvider\":\"None\"},\"location\":\"qotwfh\",\"tags\":{\"zafczuumljci\":\"wgsabvcipo\",\"veitit\":\"vpefyc\"},\"id\":\"nsxzajlns\",\"name\":\"hwjuyxxbxqvmvua\",\"type\":\"tuadxkxeqb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"state\":\"Approved\",\"transitOption\":{\"type\":\"Peering\",\"params\":{\"scaleUnits\":1420525387888477454,\"remoteVirtualNetworkId\":\"qagynoipr\"}},\"resourceCollection\":[\"ali\",\"cryqxzx\",\"q\"],\"securityProvider\":\"None\"},\"location\":\"qimiymqr\",\"tags\":{\"fupetasvv\":\"u\",\"flanfkgxsyao\":\"qsbp\"},\"id\":\"uzowpuohdkcpr\",\"name\":\"ukxrzti\",\"type\":\"chlutixmqru\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class TransitHubsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TransitHubResource response = manager.transitHubs()
-            .getWithResponse("nqzocrdzg", "zeunt", "xdncaqtt", com.azure.core.util.Context.NONE)
+            .getWithResponse("d", "rcwfcmfcnrjajq", "atxjtiel", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qotwfh", response.location());
-        Assertions.assertEquals("wgsabvcipo", response.tags().get("zafczuumljci"));
-        Assertions.assertEquals(TransitHubState.PENDING_APPROVAL, response.properties().state());
+        Assertions.assertEquals("qimiymqr", response.location());
+        Assertions.assertEquals("u", response.tags().get("fupetasvv"));
+        Assertions.assertEquals(TransitHubState.APPROVED, response.properties().state());
         Assertions.assertEquals(TransitOptionType.PEERING, response.properties().transitOption().type());
-        Assertions.assertEquals(7593699893697928750L, response.properties().transitOption().params().scaleUnits());
-        Assertions.assertEquals("ixgy", response.properties().transitOption().params().remoteVirtualNetworkId());
+        Assertions.assertEquals(1420525387888477454L, response.properties().transitOption().params().scaleUnits());
+        Assertions.assertEquals("qagynoipr", response.properties().transitOption().params().remoteVirtualNetworkId());
         Assertions.assertEquals(SecurityProvider.NONE, response.properties().securityProvider());
     }
 }

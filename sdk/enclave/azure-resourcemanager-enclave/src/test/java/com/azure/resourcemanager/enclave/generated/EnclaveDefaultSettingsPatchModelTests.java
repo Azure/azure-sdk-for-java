@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EnclaveDefaultSettingsPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnclaveDefaultSettingsPatchModel model = BinaryData.fromString("{\"diagnosticDestination\":\"CommunityOnly\"}")
+        EnclaveDefaultSettingsPatchModel model = BinaryData.fromString("{\"diagnosticDestination\":\"EnclaveOnly\"}")
             .toObject(EnclaveDefaultSettingsPatchModel.class);
-        Assertions.assertEquals(DiagnosticDestination.COMMUNITY_ONLY, model.diagnosticDestination());
+        Assertions.assertEquals(DiagnosticDestination.ENCLAVE_ONLY, model.diagnosticDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnclaveDefaultSettingsPatchModel model
-            = new EnclaveDefaultSettingsPatchModel().withDiagnosticDestination(DiagnosticDestination.COMMUNITY_ONLY);
+            = new EnclaveDefaultSettingsPatchModel().withDiagnosticDestination(DiagnosticDestination.ENCLAVE_ONLY);
         model = BinaryData.fromObject(model).toObject(EnclaveDefaultSettingsPatchModel.class);
-        Assertions.assertEquals(DiagnosticDestination.COMMUNITY_ONLY, model.diagnosticDestination());
+        Assertions.assertEquals(DiagnosticDestination.ENCLAVE_ONLY, model.diagnosticDestination());
     }
 }

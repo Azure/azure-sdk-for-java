@@ -22,7 +22,7 @@ public final class WorkloadsListByEnclaveResourceMockTests {
     @Test
     public void testListByEnclaveResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"resourceGroupCollection\":[\"awjmjsmw\",\"okcdxfzzzwyjaf\",\"tlhguynuchl\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"dw\"}]}},\"location\":\"ozusgz\",\"tags\":{\"amxqzragpgdphtv\":\"snnjzfpafolpym\"},\"id\":\"ulajvlejchc\",\"name\":\"rlzk\",\"type\":\"mzlanru\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGroupCollection\":[\"cjimryvwgcwwpbmz\",\"w\",\"sydsxwefohe\",\"bvopwndyqle\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"mtkhlowkxxpvbr\"},{\"id\":\"jmzsyzfh\"},{\"id\":\"lhikcyychunsj\"}]}},\"location\":\"jrtwsz\",\"tags\":{\"hvtrrmhwrbfdpyf\":\"uic\",\"lrocuyzlwh\":\"ubhvj\"},\"id\":\"memhooclutnpq\",\"name\":\"emc\",\"type\":\"jk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class WorkloadsListByEnclaveResourceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<WorkloadResource> response
-            = manager.workloads().listByEnclaveResource("zolxrzvhqjwtr", "tgvgzp", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadResource> response = manager.workloads()
+            .listByEnclaveResource("kjxnqpvwgfstmhq", "kizmdksaoafclu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ozusgz", response.iterator().next().location());
-        Assertions.assertEquals("snnjzfpafolpym", response.iterator().next().tags().get("amxqzragpgdphtv"));
-        Assertions.assertEquals("awjmjsmw", response.iterator().next().properties().resourceGroupCollection().get(0));
+        Assertions.assertEquals("jrtwsz", response.iterator().next().location());
+        Assertions.assertEquals("uic", response.iterator().next().tags().get("hvtrrmhwrbfdpyf"));
+        Assertions.assertEquals("cjimryvwgcwwpbmz",
+            response.iterator().next().properties().resourceGroupCollection().get(0));
     }
 }

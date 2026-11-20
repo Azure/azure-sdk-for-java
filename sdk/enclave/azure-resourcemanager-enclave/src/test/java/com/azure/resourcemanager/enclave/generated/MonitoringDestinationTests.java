@@ -13,22 +13,22 @@ public final class MonitoringDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoringDestination model = BinaryData.fromString(
-            "{\"destinationType\":\"CommunityWorkspace\",\"customWorkspaceResourceId\":\"ffrzpwvlqdqgbiqy\",\"diagnosticSettingsName\":\"hkaetcktvfc\"}")
+            "{\"destinationType\":\"CustomWorkspace\",\"customWorkspaceResourceId\":\"reximoryocfs\",\"diagnosticSettingsName\":\"s\"}")
             .toObject(MonitoringDestination.class);
-        Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE, model.destinationType());
-        Assertions.assertEquals("ffrzpwvlqdqgbiqy", model.customWorkspaceResourceId());
-        Assertions.assertEquals("hkaetcktvfc", model.diagnosticSettingsName());
+        Assertions.assertEquals(MonitoringDestinationType.CUSTOM_WORKSPACE, model.destinationType());
+        Assertions.assertEquals("reximoryocfs", model.customWorkspaceResourceId());
+        Assertions.assertEquals("s", model.diagnosticSettingsName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoringDestination model
-            = new MonitoringDestination().withDestinationType(MonitoringDestinationType.COMMUNITY_WORKSPACE)
-                .withCustomWorkspaceResourceId("ffrzpwvlqdqgbiqy")
-                .withDiagnosticSettingsName("hkaetcktvfc");
+            = new MonitoringDestination().withDestinationType(MonitoringDestinationType.CUSTOM_WORKSPACE)
+                .withCustomWorkspaceResourceId("reximoryocfs")
+                .withDiagnosticSettingsName("s");
         model = BinaryData.fromObject(model).toObject(MonitoringDestination.class);
-        Assertions.assertEquals(MonitoringDestinationType.COMMUNITY_WORKSPACE, model.destinationType());
-        Assertions.assertEquals("ffrzpwvlqdqgbiqy", model.customWorkspaceResourceId());
-        Assertions.assertEquals("hkaetcktvfc", model.diagnosticSettingsName());
+        Assertions.assertEquals(MonitoringDestinationType.CUSTOM_WORKSPACE, model.destinationType());
+        Assertions.assertEquals("reximoryocfs", model.customWorkspaceResourceId());
+        Assertions.assertEquals("s", model.diagnosticSettingsName());
     }
 }

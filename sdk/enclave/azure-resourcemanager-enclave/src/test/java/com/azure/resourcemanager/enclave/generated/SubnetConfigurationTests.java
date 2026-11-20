@@ -6,27 +6,31 @@ package com.azure.resourcemanager.enclave.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.enclave.models.SubnetConfiguration;
+import com.azure.resourcemanager.enclave.models.SubnetPurpose;
 import org.junit.jupiter.api.Assertions;
 
 public final class SubnetConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubnetConfiguration model = BinaryData.fromString(
-            "{\"subnetName\":\"ocfs\",\"subnetResourceId\":\"s\",\"networkPrefixSize\":610021021,\"subnetDelegation\":\"dystkiiuxhqyud\",\"addressPrefix\":\"rrqnbpoczvyifqrv\",\"networkSecurityGroupResourceId\":\"vjsllrmvvdfw\"}")
+            "{\"subnetName\":\"dudgwdslfhot\",\"subnetResourceId\":\"cynpwlbjnp\",\"networkPrefixSize\":1185214536,\"subnetDelegation\":\"ftadehxnltyfs\",\"addressPrefix\":\"pusuesn\",\"networkSecurityGroupResourceId\":\"dejbavo\",\"subnetPurpose\":\"General\"}")
             .toObject(SubnetConfiguration.class);
-        Assertions.assertEquals("ocfs", model.subnetName());
-        Assertions.assertEquals(610021021, model.networkPrefixSize());
-        Assertions.assertEquals("dystkiiuxhqyud", model.subnetDelegation());
+        Assertions.assertEquals("dudgwdslfhot", model.subnetName());
+        Assertions.assertEquals(1185214536, model.networkPrefixSize());
+        Assertions.assertEquals("ftadehxnltyfs", model.subnetDelegation());
+        Assertions.assertEquals(SubnetPurpose.GENERAL, model.subnetPurpose());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubnetConfiguration model = new SubnetConfiguration().withSubnetName("ocfs")
-            .withNetworkPrefixSize(610021021)
-            .withSubnetDelegation("dystkiiuxhqyud");
+        SubnetConfiguration model = new SubnetConfiguration().withSubnetName("dudgwdslfhot")
+            .withNetworkPrefixSize(1185214536)
+            .withSubnetDelegation("ftadehxnltyfs")
+            .withSubnetPurpose(SubnetPurpose.GENERAL);
         model = BinaryData.fromObject(model).toObject(SubnetConfiguration.class);
-        Assertions.assertEquals("ocfs", model.subnetName());
-        Assertions.assertEquals(610021021, model.networkPrefixSize());
-        Assertions.assertEquals("dystkiiuxhqyud", model.subnetDelegation());
+        Assertions.assertEquals("dudgwdslfhot", model.subnetName());
+        Assertions.assertEquals(1185214536, model.networkPrefixSize());
+        Assertions.assertEquals("ftadehxnltyfs", model.subnetDelegation());
+        Assertions.assertEquals(SubnetPurpose.GENERAL, model.subnetPurpose());
     }
 }

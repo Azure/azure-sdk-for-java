@@ -14,21 +14,21 @@ public final class ApproverTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Approver model = BinaryData.fromString(
-            "{\"approverEntraId\":\"fhxwrsne\",\"actionPerformed\":\"Rejected\",\"lastUpdatedAt\":\"2021-10-12T12:35:10Z\",\"mandatoryApprovalGroupMembershipIds\":[\"bubqmamhsycxh\"]}")
+            "{\"approverEntraId\":\"henlusfnr\",\"actionPerformed\":\"Approved\",\"lastUpdatedAt\":\"2021-11-01T20:24:07Z\",\"mandatoryApprovalGroupMembershipIds\":[\"r\",\"cq\"]}")
             .toObject(Approver.class);
-        Assertions.assertEquals("fhxwrsne", model.approverEntraId());
-        Assertions.assertEquals(ActionPerformed.REJECTED, model.actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T12:35:10Z"), model.lastUpdatedAt());
+        Assertions.assertEquals("henlusfnr", model.approverEntraId());
+        Assertions.assertEquals(ActionPerformed.APPROVED, model.actionPerformed());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T20:24:07Z"), model.lastUpdatedAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Approver model = new Approver().withApproverEntraId("fhxwrsne")
-            .withActionPerformed(ActionPerformed.REJECTED)
-            .withLastUpdatedAt(OffsetDateTime.parse("2021-10-12T12:35:10Z"));
+        Approver model = new Approver().withApproverEntraId("henlusfnr")
+            .withActionPerformed(ActionPerformed.APPROVED)
+            .withLastUpdatedAt(OffsetDateTime.parse("2021-11-01T20:24:07Z"));
         model = BinaryData.fromObject(model).toObject(Approver.class);
-        Assertions.assertEquals("fhxwrsne", model.approverEntraId());
-        Assertions.assertEquals(ActionPerformed.REJECTED, model.actionPerformed());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T12:35:10Z"), model.lastUpdatedAt());
+        Assertions.assertEquals("henlusfnr", model.approverEntraId());
+        Assertions.assertEquals(ActionPerformed.APPROVED, model.actionPerformed());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T20:24:07Z"), model.lastUpdatedAt());
     }
 }

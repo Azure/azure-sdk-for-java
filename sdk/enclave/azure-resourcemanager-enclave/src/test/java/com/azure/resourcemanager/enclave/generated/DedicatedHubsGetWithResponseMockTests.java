@@ -22,7 +22,7 @@ public final class DedicatedHubsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vHubResourceId\":\"qkevzgj\",\"firewallResourceId\":\"anhx\",\"firewallPolicyResourceId\":\"dxxzetwwzjwotn\",\"designation\":\"Pooled\",\"provisioningState\":\"NotSpecified\"},\"location\":\"lhrfox\",\"tags\":{\"elqxovppqi\":\"crsnhpc\",\"l\":\"ukklvzrlr\"},\"id\":\"cme\",\"name\":\"jsczivfqbqnasdsy\",\"type\":\"nzsieuscplh\"}";
+            = "{\"properties\":{\"vHubResourceId\":\"iqm\",\"firewallResourceId\":\"bhikeaqgr\",\"firewallPolicyResourceId\":\"pomxpu\",\"designation\":\"Reserved\",\"provisioningState\":\"Creating\"},\"location\":\"jyies\",\"tags\":{\"mpyzgleo\":\"iqbuou\",\"bwwzvdajf\":\"jsb\",\"lwixvtbou\":\"nncfmaciqgjjrlhi\"},\"id\":\"uxtndopgjttbasua\",\"name\":\"ap\",\"type\":\"lndbeaqbkixv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class DedicatedHubsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DedicatedHubResource response = manager.dedicatedHubs()
-            .getWithResponse("zgczfcmfpfbode", "resrgvtshuvft", "ai", com.azure.core.util.Context.NONE)
+            .getWithResponse("p", "hazyntacihnco", "mip", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lhrfox", response.location());
-        Assertions.assertEquals("crsnhpc", response.tags().get("elqxovppqi"));
-        Assertions.assertEquals(Designation.POOLED, response.properties().designation());
+        Assertions.assertEquals("jyies", response.location());
+        Assertions.assertEquals("iqbuou", response.tags().get("mpyzgleo"));
+        Assertions.assertEquals(Designation.RESERVED, response.properties().designation());
     }
 }

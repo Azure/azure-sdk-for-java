@@ -13,24 +13,24 @@ public final class RequestMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RequestMetadata model = BinaryData.fromString(
-            "{\"resourceAction\":\"zgaz\",\"approvalCallbackRoute\":\"abo\",\"approvalCallbackPayload\":\"vmfqhppubo\",\"approvalStatus\":\"Approved\"}")
+            "{\"resourceAction\":\"jvidttge\",\"approvalCallbackRoute\":\"slvyjtcvuwkasi\",\"approvalCallbackPayload\":\"esfuught\",\"approvalStatus\":\"Deleted\"}")
             .toObject(RequestMetadata.class);
-        Assertions.assertEquals("zgaz", model.resourceAction());
-        Assertions.assertEquals("abo", model.approvalCallbackRoute());
-        Assertions.assertEquals("vmfqhppubo", model.approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.APPROVED, model.approvalStatus());
+        Assertions.assertEquals("jvidttge", model.resourceAction());
+        Assertions.assertEquals("slvyjtcvuwkasi", model.approvalCallbackRoute());
+        Assertions.assertEquals("esfuught", model.approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.DELETED, model.approvalStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RequestMetadata model = new RequestMetadata().withResourceAction("zgaz")
-            .withApprovalCallbackRoute("abo")
-            .withApprovalCallbackPayload("vmfqhppubo")
-            .withApprovalStatus(ApprovalStatus.APPROVED);
+        RequestMetadata model = new RequestMetadata().withResourceAction("jvidttge")
+            .withApprovalCallbackRoute("slvyjtcvuwkasi")
+            .withApprovalCallbackPayload("esfuught")
+            .withApprovalStatus(ApprovalStatus.DELETED);
         model = BinaryData.fromObject(model).toObject(RequestMetadata.class);
-        Assertions.assertEquals("zgaz", model.resourceAction());
-        Assertions.assertEquals("abo", model.approvalCallbackRoute());
-        Assertions.assertEquals("vmfqhppubo", model.approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.APPROVED, model.approvalStatus());
+        Assertions.assertEquals("jvidttge", model.resourceAction());
+        Assertions.assertEquals("slvyjtcvuwkasi", model.approvalCallbackRoute());
+        Assertions.assertEquals("esfuught", model.approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.DELETED, model.approvalStatus());
     }
 }

@@ -21,7 +21,7 @@ public final class EnclaveConnectionsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Disconnected\",\"communityResourceId\":\"gs\",\"sourceResourceId\":\"xunrswgkpjhboy\",\"sourceCidr\":\"ebhuhkslgwlokhu\",\"destinationEndpointId\":\"o\",\"provisioningState\":\"NotSpecified\",\"resourceCollection\":[\"qypzqzufgs\",\"fejyvdwtfxptpqa\"],\"updateMode\":\"Manual\"},\"location\":\"ncfgybmxsnxoc\",\"tags\":{\"j\":\"l\",\"g\":\"poy\",\"cvuq\":\"wdjuxdbdljzgdy\",\"nq\":\"sgzlrqhb\"},\"id\":\"gdxwbsfpyxx\",\"name\":\"jlf\",\"type\":\"ecominxojjluxxd\"}";
+            = "{\"properties\":{\"state\":\"Active\",\"communityResourceId\":\"hlwyjfnqzocrd\",\"sourceResourceId\":\"gczeuntgx\",\"sourceCidr\":\"ca\",\"destinationEndpointId\":\"ttie\",\"provisioningState\":\"Running\",\"resourceCollection\":[\"vnyttzgi\"],\"updateMode\":\"Automatic\"},\"location\":\"ihlgm\",\"tags\":{\"rndpgfjodhdaqotw\":\"hlqtxnrflkn\"},\"id\":\"hipx\",\"name\":\"gsabvcipowzafc\",\"type\":\"uumljcirvpefyc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class EnclaveConnectionsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EnclaveConnectionResource response = manager.enclaveConnections()
-            .getByResourceGroupWithResponse("wtzvpakloz", "xbzrpejplssanb", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("xdqaolfylnkkb", "pjvlywltmfwo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ncfgybmxsnxoc", response.location());
-        Assertions.assertEquals("l", response.tags().get("j"));
-        Assertions.assertEquals("gs", response.properties().communityResourceId());
-        Assertions.assertEquals("xunrswgkpjhboy", response.properties().sourceResourceId());
-        Assertions.assertEquals("ebhuhkslgwlokhu", response.properties().sourceCidr());
-        Assertions.assertEquals("o", response.properties().destinationEndpointId());
+        Assertions.assertEquals("ihlgm", response.location());
+        Assertions.assertEquals("hlqtxnrflkn", response.tags().get("rndpgfjodhdaqotw"));
+        Assertions.assertEquals("hlwyjfnqzocrd", response.properties().communityResourceId());
+        Assertions.assertEquals("gczeuntgx", response.properties().sourceResourceId());
+        Assertions.assertEquals("ca", response.properties().sourceCidr());
+        Assertions.assertEquals("ttie", response.properties().destinationEndpointId());
     }
 }

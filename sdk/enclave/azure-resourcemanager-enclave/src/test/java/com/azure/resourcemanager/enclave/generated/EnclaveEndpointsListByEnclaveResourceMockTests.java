@@ -24,7 +24,7 @@ public final class EnclaveEndpointsListByEnclaveResourceMockTests {
     @Test
     public void testListByEnclaveResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"ICMP\",\"ICMP\",\"ESP\",\"TCP\"],\"endpointRuleName\":\"lfuctejrthcfjzhx\",\"destination\":\"ubqjro\",\"ports\":\"vrjeqmtzzbeqrztr\"},{\"protocols\":[\"TCP\",\"ICMP\",\"ICMP\",\"AH\"],\"endpointRuleName\":\"bsrwrsnrhpqat\",\"destination\":\"kkvyanxk\",\"ports\":\"csemsvuvd\"},{\"protocols\":[\"ANY\",\"ICMP\",\"ESP\",\"ICMP\"],\"endpointRuleName\":\"mlivrjjxnwx\",\"destination\":\"hpojxl\",\"ports\":\"z\"}],\"resourceCollection\":[\"gfquwz\",\"w\",\"ibelwcerwkw\",\"pjxljtxb\"],\"provisioningState\":\"Succeeded\",\"updateMode\":\"Automatic\"},\"location\":\"xniu\",\"tags\":{\"db\":\"zhgbdgzpagsecn\",\"nezoellnkki\":\"wqrgxfllmqi\",\"mtum\":\"w\"},\"id\":\"pymdjfuax\",\"name\":\"oqvqpilr\",\"type\":\"uncanlduwzorx\"}]}";
+            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"protocols\":[\"ICMP\",\"ICMP\",\"ANY\"],\"endpointRuleName\":\"olgisu\",\"destination\":\"bteogfg\",\"ports\":\"ij\"}],\"resourceCollection\":[\"wlefksxqceazfpxg\"],\"provisioningState\":\"Accepted\",\"updateMode\":\"Manual\"},\"location\":\"luyqqaiossscyvai\",\"tags\":{\"owpsfxt\":\"uacvfy\"},\"id\":\"dhsoymhpv\",\"name\":\"yqfttehdpboujst\",\"type\":\"fvvdshxcdedsue\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,18 @@ public final class EnclaveEndpointsListByEnclaveResourceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<EnclaveEndpointResource> response
-            = manager.enclaveEndpoints().listByEnclaveResource("chskxxka", "sbvr", com.azure.core.util.Context.NONE);
+        PagedIterable<EnclaveEndpointResource> response = manager.enclaveEndpoints()
+            .listByEnclaveResource("wjyofgwhnkbtl", "ljssm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xniu", response.iterator().next().location());
-        Assertions.assertEquals("zhgbdgzpagsecn", response.iterator().next().tags().get("db"));
+        Assertions.assertEquals("luyqqaiossscyvai", response.iterator().next().location());
+        Assertions.assertEquals("uacvfy", response.iterator().next().tags().get("owpsfxt"));
         Assertions.assertEquals(EnclaveEndpointProtocol.ICMP,
             response.iterator().next().properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("lfuctejrthcfjzhx",
+        Assertions.assertEquals("olgisu",
             response.iterator().next().properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("ubqjro",
+        Assertions.assertEquals("bteogfg",
             response.iterator().next().properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("vrjeqmtzzbeqrztr",
-            response.iterator().next().properties().ruleCollection().get(0).ports());
-        Assertions.assertEquals(UpdateMode.AUTOMATIC, response.iterator().next().properties().updateMode());
+        Assertions.assertEquals("ij", response.iterator().next().properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(UpdateMode.MANUAL, response.iterator().next().properties().updateMode());
     }
 }

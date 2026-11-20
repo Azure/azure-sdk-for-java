@@ -16,21 +16,21 @@ public final class DedicatedHubResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedHubResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"vHubResourceId\":\"azszrnwoiindfpw\",\"firewallResourceId\":\"ylwbtlhflsjcdhsz\",\"firewallPolicyResourceId\":\"vfbgofeljagrqmqh\",\"designation\":\"Pooled\",\"provisioningState\":\"Running\"},\"location\":\"iojnalghfkvtv\",\"tags\":{\"rhmzkwpj\":\"sowueluqhhahhx\",\"ughftqsx\":\"wws\"},\"id\":\"qxujxukndxd\",\"name\":\"grjguufzd\",\"type\":\"syqtfi\"}")
+            "{\"properties\":{\"vHubResourceId\":\"as\",\"firewallResourceId\":\"haq\",\"firewallPolicyResourceId\":\"ss\",\"designation\":\"Pooled\",\"provisioningState\":\"Running\"},\"location\":\"dsrezpdrhneuyow\",\"tags\":{\"sibircgpi\":\"wyt\"},\"id\":\"pzimejzanlfzxi\",\"name\":\"vrmbzono\",\"type\":\"i\"}")
             .toObject(DedicatedHubResourceInner.class);
-        Assertions.assertEquals("iojnalghfkvtv", model.location());
-        Assertions.assertEquals("sowueluqhhahhx", model.tags().get("rhmzkwpj"));
+        Assertions.assertEquals("dsrezpdrhneuyow", model.location());
+        Assertions.assertEquals("wyt", model.tags().get("sibircgpi"));
         Assertions.assertEquals(Designation.POOLED, model.properties().designation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedHubResourceInner model = new DedicatedHubResourceInner().withLocation("iojnalghfkvtv")
-            .withTags(mapOf("rhmzkwpj", "sowueluqhhahhx", "ughftqsx", "wws"))
+        DedicatedHubResourceInner model = new DedicatedHubResourceInner().withLocation("dsrezpdrhneuyow")
+            .withTags(mapOf("sibircgpi", "wyt"))
             .withProperties(new DedicatedHubProperties().withDesignation(Designation.POOLED));
         model = BinaryData.fromObject(model).toObject(DedicatedHubResourceInner.class);
-        Assertions.assertEquals("iojnalghfkvtv", model.location());
-        Assertions.assertEquals("sowueluqhhahhx", model.tags().get("rhmzkwpj"));
+        Assertions.assertEquals("dsrezpdrhneuyow", model.location());
+        Assertions.assertEquals("wyt", model.tags().get("sibircgpi"));
         Assertions.assertEquals(Designation.POOLED, model.properties().designation());
     }
 

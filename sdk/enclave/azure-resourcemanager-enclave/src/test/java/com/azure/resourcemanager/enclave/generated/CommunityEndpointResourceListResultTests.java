@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.enclave.implementation.models.CommunityEndpointResourceListResult;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import com.azure.resourcemanager.enclave.models.UpdateMode;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,22 +16,23 @@ public final class CommunityEndpointResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunityEndpointResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"ServiceTag\",\"protocols\":[\"UDP\"],\"transitHubResourceId\":\"qwazlnqnmcjngzq\",\"endpointRuleName\":\"xtbjwgnyfusfzsv\",\"destination\":\"ikzhajqglcfhmlrq\",\"ports\":\"xynqnz\"}],\"resourceCollection\":[\"sovwxznptgoeiyb\"],\"provisioningState\":\"NotSpecified\",\"updateMode\":\"Automatic\"},\"location\":\"vf\",\"tags\":{\"kyrioovzid\":\"vntjlrigjk\",\"xrizkzobgop\":\"xwaabzmifrygznmm\",\"lxecwcrojphslh\":\"lhslnelxieixyn\",\"fmvigorqjbttzh\":\"awjutifd\"},\"id\":\"aglkafhon\",\"name\":\"juj\",\"type\":\"ickpz\"},{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"PrivateNetwork\",\"protocols\":[\"ICMP\",\"ESP\"],\"transitHubResourceId\":\"wcltyjede\",\"endpointRuleName\":\"mlfmkqs\",\"destination\":\"zuawxtzxpuamwa\",\"ports\":\"xrvxcushsphai\"}],\"resourceCollection\":[\"yasflvgsgzwy\",\"akoi\",\"knsmjblmljhlnymz\"],\"provisioningState\":\"Succeeded\",\"updateMode\":\"Manual\"},\"location\":\"uzcbmqq\",\"tags\":{\"tayx\":\"vwf\"},\"id\":\"nsup\",\"name\":\"ujlzqnhcvsqltn\",\"type\":\"oibgsxg\"},{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"FQDN\",\"protocols\":[\"UDP\",\"ANY\",\"UDP\"],\"transitHubResourceId\":\"xwdofdb\",\"endpointRuleName\":\"qxeiiqbimhtmwwi\",\"destination\":\"ehfqpofvwbc\",\"ports\":\"embnkbw\"}],\"resourceCollection\":[\"xk\",\"ivqiheb\",\"tswbzuwfmd\",\"ragegi\"],\"provisioningState\":\"Accepted\",\"updateMode\":\"Manual\"},\"location\":\"lisdjubggbq\",\"tags\":{\"rcmjdmspofapvuh\":\"xkbsazgakgac\",\"rz\":\"ylnio\",\"nlvxbcuii\":\"bzjedmstk\",\"ostbzbkiwb\":\"nktwfansnvpdibmi\"},\"id\":\"qnyophzfyls\",\"name\":\"crpfbcunez\",\"type\":\"cez\"},{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"FQDNTag\",\"protocols\":[\"ICMP\"],\"transitHubResourceId\":\"xjwet\",\"endpointRuleName\":\"sihclafzvaylp\",\"destination\":\"sqqw\",\"ports\":\"cmwqkchcxwa\"},{\"destinationType\":\"FQDNTag\",\"protocols\":[\"UDP\",\"AH\",\"ESP\"],\"transitHubResourceId\":\"xfdeqvhpsyl\",\"endpointRuleName\":\"shk\",\"destination\":\"f\",\"ports\":\"mxzjrgywwpgjx\"},{\"destinationType\":\"PrivateNetwork\",\"protocols\":[\"ESP\"],\"transitHubResourceId\":\"gicgaaoepttaq\",\"endpointRuleName\":\"dewemxswv\",\"destination\":\"unzzjgehk\",\"ports\":\"imrt\"}],\"resourceCollection\":[\"kffqyinljqepqwh\",\"xmonstshi\",\"xgvelfclduccbird\",\"vuwcobiegstmnin\"],\"provisioningState\":\"Running\",\"updateMode\":\"Manual\"},\"location\":\"lnghgshejjtbxqmu\",\"tags\":{\"rsbycucrwn\":\"lxqzvn\",\"qbsms\":\"mikzeb\"},\"id\":\"ziqgfuh\",\"name\":\"kzruswh\",\"type\":\"hczznvf\"}],\"nextLink\":\"cjsxjww\"}")
+            "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"IPAddress\",\"protocols\":[\"HTTPS\",\"AH\",\"ICMP\",\"HTTP\"],\"transitHubResourceId\":\"fmd\",\"direction\":\"Outbound\",\"endpointRuleName\":\"egizv\",\"destination\":\"felisdjub\",\"ports\":\"bqigkx\"},{\"destinationType\":\"PrivateNetwork\",\"protocols\":[\"TCP\",\"AH\",\"TCP\"],\"transitHubResourceId\":\"acy\",\"direction\":\"Outbound\",\"endpointRuleName\":\"dmspof\",\"destination\":\"vuhrylni\",\"ports\":\"rz\"}],\"resourceCollection\":[\"jed\",\"st\",\"vnlvxbcuiiznktwf\"],\"provisioningState\":\"Updating\",\"updateMode\":\"Automatic\",\"syncTo\":[\"ibmikostbzb\",\"iwbuqny\",\"phzfylsgcrp\",\"bcunezzceze\"],\"syncFrom\":\"w\",\"syncStatus\":\"Failed\",\"syncDestinationStatuses\":[{\"destinationId\":\"xjwet\",\"status\":\"NotConfigured\",\"errorMessage\":\"ihclafzv\",\"lastSyncTime\":\"2021-01-20T16:23:38Z\"}],\"syncPerformedBy\":{\"principalId\":\"trsqqw\",\"principalType\":\"tcmwqkchc\",\"tenantId\":\"waxfewzjkj\",\"performedAt\":\"2021-01-10T06:39:18Z\",\"correlationId\":\"fdeqvhpsyl\"}},\"location\":\"shk\",\"tags\":{\"snptfujgicgaao\":\"mbmxzjrgywwpgj\"},\"id\":\"pttaqutd\",\"name\":\"wemxswvruunzz\",\"type\":\"gehkfkimrtixokff\"},{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"FQDN\",\"protocols\":[\"TCP\",\"AH\",\"UDP\"],\"transitHubResourceId\":\"hi\",\"direction\":\"Outbound\",\"endpointRuleName\":\"stshiy\",\"destination\":\"velfcldu\",\"ports\":\"birdsvuwcobiegs\"},{\"destinationType\":\"FQDNTag\",\"protocols\":[\"HTTPS\",\"AH\",\"UDP\",\"ICMP\"],\"transitHubResourceId\":\"i\",\"direction\":\"Inbound\",\"endpointRuleName\":\"gshejjtbxqmulux\",\"destination\":\"qzvnersbycucr\",\"ports\":\"amikzebrqbsm\"},{\"destinationType\":\"ServiceTag\",\"protocols\":[\"AH\",\"UDP\",\"TCP\"],\"transitHubResourceId\":\"okzrus\",\"direction\":\"Inbound\",\"endpointRuleName\":\"czznvfbycjsxj\",\"destination\":\"i\",\"ports\":\"vumwmxqh\"},{\"destinationType\":\"ServiceTag\",\"protocols\":[\"ICMP\",\"AH\"],\"transitHubResourceId\":\"dsehaohdjhhflzo\",\"direction\":\"Inbound\",\"endpointRuleName\":\"xpelnjetagltsx\",\"destination\":\"tft\",\"ports\":\"pnpbswveflocc\"}],\"resourceCollection\":[\"ozihmipgawt\"],\"provisioningState\":\"Deleting\",\"updateMode\":\"Automatic\",\"syncTo\":[\"xcjxgrytfmpcy\",\"ilrmcaykggnox\"],\"syncFrom\":\"t\",\"syncStatus\":\"Succeeded\",\"syncDestinationStatuses\":[{\"destinationId\":\"pndfcpfnznt\",\"status\":\"Succeeded\",\"errorMessage\":\"wkjaos\",\"lastSyncTime\":\"2021-11-04T17:56:25Z\"}],\"syncPerformedBy\":{\"principalId\":\"voamktcqiosmg\",\"principalType\":\"zah\",\"tenantId\":\"xqdlyrtltlapr\",\"performedAt\":\"2021-09-17T05:36:33Z\",\"correlationId\":\"zkatb\"}},\"location\":\"mznnbsoqeqalarvl\",\"tags\":{\"bmhyreeudz\":\"nbtgfebwl\"},\"id\":\"av\",\"name\":\"pdqmjxlyyzglgouw\",\"type\":\"lmjjyuo\"}],\"nextLink\":\"tob\"}")
             .toObject(CommunityEndpointResourceListResult.class);
-        Assertions.assertEquals("vf", model.value().get(0).location());
-        Assertions.assertEquals("vntjlrigjk", model.value().get(0).tags().get("kyrioovzid"));
-        Assertions.assertEquals(DestinationType.SERVICE_TAG,
+        Assertions.assertEquals("shk", model.value().get(0).location());
+        Assertions.assertEquals("mbmxzjrgywwpgj", model.value().get(0).tags().get("snptfujgicgaao"));
+        Assertions.assertEquals(DestinationType.IPADDRESS,
             model.value().get(0).properties().ruleCollection().get(0).destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.UDP,
+        Assertions.assertEquals(CommunityEndpointProtocol.HTTPS,
             model.value().get(0).properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("qwazlnqnmcjngzq",
+        Assertions.assertEquals("fmd",
             model.value().get(0).properties().ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("xtbjwgnyfusfzsv",
-            model.value().get(0).properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("ikzhajqglcfhmlrq",
-            model.value().get(0).properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("xynqnz", model.value().get(0).properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals(RuleDirection.OUTBOUND,
+            model.value().get(0).properties().ruleCollection().get(0).direction());
+        Assertions.assertEquals("egizv", model.value().get(0).properties().ruleCollection().get(0).endpointRuleName());
+        Assertions.assertEquals("felisdjub", model.value().get(0).properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("bqigkx", model.value().get(0).properties().ruleCollection().get(0).ports());
         Assertions.assertEquals(UpdateMode.AUTOMATIC, model.value().get(0).properties().updateMode());
-        Assertions.assertEquals("cjsxjww", model.nextLink());
+        Assertions.assertEquals("ibmikostbzb", model.value().get(0).properties().syncTo().get(0));
+        Assertions.assertEquals("tob", model.nextLink());
     }
 }

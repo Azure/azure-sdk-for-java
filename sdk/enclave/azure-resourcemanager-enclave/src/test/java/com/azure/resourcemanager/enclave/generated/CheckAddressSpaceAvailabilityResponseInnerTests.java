@@ -12,7 +12,7 @@ public final class CheckAddressSpaceAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckAddressSpaceAvailabilityResponseInner model
-            = BinaryData.fromString("{\"value\":false}").toObject(CheckAddressSpaceAvailabilityResponseInner.class);
-        Assertions.assertFalse(model.value());
+            = BinaryData.fromString("{\"value\":true}").toObject(CheckAddressSpaceAvailabilityResponseInner.class);
+        Assertions.assertTrue(model.value());
     }
 }

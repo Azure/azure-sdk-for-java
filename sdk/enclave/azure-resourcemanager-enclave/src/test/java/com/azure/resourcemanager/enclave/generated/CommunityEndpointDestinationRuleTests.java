@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointDestinationRule;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,32 +16,34 @@ public final class CommunityEndpointDestinationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunityEndpointDestinationRule model = BinaryData.fromString(
-            "{\"destinationType\":\"FQDN\",\"protocols\":[\"UDP\",\"ESP\",\"ICMP\",\"ESP\"],\"transitHubResourceId\":\"foudor\",\"endpointRuleName\":\"gyyprotwy\",\"destination\":\"ndm\",\"ports\":\"hu\"}")
+            "{\"destinationType\":\"IPAddress\",\"protocols\":[\"ESP\",\"ANY\"],\"transitHubResourceId\":\"ikzhajqglcfhmlrq\",\"direction\":\"Outbound\",\"endpointRuleName\":\"nqnzrd\",\"destination\":\"ovw\",\"ports\":\"nptgoeiybba\"}")
             .toObject(CommunityEndpointDestinationRule.class);
-        Assertions.assertEquals(DestinationType.FQDN, model.destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.UDP, model.protocols().get(0));
-        Assertions.assertEquals("foudor", model.transitHubResourceId());
-        Assertions.assertEquals("gyyprotwy", model.endpointRuleName());
-        Assertions.assertEquals("ndm", model.destination());
-        Assertions.assertEquals("hu", model.ports());
+        Assertions.assertEquals(DestinationType.IPADDRESS, model.destinationType());
+        Assertions.assertEquals(CommunityEndpointProtocol.ESP, model.protocols().get(0));
+        Assertions.assertEquals("ikzhajqglcfhmlrq", model.transitHubResourceId());
+        Assertions.assertEquals(RuleDirection.OUTBOUND, model.direction());
+        Assertions.assertEquals("nqnzrd", model.endpointRuleName());
+        Assertions.assertEquals("ovw", model.destination());
+        Assertions.assertEquals("nptgoeiybba", model.ports());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommunityEndpointDestinationRule model
-            = new CommunityEndpointDestinationRule().withDestinationType(DestinationType.FQDN)
-                .withProtocols(Arrays.asList(CommunityEndpointProtocol.UDP, CommunityEndpointProtocol.ESP,
-                    CommunityEndpointProtocol.ICMP, CommunityEndpointProtocol.ESP))
-                .withTransitHubResourceId("foudor")
-                .withEndpointRuleName("gyyprotwy")
-                .withDestination("ndm")
-                .withPorts("hu");
+            = new CommunityEndpointDestinationRule().withDestinationType(DestinationType.IPADDRESS)
+                .withProtocols(Arrays.asList(CommunityEndpointProtocol.ESP, CommunityEndpointProtocol.ANY))
+                .withTransitHubResourceId("ikzhajqglcfhmlrq")
+                .withDirection(RuleDirection.OUTBOUND)
+                .withEndpointRuleName("nqnzrd")
+                .withDestination("ovw")
+                .withPorts("nptgoeiybba");
         model = BinaryData.fromObject(model).toObject(CommunityEndpointDestinationRule.class);
-        Assertions.assertEquals(DestinationType.FQDN, model.destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.UDP, model.protocols().get(0));
-        Assertions.assertEquals("foudor", model.transitHubResourceId());
-        Assertions.assertEquals("gyyprotwy", model.endpointRuleName());
-        Assertions.assertEquals("ndm", model.destination());
-        Assertions.assertEquals("hu", model.ports());
+        Assertions.assertEquals(DestinationType.IPADDRESS, model.destinationType());
+        Assertions.assertEquals(CommunityEndpointProtocol.ESP, model.protocols().get(0));
+        Assertions.assertEquals("ikzhajqglcfhmlrq", model.transitHubResourceId());
+        Assertions.assertEquals(RuleDirection.OUTBOUND, model.direction());
+        Assertions.assertEquals("nqnzrd", model.endpointRuleName());
+        Assertions.assertEquals("ovw", model.destination());
+        Assertions.assertEquals("nptgoeiybba", model.ports());
     }
 }

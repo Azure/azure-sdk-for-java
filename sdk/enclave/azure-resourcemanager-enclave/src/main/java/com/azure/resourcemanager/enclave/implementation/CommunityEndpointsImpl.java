@@ -126,6 +126,28 @@ public final class CommunityEndpointsImpl implements CommunityEndpoints {
         }
     }
 
+    public CommunityEndpointResource sync(String resourceGroupName, String communityName,
+        String communityEndpointName) {
+        CommunityEndpointResourceInner inner
+            = this.serviceClient().sync(resourceGroupName, communityName, communityEndpointName);
+        if (inner != null) {
+            return new CommunityEndpointResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommunityEndpointResource sync(String resourceGroupName, String communityName, String communityEndpointName,
+        Context context) {
+        CommunityEndpointResourceInner inner
+            = this.serviceClient().sync(resourceGroupName, communityName, communityEndpointName, context);
+        if (inner != null) {
+            return new CommunityEndpointResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public CommunityEndpointResource getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/communityEndpoints/{communityEndpointName}",

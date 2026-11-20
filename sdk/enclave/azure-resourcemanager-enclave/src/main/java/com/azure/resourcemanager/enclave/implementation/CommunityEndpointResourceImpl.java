@@ -181,6 +181,15 @@ public final class CommunityEndpointResourceImpl
             .handleApprovalDeletion(resourceGroupName, communityName, communityEndpointName, body, context);
     }
 
+    public CommunityEndpointResource sync() {
+        return serviceManager.communityEndpoints().sync(resourceGroupName, communityName, communityEndpointName);
+    }
+
+    public CommunityEndpointResource sync(Context context) {
+        return serviceManager.communityEndpoints()
+            .sync(resourceGroupName, communityName, communityEndpointName, context);
+    }
+
     public CommunityEndpointResourceImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;

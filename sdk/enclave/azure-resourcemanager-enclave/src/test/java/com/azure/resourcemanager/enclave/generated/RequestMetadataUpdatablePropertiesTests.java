@@ -13,25 +13,24 @@ public final class RequestMetadataUpdatablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RequestMetadataUpdatableProperties model = BinaryData.fromString(
-            "{\"resourceAction\":\"icphvtrrmhw\",\"approvalCallbackRoute\":\"fdpyflubh\",\"approvalCallbackPayload\":\"glrocuy\",\"approvalStatus\":\"Approved\"}")
+            "{\"resourceAction\":\"ev\",\"approvalCallbackRoute\":\"lyokrrrou\",\"approvalCallbackPayload\":\"vnsasbcrymodi\",\"approvalStatus\":\"Expired\"}")
             .toObject(RequestMetadataUpdatableProperties.class);
-        Assertions.assertEquals("icphvtrrmhw", model.resourceAction());
-        Assertions.assertEquals("fdpyflubh", model.approvalCallbackRoute());
-        Assertions.assertEquals("glrocuy", model.approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.APPROVED, model.approvalStatus());
+        Assertions.assertEquals("ev", model.resourceAction());
+        Assertions.assertEquals("lyokrrrou", model.approvalCallbackRoute());
+        Assertions.assertEquals("vnsasbcrymodi", model.approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.EXPIRED, model.approvalStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RequestMetadataUpdatableProperties model
-            = new RequestMetadataUpdatableProperties().withResourceAction("icphvtrrmhw")
-                .withApprovalCallbackRoute("fdpyflubh")
-                .withApprovalCallbackPayload("glrocuy")
-                .withApprovalStatus(ApprovalStatus.APPROVED);
+        RequestMetadataUpdatableProperties model = new RequestMetadataUpdatableProperties().withResourceAction("ev")
+            .withApprovalCallbackRoute("lyokrrrou")
+            .withApprovalCallbackPayload("vnsasbcrymodi")
+            .withApprovalStatus(ApprovalStatus.EXPIRED);
         model = BinaryData.fromObject(model).toObject(RequestMetadataUpdatableProperties.class);
-        Assertions.assertEquals("icphvtrrmhw", model.resourceAction());
-        Assertions.assertEquals("fdpyflubh", model.approvalCallbackRoute());
-        Assertions.assertEquals("glrocuy", model.approvalCallbackPayload());
-        Assertions.assertEquals(ApprovalStatus.APPROVED, model.approvalStatus());
+        Assertions.assertEquals("ev", model.resourceAction());
+        Assertions.assertEquals("lyokrrrou", model.approvalCallbackRoute());
+        Assertions.assertEquals("vnsasbcrymodi", model.approvalCallbackPayload());
+        Assertions.assertEquals(ApprovalStatus.EXPIRED, model.approvalStatus());
     }
 }

@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.enclave.generated;
 
 import com.azure.resourcemanager.enclave.models.CheckAddressSpaceAvailabilityRequest;
-import com.azure.resourcemanager.enclave.models.EnclaveVirtualNetworkModel;
-import com.azure.resourcemanager.enclave.models.SubnetConfiguration;
-import java.util.Arrays;
 
 /**
  * Samples for Community CheckAddressSpaceAvailability.
  */
 public final class CommunityCheckAddressSpaceAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_PostCheckAddressSpaceAvailability.json
+     * x-ms-original-file: 2026-10-01-preview/Community_PostCheckAddressSpaceAvailability.json
      */
     /**
      * Sample code: Community_CheckAddressSpaceAvailability.
@@ -27,11 +24,7 @@ public final class CommunityCheckAddressSpaceAvailabilitySamples {
             .checkAddressSpaceAvailabilityWithResponse("rgopenapi", "TestMyCommunity",
                 new CheckAddressSpaceAvailabilityRequest().withCommunityResourceId(
                     "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity")
-                    .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkSize("small")
-                        .withCustomCidrRange("10.0.0.0/24")
-                        .withSubnetConfigurations(
-                            Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
-                        .withAllowSubnetCommunication(true)),
+                    .withPrefixLength(23),
                 com.azure.core.util.Context.NONE);
     }
 }

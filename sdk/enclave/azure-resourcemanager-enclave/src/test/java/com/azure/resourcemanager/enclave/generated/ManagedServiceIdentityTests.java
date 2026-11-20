@@ -16,20 +16,18 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"fsnkymuctq\",\"tenantId\":\"fbebrjcxer\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"xepcyvahfn\":{\"principalId\":\"ttxfvjr\",\"clientId\":\"rp\"},\"gsncghkjeszz\":{\"principalId\":\"kyqxjvuujqgidokg\",\"clientId\":\"jyoxgvclt\"},\"mxnehmp\":{\"principalId\":\"ijhtxf\",\"clientId\":\"xbf\"},\"mpukgriw\":{\"principalId\":\"cxgod\",\"clientId\":\"fqkkr\"}}}")
+            "{\"principalId\":\"ddystkiiuxhqy\",\"tenantId\":\"xorrqnb\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"atkpnp\":{\"principalId\":\"yifqrvkdvjsllrmv\",\"clientId\":\"f\"},\"vsovmyokac\":{\"principalId\":\"exxbczwtr\",\"clientId\":\"iqzbq\"},\"chrkcciwwzjuqk\":{\"principalId\":\"kwlhzdo\",\"clientId\":\"xjmflbvv\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model
-            = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("xepcyvahfn", new UserAssignedIdentity(), "gsncghkjeszz", new UserAssignedIdentity(),
-                        "mxnehmp", new UserAssignedIdentity(), "mpukgriw", new UserAssignedIdentity()));
+        ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("atkpnp", new UserAssignedIdentity(), "vsovmyokac",
+                new UserAssignedIdentity(), "chrkcciwwzjuqk", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

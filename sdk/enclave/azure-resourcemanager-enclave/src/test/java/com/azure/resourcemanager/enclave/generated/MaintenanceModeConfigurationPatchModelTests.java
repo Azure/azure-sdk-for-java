@@ -17,26 +17,27 @@ public final class MaintenanceModeConfigurationPatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceModeConfigurationPatchModel model = BinaryData.fromString(
-            "{\"mode\":\"Off\",\"principals\":[{\"id\":\"qtdo\",\"type\":\"ServicePrincipal\"},{\"id\":\"cbxvwvxyslqbh\",\"type\":\"User\"},{\"id\":\"xoblytkbl\",\"type\":\"User\"}],\"justification\":\"Networking\"}")
+            "{\"mode\":\"Advanced\",\"principals\":[{\"id\":\"wjvzunluthnn\",\"type\":\"User\"},{\"id\":\"nxipeil\",\"type\":\"User\"},{\"id\":\"zuaejxd\",\"type\":\"Group\"},{\"id\":\"tskzbbtdzumveek\",\"type\":\"ServicePrincipal\"}],\"justification\":\"Off\"}")
             .toObject(MaintenanceModeConfigurationPatchModel.class);
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.OFF, model.mode());
-        Assertions.assertEquals("qtdo", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principals().get(0).type());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.NETWORKING, model.justification());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED, model.mode());
+        Assertions.assertEquals("wjvzunluthnn", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.USER, model.principals().get(0).type());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.OFF, model.justification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MaintenanceModeConfigurationPatchModel model
-            = new MaintenanceModeConfigurationPatchModel().withMode(MaintenanceModeConfigurationModelMode.OFF)
-                .withPrincipals(Arrays.asList(new Principal().withId("qtdo").withType(PrincipalType.SERVICE_PRINCIPAL),
-                    new Principal().withId("cbxvwvxyslqbh").withType(PrincipalType.USER),
-                    new Principal().withId("xoblytkbl").withType(PrincipalType.USER)))
-                .withJustification(MaintenanceModeConfigurationModelJustification.NETWORKING);
+            = new MaintenanceModeConfigurationPatchModel().withMode(MaintenanceModeConfigurationModelMode.ADVANCED)
+                .withPrincipals(Arrays.asList(new Principal().withId("wjvzunluthnn").withType(PrincipalType.USER),
+                    new Principal().withId("nxipeil").withType(PrincipalType.USER),
+                    new Principal().withId("zuaejxd").withType(PrincipalType.GROUP),
+                    new Principal().withId("tskzbbtdzumveek").withType(PrincipalType.SERVICE_PRINCIPAL)))
+                .withJustification(MaintenanceModeConfigurationModelJustification.OFF);
         model = BinaryData.fromObject(model).toObject(MaintenanceModeConfigurationPatchModel.class);
-        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.OFF, model.mode());
-        Assertions.assertEquals("qtdo", model.principals().get(0).id());
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, model.principals().get(0).type());
-        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.NETWORKING, model.justification());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelMode.ADVANCED, model.mode());
+        Assertions.assertEquals("wjvzunluthnn", model.principals().get(0).id());
+        Assertions.assertEquals(PrincipalType.USER, model.principals().get(0).type());
+        Assertions.assertEquals(MaintenanceModeConfigurationModelJustification.OFF, model.justification());
     }
 }

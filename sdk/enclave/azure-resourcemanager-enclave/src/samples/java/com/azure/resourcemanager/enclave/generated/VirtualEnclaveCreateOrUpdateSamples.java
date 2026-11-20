@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.enclave.generated;
 
+import com.azure.resourcemanager.enclave.models.AddressSpaceEntry;
 import com.azure.resourcemanager.enclave.models.ApprovalPolicy;
 import com.azure.resourcemanager.enclave.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.enclave.models.DiagnosticDestination;
 import com.azure.resourcemanager.enclave.models.EnclaveDefaultSettingsModel;
-import com.azure.resourcemanager.enclave.models.EnclaveVirtualNetworkModel;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModel;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModelJustification;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModelMode;
@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public final class VirtualEnclaveCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualEnclave_CreateOrUpdate.
@@ -49,14 +49,8 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
             .withRegion("westcentralus")
             .withExistingResourceGroup("rgopenapi")
             .withTags(mapOf("Tag1", "Value1"))
-            .withProperties(new VirtualEnclaveProperties()
-                .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkSize("small")
-                    .withCustomCidrRange("10.0.0.0/24")
-                    .withSubnetConfigurations(
-                        Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
-                    .withAllowSubnetCommunication(true))
-                .withCommunityResourceId(
-                    "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity")
+            .withProperties(new VirtualEnclaveProperties().withCommunityResourceId(
+                "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity")
                 .withBastionEnabled(true)
                 .withWorkloadResourceVisibility(ResourceVisibilityMode.DISABLED)
                 .withRbacInheritance(RbacInheritanceMode.DISABLED)
@@ -78,6 +72,11 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
                     new RoleAssignmentItem().withRoleDefinitionId("fb879df8-f326-4884-b1cf-06f3ad86be52")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
                             .withType(PrincipalType.GROUP)))))
+                .withAddressSpaces(
+                    Arrays.asList(new AddressSpaceEntry().withPrefixLength(23).withAddressSpace("10.1.0.0/23")))
+                .withSubnetConfigurations(
+                    Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
+                .withAllowSubnetCommunication(true)
                 .withEnclaveDefaultSettings(
                     new EnclaveDefaultSettingsModel().withDiagnosticDestination(DiagnosticDestination.BOTH))
                 .withMaintenanceModeConfiguration(new MaintenanceModeConfigurationModel()

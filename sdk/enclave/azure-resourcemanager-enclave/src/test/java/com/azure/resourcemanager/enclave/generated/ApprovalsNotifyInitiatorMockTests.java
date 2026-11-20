@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class ApprovalsNotifyInitiatorMockTests {
     @Test
     public void testNotifyInitiator() throws Exception {
-        String responseStr = "{\"message\":\"rnzpducdaak\"}";
+        String responseStr = "{\"message\":\"mrkkhmwd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class ApprovalsNotifyInitiatorMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApprovalActionResponse response = manager.approvals()
-            .notifyInitiator("djnosdkvibf", "sgm",
-                new ApprovalActionRequest().withApprovalStatus(ApprovalActionRequestApprovalStatus.REJECTED),
+            .notifyInitiator("selqkrsazrhxud", "qmdtffi",
+                new ApprovalActionRequest().withApprovalStatus(ApprovalActionRequestApprovalStatus.APPROVED),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rnzpducdaak", response.message());
+        Assertions.assertEquals("mrkkhmwd", response.message());
     }
 }

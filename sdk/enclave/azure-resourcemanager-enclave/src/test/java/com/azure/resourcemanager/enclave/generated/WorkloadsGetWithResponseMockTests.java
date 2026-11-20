@@ -21,7 +21,7 @@ public final class WorkloadsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"NotSpecified\",\"resourceGroupCollection\":[\"pie\",\"gbebjf\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"ichdlpn\"},{\"id\":\"ubntnbatzviqsow\"},{\"id\":\"aelcat\"},{\"id\":\"ju\"}]}},\"location\":\"lrvkmjc\",\"tags\":{\"vkyylizrzbjpsf\":\"vlgfgg\",\"gbwidqlvh\":\"sfuztlvtmv\",\"zrvjfnmjmvlwyzgi\":\"koveof\",\"jpu\":\"lkujrllfojui\"},\"id\":\"yjucejikzoeo\",\"name\":\"vtzejetjklnti\",\"type\":\"yjuzkdb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Running\",\"resourceGroupCollection\":[\"ukphaimmoiroq\",\"oshbragapyy\",\"mfsvbpav\",\"opfppdbwnupgah\"],\"managedOnBehalfOfConfiguration\":{\"moboBrokerResources\":[{\"id\":\"sjcaacfdmmcpugm\"}]}},\"location\":\"qepvufhbzeh\",\"tags\":{\"nbldxeaclgschori\":\"oqhnlb\",\"fldpuviyfc\":\"krsrrmoucs\"},\"id\":\"abeolhbhlvbm\",\"name\":\"uqibsxtkcu\",\"type\":\"fbsfarfsiow\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class WorkloadsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadResource response = manager.workloads()
-            .getWithResponse("jgnrefqyhqoto", "hiqakydiwfbrk", "pzdqtvhcspod", com.azure.core.util.Context.NONE)
+            .getWithResponse("wgbdvibidmhmwffp", "fmuvapckccr", "vwe", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lrvkmjc", response.location());
-        Assertions.assertEquals("vlgfgg", response.tags().get("vkyylizrzbjpsf"));
-        Assertions.assertEquals("pie", response.properties().resourceGroupCollection().get(0));
+        Assertions.assertEquals("qepvufhbzeh", response.location());
+        Assertions.assertEquals("oqhnlb", response.tags().get("nbldxeaclgschori"));
+        Assertions.assertEquals("ukphaimmoiroq", response.properties().resourceGroupCollection().get(0));
     }
 }

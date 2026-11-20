@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public final class CommunityUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_Update.json
+     * x-ms-original-file: 2026-10-01-preview/Community_Update.json
      */
     /**
      * Sample code: Community_Update.
@@ -127,13 +127,15 @@ public final class CommunityUpdateSamples {
                                 new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
                                     .withMinimumApproversRequired(1))
                             .withEnclaveCreation(
-                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                                    .withMinimumApproversRequired(1))
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))
                             .withConnectionCreation(
                                 new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                                    .withMinimumApproversRequired(1))
+                                    .withMinimumApproversRequired(1)
+                                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000002"))))
                             .withConnectionUpdate(
-                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
                             .withCommunityMaintenanceMode(new ApprovalSettingConfiguration()
                                 .withApprovalPolicy(ApprovalPolicy.REQUIRED)
                                 .withMinimumApproversRequired(2)
@@ -142,7 +144,8 @@ public final class CommunityUpdateSamples {
                                     new MandatoryApprover()
                                         .withApproverEntraId("00000000-0000-0000-0000-000000000004"))))
                             .withEnclaveMaintenanceMode(
-                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))))
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)))
+                    .withAddressSpaces(Arrays.asList("10.0.0.0/16", "10.1.0.0/16")))
             .apply();
     }
 

@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class CommunityEndpointsHandleApprovalCreationMockTests {
     @Test
     public void testHandleApprovalCreation() throws Exception {
-        String responseStr = "{\"message\":\"hddzydisnuepy\"}";
+        String responseStr = "{\"message\":\"rhjul\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class CommunityEndpointsHandleApprovalCreationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApprovalActionResponse response = manager.communityEndpoints()
-            .handleApprovalCreation("qq", "cjubkhjozfymcwm", "upyvqyvliq",
+            .handleApprovalCreation("yykyalu", "ekdfqnhttwd", "wrczfjjnnuxxrk",
                 new ApprovalCallbackRequest()
                     .withResourceRequestAction(ApprovalCallbackRequestResourceRequestAction.UPDATE)
-                    .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.REJECTED)
-                    .withApprovalCallbackPayload("ejbsvsiaies"),
+                    .withApprovalStatus(ApprovalCallbackRequestApprovalStatus.APPROVED)
+                    .withApprovalCallbackPayload("nulwempdci"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hddzydisnuepy", response.message());
+        Assertions.assertEquals("rhjul", response.message());
     }
 }

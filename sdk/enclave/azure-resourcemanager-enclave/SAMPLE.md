@@ -29,6 +29,7 @@
 - [HandleApprovalDeletion](#communityendpoints_handleapprovaldeletion)
 - [ListByCommunityResource](#communityendpoints_listbycommunityresource)
 - [ListBySubscription](#communityendpoints_listbysubscription)
+- [Sync](#communityendpoints_sync)
 - [Update](#communityendpoints_update)
 
 ## DedicatedHub
@@ -110,7 +111,7 @@ import java.util.Arrays;
  */
 public final class ApprovalCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Approvals_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/Approvals_CreateOrUpdate.json
      */
     /**
      * Sample code: Approval_CreateOrUpdate.
@@ -149,7 +150,7 @@ public final class ApprovalCreateOrUpdateSamples {
  */
 public final class ApprovalDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Approvals_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/Approvals_Delete.json
      */
     /**
      * Sample code: Approval_Delete.
@@ -173,7 +174,7 @@ public final class ApprovalDeleteSamples {
  */
 public final class ApprovalGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Approvals_Get.json
+     * x-ms-original-file: 2026-10-01-preview/Approvals_Get.json
      */
     /**
      * Sample code: Approval_Get.
@@ -197,7 +198,7 @@ public final class ApprovalGetSamples {
  */
 public final class ApprovalListByParentSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Approvals_ListByParent.json
+     * x-ms-original-file: 2026-10-01-preview/Approvals_ListByParent.json
      */
     /**
      * Sample code: Approval_ListByParent.
@@ -224,7 +225,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalActionRequestApprovalSta
  */
 public final class ApprovalNotifyInitiatorSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Approvals_NotifyInitiator.json
+     * x-ms-original-file: 2026-10-01-preview/Approvals_NotifyInitiator.json
      */
     /**
      * Sample code: Approval_NotifyInitiator.
@@ -259,7 +260,7 @@ import java.util.Arrays;
  */
 public final class ApprovalUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Approvals_Update.json
+     * x-ms-original-file: 2026-10-01-preview/Approvals_Update.json
      */
     /**
      * Sample code: Approval_Update.
@@ -296,16 +297,13 @@ public final class ApprovalUpdateSamples {
 
 ```java
 import com.azure.resourcemanager.enclave.models.CheckAddressSpaceAvailabilityRequest;
-import com.azure.resourcemanager.enclave.models.EnclaveVirtualNetworkModel;
-import com.azure.resourcemanager.enclave.models.SubnetConfiguration;
-import java.util.Arrays;
 
 /**
  * Samples for Community CheckAddressSpaceAvailability.
  */
 public final class CommunityCheckAddressSpaceAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_PostCheckAddressSpaceAvailability.json
+     * x-ms-original-file: 2026-10-01-preview/Community_PostCheckAddressSpaceAvailability.json
      */
     /**
      * Sample code: Community_CheckAddressSpaceAvailability.
@@ -318,11 +316,7 @@ public final class CommunityCheckAddressSpaceAvailabilitySamples {
             .checkAddressSpaceAvailabilityWithResponse("rgopenapi", "TestMyCommunity",
                 new CheckAddressSpaceAvailabilityRequest().withCommunityResourceId(
                     "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/communities/TestMyCommunity")
-                    .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkSize("small")
-                        .withCustomCidrRange("10.0.0.0/24")
-                        .withSubnetConfigurations(
-                            Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
-                        .withAllowSubnetCommunication(true)),
+                    .withPrefixLength(23),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -363,7 +357,7 @@ import java.util.Map;
  */
 public final class CommunityCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/Community_CreateOrUpdate.json
      */
     /**
      * Sample code: Community_CreateOrUpdate.
@@ -539,7 +533,7 @@ public final class CommunityCreateOrUpdateSamples {
  */
 public final class CommunityDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/Community_Delete.json
      */
     /**
      * Sample code: Community_Delete.
@@ -560,7 +554,7 @@ public final class CommunityDeleteSamples {
  */
 public final class CommunityGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_Get.json
+     * x-ms-original-file: 2026-10-01-preview/Community_Get.json
      */
     /**
      * Sample code: Community_Get.
@@ -582,7 +576,7 @@ public final class CommunityGetByResourceGroupSamples {
  */
 public final class CommunityListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/Community_ListBySubscription.json
      */
     /**
      * Sample code: Community_ListBySubscription.
@@ -603,7 +597,7 @@ public final class CommunityListSamples {
  */
 public final class CommunityListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_ListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01-preview/Community_ListByResourceGroup.json
      */
     /**
      * Sample code: Community_ListByResourceGroup.
@@ -642,7 +636,7 @@ import java.util.Map;
  */
 public final class CommunityUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Community_Update.json
+     * x-ms-original-file: 2026-10-01-preview/Community_Update.json
      */
     /**
      * Sample code: Community_Update.
@@ -742,13 +736,15 @@ public final class CommunityUpdateSamples {
                                 new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
                                     .withMinimumApproversRequired(1))
                             .withEnclaveCreation(
-                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                                    .withMinimumApproversRequired(1))
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))
                             .withConnectionCreation(
                                 new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
-                                    .withMinimumApproversRequired(1))
+                                    .withMinimumApproversRequired(1)
+                                    .withMandatoryApprovers(Arrays.asList(new MandatoryApprover()
+                                        .withApproverEntraId("00000000-0000-0000-0000-000000000002"))))
                             .withConnectionUpdate(
-                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.REQUIRED)
+                                    .withMinimumApproversRequired(1))
                             .withCommunityMaintenanceMode(new ApprovalSettingConfiguration()
                                 .withApprovalPolicy(ApprovalPolicy.REQUIRED)
                                 .withMinimumApproversRequired(2)
@@ -757,7 +753,8 @@ public final class CommunityUpdateSamples {
                                     new MandatoryApprover()
                                         .withApproverEntraId("00000000-0000-0000-0000-000000000004"))))
                             .withEnclaveMaintenanceMode(
-                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED))))
+                                new ApprovalSettingConfiguration().withApprovalPolicy(ApprovalPolicy.NOT_REQUIRED)))
+                    .withAddressSpaces(Arrays.asList("10.0.0.0/16", "10.1.0.0/16")))
             .apply();
     }
 
@@ -782,6 +779,7 @@ import com.azure.resourcemanager.enclave.models.CommunityEndpointDestinationRule
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProperties;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import com.azure.resourcemanager.enclave.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -792,7 +790,7 @@ import java.util.Map;
  */
 public final class CommunityEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: CommunityEndpoints_CreateOrUpdate.
@@ -810,6 +808,7 @@ public final class CommunityEndpointsCreateOrUpdateSamples {
                     .withProtocols(Arrays.asList(CommunityEndpointProtocol.TCP))
                     .withTransitHubResourceId(
                         "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName")
+                    .withDirection(RuleDirection.OUTBOUND)
                     .withDestination("foo.example.com")
                     .withPorts("443")))
                 .withUpdateMode(UpdateMode.AUTOMATIC))
@@ -838,7 +837,7 @@ public final class CommunityEndpointsCreateOrUpdateSamples {
  */
 public final class CommunityEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_Delete.json
      */
     /**
      * Sample code: CommunityEndpoints_Delete.
@@ -860,7 +859,7 @@ public final class CommunityEndpointsDeleteSamples {
  */
 public final class CommunityEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_Get.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_Get.json
      */
     /**
      * Sample code: CommunityEndpoints_Get.
@@ -887,7 +886,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalCallbackRequestResourceR
  */
 public final class CommunityEndpointsHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_HandleApprovalCreation.json
      */
     /**
      * Sample code: CommunityEndpoints_HandleApprovalCreation.
@@ -917,7 +916,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalDeletionCallbackRequestR
  */
 public final class CommunityEndpointsHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_HandleApprovalDeletion.json
      */
     /**
      * Sample code: CommunityEndpoints_HandleApprovalDeletion.
@@ -943,7 +942,7 @@ public final class CommunityEndpointsHandleApprovalDeletionSamples {
  */
 public final class CommunityEndpointsListByCommunityResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_ListByCommunityResource.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_ListByCommunityResource.json
      */
     /**
      * Sample code: CommunityEndpoints_ListByCommunityResource.
@@ -966,7 +965,7 @@ public final class CommunityEndpointsListByCommunityResourceSamples {
  */
 public final class CommunityEndpointsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_ListBySubscription.json
      */
     /**
      * Sample code: CommunityEndpoints_ListBySubscription.
@@ -980,6 +979,28 @@ public final class CommunityEndpointsListBySubscriptionSamples {
 }
 ```
 
+### CommunityEndpoints_Sync
+
+```java
+/**
+ * Samples for CommunityEndpoints Sync.
+ */
+public final class CommunityEndpointsSyncSamples {
+    /*
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_Sync.json
+     */
+    /**
+     * Sample code: CommunityEndpoints_Sync.
+     * 
+     * @param manager Entry point to AzureEnclaveManager.
+     */
+    public static void communityEndpointsSync(com.azure.resourcemanager.enclave.AzureEnclaveManager manager) {
+        manager.communityEndpoints()
+            .sync("rgopenapi", "TestMyCommunity", "TestMyCommunityEndpoint", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### CommunityEndpoints_Update
 
 ```java
@@ -988,6 +1009,7 @@ import com.azure.resourcemanager.enclave.models.CommunityEndpointPatchProperties
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointResource;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import com.azure.resourcemanager.enclave.models.UpdateMode;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -998,7 +1020,7 @@ import java.util.Map;
  */
 public final class CommunityEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/CommunityEndpoints_Update.json
+     * x-ms-original-file: 2026-10-01-preview/CommunityEndpoints_Update.json
      */
     /**
      * Sample code: CommunityEndpoints_Update.
@@ -1017,6 +1039,7 @@ public final class CommunityEndpointsUpdateSamples {
                     .withProtocols(Arrays.asList(CommunityEndpointProtocol.TCP))
                     .withTransitHubResourceId(
                         "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity/transitHubs/TestThName")
+                    .withDirection(RuleDirection.OUTBOUND)
                     .withDestination("foo.example.com")
                     .withPorts("443")))
                 .withUpdateMode(UpdateMode.AUTOMATIC))
@@ -1050,7 +1073,7 @@ import java.util.Map;
  */
 public final class DedicatedHubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/DedicatedHubs_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/DedicatedHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: DedicatedHub_CreateOrUpdate.
@@ -1089,7 +1112,7 @@ public final class DedicatedHubCreateOrUpdateSamples {
  */
 public final class DedicatedHubDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/DedicatedHubs_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/DedicatedHubs_Delete.json
      */
     /**
      * Sample code: DedicatedHub_Delete.
@@ -1111,7 +1134,7 @@ public final class DedicatedHubDeleteSamples {
  */
 public final class DedicatedHubGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01/DedicatedHubs_Get.json
+     * x-ms-original-file: 2026-10-01-preview/DedicatedHubs_Get.json
      */
     /**
      * Sample code: DedicatedHub_Get.
@@ -1134,7 +1157,7 @@ public final class DedicatedHubGetSamples {
  */
 public final class DedicatedHubListByCommunityResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-01/DedicatedHubs_ListByCommunityResource.json
+     * x-ms-original-file: 2026-10-01-preview/DedicatedHubs_ListByCommunityResource.json
      */
     /**
      * Sample code: DedicatedHub_ListByCommunityResource.
@@ -1157,7 +1180,7 @@ public final class DedicatedHubListByCommunityResourceSamples {
  */
 public final class DedicatedHubListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/DedicatedHubs_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/DedicatedHubs_ListBySubscription.json
      */
     /**
      * Sample code: DedicatedHub_ListBySubscription.
@@ -1184,7 +1207,7 @@ import java.util.Map;
  */
 public final class DedicatedHubUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/DedicatedHubs_Update.json
+     * x-ms-original-file: 2026-10-01-preview/DedicatedHubs_Update.json
      */
     /**
      * Sample code: DedicatedHub_Update.
@@ -1227,7 +1250,7 @@ import java.util.Map;
  */
 public final class EnclaveConnectionCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveConnection_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveConnection_CreateOrUpdate.json
      */
     /**
      * Sample code: EnclaveConnection_CreateOrUpdate.
@@ -1272,7 +1295,7 @@ public final class EnclaveConnectionCreateOrUpdateSamples {
  */
 public final class EnclaveConnectionDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveConnection_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveConnection_Delete.json
      */
     /**
      * Sample code: EnclaveConnection_Delete.
@@ -1293,7 +1316,7 @@ public final class EnclaveConnectionDeleteSamples {
  */
 public final class EnclaveConnectionGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveConnection_Get.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveConnection_Get.json
      */
     /**
      * Sample code: EnclaveConnection_Get.
@@ -1319,7 +1342,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalCallbackRequestResourceR
  */
 public final class EnclaveConnectionHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveConnection_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveConnection_HandleApprovalCreation.json
      */
     /**
      * Sample code: EnclaveConnection_HandleApprovalCreation.
@@ -1350,7 +1373,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalDeletionCallbackRequestR
  */
 public final class EnclaveConnectionHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveConnection_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveConnection_HandleApprovalDeletion.json
      */
     /**
      * Sample code: EnclaveConnection_HandleApprovalDeletion.
@@ -1375,7 +1398,7 @@ public final class EnclaveConnectionHandleApprovalDeletionSamples {
  */
 public final class EnclaveConnectionListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveConnection_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveConnection_ListBySubscription.json
      */
     /**
      * Sample code: EnclaveConnection_ListBySubscription.
@@ -1397,7 +1420,7 @@ public final class EnclaveConnectionListSamples {
  */
 public final class EnclaveConnectionListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveConnection_ListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveConnection_ListByResourceGroup.json
      */
     /**
      * Sample code: EnclaveConnection_ListByResourceGroup.
@@ -1424,7 +1447,7 @@ import java.util.Map;
  */
 public final class EnclaveConnectionUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveConnection_Update.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveConnection_Update.json
      */
     /**
      * Sample code: EnclaveConnection_Update.
@@ -1471,7 +1494,7 @@ import java.util.Map;
  */
 public final class EnclaveEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveEndpoints_CreateOrUpdate.json
      */
     /**
      * Sample code: EnclaveEndpoints_CreateOrUpdate.
@@ -1515,7 +1538,7 @@ public final class EnclaveEndpointsCreateOrUpdateSamples {
  */
 public final class EnclaveEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveEndpoints_Delete.json
      */
     /**
      * Sample code: EnclaveEndpoints_Delete.
@@ -1537,7 +1560,7 @@ public final class EnclaveEndpointsDeleteSamples {
  */
 public final class EnclaveEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_Get.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveEndpoints_Get.json
      */
     /**
      * Sample code: EnclaveEndpoints_Get.
@@ -1563,7 +1586,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalCallbackRequestResourceR
  */
 public final class EnclaveEndpointsHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveEndpoints_HandleApprovalCreation.json
      */
     /**
      * Sample code: EnclaveEndpoints_HandleApprovalCreation.
@@ -1593,7 +1616,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalDeletionCallbackRequestR
  */
 public final class EnclaveEndpointsHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveEndpoints_HandleApprovalDeletion.json
      */
     /**
      * Sample code: EnclaveEndpoints_HandleApprovalDeletion.
@@ -1619,7 +1642,7 @@ public final class EnclaveEndpointsHandleApprovalDeletionSamples {
  */
 public final class EnclaveEndpointsListByEnclaveResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_ListByEnclaveResource.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveEndpoints_ListByEnclaveResource.json
      */
     /**
      * Sample code: EnclaveEndpoints_ListByEnclaveResource.
@@ -1642,7 +1665,7 @@ public final class EnclaveEndpointsListByEnclaveResourceSamples {
  */
 public final class EnclaveEndpointsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveEndpoints_ListBySubscription.json
      */
     /**
      * Sample code: EnclaveEndpoints_ListBySubscription.
@@ -1673,7 +1696,7 @@ import java.util.Map;
  */
 public final class EnclaveEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/EnclaveEndpoints_Update.json
+     * x-ms-original-file: 2026-10-01-preview/EnclaveEndpoints_Update.json
      */
     /**
      * Sample code: EnclaveEndpoints_Update.
@@ -1717,7 +1740,7 @@ public final class EnclaveEndpointsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Operations_List.json
+     * x-ms-original-file: 2026-10-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -1747,7 +1770,7 @@ import java.util.Map;
  */
 public final class TransitHubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/TransitHub_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/TransitHub_CreateOrUpdate.json
      */
     /**
      * Sample code: TransitHub_CreateOrUpdate.
@@ -1789,7 +1812,7 @@ public final class TransitHubCreateOrUpdateSamples {
  */
 public final class TransitHubDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/TransitHub_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/TransitHub_Delete.json
      */
     /**
      * Sample code: TransitHub_Delete.
@@ -1810,7 +1833,7 @@ public final class TransitHubDeleteSamples {
  */
 public final class TransitHubGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01/TransitHub_Get.json
+     * x-ms-original-file: 2026-10-01-preview/TransitHub_Get.json
      */
     /**
      * Sample code: TransitHub_Get.
@@ -1832,7 +1855,7 @@ public final class TransitHubGetSamples {
  */
 public final class TransitHubListByCommunityResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-01/TransitHub_ListByCommunityResource.json
+     * x-ms-original-file: 2026-10-01-preview/TransitHub_ListByCommunityResource.json
      */
     /**
      * Sample code: TransitHub_ListByCommunityResource.
@@ -1854,7 +1877,7 @@ public final class TransitHubListByCommunityResourceSamples {
  */
 public final class TransitHubListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/TransitHub_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/TransitHub_ListBySubscription.json
      */
     /**
      * Sample code: TransitHub_ListBySubscription.
@@ -1885,7 +1908,7 @@ import java.util.Map;
  */
 public final class TransitHubUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/TransitHub_Update.json
+     * x-ms-original-file: 2026-10-01-preview/TransitHub_Update.json
      */
     /**
      * Sample code: TransitHub_Update.
@@ -1922,11 +1945,11 @@ public final class TransitHubUpdateSamples {
 ### VirtualEnclave_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.enclave.models.AddressSpaceEntry;
 import com.azure.resourcemanager.enclave.models.ApprovalPolicy;
 import com.azure.resourcemanager.enclave.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.enclave.models.DiagnosticDestination;
 import com.azure.resourcemanager.enclave.models.EnclaveDefaultSettingsModel;
-import com.azure.resourcemanager.enclave.models.EnclaveVirtualNetworkModel;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModel;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModelJustification;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModelMode;
@@ -1954,7 +1977,7 @@ import java.util.Map;
  */
 public final class VirtualEnclaveCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_CreateOrUpdate.json
      */
     /**
      * Sample code: VirtualEnclave_CreateOrUpdate.
@@ -1967,14 +1990,8 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
             .withRegion("westcentralus")
             .withExistingResourceGroup("rgopenapi")
             .withTags(mapOf("Tag1", "Value1"))
-            .withProperties(new VirtualEnclaveProperties()
-                .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkSize("small")
-                    .withCustomCidrRange("10.0.0.0/24")
-                    .withSubnetConfigurations(
-                        Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
-                    .withAllowSubnetCommunication(true))
-                .withCommunityResourceId(
-                    "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity")
+            .withProperties(new VirtualEnclaveProperties().withCommunityResourceId(
+                "/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/communities/TestMyCommunity")
                 .withBastionEnabled(true)
                 .withWorkloadResourceVisibility(ResourceVisibilityMode.DISABLED)
                 .withRbacInheritance(RbacInheritanceMode.DISABLED)
@@ -1996,6 +2013,11 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
                     new RoleAssignmentItem().withRoleDefinitionId("fb879df8-f326-4884-b1cf-06f3ad86be52")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
                             .withType(PrincipalType.GROUP)))))
+                .withAddressSpaces(
+                    Arrays.asList(new AddressSpaceEntry().withPrefixLength(23).withAddressSpace("10.1.0.0/23")))
+                .withSubnetConfigurations(
+                    Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
+                .withAllowSubnetCommunication(true)
                 .withEnclaveDefaultSettings(
                     new EnclaveDefaultSettingsModel().withDiagnosticDestination(DiagnosticDestination.BOTH))
                 .withMaintenanceModeConfiguration(new MaintenanceModeConfigurationModel()
@@ -2067,7 +2089,7 @@ public final class VirtualEnclaveCreateOrUpdateSamples {
  */
 public final class VirtualEnclaveDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_Delete.json
      */
     /**
      * Sample code: VirtualEnclave_Delete.
@@ -2088,7 +2110,7 @@ public final class VirtualEnclaveDeleteSamples {
  */
 public final class VirtualEnclaveGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_Get.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_Get.json
      */
     /**
      * Sample code: VirtualEnclave_Get.
@@ -2114,7 +2136,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalCallbackRequestResourceR
  */
 public final class VirtualEnclaveHandleApprovalCreationSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_HandleApprovalCreation.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_HandleApprovalCreation.json
      */
     /**
      * Sample code: VirtualEnclave_HandleApprovalCreation.
@@ -2145,7 +2167,7 @@ import com.azure.resourcemanager.enclave.models.ApprovalDeletionCallbackRequestR
  */
 public final class VirtualEnclaveHandleApprovalDeletionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_HandleApprovalDeletion.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_HandleApprovalDeletion.json
      */
     /**
      * Sample code: VirtualEnclave_HandleApprovalDeletion.
@@ -2170,7 +2192,7 @@ public final class VirtualEnclaveHandleApprovalDeletionSamples {
  */
 public final class VirtualEnclaveListSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_ListBySubscription.json
      */
     /**
      * Sample code: VirtualEnclave_ListBySubscription.
@@ -2191,7 +2213,7 @@ public final class VirtualEnclaveListSamples {
  */
 public final class VirtualEnclaveListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_ListByResourceGroup.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_ListByResourceGroup.json
      */
     /**
      * Sample code: VirtualEnclave_ListByResourceGroup.
@@ -2208,12 +2230,12 @@ public final class VirtualEnclaveListByResourceGroupSamples {
 ### VirtualEnclave_Update
 
 ```java
+import com.azure.resourcemanager.enclave.models.AddressSpaceEntry;
 import com.azure.resourcemanager.enclave.models.ApprovalPolicy;
 import com.azure.resourcemanager.enclave.models.ApprovalSettingConfiguration;
 import com.azure.resourcemanager.enclave.models.DiagnosticDestination;
 import com.azure.resourcemanager.enclave.models.EnclaveDefaultSettingsPatchModel;
 import com.azure.resourcemanager.enclave.models.EnclaveResource;
-import com.azure.resourcemanager.enclave.models.EnclaveVirtualNetworkModel;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModelJustification;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationModelMode;
 import com.azure.resourcemanager.enclave.models.MaintenanceModeConfigurationPatchModel;
@@ -2235,7 +2257,7 @@ import java.util.Map;
  */
 public final class VirtualEnclaveUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/VirtualEnclave_Update.json
+     * x-ms-original-file: 2026-10-01-preview/VirtualEnclave_Update.json
      */
     /**
      * Sample code: VirtualEnclave_Update.
@@ -2248,13 +2270,7 @@ public final class VirtualEnclaveUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("Tag1", "Value1"))
-            .withProperties(new VirtualEnclavePatchProperties()
-                .withEnclaveVirtualNetwork(new EnclaveVirtualNetworkModel().withNetworkSize("small")
-                    .withCustomCidrRange("10.0.0.0/24")
-                    .withSubnetConfigurations(
-                        Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
-                    .withAllowSubnetCommunication(true))
-                .withBastionEnabled(true)
+            .withProperties(new VirtualEnclavePatchProperties().withBastionEnabled(true)
                 .withWorkloadResourceVisibility(ResourceVisibilityMode.DISABLED)
                 .withRbacInheritance(RbacInheritanceMode.DISABLED)
                 .withEnclaveRoleAssignments(Arrays.asList(
@@ -2275,6 +2291,10 @@ public final class VirtualEnclaveUpdateSamples {
                     new RoleAssignmentItem().withRoleDefinitionId("fb879df8-f326-4884-b1cf-06f3ad86be52")
                         .withPrincipals(Arrays.asList(new Principal().withId("01234567-89ab-ef01-2345-0123456789ab")
                             .withType(PrincipalType.GROUP)))))
+                .withAddressSpaces(
+                    Arrays.asList(new AddressSpaceEntry().withPrefixLength(23).withAddressSpace("10.1.0.0/23")))
+                .withSubnetConfigurations(
+                    Arrays.asList(new SubnetConfiguration().withSubnetName("test").withNetworkPrefixSize(26)))
                 .withEnclaveDefaultSettings(
                     new EnclaveDefaultSettingsPatchModel().withDiagnosticDestination(DiagnosticDestination.BOTH))
                 .withMaintenanceModeConfiguration(new MaintenanceModeConfigurationPatchModel()
@@ -2332,7 +2352,7 @@ import java.util.Map;
  */
 public final class WorkloadCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Workload_CreateOrUpdate.json
+     * x-ms-original-file: 2026-10-01-preview/Workload_CreateOrUpdate.json
      */
     /**
      * Sample code: Workload_CreateOrUpdate.
@@ -2371,7 +2391,7 @@ public final class WorkloadCreateOrUpdateSamples {
  */
 public final class WorkloadDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Workload_Delete.json
+     * x-ms-original-file: 2026-10-01-preview/Workload_Delete.json
      */
     /**
      * Sample code: Workload_Delete.
@@ -2392,7 +2412,7 @@ public final class WorkloadDeleteSamples {
  */
 public final class WorkloadGetSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Workload_Get.json
+     * x-ms-original-file: 2026-10-01-preview/Workload_Get.json
      */
     /**
      * Sample code: Workload_Get.
@@ -2414,7 +2434,7 @@ public final class WorkloadGetSamples {
  */
 public final class WorkloadListByEnclaveResourceSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Workload_ListByEnclaveResource.json
+     * x-ms-original-file: 2026-10-01-preview/Workload_ListByEnclaveResource.json
      */
     /**
      * Sample code: Workload_ListByEnclaveResource.
@@ -2435,7 +2455,7 @@ public final class WorkloadListByEnclaveResourceSamples {
  */
 public final class WorkloadListBySubscriptionSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Workload_ListBySubscription.json
+     * x-ms-original-file: 2026-10-01-preview/Workload_ListBySubscription.json
      */
     /**
      * Sample code: Workload_ListBySubscription.
@@ -2462,7 +2482,7 @@ import java.util.Map;
  */
 public final class WorkloadUpdateSamples {
     /*
-     * x-ms-original-file: 2026-04-01/Workload_Update.json
+     * x-ms-original-file: 2026-10-01-preview/Workload_Update.json
      */
     /**
      * Sample code: Workload_Update.

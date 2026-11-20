@@ -44,6 +44,12 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
     private FirewallSKU firewallSku;
 
     /*
+     * Desired enforcement mode for the subscription-scoped subnet join deny policy. Defaults to 'Deny' on api-version
+     * 2026-10-01-preview and later.
+     */
+    private SubnetJoinPolicyMode subnetJoinPolicyMode;
+
+    /*
      * Granular approval requirements for various actions on the community's resources.
      */
     private ApprovalSettingsPatchProperties granularApprovalSettings;
@@ -174,6 +180,28 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
     }
 
     /**
+     * Get the subnetJoinPolicyMode property: Desired enforcement mode for the subscription-scoped subnet join deny
+     * policy. Defaults to 'Deny' on api-version 2026-10-01-preview and later.
+     * 
+     * @return the subnetJoinPolicyMode value.
+     */
+    public SubnetJoinPolicyMode subnetJoinPolicyMode() {
+        return this.subnetJoinPolicyMode;
+    }
+
+    /**
+     * Set the subnetJoinPolicyMode property: Desired enforcement mode for the subscription-scoped subnet join deny
+     * policy. Defaults to 'Deny' on api-version 2026-10-01-preview and later.
+     * 
+     * @param subnetJoinPolicyMode the subnetJoinPolicyMode value to set.
+     * @return the CommunityPatchProperties object itself.
+     */
+    public CommunityPatchProperties withSubnetJoinPolicyMode(SubnetJoinPolicyMode subnetJoinPolicyMode) {
+        this.subnetJoinPolicyMode = subnetJoinPolicyMode;
+        return this;
+    }
+
+    /**
      * Get the granularApprovalSettings property: Granular approval requirements for various actions on the community's
      * resources.
      * 
@@ -271,6 +299,8 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
         jsonWriter.writeArrayField("communityRoleAssignments", this.communityRoleAssignments,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("firewallSku", this.firewallSku == null ? null : this.firewallSku.toString());
+        jsonWriter.writeStringField("subnetJoinPolicyMode",
+            this.subnetJoinPolicyMode == null ? null : this.subnetJoinPolicyMode.toString());
         jsonWriter.writeJsonField("approvalSettings", this.granularApprovalSettings);
         jsonWriter.writeJsonField("maintenanceModeConfiguration", this.maintenanceModeConfiguration);
         jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
@@ -310,6 +340,9 @@ public final class CommunityPatchProperties implements JsonSerializable<Communit
                     deserializedCommunityPatchProperties.communityRoleAssignments = communityRoleAssignments;
                 } else if ("firewallSku".equals(fieldName)) {
                     deserializedCommunityPatchProperties.firewallSku = FirewallSKU.fromString(reader.getString());
+                } else if ("subnetJoinPolicyMode".equals(fieldName)) {
+                    deserializedCommunityPatchProperties.subnetJoinPolicyMode
+                        = SubnetJoinPolicyMode.fromString(reader.getString());
                 } else if ("approvalSettings".equals(fieldName)) {
                     deserializedCommunityPatchProperties.granularApprovalSettings
                         = ApprovalSettingsPatchProperties.fromJson(reader);

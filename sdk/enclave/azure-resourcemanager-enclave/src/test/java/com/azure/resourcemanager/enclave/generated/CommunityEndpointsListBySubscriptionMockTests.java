@@ -14,6 +14,7 @@ import com.azure.resourcemanager.enclave.AzureEnclaveManager;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointProtocol;
 import com.azure.resourcemanager.enclave.models.CommunityEndpointResource;
 import com.azure.resourcemanager.enclave.models.DestinationType;
+import com.azure.resourcemanager.enclave.models.RuleDirection;
 import com.azure.resourcemanager.enclave.models.UpdateMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,7 +26,7 @@ public final class CommunityEndpointsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"FQDN\",\"protocols\":[\"AH\",\"ICMP\",\"ESP\"],\"transitHubResourceId\":\"icghfl\",\"endpointRuleName\":\"fss\",\"destination\":\"ghsfxrkbhammgmqf\",\"ports\":\"fgvqcpdw\"}],\"resourceCollection\":[\"uxweyslandkd\",\"djhunhghcgawnr\",\"nquoxsotireimse\",\"bfsx\"],\"provisioningState\":\"Running\",\"updateMode\":\"Manual\"},\"location\":\"bvzmmxcjzlquz\",\"tags\":{\"b\":\"kjxebj\",\"v\":\"inzabwmvoglj\",\"ehaqidoyzltgio\":\"pgidnw\"},\"id\":\"qoqpepiaeap\",\"name\":\"sergdtpe\",\"type\":\"nacyheqwb\"}]}";
+            = "{\"value\":[{\"properties\":{\"ruleCollection\":[{\"destinationType\":\"IPAddress\",\"protocols\":[\"ICMP\",\"AH\",\"HTTP\"],\"transitHubResourceId\":\"wpq\",\"direction\":\"Inbound\",\"endpointRuleName\":\"uwyqwdq\",\"destination\":\"mghg\",\"ports\":\"z\"}],\"resourceCollection\":[\"ujkhnjcmrnkfmkh\",\"qtwmlmhjnqtqeahj\"],\"provisioningState\":\"Canceled\",\"updateMode\":\"Manual\",\"syncTo\":[\"okddxejhhkvguav\"],\"syncFrom\":\"tbkewkqynspg\",\"syncStatus\":\"Succeeded\",\"syncDestinationStatuses\":[{\"destinationId\":\"bkkwvdxae\",\"status\":\"NotConfigured\",\"errorMessage\":\"kmyrljialzbnobr\",\"lastSyncTime\":\"2021-10-05T12:37:49Z\"},{\"destinationId\":\"bcjtrpzuy\",\"status\":\"InProgress\",\"errorMessage\":\"vbxnhsqeaeonqe\",\"lastSyncTime\":\"2021-10-14T00:46:16Z\"},{\"destinationId\":\"dhuruzytzarog\",\"status\":\"NotConfigured\",\"errorMessage\":\"oljiywmpinm\",\"lastSyncTime\":\"2021-01-31T02:27:09Z\"}],\"syncPerformedBy\":{\"principalId\":\"neerzztrknsj\",\"principalType\":\"lugdybnhrxlelf\",\"tenantId\":\"hkeizcp\",\"performedAt\":\"2021-12-07T04:48:42Z\",\"correlationId\":\"tdmiwjekptyca\"}},\"location\":\"bjzcqymlcfnzhm\",\"tags\":{\"olawiubmoms\":\"rlgwqkpmmzpsta\",\"ajnkdflqionswae\":\"vvjhvvlrlohewjj\",\"totryegpkhxrme\":\"kzfzqxjosho\",\"bfokxkhu\":\"znlw\"},\"id\":\"ze\",\"name\":\"ufgjblcdr\",\"type\":\"yfcemftz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,21 +36,23 @@ public final class CommunityEndpointsListBySubscriptionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CommunityEndpointResource> response
-            = manager.communityEndpoints().listBySubscription("mihzbdnpxp", com.azure.core.util.Context.NONE);
+            = manager.communityEndpoints().listBySubscription("kwdvbtb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bvzmmxcjzlquz", response.iterator().next().location());
-        Assertions.assertEquals("kjxebj", response.iterator().next().tags().get("b"));
-        Assertions.assertEquals(DestinationType.FQDN,
+        Assertions.assertEquals("bjzcqymlcfnzhm", response.iterator().next().location());
+        Assertions.assertEquals("rlgwqkpmmzpsta", response.iterator().next().tags().get("olawiubmoms"));
+        Assertions.assertEquals(DestinationType.IPADDRESS,
             response.iterator().next().properties().ruleCollection().get(0).destinationType());
-        Assertions.assertEquals(CommunityEndpointProtocol.AH,
+        Assertions.assertEquals(CommunityEndpointProtocol.ICMP,
             response.iterator().next().properties().ruleCollection().get(0).protocols().get(0));
-        Assertions.assertEquals("icghfl",
+        Assertions.assertEquals("wpq",
             response.iterator().next().properties().ruleCollection().get(0).transitHubResourceId());
-        Assertions.assertEquals("fss",
+        Assertions.assertEquals(RuleDirection.INBOUND,
+            response.iterator().next().properties().ruleCollection().get(0).direction());
+        Assertions.assertEquals("uwyqwdq",
             response.iterator().next().properties().ruleCollection().get(0).endpointRuleName());
-        Assertions.assertEquals("ghsfxrkbhammgmqf",
-            response.iterator().next().properties().ruleCollection().get(0).destination());
-        Assertions.assertEquals("fgvqcpdw", response.iterator().next().properties().ruleCollection().get(0).ports());
+        Assertions.assertEquals("mghg", response.iterator().next().properties().ruleCollection().get(0).destination());
+        Assertions.assertEquals("z", response.iterator().next().properties().ruleCollection().get(0).ports());
         Assertions.assertEquals(UpdateMode.MANUAL, response.iterator().next().properties().updateMode());
+        Assertions.assertEquals("okddxejhhkvguav", response.iterator().next().properties().syncTo().get(0));
     }
 }

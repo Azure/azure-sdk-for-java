@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for CommunityPropertiesPolicyOverride.
+ * The policy override setting for a community.
  */
 public final class CommunityPropertiesPolicyOverride extends ExpandableStringEnum<CommunityPropertiesPolicyOverride> {
     /**
-     * Static value Enclave for CommunityPropertiesPolicyOverride.
+     * Apply enclave-specific policies.
      */
     public static final CommunityPropertiesPolicyOverride ENCLAVE = fromString("Enclave");
 
     /**
-     * Static value None for CommunityPropertiesPolicyOverride.
+     * Do not apply a policy override.
      */
     public static final CommunityPropertiesPolicyOverride NONE = fromString("None");
 

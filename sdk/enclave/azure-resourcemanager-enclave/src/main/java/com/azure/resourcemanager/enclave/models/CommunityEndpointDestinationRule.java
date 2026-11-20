@@ -33,6 +33,11 @@ public final class CommunityEndpointDestinationRule implements JsonSerializable<
     private String transitHubResourceId;
 
     /*
+     * The direction of traffic for this rule. Defaults to Outbound if not specified.
+     */
+    private RuleDirection direction;
+
+    /*
      * Endpoint Rule Name.
      */
     private String endpointRuleName;
@@ -115,6 +120,26 @@ public final class CommunityEndpointDestinationRule implements JsonSerializable<
     }
 
     /**
+     * Get the direction property: The direction of traffic for this rule. Defaults to Outbound if not specified.
+     * 
+     * @return the direction value.
+     */
+    public RuleDirection direction() {
+        return this.direction;
+    }
+
+    /**
+     * Set the direction property: The direction of traffic for this rule. Defaults to Outbound if not specified.
+     * 
+     * @param direction the direction value to set.
+     * @return the CommunityEndpointDestinationRule object itself.
+     */
+    public CommunityEndpointDestinationRule withDirection(RuleDirection direction) {
+        this.direction = direction;
+        return this;
+    }
+
+    /**
      * Get the endpointRuleName property: Endpoint Rule Name.
      * 
      * @return the endpointRuleName value.
@@ -187,6 +212,7 @@ public final class CommunityEndpointDestinationRule implements JsonSerializable<
         jsonWriter.writeArrayField("protocols", this.protocols,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("transitHubResourceId", this.transitHubResourceId);
+        jsonWriter.writeStringField("direction", this.direction == null ? null : this.direction.toString());
         jsonWriter.writeStringField("endpointRuleName", this.endpointRuleName);
         jsonWriter.writeStringField("destination", this.destination);
         jsonWriter.writeStringField("ports", this.ports);
@@ -218,6 +244,9 @@ public final class CommunityEndpointDestinationRule implements JsonSerializable<
                     deserializedCommunityEndpointDestinationRule.protocols = protocols;
                 } else if ("transitHubResourceId".equals(fieldName)) {
                     deserializedCommunityEndpointDestinationRule.transitHubResourceId = reader.getString();
+                } else if ("direction".equals(fieldName)) {
+                    deserializedCommunityEndpointDestinationRule.direction
+                        = RuleDirection.fromString(reader.getString());
                 } else if ("endpointRuleName".equals(fieldName)) {
                     deserializedCommunityEndpointDestinationRule.endpointRuleName = reader.getString();
                 } else if ("destination".equals(fieldName)) {
