@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
  * Encapsulates the list of container identities and no. of proactive connection regions.
  * */
 public final class CosmosContainerProactiveInitConfig {
-    private final static ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor
-        containerIdAccessor = ImplementationBridgeHelpers
-            .CosmosContainerIdentityHelper
-            .getCosmosContainerIdentityAccessor();
+    private static ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor() {
+        return ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
+    }
+
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerDirectConnectionMetadataMap;
     private final int numProactiveConnectionRegions;
@@ -105,7 +105,7 @@ public final class CosmosContainerProactiveInitConfig {
                     .stream()
                     .map(ci -> String.join(
                         ".",
-                        containerIdAccessor.getContainerLink(ci)))
+                        containerIdentityAccessor().getContainerLink(ci)))
                     .collect(Collectors.joining(";")),
                 numProactiveConnectionRegions,
                 aggressiveWarmupDuration);

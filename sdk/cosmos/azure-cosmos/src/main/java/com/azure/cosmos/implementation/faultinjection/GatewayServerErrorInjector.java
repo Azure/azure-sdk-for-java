@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
+import io.netty.util.ReferenceCountUtil;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -174,11 +175,18 @@ public class GatewayServerErrorInjector {
                 if (this.injectGatewayServerResponseDelayAfterProcessing(faultInjectionRequestArgs, delayToBeInjected)) {
                     if (delayToBeInjected.v.toMillis() >= effectiveResponseTimeout.toMillis()) {
                         return originalResponseMono
+                            .doOnNext(GatewayServerErrorInjector::releaseResponseBody)
                             .delayElement(delayToBeInjected.v)
                             .then(Mono.error(new ReadTimeoutException()));
                     } else {
+                        // In the happy path the response flows downstream after the delay
+                        // and the caller drains the body normally. However, if the downstream
+                        // cancels during delayElement (e.g., an outer timeout fires),
+                        // delayElement silently drops the buffered HttpResponse. doOnDiscard
+                        // catches that discard and releases the body ByteBuf to prevent leaks.
                         return originalResponseMono
-                            .delayElement(delayToBeInjected.v);
+                            .delayElement(delayToBeInjected.v)
+                            .doOnDiscard(HttpResponse.class, GatewayServerErrorInjector::releaseResponseBody);
                     }
                 }
 
@@ -242,5 +250,18 @@ public class GatewayServerErrorInjector {
             requestUri,
             serviceRequest,
             partitionKeyRangeIds);
+    }
+
+    /**
+     * Drains and releases the response body to prevent Netty ByteBuf leaks.
+     * Called when a fault-injected path discards the real HTTP response (e.g.,
+     * simulating a timeout after the response has already arrived).
+     */
+    private static void releaseResponseBody(HttpResponse httpResponse) {
+        httpResponse.body()
+            .subscribe(
+                buf -> ReferenceCountUtil.safeRelease(buf),
+                ex -> { },
+                () -> { });
     }
 }

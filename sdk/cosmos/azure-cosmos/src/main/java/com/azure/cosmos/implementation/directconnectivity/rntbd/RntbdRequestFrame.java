@@ -204,6 +204,8 @@ final class RntbdRequestFrame {
                 return RntbdOperationType.AddComputeGatewayRequestCharges;
             case Batch:
                 return RntbdOperationType.Batch;
+            case QueryPlan:
+                return RntbdOperationType.QueryPlan;
             default:
                 final String reason = String.format("Unrecognized operation type: %s", operationType);
                 throw new UnsupportedOperationException(reason);

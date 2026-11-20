@@ -38,6 +38,10 @@ import java.util.function.Supplier;
 public abstract class ParallelDocumentQueryExecutionContextBase<T>
         extends DocumentQueryExecutionContextBase<T> implements IDocumentQueryExecutionComponent<T> {
 
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
+
     protected List<DocumentProducer<T>> documentProducers;
     protected final SqlQuerySpec querySpec;
     protected int top = -1;
@@ -87,8 +91,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     }
                 }
 
-                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collection.getPartitionKey());
-                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collection.getResourceId());
+                queryOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collection.getPartitionKey());
+                queryOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collection.getResourceId());
                 return this.createDocumentServiceRequestWithFeedRange(headers, querySpecForInit, partitionKeyInternal, feedRange,
                                                          collection.getResourceId(), cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
@@ -157,8 +161,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
-                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collection.getPartitionKey());
-                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collection.getResourceId());
+                queryOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collection.getPartitionKey());
+                queryOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collection.getResourceId());
                 return this.createDocumentServiceRequestWithFeedRange(headers,
                     querySpec,
                     null,

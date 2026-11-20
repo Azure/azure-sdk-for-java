@@ -16,10 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
 
-    private final static ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor
-        sessionRetryOptionsAccessor = ImplementationBridgeHelpers
-            .CosmosSessionRetryOptionsHelper
-            .getCosmosSessionRetryOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor sessionRetryAccessor() {
+        return ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.getCosmosSessionRetryOptionsAccessor();
+    }
+
     private final static Logger LOGGER = LoggerFactory.getLogger(SessionTokenMismatchRetryPolicy.class);
     private static final int BACKOFF_MULTIPLIER = 5;
     private final Duration maximumBackoff;
@@ -43,9 +43,9 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
         if (sessionRetryOptions != null) {
             this.maxRetryAttemptsInCurrentRegion =
-                new AtomicInteger(sessionRetryOptionsAccessor.getMaxInRegionRetryCount(sessionRetryOptions));
-            this.regionSwitchHint = sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptions);
-            this.minInRegionRetryTime = sessionRetryOptionsAccessor.getMinInRegionRetryTime(sessionRetryOptions);
+                new AtomicInteger(sessionRetryAccessor().getMaxInRegionRetryCount(sessionRetryOptions));
+            this.regionSwitchHint = sessionRetryAccessor().getRegionSwitchHint(sessionRetryOptions);
+            this.minInRegionRetryTime = sessionRetryAccessor().getMinInRegionRetryTime(sessionRetryOptions);
         } else {
             this.maxRetryAttemptsInCurrentRegion = null;
             this.regionSwitchHint = CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED;

@@ -73,6 +73,14 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkSt
 @JsonSerialize(using = RntbdTransportClient.JsonSerializer.class)
 public class RntbdTransportClient extends TransportClient {
 
+    private static ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor() {
+        return ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
+    }
+
     // region Fields
 
     private static final String TAG_NAME = RntbdTransportClient.class.getSimpleName();
@@ -376,9 +384,7 @@ public class RntbdTransportClient extends TransportClient {
                 OperationCancelledException operationCancelledException =
                     new OperationCancelledException(record.toString(), record.args().physicalAddressUri().getURI());
 
-                ImplementationBridgeHelpers
-                    .CosmosExceptionHelper
-                    .getCosmosExceptionAccessor()
+                cosmosExceptionAccessor()
                     .setRequestUri(operationCancelledException, addressUri);
                 this.populateExceptionWithRequestDetails(operationCancelledException, record);
 
@@ -430,21 +436,15 @@ public class RntbdTransportClient extends TransportClient {
 
     public EnumSet<MetricCategory> getMetricCategories() {
         return this.metricConfig != null ?
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
+            clientTelemetryConfigAccessor()
                 .getMetricCategories(this.metricConfig) : MetricCategory.DEFAULT_CATEGORIES;
     }
 
     public CosmosMeterOptions getMeterOptions(CosmosMetricName name) {
         return this.metricConfig != null ?
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
+            clientTelemetryConfigAccessor()
                 .getMeterOptions(this.metricConfig, name) :
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
+            clientTelemetryConfigAccessor()
                 .createDisabledMeterOptions(name);
     }
 
@@ -452,9 +452,7 @@ public class RntbdTransportClient extends TransportClient {
         RxDocumentServiceRequest request = record.args().serviceRequest();
 
         BridgeInternal.setServiceEndpointStatistics(cosmosException, record.serviceEndpointStatistics());
-        ImplementationBridgeHelpers
-            .CosmosExceptionHelper
-            .getCosmosExceptionAccessor()
+        cosmosExceptionAccessor()
             .setRntbdChannelStatistics(cosmosException, record.channelStatistics());
         BridgeInternal.setRntbdRequestLength(cosmosException, record.requestLength());
         BridgeInternal.setRntbdResponseLength(cosmosException, record.responseLength());
@@ -463,16 +461,12 @@ public class RntbdTransportClient extends TransportClient {
         RequestTimeline requestTimeline = record.takeTimelineSnapshot();
         BridgeInternal.setRequestTimeline(cosmosException, requestTimeline);
         BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
-        ImplementationBridgeHelpers
-            .CosmosExceptionHelper
-            .getCosmosExceptionAccessor()
+        cosmosExceptionAccessor()
             .setFaultInjectionRuleId(
                 cosmosException,
                 request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
 
-        ImplementationBridgeHelpers
-            .CosmosExceptionHelper
-            .getCosmosExceptionAccessor()
+        cosmosExceptionAccessor()
             .setFaultInjectionEvaluationResults(
                 cosmosException,
                 request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
@@ -581,7 +575,6 @@ public class RntbdTransportClient extends TransportClient {
          */
         @JsonProperty()
         private final boolean timeoutDetectionEnabled;
-
 
         /**
          * Used during Rntbd health check flow.

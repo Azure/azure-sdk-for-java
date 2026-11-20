@@ -17,9 +17,11 @@ import java.util.Map;
  * can be authorized using the master key or resource keys.
  */
 public class Document extends Resource {
+    private static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    }
+
     private final static ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
 
     /**
      * Constructor.
@@ -71,7 +73,7 @@ public class Document extends Resource {
         if (document instanceof Document) {
             typedDocument = (Document) document;
         } else {
-            Map<String, Object> jsonTreeMap = itemSerializerAccessor.serializeSafe(itemSerializer, document);
+            Map<String, Object> jsonTreeMap = itemSerializerAccessor().serializeSafe(itemSerializer, document);
             ObjectNode objectNode = null;
             if (jsonTreeMap instanceof ObjectNodeMap) {
                 objectNode = ((ObjectNodeMap)jsonTreeMap).getObjectNode();

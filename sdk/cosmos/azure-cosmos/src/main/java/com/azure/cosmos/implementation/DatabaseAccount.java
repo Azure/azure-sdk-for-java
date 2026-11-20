@@ -300,6 +300,23 @@ public final class DatabaseAccount extends Resource {
         return null;
     }
 
+    /**
+     * Returns true if the account supports N region synchronous commit,
+     * false otherwise
+     * <p>
+     * If enableNRegionSynchronousCommit property does not exist in account metadata JSON payload, false is returned
+     *
+     * @return true if the account supports N region synchronous commit, false otherwise.
+     */
+    public boolean isNRegionSynchronousCommitEnabled() {
+
+        if (super.has(Constants.Properties.ENABLE_N_REGION_SYNCHRONOUS_COMMIT)) {
+            return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_N_REGION_SYNCHRONOUS_COMMIT), false);
+        }
+
+        return false;
+    }
+
     public void setIsPerPartitionFailoverBehaviorEnabled(boolean value) {
         this.set(Constants.Properties.ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR, value);
     }

@@ -37,6 +37,10 @@ import java.util.stream.Collectors;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
+    private static ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor() {
+        return ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
@@ -167,9 +171,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         synchronized (this.containersUnderOpenConnectionAndInitCachesLock) {
             for (CosmosContainerIdentity containerIdentity : containerIdentities) {
                 this.containersUnderOpenConnectionAndInitCaches.remove(
-                    ImplementationBridgeHelpers
-                        .CosmosContainerIdentityHelper
-                        .getCosmosContainerIdentityAccessor()
+                    containerIdentityAccessor()
                         .getContainerLink(containerIdentity)
                 );
             }
@@ -192,9 +194,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             shouldReInstantiatePublisher = this.containersUnderOpenConnectionAndInitCaches.size() == 0;
             for (CosmosContainerIdentity containerIdentity : cosmosContainerIdentities) {
                 this.containersUnderOpenConnectionAndInitCaches.add(
-                    ImplementationBridgeHelpers
-                        .CosmosContainerIdentityHelper
-                        .getCosmosContainerIdentityAccessor()
+                    containerIdentityAccessor()
                         .getContainerLink(containerIdentity)
                 );
             }
