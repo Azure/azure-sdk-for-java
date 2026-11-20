@@ -66,6 +66,18 @@ class TestRemoveUnusedExternalDependencies(unittest.TestCase):
         with open(self.dependency_file, encoding="utf-8") as file:
             self.assertEqual(file.read(), "")
 
+    def test_preserves_include_only_external_dependency(self):
+        self._write_file(self.dependency_file, "spring6_com.example:included;1.0.0\n")
+        self._write_pom(
+            "sdk/example/pom.xml",
+            "<include>com.example:included:[1.0.0]</include>"
+            " <!-- {x-include-update;spring6_com.example:included;external_dependency} -->",
+        )
+
+        self.assertEqual(remove_unused_external_dependencies(self.repository_root, self.dependency_file), [])
+        with open(self.dependency_file, encoding="utf-8") as file:
+            self.assertEqual(file.read(), "spring6_com.example:included;1.0.0\n")
+
     def _write_pom(self, relative_path, marker):
         self._write_file(
             os.path.join(self.repository_root, relative_path),

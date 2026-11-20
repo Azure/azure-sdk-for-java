@@ -8,6 +8,7 @@ import argparse
 import os
 
 from utils import CodeModule
+from utils import include_update_marker
 from utils import load_version_map_from_file
 from utils import version_update_marker
 
@@ -42,7 +43,7 @@ def mark_referenced_dependencies(repository_root, version_map, ext_dep_map):
                 if file.startswith("pom") and file.endswith(".xml"):
                     with open(os.path.join(root, file), encoding="utf-8") as f:
                         for line in f:
-                            match = version_update_marker.search(line)
+                            match = version_update_marker.search(line) or include_update_marker.search(line)
                             if match:
                                 module_name, version_type = match.group(1), match.group(2)
                                 if module_name in ext_dep_map or module_name in version_map:
