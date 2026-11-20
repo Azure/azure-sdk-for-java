@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkDeleteOperationSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDelete_VmNotFoundError.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkDelete_VmNotFoundError.json
      */
     /**
      * Sample code: 03 - Response when a virtual machine does not exist.
@@ -34,7 +34,7 @@ public final class VirtualMachineBulkOperationsBulkDeleteOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDelete_ForceDeleteSuccess.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkDelete_ForceDeleteSuccess.json
      */
     /**
      * Sample code: 02 - Force delete multiple virtual machines.
@@ -53,7 +53,7 @@ public final class VirtualMachineBulkOperationsBulkDeleteOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkDelete_BasicSuccess.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkDelete_BasicSuccess.json
      */
     /**
      * Sample code: 01 - Delete multiple virtual machines.

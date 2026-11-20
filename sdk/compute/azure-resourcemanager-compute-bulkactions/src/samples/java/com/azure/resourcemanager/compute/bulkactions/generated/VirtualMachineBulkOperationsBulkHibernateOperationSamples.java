@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkHibernateOperationSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkHibernate_VmNotFoundError.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkHibernate_VmNotFoundError.json
      */
     /**
      * Sample code: 03 - Response when a virtual machine does not exist.
@@ -36,7 +36,7 @@ public final class VirtualMachineBulkOperationsBulkHibernateOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkHibernate_WithFallback.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkHibernate_WithFallback.json
      */
     /**
      * Sample code: 02 - Hibernate virtual machines and fallback to deallocation if hibernate is not successful.
@@ -57,7 +57,7 @@ public final class VirtualMachineBulkOperationsBulkHibernateOperationSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkHibernate_Basic.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkHibernate_Basic.json
      */
     /**
      * Sample code: 01 - Hibernate multiple virtual machines.

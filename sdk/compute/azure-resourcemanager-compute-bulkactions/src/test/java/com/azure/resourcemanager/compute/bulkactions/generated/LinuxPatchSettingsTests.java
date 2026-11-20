@@ -16,27 +16,27 @@ public final class LinuxPatchSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinuxPatchSettings model = BinaryData.fromString(
-            "{\"patchMode\":\"AutomaticByPlatform\",\"assessmentMode\":\"AutomaticByPlatform\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Always\",\"bypassPlatformSafetyChecksOnUserSchedule\":true}}")
+            "{\"patchMode\":\"AutomaticByPlatform\",\"assessmentMode\":\"ImageDefault\",\"automaticByPlatformSettings\":{\"rebootSetting\":\"Never\",\"bypassPlatformSafetyChecksOnUserSchedule\":false}}")
             .toObject(LinuxPatchSettings.class);
         Assertions.assertEquals(LinuxVMGuestPatchMode.AUTOMATIC_BY_PLATFORM, model.patchMode());
-        Assertions.assertEquals(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
-        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
+        Assertions.assertEquals(LinuxPatchAssessmentMode.IMAGE_DEFAULT, model.assessmentMode());
+        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER,
             model.automaticByPlatformSettings().rebootSetting());
-        Assertions.assertTrue(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertFalse(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinuxPatchSettings model = new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
-            .withAssessmentMode(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM)
+            .withAssessmentMode(LinuxPatchAssessmentMode.IMAGE_DEFAULT)
             .withAutomaticByPlatformSettings(new LinuxVMGuestPatchAutomaticByPlatformSettings()
-                .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS)
-                .withBypassPlatformSafetyChecksOnUserSchedule(true));
+                .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER)
+                .withBypassPlatformSafetyChecksOnUserSchedule(false));
         model = BinaryData.fromObject(model).toObject(LinuxPatchSettings.class);
         Assertions.assertEquals(LinuxVMGuestPatchMode.AUTOMATIC_BY_PLATFORM, model.patchMode());
-        Assertions.assertEquals(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
-        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.ALWAYS,
+        Assertions.assertEquals(LinuxPatchAssessmentMode.IMAGE_DEFAULT, model.assessmentMode());
+        Assertions.assertEquals(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER,
             model.automaticByPlatformSettings().rebootSetting());
-        Assertions.assertTrue(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
+        Assertions.assertFalse(model.automaticByPlatformSettings().bypassPlatformSafetyChecksOnUserSchedule());
     }
 }

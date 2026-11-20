@@ -29,12 +29,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreateCustomsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreatesClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.ComputeBulkActionsManagementClient;
-import com.azure.resourcemanager.compute.bulkactions.fluent.OccurrenceExtensionsClient;
-import com.azure.resourcemanager.compute.bulkactions.fluent.OccurrencesClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.OperationsClient;
-import com.azure.resourcemanager.compute.bulkactions.fluent.ScheduledActionExtensionsClient;
-import com.azure.resourcemanager.compute.bulkactions.fluent.ScheduledActionOperationStatusClient;
-import com.azure.resourcemanager.compute.bulkactions.fluent.ScheduledActionsClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.VirtualMachineBulkOperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -191,76 +186,6 @@ public final class ComputeBulkActionsManagementClientImpl implements ComputeBulk
     }
 
     /**
-     * The ScheduledActionsClient object to access its operations.
-     */
-    private final ScheduledActionsClient scheduledActions;
-
-    /**
-     * Gets the ScheduledActionsClient object to access its operations.
-     * 
-     * @return the ScheduledActionsClient object.
-     */
-    public ScheduledActionsClient getScheduledActions() {
-        return this.scheduledActions;
-    }
-
-    /**
-     * The ScheduledActionExtensionsClient object to access its operations.
-     */
-    private final ScheduledActionExtensionsClient scheduledActionExtensions;
-
-    /**
-     * Gets the ScheduledActionExtensionsClient object to access its operations.
-     * 
-     * @return the ScheduledActionExtensionsClient object.
-     */
-    public ScheduledActionExtensionsClient getScheduledActionExtensions() {
-        return this.scheduledActionExtensions;
-    }
-
-    /**
-     * The ScheduledActionOperationStatusClient object to access its operations.
-     */
-    private final ScheduledActionOperationStatusClient scheduledActionOperationStatus;
-
-    /**
-     * Gets the ScheduledActionOperationStatusClient object to access its operations.
-     * 
-     * @return the ScheduledActionOperationStatusClient object.
-     */
-    public ScheduledActionOperationStatusClient getScheduledActionOperationStatus() {
-        return this.scheduledActionOperationStatus;
-    }
-
-    /**
-     * The OccurrencesClient object to access its operations.
-     */
-    private final OccurrencesClient occurrences;
-
-    /**
-     * Gets the OccurrencesClient object to access its operations.
-     * 
-     * @return the OccurrencesClient object.
-     */
-    public OccurrencesClient getOccurrences() {
-        return this.occurrences;
-    }
-
-    /**
-     * The OccurrenceExtensionsClient object to access its operations.
-     */
-    private final OccurrenceExtensionsClient occurrenceExtensions;
-
-    /**
-     * Gets the OccurrenceExtensionsClient object to access its operations.
-     * 
-     * @return the OccurrenceExtensionsClient object.
-     */
-    public OccurrenceExtensionsClient getOccurrenceExtensions() {
-        return this.occurrenceExtensions;
-    }
-
-    /**
      * Initializes an instance of ComputeBulkActionsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -277,16 +202,11 @@ public final class ComputeBulkActionsManagementClientImpl implements ComputeBulk
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-10-06-preview";
+        this.apiVersion = "2026-10-16";
         this.operations = new OperationsClientImpl(this);
         this.virtualMachineBulkOperations = new VirtualMachineBulkOperationsClientImpl(this);
         this.bulkCreateCustoms = new BulkCreateCustomsClientImpl(this);
         this.bulkCreates = new BulkCreatesClientImpl(this);
-        this.scheduledActions = new ScheduledActionsClientImpl(this);
-        this.scheduledActionExtensions = new ScheduledActionExtensionsClientImpl(this);
-        this.scheduledActionOperationStatus = new ScheduledActionOperationStatusClientImpl(this);
-        this.occurrences = new OccurrencesClientImpl(this);
-        this.occurrenceExtensions = new OccurrenceExtensionsClientImpl(this);
     }
 
     /**

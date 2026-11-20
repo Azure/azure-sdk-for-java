@@ -12,8 +12,8 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkGetOperationsStatusSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/
-     * VirtualMachineBulkOperations_BulkGetOperationsStatus_DeallocateFallbackFailedAfterHibernateFail.json
+     * x-ms-original-file:
+     * 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_DeallocateFallbackFailedAfterHibernateFail.json
      */
     /**
      * Sample code: 05 - Response with failed deallocation fallback after hibernation fails.
@@ -31,7 +31,7 @@ public final class VirtualMachineBulkOperationsBulkGetOperationsStatusSamples {
 
     /*
      * x-ms-original-file:
-     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_DeallocateFallbackAfterHibernateFail.json
+     * 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_DeallocateFallbackAfterHibernateFail.json
      */
     /**
      * Sample code: 04 - Response with successful deallocation fallback after hibernation fails.
@@ -48,7 +48,7 @@ public final class VirtualMachineBulkOperationsBulkGetOperationsStatusSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_BasicSuccess.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_BasicSuccess.json
      */
     /**
      * Sample code: 01 - Get the status of successfully completed operations.
@@ -66,8 +66,7 @@ public final class VirtualMachineBulkOperationsBulkGetOperationsStatusSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_OperationNotFoundError.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_OperationNotFoundError.json
      */
     /**
      * Sample code: 03 - Response with an operation not found error.
@@ -84,7 +83,7 @@ public final class VirtualMachineBulkOperationsBulkGetOperationsStatusSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_FailedOperation.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkGetOperationsStatus_FailedOperation.json
      */
     /**
      * Sample code: 02 - Get the status of a failed operation.

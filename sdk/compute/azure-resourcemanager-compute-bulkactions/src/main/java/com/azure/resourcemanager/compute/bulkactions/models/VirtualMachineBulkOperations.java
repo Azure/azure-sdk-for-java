@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.bulkactions.models;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -202,98 +201,4 @@ public interface VirtualMachineBulkOperations {
      */
     CancelOperationsResponse bulkCancelOperations(String resourceGroupName, String location,
         CancelOperationsContent requestBody);
-
-    /**
-     * This feature is currently in preview.
-     * 
-     * Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents.
-     * Bulk Actions begins processing the request immediately and returns a Bulk Action Operation Id for each virtual
-     * machine. Use the returned IDs to get operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to reimage and the execution settings for the bulk action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk reimage action along with {@link Response}.
-     */
-    Response<ReimageResourceOperationResponse> bulkReimageOperationWithResponse(String resourceGroupName,
-        String location, ExecuteReimageRequest requestBody, Context context);
-
-    /**
-     * This feature is currently in preview.
-     * 
-     * Reimage one or more virtual machines. Reimaging is destructive and can replace operating system disk contents.
-     * Bulk Actions begins processing the request immediately and returns a Bulk Action Operation Id for each virtual
-     * machine. Use the returned IDs to get operation status updates.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param requestBody The virtual machines to reimage and the execution settings for the bulk action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a bulk reimage action.
-     */
-    ReimageResourceOperationResponse bulkReimageOperation(String resourceGroupName, String location,
-        ExecuteReimageRequest requestBody);
-
-    /**
-     * List recent errors for operations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of recent bulk action errors as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location);
-
-    /**
-     * List recent errors for operations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param lookbackInMinutes The number of minutes before the current time to include when listing bulk action
-     * errors.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of recent bulk action errors as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<ResourceOperation> bulkListOperationErrors(String resourceGroupName, String location,
-        Integer lookbackInMinutes, Context context);
-
-    /**
-     * Acknowledge errors for specified operations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of acknowledging errors for specified operations along with {@link Response}.
-     */
-    Response<AcknowledgeBulkOperationErrorsResponse> bulkAcknowledgeOperationErrorsWithResponse(
-        String resourceGroupName, String location, AcknowledgeBulkOperationErrorsRequest body, Context context);
-
-    /**
-     * Acknowledge errors for specified operations in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The location name.
-     * @param body The Bulk Action Operation Ids that identify operations for which errors should be acknowledged.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of acknowledging errors for specified operations.
-     */
-    AcknowledgeBulkOperationErrorsResponse bulkAcknowledgeOperationErrors(String resourceGroupName, String location,
-        AcknowledgeBulkOperationErrorsRequest body);
 }

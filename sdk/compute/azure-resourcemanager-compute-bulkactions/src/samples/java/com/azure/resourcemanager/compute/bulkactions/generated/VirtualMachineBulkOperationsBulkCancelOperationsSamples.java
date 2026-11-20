@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkCancelOperationsSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkCancel_BasicSuccess.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkCancel_BasicSuccess.json
      */
     /**
      * Sample code: 01 - Cancel multiple operations.
@@ -29,7 +29,7 @@ public final class VirtualMachineBulkOperationsBulkCancelOperationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkCancel_OperationNotFoundError.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkCancel_OperationNotFoundError.json
      */
     /**
      * Sample code: 03 - Response with an unknown operation error during cancellation.
@@ -46,7 +46,7 @@ public final class VirtualMachineBulkOperationsBulkCancelOperationsSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkCancel_PartialSuccess.json
+     * x-ms-original-file: 2026-10-16/VirtualMachineBulkOperations_BulkCancel_PartialSuccess.json
      */
     /**
      * Sample code: 02 - Response with partially successful result.

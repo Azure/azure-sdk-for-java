@@ -9,17 +9,17 @@ package com.azure.resourcemanager.compute.bulkactions.generated;
  */
 public final class BulkCreateCustomVirtualMachinesGetOperationStatusSamples {
     /*
-     * x-ms-original-file: 2026-10-06-preview/BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-16/BulkCreateCustom_VirtualMachinesGetOperationStatus.json
      */
     /**
-     * Sample code: BulkCreateCustom_VirtualMachinesGetOperationStatus_MaximumSet.
+     * Sample code: Get the individual virtual machine results for a bulk create custom operation.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void bulkCreateCustomVirtualMachinesGetOperationStatusMaximumSet(
+    public static void getTheIndividualVirtualMachineResultsForABulkCreateCustomOperation(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.bulkCreateCustoms()
-            .virtualMachinesGetOperationStatus("local-test-rg", "eastus", "00000000-0000-0000-0000-000000000102",
+            .virtualMachinesGetOperationStatus("rg-bulk-create", "eastus", "a1223fe4-126f-4905-a870-6d53e360cab5",
                 com.azure.core.util.Context.NONE);
     }
 }

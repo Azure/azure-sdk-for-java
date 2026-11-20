@@ -1,14 +1,229 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0 (2026-11-20)
 
-### Features Added
+- Azure Resource Manager Compute BulkActions client library for Java. This package contains Microsoft Azure SDK for Compute BulkActions Management SDK.  Package api-version 2026-10-16. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ScheduledActionResources` was removed
 
-### Other Changes
+#### `models.ScheduledActionExtensions` was removed
+
+#### `models.ScheduledActionOperationStatus` was removed
+
+#### `models.ScheduledAction$DefinitionStages` was removed
+
+#### `models.ScheduledAction$UpdateStages` was removed
+
+#### `models.OccurrenceResource` was removed
+
+#### `models.OSProfileProvisioningData` was removed
+
+#### `models.ReimagePayload` was removed
+
+#### `models.AcknowledgeBulkOperationErrorsRequest` was removed
+
+#### `models.ResourcesWithContext` was removed
+
+#### `models.OccurrenceProperties` was removed
+
+#### `models.ScheduledActionsResourceOperationType` was removed
+
+#### `models.OccurrenceState` was removed
+
+#### `models.ReimageResourceOverride` was removed
+
+#### `models.ScheduledActionsDeadlineType` was removed
+
+#### `models.ScheduledAction$Definition` was removed
+
+#### `models.OccurrenceResultSummary` was removed
+
+#### `models.ResourceOperationResponse` was removed
+
+#### `models.ScheduledActionsExecutionParameters` was removed
+
+#### `models.ResourcePatchRequest` was removed
+
+#### `models.ResourceAttachRequest` was removed
+
+#### `models.ExecuteReimageRequest` was removed
+
+#### `models.OccurrenceExtensions` was removed
+
+#### `models.ResourceStatus` was removed
+
+#### `models.Language` was removed
+
+#### `models.OccurrenceExtensionProperties` was removed
+
+#### `models.NotificationType` was removed
+
+#### `models.ScheduledActionProperties` was removed
+
+#### `models.ScheduledAction` was removed
+
+#### `models.DelayRequest` was removed
+
+#### `models.ScheduledActionResourceInput` was removed
+
+#### `models.LocationBasedBulkCreate$UpdateStages` was removed
+
+#### `models.InnerError` was removed
+
+#### `models.ScheduledActionsRetryPolicy` was removed
+
+#### `models.OccurrenceResourceProvisioningState` was removed
+
+#### `models.NotificationProperties` was removed
+
+#### `models.CancelOccurrenceRequest` was removed
+
+#### `models.ScheduledActionUpdateProperties` was removed
+
+#### `models.ScheduledAction$Update` was removed
+
+#### `models.VirtualMachineReimageParameters` was removed
+
+#### `models.ResourceOperationStatus` was removed
+
+#### `models.ResourceResultSummary` was removed
+
+#### `models.WeekDay` was removed
+
+#### `models.LocationBasedBulkCreateCustom$Update` was removed
+
+#### `models.Error` was removed
+
+#### `models.ScheduledActionsScheduleUpdate` was removed
+
+#### `models.ScheduledActionType` was removed
+
+#### `models.ResourceType` was removed
+
+#### `models.ReimageResourceOperationResponse` was removed
+
+#### `models.Occurrence` was removed
+
+#### `models.LocationBasedBulkCreateCustom$UpdateStages` was removed
+
+#### `models.ScheduledActionUpdate` was removed
+
+#### `models.Month` was removed
+
+#### `models.ScheduledActionResource` was removed
+
+#### `models.ResourceDetachRequest` was removed
+
+#### `models.AcknowledgeBulkOperationErrorsResponse` was removed
+
+#### `models.ScheduledActions` was removed
+
+#### `models.ScheduledActionsSchedule` was removed
+
+#### `models.OccurrenceExtensionResource` was removed
+
+#### `models.Occurrences` was removed
+
+#### `models.ResourceWithContext` was removed
+
+#### `models.ScheduledActionsProvisioningState` was removed
+
+#### `models.LocationBasedBulkCreate$Update` was removed
+
+#### `models.ScheduledActionsExtensionProperties` was removed
+
+#### `models.LocationBasedBulkCreate$Definition` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.VirtualMachineBulkOperations` was modified
+
+* `bulkListOperationErrors(java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was removed
+* `bulkListOperationErrors(java.lang.String,java.lang.String)` was removed
+* `bulkAcknowledgeOperationErrorsWithResponse(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest,com.azure.core.util.Context)` was removed
+* `bulkReimageOperation(java.lang.String,java.lang.String,models.ExecuteReimageRequest)` was removed
+* `bulkAcknowledgeOperationErrors(java.lang.String,java.lang.String,models.AcknowledgeBulkOperationErrorsRequest)` was removed
+* `bulkReimageOperationWithResponse(java.lang.String,java.lang.String,models.ExecuteReimageRequest,com.azure.core.util.Context)` was removed
+
+#### `models.LocationBasedBulkCreateCustom$Definition` was modified
+
+* `withTags(java.util.Map)` was removed
+
+#### `models.BulkCreateCustoms` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was removed
+* `cancel(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `deleteById(java.lang.String)` was removed
+* `cancel(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ExecuteDeallocateContent` was modified
+
+* `withResourcesWithContext(models.ResourcesWithContext)` was removed
+* `resourcesWithContext()` was removed
+
+#### `models.ResourceOperation` was modified
+
+* Changed from an interface to a class.
+* `innerModel()` was removed
+
+#### `models.LocationBasedBulkCreate` was modified
+
+* `cancel(com.azure.core.util.Context)` was removed
+* `cancel()` was removed
+* `update()` was removed
+* `resourceGroupName()` was removed
+* `tags()` was removed
+
+#### `models.LocationBasedBulkCreateCustom` was modified
+
+* `cancel()` was removed
+* `cancel(com.azure.core.util.Context)` was removed
+* `update()` was removed
+* `tags()` was removed
+* `resourceGroupName()` was removed
+
+#### `models.ExecuteStartContent` was modified
+
+* `resourcesWithContext()` was removed
+* `withResourcesWithContext(models.ResourcesWithContext)` was removed
+
+#### `ComputeBulkActionsManager` was modified
+
+* `occurrenceExtensions()` was removed
+* `scheduledActionExtensions()` was removed
+* `occurrences()` was removed
+* `scheduledActionOperationStatus()` was removed
+* `scheduledActions()` was removed
+
+#### `models.BulkCreates` was modified
+
+* `cancel(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was removed
+* `deleteById(java.lang.String)` was removed
+* `cancel(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `deleteByIdWithResponse(java.lang.String,java.lang.Boolean,com.azure.core.util.Context)` was removed
+* `delete(java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.ExecuteHibernateContent` was modified
+
+* `withResourcesWithContext(models.ResourcesWithContext)` was removed
+* `resourcesWithContext()` was removed
+
+#### `models.ExecuteDeleteContent` was modified
+
+* `resourcesWithContext()` was removed
+* `withResourcesWithContext(models.ResourcesWithContext)` was removed
+
+### Features Added
+
+#### `models.ResourceOperation` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 ## 1.0.0-beta.8 (2026-10-13)
 

@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.bulkactions.fluent.BulkCreatesClient;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.LocationBasedBulkCreateInner;
 import com.azure.resourcemanager.compute.bulkactions.fluent.models.OperationStatusResultInner;
-import com.azure.resourcemanager.compute.bulkactions.fluent.models.ResourceOperationInner;
 import com.azure.resourcemanager.compute.bulkactions.models.BulkCreates;
 import com.azure.resourcemanager.compute.bulkactions.models.LocationBasedBulkCreate;
 import com.azure.resourcemanager.compute.bulkactions.models.OperationStatusResult;
@@ -65,35 +64,14 @@ public final class BulkCreatesImpl implements BulkCreates {
         }
     }
 
-    public void delete(String resourceGroupName, String location, String name) {
-        this.serviceClient().delete(resourceGroupName, location, name);
-    }
-
-    public void delete(String resourceGroupName, String location, String name, Boolean deleteInstances,
-        Context context) {
-        this.serviceClient().delete(resourceGroupName, location, name, deleteInstances, context);
-    }
-
-    public void cancel(String resourceGroupName, String location, String name) {
-        this.serviceClient().cancel(resourceGroupName, location, name);
-    }
-
-    public void cancel(String resourceGroupName, String location, String name, Context context) {
-        this.serviceClient().cancel(resourceGroupName, location, name, context);
-    }
-
     public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name) {
-        PagedIterable<ResourceOperationInner> inner
-            = this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceOperationImpl(inner1, this.manager()));
+        return this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
     }
 
     public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(String resourceGroupName, String location,
         String name, Context context) {
-        PagedIterable<ResourceOperationInner> inner
-            = this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceOperationImpl(inner1, this.manager()));
+        return this.serviceClient().virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
     }
 
     public PagedIterable<LocationBasedBulkCreate> listByResourceGroup(String resourceGroupName, String location) {
@@ -167,57 +145,6 @@ public final class BulkCreatesImpl implements BulkCreates {
                 String.format("The resource ID '%s' is not valid. Missing path segment 'bulkCreate'.", id)));
         }
         return this.getWithResponse(resourceGroupName, location, name, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "location");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bulkCreate'.", id)));
-        }
-        Boolean localDeleteInstances = null;
-        this.delete(resourceGroupName, location, name, localDeleteInstances, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Boolean deleteInstances, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String location = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "location");
-        if (location == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
-        }
-        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "name");
-        if (name == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'bulkCreate'.", id)));
-        }
-        this.delete(resourceGroupName, location, name, deleteInstances, context);
     }
 
     private BulkCreatesClient serviceClient() {

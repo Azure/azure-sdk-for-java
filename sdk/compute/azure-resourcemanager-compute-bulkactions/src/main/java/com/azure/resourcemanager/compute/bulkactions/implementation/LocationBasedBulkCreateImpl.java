@@ -17,13 +17,17 @@ import com.azure.resourcemanager.compute.bulkactions.models.Plan;
 import com.azure.resourcemanager.compute.bulkactions.models.ResourceOperation;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-public final class LocationBasedBulkCreateImpl
-    implements LocationBasedBulkCreate, LocationBasedBulkCreate.Definition, LocationBasedBulkCreate.Update {
+public final class LocationBasedBulkCreateImpl implements LocationBasedBulkCreate, LocationBasedBulkCreate.Definition {
     private LocationBasedBulkCreateInner innerObject;
 
     private final com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager;
+
+    LocationBasedBulkCreateImpl(LocationBasedBulkCreateInner innerObject,
+        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+    }
 
     public String id() {
         return this.innerModel().id();
@@ -58,15 +62,6 @@ public final class LocationBasedBulkCreateImpl
         return this.innerModel().placement();
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
     }
@@ -77,10 +72,6 @@ public final class LocationBasedBulkCreateImpl
 
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String resourceGroupName() {
-        return resourceGroupName;
     }
 
     public LocationBasedBulkCreateInner innerModel() {
@@ -106,14 +97,14 @@ public final class LocationBasedBulkCreateImpl
     public LocationBasedBulkCreate create() {
         this.innerObject = serviceManager.serviceClient()
             .getBulkCreates()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
+            .create(resourceGroupName, location, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LocationBasedBulkCreate create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBulkCreates()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), context);
+            .create(resourceGroupName, location, name, this.innerModel(), context);
         return this;
     }
 
@@ -122,39 +113,6 @@ public final class LocationBasedBulkCreateImpl
         this.innerObject = new LocationBasedBulkCreateInner();
         this.serviceManager = serviceManager;
         this.name = name;
-    }
-
-    public LocationBasedBulkCreateImpl update() {
-        return this;
-    }
-
-    public LocationBasedBulkCreate apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreates()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public LocationBasedBulkCreate apply(Context context) {
-        this.innerObject = serviceManager.serviceClient()
-            .getBulkCreates()
-            .createOrUpdate(resourceGroupName, location, name, this.innerModel(), context);
-        return this;
-    }
-
-    LocationBasedBulkCreateImpl(LocationBasedBulkCreateInner innerObject,
-        com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "resourceGroupName");
-        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "location");
-        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreate/{name}",
-            "name");
     }
 
     public LocationBasedBulkCreate refresh() {
@@ -173,14 +131,6 @@ public final class LocationBasedBulkCreateImpl
         return this;
     }
 
-    public void cancel() {
-        serviceManager.bulkCreates().cancel(resourceGroupName, location, name);
-    }
-
-    public void cancel(Context context) {
-        serviceManager.bulkCreates().cancel(resourceGroupName, location, name, context);
-    }
-
     public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus() {
         return serviceManager.bulkCreates().virtualMachinesGetOperationStatus(resourceGroupName, location, name);
     }
@@ -188,11 +138,6 @@ public final class LocationBasedBulkCreateImpl
     public PagedIterable<ResourceOperation> virtualMachinesGetOperationStatus(Context context) {
         return serviceManager.bulkCreates()
             .virtualMachinesGetOperationStatus(resourceGroupName, location, name, context);
-    }
-
-    public LocationBasedBulkCreateImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
     }
 
     public LocationBasedBulkCreateImpl withProperties(BulkCreateProperties properties) {
