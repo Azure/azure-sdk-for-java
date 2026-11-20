@@ -7,13 +7,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("deprecation")
@@ -62,6 +65,50 @@ public class HttpHeadersTests {
 
             // HttpHeaders is case-insensitive.
             Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", "c"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "Content-Type", "cOnTeNt-TyPe" })
+    public void nullStringValueRemovesCaseInsensitiveHeader(String name) {
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "value");
+        headers.set(name, (String) null);
+        assertNull(headers.get(HttpHeaderName.CONTENT_TYPE));
+        assertEquals(0, headers.getSize());
+
+        headers.set("Content-Type", "value");
+        headers.set(HttpHeaderName.fromString(name), (String) null);
+        assertNull(headers.get(HttpHeaderName.CONTENT_TYPE));
+        assertEquals(0, headers.getSize());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "Content-Type", "cOnTeNt-TyPe" })
+    public void removeIsCaseInsensitive(String name) {
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "value");
+        assertEquals("value", headers.remove(name).getValue());
+        assertEquals(0, headers.getSize());
+
+        headers.set("Content-Type", "value");
+        assertEquals("value", headers.remove(HttpHeaderName.fromString(name)).getValue());
+        assertEquals(0, headers.getSize());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "Content-Type", "cOnTeNt-TyPe" })
+    public void nullOrEmptyListRemovesCaseInsensitiveHeader(String name) {
+        HttpHeaderName headerName = HttpHeaderName.fromString(name);
+        HttpHeaders headers = new HttpHeaders().set(headerName, "value");
+        headers.set(name, (List<String>) null);
+        assertEquals(0, headers.getSize());
+
+        headers.set(headerName, "value").set(headerName, (List<String>) null);
+        assertEquals(0, headers.getSize());
+
+        headers.set(headerName, "value").set(name, Collections.emptyList());
+        assertEquals(0, headers.getSize());
+
+        headers.set(headerName, "value").set(headerName, Collections.emptyList());
+        assertEquals(0, headers.getSize());
     }
 
     @ParameterizedTest

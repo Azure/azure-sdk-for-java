@@ -7,6 +7,7 @@ import com.azure.core.implementation.StringBuilderWriter;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -45,6 +46,7 @@ final class BinaryDataDeserializer extends JsonDeserializer<BinaryData> {
     private static String bufferStruct(JsonParser parser) throws IOException {
         StringBuilder buffer = new StringBuilder(128);
         Writer bufferWriter = new StringBuilderWriter(buffer);
+        JsonStringEncoder stringEncoder = JsonStringEncoder.getInstance();
 
         // If this state is reached it is known that the current JsonToken is either '{' or '['
         buffer.append(parser.currentToken() == JsonToken.START_OBJECT ? '{' : '[');
@@ -75,7 +77,7 @@ final class BinaryDataDeserializer extends JsonDeserializer<BinaryData> {
                 case FIELD_NAME:
                 case VALUE_STRING:
                     buffer.append("\"");
-                    parser.getText(bufferWriter);
+                    buffer.append(stringEncoder.quoteAsString(parser.getText()));
                     buffer.append(next == JsonToken.FIELD_NAME ? "\":" : "\"");
                     break;
 

@@ -16,7 +16,8 @@ import static com.azure.core.implementation.http.rest.RestProxyUtils.BODY_TOO_SM
  * An {@link InputStream} decorator that tracks the number of bytes read from an inner {@link InputStream} and throws
  * an exception if the number of bytes read doesn't match what was expected.
  * <p>
- * This implementation assumes that reader is going to read until EOF.
+ * Overlong reads are rejected before their bytes are returned. The reader must read until EOF to detect a body
+ * shorter than the expected length.
  */
 final class LengthValidatingInputStream extends InputStream {
 
@@ -46,6 +47,13 @@ final class LengthValidatingInputStream extends InputStream {
 
     @Override
     public synchronized int read(byte[] b, int off, int len) throws IOException {
+        Objects.requireNonNull(b, "'b' cannot be null.");
+        if (off < 0 || len < 0 || off > b.length - len) {
+            throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("Invalid offset or length."));
+        }
+        if (len == 0) {
+            return 0;
+        }
         int totalRead = 0;
         int readSize;
         do {
@@ -70,7 +78,7 @@ final class LengthValidatingInputStream extends InputStream {
     @Override
     public synchronized long skip(long n) throws IOException {
         long skipped = inner.skip(n);
-        position += skipped;
+        validateLength(skipped);
         return skipped;
     }
 
@@ -110,18 +118,16 @@ final class LengthValidatingInputStream extends InputStream {
         return read;
     }
 
-    private void validateLength(int readSize) {
-        if (readSize == -1) {
-            // If the inner InputStream has reached termination validate that the read bytes matches what was expected.
-            if (position > expectedReadSize) {
-                throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                    String.format(BODY_TOO_LARGE, position, expectedReadSize), position, expectedReadSize));
-            } else if (position < expectedReadSize) {
-                throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                    String.format(BODY_TOO_SMALL, position, expectedReadSize), position, expectedReadSize));
-            }
-        } else {
-            position += readSize;
+    private void validateLength(long readSize) {
+        if (readSize != -1) {
+            position = Math.addExact(position, readSize);
+        }
+        if (position > expectedReadSize) {
+            throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                String.format(BODY_TOO_LARGE, position, expectedReadSize), position, expectedReadSize));
+        } else if (readSize == -1 && position < expectedReadSize) {
+            throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                String.format(BODY_TOO_SMALL, position, expectedReadSize), position, expectedReadSize));
         }
     }
 }

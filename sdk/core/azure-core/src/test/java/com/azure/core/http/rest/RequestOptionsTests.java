@@ -11,11 +11,13 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 
 import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RequestOptionsTests {
@@ -58,6 +60,43 @@ public class RequestOptionsTests {
         StepVerifier.create(BinaryData.fromFlux(request.getBody()).map(BinaryData::toString))
             .expectNext(expected)
             .verifyComplete();
+    }
+
+    @Test
+    public void unknownLengthBodyReplacesEmptyRequestFraming() {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, "https://request.url").setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1, 2, 3 }));
+
+        new RequestOptions().setBody(body).getRequestCallback().accept(request);
+
+        assertSame(body, request.getBodyAsBinaryData());
+        assertNull(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
+    public void explicitLengthCanFollowUnknownLengthBody() {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, "https://request.url").setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1, 2, 3 }));
+
+        new RequestOptions().setBody(body)
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "3")
+            .getRequestCallback()
+            .accept(request);
+
+        assertEquals("3", request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
+    public void nonzeroExplicitLengthIsPreservedForUnknownLengthBody() {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, "https://request.url").setHeader(HttpHeaderName.CONTENT_LENGTH, "3");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1, 2, 3 }));
+
+        new RequestOptions().setBody(body).getRequestCallback().accept(request);
+
+        assertEquals("3", request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
     }
 
     @Test

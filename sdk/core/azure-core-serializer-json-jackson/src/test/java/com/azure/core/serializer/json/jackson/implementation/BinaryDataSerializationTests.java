@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -181,6 +182,25 @@ public class BinaryDataSerializationTests {
             Arguments.of(MAP_PROPERTY_FROM_STRING, MAP_PROPERTY_STRING_JSON, MapProperty.class),
             Arguments.of(MAP_PROPERTY_FROM_OBJECT, MAP_PROPERTY_OBJECT_JSON, MapProperty.class),
             Arguments.of(MAP_PROPERTY_BASE64_MULTIPLE, MAP_PROPERTY_MULTI_JSON, MapProperty.class));
+    }
+
+    @ParameterizedTest
+    @MethodSource("escapedJsonStructures")
+    public void structuredBinaryDataPreservesEscaping(Object value) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(value);
+
+        BinaryData actual = ADAPTER.deserialize(json, BinaryData.class, SerializerEncoding.JSON);
+
+        assertEquals(mapper.readTree(json), mapper.readTree(actual.toString()));
+    }
+
+    private static Stream<Arguments> escapedJsonStructures() {
+        return Stream
+            .of("", "\"quoted\"", "back\\slash", "\b\f\n\r\t", "\u00e9\uD83D\uDE00",
+                "\",\"injected\":true,\"value\":\"")
+            .flatMap(value -> Stream.of(Arguments.of(singletonMap(value, value)),
+                Arguments.of(Arrays.asList(value, singletonMap(value, Arrays.asList(value, null, 1, true))))));
     }
 
     public static final class SimpleProperty {

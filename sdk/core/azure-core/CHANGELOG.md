@@ -18,6 +18,15 @@
   consumers that retain the emitted buffers, such as uploads from an `InputStream` returning small reads, to use many
   times more memory than the data read and fail with `OutOfMemoryError`. Emitted buffers are now sized to the data
   read.
+- Fixed JSON Patch deserialization preserving the JSON types and escaping of values, paths, and source paths.
+- Fixed case-insensitive header removal when setting a header to a null string value.
+- Fixed `ByteBuffer`-backed `BinaryData` conversions changing the source buffer's position, limit, and mark, which could
+  expose bytes outside the selected range to subsequent reads or writes.
+- Fixed cached `UrlBuilder` copies sharing mutable query values and clearing a query before lazy initialization.
+- Fixed JSON escaping of string data in `CloudEvent` and nested strings and property names when deserializing `BinaryData`.
+- Fixed oversized `InputStream` request chunks being returned before their length was validated.
+- Fixed unknown-length request bodies without a Content-Length header failing length validation. Setting an
+  unknown-length body through `RequestOptions` also removes the stale zero Content-Length of an empty request.
 
 ### Other Changes
 

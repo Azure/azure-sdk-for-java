@@ -128,11 +128,9 @@ public final class ByteBufferContent extends BinaryDataContent {
     }
 
     private byte[] getBytes() {
-        byte[] bytes = new byte[content.remaining()];
-
-        content.mark();
-        content.get(bytes);
-        content.flip();
+        ByteBuffer duplicate = content.duplicate();
+        byte[] bytes = new byte[duplicate.remaining()];
+        duplicate.get(bytes);
 
         return bytes;
     }

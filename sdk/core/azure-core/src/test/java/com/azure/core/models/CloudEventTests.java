@@ -276,8 +276,9 @@ public class CloudEventTests {
     }
 
     private static Stream<Arguments> primitiveDataValues() {
-        return Stream.of(Arguments.of("str"), Arguments.of(1), Arguments.of(1.1), Arguments.of(true),
-            Arguments.of(false));
+        return Stream.of(Arguments.of("str"), Arguments.of(""), Arguments.of("\"quoted\""), Arguments.of("back\\slash"),
+            Arguments.of("\b\f\n\r\t"), Arguments.of("\",\"source\":\"untrusted"), Arguments.of("\u00e9\uD83D\uDE00"),
+            Arguments.of(1), Arguments.of(1.1), Arguments.of(true), Arguments.of(false));
     }
 
     @Test

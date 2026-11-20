@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed JSON escaping of nested string values and property names when deserializing `BinaryData`.
+
 ### Other Changes
 
 ## 1.7.0 (2026-10-27)
