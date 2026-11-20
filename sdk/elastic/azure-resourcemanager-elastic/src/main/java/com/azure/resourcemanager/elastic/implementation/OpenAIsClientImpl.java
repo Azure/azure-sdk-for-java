@@ -262,8 +262,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param integrationName The integrationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param integrationName OpenAI Integration name.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -287,8 +287,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param integrationName The integrationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param integrationName OpenAI Integration name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -307,8 +307,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param integrationName The integrationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param integrationName OpenAI Integration name.
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,8 +329,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName The monitorName parameter.
-     * @param integrationName The integrationName parameter.
+     * @param monitorName Monitor resource name.
+     * @param integrationName OpenAI Integration name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
