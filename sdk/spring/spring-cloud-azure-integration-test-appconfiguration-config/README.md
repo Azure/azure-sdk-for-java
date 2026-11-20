@@ -42,7 +42,7 @@ Prerequisites:
 - A JDK supported by the current Spring Boot baseline and Maven.
 - An existing App Configuration store with the unlabeled fixtures below and all
   key/label/value fixtures from `variables.selectionSettings` in
-  [test-resources.json](test-resources.json).
+  [test-resources.json](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/spring-cloud-azure-integration-test-appconfiguration-config/test-resources.json).
 - An existing Key Vault secret readable by the test identity.
 - App Configuration Data Reader access (or Data Owner) and Key Vault secret-read
   access for that identity.
