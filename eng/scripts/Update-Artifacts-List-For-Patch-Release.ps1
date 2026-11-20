@@ -2,7 +2,8 @@ param(
   # $(Build.SourcesDirectory) - root of the repository
   [Parameter(Mandatory=$true)][string]$SourcesDirectory,
   # The yml file whose artifacts and additionalModules lists will be updated
-  [Parameter(Mandatory=$true)][string]$YmlToUpdate
+  [Parameter(Mandatory=$true)][string]$YmlToUpdate,
+  [switch]$IncrementMinorVersion
 )
 
 $StartTime = $(get-date)
@@ -29,8 +30,7 @@ $artifactsDict = [ordered]@{}
 $addModulesDict  = [ordered]@{}
 $ymlFiles = Get-ChildItem -Path $SourcesDirectory -Recurse -Depth 3 -File -Filter "ci.yml"
 foreach ($ymlFile in $ymlFiles) {
-    if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
-        $ymlFile.FullName -eq $YmlToUpdate) {
+    if ($ymlFile.FullName -eq $YmlToUpdate) {
         continue
     }
     $ymlContent = Get-Content $ymlFile.FullName -Raw
@@ -88,7 +88,7 @@ foreach ($line in Get-Content "${PSScriptRoot}/../pipelines/patch_release_client
 
 UpdateDependencies -ArtifactInfos $ArtifactInfos
 
-FindArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos
+FindArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos -IncrementMinorVersion:$IncrementMinorVersion
 
 $ArtifactsToPatch = $ArtifactInfos.Keys | Where-Object { $null -ne $ArtifactInfos[$_].FutureReleasePatchVersion } | ForEach-Object { $ArtifactInfos[$_].ArtifactId }
 

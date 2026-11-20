@@ -10,6 +10,12 @@ trigger:
   paths:
     include:
       - eng/scripts/*
+      - eng/pipelines/pullrequest.yml
+      - eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1
+      - eng/pipelines/scripts/Get-Test-Logs.ps1
+      - eng/pipelines/scripts/Get-Troubleshooting-Artifacts.ps1
+      - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
+      - eng/pipelines/templates/*
     exclude:
       - eng/scripts/typespec
 
@@ -23,9 +29,23 @@ pr:
   paths:
     include:
       - eng/scripts/*
+      - eng/pipelines/pullrequest.yml
+      - eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1
+      - eng/pipelines/scripts/Get-Test-Logs.ps1
+      - eng/pipelines/scripts/Get-Troubleshooting-Artifacts.ps1
+      - eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
+      - eng/pipelines/templates/*
 
 extends:
   template: /eng/common/pipelines/templates/stages/archetype-sdk-tool-pwsh.yml
   parameters:
     TargetDirectory: eng/scripts/
     TargetTags: 'UnitTest'
+    PreTestSteps:
+      - checkout: self
+        fetchDepth: 1
+        fetchTags: false
+      - pwsh: |
+          . (Join-Path "$(Build.SourcesDirectory)" eng common scripts Helpers PSModule-Helpers.ps1)
+          Install-ModuleIfNotInstalled "powershell-yaml" "0.4.7"
+        displayName: Install PowerShell YAML

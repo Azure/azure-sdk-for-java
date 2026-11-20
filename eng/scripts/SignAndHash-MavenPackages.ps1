@@ -156,7 +156,7 @@ foreach ($packageDetail in $packageDetails) {
 
   # Use fully-qualified plugin coordinates to avoid prefix resolution against incomplete
   # mirror metadata. This matches the approach used in Publish-MavenPackages.ps1.
-  $gpgSignAndDeployGoal = "org.apache.maven.plugins:maven-gpg-plugin:3.2.7:sign-and-deploy-file"
+  $gpgSignAndDeployGoal = "org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file"
 
   Write-Host ""
   Write-Host "Signing package"
