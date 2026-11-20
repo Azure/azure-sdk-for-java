@@ -19,12 +19,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -217,13 +221,79 @@ public class VertxHttpClientBuilderTests {
 
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientBuilder().proxy(proxyOptions).build();
 
-        io.vertx.core.net.ProxyOptions vertxProxyOptions = httpClient.buildOptions.getProxyOptions();
+        // The proxy is set on each request whose host isn't a non-proxy host, not on the Vert.x options.
+        assertNull(httpClient.buildOptions.getProxyOptions());
+        assertNull(httpClient.getProxyOptions("microsoft.com"));
+
+        io.vertx.core.net.ProxyOptions vertxProxyOptions = httpClient.getProxyOptions("example.com");
         assertNotNull(vertxProxyOptions);
         assertEquals(address.getHostName(), vertxProxyOptions.getHost());
         assertEquals(address.getPort(), vertxProxyOptions.getPort());
         assertEquals(type.name(), vertxProxyOptions.getType().name());
         assertEquals(proxyUser, vertxProxyOptions.getUsername());
         assertEquals(proxyPassword, vertxProxyOptions.getPassword());
+    }
+
+    /**
+     * Tests that the proxy is only skipped for request hosts matching the non-proxy hosts. They're matched like in the
+     * other HTTP clients, rather than by Vert.x, which matched '10.*' with '100.64.0.1' and compared hosts without
+     * wildcards case-sensitively.
+     */
+    @ParameterizedTest
+    @CsvSource({
+        "10.*, http://10.0.0.1, false",
+        "10.*, http://100.64.0.1, true",
+        "LOCALHOST, http://localhost, false",
+        "*.example.com, https://API.EXAMPLE.COM, false",
+        ".example.com, https://example.com, false",
+        ".example.com, https://badexample.com, true",
+        "[::1], http://[::1]:8080, false",
+        "[::1], http://1, true" })
+    public void proxyIsSkippedOnlyForNonProxyHosts(String nonProxyHosts, String url, boolean proxied) throws Exception {
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))
+            .setNonProxyHosts(nonProxyHosts);
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientBuilder().proxy(proxyOptions).build();
+
+        try {
+            String host = new HttpRequest(HttpMethod.GET, url).getUrl().getHost();
+            assertEquals(proxied, httpClient.getProxyOptions(host) != null);
+        } finally {
+            closeClient(httpClient);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "localhost", "LOCALHOST", "local*", ".localhost" })
+    public void requestToNonProxyHostConnectsDirectly(String nonProxyHosts) throws IOException {
+        HttpClient httpClient = buildWithUnreachableProxy(nonProxyHosts);
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, SERVER_HTTP_URI + SERVICE_ENDPOINT)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "localhost.*", "localhostx*", "example.com" })
+    public void requestToOtherHostUsesProxy(String nonProxyHosts) throws IOException {
+        HttpClient httpClient = buildWithUnreachableProxy(nonProxyHosts);
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, SERVER_HTTP_URI + SERVICE_ENDPOINT)))
+            .verifyError(ConnectException.class);
+    }
+
+    /*
+     * Nothing listens on the proxy port, so only requests that connect directly to the local server succeed.
+     */
+    private static HttpClient buildWithUnreachableProxy(String nonProxyHosts) throws IOException {
+        int unusedPort;
+        try (ServerSocket socket = new ServerSocket(0)) {
+            unusedPort = socket.getLocalPort();
+        }
+
+        return new VertxHttpClientBuilder()
+            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", unusedPort))
+                .setNonProxyHosts(nonProxyHosts))
+            .build();
     }
 
     @Test

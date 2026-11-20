@@ -19,6 +19,13 @@
 - Fixed HTTP timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
   configuration, and finally SDK defaults. Global timeouts are resolved when needed rather than cached at class
   initialization. Nonpositive JDK HTTP timeouts now disable the timeout, including the connection timeout.
+- Fixed suffix wildcards in `ProxyOptions` non-proxy hosts removing the character before the wildcard, so `storage1*`
+  matched `storage2.example.com` and `10.*` matched `100.64.0.1`. This affected `setNonProxyHosts` as well as
+  `http.nonProxyHosts`, `http.proxy.non-proxy-hosts`, and `NO_PROXY`. Entries such as `.*` no longer throw
+  `StringIndexOutOfBoundsException`. ([#51341](https://github.com/Azure/azure-sdk-for-java/issues/51341))
+- Fixed `ProxyOptions` non-proxy hosts with a leading or trailing dot, or a bracketed IPv6 address, matching other
+  hosts. `.example.com` now matches `example.com` and its subdomains but not `badexample.com`, `192.168.` no longer
+  matches `192.1689.0.1`, and `[::1]` is matched literally instead of as a regex character class.
 
 ### Other Changes
 

@@ -43,10 +43,6 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIM
  */
 public class VertxHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(VertxHttpClientBuilder.class);
-    private static final Pattern NON_PROXY_HOSTS_SPLIT = Pattern.compile("(?<!\\\\)\\|");
-    private static final Pattern NON_PROXY_HOST_REMOVE_SANITIZATION
-        = Pattern.compile("(\\?|\\\\|\\(|\\)|\\\\E|\\\\Q|\\.\\.)");
-    private static final Pattern NON_PROXY_HOST_DOT_STAR = Pattern.compile("(\\.\\*)");
 
     private static final BiFunction<Vertx, HttpClientOptions, io.vertx.core.http.HttpClient> VERTX_HTTP_CLIENT_FACTORY;
     static {
@@ -271,6 +267,8 @@ public class VertxHttpClientBuilder {
         }
 
         HttpClientOptions buildOptions = this.httpClientOptions;
+        io.vertx.core.net.ProxyOptions vertxProxyOptions = null;
+        Pattern nonProxyHostsPattern = null;
         Duration writeTimeout = Duration.ZERO;
         if (buildOptions == null) {
             writeTimeout = getTimeout(this.writeTimeout, configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
@@ -291,7 +289,7 @@ public class VertxHttpClientBuilder {
                 = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
             if (buildProxyOptions != null) {
-                io.vertx.core.net.ProxyOptions vertxProxyOptions = new io.vertx.core.net.ProxyOptions();
+                vertxProxyOptions = new io.vertx.core.net.ProxyOptions();
                 InetSocketAddress proxyAddress = buildProxyOptions.getAddress();
 
                 if (proxyAddress != null) {
@@ -317,14 +315,12 @@ public class VertxHttpClientBuilder {
                     }
                 }
 
+                // Vert.x can't match the non-proxy hosts regex, and a request can't opt out of a proxy set on
+                // HttpClientOptions. Instead, VertxHttpClient sets the proxy on each request whose host doesn't match.
                 String nonProxyHosts = buildProxyOptions.getNonProxyHosts();
                 if (!CoreUtils.isNullOrEmpty(nonProxyHosts)) {
-                    for (String nonProxyHost : removeNonProxyHostsSanitation(nonProxyHosts)) {
-                        buildOptions.addNonProxyHost(nonProxyHost);
-                    }
+                    nonProxyHostsPattern = Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
                 }
-
-                buildOptions.setProxyOptions(vertxProxyOptions);
             }
         }
 
@@ -342,8 +338,10 @@ public class VertxHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = VERTX_HTTP_CLIENT_FACTORY.apply(configuredVertx, buildOptions);
-        return new VertxHttpClient(client, buildOptions, getTimeout(this.responseTimeout, configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, DEFAULT_RESPONSE_TIMEOUT), writeTimeout);
+        return new VertxHttpClient(client, buildOptions, vertxProxyOptions, nonProxyHostsPattern,
+            getTimeout(this.responseTimeout, configuration, PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
+                DEFAULT_RESPONSE_TIMEOUT),
+            writeTimeout);
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {
@@ -363,24 +361,6 @@ public class VertxHttpClientBuilder {
         }
 
         return configuredVertx;
-    }
-
-    /**
-     * Reverses non-proxy host string sanitization applied by {@link ProxyOptions}.
-     * <p>
-     * This is necessary as Vert.x will apply its own sanitization logic.
-     *
-     * @param nonProxyHosts The list of non-proxy hosts
-     * @return String array of proxy host strings without sanitation.
-     */
-    private String[] removeNonProxyHostsSanitation(String nonProxyHosts) {
-        String nonProxyHostsSanitationRemoved
-            = NON_PROXY_HOST_REMOVE_SANITIZATION.matcher(nonProxyHosts).replaceAll("");
-
-        nonProxyHostsSanitationRemoved
-            = NON_PROXY_HOST_DOT_STAR.matcher(nonProxyHostsSanitationRemoved).replaceAll("*");
-
-        return NON_PROXY_HOSTS_SPLIT.split(nonProxyHostsSanitationRemoved);
     }
 
     // Enum Singleton Pattern
