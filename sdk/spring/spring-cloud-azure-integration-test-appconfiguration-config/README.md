@@ -40,7 +40,9 @@ tests also fail.
 Prerequisites:
 
 - A JDK supported by the current Spring Boot baseline and Maven.
-- An existing App Configuration store with the unlabeled fixtures below.
+- An existing App Configuration store with the unlabeled fixtures below and all
+  key/label/value fixtures from `variables.selectionSettings` in
+  [test-resources.json](test-resources.json).
 - An existing Key Vault secret readable by the test identity.
 - App Configuration Data Reader access (or Data Owner) and Key Vault secret-read
   access for that identity.
