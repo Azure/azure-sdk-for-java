@@ -13,16 +13,14 @@ public final class SetSourceAddressesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SetSourceAddresses model
-            = BinaryData.fromString("{\"values\":[\"smjqfrddgam\",\"uhiosrsju\",\"vfcdisyirn\",\"zhczexrxzbujrtrh\"]}")
-                .toObject(SetSourceAddresses.class);
-        Assertions.assertEquals("smjqfrddgam", model.values().get(0));
+            = BinaryData.fromString("{\"values\":[\"sccbiuimzd\",\"yjdfqwmky\"]}").toObject(SetSourceAddresses.class);
+        Assertions.assertEquals("sccbiuimzd", model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SetSourceAddresses model = new SetSourceAddresses()
-            .withValues(Arrays.asList("smjqfrddgam", "uhiosrsju", "vfcdisyirn", "zhczexrxzbujrtrh"));
+        SetSourceAddresses model = new SetSourceAddresses().withValues(Arrays.asList("sccbiuimzd", "yjdfqwmky"));
         model = BinaryData.fromObject(model).toObject(SetSourceAddresses.class);
-        Assertions.assertEquals("smjqfrddgam", model.values().get(0));
+        Assertions.assertEquals("sccbiuimzd", model.values().get(0));
     }
 }

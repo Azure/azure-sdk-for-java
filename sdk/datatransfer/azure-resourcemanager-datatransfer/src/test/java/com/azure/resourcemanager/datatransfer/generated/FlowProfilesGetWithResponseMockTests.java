@@ -29,7 +29,7 @@ public final class FlowProfilesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"flowProfileId\":\"ouau\",\"replicationScenario\":\"Complex\",\"status\":\"Enabled\",\"description\":\"tloqxfuojrn\",\"rulesets\":{\"antivirus\":{\"avSolutions\":[\"Defender\",\"Defender\",\"Defender\",\"ClamAv\"]},\"archives\":{\"minimumSizeForExpansion\":5394588020483902059,\"maximumExpansionSizeLimit\":7631584210516257592,\"maximumDepthLimit\":6769546219149410070,\"maximumCompressionRatioLimit\":91.6927151946404},\"dataSize\":{\"maximum\":7996059228480805157,\"minimum\":1642641561666020981},\"mimeFilters\":{\"type\":\"Allow\",\"filters\":[{},{},{},{}]},\"xmlFilters\":{\"defaultNamespace\":\"zslzojhp\",\"reference\":\"Inline\",\"schema\":\"mdxotngfdgu\"},\"textMatching\":{\"deny\":[{\"text\":\"i\",\"matchType\":\"Complete\",\"caseSensitivity\":\"Insensitive\"},{\"text\":\"kyuizabsnmfpp\",\"matchType\":\"Partial\",\"caseSensitivity\":\"Insensitive\"}]}}},\"identity\":{\"principalId\":\"vyhyhsgzfc\",\"tenantId\":\"gomfgbeglq\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"xeeebtijvacvbmqz\":{\"principalId\":\"i\",\"clientId\":\"tnluankrr\"}}},\"location\":\"q\",\"tags\":{\"h\":\"jrnwxacev\"},\"id\":\"kuyxoafg\",\"name\":\"oqltfae\",\"type\":\"linmfgv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"flowProfileId\":\"wrtmjfjmy\",\"replicationScenario\":\"Messaging\",\"status\":\"Disabled\",\"description\":\"lzhcoxovnekh\",\"rulesets\":{\"antivirus\":{\"avSolutions\":[\"ClamAv\",\"Defender\",\"Defender\"]},\"archives\":{\"minimumSizeForExpansion\":7824086182180840911,\"maximumExpansionSizeLimit\":7902850458902365247,\"maximumDepthLimit\":1317448757374562469,\"maximumCompressionRatioLimit\":45.88657454946724},\"dataSize\":{\"maximum\":6332291518186623819,\"minimum\":2985215474736508844},\"mimeFilters\":{\"type\":\"Deny\",\"filters\":[{},{}]},\"xmlFilters\":{\"defaultNamespace\":\"cvuwkasiz\",\"reference\":\"Inline\",\"schema\":\"uughtuqfecjxeyg\"},\"textMatching\":{\"deny\":[{\"text\":\"uicbuewmrsw\",\"matchType\":\"Partial\",\"caseSensitivity\":\"Insensitive\"}]}}},\"identity\":{\"principalId\":\"zrhwp\",\"tenantId\":\"xjbaqehgpdohzjq\",\"type\":\"None\",\"userAssignedIdentities\":{\"gcgbjb\":{\"principalId\":\"igebxncnwfepb\",\"clientId\":\"gfmx\"}}},\"location\":\"lfgtdysnaquflqbc\",\"tags\":{\"rwd\":\"amz\",\"antkwcegyamlbns\":\"qzeqyjleziunjxdf\",\"jjvpilguooqja\":\"qa\"},\"id\":\"m\",\"name\":\"itgueiookjbs\",\"type\":\"hrtdtpdelq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,34 +39,34 @@ public final class FlowProfilesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FlowProfile response = manager.flowProfiles()
-            .getWithResponse("dyfpchrqbnj", "rcgegydcwboxjum", "qqoli", com.azure.core.util.Context.NONE)
+            .getWithResponse("uowolbauiropi", "nszonwpngaj", "n", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("q", response.location());
-        Assertions.assertEquals("jrnwxacev", response.tags().get("h"));
-        Assertions.assertEquals(DataClassType.COMPLEX, response.properties().replicationScenario());
-        Assertions.assertEquals(FlowProfileStatus.ENABLED, response.properties().status());
-        Assertions.assertEquals("tloqxfuojrn", response.properties().description());
-        Assertions.assertEquals(AntivirusSolutions.DEFENDER,
+        Assertions.assertEquals("lfgtdysnaquflqbc", response.location());
+        Assertions.assertEquals("amz", response.tags().get("rwd"));
+        Assertions.assertEquals(DataClassType.MESSAGING, response.properties().replicationScenario());
+        Assertions.assertEquals(FlowProfileStatus.DISABLED, response.properties().status());
+        Assertions.assertEquals("lzhcoxovnekh", response.properties().description());
+        Assertions.assertEquals(AntivirusSolutions.CLAM_AV,
             response.properties().rulesets().antivirus().avSolutions().get(0));
-        Assertions.assertEquals(5394588020483902059L,
+        Assertions.assertEquals(7824086182180840911L,
             response.properties().rulesets().archives().minimumSizeForExpansion());
-        Assertions.assertEquals(7631584210516257592L,
+        Assertions.assertEquals(7902850458902365247L,
             response.properties().rulesets().archives().maximumExpansionSizeLimit());
-        Assertions.assertEquals(6769546219149410070L, response.properties().rulesets().archives().maximumDepthLimit());
-        Assertions.assertEquals(91.6927151946404D,
+        Assertions.assertEquals(1317448757374562469L, response.properties().rulesets().archives().maximumDepthLimit());
+        Assertions.assertEquals(45.88657454946724D,
             response.properties().rulesets().archives().maximumCompressionRatioLimit());
-        Assertions.assertEquals(7996059228480805157L, response.properties().rulesets().dataSize().maximum());
-        Assertions.assertEquals(1642641561666020981L, response.properties().rulesets().dataSize().minimum());
-        Assertions.assertEquals(FilterType.ALLOW, response.properties().rulesets().mimeFilters().type());
-        Assertions.assertEquals("zslzojhp", response.properties().rulesets().xmlFilters().defaultNamespace());
+        Assertions.assertEquals(6332291518186623819L, response.properties().rulesets().dataSize().maximum());
+        Assertions.assertEquals(2985215474736508844L, response.properties().rulesets().dataSize().minimum());
+        Assertions.assertEquals(FilterType.DENY, response.properties().rulesets().mimeFilters().type());
+        Assertions.assertEquals("cvuwkasiz", response.properties().rulesets().xmlFilters().defaultNamespace());
         Assertions.assertEquals(XmlReferenceType.INLINE, response.properties().rulesets().xmlFilters().reference());
-        Assertions.assertEquals("mdxotngfdgu", response.properties().rulesets().xmlFilters().schema());
-        Assertions.assertEquals("i", response.properties().rulesets().textMatching().deny().get(0).text());
-        Assertions.assertEquals(MatchType.COMPLETE,
+        Assertions.assertEquals("uughtuqfecjxeyg", response.properties().rulesets().xmlFilters().schema());
+        Assertions.assertEquals("uicbuewmrsw", response.properties().rulesets().textMatching().deny().get(0).text());
+        Assertions.assertEquals(MatchType.PARTIAL,
             response.properties().rulesets().textMatching().deny().get(0).matchType());
         Assertions.assertEquals(Casing.INSENSITIVE,
             response.properties().rulesets().textMatching().deny().get(0).caseSensitivity());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
     }
 }

@@ -27,6 +27,16 @@ public final class TargetType extends ExpandableStringEnum<TargetType> {
     public static final TargetType FLOW_TYPE = fromString("FlowType");
 
     /**
+     * The action executing is targeting a storage flow.
+     */
+    public static final TargetType STORAGE_TRANSFER_FLOW = fromString("StorageTransferFlow");
+
+    /**
+     * The action executing is targeting a messaging flow.
+     */
+    public static final TargetType MESSAGING_TRANSFER_FLOW = fromString("MessagingTransferFlow");
+
+    /**
      * The action executing is targeting a flow profile.
      */
     public static final TargetType FLOW_PROFILE = fromString("FlowProfile");

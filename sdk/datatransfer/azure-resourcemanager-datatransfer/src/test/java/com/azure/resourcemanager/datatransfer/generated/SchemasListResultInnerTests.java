@@ -15,15 +15,15 @@ public final class SchemasListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemasListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"npirgnepttw\",\"connectionId\":\"sniffc\",\"status\":\"Approved\",\"name\":\"r\",\"content\":\"lpijnkrxfrd\",\"direction\":\"Send\",\"schemaUri\":\"atiz\",\"schemaType\":\"Zip\"}]}")
+            "{\"value\":[{\"id\":\"scyhwz\",\"connectionId\":\"irujbz\",\"status\":\"Approved\",\"name\":\"zzbtdcqvpniyujvi\",\"content\":\"wdsh\",\"direction\":\"Receive\",\"schemaUri\":\"rbgyefry\",\"schemaType\":\"Xsd\"},{\"id\":\"ojfmwnco\",\"connectionId\":\"rfh\",\"status\":\"Approved\",\"name\":\"ymoxoftpipiwyczu\",\"content\":\"a\",\"direction\":\"Receive\",\"schemaUri\":\"lihhyuspskasdvlm\",\"schemaType\":\"Zip\"},{\"id\":\"zxulucvpamrsreu\",\"connectionId\":\"xurisjnhnyt\",\"status\":\"New\",\"name\":\"jzgxmrhublwp\",\"content\":\"sutrgjup\",\"direction\":\"Receive\",\"schemaUri\":\"p\",\"schemaType\":\"Xsd\"},{\"id\":\"ih\",\"connectionId\":\"qg\",\"status\":\"Approved\",\"name\":\"fqntcyp\",\"content\":\"jv\",\"direction\":\"Receive\",\"schemaUri\":\"wkslir\",\"schemaType\":\"Zip\"}]}")
             .toObject(SchemasListResultInner.class);
-        Assertions.assertEquals("npirgnepttw", model.value().get(0).id());
-        Assertions.assertEquals("sniffc", model.value().get(0).connectionId());
+        Assertions.assertEquals("scyhwz", model.value().get(0).id());
+        Assertions.assertEquals("irujbz", model.value().get(0).connectionId());
         Assertions.assertEquals(SchemaStatus.APPROVED, model.value().get(0).status());
-        Assertions.assertEquals("r", model.value().get(0).name());
-        Assertions.assertEquals("lpijnkrxfrd", model.value().get(0).content());
-        Assertions.assertEquals(Direction.SEND, model.value().get(0).direction());
-        Assertions.assertEquals("atiz", model.value().get(0).schemaUri());
-        Assertions.assertEquals(SchemaType.ZIP, model.value().get(0).schemaType());
+        Assertions.assertEquals("zzbtdcqvpniyujvi", model.value().get(0).name());
+        Assertions.assertEquals("wdsh", model.value().get(0).content());
+        Assertions.assertEquals(Direction.RECEIVE, model.value().get(0).direction());
+        Assertions.assertEquals("rbgyefry", model.value().get(0).schemaUri());
+        Assertions.assertEquals(SchemaType.XSD, model.value().get(0).schemaType());
     }
 }

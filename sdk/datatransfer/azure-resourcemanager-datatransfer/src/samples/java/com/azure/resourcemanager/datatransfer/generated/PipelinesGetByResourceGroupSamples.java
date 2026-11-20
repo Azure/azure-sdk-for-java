@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class PipelinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/getPipeline.json
+     * x-ms-original-file: 2026-06-29-preview/getPipeline.json
      */
     /**
      * Sample code: Gets pipeline resource.

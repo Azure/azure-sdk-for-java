@@ -15,11 +15,15 @@ import com.azure.resourcemanager.datatransfer.fluent.models.ConnectionInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.ListFlowsByPipelineResultInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.PipelineInner;
 import com.azure.resourcemanager.datatransfer.fluent.models.SchemasListResultInner;
+import com.azure.resourcemanager.datatransfer.fluent.models.TransferFlowResponseBodyInner;
+import com.azure.resourcemanager.datatransfer.fluent.models.TransferFlowSummaryInner;
 import com.azure.resourcemanager.datatransfer.models.Action;
 import com.azure.resourcemanager.datatransfer.models.ConnectionIdList;
+import com.azure.resourcemanager.datatransfer.models.ListTransferFlowsByPipelineRequestBody;
 import com.azure.resourcemanager.datatransfer.models.PipelinesPatch;
 import com.azure.resourcemanager.datatransfer.models.ResourceBody;
 import com.azure.resourcemanager.datatransfer.models.Schema;
+import com.azure.resourcemanager.datatransfer.models.TransferFlowRequestBody;
 
 /**
  * An instance of this class provides access to all the operations defined in PipelinesClient.
@@ -341,6 +345,68 @@ public interface PipelinesClient {
         Context context);
 
     /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner>
+        beginApproveTransferFlow(String resourceGroupName, String pipelineName, TransferFlowRequestBody body);
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner> beginApproveTransferFlow(
+        String resourceGroupName, String pipelineName, TransferFlowRequestBody body, Context context);
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TransferFlowResponseBodyInner approveTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body);
+
+    /**
+     * Approves pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TransferFlowResponseBodyInner approveTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context);
+
+    /**
      * Executes a privileged or administrative action on the specified Pipeline.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -428,6 +494,43 @@ public interface PipelinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ListFlowsByPipelineResultInner list(String resourceGroupName, String pipelineName);
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<TransferFlowSummaryInner> listTransferFlows(String resourceGroupName, String pipelineName);
+
+    /**
+     * Lists the storage and messaging transfer flows that use the specified Pipeline, across all subscriptions and
+     * tenants that use it. This is the pipeline approver view; it differs from the subscription and resource group list
+     * operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side of
+     * each flow is referenced only through remoteTransferFlowResourceId.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body Filters used to select the flow resources to be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a page of transfer flow summaries associated with a pipeline as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<TransferFlowSummaryInner> listTransferFlows(String resourceGroupName, String pipelineName,
+        ListTransferFlowsByPipelineRequestBody body, Context context);
 
     /**
      * Lists the schemas associated with a specific connection in the Pipeline. This operation has reached end of life
@@ -521,4 +624,66 @@ public interface PipelinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConnectionInner rejectConnection(String resourceGroupName, String pipelineName, ResourceBody connection,
         Context context);
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner>
+        beginRejectTransferFlow(String resourceGroupName, String pipelineName, TransferFlowRequestBody body);
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TransferFlowResponseBodyInner>, TransferFlowResponseBodyInner> beginRejectTransferFlow(
+        String resourceGroupName, String pipelineName, TransferFlowRequestBody body, Context context);
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TransferFlowResponseBodyInner rejectTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body);
+
+    /**
+     * Rejects pending flow request(s) associated with the specified Pipeline.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pipelineName The name of the pipeline on which to operate.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the resource response body to reference.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TransferFlowResponseBodyInner rejectTransferFlow(String resourceGroupName, String pipelineName,
+        TransferFlowRequestBody body, Context context);
 }

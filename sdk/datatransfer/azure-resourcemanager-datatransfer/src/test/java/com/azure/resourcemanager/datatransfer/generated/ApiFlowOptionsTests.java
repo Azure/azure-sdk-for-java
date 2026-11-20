@@ -18,115 +18,104 @@ public final class ApiFlowOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiFlowOptions model = BinaryData.fromString(
-            "{\"remoteEndpoint\":\"semdwzrmu\",\"cname\":\"pfcqdp\",\"apiMode\":\"SDK\",\"identityTranslation\":\"ServiceIdentity\",\"senderClientId\":\"svuo\",\"remoteCallingModeClientId\":\"gc\",\"audienceOverride\":\"lvez\",\"authentication\":[{\"type\":\"None\",\"instance\":\"feo\",\"tenantId\":\"rqwky\",\"authority\":\"ob\",\"applicationIds\":[\"xedk\",\"wep\"],\"audience\":\"pc\",\"clientIdOverride\":\"kbwcc\",\"identityTranslation\":\"ServiceIdentity\"},{\"type\":\"JWT\",\"instance\":\"wxlp\",\"tenantId\":\"kftnkhtjsyin\",\"authority\":\"fq\",\"applicationIds\":[\"tdhtmdvyp\"],\"audience\":\"kdgszywkbirr\",\"clientIdOverride\":\"zh\",\"identityTranslation\":\"UserIdentity\"}],\"remoteEndpointSettings\":{\"endpoint\":\"oqrvqqaatjin\",\"authentication\":[{\"type\":\"None\",\"instance\":\"mfiibfggj\",\"tenantId\":\"olvrw\",\"authority\":\"v\",\"applicationIds\":[\"gllqwjy\"],\"audience\":\"jayvblmhv\",\"clientIdOverride\":\"uhbxvvy\",\"identityTranslation\":\"UserIdentity\"},{\"type\":\"None\",\"instance\":\"yrqufegxuvwz\",\"tenantId\":\"nhlmctlpdng\",\"authority\":\"vgbmhr\",\"applicationIds\":[\"wmyijejveg\"],\"audience\":\"bpnaixexccbdre\",\"clientIdOverride\":\"hcexdrrvqa\",\"identityTranslation\":\"ServiceIdentity\"},{\"type\":\"JWT\",\"instance\":\"pwijnhy\",\"tenantId\":\"vfycxzb\",\"authority\":\"oowvrv\",\"applicationIds\":[\"jqppyostronzmy\",\"gfipnsxk\"],\"audience\":\"waekrrjreafxtsgu\",\"clientIdOverride\":\"jglikkxwslolb\",\"identityTranslation\":\"UserIdentity\"}]}}")
+            "{\"remoteEndpoint\":\"csnjvcdwxlpqekft\",\"cname\":\"htjsying\",\"apiMode\":\"Endpoint\",\"identityTranslation\":\"ServiceIdentity\",\"senderClientId\":\"tdhtmdvyp\",\"remoteCallingModeClientId\":\"kdgszywkbirr\",\"audienceOverride\":\"zh\",\"authentication\":[{\"type\":\"None\",\"instance\":\"rvqqaatj\",\"tenantId\":\"rv\",\"authority\":\"upmfiibfg\",\"applicationIds\":[\"ool\",\"rwxkvtkkgl\",\"qwjygvja\",\"vblm\"],\"audience\":\"k\",\"clientIdOverride\":\"hbxvvyhgsopbyrqu\",\"identityTranslation\":\"UserIdentity\"}],\"remoteEndpointSettings\":{\"endpoint\":\"uvwzfbnh\",\"authentication\":[{\"type\":\"JWT\",\"instance\":\"dn\",\"tenantId\":\"tvgbmhrixkwmy\",\"authority\":\"ejvegrhbpnaixex\",\"applicationIds\":[\"dreaxh\"],\"audience\":\"xdrrvqahqkghtp\",\"clientIdOverride\":\"jnhyjsvf\",\"identityTranslation\":\"UserIdentity\"},{\"type\":\"None\",\"instance\":\"voowvr\",\"tenantId\":\"t\",\"authority\":\"qp\",\"applicationIds\":[\"s\",\"ronzmyhgfip\"],\"audience\":\"xkmcwaekrrjre\",\"clientIdOverride\":\"xt\",\"identityTranslation\":\"UserIdentity\"},{\"type\":\"JWT\",\"instance\":\"glikkxwslolb\",\"tenantId\":\"vuzlm\",\"authority\":\"elfk\",\"applicationIds\":[\"lcrpw\",\"xeznoi\",\"brnjwmw\",\"pn\"],\"audience\":\"azej\",\"clientIdOverride\":\"qkagfhsxt\",\"identityTranslation\":\"UserIdentity\"}]}}")
             .toObject(ApiFlowOptions.class);
-        Assertions.assertEquals("semdwzrmu", model.remoteEndpoint());
-        Assertions.assertEquals("pfcqdp", model.cname());
-        Assertions.assertEquals(ApiMode.SDK, model.apiMode());
+        Assertions.assertEquals("csnjvcdwxlpqekft", model.remoteEndpoint());
+        Assertions.assertEquals("htjsying", model.cname());
+        Assertions.assertEquals(ApiMode.ENDPOINT, model.apiMode());
         Assertions.assertEquals(IdentityTranslation.SERVICE_IDENTITY, model.identityTranslation());
-        Assertions.assertEquals("svuo", model.senderClientId());
-        Assertions.assertEquals("gc", model.remoteCallingModeClientId());
-        Assertions.assertEquals("lvez", model.audienceOverride());
+        Assertions.assertEquals("tdhtmdvyp", model.senderClientId());
+        Assertions.assertEquals("kdgszywkbirr", model.remoteCallingModeClientId());
+        Assertions.assertEquals("zh", model.audienceOverride());
         Assertions.assertEquals(AuthenticationType.NONE, model.authentication().get(0).type());
-        Assertions.assertEquals("feo", model.authentication().get(0).instance());
-        Assertions.assertEquals("rqwky", model.authentication().get(0).tenantId());
-        Assertions.assertEquals("ob", model.authentication().get(0).authority());
-        Assertions.assertEquals("xedk", model.authentication().get(0).applicationIds().get(0));
-        Assertions.assertEquals("pc", model.authentication().get(0).audience());
-        Assertions.assertEquals("kbwcc", model.authentication().get(0).clientIdOverride());
-        Assertions.assertEquals(IdentityTranslation.SERVICE_IDENTITY,
-            model.authentication().get(0).identityTranslation());
-        Assertions.assertEquals("oqrvqqaatjin", model.remoteEndpointSettings().endpoint());
-        Assertions.assertEquals(AuthenticationType.NONE, model.remoteEndpointSettings().authentication().get(0).type());
-        Assertions.assertEquals("mfiibfggj", model.remoteEndpointSettings().authentication().get(0).instance());
-        Assertions.assertEquals("olvrw", model.remoteEndpointSettings().authentication().get(0).tenantId());
-        Assertions.assertEquals("v", model.remoteEndpointSettings().authentication().get(0).authority());
-        Assertions.assertEquals("gllqwjy",
+        Assertions.assertEquals("rvqqaatj", model.authentication().get(0).instance());
+        Assertions.assertEquals("rv", model.authentication().get(0).tenantId());
+        Assertions.assertEquals("upmfiibfg", model.authentication().get(0).authority());
+        Assertions.assertEquals("ool", model.authentication().get(0).applicationIds().get(0));
+        Assertions.assertEquals("k", model.authentication().get(0).audience());
+        Assertions.assertEquals("hbxvvyhgsopbyrqu", model.authentication().get(0).clientIdOverride());
+        Assertions.assertEquals(IdentityTranslation.USER_IDENTITY, model.authentication().get(0).identityTranslation());
+        Assertions.assertEquals("uvwzfbnh", model.remoteEndpointSettings().endpoint());
+        Assertions.assertEquals(AuthenticationType.JWT, model.remoteEndpointSettings().authentication().get(0).type());
+        Assertions.assertEquals("dn", model.remoteEndpointSettings().authentication().get(0).instance());
+        Assertions.assertEquals("tvgbmhrixkwmy", model.remoteEndpointSettings().authentication().get(0).tenantId());
+        Assertions.assertEquals("ejvegrhbpnaixex", model.remoteEndpointSettings().authentication().get(0).authority());
+        Assertions.assertEquals("dreaxh",
             model.remoteEndpointSettings().authentication().get(0).applicationIds().get(0));
-        Assertions.assertEquals("jayvblmhv", model.remoteEndpointSettings().authentication().get(0).audience());
-        Assertions.assertEquals("uhbxvvy", model.remoteEndpointSettings().authentication().get(0).clientIdOverride());
+        Assertions.assertEquals("xdrrvqahqkghtp", model.remoteEndpointSettings().authentication().get(0).audience());
+        Assertions.assertEquals("jnhyjsvf", model.remoteEndpointSettings().authentication().get(0).clientIdOverride());
         Assertions.assertEquals(IdentityTranslation.USER_IDENTITY,
             model.remoteEndpointSettings().authentication().get(0).identityTranslation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiFlowOptions model = new ApiFlowOptions().withRemoteEndpoint("semdwzrmu")
-            .withCname("pfcqdp")
-            .withApiMode(ApiMode.SDK)
+        ApiFlowOptions model = new ApiFlowOptions().withRemoteEndpoint("csnjvcdwxlpqekft")
+            .withCname("htjsying")
+            .withApiMode(ApiMode.ENDPOINT)
             .withIdentityTranslation(IdentityTranslation.SERVICE_IDENTITY)
-            .withSenderClientId("svuo")
-            .withRemoteCallingModeClientId("gc")
-            .withAudienceOverride("lvez")
-            .withAuthentication(Arrays.asList(
-                new Authentication().withType(AuthenticationType.NONE)
-                    .withInstance("feo")
-                    .withTenantId("rqwky")
-                    .withAuthority("ob")
-                    .withApplicationIds(Arrays.asList("xedk", "wep"))
-                    .withAudience("pc")
-                    .withClientIdOverride("kbwcc")
-                    .withIdentityTranslation(IdentityTranslation.SERVICE_IDENTITY),
-                new Authentication().withType(AuthenticationType.JWT)
-                    .withInstance("wxlp")
-                    .withTenantId("kftnkhtjsyin")
-                    .withAuthority("fq")
-                    .withApplicationIds(Arrays.asList("tdhtmdvyp"))
-                    .withAudience("kdgszywkbirr")
-                    .withClientIdOverride("zh")
-                    .withIdentityTranslation(IdentityTranslation.USER_IDENTITY)))
-            .withRemoteEndpointSettings(new RemoteEndpointSettings().withEndpoint("oqrvqqaatjin")
+            .withSenderClientId("tdhtmdvyp")
+            .withRemoteCallingModeClientId("kdgszywkbirr")
+            .withAudienceOverride("zh")
+            .withAuthentication(Arrays.asList(new Authentication().withType(AuthenticationType.NONE)
+                .withInstance("rvqqaatj")
+                .withTenantId("rv")
+                .withAuthority("upmfiibfg")
+                .withApplicationIds(Arrays.asList("ool", "rwxkvtkkgl", "qwjygvja", "vblm"))
+                .withAudience("k")
+                .withClientIdOverride("hbxvvyhgsopbyrqu")
+                .withIdentityTranslation(IdentityTranslation.USER_IDENTITY)))
+            .withRemoteEndpointSettings(new RemoteEndpointSettings().withEndpoint("uvwzfbnh")
                 .withAuthentication(Arrays.asList(
-                    new Authentication().withType(AuthenticationType.NONE)
-                        .withInstance("mfiibfggj")
-                        .withTenantId("olvrw")
-                        .withAuthority("v")
-                        .withApplicationIds(Arrays.asList("gllqwjy"))
-                        .withAudience("jayvblmhv")
-                        .withClientIdOverride("uhbxvvy")
+                    new Authentication().withType(AuthenticationType.JWT)
+                        .withInstance("dn")
+                        .withTenantId("tvgbmhrixkwmy")
+                        .withAuthority("ejvegrhbpnaixex")
+                        .withApplicationIds(Arrays.asList("dreaxh"))
+                        .withAudience("xdrrvqahqkghtp")
+                        .withClientIdOverride("jnhyjsvf")
                         .withIdentityTranslation(IdentityTranslation.USER_IDENTITY),
                     new Authentication().withType(AuthenticationType.NONE)
-                        .withInstance("yrqufegxuvwz")
-                        .withTenantId("nhlmctlpdng")
-                        .withAuthority("vgbmhr")
-                        .withApplicationIds(Arrays.asList("wmyijejveg"))
-                        .withAudience("bpnaixexccbdre")
-                        .withClientIdOverride("hcexdrrvqa")
-                        .withIdentityTranslation(IdentityTranslation.SERVICE_IDENTITY),
+                        .withInstance("voowvr")
+                        .withTenantId("t")
+                        .withAuthority("qp")
+                        .withApplicationIds(Arrays.asList("s", "ronzmyhgfip"))
+                        .withAudience("xkmcwaekrrjre")
+                        .withClientIdOverride("xt")
+                        .withIdentityTranslation(IdentityTranslation.USER_IDENTITY),
                     new Authentication().withType(AuthenticationType.JWT)
-                        .withInstance("pwijnhy")
-                        .withTenantId("vfycxzb")
-                        .withAuthority("oowvrv")
-                        .withApplicationIds(Arrays.asList("jqppyostronzmy", "gfipnsxk"))
-                        .withAudience("waekrrjreafxtsgu")
-                        .withClientIdOverride("jglikkxwslolb")
+                        .withInstance("glikkxwslolb")
+                        .withTenantId("vuzlm")
+                        .withAuthority("elfk")
+                        .withApplicationIds(Arrays.asList("lcrpw", "xeznoi", "brnjwmw", "pn"))
+                        .withAudience("azej")
+                        .withClientIdOverride("qkagfhsxt")
                         .withIdentityTranslation(IdentityTranslation.USER_IDENTITY))));
         model = BinaryData.fromObject(model).toObject(ApiFlowOptions.class);
-        Assertions.assertEquals("semdwzrmu", model.remoteEndpoint());
-        Assertions.assertEquals("pfcqdp", model.cname());
-        Assertions.assertEquals(ApiMode.SDK, model.apiMode());
+        Assertions.assertEquals("csnjvcdwxlpqekft", model.remoteEndpoint());
+        Assertions.assertEquals("htjsying", model.cname());
+        Assertions.assertEquals(ApiMode.ENDPOINT, model.apiMode());
         Assertions.assertEquals(IdentityTranslation.SERVICE_IDENTITY, model.identityTranslation());
-        Assertions.assertEquals("svuo", model.senderClientId());
-        Assertions.assertEquals("gc", model.remoteCallingModeClientId());
-        Assertions.assertEquals("lvez", model.audienceOverride());
+        Assertions.assertEquals("tdhtmdvyp", model.senderClientId());
+        Assertions.assertEquals("kdgszywkbirr", model.remoteCallingModeClientId());
+        Assertions.assertEquals("zh", model.audienceOverride());
         Assertions.assertEquals(AuthenticationType.NONE, model.authentication().get(0).type());
-        Assertions.assertEquals("feo", model.authentication().get(0).instance());
-        Assertions.assertEquals("rqwky", model.authentication().get(0).tenantId());
-        Assertions.assertEquals("ob", model.authentication().get(0).authority());
-        Assertions.assertEquals("xedk", model.authentication().get(0).applicationIds().get(0));
-        Assertions.assertEquals("pc", model.authentication().get(0).audience());
-        Assertions.assertEquals("kbwcc", model.authentication().get(0).clientIdOverride());
-        Assertions.assertEquals(IdentityTranslation.SERVICE_IDENTITY,
-            model.authentication().get(0).identityTranslation());
-        Assertions.assertEquals("oqrvqqaatjin", model.remoteEndpointSettings().endpoint());
-        Assertions.assertEquals(AuthenticationType.NONE, model.remoteEndpointSettings().authentication().get(0).type());
-        Assertions.assertEquals("mfiibfggj", model.remoteEndpointSettings().authentication().get(0).instance());
-        Assertions.assertEquals("olvrw", model.remoteEndpointSettings().authentication().get(0).tenantId());
-        Assertions.assertEquals("v", model.remoteEndpointSettings().authentication().get(0).authority());
-        Assertions.assertEquals("gllqwjy",
+        Assertions.assertEquals("rvqqaatj", model.authentication().get(0).instance());
+        Assertions.assertEquals("rv", model.authentication().get(0).tenantId());
+        Assertions.assertEquals("upmfiibfg", model.authentication().get(0).authority());
+        Assertions.assertEquals("ool", model.authentication().get(0).applicationIds().get(0));
+        Assertions.assertEquals("k", model.authentication().get(0).audience());
+        Assertions.assertEquals("hbxvvyhgsopbyrqu", model.authentication().get(0).clientIdOverride());
+        Assertions.assertEquals(IdentityTranslation.USER_IDENTITY, model.authentication().get(0).identityTranslation());
+        Assertions.assertEquals("uvwzfbnh", model.remoteEndpointSettings().endpoint());
+        Assertions.assertEquals(AuthenticationType.JWT, model.remoteEndpointSettings().authentication().get(0).type());
+        Assertions.assertEquals("dn", model.remoteEndpointSettings().authentication().get(0).instance());
+        Assertions.assertEquals("tvgbmhrixkwmy", model.remoteEndpointSettings().authentication().get(0).tenantId());
+        Assertions.assertEquals("ejvegrhbpnaixex", model.remoteEndpointSettings().authentication().get(0).authority());
+        Assertions.assertEquals("dreaxh",
             model.remoteEndpointSettings().authentication().get(0).applicationIds().get(0));
-        Assertions.assertEquals("jayvblmhv", model.remoteEndpointSettings().authentication().get(0).audience());
-        Assertions.assertEquals("uhbxvvy", model.remoteEndpointSettings().authentication().get(0).clientIdOverride());
+        Assertions.assertEquals("xdrrvqahqkghtp", model.remoteEndpointSettings().authentication().get(0).audience());
+        Assertions.assertEquals("jnhyjsvf", model.remoteEndpointSettings().authentication().get(0).clientIdOverride());
         Assertions.assertEquals(IdentityTranslation.USER_IDENTITY,
             model.remoteEndpointSettings().authentication().get(0).identityTranslation());
     }

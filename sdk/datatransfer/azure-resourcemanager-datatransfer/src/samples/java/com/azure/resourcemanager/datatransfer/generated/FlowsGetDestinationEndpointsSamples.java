@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class FlowsGetDestinationEndpointsSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/getFlowDestinationEndpoints.json
+     * x-ms-original-file: 2026-06-29-preview/getFlowDestinationEndpoints.json
      */
     /**
      * Sample code: Get the flow stream destination endpoints.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.datatransfer.generated;
  */
 public final class FlowsGeneratePassphraseSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/generateFlowPassphrase.json
+     * x-ms-original-file: 2026-06-29-preview/generateFlowPassphrase.json
      */
     /**
      * Sample code: Generate a new compliant streaming passphrase.

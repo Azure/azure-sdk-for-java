@@ -14,13 +14,13 @@ public final class FlowProfilesListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FlowProfilesListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"pipeline\":\"ncvjts\",\"name\":\"cof\",\"replicationScenario\":\"Stream\",\"flowProfileId\":\"e\",\"status\":\"Enabled\",\"description\":\"dhgbjkvre\"},{\"pipeline\":\"jeamurv\",\"name\":\"mlovuanashcxl\",\"replicationScenario\":\"API\",\"flowProfileId\":\"jerbdkelvidizozs\",\"status\":\"Obsolete\",\"description\":\"ccxjm\"},{\"pipeline\":\"nfdgn\",\"name\":\"n\",\"replicationScenario\":\"Messaging\",\"flowProfileId\":\"puuw\",\"status\":\"Obsolete\",\"description\":\"tvuqjctzenkeifzz\"},{\"pipeline\":\"mkdasv\",\"name\":\"lyhb\",\"replicationScenario\":\"Complex\",\"flowProfileId\":\"udchxgsrboldforo\",\"status\":\"Obsolete\",\"description\":\"jlvizbfhfovva\"}]}")
+            "{\"value\":[{\"pipeline\":\"c\",\"name\":\"fkyjpmspbpssdfpp\",\"replicationScenario\":\"Messaging\",\"flowProfileId\":\"gt\",\"status\":\"Enabled\",\"description\":\"yujtvczkcnyx\"},{\"pipeline\":\"x\",\"name\":\"unjdx\",\"replicationScenario\":\"Files\",\"flowProfileId\":\"lnkvxlx\",\"status\":\"Enabled\",\"description\":\"glqivbgkcv\"},{\"pipeline\":\"hpzvuqdflvoniyp\",\"name\":\"pubcpzgpxtivhjk\",\"replicationScenario\":\"API\",\"flowProfileId\":\"dibgqjxgpnrhgov\",\"status\":\"Enabled\",\"description\":\"pikqmh\"},{\"pipeline\":\"ao\",\"name\":\"jrmzvupor\",\"replicationScenario\":\"Messaging\",\"flowProfileId\":\"dfuyd\",\"status\":\"Disabled\",\"description\":\"kfvxcnq\"}]}")
             .toObject(FlowProfilesListResultInner.class);
-        Assertions.assertEquals("ncvjts", model.value().get(0).pipeline());
-        Assertions.assertEquals("cof", model.value().get(0).name());
-        Assertions.assertEquals(DataClassType.STREAM, model.value().get(0).replicationScenario());
-        Assertions.assertEquals("e", model.value().get(0).flowProfileId());
+        Assertions.assertEquals("c", model.value().get(0).pipeline());
+        Assertions.assertEquals("fkyjpmspbpssdfpp", model.value().get(0).name());
+        Assertions.assertEquals(DataClassType.MESSAGING, model.value().get(0).replicationScenario());
+        Assertions.assertEquals("gt", model.value().get(0).flowProfileId());
         Assertions.assertEquals(FlowProfileStatus.ENABLED, model.value().get(0).status());
-        Assertions.assertEquals("dhgbjkvre", model.value().get(0).description());
+        Assertions.assertEquals("yujtvczkcnyx", model.value().get(0).description());
     }
 }

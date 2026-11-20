@@ -16,7 +16,7 @@ import com.azure.resourcemanager.datatransfer.models.SelectedResource;
  */
 public final class FlowsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/createOrUpdateFlow.json
+     * x-ms-original-file: 2026-06-29-preview/createOrUpdateFlow.json
      */
     /**
      * Sample code: Creates or updates the flow resource.

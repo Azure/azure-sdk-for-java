@@ -11,7 +11,7 @@ import com.azure.resourcemanager.datatransfer.models.Schema;
  */
 public final class PipelinesListSchemasListSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/listSchemas.json
+     * x-ms-original-file: 2026-06-29-preview/listSchemas.json
      */
     /**
      * Sample code: Lists schemas for a pipeline.

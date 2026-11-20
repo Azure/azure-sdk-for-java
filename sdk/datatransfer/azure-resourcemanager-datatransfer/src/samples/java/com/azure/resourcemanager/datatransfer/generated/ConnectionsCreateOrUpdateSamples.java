@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class ConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/createOrUpdateConnection.json
+     * x-ms-original-file: 2026-06-29-preview/createOrUpdateConnection.json
      */
     /**
      * Sample code: Creates or updates the connection resource.
@@ -31,16 +31,16 @@ public final class ConnectionsCreateOrUpdateSamples {
             .withProperties(new ConnectionProperties().withPipeline("testdc")
                 .withJustification("justification")
                 .withFlowProfileList(Arrays.asList(
-                    new FlowProfileMetadata().withPipeline("pipelinea")
+                    new FlowProfileMetadata().withPipeline("testPipeline")
                         .withName("flowProfileNamea")
                         .withReplicationScenario(DataClassType.FILES)
                         .withFlowProfileId("25f2c41a-6e29-4c40-a033-b4de81d4a681")
                         .withStatus(FlowProfileStatus.ENABLED)
                         .withDescription("Testing 123"),
-                    new FlowProfileMetadata().withPipeline("pipelinea")
+                    new FlowProfileMetadata().withPipeline("testPipeline")
                         .withName("flowProfileNameb")
                         .withReplicationScenario(DataClassType.FILES)
-                        .withFlowProfileId("66b00598-cabb-4a85-b3d8-88905ac899b8")
+                        .withFlowProfileId("25f2c41a-6e29-4c40-a033-b4de81d4a681")
                         .withStatus(FlowProfileStatus.ENABLED)
                         .withDescription("Testing 123")))
                 .withRequirementId("id"))

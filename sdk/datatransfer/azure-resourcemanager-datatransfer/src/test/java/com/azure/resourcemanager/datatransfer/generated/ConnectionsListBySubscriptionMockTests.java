@@ -29,7 +29,7 @@ public final class ConnectionsListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"pipeline\":\"saeuzanhsfnhsenw\",\"direction\":\"Receive\",\"justification\":\"fngq\",\"status\":\"Rejected\",\"forceDisabledStatus\":[\"PipelineForceDisabled\",\"FlowTypeForceDisabled\",\"ConnectionForceDisabled\",\"ConnectionForceDisabled\"],\"statusReason\":\"jj\",\"linkStatus\":\"Unlinked\",\"linkedConnectionId\":\"eqrkuorhtss\",\"flowTypes\":[\"Standard\",\"Data\",\"Unknown\"],\"flowProfileList\":[{\"pipeline\":\"azcvjyt\",\"name\":\"qswbqerzwx\",\"replicationScenario\":\"SoftwareArtifacts\",\"flowProfileId\":\"txtd\",\"status\":\"Disabled\",\"description\":\"kvlbpktgdstyoua\"},{\"pipeline\":\"bewreswmowegmmut\",\"name\":\"yxey\",\"replicationScenario\":\"Messaging\",\"flowProfileId\":\"qigijiitnspxlzde\",\"status\":\"Obsolete\",\"description\":\"grijwaiufanrayb\"},{\"pipeline\":\"ueqfrojsyd\",\"name\":\"rhydkygywez\",\"replicationScenario\":\"Messaging\",\"flowProfileId\":\"iecafygzmxi\",\"status\":\"Obsolete\",\"description\":\"vdsmaklixq\"},{\"pipeline\":\"ah\",\"name\":\"hxalybxawo\",\"replicationScenario\":\"SoftwareArtifacts\",\"flowProfileId\":\"podtblx\",\"status\":\"Enabled\",\"description\":\"kwjdjodqhy\"}],\"requirementId\":\"ncn\",\"remoteSubscriptionId\":\"mehllizhceu\",\"approver\":\"qodkadppyibngql\",\"pin\":\"ywrxw\",\"dateSubmitted\":\"2021-10-19T14:36:18Z\",\"primaryContact\":\"luvvad\",\"secondaryContacts\":[\"snuyemlowuowhl\"],\"provisioningState\":\"Failed\",\"policies\":[\"rmouvb\"],\"schemas\":[{\"id\":\"kzkltrfowt\",\"connectionId\":\"rfmvlihcvjdrqcrj\",\"status\":\"New\",\"name\":\"tuk\",\"content\":\"dxlwyojbfqz\",\"direction\":\"Send\",\"schemaUri\":\"jyixhaf\",\"schemaType\":\"Xsd\"}],\"schemaUris\":[\"mbjrou\",\"zznval\"],\"apiHostname\":\"rhuzgfxonjtpu\"},\"identity\":{\"principalId\":\"ywpvt\",\"tenantId\":\"tzbpdbollgry\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"mwiuawvcm\":{\"principalId\":\"sigrowsocnequygd\",\"clientId\":\"oqgrmtqjkqevadr\"},\"am\":{\"principalId\":\"kxiidisczskoswo\",\"clientId\":\"qazu\"}}},\"location\":\"krrcoiisbamnpp\",\"tags\":{\"zxuizhyhnepkpe\":\"kuztdsbezaxyfu\",\"xdazv\":\"iarxqiubxdukec\",\"dblnsntrp\":\"hctmmkosz\"},\"id\":\"aqkiofkb\",\"name\":\"fmhklbnld\",\"type\":\"vcb\"}]}";
+            = "{\"value\":[{\"properties\":{\"pipeline\":\"vume\",\"direction\":\"Send\",\"justification\":\"ibnzp\",\"status\":\"Accepted\",\"forceDisabledStatus\":[\"FlowProfileForceDisabled\",\"PipelineForceDisabled\",\"FlowTypeForceDisabled\",\"FlowProfileForceDisabled\"],\"statusReason\":\"qirccj\",\"linkStatus\":\"Unlinked\",\"linkedConnectionId\":\"cgxvrpj\",\"flowTypes\":[\"BasicFiles\",\"MissionOpaqueXML\"],\"flowProfileList\":[{\"pipeline\":\"ac\",\"name\":\"u\",\"replicationScenario\":\"API\",\"flowProfileId\":\"ttepdjxqe\",\"status\":\"Enabled\",\"description\":\"oy\"}],\"requirementId\":\"iylpck\",\"remoteSubscriptionId\":\"wsedvesk\",\"approver\":\"egqphrgfnzhctm\",\"pin\":\"sghpbcbcpzarpze\",\"dateSubmitted\":\"2021-03-02T16:09:54Z\",\"primaryContact\":\"ldtzmpypefcp\",\"secondaryContacts\":[\"hnuqndaizu\",\"fkhuytu\"],\"provisioningState\":\"Succeeded\",\"policies\":[\"tvtv\",\"gw\",\"iukvzwydwt\",\"haokgkskjiv\"],\"schemas\":[{\"id\":\"ajq\",\"connectionId\":\"kpeexpgeumilh\",\"status\":\"New\",\"name\":\"rdexyio\",\"content\":\"fninbdbzs\",\"direction\":\"Receive\",\"schemaUri\":\"qrs\",\"schemaType\":\"Zip\"},{\"id\":\"bprt\",\"connectionId\":\"av\",\"status\":\"Approved\",\"name\":\"yksivmfogdrtbfc\",\"content\":\"rftsjcwjjxs\",\"direction\":\"Send\",\"schemaUri\":\"wvif\",\"schemaType\":\"Zip\"}],\"schemaUris\":[\"if\",\"ocjxw\",\"loozrvt\"],\"apiHostname\":\"cmufunlcpxxv\"},\"identity\":{\"principalId\":\"eyngjg\",\"tenantId\":\"quv\",\"type\":\"None\",\"userAssignedIdentities\":{\"q\":{\"principalId\":\"pmcrdcuelj\",\"clientId\":\"ahxm\"}}},\"location\":\"arvsx\",\"tags\":{\"btl\":\"glcjkayspthzod\",\"kfmkmfdjxyxgbk\":\"jtgblios\",\"l\":\"qvjcteoe\",\"xv\":\"slskkz\"},\"id\":\"nzdpvoco\",\"name\":\"hpcnabxzfsn\",\"type\":\"gyte\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -40,39 +40,39 @@ public final class ConnectionsListBySubscriptionMockTests {
 
         PagedIterable<Connection> response = manager.connections().listBySubscription(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("krrcoiisbamnpp", response.iterator().next().location());
-        Assertions.assertEquals("kuztdsbezaxyfu", response.iterator().next().tags().get("zxuizhyhnepkpe"));
-        Assertions.assertEquals("saeuzanhsfnhsenw", response.iterator().next().properties().pipeline());
-        Assertions.assertEquals(Direction.RECEIVE, response.iterator().next().properties().direction());
-        Assertions.assertEquals("fngq", response.iterator().next().properties().justification());
-        Assertions.assertEquals(FlowType.STANDARD, response.iterator().next().properties().flowTypes().get(0));
-        Assertions.assertEquals("azcvjyt", response.iterator().next().properties().flowProfileList().get(0).pipeline());
-        Assertions.assertEquals("qswbqerzwx", response.iterator().next().properties().flowProfileList().get(0).name());
-        Assertions.assertEquals(DataClassType.SOFTWARE_ARTIFACTS,
+        Assertions.assertEquals("arvsx", response.iterator().next().location());
+        Assertions.assertEquals("glcjkayspthzod", response.iterator().next().tags().get("btl"));
+        Assertions.assertEquals("vume", response.iterator().next().properties().pipeline());
+        Assertions.assertEquals(Direction.SEND, response.iterator().next().properties().direction());
+        Assertions.assertEquals("ibnzp", response.iterator().next().properties().justification());
+        Assertions.assertEquals(FlowType.BASIC_FILES, response.iterator().next().properties().flowTypes().get(0));
+        Assertions.assertEquals("ac", response.iterator().next().properties().flowProfileList().get(0).pipeline());
+        Assertions.assertEquals("u", response.iterator().next().properties().flowProfileList().get(0).name());
+        Assertions.assertEquals(DataClassType.API,
             response.iterator().next().properties().flowProfileList().get(0).replicationScenario());
-        Assertions.assertEquals("txtd",
+        Assertions.assertEquals("ttepdjxqe",
             response.iterator().next().properties().flowProfileList().get(0).flowProfileId());
-        Assertions.assertEquals(FlowProfileStatus.DISABLED,
+        Assertions.assertEquals(FlowProfileStatus.ENABLED,
             response.iterator().next().properties().flowProfileList().get(0).status());
-        Assertions.assertEquals("kvlbpktgdstyoua",
-            response.iterator().next().properties().flowProfileList().get(0).description());
-        Assertions.assertEquals("ncn", response.iterator().next().properties().requirementId());
-        Assertions.assertEquals("mehllizhceu", response.iterator().next().properties().remoteSubscriptionId());
-        Assertions.assertEquals("ywrxw", response.iterator().next().properties().pin());
-        Assertions.assertEquals("luvvad", response.iterator().next().properties().primaryContact());
-        Assertions.assertEquals("snuyemlowuowhl", response.iterator().next().properties().secondaryContacts().get(0));
-        Assertions.assertEquals("rmouvb", response.iterator().next().properties().policies().get(0));
-        Assertions.assertEquals("kzkltrfowt", response.iterator().next().properties().schemas().get(0).id());
-        Assertions.assertEquals("rfmvlihcvjdrqcrj",
+        Assertions.assertEquals("oy", response.iterator().next().properties().flowProfileList().get(0).description());
+        Assertions.assertEquals("iylpck", response.iterator().next().properties().requirementId());
+        Assertions.assertEquals("wsedvesk", response.iterator().next().properties().remoteSubscriptionId());
+        Assertions.assertEquals("sghpbcbcpzarpze", response.iterator().next().properties().pin());
+        Assertions.assertEquals("ldtzmpypefcp", response.iterator().next().properties().primaryContact());
+        Assertions.assertEquals("hnuqndaizu", response.iterator().next().properties().secondaryContacts().get(0));
+        Assertions.assertEquals("tvtv", response.iterator().next().properties().policies().get(0));
+        Assertions.assertEquals("ajq", response.iterator().next().properties().schemas().get(0).id());
+        Assertions.assertEquals("kpeexpgeumilh",
             response.iterator().next().properties().schemas().get(0).connectionId());
         Assertions.assertEquals(SchemaStatus.NEW, response.iterator().next().properties().schemas().get(0).status());
-        Assertions.assertEquals("tuk", response.iterator().next().properties().schemas().get(0).name());
-        Assertions.assertEquals("dxlwyojbfqz", response.iterator().next().properties().schemas().get(0).content());
-        Assertions.assertEquals(Direction.SEND, response.iterator().next().properties().schemas().get(0).direction());
-        Assertions.assertEquals("jyixhaf", response.iterator().next().properties().schemas().get(0).schemaUri());
-        Assertions.assertEquals(SchemaType.XSD, response.iterator().next().properties().schemas().get(0).schemaType());
-        Assertions.assertEquals("mbjrou", response.iterator().next().properties().schemaUris().get(0));
-        Assertions.assertEquals("rhuzgfxonjtpu", response.iterator().next().properties().apiHostname());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("rdexyio", response.iterator().next().properties().schemas().get(0).name());
+        Assertions.assertEquals("fninbdbzs", response.iterator().next().properties().schemas().get(0).content());
+        Assertions.assertEquals(Direction.RECEIVE,
+            response.iterator().next().properties().schemas().get(0).direction());
+        Assertions.assertEquals("qrs", response.iterator().next().properties().schemas().get(0).schemaUri());
+        Assertions.assertEquals(SchemaType.ZIP, response.iterator().next().properties().schemas().get(0).schemaType());
+        Assertions.assertEquals("if", response.iterator().next().properties().schemaUris().get(0));
+        Assertions.assertEquals("cmufunlcpxxv", response.iterator().next().properties().apiHostname());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
     }
 }

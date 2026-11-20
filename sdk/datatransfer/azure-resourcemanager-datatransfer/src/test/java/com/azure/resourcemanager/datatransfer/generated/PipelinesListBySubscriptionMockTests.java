@@ -26,7 +26,7 @@ public final class PipelinesListBySubscriptionMockTests {
     @Test
     public void testListBySubscription() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"remoteCloud\":\"hmnxhkxjqi\",\"displayName\":\"rweooxffifhx\",\"connections\":[{\"id\":\"newmozqvb\",\"name\":\"qmamhsycxhxzga\",\"type\":\"taboidvmf\",\"location\":\"ppu\",\"etag\":\"w\",\"properties\":{\"internalMetadata\":{},\"gb\":\"\\\"datakmtdher\\\"\"},\"obkauxofsh\":\"\\\"datauahokq\\\"\",\"whslwkoj\":\"\\\"dataphwpnulaiywzej\\\"\",\"rpqaf\":\"\\\"datallndnpd\\\"\"},{\"id\":\"fugsnnfhyetefy\",\"name\":\"coc\",\"type\":\"jgtixr\",\"location\":\"zuyt\",\"etag\":\"mlmuowol\",\"properties\":{\"internalMetadata\":{},\"ons\":\"\\\"datap\\\"\",\"innixjawrtmjfj\":\"\\\"dataonwpnga\\\"\",\"vnekhenlusfnrdtj\":\"\\\"datayccxlzhcox\\\"\"},\"cq\":\"\\\"datar\\\"\",\"uslvyjtcvuwkasi\":\"\\\"datajvidttge\\\"\"},{\"id\":\"iesfuug\",\"name\":\"uqfecj\",\"type\":\"ygtuhx\",\"location\":\"cbuewmrswnjlxuz\",\"etag\":\"wpusxjbaqehg\",\"properties\":{\"internalMetadata\":{},\"wfepbnwgfmx\":\"\\\"dataqatucoigebxnc\\\"\",\"dlfgtdysnaq\":\"\\\"datagcgbjb\\\"\",\"ctqhamzjrwdk\":\"\\\"dataflq\\\"\",\"xdfzantkw\":\"\\\"datazeqyjleziun\\\"\"},\"ac\":\"\\\"datayamlbnse\\\"\",\"m\":\"\\\"datajvpilguooqja\\\"\",\"hrtdtpdelq\":\"\\\"dataitgueiookjbs\\\"\",\"vcjkgd\":\"\\\"datacslmotoebnfxo\\\"\"}],\"subscribers\":[{\"email\":\"f\",\"notifications\":5876258781351504960},{\"email\":\"ab\",\"notifications\":8316099328304132304},{\"email\":\"mvcopexcmjurbuhh\",\"notifications\":8606633803296294188},{\"email\":\"tqsrogtuwkff\",\"notifications\":7729705463242282877}],\"provisioningState\":\"Canceled\",\"policies\":[\"dfvclglxnfu\"],\"flowTypes\":[\"MicrosoftInternal\"],\"disabledFlowTypes\":[\"Mission\",\"BasicFiles\",\"Mission\",\"DiskImages\"],\"disabledDataClass\":[\"Table\",\"Video\",\"Blob\",\"ApiSDK\"],\"quarantineDownloadStorageAccount\":\"ansharujtjiqxfz\",\"quarantineDownloadStorageContainer\":\"qttv\",\"status\":\"Disabled\"},\"identity\":{\"principalId\":\"j\",\"tenantId\":\"nuygbqeqqekewvnq\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"jqi\":{\"principalId\":\"uaucmf\",\"clientId\":\"wnlaxpu\"},\"hlwntsjgq\":{\"principalId\":\"zvvitacgxmfcs\",\"clientId\":\"rxhtvso\"}}},\"location\":\"xypruuuy\",\"tags\":{\"oyuelyetn\":\"hrszi\",\"qyggagfl\":\"nb\"},\"id\":\"lgmtrwahzjmucf\",\"name\":\"byrplrohkpig\",\"type\":\"fusuckzmkwklsno\"}]}";
+            = "{\"value\":[{\"properties\":{\"remoteCloud\":\"nssxlgh\",\"displayName\":\"egjlgvvpa\",\"connections\":[{\"id\":\"sgb\",\"name\":\"antuygdhgaqipirp\",\"type\":\"rqofulopmjnlexwh\",\"location\":\"jpib\",\"etag\":\"phuuuerctato\",\"properties\":{\"internalMetadata\":{},\"rduczkgofxyfs\":\"\\\"databrlc\\\"\",\"crrpcjttbstvje\":\"\\\"datauc\\\"\",\"mlghktuidvrmazlp\":\"\\\"dataqnrmvvfko\\\"\",\"wvqsgny\":\"\\\"datawwexymzvlazipbh\\\"\"},\"rpmey\":\"\\\"dataziven\\\"\",\"jp\":\"\\\"datavpkpatlb\\\"\",\"olmk\":\"\\\"datagsksrfhf\\\"\",\"ommpvfqaw\":\"\\\"databnxwc\\\"\"},{\"id\":\"fgbrtt\",\"name\":\"aclkiexhajlfnt\",\"type\":\"qfyuttd\",\"location\":\"gbpvnwswmtxkyct\",\"etag\":\"gzwx\",\"properties\":{\"internalMetadata\":{},\"gzyvnee\":\"\\\"dataog\\\"\",\"ffhzbkrkjjjavfq\":\"\\\"dataaifghtmoqqt\\\"\",\"wdogiyetesyp\":\"\\\"datavhnqo\\\"\"},\"etnjuhpsprkz\":\"\\\"databztjhqtfbovnynkb\\\"\",\"cxnafbwqrooh\":\"\\\"dataaupia\\\"\",\"mghihp\":\"\\\"datauovmaonurjt\\\"\"}],\"subscribers\":[{\"email\":\"slclblyjxltbsju\",\"notifications\":8870278689200078350},{\"email\":\"xigc\",\"notifications\":9050305746042718833},{\"email\":\"upbezqccydrt\",\"notifications\":3571783690197600648},{\"email\":\"qkkyihztgeqmg\",\"notifications\":4938544911547531409}],\"provisioningState\":\"Accepted\",\"policies\":[\"chillcecf\",\"huwaoaguhic\",\"llizs\"],\"flowTypes\":[\"DiskImages\",\"Mission\",\"Messaging\"],\"disabledFlowTypes\":[\"Data\",\"DiskImages\"],\"disabledDataClass\":[\"EventHub\"],\"quarantineDownloadStorageAccount\":\"qejpmvssehaepwa\",\"quarantineDownloadStorageContainer\":\"xtczhupeuknijd\",\"status\":\"Disabled\"},\"identity\":{\"principalId\":\"pydjfboc\",\"tenantId\":\"hhulrtywikdm\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"dkfnozoeoqbvj\":{\"principalId\":\"flgbhgau\",\"clientId\":\"dixmxufrsryjq\"},\"mqkyojwyvfkmbts\":{\"principalId\":\"efgwbmqjc\",\"clientId\":\"tasfaymxbulpzeal\"}}},\"location\":\"hxsgxj\",\"tags\":{\"wsdrnpxqwodif\":\"zrrscub\",\"jogjonmc\":\"jxcjrmmuabwib\",\"oyzbamwineofvf\":\"e\",\"lz\":\"akpoldtvevbo\"},\"id\":\"zjknyuxg\",\"name\":\"ttxpnrupza\",\"type\":\"mrdixtreki\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,23 +37,25 @@ public final class PipelinesListBySubscriptionMockTests {
 
         PagedIterable<Pipeline> response = manager.pipelines().listBySubscription(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xypruuuy", response.iterator().next().location());
-        Assertions.assertEquals("hrszi", response.iterator().next().tags().get("oyuelyetn"));
-        Assertions.assertEquals("hmnxhkxjqi", response.iterator().next().properties().remoteCloud());
-        Assertions.assertEquals("rweooxffifhx", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("f", response.iterator().next().properties().subscribers().get(0).email());
-        Assertions.assertEquals(5876258781351504960L,
+        Assertions.assertEquals("hxsgxj", response.iterator().next().location());
+        Assertions.assertEquals("zrrscub", response.iterator().next().tags().get("wsdrnpxqwodif"));
+        Assertions.assertEquals("nssxlgh", response.iterator().next().properties().remoteCloud());
+        Assertions.assertEquals("egjlgvvpa", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("slclblyjxltbsju",
+            response.iterator().next().properties().subscribers().get(0).email());
+        Assertions.assertEquals(8870278689200078350L,
             response.iterator().next().properties().subscribers().get(0).notifications());
-        Assertions.assertEquals("dfvclglxnfu", response.iterator().next().properties().policies().get(0));
-        Assertions.assertEquals(FlowType.MICROSOFT_INTERNAL,
-            response.iterator().next().properties().flowTypes().get(0));
-        Assertions.assertEquals(FlowType.MISSION, response.iterator().next().properties().disabledFlowTypes().get(0));
-        Assertions.assertEquals(DataClass.TABLE, response.iterator().next().properties().disabledDataClass().get(0));
-        Assertions.assertEquals("ansharujtjiqxfz",
+        Assertions.assertEquals("chillcecf", response.iterator().next().properties().policies().get(0));
+        Assertions.assertEquals(FlowType.DISK_IMAGES, response.iterator().next().properties().flowTypes().get(0));
+        Assertions.assertEquals(FlowType.DATA, response.iterator().next().properties().disabledFlowTypes().get(0));
+        Assertions.assertEquals(DataClass.EVENT_HUB,
+            response.iterator().next().properties().disabledDataClass().get(0));
+        Assertions.assertEquals("qejpmvssehaepwa",
             response.iterator().next().properties().quarantineDownloadStorageAccount());
-        Assertions.assertEquals("qttv", response.iterator().next().properties().quarantineDownloadStorageContainer());
+        Assertions.assertEquals("xtczhupeuknijd",
+            response.iterator().next().properties().quarantineDownloadStorageContainer());
         Assertions.assertEquals(PipelineStatus.DISABLED, response.iterator().next().properties().status());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.iterator().next().identity().type());
     }
 }

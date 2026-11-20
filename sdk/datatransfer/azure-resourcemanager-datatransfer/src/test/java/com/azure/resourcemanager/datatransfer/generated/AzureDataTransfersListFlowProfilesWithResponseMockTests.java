@@ -24,7 +24,7 @@ public final class AzureDataTransfersListFlowProfilesWithResponseMockTests {
     @Test
     public void testListFlowProfilesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"pipeline\":\"zlrqhbjnqogdx\",\"name\":\"bsfp\",\"replicationScenario\":\"Stream\",\"flowProfileId\":\"x\",\"status\":\"Enabled\",\"description\":\"lflec\"},{\"pipeline\":\"minxojjluxxdh\",\"name\":\"lzzdz\",\"replicationScenario\":\"Complex\",\"flowProfileId\":\"jmueza\",\"status\":\"Obsolete\",\"description\":\"vribqlotokht\"}]}";
+            = "{\"value\":[{\"pipeline\":\"necova\",\"name\":\"zkheubanlxunpqcc\",\"replicationScenario\":\"Messaging\",\"flowProfileId\":\"iawzlzklaslgac\",\"status\":\"Obsolete\",\"description\":\"uxlrarwpe\"},{\"pipeline\":\"saudoejtighsx\",\"name\":\"pytn\",\"replicationScenario\":\"Stream\",\"flowProfileId\":\"bala\",\"status\":\"Disabled\",\"description\":\"vuuwxhmeh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class AzureDataTransfersListFlowProfilesWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FlowProfilesListResult response = manager.azureDataTransfers()
-            .listFlowProfilesWithResponse(new ListFlowProfilesRequest().withPipeline("cvuq"),
+            .listFlowProfilesWithResponse(new ListFlowProfilesRequest().withPipeline("dhlltqstqkqsyg"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zlrqhbjnqogdx", response.value().get(0).pipeline());
-        Assertions.assertEquals("bsfp", response.value().get(0).name());
-        Assertions.assertEquals(DataClassType.STREAM, response.value().get(0).replicationScenario());
-        Assertions.assertEquals("x", response.value().get(0).flowProfileId());
-        Assertions.assertEquals(FlowProfileStatus.ENABLED, response.value().get(0).status());
-        Assertions.assertEquals("lflec", response.value().get(0).description());
+        Assertions.assertEquals("necova", response.value().get(0).pipeline());
+        Assertions.assertEquals("zkheubanlxunpqcc", response.value().get(0).name());
+        Assertions.assertEquals(DataClassType.MESSAGING, response.value().get(0).replicationScenario());
+        Assertions.assertEquals("iawzlzklaslgac", response.value().get(0).flowProfileId());
+        Assertions.assertEquals(FlowProfileStatus.OBSOLETE, response.value().get(0).status());
+        Assertions.assertEquals("uxlrarwpe", response.value().get(0).description());
     }
 }

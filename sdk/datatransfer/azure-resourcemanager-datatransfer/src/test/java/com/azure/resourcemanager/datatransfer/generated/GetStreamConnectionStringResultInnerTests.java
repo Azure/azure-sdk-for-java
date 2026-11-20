@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GetStreamConnectionStringResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetStreamConnectionStringResultInner model = BinaryData.fromString("{\"connectionString\":\"yxeb\"}")
+        GetStreamConnectionStringResultInner model = BinaryData.fromString("{\"connectionString\":\"gegydcwboxjum\"}")
             .toObject(GetStreamConnectionStringResultInner.class);
-        Assertions.assertEquals("yxeb", model.connectionString());
+        Assertions.assertEquals("gegydcwboxjum", model.connectionString());
     }
 }

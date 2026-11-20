@@ -30,14 +30,18 @@ import com.azure.resourcemanager.datatransfer.implementation.ConnectionsImpl;
 import com.azure.resourcemanager.datatransfer.implementation.DataTransferManagementClientBuilder;
 import com.azure.resourcemanager.datatransfer.implementation.FlowProfilesImpl;
 import com.azure.resourcemanager.datatransfer.implementation.FlowsImpl;
+import com.azure.resourcemanager.datatransfer.implementation.MessagingTransferFlowsImpl;
 import com.azure.resourcemanager.datatransfer.implementation.OperationsImpl;
 import com.azure.resourcemanager.datatransfer.implementation.PipelinesImpl;
+import com.azure.resourcemanager.datatransfer.implementation.StorageTransferFlowsImpl;
 import com.azure.resourcemanager.datatransfer.models.AzureDataTransfers;
 import com.azure.resourcemanager.datatransfer.models.Connections;
 import com.azure.resourcemanager.datatransfer.models.FlowProfiles;
 import com.azure.resourcemanager.datatransfer.models.Flows;
+import com.azure.resourcemanager.datatransfer.models.MessagingTransferFlows;
 import com.azure.resourcemanager.datatransfer.models.Operations;
 import com.azure.resourcemanager.datatransfer.models.Pipelines;
+import com.azure.resourcemanager.datatransfer.models.StorageTransferFlows;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -59,6 +63,10 @@ public final class DataTransferManager {
     private Connections connections;
 
     private Flows flows;
+
+    private StorageTransferFlows storageTransferFlows;
+
+    private MessagingTransferFlows messagingTransferFlows;
 
     private AzureDataTransfers azureDataTransfers;
 
@@ -335,6 +343,31 @@ public final class DataTransferManager {
             this.flows = new FlowsImpl(clientObject.getFlows(), this);
         }
         return flows;
+    }
+
+    /**
+     * Gets the resource collection API of StorageTransferFlows. It manages StorageTransferFlow.
+     * 
+     * @return Resource collection API of StorageTransferFlows.
+     */
+    public StorageTransferFlows storageTransferFlows() {
+        if (this.storageTransferFlows == null) {
+            this.storageTransferFlows = new StorageTransferFlowsImpl(clientObject.getStorageTransferFlows(), this);
+        }
+        return storageTransferFlows;
+    }
+
+    /**
+     * Gets the resource collection API of MessagingTransferFlows. It manages MessagingTransferFlow.
+     * 
+     * @return Resource collection API of MessagingTransferFlows.
+     */
+    public MessagingTransferFlows messagingTransferFlows() {
+        if (this.messagingTransferFlows == null) {
+            this.messagingTransferFlows
+                = new MessagingTransferFlowsImpl(clientObject.getMessagingTransferFlows(), this);
+        }
+        return messagingTransferFlows;
     }
 
     /**

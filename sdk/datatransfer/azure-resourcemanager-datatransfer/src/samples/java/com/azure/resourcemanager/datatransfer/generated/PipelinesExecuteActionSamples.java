@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class PipelinesExecuteActionSamples {
     /*
-     * x-ms-original-file: 2026-02-06-preview/executeAction.json
+     * x-ms-original-file: 2026-06-29-preview/executeAction.json
      */
     /**
      * Sample code: Executes action for a pipeline.

@@ -12,7 +12,7 @@ public final class GetDestinationEndpointsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetDestinationEndpointsResultInner model
-            = BinaryData.fromString("{\"endpoints\":[\"igpibud\"]}").toObject(GetDestinationEndpointsResultInner.class);
-        Assertions.assertEquals("igpibud", model.endpoints().get(0));
+            = BinaryData.fromString("{\"endpoints\":[\"bnjj\"]}").toObject(GetDestinationEndpointsResultInner.class);
+        Assertions.assertEquals("bnjj", model.endpoints().get(0));
     }
 }

@@ -13,24 +13,24 @@ public final class FlowsPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FlowsPatchProperties model = BinaryData.fromString(
-            "{\"streamProtocol\":\"SRT\",\"passphrase\":\"athwt\",\"streamId\":\"lbaemwmdxmeb\",\"streamLatency\":34566941819509688}")
+            "{\"streamProtocol\":\"RTP\",\"passphrase\":\"exzsrz\",\"streamId\":\"epqtybb\",\"streamLatency\":3794930751170824614}")
             .toObject(FlowsPatchProperties.class);
-        Assertions.assertEquals(StreamProtocol.SRT, model.streamProtocol());
-        Assertions.assertEquals("athwt", model.passphrase());
-        Assertions.assertEquals("lbaemwmdxmeb", model.streamId());
-        Assertions.assertEquals(34566941819509688L, model.streamLatency());
+        Assertions.assertEquals(StreamProtocol.RTP, model.streamProtocol());
+        Assertions.assertEquals("exzsrz", model.passphrase());
+        Assertions.assertEquals("epqtybb", model.streamId());
+        Assertions.assertEquals(3794930751170824614L, model.streamLatency());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FlowsPatchProperties model = new FlowsPatchProperties().withStreamProtocol(StreamProtocol.SRT)
-            .withPassphrase("athwt")
-            .withStreamId("lbaemwmdxmeb")
-            .withStreamLatency(34566941819509688L);
+        FlowsPatchProperties model = new FlowsPatchProperties().withStreamProtocol(StreamProtocol.RTP)
+            .withPassphrase("exzsrz")
+            .withStreamId("epqtybb")
+            .withStreamLatency(3794930751170824614L);
         model = BinaryData.fromObject(model).toObject(FlowsPatchProperties.class);
-        Assertions.assertEquals(StreamProtocol.SRT, model.streamProtocol());
-        Assertions.assertEquals("athwt", model.passphrase());
-        Assertions.assertEquals("lbaemwmdxmeb", model.streamId());
-        Assertions.assertEquals(34566941819509688L, model.streamLatency());
+        Assertions.assertEquals(StreamProtocol.RTP, model.streamProtocol());
+        Assertions.assertEquals("exzsrz", model.passphrase());
+        Assertions.assertEquals("epqtybb", model.streamId());
+        Assertions.assertEquals(3794930751170824614L, model.streamLatency());
     }
 }
