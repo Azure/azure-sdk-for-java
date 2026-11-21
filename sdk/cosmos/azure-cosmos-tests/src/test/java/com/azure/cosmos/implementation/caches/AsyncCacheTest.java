@@ -66,4 +66,22 @@ public class AsyncCacheTest {
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(20);
         assertThat(cache.getAsync(2, -1, () -> refreshFunc.apply(2)).block()).isEqualTo(5);
     }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void removeAsyncReturnsEmptyForMissingKey() {
+        AsyncCache<Integer, Integer> cache = new AsyncCache<>();
+
+        // ConcurrentHashMap.remove returns null for a missing key - this must not throw.
+        assertThat(cache.removeAsync(1).block()).isNull();
+        assertThat(cache.getEntries()).isEmpty();
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void removeAsyncReturnsRemovedValue() {
+        AsyncCache<Integer, Integer> cache = new AsyncCache<>();
+        cache.set(1, 10);
+
+        assertThat(cache.removeAsync(1).block()).isEqualTo(10);
+        assertThat(cache.removeAsync(1).block()).isNull();
+    }
 }

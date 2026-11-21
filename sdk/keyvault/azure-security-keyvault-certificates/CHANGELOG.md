@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a challenge resource verification error message that gave invalid instructions for disabling the check. The message now tells users to call the no-argument `disableChallengeResourceVerification()` method on their client builder.
+
 ### Other Changes
 
 ## 4.11.1 (2026-11-02)
