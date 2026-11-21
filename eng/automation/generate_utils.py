@@ -3,6 +3,7 @@ import os
 import re
 import sys
 import json
+import glob
 import yaml
 import shutil
 import logging
@@ -89,6 +90,17 @@ def compile_arm_package(sdk_root: str, module: str) -> bool:
         )
         return False
     return True
+
+
+def get_api_review_artifacts(sdk_root: str, sdk_folder: str) -> List[str]:
+    package_directory = os.path.abspath(os.path.join(sdk_root, sdk_folder))
+    artifacts = []
+    for filename in ("api.md", "api.metadata.yml"):
+        artifact_path = os.path.join(package_directory, filename)
+        if not os.path.isfile(artifact_path):
+            raise RuntimeError(f"API review file was not produced: {artifact_path}.")
+        artifacts.append(os.path.relpath(artifact_path, sdk_root).replace(os.sep, "/"))
+    return artifacts
 
 
 def generate_changelog_and_breaking_change(

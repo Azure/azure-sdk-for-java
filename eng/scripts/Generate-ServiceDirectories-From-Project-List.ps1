@@ -77,6 +77,8 @@ foreach($file in Get-ChildItem -Path $SourcesDirectory -Filter pom*.xml -Recurse
 $sparseCheckoutDirectories = @()
 $serviceDirectories = @()
 $sparseCheckoutDirectories += "/sdk/parents"
+$sparseCheckoutDirectories += "/sdk/tools/apiview-java-processor"
+$sparseCheckoutDirectories += "/.vscode"
 # in place until we can come up with a better path to honoring ExcludePaths
 # in archetype-sdk-client. Given that the validation for these is triggered for outside paths, but `analyze` still needs to
 # process those folders, we'll just include them in the sparse checkout and service directory lists for now.

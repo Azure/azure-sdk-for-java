@@ -185,6 +185,120 @@ Describe 'Native sparse checkout expansion' -Tag 'UnitTest' {
         Test-Path $script:ChangesPath | Should -BeFalse
     }
 
+    It 'generates API Markdown after a <Flow> sparse checkout' -TestCases @(
+        @{ Flow = 'service' }
+        @{ Flow = 'from-source' }
+    ) {
+        param($Flow)
+
+        foreach ($pom in Get-ChildItem -LiteralPath $repositoryPath -Filter 'pom.xml' -Recurse) {
+            $artifact = if ($pom.Directory.FullName -eq $repositoryPath) { 'root' } else { $pom.Directory.Name }
+            Set-Content -LiteralPath $pom.FullName -Value @"
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <groupId>com.azure</groupId><artifactId>$artifact</artifactId><version>1.0.0</version>
+</project>
+"@
+        }
+        $package = Join-Path $repositoryPath 'sdk/selected/azure-selected'
+        $processor = Join-Path $repositoryPath 'sdk/tools/apiview-java-processor'
+        $fixtureFiles = @{
+            'sdk/selected/azure-selected/pom.xml' = @'
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <parent><groupId>com.azure</groupId><artifactId>azure-client-sdk-parent</artifactId><version>1.0.0</version></parent>
+  <groupId>com.azure</groupId><artifactId>azure-selected</artifactId><version>1.0.0</version>
+</project>
+'@
+            'sdk/selected/azure-selected/src/Main.java' = 'public class Main {}'
+            'sdk/tools/apiview-java-processor/pom.xml' = @'
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <groupId>com.azure</groupId><artifactId>apiview-java-processor</artifactId><version>1.34.0</version>
+</project>
+'@
+            'sdk/tools/apiview-java-processor/src/main/java/Main.java' = 'public class Main {}'
+            'sdk/tools/apiview-java-processor/src/main/resources/template.txt' = 'renderer resource'
+            '.vscode/eclipse-format-azure-sdk-for-java.xml' = '<profiles />'
+            'eng/versioning/version_client.txt' = ''
+            'eng/common/scripts/common.ps1' = ''
+        }
+        foreach ($entry in $fixtureFiles.GetEnumerator()) {
+            $path = Join-Path $repositoryPath $entry.Key
+            New-Item -ItemType Directory -Path (Split-Path $path) -Force | Out-Null
+            Set-Content -LiteralPath $path -Value $entry.Value
+        }
+        $fixtureScripts = Join-Path $repositoryPath 'eng/scripts'
+        New-Item -ItemType Directory -Path $fixtureScripts -Force | Out-Null
+        foreach ($name in @(
+            'Generate-ServiceDirectories-From-Project-List.ps1',
+            'generate_from_source_pom.py',
+            'pom_helper.py',
+            'Generate-ApiMarkdown.ps1'
+        )) {
+            Copy-Item -LiteralPath (Join-Path $script:EngineeringRoot 'scripts' $name) -Destination $fixtureScripts
+        }
+        Invoke-TestGit $repositoryPath @('add', '--all') | Out-Null
+        Invoke-TestGit $repositoryPath @(
+            '-c', 'user.name=Sparse Checkout Tests',
+            '-c', 'user.email=sparse-checkout-tests@example.invalid',
+            '-c', 'commit.gpgsign=false',
+            '-c', 'core.hooksPath=.git/hooks',
+            'commit', '--quiet', '--message', 'API generation fixture'
+        ) | Out-Null
+        $script:SourceVersion = Invoke-TestGit $repositoryPath @('rev-parse', 'HEAD')
+        Enable-TestSparseCheckout $repositoryPath
+        Test-Path (Join-Path $processor 'src/main/java/Main.java') | Should -BeFalse
+        Test-Path (Join-Path $processor 'src/main/resources/template.txt') | Should -BeFalse
+
+        if ($Flow -eq 'service') {
+            $output = @(& (Join-Path $fixtureScripts 'Generate-ServiceDirectories-From-Project-List.ps1') `
+                -SourcesDirectory $repositoryPath -ProjectList @('com.azure:azure-selected') 6>&1 |
+                ForEach-Object { "$_" })
+        }
+        else {
+            $output = @(& python (Join-Path $fixtureScripts 'generate_from_source_pom.py') --al 'com.azure:azure-selected')
+            $LASTEXITCODE | Should -Be 0
+        }
+        $prefix = '##vso[task.setvariable variable=SparseCheckoutDirectories;]'
+        $setting = @($output | Where-Object { $_.StartsWith($prefix) })
+        $setting.Count | Should -Be 1
+        $serviceSetting = @($output | Where-Object { $_.StartsWith('##vso[task.setvariable variable=ServiceDirectories;]') })
+        $serviceSetting.Count | Should -Be 1
+        $serviceSetting[0] | Should -Not -Match 'tools|\.vscode'
+        $preparation = @(Invoke-CheckoutPreparation $repositoryPath $setting[0].Substring($prefix.Length))
+        Invoke-TestNativeCheckout $repositoryPath $preparation
+        Restore-CheckoutState $repositoryPath
+
+        Mock mvn {
+            foreach ($path in @(
+                'sdk/tools/apiview-java-processor/src/main/java/Main.java',
+                'sdk/tools/apiview-java-processor/src/main/resources/template.txt',
+                '.vscode/eclipse-format-azure-sdk-for-java.xml'
+            )) {
+                if (-not (Test-Path -LiteralPath (Join-Path $repositoryPath $path))) {
+                    throw "Missing processor build input: $path"
+                }
+            }
+            $target = Join-Path $processor 'target'
+            New-Item -ItemType Directory -Path $target -Force | Out-Null
+            Set-Content -LiteralPath (Join-Path $target 'apiview-java-processor-1.34.0.jar') -Value ''
+            $global:LASTEXITCODE = 0
+        }
+        Mock java {
+            $rendered = Join-Path $args[-1] "$([IO.Path]::GetFileNameWithoutExtension($args[-2])).md"
+            Set-Content -LiteralPath $rendered -Value 'public class Main {}'
+            $global:LASTEXITCODE = 0
+        }
+        $target = Join-Path $package 'target'
+        New-Item -ItemType Directory -Path $target -Force | Out-Null
+        $sources = Join-Path $target 'azure-selected-1.0.0-sources.jar'
+        Set-Content -LiteralPath $sources -Value ''
+        & (Join-Path $fixtureScripts 'Generate-ApiMarkdown.ps1') -PackagePath $package -SourcesJar $sources
+
+        Get-Content -LiteralPath (Join-Path $package 'api.md') -Raw | Should -Match 'public class Main'
+        $hash = (Get-FileHash -LiteralPath (Join-Path $package 'api.md') -Algorithm SHA256).Hash.ToLowerInvariant()
+        Get-Content -LiteralPath (Join-Path $package 'api.metadata.yml') | Should -Contain "apiHash: $hash"
+        Should -Invoke mvn -Times 1 -Exactly
+    }
+
     It 'passes paths containing spaces, single quotes, and percent signs to the native task' {
         Enable-TestSparseCheckout $repositoryPath
         $pathsJson = ConvertTo-Json -InputObject @('/sdk/space directory', "/sdk/quoted'service", '/sdk/percent%service') -Compress
