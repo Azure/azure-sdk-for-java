@@ -20,6 +20,7 @@ import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 
 import java.util.Collections;
@@ -114,7 +115,7 @@ final class V2StackSupport {
     }
 
     ReactorConnectionCache<EventHubReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
-        Supplier<String> eventHubNameSupplier, MessageSerializer serializer, Meter meter,
+        Supplier<String> eventHubNameSupplier, MessageSerializer serializer, Meter meter, Tracer tracer,
         boolean useSessionChannelCache) {
         final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
             final String connectionId = StringUtil.getRandomString("MF");
@@ -122,7 +123,8 @@ final class V2StackSupport {
                 = new AzureTokenManagerProvider(connectionOptions.getAuthorizationType(),
                     connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getAuthorizationScope());
             final ReactorProvider provider = new ReactorProvider();
-            final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+            final ReactorHandlerProvider handlerProvider = new EventHubsHandlerProvider(provider, meter, tracer,
+                connectionOptions.getFullyQualifiedNamespace(), eventHubNameSupplier.get());
             final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
             return new EventHubReactorAmqpConnection(connectionId, connectionOptions, eventHubNameSupplier.get(),
                 provider, handlerProvider, linkProvider, tokenManagerProvider, serializer, true,

@@ -571,6 +571,47 @@ public class EventHubsConsumerInstrumentationTests {
         return TestUtils.getEvent(annotatedMessage, "25L", 14L, enqueuedTime);
     }
 
+    @Test
+    public void metricsOnlyReceiveWindowsCountPartialDeliveriesPerSubscription() {
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(null, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, true);
+        PartitionEvent event = createPartitionEvent(Instant.now(), TRACEPARENT1, "0");
+        Flux<PartitionEvent> receive = instrumentation.syncReceive(
+            Flux.concat(Flux.just(event), Flux.error(new IllegalStateException("failure after delivery"))), "0");
+        for (int i = 0; i < 2; i++) {
+            StepVerifier.create(receive).expectNext(event).expectError(IllegalStateException.class).verify();
+        }
+        TestCounter events = meter.getCounters().get("az.eventhubs.events");
+        TestCounter operations = meter.getCounters().get("az.eventhubs.operations");
+        assertEquals(2, events.getMeasurements().size());
+        assertEquals(2, operations.getMeasurements().size());
+        for (int i = 0; i < 2; i++) {
+            assertEquals(1L, events.getMeasurements().get(i).getValue());
+            assertEquals("success", events.getMeasurements().get(i).getAttributes().get("outcome"));
+            assertEquals("error", operations.getMeasurements().get(i).getAttributes().get("outcome"));
+        }
+    }
+
+    @Test
+    public void streamStopsWaitingAtFirstEventAndRecordsCancellation() {
+        EventHubsConsumerInstrumentation instrumentation
+            = new EventHubsConsumerInstrumentation(tracer, meter, FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+        PartitionEvent event = createPartitionEvent(Instant.now(), TRACEPARENT1, "0");
+        Flux<PartitionEvent> stream = instrumentation.clientReceive(Flux.just(event).concatWith(Flux.never()));
+        StepVerifier.create(stream).expectNext(event).then(() -> {
+            assertEquals(1, spanProcessor.getEndedSpans().size());
+            assertEquals("EventHubs.receive.wait", spanProcessor.getEndedSpans().get(0).getName());
+        }).thenCancel().verify();
+        SpanData wait = spanProcessor.getEndedSpans().get(0).toSpanData();
+        SpanData receive = spanProcessor.getEndedSpans().get(1).toSpanData();
+        assertEquals(receive.getSpanId(), wait.getParentSpanId());
+        assertEquals("cancelled", receive.getStatus().getDescription());
+        assertEquals(1L, attributesToMap(receive.getAttributes()).get("messaging.batch.message_count"));
+        assertEquals("cancelled",
+            meter.getCounters().get("az.eventhubs.operations").getMeasurements().get(0).getAttributes().get("outcome"));
+        assertEquals(1L, meter.getCounters().get("az.eventhubs.events").getMeasurements().get(0).getValue());
+    }
+
     private SpanData assertReceiveSpan(int expectedBatchSize, String partitionId, String expectedErrorType,
         String spanDescription) {
         SpanData span = assertGenericOperationSpan(RECEIVE, CLIENT, partitionId, expectedErrorType, spanDescription);
@@ -589,9 +630,19 @@ public class EventHubsConsumerInstrumentationTests {
 
     private SpanData assertGenericOperationSpan(OperationName operation, SpanKind kind, String partitionId,
         String expectedErrorType, String spanDescription) {
-        assertEquals(1, spanProcessor.getEndedSpans().size());
-        SpanData span = spanProcessor.getEndedSpans().get(0).toSpanData();
-        assertEquals(getSpanName(operation, ENTITY_NAME), span.getName());
+        List<SpanData> spans
+            = spanProcessor.getEndedSpans().stream().map(s -> s.toSpanData()).collect(Collectors.toList());
+        assertEquals(operation == RECEIVE ? 3 : 1, spans.size());
+        SpanData span
+            = spans.stream().filter(s -> getSpanName(operation, ENTITY_NAME).equals(s.getName())).findFirst().get();
+        if (operation == RECEIVE) {
+            SpanData wait = spans.get(0);
+            SpanData logical = spans.get(2);
+            assertEquals("EventHubs.receive.wait", wait.getName());
+            assertEquals("EventHubs.receive", logical.getName());
+            assertEquals(logical.getSpanId(), wait.getParentSpanId());
+            assertEquals(logical.getSpanId(), span.getParentSpanId());
+        }
         assertEquals(kind, span.getKind());
         Map<String, Object> attributes = attributesToMap(span.getAttributes());
         assertAllAttributes(FQDN, ENTITY_NAME, partitionId, CONSUMER_GROUP, expectedErrorType, operation, attributes);

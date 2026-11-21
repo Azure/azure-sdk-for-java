@@ -194,6 +194,7 @@ class PartitionPumpManager {
             Flux<Flux<PartitionEvent>> partitionEventFlux;
             Flux<PartitionEvent> receiver = eventHubConsumer
                 .receiveFromPartition(partitionId, startFromEventPosition, receiveOptions)
+                .transform(instrumentation::streamReceive)
                 .doOnNext(partitionEvent -> {
                     if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
                         LOGGER.atVerbose()

@@ -54,6 +54,11 @@ public final class EventHubsMetricsProvider {
     private DoubleHistogram operationDuration;
     private DoubleHistogram processDuration;
     private DoubleHistogram consumerLag;
+    private LongCounter operations;
+    private LongCounter events;
+    private DoubleHistogram logicalDuration;
+    private AttributeCache sendOutcomes;
+    private AttributeCache receiveOutcomes;
 
     public EventHubsMetricsProvider(Meter meter, String namespace, String entityName, String consumerGroup) {
         this.meter = meter;
@@ -69,6 +74,15 @@ public final class EventHubsMetricsProvider {
             this.getEventHubPropertiesAttributeCacheSuccess
                 = AttributeCache.create(meter, OperationName.GET_EVENT_HUB_PROPERTIES, commonAttributes);
             this.lagAttributeCache = new AttributeCache(meter, MESSAGING_DESTINATION_PARTITION_ID, commonAttributes);
+
+            this.operations = meter.createLongCounter("az.eventhubs.operations",
+                "Completed logical send and receive operations", "{operation}");
+            this.events
+                = meter.createLongCounter("az.eventhubs.events", "Successfully sent or received events", "{event}");
+            this.logicalDuration = meter.createDoubleHistogram("az.eventhubs.operation.duration",
+                "Logical operation duration including retries", "s");
+            this.sendOutcomes = outcomeCache(namespace, entityName, "send");
+            this.receiveOutcomes = outcomeCache(namespace, entityName, "receive");
 
             this.publishedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_PUBLISHED_MESSAGES,
                 "The number of published events", "{event}");
@@ -91,6 +105,35 @@ public final class EventHubsMetricsProvider {
         return isEnabled;
     }
 
+    private AttributeCache outcomeCache(String namespace, String entityName, String operation) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE);
+        attributes.put(MESSAGING_DESTINATION_NAME, entityName);
+        attributes.put(SERVER_ADDRESS, namespace);
+        attributes.put("operation", operation);
+        return new AttributeCache(meter, "outcome", attributes);
+    }
+
+    public void reportOperation(OperationName operation, long count, InstrumentationScope scope) {
+        if (!isEnabled) {
+            return;
+        }
+        String outcome = scope.getOutcome();
+        TelemetryAttributes attributes = (operation == SEND ? sendOutcomes : receiveOutcomes).getOrCreate(outcome);
+        operations.add(1, attributes, scope.getSpan());
+        logicalDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
+        // A streaming receive may deliver events before the terminal error or cancellation.
+        if (count > 0 && (operation == RECEIVE || "success".equals(outcome))) {
+            events.add(count, operation == SEND ? attributes : receiveOutcomes.getOrCreate("success"), scope.getSpan());
+        }
+    }
+
+    public void reportStreamDelivery(InstrumentationScope scope) {
+        if (isEnabled) {
+            events.add(1, receiveOutcomes.getOrCreate("success"), scope.getSpan());
+        }
+    }
+
     public void reportBatchSend(int batchSize, String partitionId, InstrumentationScope scope) {
         if (isEnabled && (publishedEventCounter.isEnabled() || operationDuration.isEnabled())) {
             TelemetryAttributes attributes = getOrCreateAttributes(SEND, partitionId, scope.getErrorType());
@@ -107,7 +150,7 @@ public final class EventHubsMetricsProvider {
         }
     }
 
-    public void reportReceive(int receivedCount, String partitionId, InstrumentationScope scope) {
+    public void reportReceive(long receivedCount, String partitionId, InstrumentationScope scope) {
         if (isEnabled && (operationDuration.isEnabled() || consumedEventCounter.isEnabled())) {
             String errorType = scope.getErrorType();
             TelemetryAttributes attributes = getOrCreateAttributes(RECEIVE, partitionId, errorType);

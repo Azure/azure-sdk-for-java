@@ -510,11 +510,11 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     private Flux<PartitionEvent> createConsumer(String linkName, String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
-        return openPartitionConsumers
+        return instrumentation.clientReceive(openPartitionConsumers
             .computeIfAbsent(linkName,
                 name -> createPartitionConsumer(name, partitionId, startingPosition, receiveOptions))
             .receive()
-            .doFinally(signal -> removeLink(linkName, partitionId, signal));
+            .doFinally(signal -> removeLink(linkName, partitionId, signal)));
     }
 
     private void removeLink(String linkName, String partitionId, SignalType signalType) {

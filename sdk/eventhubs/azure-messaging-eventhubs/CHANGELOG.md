@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added metrics for completed sends and receives, accepted and received events, operation duration, and AMQP
+  lifecycle transitions. Added optional spans for endpoint handshakes, send dispositions, and receive waits.
+
 ### Breaking Changes
 
 ### Bugs Fixed

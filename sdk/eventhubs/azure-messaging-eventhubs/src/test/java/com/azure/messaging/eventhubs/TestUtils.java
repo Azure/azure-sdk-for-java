@@ -13,6 +13,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -77,6 +78,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.startsWith;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Contains helper methods for working with AMQP messages
@@ -84,6 +89,13 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 public final class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
     private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
+
+    static Tracer mockTracerWithAmqpSpans() {
+        Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.start(startsWith("EventHubs."), any(), any(Context.class))).thenReturn(Context.NONE);
+        return tracer;
+    }
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);

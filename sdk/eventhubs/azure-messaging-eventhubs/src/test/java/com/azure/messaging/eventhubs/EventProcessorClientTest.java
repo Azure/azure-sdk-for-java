@@ -77,7 +77,6 @@ import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -227,9 +226,8 @@ public class EventProcessorClientTest {
     @SuppressWarnings("unchecked")
     public void testProcessSpansAndMetrics() throws Exception {
         //Arrange
-        final Tracer tracer = mock(Tracer.class);
+        final Tracer tracer = TestUtils.mockTracerWithAmqpSpans();
         final TestMeter meter = new TestMeter();
-        when(tracer.isEnabled()).thenReturn(true);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer);
@@ -278,7 +276,7 @@ public class EventProcessorClientTest {
         doAnswer(invocation -> {
             latch.countDown();
             return null;
-        }).when(tracer).end(any(), any(), any());
+        }).when(tracer).end(any(), any(), argThat(span -> span != Context.NONE));
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
@@ -318,9 +316,8 @@ public class EventProcessorClientTest {
     @SuppressWarnings("unchecked")
     public void testProcessBatchTracesAndMetrics() throws Exception {
         //Arrange
-        final Tracer tracer = mock(Tracer.class);
+        final Tracer tracer = TestUtils.mockTracerWithAmqpSpans();
         final TestMeter meter = new TestMeter();
-        when(tracer.isEnabled()).thenReturn(true);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer);
@@ -382,7 +379,7 @@ public class EventProcessorClientTest {
         doAnswer(invocation -> {
             latch.countDown();
             return null;
-        }).when(tracer).end(any(), any(), any());
+        }).when(tracer).end(any(), any(), argThat(span -> span != Context.NONE));
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
@@ -427,9 +424,8 @@ public class EventProcessorClientTest {
     public void testProcessWithErrorTracesAndMetrics(RuntimeException error, String expectedErrorType)
         throws Exception {
         //Arrange
-        final Tracer tracer = mock(Tracer.class);
+        final Tracer tracer = TestUtils.mockTracerWithAmqpSpans();
         final TestMeter meter = new TestMeter();
-        when(tracer.isEnabled()).thenReturn(true);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer);
@@ -470,7 +466,7 @@ public class EventProcessorClientTest {
         doAnswer(invocation -> {
             latch.countDown();
             return null;
-        }).when(tracer).end(any(), any(), any());
+        }).when(tracer).end(any(), any(), argThat(span -> span != Context.NONE));
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
         final TestPartitionProcessor processor = new TestPartitionProcessor(new CountDownLatch(1), error);
@@ -504,9 +500,8 @@ public class EventProcessorClientTest {
     @SuppressWarnings("unchecked")
     public void testTracingMetricsEmptyBatch() throws Exception {
         //Arrange
-        final Tracer tracer = mock(Tracer.class);
+        final Tracer tracer = TestUtils.mockTracerWithAmqpSpans();
         final TestMeter meter = new TestMeter();
-        when(tracer.isEnabled()).thenReturn(true);
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer);
@@ -526,7 +521,7 @@ public class EventProcessorClientTest {
         doAnswer(invocation -> {
             latch.countDown();
             return null;
-        }).when(tracer).end(any(), any(), any());
+        }).when(tracer).end(any(), any(), argThat(span -> span != Context.NONE));
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
@@ -550,7 +545,7 @@ public class EventProcessorClientTest {
         eventProcessorClient.stop();
 
         //Assert
-        verify(tracer, never()).start(anyString(), any(), any(Context.class));
+        verify(tracer, never()).start(eq(getSpanName(PROCESS, EVENT_HUB_NAME)), any(), any(Context.class));
         assertEquals(0, meter.getCounters().get("messaging.client.consumed.messages").getMeasurements().size());
         assertEquals(0, meter.getHistograms().get("messaging.process.duration").getMeasurements().size());
     }
@@ -563,8 +558,7 @@ public class EventProcessorClientTest {
     @Test
     public void testProcessSpansWithoutDiagnosticId() throws Exception {
         //Arrange
-        final Tracer tracer = mock(Tracer.class);
-        when(tracer.isEnabled()).thenReturn(true);
+        final Tracer tracer = TestUtils.mockTracerWithAmqpSpans();
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         when(eventHubClientBuilder.createTracer()).thenReturn(tracer);

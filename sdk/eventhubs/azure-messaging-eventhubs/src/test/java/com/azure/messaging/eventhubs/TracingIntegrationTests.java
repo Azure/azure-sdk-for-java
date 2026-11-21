@@ -113,7 +113,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
 
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
+        spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || isOperationSpan(span, SEND));
         toClose(consumer
             .receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime), getReceiveOptions())
             .take(1)
@@ -152,7 +152,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<Span> receivedSpan = new AtomicReference<>();
 
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || hasOperationName(span, SEND));
+        spanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || isOperationSpan(span, SEND));
         toClose(consumer.receive(true, getReceiveOptions()).take(DEFAULT_TIMEOUT).subscribe(pe -> {
             if (receivedMessage.compareAndSet(null, pe)) {
                 receivedSpan.compareAndSet(null, Span.current());
@@ -191,8 +191,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         EventHubConsumerAsyncClient consumer = createConsumer(null);
 
         CountDownLatch latch = new CountDownLatch(2);
-        customSpanProcessor.notifyIfCondition(latch,
-            span -> span == receivedSpan.get() || hasOperationName(span, SEND));
+        customSpanProcessor.notifyIfCondition(latch, span -> span == receivedSpan.get() || isOperationSpan(span, SEND));
 
         toClose(consumer.receive(true, getReceiveOptions()).take(1).subscribe(pe -> {
             if (receivedMessage.compareAndSet(null, pe)) {
@@ -225,7 +224,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         int messageCount = 5;
         CountDownLatch latch = new CountDownLatch(messageCount);
 
-        spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS));
+        spanProcessor.notifyIfCondition(latch, span -> isOperationSpan(span, PROCESS));
 
         StepVerifier.create(producer.send(data)).expectComplete().verify(DEFAULT_TIMEOUT);
 
@@ -254,7 +253,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         EventHubConsumerAsyncClient consumer = createConsumer(null);
 
         CountDownLatch latch = new CountDownLatch(3);
-        spanProcessor.notifyIfCondition(latch, span -> hasOperationName(span, PROCESS) || hasOperationName(span, SEND));
+        spanProcessor.notifyIfCondition(latch, span -> isOperationSpan(span, PROCESS) || isOperationSpan(span, SEND));
 
         EventHubBufferedProducerAsyncClient bufferedProducer
             = toClose(new EventHubBufferedProducerClientBuilder().clientOptions(getClientOptions())
@@ -397,7 +396,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<EventContext> receivedMessage = new AtomicReference<>();
 
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || hasOperationName(span, SEND));
+        spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || isOperationSpan(span, SEND));
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID)))
             .expectComplete()
@@ -461,7 +460,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<EventContext> received = new ArrayList<>();
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch,
-            span -> hasOperationName(span, PROCESS) && !span.getParentSpanContext().isValid());
+            span -> isOperationSpan(span, PROCESS) && !span.getParentSpanContext().isValid());
         StepVerifier.create(notInstrumentedProducer.send(Arrays.asList(message1, message2),
             new SendOptions().setPartitionId(PARTITION_ID))).expectComplete().verify(DEFAULT_TIMEOUT);
 
@@ -592,7 +591,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<Span> currentInProcess = new AtomicReference<>();
         AtomicReference<List<EventData>> received = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || hasOperationName(span, SEND));
+        spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || isOperationSpan(span, SEND));
 
         StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID)))
             .expectComplete()
@@ -760,8 +759,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         return spans.stream().filter(s -> s.getName().equals(spanName)).collect(toList());
     }
 
-    private boolean hasOperationName(ReadableSpan span, OperationName operationName) {
-        return operationName.toString().equals(span.getAttribute(OPERATION_NAME_ATTRIBUTE));
+    private boolean isOperationSpan(ReadableSpan span, OperationName operationName) {
+        return TestUtils.getSpanName(operationName, getEventHubName()).equals(span.getName());
     }
 
     private Configuration getConfiguration(String v2Stack) {

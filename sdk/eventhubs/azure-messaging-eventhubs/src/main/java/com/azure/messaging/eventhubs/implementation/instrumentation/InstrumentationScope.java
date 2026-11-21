@@ -20,6 +20,7 @@ public final class InstrumentationScope implements AutoCloseable {
     private final BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback;
     private Instant startTime;
     private Throwable error;
+    private long eventCount;
     private String errorType;
     private Context span = Context.NONE;
     private AutoCloseable spanScope;
@@ -88,15 +89,47 @@ public final class InstrumentationScope implements AutoCloseable {
         return errorType;
     }
 
+    public void addEvents(int count) {
+        eventCount += count;
+    }
+
+    public long getEventCount() {
+        return eventCount;
+    }
+
+    public void closeLogical() {
+        tracer.setEventCount(span, eventCount);
+        closeAmqp();
+    }
+
+    public String getOutcome() {
+        if (error != null) {
+            return "error";
+        }
+        return CANCELLED_ERROR_TYPE_VALUE.equals(errorType) ? "cancelled" : "success";
+    }
+
+    public void closeAmqp() {
+        close(true);
+    }
+
     @Override
     public void close() {
+        close(false);
+    }
+
+    private void close(boolean sanitizeError) {
         if (!closed) {
             closed = true;
             if (meter != null && reportMetricsCallback != null) {
                 reportMetricsCallback.accept(meter, this);
             }
             if (tracer != null) {
-                tracer.endSpan(errorType, error, span, spanScope);
+                if (sanitizeError) {
+                    tracer.endAmqpSpan(span, getOutcome());
+                } else {
+                    tracer.endSpan(errorType, error, span, spanScope);
+                }
             }
         }
     }

@@ -543,7 +543,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
-        return sendInternal(events, options).publishOn(scheduler);
+        return instrumentation.logicalSend(sendInternal(events, options)).publishOn(scheduler);
     }
 
     /**
@@ -557,11 +557,15 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(EventDataBatch batch) {
+        return instrumentation.logicalSend(sendBatch(batch));
+    }
+
+    private Mono<Integer> sendBatch(EventDataBatch batch) {
         if (batch == null) {
             return monoError(LOGGER, new NullPointerException("'batch' cannot be null."));
         } else if (batch.getEvents().isEmpty()) {
             LOGGER.warning(Messages.CANNOT_SEND_EVENT_BATCH_EMPTY);
-            return Mono.empty();
+            return Mono.just(0);
         }
 
         if (!CoreUtils.isNullOrEmpty(batch.getPartitionId())) {
@@ -583,17 +587,17 @@ public class EventHubProducerAsyncClient implements Closeable {
         final List<Message> messages
             = batch.getEvents().stream().map(messageSerializer::serialize).collect(Collectors.toList());
 
-        final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
-            .flatMap(link -> messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages));
+        final Mono<Void> sendMessage = getSendLink(batch.getPartitionId()).flatMap(link -> instrumentation
+            .sendDisposition(messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages)));
 
         final Mono<Void> send = withRetry(sendMessage, retryOptions,
             String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId())).publishOn(scheduler);
 
         // important to end spans after metrics are reported so metrics get relevant context for exemplars.
-        return instrumentation.sendBatch(send, batch);
+        return instrumentation.sendBatch(send, batch).thenReturn(messages.size());
     }
 
-    private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
+    private Mono<Integer> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
 
@@ -611,13 +615,11 @@ public class EventHubProducerAsyncClient implements Closeable {
                 .setPartitionId(options.getPartitionId())
                 .setMaximumSizeInBytes(batchSize);
             return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext, instrumentation));
-        }).flatMap(list -> sendInternal(Flux.fromIterable(list))));
-    }
-
-    private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
-        return eventBatches.flatMap(this::send).then().doOnError(error -> {
-            LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
-        });
+        })
+            .flatMapMany(Flux::fromIterable)
+            .flatMap(this::sendBatch)
+            .reduce(0, Integer::sum)
+            .doOnError(error -> LOGGER.error(Messages.ERROR_SENDING_BATCH, error)));
     }
 
     private String getEntityPath(String partitionId) {

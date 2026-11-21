@@ -76,6 +76,38 @@ public final class EventHubsTracer {
         return isEnabled() ? tracer.start(getSpanName(operationName), startOptions, context) : context;
     }
 
+    public Context startAmqpSpan(String name, String operation, SpanKind kind, Context parent) {
+        return isEnabled()
+            ? tracer.start(name,
+                new StartSpanOptions(kind).setAttribute(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE)
+                    .setAttribute(MESSAGING_OPERATION_NAME, operation)
+                    .setAttribute(MESSAGING_DESTINATION_NAME, entityName)
+                    .setAttribute(SERVER_ADDRESS, fullyQualifiedName),
+                parent)
+            : Context.NONE;
+    }
+
+    public void identifyEndpoint(Context span, String component, String connectionId, String endpointId, long attempt) {
+        if (isEnabled()) {
+            tracer.setAttribute("az.eventhubs.amqp.connection.id", connectionId, span);
+            tracer.setAttribute("az.eventhubs.amqp.component.type", component, span);
+            tracer.setAttribute("az.eventhubs.amqp.component.id", endpointId, span);
+            tracer.setAttribute("az.eventhubs.amqp.component.generation", attempt, span);
+        }
+    }
+
+    public void setEventCount(Context span, long count) {
+        if (isEnabled()) {
+            tracer.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, count, span);
+        }
+    }
+
+    public void endAmqpSpan(Context span, String outcome) {
+        if (isEnabled()) {
+            tracer.end("success".equals(outcome) ? null : outcome, null, span);
+        }
+    }
+
     public Context startGenericOperationSpan(OperationName operationName, String partitionId, Context parent) {
         if (!isEnabled()) {
             return parent;

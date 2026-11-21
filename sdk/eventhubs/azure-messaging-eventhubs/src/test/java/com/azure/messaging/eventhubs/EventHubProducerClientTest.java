@@ -179,8 +179,7 @@ public class EventHubProducerClientTest {
     @SuppressWarnings("unchecked")
     public void sendStartSpanSingleMessage() {
         //Arrange
-        final Tracer tracer1 = mock(Tracer.class);
-        when(tracer1.isEnabled()).thenReturn(true);
+        final Tracer tracer1 = TestUtils.mockTracerWithAmqpSpans();
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
 
@@ -224,7 +223,7 @@ public class EventHubProducerClientTest {
         //Assert
         verify(tracer1, times(1)).start(eq(expectedSendSpanName), any(), any(Context.class));
         verify(tracer1, times(1)).start(eq(expectedMessageSpanName), any(), any(Context.class));
-        verify(tracer1, times(2)).end(isNull(), isNull(), any());
+        verify(tracer1, times(4)).end(isNull(), isNull(), any());
         verify(tracer1, times(1)).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);
@@ -237,8 +236,7 @@ public class EventHubProducerClientTest {
     @SuppressWarnings("unchecked")
     public void sendMessageRetrySpanTest() {
         //Arrange
-        final Tracer tracer1 = mock(Tracer.class);
-        when(tracer1.isEnabled()).thenReturn(true);
+        final Tracer tracer1 = TestUtils.mockTracerWithAmqpSpans();
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
 
@@ -276,7 +274,7 @@ public class EventHubProducerClientTest {
 
         //Assert
         verify(tracer1, times(1)).start(eq(expectedSendSpanName), any(), any(Context.class));
-        verify(tracer1, times(1)).end(isNull(), isNull(), any());
+        verify(tracer1, times(3)).end(isNull(), isNull(), any());
         verify(tracer1, times(1)).extractContext(any());
         verify(tracer1, never()).start(eq(expectedMessageSpanName), any(), any(Context.class));
         verify(tracer1, never()).injectContext(any(), any());
@@ -393,8 +391,7 @@ public class EventHubProducerClientTest {
     @SuppressWarnings("unchecked")
     public void startsMessageSpanOnEventBatch() {
         // Arrange
-        final Tracer tracer1 = mock(Tracer.class);
-        when(tracer1.isEnabled()).thenReturn(true);
+        final Tracer tracer1 = TestUtils.mockTracerWithAmqpSpans();
         final EventHubsProducerInstrumentation instrumentation
             = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer
@@ -447,7 +444,7 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(2)).start(eq(expectedMessageSpanName), any(), any(Context.class));
         verify(tracer1, times(1)).start(eq(expectedSendSpanName), any(), any(Context.class));
         verify(tracer1, times(2)).start(eq(expectedMessageSpanName), any(), any(Context.class));
-        verify(tracer1, times(3)).end(isNull(), isNull(), any());
+        verify(tracer1, times(5)).end(isNull(), isNull(), any());
         verify(tracer1, times(2)).injectContext(any(), any());
 
         verifyNoInteractions(onClientClosed);

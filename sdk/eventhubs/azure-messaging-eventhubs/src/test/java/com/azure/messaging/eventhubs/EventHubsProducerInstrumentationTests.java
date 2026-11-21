@@ -29,6 +29,7 @@ import reactor.test.StepVerifier;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -80,6 +81,8 @@ public class EventHubsProducerInstrumentationTests {
         batch.tryAdd(new EventData("test"));
         Mono<Void> inner = Mono.empty();
         assertSame(inner, instrumentation.sendBatch(inner, batch));
+        assertSame(inner, instrumentation.sendDisposition(inner));
+        StepVerifier.create(instrumentation.logicalSend(Mono.just(1))).verifyComplete();
     }
 
     public static Stream<Arguments> sendBatchErrors() {
@@ -144,6 +147,57 @@ public class EventHubsProducerInstrumentationTests {
         assertSendDuration(partitionId, expectedErrorType);
         assertBatchCount(count, partitionId, expectedErrorType);
         assertSpans(count, partitionId, expectedErrorType, spanDescription);
+    }
+
+    @Test
+    public void retryCountsOneOperationAndOnlyAcceptedEvents() {
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(tracer, meter, FQDN, ENTITY_NAME);
+        EventDataBatch batch = new EventDataBatch(1024, null, null, () -> null, instrumentation);
+        AtomicInteger attempts = new AtomicInteger();
+        Mono<Void> delivery = Mono.defer(() -> attempts.incrementAndGet() == 1
+            ? Mono.error(new IllegalStateException("broker diagnostics"))
+            : Mono.empty());
+        Mono<Void> send = instrumentation.sendBatch(instrumentation.sendDisposition(delivery).retry(1), batch);
+        StepVerifier.create(instrumentation.logicalSend(send.thenReturn(3))).verifyComplete();
+
+        assertEquals(2, attempts.get());
+        assertEquals(1, meter.getCounters().get("az.eventhubs.operations").getMeasurements().size());
+        assertEquals("success",
+            meter.getCounters().get("az.eventhubs.operations").getMeasurements().get(0).getAttributes().get("outcome"));
+        assertEquals(3L, meter.getCounters().get("az.eventhubs.events").getMeasurements().get(0).getValue());
+        assertEquals(1, meter.getHistograms().get("az.eventhubs.operation.duration").getMeasurements().size());
+        List<SpanData> spans
+            = spanProcessor.getEndedSpans().stream().map(s -> s.toSpanData()).collect(Collectors.toList());
+        assertEquals(4, spans.size());
+        assertEquals("EventHubs.send", spans.get(3).getName());
+        assertEquals(3L, attributesToMap(spans.get(3).getAttributes()).get("messaging.batch.message_count"));
+        assertEquals(spans.get(3).getSpanId(), spans.get(2).getParentSpanId());
+        for (int i = 0; i < 2; i++) {
+            assertEquals("EventHubs.send.disposition", spans.get(i).getName());
+            assertEquals(spans.get(2).getSpanId(), spans.get(i).getParentSpanId());
+        }
+        assertEquals("error", spans.get(0).getStatus().getDescription());
+        assertEquals(0, spans.get(0).getEvents().size());
+    }
+
+    @Test
+    public void failureAndCancellationDoNotCountEvents() {
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(tracer, meter, FQDN, ENTITY_NAME);
+        RuntimeException original = new IllegalStateException("private broker diagnostics");
+        StepVerifier.create(instrumentation.logicalSend(Mono.error(original)))
+            .expectErrorMatches(e -> e == original)
+            .verify();
+        StepVerifier.create(instrumentation.logicalSend(Mono.never())).thenCancel().verify();
+
+        TestCounter operations = meter.getCounters().get("az.eventhubs.operations");
+        assertEquals(2, operations.getMeasurements().size());
+        assertEquals("error", operations.getMeasurements().get(0).getAttributes().get("outcome"));
+        assertEquals("cancelled", operations.getMeasurements().get(1).getAttributes().get("outcome"));
+        assertEquals(0, meter.getCounters().get("az.eventhubs.events").getMeasurements().size());
+        assertEquals("error", spanProcessor.getEndedSpans().get(0).toSpanData().getStatus().getDescription());
+        assertEquals(0, spanProcessor.getEndedSpans().get(0).toSpanData().getEvents().size());
     }
 
     private void assertSendDuration(String partitionId, String expectedErrorType) {
