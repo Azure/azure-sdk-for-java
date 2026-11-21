@@ -1227,6 +1227,8 @@ public final class QueueClient {
      * additionally contains the updated metadata about the message.
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds.
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateMessageResult updateMessage(String messageId, String popReceipt, String messageText,
@@ -1269,10 +1271,13 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateMessageResult> updateMessageWithResponse(String messageId, String popReceipt,
         String messageText, Duration visibilityTimeout, Duration timeout, Context context) {
+        ModelHelper.validateMessageId(messageId);
         QueueMessage message;
         if (messageText != null) {
             String finalMessage = ModelHelper.encodeMessage(BinaryData.fromString(messageText), messageEncoding);
@@ -1315,6 +1320,8 @@ public final class QueueClient {
      * @param popReceipt Unique identifier that must match for the message to be deleted
      * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
      * message.
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMessage(String messageId, String popReceipt) {
@@ -1349,10 +1356,13 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
      * message.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteMessageWithResponse(String messageId, String popReceipt, Duration timeout,
         Context context) {
+        ModelHelper.validateMessageId(messageId);
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getMessageIds()
             .deleteNoCustomHeadersWithResponse(queueName, messageId, popReceipt, null, null, finalContext);

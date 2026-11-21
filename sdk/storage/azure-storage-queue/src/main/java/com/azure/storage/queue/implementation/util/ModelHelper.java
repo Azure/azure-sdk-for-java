@@ -86,6 +86,24 @@ public class ModelHelper {
         }
     }
 
+    /**
+     * Validates a message ID before it is used as a path segment in a message-level request.
+     * <p>
+     * An empty message ID, {@code "."} or {@code ".."} would make the request path resolve to the messages collection
+     * or to the queue itself instead of a single message. For example, {@code DELETE /{queue}/messages/..} resolves
+     * to Delete Queue. These values are never valid message IDs, so they are rejected before a request is sent.
+     *
+     * @param messageId The message ID to validate.
+     * @throws NullPointerException If {@code messageId} is null.
+     * @throws IllegalArgumentException If {@code messageId} is empty, {@code "."} or {@code ".."}.
+     */
+    public static void validateMessageId(String messageId) {
+        StorageImplUtils.assertNotNull("messageId", messageId);
+        if (messageId.isEmpty() || ".".equals(messageId) || "..".equals(messageId)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'messageId' cannot be empty, '.' or '..'."));
+        }
+    }
+
     public static QueueProperties transformQueueProperties(QueuesGetPropertiesHeaders headers) {
         return new QueueProperties(headers.getXMsMeta(), headers.getXMsApproximateMessagesCount());
     }
