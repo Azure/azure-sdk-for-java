@@ -398,6 +398,25 @@ class QuickPulseDataCollectorTests {
         assertThat(resetCounters.projections).isEqualTo(resetProjections);
     }
 
+    @Test
+    void configurationUpdateDoesNotRaceWithCurrentCounters() {
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
+        collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
+        collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
+
+        configuration.set(new FilteringConfiguration(createDerivedMetricConfig()));
+
+        TelemetryItem request = createRequestTelemetry("request-success", new Date(), 300, "200", true);
+        request.setConnectionString(FAKE_CONNECTION_STRING);
+        collector.add(request);
+        assertThat(collector.peek().projections).isEmpty();
+
+        collector.getAndRestart();
+        collector.add(request);
+        assertThat(collector.peek().projections.get("request-duration")).isEqualTo(300.0);
+    }
+
     private void assertDefaultMetrics(QuickPulseDataCollector.FinalCounters counters) {
         assertThat(counters.rdds).isEqualTo(2);
         assertThat(counters.unsuccessfulRdds).isEqualTo(1);

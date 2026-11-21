@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Fixed Live Metrics stopping with `QuickPulseCoordinator failed` when the service returned a polling interval hint header. ([#50693](https://github.com/Azure/azure-sdk-for-java/pull/50693))
+- Fixed a race condition in Live Metrics derived metric configuration that could cause `Span.end()` to throw a `NullPointerException`.
 
 ### Other Changes
 
