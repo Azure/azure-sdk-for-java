@@ -74,8 +74,9 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         final byte[] buf;
         if (dst.hasArray()) {
             // ByteBuffer has a position and limit that define the bounds of the writeable area, and that
-            // area can be both smaller than the backing array and might not begin at array index 0.
-            pos = dst.position();
+            // area can be both smaller than the backing array and might not begin at array index 0. The buffer's
+            // index 0 is at arrayOffset() in the backing array, which is not 0 for a buffer created by slice().
+            pos = dst.arrayOffset() + dst.position();
             limit = pos + dst.remaining();
             buf = dst.array();
         } else {
@@ -98,8 +99,8 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
          */
         int count;
         if (dst.hasArray()) {
-            count = pos - dst.position();
-            dst.position(pos);
+            count = pos - (dst.arrayOffset() + dst.position());
+            dst.position(dst.position() + count);
         } else {
             count = pos; // original position was 0
             dst.put(buf, 0, count);
@@ -126,10 +127,11 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         byte[] buf;
         if (src.hasArray()) {
             // ByteBuffer has a position and limit that define the bounds of the readable area, and that
-            // area can be both smaller than the backing array and might not begin at array index 0.
-            pos = src.position();
+            // area can be both smaller than the backing array and might not begin at array index 0. The buffer's
+            // index 0 is at arrayOffset() in the backing array, which is not 0 for a buffer created by slice().
+            pos = src.arrayOffset() + src.position();
             buf = src.array();
-            src.position(pos + length);
+            src.position(src.position() + length);
         } else {
             pos = 0;
             buf = new byte[length];
