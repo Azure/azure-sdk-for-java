@@ -24,6 +24,8 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.util.concurrent.Queues;
 
@@ -137,6 +139,7 @@ public class EventHubBufferedPartitionProducerTest {
     @ValueSource(strings = { "success", "sendFailure", "oversized" })
     public void continuesPublishingAfterHandlerThrows(String scenario) throws InterruptedException {
         final CountDownLatch callbackInvoked = new CountDownLatch(1);
+        final CountDownLatch recovered = new CountDownLatch(1);
         final List<EventData> published = new CopyOnWriteArrayList<>();
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
         options.setMaxWaitTime(Duration.ofMinutes(1));
@@ -146,6 +149,7 @@ public class EventHubBufferedPartitionProducerTest {
                 throw new IllegalStateException("Success handler failed.");
             }
             context.getEvents().forEach(published::add);
+            recovered.countDown();
         });
         options.setSendFailedContext(context -> {
             callbackInvoked.countDown();
@@ -175,6 +179,7 @@ public class EventHubBufferedPartitionProducerTest {
 
             StepVerifier.create(producer.enqueueEvent(event2)).expectComplete().verify(Duration.ofSeconds(5));
             producer.flush().block(Duration.ofSeconds(5));
+            assertTrue(recovered.await(5, TimeUnit.SECONDS));
             assertEquals(Arrays.asList(event2), published);
         }
     }
@@ -247,15 +252,16 @@ public class EventHubBufferedPartitionProducerTest {
         }
     }
 
-    @Test
-    public void failedHandlerBackpressuresInvalidEvents() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void failedHandlerBackpressuresInvalidEvents(boolean afterTimerSends) throws InterruptedException {
         final CountDownLatch handlerEntered = new CountDownLatch(1);
         final CountDownLatch release = new CountDownLatch(1);
         final AtomicInteger failures = new AtomicInteger();
+        final Semaphore successes = new Semaphore(0);
         final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
-        options.setMaxWaitTime(Duration.ofMinutes(1));
-        options.setSendSucceededContext(ignored -> {
-        });
+        options.setMaxWaitTime(afterTimerSends ? Duration.ofMillis(20) : Duration.ofMinutes(1));
+        options.setSendSucceededContext(ignored -> successes.release());
         options.setSendFailedContext(context -> {
             failures.incrementAndGet();
             handlerEntered.countDown();
@@ -266,21 +272,86 @@ public class EventHubBufferedPartitionProducerTest {
                 throw new IllegalStateException(error);
             }
         });
-        when(batch.tryAdd(any(EventData.class))).thenThrow(new AmqpException(false, "Event is too large.", null));
+        final EventDataBatch rejectingBatch = afterTimerSends ? batch4 : batch;
+        if (afterTimerSends) {
+            setupBatchMock(batch, new ArrayList<>(), event1);
+            setupBatchMock(batch2, new ArrayList<>(), event2);
+            setupBatchMock(batch3, new ArrayList<>(), event3);
+            setupBatchMock(batch4, new ArrayList<>());
+            when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
+        }
+        when(rejectingBatch.tryAdd(any(EventData.class)))
+            .thenThrow(new AmqpException(false, "Event is too large.", null));
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3));
         try (EventHubBufferedPartitionProducer producer
             = new EventHubBufferedPartitionProducer(client, PARTITION_ID, options, retryOptions, eventSink, null)) {
+            if (afterTimerSends) {
+                for (EventData event : Arrays.asList(event1, event2, event3)) {
+                    producer.enqueueEvent(event).block(Duration.ofSeconds(5));
+                    assertTrue(successes.tryAcquire(5, TimeUnit.SECONDS));
+                }
+            }
             producer.enqueueEvent(event1).block(Duration.ofSeconds(5));
             assertTrue(handlerEntered.await(5, TimeUnit.SECONDS));
             producer.enqueueEvent(event2).block(Duration.ofSeconds(5));
             producer.enqueueEvent(event3).block(Duration.ofSeconds(5));
-            verify(batch, never()).tryAdd(event2);
-            verify(batch, never()).tryAdd(event3);
+            verify(rejectingBatch, never()).tryAdd(event2);
+            verify(rejectingBatch, never()).tryAdd(event3);
+            assertEquals(2, eventQueue.size());
             release.countDown();
             producer.flush().block(Duration.ofSeconds(5));
             assertEquals(3, failures.get());
         } finally {
             release.countDown();
+        }
+    }
+
+    @Test
+    public void resumesFailedEventDemandOutsideCompletionScheduler() throws InterruptedException {
+        final Scheduler completionScheduler = Schedulers.newBoundedElastic(1, 10, "batch-completion");
+        final CountDownLatch handlerEntered = new CountDownLatch(1);
+        final CountDownLatch release = new CountDownLatch(1);
+        final CountDownLatch recovered = new CountDownLatch(1);
+        final AtomicInteger attempts = new AtomicInteger();
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(Duration.ofMillis(20));
+        options.setSendSucceededContext(ignored -> recovered.countDown());
+        options.setSendFailedContext(context -> {
+            handlerEntered.countDown();
+            try {
+                assertTrue(release.await(5, TimeUnit.SECONDS));
+            } catch (InterruptedException error) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException(error);
+            }
+        });
+        setupBatchMock(batch, new ArrayList<>(), event2);
+        setupBatchMock(batch2, new ArrayList<>());
+        when(client.createBatch(any(CreateBatchOptions.class))).thenAnswer(invocation -> {
+            final int attempt = attempts.getAndIncrement();
+            if (attempt < 2) {
+                return Mono.error(new IllegalStateException("Batch creation failed."));
+            }
+            return Mono.just(attempt == 2 ? batch : batch2).publishOn(completionScheduler);
+        });
+        when(client.send(batch)).thenReturn(Mono.empty());
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3));
+        EventHubBufferedPartitionProducer producer = null;
+        try {
+            producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID, options, retryOptions, eventSink,
+                null, completionScheduler);
+            producer.enqueueEvent(event1).block(Duration.ofSeconds(5));
+            assertTrue(handlerEntered.await(5, TimeUnit.SECONDS));
+            producer.enqueueEvent(event2).block(Duration.ofSeconds(5));
+            release.countDown();
+            assertTrue(recovered.await(5, TimeUnit.SECONDS), "Batch creation must complete on the callback scheduler.");
+            producer.flush().block(Duration.ofSeconds(5));
+        } finally {
+            release.countDown();
+            completionScheduler.dispose();
+            if (producer != null) {
+                producer.close();
+            }
         }
     }
 

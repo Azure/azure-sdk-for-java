@@ -10,6 +10,7 @@
 
 - Fixed buffered partition publishing after batch-creation failures, oversized events, or ordinary exceptions from send callbacks.
 - Prevented buffered producers from resending a published batch after replacement-batch creation fails.
+- Kept buffered input demand bounded after timer-driven sends and resumed failed-event processing outside the producer completion scheduler.
 - Prevented timer cancellation from interrupting buffered partition publishing. Timer schedulers now stop on completion, error, and cancellation.
 
 - Fixed `EventContext.updateCheckpointAsync()` so that the `offsetString` from the received `EventData` is propagated

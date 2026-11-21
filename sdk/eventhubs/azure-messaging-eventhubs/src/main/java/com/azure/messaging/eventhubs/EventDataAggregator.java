@@ -22,6 +22,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -134,6 +135,11 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private final BiConsumer<EventData, Throwable> eventFailureReporter;
         private final boolean deferFailedEventDemand;
         private final Object lock = new Object();
+        private final Object demandLock = new Object();
+
+        // Guarded by demandLock. Keep one input request until its event finishes processing.
+        private boolean inputRequestPending;
+        private boolean failedEventPending;
 
         private Subscription subscription;
         private EventDataBatch currentBatch;
@@ -204,7 +210,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             }
 
             Operators.addCap(REQUESTED, this, n);
-            subscription.request(n);
+            requestEventIfNeeded();
         }
 
         /**
@@ -244,22 +250,43 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             if (isCompleted.get()) {
                 return;
             }
-            final boolean requestMore = updateOrPublishBatch(eventData, false);
+            updateOrPublishBatch(eventData, false);
 
             eventSink.emitNext(1L, Sinks.EmitFailureHandler.FAIL_FAST);
 
-            // When an EventDataBatch is pushed downstream, we decrement REQUESTED. However, if REQUESTED is still > 0,
-            // that means we did not publish the EventDataBatch (i.e. because it was not full). We request another
-            // EventData upstream to try and fill this EventDataBatch and push it downstream.
-            if (requestMore) {
-                requestNextEvent();
+            synchronized (demandLock) {
+                inputRequestPending = false;
             }
+            requestEventIfNeeded();
         }
 
         private void requestNextEvent() {
-            if (!isCompleted.get() && REQUESTED.get(this) > 0) {
-                subscription.request(1L);
+            if (isCompleted.get()) {
+                return;
             }
+            try {
+                // Batch creation can block. Keep it off the scheduler that completes producer operations.
+                timerScheduler.schedule(() -> {
+                    synchronized (demandLock) {
+                        failedEventPending = false;
+                    }
+                    requestEventIfNeeded();
+                });
+            } catch (RejectedExecutionException error) {
+                if (!isCompleted.get()) {
+                    throw error;
+                }
+            }
+        }
+
+        private void requestEventIfNeeded() {
+            synchronized (demandLock) {
+                if (isCompleted.get() || REQUESTED.get(this) <= 0 || inputRequestPending || failedEventPending) {
+                    return;
+                }
+                inputRequestPending = true;
+            }
+            subscription.request(1L);
         }
 
         @Override
@@ -302,18 +329,17 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         /**
          * @param eventData EventData to add to or null if there are no events to add to the batch.
          * @param alwaysPublish {@code true} to always push batch downstream. {@code false}, otherwise.
-         * @return Whether to request another event immediately. Failed events resume demand after their callback.
          */
-        private boolean updateOrPublishBatch(EventData eventData, boolean alwaysPublish) {
+        private void updateOrPublishBatch(EventData eventData, boolean alwaysPublish) {
             final boolean isFlush = isFlushSignal(eventData);
             if (alwaysPublish || isFlush) {
                 publishDownstream(isFlush);
-                return true;
+                return;
             }
             if (eventData == null) {
                 // EventData will be null in the case when options.maxWaitTime() has elapsed  and we want to push the
                 // batch downstream.
-                return true;
+                return;
             }
 
             Throwable failure;
@@ -324,7 +350,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 } else {
                     failure = tryAdd(batch, eventData);
                     if (failure == null) {
-                        return true;
+                        return;
                     }
                     publishDownstream(false);
                     batch = getOrCreateBatch();
@@ -333,10 +359,13 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     } else {
                         failure = tryAdd(batch, eventData);
                         if (failure == null) {
-                            return true;
+                            return;
                         }
                     }
                 }
+            }
+            synchronized (demandLock) {
+                failedEventPending = deferFailedEventDemand;
             }
             try {
                 eventFailureReporter.accept(eventData, failure);
@@ -344,7 +373,6 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 Exceptions.throwIfFatal(error);
                 logger.warning("Unable to report a failed event.", error);
             }
-            return !deferFailedEventDemand;
         }
 
         // Called with lock held.

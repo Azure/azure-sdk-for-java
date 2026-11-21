@@ -22,6 +22,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
@@ -64,6 +65,12 @@ class EventHubBufferedPartitionProducer implements Closeable {
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
         BufferedProducerClientOptions options, AmqpRetryOptions retryOptions, Sinks.Many<EventData> eventSink,
         Tracer tracer) {
+        this(client, partitionId, options, retryOptions, eventSink, tracer, Schedulers.boundedElastic());
+    }
+
+    EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
+        BufferedProducerClientOptions options, AmqpRetryOptions retryOptions, Sinks.Many<EventData> eventSink,
+        Tracer tracer, Scheduler callbackScheduler) {
 
         final HashMap<String, Object> logContext = new HashMap<>();
         logContext.put(PARTITION_ID_KEY, partitionId);
@@ -86,7 +93,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         final Flux<PublishResult> sendResults
             = publishEvents(eventDataAggregator).doFinally(signal -> failedEventSink.tryEmitComplete());
         this.publishSubscription = Flux.merge(1, sendResults, failedEventSink.asFlux())
-            .publishOn(Schedulers.boundedElastic(), 1)
+            .publishOn(callbackScheduler, 1)
             .subscribeWith(publishResultSubscriber);
 
         this.tracer = new EventHubsTracer(tracer, client.getFullyQualifiedNamespace(), client.getEventHubName(), null);
