@@ -1,6 +1,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 
 public class ThinClientStoreModelTest {
@@ -252,6 +254,65 @@ public class ThinClientStoreModelTest {
         assertThat(httpHeaders.toMap().get(HttpConstants.HttpHeaders.NO_RETRY_449))
             .as("ThinClient HTTP framing headers should not include the Gateway V1 no-retry-449 header")
             .isNull();
+    }
+
+    @Test(groups = "unit")
+    public void getRootUriThrowsIllegalArgumentExceptionWhenThinClientEndpointIsMissing() throws Exception {
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://acct.documents.azure.com:443/")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setPreferredRegions(Collections.singletonList("East US 2"));
+        Mockito.doReturn(connectionPolicy).when(globalEndpointManager).getConnectionPolicy();
+
+        ThinClientStoreModel storeModel = new ThinClientStoreModel(
+            Mockito.mock(DiagnosticsClientContext.class),
+            Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            Mockito.mock(HttpClient.class),
+            null);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            Mockito.mock(DiagnosticsClientContext.class),
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+
+        assertThatThrownBy(() -> storeModel.getRootUri(request))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("preferred regions do not match any region of the database account")
+            .hasMessageContaining("East US 2");
+    }
+
+    @Test(groups = "unit")
+    public void getRootUriReturnsThinClientEndpointWhenPresent() throws Exception {
+        URI thinClientEndpoint = new URI("https://acct-westcentralus.documents.azure.com:10250/");
+        RegionalRoutingContext routingContext = new RegionalRoutingContext(
+            new URI("https://acct.documents.azure.com:443/"));
+        routingContext.setThinclientRegionalEndpoint(thinClientEndpoint);
+
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(routingContext).when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        ThinClientStoreModel storeModel = new ThinClientStoreModel(
+            Mockito.mock(DiagnosticsClientContext.class),
+            Mockito.mock(ISessionContainer.class),
+            ConsistencyLevel.SESSION,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            Mockito.mock(HttpClient.class),
+            null);
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            Mockito.mock(DiagnosticsClientContext.class),
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+
+        assertThat(storeModel.getRootUri(request)).isEqualTo(thinClientEndpoint);
     }
 
     @Test(groups = "unit")
