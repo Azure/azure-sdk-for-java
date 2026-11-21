@@ -19,6 +19,12 @@ public final class GuestSubscriptionImpl implements GuestSubscription, GuestSubs
         com.azure.resourcemanager.computelimit.ComputeLimitManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.location = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/guestSubscriptions/{guestSubscriptionId}",
+            "location");
+        this.guestSubscriptionId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/guestSubscriptions/{guestSubscriptionId}",
+            "guestSubscriptionId");
     }
 
     public String id() {

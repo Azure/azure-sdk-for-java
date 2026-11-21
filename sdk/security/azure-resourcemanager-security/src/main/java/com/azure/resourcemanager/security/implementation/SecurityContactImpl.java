@@ -23,6 +23,10 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.securityContactName
+            = SecurityContactName.fromString(ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}",
+                "securityContactName"));
     }
 
     public String id() {

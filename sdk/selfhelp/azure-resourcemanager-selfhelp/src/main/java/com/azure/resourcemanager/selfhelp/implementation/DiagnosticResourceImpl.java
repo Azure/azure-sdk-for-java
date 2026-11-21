@@ -24,6 +24,10 @@ public final class DiagnosticResourceImpl implements DiagnosticResource, Diagnos
         com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "scope");
+        this.diagnosticsResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "diagnosticsResourceName");
     }
 
     public String id() {
