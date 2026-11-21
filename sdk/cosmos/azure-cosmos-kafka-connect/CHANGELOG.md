@@ -5,6 +5,8 @@
 #### Features Added
 * Added `azure.cosmos.source.changeFeed.poll.delay.ms` to space polls after no change-feed changes are found. - See [PR 51149](https://github.com/Azure/azure-sdk-for-java/pull/51149)
 
+* Added the `AccessTokenProvider` auth type, which takes Microsoft Entra ID access tokens from a custom `CosmosAccessTokenProvider` implementation configured with `azure.cosmos.auth.accessTokenProvider.class`. This supports identities whose tokens are issued and refreshed outside the connector, such as Fabric workspace identity.
+
 #### Breaking Changes
 
 #### Bugs Fixed
