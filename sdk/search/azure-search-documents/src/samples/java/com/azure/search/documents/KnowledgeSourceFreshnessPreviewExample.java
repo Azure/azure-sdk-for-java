@@ -34,13 +34,12 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeRetrievalSemant
  */
 public class KnowledgeSourceFreshnessPreviewExample {
 
-    private static final String KB_NAME = "freshness-defaults-sample-kb";
-    private static final String KS_NAME = "freshness-defaults-sample-ks";
-
     public static void main(String[] args) {
+        String knowledgeBaseName = PreviewSampleSupport.name("java-dp11-freshness-kb");
+        String knowledgeSourceName = PreviewSampleSupport.name("java-dp11-freshness-ks");
         String endpoint = System.getenv("SEARCH_ENDPOINT");
         String apiKey = System.getenv("SEARCH_API_KEY");
-        String indexName = System.getenv("SEARCH_INDEX_NAME");
+        String indexName = PreviewSampleSupport.required("SEARCH_INDEX_NAME");
         String aoaiEndpoint = System.getenv("SEARCH_OPENAI_ENDPOINT");
         String aoaiDeployment = System.getenv("SEARCH_OPENAI_DEPLOYMENT_NAME");
 
@@ -52,37 +51,40 @@ public class KnowledgeSourceFreshnessPreviewExample {
         KnowledgeBaseRetrievalClient retrievalClient = new KnowledgeBaseRetrievalClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .knowledgeBaseName(KB_NAME)
+            .knowledgeBaseName(knowledgeBaseName)
             .buildClient();
 
 
-        try {
+        try (PreviewSampleSupport.Resources resources = new PreviewSampleSupport.Resources(searchIndexClient)) {
             // Step 1: Create an indexed knowledge source backed by a search index.
             SearchIndexKnowledgeSource knowledgeSource = new SearchIndexKnowledgeSource(
-                KS_NAME,
+                knowledgeSourceName,
                 new SearchIndexKnowledgeSourceParameters(indexName)
-                    .setSemanticConfigurationName("my-semantic-config")
+                    .setSemanticConfigurationName(
+                        PreviewSampleSupport.optional("SEARCH_SEMANTIC_CONFIGURATION", "default"))
             );
-            searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource);
+            resources.createKnowledgeSource(knowledgeSource);
 
             // Step 2: Reference the source with enableFreshness = true.
             // This tells the service to prefer recently-updated documents during retrieval.
-            KnowledgeSourceReference sourceRef = new KnowledgeSourceReference(KS_NAME)
+            KnowledgeSourceReference sourceRef = new KnowledgeSourceReference(knowledgeSourceName)
                 .setEnableFreshness(true);
 
             // Step 3: Create the knowledge base with persisted retrieval defaults.
             // These defaults apply to every retrieve call unless overridden at query time.
-            KnowledgeBase knowledgeBase = new KnowledgeBase(KB_NAME, sourceRef)
+            KnowledgeBase knowledgeBase = new KnowledgeBase(knowledgeBaseName, sourceRef)
                 .setModels(new KnowledgeBaseAzureOpenAIModel(
                     new AzureOpenAIVectorizerParameters()
                         .setResourceUrl(aoaiEndpoint)
                         .setDeploymentName(aoaiDeployment)
-                        .setModelName(AzureOpenAIModelName.GPT54)))
+                        .setApiKey(System.getenv("SEARCH_OPENAI_API_KEY"))
+                        .setModelName(AzureOpenAIModelName.fromString(
+                            PreviewSampleSupport.required("SEARCH_OPENAI_MODEL_NAME")))))
                 .setOutputMode(KnowledgeRetrievalOutputMode.EXTRACTIVE_DATA)
                 .setRetrievalReasoningEffort(new KnowledgeRetrievalMinimalReasoningEffort())
                 .setRetrievalInstructions("Prefer documents updated in the last 7 days.");
 
-            searchIndexClient.createOrUpdateKnowledgeBase(knowledgeBase);
+            resources.createKnowledgeBase(knowledgeBase);
             System.out.println("Created KB with freshness enabled and persisted defaults.");
 
             // Step 4: Retrieve — pass only the query. Defaults from the KB are applied automatically.
@@ -95,11 +97,6 @@ public class KnowledgeSourceFreshnessPreviewExample {
                 + (result.getActivity() != null ? result.getActivity().size() : 0));
 
 
-        } finally {
-            // Cleanup
-            searchIndexClient.deleteKnowledgeBase(KB_NAME);
-            searchIndexClient.deleteKnowledgeSource(KS_NAME);
-            System.out.println("Cleaned up KB and KS.");
         }
     }
 }

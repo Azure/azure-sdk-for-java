@@ -46,6 +46,10 @@
 
 ### Other Changes
 
+- Added integrated November-preview feature walkthroughs for Topic Graph, graph extraction/retrieval, native file
+  ingestion pollers, KB tools, random scoring, automatic query hints, compatible providers, GenAI prompt execution,
+  native GPT-6 retrieval, OneLake security filtering, and agentic retrieval.
+  Hardened Fabric, MCP and freshness sample cleanup to preserve resources not created by the run.
 - Restored the opt-in Content Understanding skillset sample and index statistics pagination and indexer-runtime examples.
 - Deprecated `BasicField.isSensitivityLabel()`, which has no effect when building search fields. Use `isSensitivityLabelId()` for sensitivity label ID filtering or `isSensitivityLabelName()` for sensitivity label names. The legacy member and its default remain unchanged for compatibility.
 
