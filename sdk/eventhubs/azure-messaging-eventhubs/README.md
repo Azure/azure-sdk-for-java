@@ -40,6 +40,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples] | [Troubles
     - [Consume events with EventHubConsumerAsyncClient](#consume-events-with-eventhubconsumerasyncclient)
     - [Consume events with EventHubConsumerClient](#consume-events-with-eventhubconsumerclient)
   - [Consume events using an EventProcessorClient](#consume-events-using-an-eventprocessorclient)
+- [Observability](#observability)
 - [Troubleshooting][troubleshooting]
 - [Next steps](#next-steps)
 - [Contributing](#contributing)
@@ -413,6 +414,34 @@ EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .buildEventProcessorClient();
 ```
 
+## Observability
+
+To export traces or metrics, add the Azure Core [OpenTelemetry tracing plugin][tracing_plugin] or
+[OpenTelemetry metrics plugin][metrics_plugin] and configure your OpenTelemetry provider before building clients.
+Both plugins are optional. AMQP lifecycle logs use the standard [Azure SDK logging providers][logging]. An
+application can forward these records through its logging framework's OpenTelemetry appender.
+
+| Instrument | Unit | Measurement |
+| --- | --- | --- |
+| `az.eventhubs.operations` | `{operation}` | Completed sends and receives by outcome (`success`, `error`, or `cancelled`). |
+| `az.eventhubs.events` | `{event}` | Events in acknowledged batches and events delivered to a receiver, including before a later failure or cancellation. |
+| `az.eventhubs.operation.duration` | `s` | Time from subscription to the end of the logical operation, including retries. |
+| `az.eventhubs.amqp.lifecycle` | `{transition}` | Completed connection, session, sender, and receiver open attempts and observed remote invalidations. |
+
+A buffered producer counts a send when it publishes a batch. A synchronous consumer measures each requested window.
+An asynchronous consumer or processor measures one operation per subscribed partition stream and counts each event
+as it arrives. For these continuous streams the duration includes idle time and downstream backpressure.
+Consumer operation metrics include the consumer group. Endpoint lifecycle counters include the namespace and hub.
+Cancelling a continuous receive records the `cancelled` metric outcome and closes its spans with unset status.
+The existing `messaging.client.published.messages` metric continues to report batch sizes by send outcome.
+
+`EventHubs.send.disposition` traces a send-link attempt through its broker outcome, including retries internal to
+the link. `EventHubs.receive.wait` measures a bounded receive window or the time to the first event on a continuous
+stream. Both are children of the corresponding logical operation. Connection, session, and link spans measure actual
+AMQP endpoint handshakes. Shared endpoints have independent lifetimes. Their spans and lifecycle logs carry the
+connection ID, physical endpoint ID, logical endpoint name, and creation-attempt generation. Data-link measurements
+exclude CBS and management links. Metric labels use the namespace and hub to group these transitions.
+
 ## Troubleshooting
 
 See [TROUBLESHOOTING.md][troubleshooting].
@@ -429,6 +458,8 @@ If you would like to become an active contributor to this project please refer t
 Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/CONTRIBUTING.md) for more information.
 
 <!-- Links -->
+[tracing_plugin]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-tracing-opentelemetry
+[metrics_plugin]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-metrics-opentelemetry
 [aad_authorization]: https://learn.microsoft.com/azure/event-hubs/authorize-access-azure-active-directory
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
 [AmqpErrorCondition]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java

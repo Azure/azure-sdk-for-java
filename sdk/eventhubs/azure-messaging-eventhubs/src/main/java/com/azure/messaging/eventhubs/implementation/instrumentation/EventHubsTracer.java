@@ -14,6 +14,8 @@ import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 
+import reactor.util.context.ContextView;
+
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Collections;
@@ -74,6 +76,48 @@ public final class EventHubsTracer {
 
     public Context startSpan(OperationName operationName, StartSpanOptions startOptions, Context context) {
         return isEnabled() ? tracer.start(getSpanName(operationName), startOptions, context) : context;
+    }
+
+    public static Context getParent(ContextView context) {
+        Object parent = context.getOrDefault(Tracer.PARENT_TRACE_CONTEXT_KEY, null);
+        if (parent == null) {
+            return Context.NONE;
+        }
+        return parent instanceof Context ? (Context) parent : new Context(Tracer.PARENT_TRACE_CONTEXT_KEY, parent);
+    }
+
+    public Context startAmqpSpan(String name, String operation, SpanKind kind, Context parent) {
+        return isEnabled()
+            ? tracer.start(name,
+                new StartSpanOptions(kind).setAttribute(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE)
+                    .setAttribute(MESSAGING_OPERATION_NAME, operation)
+                    .setAttribute(MESSAGING_DESTINATION_NAME, entityName)
+                    .setAttribute(SERVER_ADDRESS, fullyQualifiedName),
+                parent)
+            : Context.NONE;
+    }
+
+    public void identifyEndpoint(Context span, String component, String connectionId, String endpointId,
+        String logicalName, long attempt) {
+        if (isEnabled()) {
+            tracer.setAttribute("az.eventhubs.amqp.connection.id", connectionId, span);
+            tracer.setAttribute("az.eventhubs.amqp.component.type", component, span);
+            tracer.setAttribute("az.eventhubs.amqp.component.id", endpointId, span);
+            tracer.setAttribute("az.eventhubs.amqp.component.name", logicalName, span);
+            tracer.setAttribute("az.eventhubs.amqp.component.generation", attempt, span);
+        }
+    }
+
+    public void setEventCount(Context span, long count) {
+        if (isEnabled()) {
+            tracer.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, count, span);
+        }
+    }
+
+    public void endAmqpSpan(Context span, String outcome) {
+        if (isEnabled()) {
+            tracer.end("success".equals(outcome) ? null : outcome, null, span);
+        }
     }
 
     public Context startGenericOperationSpan(OperationName operationName, String partitionId, Context parent) {

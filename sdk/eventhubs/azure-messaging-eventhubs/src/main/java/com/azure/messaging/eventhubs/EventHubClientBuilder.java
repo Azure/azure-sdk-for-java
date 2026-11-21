@@ -989,6 +989,7 @@ public class EventHubClientBuilder
         }
 
         final Meter meter = createMeter();
+        final Tracer tracer = createTracer();
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final ConnectionCacheWrapper processor;
@@ -999,10 +1000,10 @@ public class EventHubClientBuilder
                         final boolean useSessionChannelCache
                             = v2StackSupport.isSessionChannelCacheEnabled(configuration);
                         eventHubConnectionProcessor = new ConnectionCacheWrapper(
-                            buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                            buildConnectionCache(messageSerializer, meter, tracer, useSessionChannelCache));
                     } else {
                         eventHubConnectionProcessor
-                            = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+                            = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter, tracer));
                     }
                 }
             }
@@ -1015,9 +1016,9 @@ public class EventHubClientBuilder
             if (v2StackSupport.isV2StackEnabled(configuration)) {
                 final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
                 processor = new ConnectionCacheWrapper(
-                    buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                    buildConnectionCache(messageSerializer, meter, tracer, useSessionChannelCache));
             } else {
-                processor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+                processor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter, tracer));
             }
         }
 
@@ -1032,7 +1033,7 @@ public class EventHubClientBuilder
         }
 
         return new EventHubAsyncClient(processor, messageSerializer, scheduler, isSharedConnection.get(),
-            this::onClientClose, identifier, meter, createTracer());
+            this::onClientClose, identifier, meter, tracer);
     }
 
     /**
@@ -1104,7 +1105,8 @@ public class EventHubClientBuilder
                 clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
-    private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
+    private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter,
+        Tracer tracer) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
@@ -1132,7 +1134,8 @@ public class EventHubClientBuilder
                     = new AzureTokenManagerProvider(connectionOptions.getAuthorizationType(),
                         connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getAuthorizationScope());
                 final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+                final ReactorHandlerProvider handlerProvider = new EventHubsHandlerProvider(provider, meter, tracer,
+                    connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get());
                 final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
                 final EventHubAmqpConnection connection
@@ -1147,8 +1150,8 @@ public class EventHubClientBuilder
             connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get(), connectionOptions.getRetry()));
     }
 
-    private ReactorConnectionCache<EventHubReactorAmqpConnection>
-        buildConnectionCache(MessageSerializer messageSerializer, Meter meter, boolean useSessionChannelCache) {
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> buildConnectionCache(
+        MessageSerializer messageSerializer, Meter meter, Tracer tracer, boolean useSessionChannelCache) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
@@ -1158,7 +1161,7 @@ public class EventHubClientBuilder
             return eventHubName;
         };
         return v2StackSupport.createConnectionCache(connectionOptions, getEventHubName, messageSerializer, meter,
-            useSessionChannelCache);
+            tracer, useSessionChannelCache);
     }
 
     ConnectionOptions getConnectionOptions() {

@@ -38,6 +38,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
@@ -543,7 +544,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
-        return sendInternal(events, options).publishOn(scheduler);
+        return instrumentation.logicalSend(sendInternal(events, options)).publishOn(scheduler);
     }
 
     /**
@@ -557,11 +558,15 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(EventDataBatch batch) {
+        return instrumentation.logicalSend(sendBatch(batch));
+    }
+
+    private Mono<Integer> sendBatch(EventDataBatch batch) {
         if (batch == null) {
             return monoError(LOGGER, new NullPointerException("'batch' cannot be null."));
         } else if (batch.getEvents().isEmpty()) {
             LOGGER.warning(Messages.CANNOT_SEND_EVENT_BATCH_EMPTY);
-            return Mono.empty();
+            return Mono.just(0);
         }
 
         if (!CoreUtils.isNullOrEmpty(batch.getPartitionId())) {
@@ -583,41 +588,38 @@ public class EventHubProducerAsyncClient implements Closeable {
         final List<Message> messages
             = batch.getEvents().stream().map(messageSerializer::serialize).collect(Collectors.toList());
 
-        final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
-            .flatMap(link -> messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages));
+        final Mono<Void> sendMessage = getSendLink(batch.getPartitionId()).flatMap(link -> instrumentation
+            .sendDisposition(messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages)));
 
         final Mono<Void> send = withRetry(sendMessage, retryOptions,
             String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId())).publishOn(scheduler);
 
         // important to end spans after metrics are reported so metrics get relevant context for exemplars.
-        return instrumentation.sendBatch(send, batch);
+        return instrumentation.sendBatch(send, batch).thenReturn(messages.size());
     }
 
-    private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
+    private Flux<Integer> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
 
         if (!CoreUtils.isNullOrEmpty(partitionKey) && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(LOGGER,
+            return fluxError(LOGGER,
                 new IllegalArgumentException(String.format(Locale.US,
                     "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
                         + " other can be used. partitionKey: '%s'. partitionId: '%s'",
                     partitionKey, partitionId)));
         }
 
-        return getSendLink(options.getPartitionId()).flatMap(link -> link.getLinkSize().flatMap(size -> {
+        return getSendLink(options.getPartitionId()).flatMapMany(link -> link.getLinkSize().flatMap(size -> {
             final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
             final CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey(options.getPartitionKey())
                 .setPartitionId(options.getPartitionId())
                 .setMaximumSizeInBytes(batchSize);
             return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext, instrumentation));
-        }).flatMap(list -> sendInternal(Flux.fromIterable(list))));
-    }
-
-    private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
-        return eventBatches.flatMap(this::send).then().doOnError(error -> {
-            LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
-        });
+        })
+            .flatMapMany(Flux::fromIterable)
+            .flatMap(this::sendBatch)
+            .doOnError(error -> LOGGER.error(Messages.ERROR_SENDING_BATCH, error)));
     }
 
     private String getEntityPath(String partitionId) {

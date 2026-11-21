@@ -7,7 +7,10 @@ import com.azure.core.test.utils.metrics.TestCounter;
 import com.azure.core.test.utils.metrics.TestHistogram;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.TracingOptions;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import io.opentelemetry.api.OpenTelemetry;
@@ -23,12 +26,15 @@ import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -80,6 +86,8 @@ public class EventHubsProducerInstrumentationTests {
         batch.tryAdd(new EventData("test"));
         Mono<Void> inner = Mono.empty();
         assertSame(inner, instrumentation.sendBatch(inner, batch));
+        assertSame(inner, instrumentation.sendDisposition(inner));
+        StepVerifier.create(instrumentation.logicalSend(Mono.just(1))).verifyComplete();
     }
 
     public static Stream<Arguments> sendBatchErrors() {
@@ -144,6 +152,91 @@ public class EventHubsProducerInstrumentationTests {
         assertSendDuration(partitionId, expectedErrorType);
         assertBatchCount(count, partitionId, expectedErrorType);
         assertSpans(count, partitionId, expectedErrorType, spanDescription);
+    }
+
+    @Test
+    public void retryCountsOneOperationAndOnlyAcceptedEvents() {
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(tracer, meter, FQDN, ENTITY_NAME);
+        EventDataBatch batch = new EventDataBatch(1024, null, null, () -> null, instrumentation);
+        AtomicInteger attempts = new AtomicInteger();
+        Mono<Void> delivery = Mono.defer(() -> attempts.incrementAndGet() == 1
+            ? Mono.error(new IllegalStateException("broker diagnostics"))
+            : Mono.empty());
+        Mono<Void> send = instrumentation.sendBatch(instrumentation.sendDisposition(delivery).retry(1), batch);
+        StepVerifier.create(instrumentation.logicalSend(send.thenReturn(3))).verifyComplete();
+
+        assertEquals(2, attempts.get());
+        assertEquals(1, meter.getCounters().get("az.eventhubs.operations").getMeasurements().size());
+        assertEquals("success",
+            meter.getCounters().get("az.eventhubs.operations").getMeasurements().get(0).getAttributes().get("outcome"));
+        assertEquals(3L, meter.getCounters().get("az.eventhubs.events").getMeasurements().get(0).getValue());
+        assertEquals(1, meter.getHistograms().get("az.eventhubs.operation.duration").getMeasurements().size());
+        List<SpanData> spans
+            = spanProcessor.getEndedSpans().stream().map(s -> s.toSpanData()).collect(Collectors.toList());
+        assertEquals(4, spans.size());
+        assertEquals("EventHubs.send", spans.get(3).getName());
+        assertEquals(3L, attributesToMap(spans.get(3).getAttributes()).get("messaging.batch.message_count"));
+        assertEquals(spans.get(3).getSpanId(), spans.get(2).getParentSpanId());
+        for (int i = 0; i < 2; i++) {
+            assertEquals("EventHubs.send.disposition", spans.get(i).getName());
+            assertEquals(spans.get(2).getSpanId(), spans.get(i).getParentSpanId());
+        }
+        assertEquals("error", spans.get(0).getStatus().getDescription());
+        assertEquals(0, spans.get(0).getEvents().size());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void sendUsesExplicitParentFromReactor(boolean useProviderContext) {
+        Context parent
+            = tracer.start("caller", new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL), Context.NONE);
+        reactor.util.context.Context reactorParent = useProviderContext
+            ? FluxUtil.toReactorContext(parent)
+            : reactor.util.context.Context.of(Tracer.PARENT_TRACE_CONTEXT_KEY, parent);
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(tracer, meter, FQDN, ENTITY_NAME);
+        EventDataBatch batch = new EventDataBatch(1024, null, null, () -> null, instrumentation);
+        StepVerifier.create(instrumentation
+            .logicalSend(instrumentation.sendBatch(instrumentation.sendDisposition(Mono.empty()), batch).thenReturn(1))
+            .contextWrite(reactorParent)).verifyComplete();
+        tracer.end(null, null, parent);
+        List<SpanData> spans
+            = spanProcessor.getEndedSpans().stream().map(s -> s.toSpanData()).collect(Collectors.toList());
+        assertEquals(4, spans.size());
+        for (int i = 0; i < 3; i++) {
+            assertEquals(spans.get(i + 1).getSpanId(), spans.get(i).getParentSpanId());
+        }
+    }
+
+    @Test
+    public void cancellationPreservesPreviouslyAcceptedBatches() {
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(null, meter, FQDN, ENTITY_NAME);
+        TestPublisher<Integer> accepted = TestPublisher.create();
+        StepVerifier.create(instrumentation.logicalSend(accepted)).then(() -> accepted.next(3)).thenCancel().verify();
+        assertEquals(3L, meter.getCounters().get("az.eventhubs.events").getMeasurements().get(0).getValue());
+        assertEquals("cancelled",
+            meter.getCounters().get("az.eventhubs.operations").getMeasurements().get(0).getAttributes().get("outcome"));
+    }
+
+    @Test
+    public void failureAndCancellationDoNotCountEvents() {
+        EventHubsProducerInstrumentation instrumentation
+            = new EventHubsProducerInstrumentation(tracer, meter, FQDN, ENTITY_NAME);
+        RuntimeException original = new IllegalStateException("private broker diagnostics");
+        StepVerifier.create(instrumentation.logicalSend(Mono.error(original)))
+            .expectErrorMatches(e -> e == original)
+            .verify();
+        StepVerifier.create(instrumentation.logicalSend(Mono.never())).thenCancel().verify();
+
+        TestCounter operations = meter.getCounters().get("az.eventhubs.operations");
+        assertEquals(2, operations.getMeasurements().size());
+        assertEquals("error", operations.getMeasurements().get(0).getAttributes().get("outcome"));
+        assertEquals("cancelled", operations.getMeasurements().get(1).getAttributes().get("outcome"));
+        assertEquals(0, meter.getCounters().get("az.eventhubs.events").getMeasurements().size());
+        assertEquals("error", spanProcessor.getEndedSpans().get(0).toSpanData().getStatus().getDescription());
+        assertEquals(0, spanProcessor.getEndedSpans().get(0).toSpanData().getEvents().size());
     }
 
     private void assertSendDuration(String partitionId, String expectedErrorType) {
