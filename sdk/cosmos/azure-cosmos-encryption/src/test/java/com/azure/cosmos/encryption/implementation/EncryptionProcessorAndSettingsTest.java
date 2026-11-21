@@ -8,7 +8,9 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.EncryptionAsyncApiCrudTest;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.AeadAes256CbcHmac256EncryptionAlgorithm;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionKeyStoreProvider;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -22,13 +24,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.time.Duration;
 import java.time.Instant;
@@ -37,6 +42,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.fail;
 
 public class EncryptionProcessorAndSettingsTest {
@@ -272,5 +278,250 @@ public class EncryptionProcessorAndSettingsTest {
             encryptionProcessor.encryptObjectNode(document).block(),
             CosmosItemSerializer.DEFAULT_SERIALIZER).block().getLeft());
         assertThat(output).isEqualTo(json);
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void encryptPatchMixedArray() throws Exception {
+        EncryptionProcessor encryptionProcessor = createEncryptionProcessor();
+        JsonNode patchValue = OBJECT_MAPPER.readTree(
+            "[{\"label\":\"patched\"},\"PATCH_SECRET\",[\"NESTED_SECRET\"],null,42,{\"tail\":\"TAIL_SECRET\"}]");
+        JsonNode expectedValue = patchValue.deepCopy();
+
+        JsonNode encryptedPatchValue = encryptionProcessor.encryptPatchNode(patchValue, "/sensitiveString").block();
+
+        assertThat(encryptedPatchValue.get(0).get("label").isBinary()).isTrue();
+        assertThat(encryptedPatchValue.get(1).isBinary()).isTrue();
+        assertThat(encryptedPatchValue.get(2).get(0).isBinary()).isTrue();
+        assertThat(encryptedPatchValue.get(3).isNull()).isTrue();
+        assertThat(encryptedPatchValue.get(4).isBinary()).isTrue();
+        assertThat(encryptedPatchValue.get(5).get("tail").isBinary()).isTrue();
+
+        ObjectNode patchedDocument = OBJECT_MAPPER.createObjectNode();
+        patchedDocument.put("id", "patchItem");
+        patchedDocument.set("sensitiveString", encryptedPatchValue);
+        JsonNode decryptedPatchedDocument = encryptionProcessor.decrypt(patchedDocument,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+        assertThat(decryptedPatchedDocument.get("sensitiveString").toString()).isEqualTo(expectedValue.toString());
+
+        ObjectNode document = OBJECT_MAPPER.createObjectNode();
+        document.put("id", "createItem");
+        document.set("sensitiveString", expectedValue.deepCopy());
+        byte[] encryptedDocumentBytes = encryptionProcessor.encrypt(document).block();
+        JsonNode encryptedDocument = OBJECT_MAPPER.readTree(encryptedDocumentBytes);
+        assertThat(encryptedDocument.toString()).doesNotContain("patched", "PATCH_SECRET", "NESTED_SECRET",
+            "TAIL_SECRET");
+        JsonNode decryptedDocument = encryptionProcessor.decrypt(encryptedDocumentBytes,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+        assertThat(decryptedDocument.get("sensitiveString").toString()).isEqualTo(expectedValue.toString());
+    }
+
+    @DataProvider(name = "legacyMixedArrays")
+    public Object[][] legacyMixedArrays() {
+        return new Object[][] {
+            {"[{\"label\":\"secret\"},42]", IllegalArgumentException.class},
+            {"[{\"label\":\"secret\"},true]", IllegalArgumentException.class},
+            {"[{\"label\":\"secret\"},\"LEGACY_SECRET!\"]", IOException.class},
+            {"[{\"label\":\"secret\"},\"\"]", IllegalArgumentException.class},
+            {"[{\"label\":\"secret\"},\"YWJjZA==\"]", MicrosoftDataEncryptionException.class},
+            {"[[\"secret\"],42]", IllegalArgumentException.class}
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "legacyMixedArrays", timeOut = TIMEOUT)
+    public void decryptLegacyMixedArrayReportsMigration(String arrayJson,
+                                                       Class<? extends Throwable> expectedCause) throws Exception {
+        EncryptionProcessor encryptionProcessor = createEncryptionProcessor();
+        ArrayNode legacyArray = (ArrayNode) OBJECT_MAPPER.readTree(arrayJson);
+        // Old writers encrypted the leading container but skipped subsequent scalar elements.
+        legacyArray.set(0, encryptionProcessor.encryptPatchNode(legacyArray.get(0), "/sensitiveString/0").block());
+        ObjectNode document = OBJECT_MAPPER.createObjectNode();
+        document.put("id", "legacyItem");
+        document.set("sensitiveString", legacyArray);
+        byte[] storedDocument = OBJECT_MAPPER.writeValueAsBytes(document);
+
+        assertThatThrownBy(() -> encryptionProcessor.decrypt(storedDocument,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block())
+            .isInstanceOf(IllegalStateException.class)
+            .hasCauseInstanceOf(expectedCause)
+            .hasMessageContaining("index 1")
+            .hasMessageContaining("encrypted property '/sensitiveString'")
+            .hasMessageContaining("SDK version that wrote it")
+            .hasMessageContaining("rewrite the decrypted item")
+            .hasMessageContaining("-DCOSMOS.ENCRYPTION_MIXED_ARRAYS_ENABLED=false")
+            .hasMessageContaining("COSMOS_ENCRYPTION_MIXED_ARRAYS_ENABLED=false")
+            .hasMessageNotContaining("secret")
+            .hasMessageNotContaining("LEGACY_SECRET!")
+            .hasMessageNotContaining("YWJjZA==");
+
+        EncryptionProcessor legacyReader = createEncryptionProcessor(false);
+        JsonNode decryptedDocument = legacyReader.decrypt(storedDocument,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+        assertThat(decryptedDocument.get("sensitiveString").toString())
+            .isEqualTo(OBJECT_MAPPER.readTree(arrayJson).toString());
+    }
+
+    @DataProvider(name = "mixedArrayModes")
+    public Object[][] mixedArrayModes() {
+        return new Object[][] {{true}, {false}};
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "mixedArrayModes", timeOut = TIMEOUT)
+    public void decryptArrayPreservesAuthenticationFailure(boolean mixedArraysEnabled) throws Exception {
+        EncryptionProcessor encryptionProcessor = createEncryptionProcessor(mixedArraysEnabled);
+        EncryptionSettings settings = Mockito.mock(EncryptionSettings.class);
+        AeadAes256CbcHmac256EncryptionAlgorithm algorithm = Mockito.mock(AeadAes256CbcHmac256EncryptionAlgorithm.class);
+        Mockito.when(settings.getAeadAes256CbcHmac256EncryptionAlgorithm()).thenReturn(algorithm);
+        MicrosoftDataEncryptionException authenticationFailure =
+            new MicrosoftDataEncryptionException("Authentication failed");
+        Mockito.when(algorithm.decrypt(Mockito.any(byte[].class))).thenThrow(authenticationFailure);
+        JsonNode array = OBJECT_MAPPER.readTree("[\"AQID\"]");
+
+        assertThatThrownBy(() -> encryptionProcessor.decryptAndSerializeProperty(settings, null, array,
+            "sensitiveString"))
+            .isInstanceOf(IllegalStateException.class)
+            .hasCause(authenticationFailure)
+            .hasMessageContaining("check the encryption key and ciphertext integrity");
+    }
+
+    @DataProvider(name = "legacyArrayWrites")
+    public Object[][] legacyArrayWrites() {
+        String objectFirst = "[{\"label\":\"secret\"},42,\"LEGACY_SECRET\",true,null,[\"nested\"],"
+            + "{\"tail\":\"secret\"}]";
+        String nestedArray = "{\"nested\":[[\"secret\"],42,\"LEGACY_SECRET\",null]}";
+        return new Object[][] {
+            {objectFirst, false}, {objectFirst, true},
+            {nestedArray, false}, {nestedArray, true},
+            {"[\"secret\",42,true]", false}, {"[\"secret\",42,true]", true}
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "legacyArrayWrites", timeOut = TIMEOUT)
+    public void legacyOptOutAppliesToItemAndPatchWrites(String valueJson, boolean patch) throws Exception {
+        EncryptionProcessor legacyProcessor = createEncryptionProcessor(false);
+        JsonNode originalValue = OBJECT_MAPPER.readTree(valueJson);
+        ObjectNode document = OBJECT_MAPPER.createObjectNode();
+        document.put("id", "legacyItem");
+        document.set("sensitiveString", originalValue.deepCopy());
+
+        if (patch) {
+            document.set("sensitiveString",
+                legacyProcessor.encryptPatchNode(document.get("sensitiveString"), "/sensitiveString").block());
+        } else {
+            document = (ObjectNode) OBJECT_MAPPER.readTree(legacyProcessor.encrypt(document).block());
+        }
+
+        JsonNode encryptedValue = document.get("sensitiveString");
+        JsonNode encryptedArray = encryptedValue.isObject() ? encryptedValue.get("nested") : encryptedValue;
+        if (originalValue.isObject() || originalValue.get(0).isContainerNode()) {
+            assertThat(encryptedArray.get(1).asInt()).isEqualTo(42);
+            assertThat(encryptedArray.get(2).asText()).isEqualTo("LEGACY_SECRET");
+        } else {
+            assertThat(encryptedArray.get(0).asText()).isNotEqualTo("secret");
+        }
+
+        JsonNode decryptedDocument = legacyProcessor.decrypt(OBJECT_MAPPER.writeValueAsBytes(document),
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+        assertThat(decryptedDocument.get("sensitiveString").toString()).isEqualTo(originalValue.toString());
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void migrateLegacyMixedArrayWithOptOut() throws Exception {
+        EncryptionProcessor legacyProcessor = createEncryptionProcessor(false);
+        EncryptionProcessor fixedProcessor = createEncryptionProcessor(true);
+        ObjectNode document = (ObjectNode) OBJECT_MAPPER.readTree(
+            "{\"id\":\"migrateItem\",\"sensitiveString\":[{\"label\":\"secret\"},42,\"LEGACY_SECRET\"]}");
+        String expectedDocument = document.toString();
+        byte[] legacyBytes = legacyProcessor.encrypt(document).block();
+        JsonNode decryptedLegacyDocument = legacyProcessor.decrypt(legacyBytes,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+
+        byte[] migratedBytes = fixedProcessor.encrypt(decryptedLegacyDocument).block();
+        assertThat(OBJECT_MAPPER.readTree(migratedBytes).toString()).doesNotContain("secret", "LEGACY_SECRET");
+        assertThat(OBJECT_MAPPER.readTree(migratedBytes).get("sensitiveString").get(1).isTextual()).isTrue();
+        JsonNode decryptedMigratedDocument = fixedProcessor.decrypt(migratedBytes,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+        assertThat(decryptedMigratedDocument.toString()).isEqualTo(expectedDocument);
+    }
+
+    @DataProvider(name = "legacyUnsupportedArrays")
+    public Object[][] legacyUnsupportedArrays() {
+        return new Object[][] {
+            {"[42,{\"label\":\"secret\"}]", false}, {"[42,{\"label\":\"secret\"}]", true},
+            {"[\"secret\",[42]]", false}, {"[\"secret\",[42]]", true},
+            {"[null]", false}, {"[null]", true}
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "legacyUnsupportedArrays", timeOut = TIMEOUT)
+    public void legacyOptOutPreservesUnsupportedArrayFailures(String valueJson, boolean patch) throws Exception {
+        EncryptionProcessor legacyProcessor = createEncryptionProcessor(false);
+        JsonNode value = OBJECT_MAPPER.readTree(valueJson);
+        if (patch) {
+            assertThatThrownBy(() -> legacyProcessor.encryptPatchNode(value, "/sensitiveString").block())
+                .hasMessageContaining("Invalid or Unsupported Data Type");
+        } else {
+            ObjectNode document = OBJECT_MAPPER.createObjectNode();
+            document.put("id", "legacyItem");
+            document.set("sensitiveString", value);
+            assertThatThrownBy(() -> legacyProcessor.encrypt(document).block())
+                .hasMessageContaining("Invalid or Unsupported Data Type");
+        }
+    }
+
+    @DataProvider(name = "mixedArrayConfigurationValues")
+    public Object[][] mixedArrayConfigurationValues() {
+        return new Object[][] {
+            {null, null, true}, {"", "", true},
+            {"false", null, false}, {null, "false", false}, {"", "false", false},
+            {"true", "false", true}, {"false", "true", false},
+            {"FALSE", null, false}, {null, "TRUE", true}
+        };
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "mixedArrayConfigurationValues", timeOut = TIMEOUT)
+    public void mixedArrayConfigurationPrecedence(String systemProperty, String environmentVariable, boolean expected) {
+        assertThat(EncryptionConfigs.isMixedArrayEncryptionEnabled(systemProperty, environmentVariable))
+            .isEqualTo(expected);
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void invalidMixedArrayConfigurationFailsExplicitly() {
+        assertThatThrownBy(() -> EncryptionConfigs.isMixedArrayEncryptionEnabled("tru", "false"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Only 'true' or 'false'");
+        assertThatThrownBy(() -> EncryptionConfigs.isMixedArrayEncryptionEnabled(null, "0"))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining(EncryptionConfigs.MIXED_ARRAYS_ENABLED_VARIABLE);
+    }
+
+    private EncryptionProcessor createEncryptionProcessor(boolean mixedArraysEnabled) throws JsonProcessingException {
+        String previousValue = System.getProperty(EncryptionConfigs.MIXED_ARRAYS_ENABLED);
+        try {
+            System.setProperty(EncryptionConfigs.MIXED_ARRAYS_ENABLED, Boolean.toString(mixedArraysEnabled));
+            return createEncryptionProcessor();
+        } finally {
+            if (previousValue == null) {
+                System.clearProperty(EncryptionConfigs.MIXED_ARRAYS_ENABLED);
+            } else {
+                System.setProperty(EncryptionConfigs.MIXED_ARRAYS_ENABLED, previousValue);
+            }
+        }
+    }
+
+    private EncryptionProcessor createEncryptionProcessor() throws JsonProcessingException {
+        CosmosAsyncContainer cosmosAsyncContainer = Mockito.mock(CosmosAsyncContainer.class);
+        CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient = Mockito.mock(CosmosEncryptionAsyncClient.class);
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.isMixedArrayEncryptionEnabled(cosmosEncryptionAsyncClient))
+            .thenReturn(EncryptionConfigs.isMixedArrayEncryptionEnabled());
+        Mockito.when(cosmosEncryptionAsyncClient.getKeyEncryptionKeyResolver()).thenReturn(keyEncryptionKeyResolver);
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getContainerPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateContainerWithCosmosEncryptionPolicy()));
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getClientEncryptionPropertiesAsync(cosmosEncryptionAsyncClient,
+            Mockito.anyString(),
+            Mockito.anyString(),
+            Mockito.any(CosmosAsyncContainer.class), Mockito.anyBoolean(), Mockito.nullable(String.class), Mockito.anyBoolean())).thenReturn(Mono.just(generateClientEncryptionKeyProperties()));
+        EncryptionKeyStoreProviderImpl encryptionKeyStoreProvider = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, "TEST_KEY_RESOLVER");
+        Mockito.when(cosmosEncryptionAsyncClientAccessor.getEncryptionKeyStoreProviderImpl(cosmosEncryptionAsyncClient)).thenReturn(encryptionKeyStoreProvider);
+        return new EncryptionProcessor(cosmosAsyncContainer, cosmosEncryptionAsyncClient);
     }
 }
