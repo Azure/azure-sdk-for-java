@@ -27,6 +27,7 @@ import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -37,7 +38,12 @@ import com.azure.storage.blob.SessionContext;
 import com.azure.storage.blob.implementation.accesshelpers.SessionContextAccessor;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.SessionContext.SessionMode;
+import com.azure.storage.blob.options.BlobDownloadContentOptions;
+import com.azure.storage.common.ContentValidationAlgorithm;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
 import com.azure.storage.common.policy.DataLocalityPolicy;
 import com.azure.storage.common.policy.StorageBearerTokenChallengeAuthorizationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -64,9 +70,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.lang.reflect.Modifier;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -1110,6 +1118,52 @@ public class SessionTests {
 
         @ParameterizedTest
         @ValueSource(booleans = { true, false })
+        public void structuredMessageDownloadUsesSessionAuthentication(boolean async) {
+            AtomicInteger acquisitions = new AtomicInteger();
+            List<String> downloadAuthorizations = new CopyOnWriteArrayList<>();
+            List<String> downloadStructuredBodies = new CopyOnWriteArrayList<>();
+            HttpClient transport = request -> {
+                if (request.getHttpMethod() == HttpMethod.POST) {
+                    acquisitions.incrementAndGet();
+                    return sessionResponse(request, "structured");
+                }
+                downloadAuthorizations.add(request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+                downloadStructuredBodies
+                    .add(request.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME));
+                return structuredDownloadResponse(request);
+            };
+            BlobServiceClientBuilder builder = serviceClientBuilder().httpClient(transport)
+                .sessionContext(new SessionContext().setSessionMode(SessionMode.ENABLED));
+            BlobDownloadContentOptions options
+                = new BlobDownloadContentOptions().setContentValidationAlgorithm(ContentValidationAlgorithm.CRC64);
+
+            if (async) {
+                StepVerifier
+                    .create(builder.buildAsyncClient()
+                        .getBlobContainerAsyncClient("container")
+                        .getBlobAsyncClient("blob")
+                        .downloadContentWithResponse(options))
+                    .assertNext(response -> assertEquals("data", response.getValue().toString()))
+                    .verifyComplete();
+            } else {
+                assertEquals("data",
+                    builder.buildClient()
+                        .getBlobContainerClient("container")
+                        .getBlobClient("blob")
+                        .downloadContentWithResponse(options, null, Context.NONE)
+                        .getValue()
+                        .toString());
+            }
+
+            assertEquals(1, acquisitions.get());
+            assertEquals(1, downloadAuthorizations.size());
+            assertEquals(StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE, downloadStructuredBodies.get(0));
+            assertTrue(downloadAuthorizations.get(0).startsWith("Session structured:"),
+                "Structured message downloads must use session authentication.");
+        }
+
+        @ParameterizedTest
+        @ValueSource(booleans = { true, false })
         public void customAcquisitionInheritsRetrySettings(boolean async) {
             AtomicInteger attempts = new AtomicInteger();
             AtomicInteger perCallInvocations = new AtomicInteger();
@@ -1266,6 +1320,25 @@ public class SessionTests {
             .addHeader(HttpHeaderName.CONTENT_TYPE.toString(), "application/octet-stream")
             .addHeader(HttpHeaderName.ETAG.toString(), "\"etag\"")
             .addHeader(HttpHeaderName.LAST_MODIFIED.toString(), new DateTimeRfc1123(OffsetDateTime.now()).toString()));
+    }
+
+    private static Mono<HttpResponse> structuredDownloadResponse(HttpRequest request) {
+        byte[] data = "data".getBytes(StandardCharsets.UTF_8);
+        byte[] encoded
+            = FluxUtil
+                .collectBytesInByteBufferStream(
+                    new StructuredMessageEncoder(data.length, data.length, StructuredMessageFlags.STORAGE_CRC64)
+                        .encode(ByteBuffer.wrap(data)))
+                .block();
+        return Mono.just(new MockHttpResponse(request, 200, encoded)
+            .addHeader(HttpHeaderName.CONTENT_LENGTH.toString(), String.valueOf(encoded.length))
+            .addHeader(HttpHeaderName.CONTENT_TYPE.toString(), "application/octet-stream")
+            .addHeader(HttpHeaderName.ETAG.toString(), "\"etag\"")
+            .addHeader(HttpHeaderName.LAST_MODIFIED.toString(), new DateTimeRfc1123(OffsetDateTime.now()).toString())
+            .addHeader(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME.toString(),
+                StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE)
+            .addHeader(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME.toString(),
+                String.valueOf(data.length)));
     }
 
     private static BlobServiceClientBuilder serviceClientBuilder() {
