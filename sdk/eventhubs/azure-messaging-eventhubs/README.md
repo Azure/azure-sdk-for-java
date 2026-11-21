@@ -424,20 +424,23 @@ application can forward these records through its logging framework's OpenTeleme
 | Instrument | Unit | Measurement |
 | --- | --- | --- |
 | `az.eventhubs.operations` | `{operation}` | Completed sends and receives by outcome (`success`, `error`, or `cancelled`). |
-| `az.eventhubs.events` | `{event}` | Events in successful sends and events delivered to a receiver, including before a stream fails or is cancelled. |
+| `az.eventhubs.events` | `{event}` | Events in acknowledged batches and events delivered to a receiver, including before a later failure or cancellation. |
 | `az.eventhubs.operation.duration` | `s` | Time from subscription to the end of the logical operation, including retries. |
 | `az.eventhubs.amqp.lifecycle` | `{transition}` | Completed connection, session, sender, and receiver open attempts and observed remote invalidations. |
 
 A buffered producer counts a send when it publishes a batch. A synchronous consumer measures each requested window.
 An asynchronous consumer or processor measures one operation per subscribed partition stream and counts each event
 as it arrives. For these continuous streams the duration includes idle time and downstream backpressure.
+Consumer operation metrics include the consumer group. Endpoint lifecycle counters include the namespace and hub.
+Cancelling a continuous receive records the `cancelled` metric outcome and closes its spans with unset status.
 The existing `messaging.client.published.messages` metric continues to report batch sizes by send outcome.
 
 `EventHubs.send.disposition` traces a send-link attempt through its broker outcome, including retries internal to
 the link. `EventHubs.receive.wait` measures a bounded receive window or the time to the first event on a continuous
 stream. Both are children of the corresponding logical operation. Connection, session, and link spans measure actual
 AMQP endpoint handshakes. Shared endpoints have independent lifetimes. Their spans and lifecycle logs carry the
-connection ID, endpoint ID, and creation-attempt generation. These identifiers are excluded from metric labels.
+connection ID, physical endpoint ID, logical endpoint name, and creation-attempt generation. Data-link measurements
+exclude CBS and management links. Metric labels use the namespace and hub to group these transitions.
 
 ## Troubleshooting
 

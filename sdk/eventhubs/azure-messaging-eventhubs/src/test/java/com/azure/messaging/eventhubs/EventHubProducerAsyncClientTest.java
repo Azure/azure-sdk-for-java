@@ -74,6 +74,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -1089,6 +1090,36 @@ class EventHubProducerAsyncClientTest {
 
         assertSendCount(meter, null, 1, null, "parent span");
         assertOperationDuration(meter, SEND, null, null, null, "parent span");
+    }
+
+    @Test
+    void rejectedSecondBatchPreservesFirstAcceptance() {
+        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), any()))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(1024));
+        IllegalStateException rejection = new IllegalStateException("second batch rejected");
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty()).thenReturn(Mono.error(rejection));
+        try (TestMeter meter = new TestMeter()) {
+            EventHubsProducerInstrumentation instrumentation
+                = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
+            EventHubProducerAsyncClient client = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+                connectionProcessor, retryOptions.setMaxRetries(0), messageSerializer, Schedulers.immediate(), false,
+                onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+            StepVerifier.create(client.send(Arrays.asList(new EventData(new byte[750]), new EventData(new byte[750]))))
+                .expectErrorMatches(e -> e == rejection)
+                .verify(DEFAULT_TIMEOUT);
+            assertEquals(1, meter.getCounters().get("az.eventhubs.operations").getMeasurements().size());
+            assertEquals("error",
+                meter.getCounters()
+                    .get("az.eventhubs.operations")
+                    .getMeasurements()
+                    .get(0)
+                    .getAttributes()
+                    .get("outcome"));
+            assertEquals(1L, meter.getCounters().get("az.eventhubs.events").getMeasurements().get(0).getValue());
+            assertEquals("success",
+                meter.getCounters().get("az.eventhubs.events").getMeasurements().get(0).getAttributes().get("outcome"));
+        }
     }
 
     @Test

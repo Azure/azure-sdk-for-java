@@ -5,11 +5,15 @@
 ### Features Added
 
 - Added metrics for completed sends and receives, accepted and received events, operation duration, and AMQP
-  lifecycle transitions. Added optional spans for endpoint handshakes, send dispositions, and receive waits.
+  lifecycle transitions. New logical spans `EventHubs.send` and `EventHubs.receive` parent the existing publish and
+  bounded receive spans. Added spans for endpoint handshakes, send dispositions, and receive waits. Queries filtering
+  on `messaging.operation.name` can now match several spans per operation. Use the span name to select a specific layer.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed `messaging.client.consumed.messages` counts for synchronous receives when only metrics are enabled.
 
 - Fixed `EventContext.updateCheckpointAsync()` so that the `offsetString` from the received `EventData` is propagated
   to the `Checkpoint` passed to the `CheckpointStore`. Previously only the deprecated `offset` (Long) was set, which

@@ -11,6 +11,8 @@ import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsMet
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationScope;
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
+import org.reactivestreams.Publisher;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.tracing.SpanKind.CLIENT;
@@ -38,21 +40,22 @@ class EventHubsProducerInstrumentation {
 
         return Mono.deferContextual(context -> Mono.using(
             () -> new InstrumentationScope(tracer, meter,
-                (m, s) -> m.reportBatchSend(batch.getCount(), batch.getPartitionId(), s)).setSpan(
-                    startPublishSpanWithLinks(batch, context.getOrDefault(PARENT_TRACE_CONTEXT_KEY, Context.NONE))),
+                (m, s) -> m.reportBatchSend(batch.getCount(), batch.getPartitionId(), s))
+                    .setSpan(startPublishSpanWithLinks(batch, EventHubsTracer.getParent(context))),
             scope -> publisher.doOnError(scope::setError)
                 .doOnCancel(scope::setCancelled)
                 .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
             InstrumentationScope::close));
     }
 
-    Mono<Void> logicalSend(Mono<Integer> accepted) {
+    Mono<Void> logicalSend(Publisher<Integer> acceptedBatches) {
+        Flux<Integer> accepted = Flux.from(acceptedBatches);
         if (!meter.isEnabled() && !tracer.isEnabled()) {
             return accepted.then();
         }
         return Mono.deferContextual(context -> {
-            Context parent = context.getOrDefault(PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-            return Mono
+            Context parent = EventHubsTracer.getParent(context);
+            return Flux
                 .using(
                     () -> new InstrumentationScope(tracer, meter,
                         (m, s) -> m.reportOperation(SEND, s.getEventCount(), s))
@@ -71,9 +74,8 @@ class EventHubsProducerInstrumentation {
             return send;
         }
         return Mono.deferContextual(context -> Mono.using(
-            () -> new InstrumentationScope(tracer, null, null)
-                .setSpan(tracer.startAmqpSpan("EventHubs.send.disposition", "send", CLIENT,
-                    context.getOrDefault(PARENT_TRACE_CONTEXT_KEY, Context.NONE))),
+            () -> new InstrumentationScope(tracer, null, null).setSpan(
+                tracer.startAmqpSpan("EventHubs.send.disposition", "send", CLIENT, EventHubsTracer.getParent(context))),
             scope -> send.doOnError(scope::setError).doOnCancel(scope::setCancelled), InstrumentationScope::closeAmqp));
     }
 

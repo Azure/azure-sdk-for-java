@@ -98,8 +98,12 @@ public final class InstrumentationScope implements AutoCloseable {
     }
 
     public void closeLogical() {
+        closeLogical(getOutcome());
+    }
+
+    void closeLogical(String spanOutcome) {
         tracer.setEventCount(span, eventCount);
-        closeAmqp();
+        close(spanOutcome);
     }
 
     public String getOutcome() {
@@ -110,23 +114,23 @@ public final class InstrumentationScope implements AutoCloseable {
     }
 
     public void closeAmqp() {
-        close(true);
+        close(getOutcome());
     }
 
     @Override
     public void close() {
-        close(false);
+        close(null);
     }
 
-    private void close(boolean sanitizeError) {
+    private void close(String spanOutcome) {
         if (!closed) {
             closed = true;
             if (meter != null && reportMetricsCallback != null) {
                 reportMetricsCallback.accept(meter, this);
             }
             if (tracer != null) {
-                if (sanitizeError) {
-                    tracer.endAmqpSpan(span, getOutcome());
+                if (spanOutcome != null) {
+                    tracer.endAmqpSpan(span, spanOutcome);
                 } else {
                     tracer.endSpan(errorType, error, span, spanScope);
                 }

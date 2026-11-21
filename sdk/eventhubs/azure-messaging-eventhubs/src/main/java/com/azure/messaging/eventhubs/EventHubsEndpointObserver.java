@@ -4,15 +4,16 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.metrics.LongCounter;
-import com.azure.core.util.metrics.Meter;
+import com.azure.core.amqp.implementation.handler.Handler;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Endpoint;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Event.Type;
 
-import java.util.HashMap;
-import java.util.Map;
+import reactor.core.Disposable;
+
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.core.util.tracing.SpanKind.CLIENT;
@@ -57,21 +58,26 @@ final class EventHubsEndpointObserver extends BaseHandler {
     private final String connectionId;
     private final String endpointId;
     private final EventHubsTracer tracer;
-    private final Meter meter;
-    private final LongCounter lifecycle;
+    private final EventHubsHandlerProvider telemetry;
+    private final String logicalName;
+    private final Disposable stateSubscription;
+    private volatile boolean handlerFailed;
     private final long attempt = NEXT_ATTEMPT.incrementAndGet();
     private Context opening;
     private boolean active;
     private boolean finished;
 
-    EventHubsEndpointObserver(Component component, String connectionId, String endpointId, EventHubsTracer tracer,
-        Meter meter, LongCounter lifecycle) {
+    EventHubsEndpointObserver(Component component, Handler handler, String logicalName,
+        EventHubsHandlerProvider telemetry) {
         this.component = component;
-        this.connectionId = connectionId;
-        this.endpointId = endpointId;
-        this.tracer = tracer;
-        this.meter = meter;
-        this.lifecycle = lifecycle;
+        this.connectionId = handler.getConnectionId();
+        this.endpointId = handler.getId();
+        this.logicalName = logicalName;
+        this.telemetry = telemetry;
+        this.tracer = telemetry.tracer;
+        // Some timeouts reach the handler before local cleanup and have no Proton error condition.
+        this.stateSubscription = handler.getEndpointStates().subscribe(state -> {
+        }, error -> handlerFailed = true);
     }
 
     @Override
@@ -83,7 +89,7 @@ final class EventHubsEndpointObserver extends BaseHandler {
         boolean link = component == Component.SENDER || component == Component.RECEIVER;
         if (type == component.init && opening == null && !active) {
             opening = tracer.startAmqpSpan(component.spanName, component.operation, CLIENT, Context.NONE);
-            tracer.identifyEndpoint(opening, component.label, connectionId, endpointId, attempt);
+            tracer.identifyEndpoint(opening, component.label, connectionId, endpointId, logicalName, attempt);
             log("started");
         } else if (type == component.opened && opening != null) {
             // A null remote terminus precedes a rejected ATTACH's DETACH.
@@ -102,14 +108,29 @@ final class EventHubsEndpointObserver extends BaseHandler {
                 record("invalidated", Context.NONE);
             }
             finished = true;
+            stateSubscription.dispose();
         } else if (type == component.terminal
             || type == component.localClose
             || (link && type == Type.LINK_LOCAL_DETACH)) {
             if (opening != null) {
-                completeOpen("cancelled");
+                completeOpen(handlerFailed
+                    || hasError(event.getLink())
+                    || hasError(event.getSession())
+                    || hasError(event.getConnection())
+                    || hasError(event.getTransport()) ? "error" : "cancelled");
             }
             finished = true;
+            stateSubscription.dispose();
         }
+    }
+
+    private static boolean hasError(Endpoint endpoint) {
+        return endpoint != null
+            && (hasCondition(endpoint.getCondition()) || hasCondition(endpoint.getRemoteCondition()));
+    }
+
+    private static boolean hasCondition(ErrorCondition condition) {
+        return condition != null && condition.getCondition() != null;
     }
 
     private void completeOpen(String outcome) {
@@ -119,12 +140,7 @@ final class EventHubsEndpointObserver extends BaseHandler {
     }
 
     private void record(String outcome, Context context) {
-        if (lifecycle != null && lifecycle.isEnabled()) {
-            Map<String, Object> attributes = new HashMap<>(2);
-            attributes.put("component", component.label);
-            attributes.put("outcome", outcome);
-            lifecycle.add(1, meter.createAttributes(attributes), context);
-        }
+        telemetry.recordLifecycle(component.label, outcome, context);
         log(outcome);
     }
 
@@ -134,6 +150,7 @@ final class EventHubsEndpointObserver extends BaseHandler {
             .addKeyValue("outcome", outcome)
             .addKeyValue("connectionId", connectionId)
             .addKeyValue("endpointId", endpointId)
+            .addKeyValue("endpointName", logicalName)
             .addKeyValue("generation", attempt)
             .log("Event Hubs AMQP lifecycle");
     }

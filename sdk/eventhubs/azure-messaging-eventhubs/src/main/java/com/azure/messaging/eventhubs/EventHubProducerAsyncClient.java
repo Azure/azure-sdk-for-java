@@ -38,6 +38,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
@@ -597,19 +598,19 @@ public class EventHubProducerAsyncClient implements Closeable {
         return instrumentation.sendBatch(send, batch).thenReturn(messages.size());
     }
 
-    private Mono<Integer> sendInternal(Flux<EventData> events, SendOptions options) {
+    private Flux<Integer> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
 
         if (!CoreUtils.isNullOrEmpty(partitionKey) && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(LOGGER,
+            return fluxError(LOGGER,
                 new IllegalArgumentException(String.format(Locale.US,
                     "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
                         + " other can be used. partitionKey: '%s'. partitionId: '%s'",
                     partitionKey, partitionId)));
         }
 
-        return getSendLink(options.getPartitionId()).flatMap(link -> link.getLinkSize().flatMap(size -> {
+        return getSendLink(options.getPartitionId()).flatMapMany(link -> link.getLinkSize().flatMap(size -> {
             final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
             final CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey(options.getPartitionKey())
                 .setPartitionId(options.getPartitionId())
@@ -618,7 +619,6 @@ public class EventHubProducerAsyncClient implements Closeable {
         })
             .flatMapMany(Flux::fromIterable)
             .flatMap(this::sendBatch)
-            .reduce(0, Integer::sum)
             .doOnError(error -> LOGGER.error(Messages.ERROR_SENDING_BATCH, error)));
     }
 

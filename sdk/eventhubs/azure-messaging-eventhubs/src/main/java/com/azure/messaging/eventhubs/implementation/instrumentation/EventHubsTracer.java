@@ -14,6 +14,8 @@ import com.azure.core.util.tracing.TracingLink;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 
+import reactor.util.context.ContextView;
+
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Collections;
@@ -76,6 +78,14 @@ public final class EventHubsTracer {
         return isEnabled() ? tracer.start(getSpanName(operationName), startOptions, context) : context;
     }
 
+    public static Context getParent(ContextView context) {
+        Object parent = context.getOrDefault(Tracer.PARENT_TRACE_CONTEXT_KEY, null);
+        if (parent == null) {
+            return Context.NONE;
+        }
+        return parent instanceof Context ? (Context) parent : new Context(Tracer.PARENT_TRACE_CONTEXT_KEY, parent);
+    }
+
     public Context startAmqpSpan(String name, String operation, SpanKind kind, Context parent) {
         return isEnabled()
             ? tracer.start(name,
@@ -87,11 +97,13 @@ public final class EventHubsTracer {
             : Context.NONE;
     }
 
-    public void identifyEndpoint(Context span, String component, String connectionId, String endpointId, long attempt) {
+    public void identifyEndpoint(Context span, String component, String connectionId, String endpointId,
+        String logicalName, long attempt) {
         if (isEnabled()) {
             tracer.setAttribute("az.eventhubs.amqp.connection.id", connectionId, span);
             tracer.setAttribute("az.eventhubs.amqp.component.type", component, span);
             tracer.setAttribute("az.eventhubs.amqp.component.id", endpointId, span);
+            tracer.setAttribute("az.eventhubs.amqp.component.name", logicalName, span);
             tracer.setAttribute("az.eventhubs.amqp.component.generation", attempt, span);
         }
     }

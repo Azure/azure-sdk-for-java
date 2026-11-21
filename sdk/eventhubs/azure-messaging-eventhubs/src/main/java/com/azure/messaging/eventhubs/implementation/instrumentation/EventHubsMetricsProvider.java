@@ -81,8 +81,8 @@ public final class EventHubsMetricsProvider {
                 = meter.createLongCounter("az.eventhubs.events", "Successfully sent or received events", "{event}");
             this.logicalDuration = meter.createDoubleHistogram("az.eventhubs.operation.duration",
                 "Logical operation duration including retries", "s");
-            this.sendOutcomes = outcomeCache(namespace, entityName, "send");
-            this.receiveOutcomes = outcomeCache(namespace, entityName, "receive");
+            this.sendOutcomes = outcomeCache("send");
+            this.receiveOutcomes = outcomeCache("receive");
 
             this.publishedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_PUBLISHED_MESSAGES,
                 "The number of published events", "{event}");
@@ -105,11 +105,8 @@ public final class EventHubsMetricsProvider {
         return isEnabled;
     }
 
-    private AttributeCache outcomeCache(String namespace, String entityName, String operation) {
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE);
-        attributes.put(MESSAGING_DESTINATION_NAME, entityName);
-        attributes.put(SERVER_ADDRESS, namespace);
+    private AttributeCache outcomeCache(String operation) {
+        Map<String, Object> attributes = new HashMap<>(commonAttributes);
         attributes.put("operation", operation);
         return new AttributeCache(meter, "outcome", attributes);
     }
@@ -122,9 +119,10 @@ public final class EventHubsMetricsProvider {
         TelemetryAttributes attributes = (operation == SEND ? sendOutcomes : receiveOutcomes).getOrCreate(outcome);
         operations.add(1, attributes, scope.getSpan());
         logicalDuration.record(getDurationInSeconds(scope.getStartTime()), attributes, scope.getSpan());
-        // A streaming receive may deliver events before the terminal error or cancellation.
-        if (count > 0 && (operation == RECEIVE || "success".equals(outcome))) {
-            events.add(count, operation == SEND ? attributes : receiveOutcomes.getOrCreate("success"), scope.getSpan());
+        // A later failure or cancellation does not undo a broker acceptance or a delivery.
+        if (count > 0) {
+            events.add(count, (operation == SEND ? sendOutcomes : receiveOutcomes).getOrCreate("success"),
+                scope.getSpan());
         }
     }
 

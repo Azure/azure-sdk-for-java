@@ -24,7 +24,6 @@ import java.util.function.BiConsumer;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.util.tracing.SpanKind.CLIENT;
-import static com.azure.core.util.tracing.SpanKind.CONSUMER;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_BATCH_MESSAGE_COUNT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
@@ -85,12 +84,12 @@ public final class EventHubsConsumerInstrumentation {
         }
 
         return Flux.deferContextual(context -> {
-            Context parent = context.getOrDefault(PARENT_TRACE_CONTEXT_KEY, Context.NONE);
+            Context parent = EventHubsTracer.getParent(context);
             // The messaging receive span is created at completion so it can link all delivered messages.
             StartSpanOptions options = tracer.isEnabled()
                 ? tracer.createStartOptions(CLIENT, RECEIVE, partitionId).setStartTimestamp(Instant.now())
                 : null;
-            Context logical = tracer.startAmqpSpan("EventHubs.receive", "receive", CONSUMER, parent);
+            Context logical = tracer.startAmqpSpan("EventHubs.receive", "receive", CLIENT, parent);
             Context wait = tracer.startAmqpSpan("EventHubs.receive.wait", "receive", CLIENT, logical);
             return Flux.using(() -> createScope((m, s) -> {
                 m.reportReceive(s.getEventCount(), partitionId, s);
@@ -127,8 +126,8 @@ public final class EventHubsConsumerInstrumentation {
             return events;
         }
         return Flux.deferContextual(context -> {
-            Context parent = context.getOrDefault(PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-            Context logical = tracer.startAmqpSpan("EventHubs.receive", "receive", CONSUMER, parent);
+            Context parent = EventHubsTracer.getParent(context);
+            Context logical = tracer.startAmqpSpan("EventHubs.receive", "receive", CLIENT, parent);
             // A continuous subscription can run for days. Measure the initial wait once per partition subscription.
             AtomicReference<Context> firstEvent
                 = new AtomicReference<>(tracer.startAmqpSpan("EventHubs.receive.wait", "receive", CLIENT, logical));
@@ -144,8 +143,10 @@ public final class EventHubsConsumerInstrumentation {
                     .doOnCancel(scope::setCancelled)
                     .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, logical)),
                 scope -> {
-                    endFirstWait(firstEvent, scope.getOutcome());
-                    scope.closeLogical();
+                    // take(), processor shutdown and ownership changes normally cancel a partition stream.
+                    String spanOutcome = scope.getError() == null ? "success" : "error";
+                    endFirstWait(firstEvent, spanOutcome);
+                    scope.closeLogical(spanOutcome);
                 });
         });
     }
