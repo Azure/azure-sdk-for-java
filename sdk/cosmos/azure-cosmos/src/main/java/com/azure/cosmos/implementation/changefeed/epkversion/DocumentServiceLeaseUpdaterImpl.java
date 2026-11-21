@@ -11,7 +11,10 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictException;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,10 +64,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
         return
             Mono.just(this)
             .flatMap( value -> this.tryReplaceLease(cachedLease, itemId, partitionKey, requestOptions))
-            .map(leaseDocument -> {
-                cachedLease.setServiceItemLease(ServiceItemLeaseV1.fromDocument(leaseDocument));
-                return cachedLease;
-            })
+            .map(replaceResponse -> this.applyReplaceResponse(cachedLease, replaceResponse))
             .hasElement()
             .flatMap(hasItems -> {
                 if (hasItems) {
@@ -134,7 +134,29 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             });
     }
 
-    private Mono<InternalObjectNode> tryReplaceLease(
+    private Lease applyReplaceResponse(Lease cachedLease, CosmosItemResponse<Lease> replaceResponse) {
+        InternalObjectNode leaseDocument = BridgeInternal.getProperties(replaceResponse);
+        if (leaseDocument != null) {
+            cachedLease.setServiceItemLease(ServiceItemLeaseV1.fromDocument(leaseDocument));
+            return cachedLease;
+        }
+
+        // Lease writes are issued with content response on write disabled - the submitted lease state is what got
+        // persisted, so only the new concurrency token needs to be taken from the response headers. Not doing so
+        // would leave a stale If-Match ETag on the cached lease and cause the next update to fail with 412.
+        String newETag = replaceResponse.getETag();
+        if (StringUtils.isEmpty(newETag)) {
+            logger.warn(
+                "Lease with token {}: Replace succeeded but the response has no ETag; the next update will refresh the lease.",
+                cachedLease.getLeaseToken());
+        } else {
+            cachedLease.setConcurrencyToken(newETag);
+        }
+
+        return cachedLease;
+    }
+
+    private Mono<CosmosItemResponse<Lease>> tryReplaceLease(
             Lease lease,
             String itemId,
             PartitionKey partitionKey,
@@ -144,7 +166,6 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                 partitionKey,
                 lease,
                 this.getCreateIfMatchOptions(cosmosItemRequestOptions, lease))
-            .map(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse))
             .onErrorResume(re -> {
                 if (re instanceof CosmosException) {
                     CosmosException ex = (CosmosException) re;
@@ -168,8 +189,10 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     }
 
     private CosmosItemRequestOptions getCreateIfMatchOptions(CosmosItemRequestOptions createIfMatchOptions, Lease lease) {
-        createIfMatchOptions.setIfMatchETag(lease.getConcurrencyToken());
+        CosmosItemRequestOptions effectiveOptions =
+            ChangeFeedHelper.withContentResponseOnWriteDisabled(createIfMatchOptions);
+        effectiveOptions.setIfMatchETag(lease.getConcurrencyToken());
 
-        return createIfMatchOptions;
+        return effectiveOptions;
     }
 }
