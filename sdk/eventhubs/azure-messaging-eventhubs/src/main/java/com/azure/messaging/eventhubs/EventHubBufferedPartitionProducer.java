@@ -16,6 +16,7 @@ import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
+import reactor.core.Exceptions;
 import reactor.core.Scannable;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -26,6 +27,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -57,6 +59,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final PublishResultSubscriber publishResultSubscriber;
     private final EventHubsTracer tracer;
     private final EventDataAggregator eventDataAggregator;
+    private final Sinks.Many<PublishResult> failedEventSink = Sinks.many().unicast().onBackpressureBuffer();
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
         BufferedProducerClientOptions options, AmqpRetryOptions retryOptions, Sinks.Many<EventData> eventSink,
@@ -74,12 +77,16 @@ class EventHubBufferedPartitionProducer implements Closeable {
         this.eventSink = eventSink;
 
         this.eventDataAggregator = new EventDataAggregator(this.eventSink.asFlux(), this::createNewBatch,
-            client.getFullyQualifiedNamespace(), options, partitionId);
+            client.getFullyQualifiedNamespace(), options, partitionId, this::reportFailedEvent);
 
         this.publishResultSubscriber = new PublishResultSubscriber(partitionId, this.eventSink,
-            options.getSendSucceededContext(), options.getSendFailedContext(), retryOptions.getTryTimeout(), logger);
+            options.getSendSucceededContext(), options.getSendFailedContext(), retryOptions.getTryTimeout(),
+            eventDataAggregator::requestNextEvent, logger);
 
-        this.publishSubscription = publishEvents(eventDataAggregator).publishOn(Schedulers.boundedElastic(), 1)
+        final Flux<PublishResult> sendResults
+            = publishEvents(eventDataAggregator).doFinally(signal -> failedEventSink.tryEmitComplete());
+        this.publishSubscription = Flux.merge(1, sendResults, failedEventSink.asFlux())
+            .publishOn(Schedulers.boundedElastic(), 1)
             .subscribeWith(publishResultSubscriber);
 
         this.tracer = new EventHubsTracer(tracer, client.getFullyQualifiedNamespace(), client.getEventHubName(), null);
@@ -212,6 +219,12 @@ class EventHubBufferedPartitionProducer implements Closeable {
         }, 1, 1);
     }
 
+    private void reportFailedEvent(EventData event, Throwable error) {
+        // Merge results before publishOn so callbacks for this partition cannot overlap.
+        failedEventSink.emitNext(new PublishResult(Collections.singletonList(event), error, true),
+            Sinks.EmitFailureHandler.FAIL_FAST);
+    }
+
     /**
      * Creates a new batch.
      *
@@ -225,6 +238,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         try {
             return batch.toFuture().get();
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw logger.logExceptionAsError(new UncheckedExecutionException(e));
         } catch (ExecutionException e) {
             throw logger.logExceptionAsError(new UncheckedExecutionException(e));
@@ -238,15 +252,22 @@ class EventHubBufferedPartitionProducer implements Closeable {
         private static final PublishResult EMPTY = new PublishResult();
         private final List<EventData> events;
         private final Throwable error;
+        private final boolean unbatchedEvent;
 
         PublishResult(List<EventData> events, Throwable error) {
+            this(events, error, false);
+        }
+
+        PublishResult(List<EventData> events, Throwable error, boolean unbatchedEvent) {
             this.events = Objects.requireNonNull(events);
             this.error = error;
+            this.unbatchedEvent = unbatchedEvent;
         }
 
         private PublishResult() {
             this.events = null;
             this.error = null;
+            this.unbatchedEvent = false;
         }
     }
 
@@ -260,6 +281,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
         private final Consumer<SendBatchFailedContext> onFailed;
         private final Duration operationTimeout;
         private final ClientLogger logger;
+        private final Runnable requestNextEvent;
 
         private final AtomicReference<FlushSignal> pendingFlushSignal = new AtomicReference<>(null);
         private final Semaphore flushSemaphore = new Semaphore(1);
@@ -267,13 +289,14 @@ class EventHubBufferedPartitionProducer implements Closeable {
 
         PublishResultSubscriber(String partitionId, Sinks.Many<EventData> eventSink,
             Consumer<SendBatchSucceededContext> onSucceed, Consumer<SendBatchFailedContext> onFailed,
-            Duration operationTimeout, ClientLogger logger) {
+            Duration operationTimeout, Runnable requestNextEvent, ClientLogger logger) {
             this.partitionId = partitionId;
             this.eventSink = eventSink;
             this.onSucceed = onSucceed;
             this.onFailed = onFailed;
             this.operationTimeout = operationTimeout;
             this.logger = logger;
+            this.requestNextEvent = requestNextEvent;
         }
 
         @Override
@@ -284,11 +307,21 @@ class EventHubBufferedPartitionProducer implements Closeable {
         @Override
         protected void hookOnNext(PublishResult result) {
             if (result != PublishResult.EMPTY) {
-                if (result.error == null) {
-                    onSucceed.accept(new SendBatchSucceededContext(result.events, partitionId));
-                } else {
-                    onFailed.accept(new SendBatchFailedContext(result.events, partitionId, result.error));
+                try {
+                    if (result.error == null) {
+                        onSucceed.accept(new SendBatchSucceededContext(result.events, partitionId));
+                    } else {
+                        onFailed.accept(new SendBatchFailedContext(result.events, partitionId, result.error));
+                    }
+                } catch (Throwable error) {
+                    Exceptions.throwIfFatal(error);
+                    logger.warning("Send result handler threw an exception.", error);
                 }
+            }
+            if (result.unbatchedEvent) {
+                // Keep failed-event buffering bounded by waiting for the handler before consuming another event.
+                requestNextEvent.run();
+                return;
             }
             final FlushCompletionOrigin origin
                 = (result == PublishResult.EMPTY) ? FlushCompletionOrigin.ON_NEXT_EMPTY : FlushCompletionOrigin.ON_NEXT;
@@ -301,8 +334,14 @@ class EventHubBufferedPartitionProducer implements Closeable {
                 return;
             }
             logger.atError().log("Publishing-subscription terminated with an error.", t);
-            onFailed.accept(new SendBatchFailedContext(null, partitionId, t));
-            tryCompleteFlush(FlushCompletionOrigin.TERMINAL_ERROR);
+            try {
+                onFailed.accept(new SendBatchFailedContext(null, partitionId, t));
+            } catch (Throwable error) {
+                Exceptions.throwIfFatal(error);
+                logger.warning("Send failure handler threw an exception.", error);
+            } finally {
+                tryCompleteFlush(FlushCompletionOrigin.TERMINAL_ERROR);
+            }
         }
 
         @Override
