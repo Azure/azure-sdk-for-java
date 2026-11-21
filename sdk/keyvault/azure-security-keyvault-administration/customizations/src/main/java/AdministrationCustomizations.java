@@ -11,6 +11,7 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.comments.LineComment;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.javadoc.Javadoc;
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ public class AdministrationCustomizations extends Customization {
         customizeKeyVaultRoleScope(libraryCustomization);
         customizeServiceVersion(libraryCustomization);
         customizeImplClients(libraryCustomization);
+        customizePaging(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
         customizePackageInfos(libraryCustomization.getRawEditor());
     }
@@ -74,6 +76,17 @@ public class AdministrationCustomizations extends Customization {
     private static void makeAllMethodsPublic(ClassOrInterfaceDeclaration clazz, String... methodNames) {
         for (String methodName : methodNames) {
             clazz.getMethodsByName(methodName).forEach(method -> method.setModifiers(Modifier.Keyword.PUBLIC));
+        }
+    }
+
+    private static void customizePaging(LibraryCustomization customization) {
+        for (String className : Arrays.asList("RoleAssignmentsImpl", "RoleDefinitionsImpl")) {
+            customization.getClass("com.azure.security.keyvault.administration.implementation", className)
+                .customizeAst(ast -> ast.findAll(MethodCallExpr.class).stream()
+                    .filter(call -> call.getScope().map(Object::toString).orElse("").equals("service")
+                        && !call.getArguments().isEmpty() && call.getArgument(0).toString().equals("nextLink"))
+                    .forEach(call -> call.setArgument(0, StaticJavaParser.parseExpression(
+                        "KeyVaultEndpointValidation.validateNextLink(nextLink, this.client.getVaultBaseUrl())"))));
         }
     }
 

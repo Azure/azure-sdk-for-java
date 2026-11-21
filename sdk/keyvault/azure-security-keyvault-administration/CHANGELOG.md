@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Validate pagination destinations against the configured endpoint and bind cached authentication challenges to their origin, including during token acquisition.
+- Isolate cached access tokens by endpoint origin and authentication context when acquisitions fail or are retried.
+
 ### Other Changes
 
 ## 4.10.0 (2026-11-13)
