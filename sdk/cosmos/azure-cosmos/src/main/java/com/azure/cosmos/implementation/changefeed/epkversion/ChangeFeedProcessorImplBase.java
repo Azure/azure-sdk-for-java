@@ -372,7 +372,9 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     abstract boolean canBootstrapFromPkRangeIdVersionLeaseStore();
 
     private Mono<PartitionManager> buildPartitionManager(LeaseStoreManager leaseStoreManager) {
-        CheckpointerObserverFactory<T> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency());
+        CheckpointerObserverFactory<T> factory = new CheckpointerObserverFactory<>(this.observerFactory, new CheckpointFrequency()
+            .withTimeInterval(this.changeFeedProcessorOptions.getCheckpointInterval())
+            .withProcessedDocumentCount(this.changeFeedProcessorOptions.getCheckpointProcessedItemCount()));
 
         PartitionSynchronizerImpl synchronizer = new PartitionSynchronizerImpl(
                 this.feedContextClient,

@@ -11,22 +11,29 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.changefeed.CancellationTokenSource;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
+import com.azure.cosmos.implementation.changefeed.CheckpointFrequency;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseCheckpointer;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;
 import com.azure.cosmos.implementation.changefeed.ProcessorSettings;
+import com.azure.cosmos.implementation.changefeed.common.AutoCheckpointer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneException;
+import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,6 +45,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -50,11 +58,13 @@ public class PartitionProcessorImplTests {
     @DataProvider(name = "changeFeed304ResponseContinuationArgProvider")
     public static Object[][] changeFeed304ResponseContinuationArgProvider() {
         return new Object[][]{
-            // hasMoreResult, hasContinuationTokenChange, shouldDoCheckpoint
-            { true, true, true },
-            { true, false, true },
-            { false, true, true },
-            { false, false, false}
+            // hasMoreResult, hasContinuationTokenChange, shouldDoCheckpoint, delayCheckpoint
+            { true, true, true, false },
+            { true, false, true, false },
+            { false, true, true, false },
+            { false, false, false, false },
+            { true, true, false, true },
+            { false, true, false, true }
         };
     }
 
@@ -62,8 +72,10 @@ public class PartitionProcessorImplTests {
     public void shouldCheckpointFor304WhenContinuationTokenChanges(
         boolean hasMoreResult,
         boolean hasContinuationTokenChange,
-        boolean shouldDoCheckpoint) {
+        boolean shouldDoCheckpoint,
+        boolean delayCheckpoint) {
         ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(observerMock.processEmptyBatch(Mockito.any())).thenCallRealMethod();
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
 
         // Setup initial state with continuation token
@@ -102,7 +114,8 @@ public class PartitionProcessorImplTests {
 
         // Create processor
         PartitionProcessorImpl<ChangeFeedProcessorItem> partitionProcessor = new PartitionProcessorImpl<>(
-            observerMock,
+            delayCheckpoint ? new AutoCheckpointer<>(
+                new CheckpointFrequency().withProcessedDocumentCount(10), observerMock) : observerMock,
             changeFeedContextClientMock,
             processorSettings,
             partitionCheckpointer,
@@ -132,6 +145,7 @@ public class PartitionProcessorImplTests {
     public void processedTimeSetAfterProcessing() {
         // Arrange
         ChangeFeedObserver<ChangeFeedProcessorItem> observerMock = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(observerMock.processEmptyBatch(Mockito.any())).thenCallRealMethod();
         Mockito.when(observerMock.processChanges(Mockito.any(), Mockito.anyList())).thenReturn(Mono.empty());
 
         ChangeFeedContextClient changeFeedContextClientMock = Mockito.mock(ChangeFeedContextClient.class);
@@ -290,6 +304,91 @@ public class PartitionProcessorImplTests {
         CosmosException cosmosException = (CosmosException) runtimeException.getCause();
         assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
         assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.FAILED_TO_PARSE_SERVER_RESPONSE);
+    }
+
+    @DataProvider(name = "initialCheckpointTakeover")
+    public Object[][] initialCheckpointTakeover() {
+        return new Object[][] {
+            {false, false, ChangeFeedMode.INCREMENTAL},
+            {false, true, ChangeFeedMode.INCREMENTAL},
+            {true, false, ChangeFeedMode.INCREMENTAL},
+            {true, true, ChangeFeedMode.INCREMENTAL},
+            {false, false, ChangeFeedMode.FULL_FIDELITY},
+            {false, true, ChangeFeedMode.FULL_FIDELITY},
+            {true, false, ChangeFeedMode.FULL_FIDELITY},
+            {true, true, ChangeFeedMode.FULL_FIDELITY}
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "initialCheckpointTakeover")
+    @SuppressWarnings("unchecked")
+    public void takeoverResumesFromInitialCheckpoint(boolean emptyFirstResponse, boolean intervalOnly,
+                                                    ChangeFeedMode mode) {
+        ChangeFeedState initial = this.getChangeFeedStateWithContinuationTokens(1);
+        ChangeFeedState first = new ChangeFeedStateV1(initial.getContainerRid(), initial.getFeedRange(), mode,
+            initial.getStartFromSettings(), initial.getContinuation());
+        ChangeFeedState later = ChangeFeedState.fromString(first.toString());
+        later.getContinuation().replaceContinuation("later-continuation", true);
+        ServiceItemLeaseV1 lease = new ServiceItemLeaseV1().withLeaseToken("lease").withFeedRange(first.getFeedRange());
+        CosmosAsyncContainer container = Mockito.mock(CosmosAsyncContainer.class);
+        Mockito.when(BridgeInternal.extractContainerSelfLink(container)).thenReturn("dbs/db/colls/feed");
+        ChangeFeedContextClient client = Mockito.mock(ChangeFeedContextClient.class);
+        ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions().setFeedPollDelay(Duration.ZERO);
+        if (intervalOnly) {
+            options.setCheckpointInterval(Duration.ofHours(1));
+        } else {
+            options.setCheckpointProcessedItemCount(100);
+        }
+        LeaseCheckpointer leaseCheckpointer = Mockito.mock(LeaseCheckpointer.class);
+        Mockito.when(leaseCheckpointer.checkpoint(Mockito.eq(lease), Mockito.anyString(), Mockito.any()))
+            .thenAnswer(invocation -> Mono.fromSupplier(() -> {
+                lease.setContinuationToken(invocation.getArgument(1));
+                return lease;
+            }));
+        ChangeFeedObserver<ChangeFeedProcessorItem> handler = Mockito.mock(ChangeFeedObserver.class);
+        Mockito.when(handler.processChanges(Mockito.any(), Mockito.anyList())).thenReturn(Mono.empty());
+        FeedResponse<ChangeFeedProcessorItem> firstResponse = Mockito.mock(FeedResponse.class);
+        Mockito.when(firstResponse.getContinuationToken()).thenReturn(first.toString());
+        Mockito.when(firstResponse.getResults()).thenReturn(emptyFirstResponse ? Collections.emptyList()
+            : Collections.singletonList(Mockito.mock(ChangeFeedProcessorItem.class)));
+        ReflectionUtils.setNoChanges(firstResponse, emptyFirstResponse);
+        FeedResponse<ChangeFeedProcessorItem> laterResponse = Mockito.mock(FeedResponse.class);
+        Mockito.when(laterResponse.getContinuationToken()).thenReturn(later.toString());
+        Mockito.when(laterResponse.getResults())
+            .thenReturn(Collections.singletonList(Mockito.mock(ChangeFeedProcessorItem.class)));
+        ReflectionUtils.setNoChanges(laterResponse, false);
+        Mockito.when(client.createDocumentChangeFeedQuery(
+            Mockito.any(), Mockito.any(), Mockito.eq(ChangeFeedProcessorItem.class)))
+            .thenReturn(Flux.just(firstResponse, laterResponse))
+            .thenReturn(Flux.error(new LeaseLostException("takeover")));
+        PartitionProcessorFactoryImpl<ChangeFeedProcessorItem> factory = new PartitionProcessorFactoryImpl<>(
+            client, options, leaseCheckpointer,
+            container, first.getContainerRid(), mode, null);
+        PartitionProcessor processor = factory.create(lease, new AutoCheckpointer<>(new CheckpointFrequency()
+            .withTimeInterval(options.getCheckpointInterval())
+            .withProcessedDocumentCount(options.getCheckpointProcessedItemCount()), handler), ChangeFeedProcessorItem.class);
+        processor.run(new CancellationTokenSource().getToken()).block(Duration.ofSeconds(5));
+
+        // Simulate abrupt ownership loss without closing the observer or flushing its pending continuation.
+        Mockito.verify(leaseCheckpointer, Mockito.times(1))
+            .checkpoint(Mockito.eq(lease), Mockito.anyString(), Mockito.any());
+        assertThat(lease.getContinuationToken()).isEqualTo(first.toString());
+        Mockito.verify(handler, Mockito.times(emptyFirstResponse ? 1 : 2))
+            .processChanges(Mockito.any(), Mockito.anyList());
+        ServiceItemLeaseV1 acquiredLease = new ServiceItemLeaseV1(lease);
+        Mockito.clearInvocations(client);
+        Mockito.when(client.createDocumentChangeFeedQuery(
+            Mockito.any(), Mockito.any(), Mockito.eq(ChangeFeedProcessorItem.class)))
+            .thenReturn(Flux.error(new LeaseLostException("end resumed query")));
+        PartitionProcessor resumedProcessor = factory.create(acquiredLease, handler, ChangeFeedProcessorItem.class);
+        resumedProcessor.run(new CancellationTokenSource().getToken()).block(Duration.ofSeconds(5));
+
+        ArgumentCaptor<CosmosChangeFeedRequestOptions> request =
+            ArgumentCaptor.forClass(CosmosChangeFeedRequestOptions.class);
+        Mockito.verify(client).createDocumentChangeFeedQuery(Mockito.any(), request.capture(), Mockito.any());
+        ChangeFeedState resumed = ModelBridgeInternal.getChangeFeedContinuationState(request.getValue());
+        assertThat(resumed.getContinuation().getCurrentContinuationToken().getToken())
+            .isEqualTo(first.getContinuation().getCurrentContinuationToken().getToken());
     }
 
     private ChangeFeedStateV1 getChangeFeedStateWithContinuationTokens(int tokenCount) {

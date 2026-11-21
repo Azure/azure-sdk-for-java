@@ -17,6 +17,7 @@ public class ChangeFeedObserverContextImpl<T> implements ChangeFeedObserverConte
     private final String leaseToken;
     private final FeedResponse<T> feedResponse;
     private final ChangeFeedState continuationState;
+    private final boolean initialCheckpointRequired;
 
 
     public ChangeFeedObserverContextImpl(String leaseToken) {
@@ -24,16 +25,26 @@ public class ChangeFeedObserverContextImpl<T> implements ChangeFeedObserverConte
         this.checkpointer = null;
         this.feedResponse = null;
         this.continuationState = null;
+        this.initialCheckpointRequired = false;
     }
 
     public ChangeFeedObserverContextImpl(String leaseToken,
                                          FeedResponse<T> feedResponse,
                                          ChangeFeedState continuationState,
                                          PartitionCheckpointer checkpointer) {
+        this(leaseToken, feedResponse, continuationState, checkpointer, false);
+    }
+
+    public ChangeFeedObserverContextImpl(String leaseToken,
+                                        FeedResponse<T> feedResponse,
+                                        ChangeFeedState continuationState,
+                                        PartitionCheckpointer checkpointer,
+                                        boolean initialCheckpointRequired) {
         this.leaseToken = leaseToken;
         this.feedResponse = feedResponse;
         this.checkpointer = checkpointer;
         this.continuationState = continuationState;
+        this.initialCheckpointRequired = initialCheckpointRequired;
     }
 
     /**
@@ -48,6 +59,16 @@ public class ChangeFeedObserverContextImpl<T> implements ChangeFeedObserverConte
     @Override
     public Mono<Lease> checkpoint() {
         return this.checkpointer.checkpointPartition(this.continuationState);
+    }
+
+    @Override
+    public boolean isInitialCheckpointRequired() {
+        return this.initialCheckpointRequired;
+    }
+
+    @Override
+    public Mono<Lease> checkpointOnShutdown() {
+        return this.checkpointer.checkpointPartitionOnShutdown(this.continuationState);
     }
 
     /**

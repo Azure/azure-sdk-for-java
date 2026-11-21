@@ -7,6 +7,8 @@ import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.PriorityLevel;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.time.Duration;
+
 /**
  * Code snippets for {@link ChangeFeedProcessor}
  */
@@ -97,5 +99,17 @@ public class ChangeFeedProcessorCodeSnippet {
                 .buildChangeFeedProcessor();
         // END: com.azure.cosmos.changeFeedProcessor.withThroughputControl
     }
+
+    public void changeFeedProcessorCheckpointFrequencyCodeSnippet() {
+        // BEGIN: com.azure.cosmos.changeFeedProcessor.checkpointFrequency
+        ChangeFeedProcessorOptions options = new ChangeFeedProcessorOptions()
+            .setCheckpointInterval(Duration.ofSeconds(30))
+            .setCheckpointProcessedItemCount(10_000);
+        // Pass options to ChangeFeedProcessorBuilder.options(options).
+        // Checkpoint after a successful batch when either threshold is reached, independently for each lease.
+        // Handlers must be idempotent because progress since the last checkpoint can be delivered again.
+        // END: com.azure.cosmos.changeFeedProcessor.checkpointFrequency
+    }
+
 }
 

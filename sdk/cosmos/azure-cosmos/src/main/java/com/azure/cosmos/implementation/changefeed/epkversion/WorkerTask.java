@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -16,6 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 class WorkerTask extends Thread {
     private final Logger logger = LoggerFactory.getLogger(WorkerTask.class);
     private final AtomicBoolean done;
+    private final Sinks.One<Void> completion = Sinks.one();
     private Mono<Void> job;
     private final Lease lease;
     private final PartitionSupervisor partitionSupervisor;
@@ -35,6 +37,7 @@ class WorkerTask extends Thread {
                 logger.info("Lease with token {}: Worker task has exited.", lease.getLeaseToken());
                 job = null;
                 this.done.set(true);
+                this.completion.tryEmitEmpty();
             })
             .subscribe();
     }
@@ -46,6 +49,10 @@ class WorkerTask extends Thread {
 
     public Lease lease() {
         return this.lease;
+    }
+
+    public Mono<Void> completion() {
+        return this.completion.asMono();
     }
 
     public boolean isRunning() {

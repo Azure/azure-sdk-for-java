@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
@@ -47,6 +48,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
+    private boolean initialCheckpointRequired;
     private final ChangeFeedObserver<T> observer;
     private volatile CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
@@ -77,6 +79,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
         this.itemType = itemType;
         this.changeFeedMode = changeFeedMode;
         this.lastServerContinuationToken = this.lease.getContinuationToken();
+        this.initialCheckpointRequired = Strings.isNullOrWhiteSpace(this.lease.getContinuationToken());
 
         this.options = PartitionProcessorHelper.createChangeFeedRequestOptionsForChangeFeedState(
                 settings.getStartState(),
@@ -126,7 +129,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                         this.options,
                         itemType);
             })
-            .flatMap(documentFeedResponse -> {
+            .concatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
                 final String continuationToken = documentFeedResponse.getContinuationToken();
@@ -156,19 +159,23 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                                 Thread.currentThread().getId(),
                             throwable))
                         .doOnSuccess((Void) -> {
+                            this.initialCheckpointRequired = false;
                             this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 } else {
                     // only skip checkpoint for 304 & noServerContinuationToken change
-                    boolean shouldSkipCheckpoint = !hasServerContinuationTokenChange && !hasMoreResults;
+                    boolean shouldSkipCheckpoint = !this.initialCheckpointRequired
+                        && !hasServerContinuationTokenChange && !hasMoreResults;
                     return Mono.just(shouldSkipCheckpoint)
                         .flatMap(skipCheckpoint -> {
                             if (skipCheckpoint) {
                                 return Mono.empty();
                             } else {
-                                return this.checkpointer.checkpointPartition(continuationState)
+                                return this.observer.processEmptyBatch(new ChangeFeedObserverContextImpl<>(
+                                        this.lease.getLeaseToken(), documentFeedResponse, continuationState, this.checkpointer,
+                                        this.initialCheckpointRequired))
                                     .doOnError(throwable -> {
                                         logger.warn(
                                             "Failed to checkpoint Lease with token " + this.lease.getLeaseToken() +
@@ -178,6 +185,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                             }
                         })
                         .doOnSuccess((Void) -> {
+                            this.initialCheckpointRequired = false;
                             this.options = PartitionProcessorHelper.createForProcessingFromContinuation(continuationToken, this.changeFeedMode);
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
@@ -330,7 +338,8 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
             lease.getLeaseToken(),
             response,
             continuationState,
-            this.checkpointer);
+            this.checkpointer,
+            this.initialCheckpointRequired);
 
         return this.observer.processChanges(context, response.getResults());
     }
