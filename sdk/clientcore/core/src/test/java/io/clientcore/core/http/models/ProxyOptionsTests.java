@@ -18,6 +18,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -483,6 +485,59 @@ public class ProxyOptionsTests {
         String nonProxyHosts = "nonproxyhosts\\|withescapedpipe";
 
         assertEquals("(" + nonProxyHosts + ")", ProxyOptions.sanitizeNoProxy(nonProxyHosts));
+    }
+
+    /**
+     * Tests that wildcards, leading and trailing dots, and IPv6 literals in non-proxy hosts only match the intended
+     * hosts, however the non-proxy hosts are configured. Hosts are matched the way HTTP clients match them: the whole
+     * host, ignoring case.
+     */
+    @ParameterizedTest
+    @MethodSource("nonProxyHostsMatchOnlyIntendedHostsSupplier")
+    public void nonProxyHostsMatchOnlyIntendedHosts(String nonProxyHost, List<String> bypassedHosts,
+        List<String> proxiedHosts) {
+        String[] sanitizedNonProxyHosts = {
+            new ProxyOptions(ProxyOptions.Type.HTTP, InetSocketAddress.createUnresolved("localhost", 7777))
+                .setNonProxyHosts(nonProxyHost)
+                .getNonProxyHosts(),
+            fromConfiguration(createJavaEnvConfiguration(443, null, null, nonProxyHost, true), true).getNonProxyHosts(),
+            fromConfiguration(createExplicitConfiguration(443, null, null, nonProxyHost), true).getNonProxyHosts(),
+            fromConfiguration(setJavaSystemProxyPrerequisiteToTrue("http://localhost:7777", nonProxyHost, true), true)
+                .getNonProxyHosts() };
+
+        for (String sanitizedNonProxyHost : sanitizedNonProxyHosts) {
+            Pattern pattern = compile(sanitizedNonProxyHost, Pattern.CASE_INSENSITIVE);
+
+            for (String host : bypassedHosts) {
+                assertTrue(pattern.matcher(host).matches(), () -> String
+                    .format("Expected '%s' (Pattern '%s') to match '%s'.", nonProxyHost, pattern.pattern(), host));
+            }
+
+            for (String host : proxiedHosts) {
+                assertFalse(pattern.matcher(host).matches(), () -> String
+                    .format("Expected '%s' (Pattern '%s') not to match '%s'.", nonProxyHost, pattern.pattern(), host));
+            }
+        }
+    }
+
+    private static Stream<Arguments> nonProxyHostsMatchOnlyIntendedHostsSupplier() {
+        List<String> anyHost = Arrays.asList("example.com", "10.0.0.1", "[::1]");
+
+        return Stream.of(
+            Arguments.of("storage1*", Arrays.asList("storage1.example.com"), Arrays.asList("storage2.example.com")),
+            Arguments.of("storage1*?", Arrays.asList("storage1.example.com"), Arrays.asList("storage2.example.com")),
+            Arguments.of("storage1.?", Arrays.asList("storage1.example.com"), Arrays.asList("storage2.example.com")),
+            Arguments.of("storage1.*", Arrays.asList("storage1.example.com"),
+                Arrays.asList("storage1other.example.com")),
+            Arguments.of("10.*", Arrays.asList("10.0.0.1"), Arrays.asList("100.64.0.1")),
+            Arguments.of("192.168.", Arrays.asList("192.168.0.1"), Arrays.asList("192.16.0.1", "192.1689.0.1")),
+            Arguments.of(".example.com", Arrays.asList("example.com", "api.example.com"),
+                Arrays.asList("badexample.com")),
+            Arguments.of("[::1]", Arrays.asList("[::1]"), Arrays.asList("1")),
+            Arguments.of("[2001:db8::1]*", Arrays.asList("[2001:db8::1]"), Arrays.asList("2evil.example.com")),
+            Arguments.of(".*", anyHost, Collections.emptyList()), Arguments.of("*", anyHost, Collections.emptyList()),
+            Arguments.of("*?", anyHost, Collections.emptyList()),
+            Arguments.of(".*?", anyHost, Collections.emptyList()));
     }
 
     private static Configuration setJavaSystemProxyPrerequisiteToTrue(String proxy, String nonProxyHosts,

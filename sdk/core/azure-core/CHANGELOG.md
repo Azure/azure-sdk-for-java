@@ -18,6 +18,13 @@
   consumers that retain the emitted buffers, such as uploads from an `InputStream` returning small reads, to use many
   times more memory than the data read and fail with `OutOfMemoryError`. Emitted buffers are now sized to the data
   read.
+- Fixed suffix wildcards in `ProxyOptions` non-proxy hosts removing the character before the wildcard, so `storage1*`
+  matched `storage2.example.com` and `10.*` matched `100.64.0.1`. This affected `setNonProxyHosts` as well as
+  `http.nonProxyHosts`, `http.proxy.non-proxy-hosts`, and `NO_PROXY`. Entries such as `.*` no longer throw
+  `StringIndexOutOfBoundsException`. ([#51341](https://github.com/Azure/azure-sdk-for-java/issues/51341))
+- Fixed `ProxyOptions` non-proxy hosts with a leading or trailing dot, or a bracketed IPv6 address, matching other
+  hosts. `.example.com` now matches `example.com` and its subdomains but not `badexample.com`, `192.168.` no longer
+  matches `192.1689.0.1`, and `[::1]` is matched literally instead of as a regex character class.
 
 ### Other Changes
 

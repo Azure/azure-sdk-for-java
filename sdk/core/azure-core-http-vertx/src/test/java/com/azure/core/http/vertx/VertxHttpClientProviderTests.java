@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.validation.http.HttpClientOptionsProviderTests;
 import io.vertx.core.Vertx;
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -37,14 +39,7 @@ public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests
     public void nullOptionsReturnsBaseClient() {
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(null);
 
-        ProxyOptions environmentProxy = loadEnvironmentProxy();
-        io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
-        if (environmentProxy == null) {
-            assertNull(proxyOptions);
-        } else {
-            assertNotNull(proxyOptions);
-            assertEquals(environmentProxy.getAddress().getHostName(), proxyOptions.getHost());
-        }
+        assertUsesEnvironmentProxy(httpClient);
     }
 
     @Test
@@ -52,13 +47,32 @@ public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests
         VertxHttpClient httpClient
             = (VertxHttpClient) new VertxHttpClientProvider().createInstance(new HttpClientOptions());
 
+        assertUsesEnvironmentProxy(httpClient);
+    }
+
+    /*
+     * Checks the proxy each request would use against the environment proxy, which CI agents set but most dev
+     * machines don't. Requests to the environment's non-proxy hosts connect directly.
+     */
+    private static void assertUsesEnvironmentProxy(VertxHttpClient httpClient) {
+        // The proxy is set on each request, not on the Vert.x options.
+        assertNull(httpClient.buildOptions.getProxyOptions());
+
         ProxyOptions environmentProxy = loadEnvironmentProxy();
-        io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
-        if (environmentProxy == null) {
-            assertNull(proxyOptions);
-        } else {
-            assertNotNull(proxyOptions);
-            assertEquals(environmentProxy.getAddress().getHostName(), proxyOptions.getHost());
+        Pattern nonProxyHosts
+            = (environmentProxy == null || CoreUtils.isNullOrEmpty(environmentProxy.getNonProxyHosts()))
+                ? null
+                : Pattern.compile(environmentProxy.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
+        for (String host : new String[] { "example.com", "localhost" }) {
+            io.vertx.core.net.ProxyOptions proxyOptions = httpClient.getProxyOptions(host);
+            if (environmentProxy == null || (nonProxyHosts != null && nonProxyHosts.matcher(host).matches())) {
+                assertNull(proxyOptions, host);
+            } else {
+                assertNotNull(proxyOptions, host);
+                assertEquals(environmentProxy.getAddress().getHostName(), proxyOptions.getHost());
+                assertEquals(environmentProxy.getAddress().getPort(), proxyOptions.getPort());
+            }
         }
     }
 
@@ -80,7 +94,10 @@ public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests
 
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
 
-        io.vertx.core.net.ProxyOptions vertxProxyOptions = httpClient.buildOptions.getProxyOptions();
+        assertNull(httpClient.buildOptions.getProxyOptions());
+        assertNull(httpClient.getProxyOptions("cheese.com"));
+
+        io.vertx.core.net.ProxyOptions vertxProxyOptions = httpClient.getProxyOptions("example.com");
         assertNotNull(vertxProxyOptions);
         assertEquals(proxyOptions.getAddress().getHostName(), vertxProxyOptions.getHost());
         assertEquals(proxyOptions.getAddress().getPort(), vertxProxyOptions.getPort());
