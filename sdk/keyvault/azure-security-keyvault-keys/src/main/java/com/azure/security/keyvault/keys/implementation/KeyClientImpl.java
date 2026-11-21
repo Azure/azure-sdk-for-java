@@ -5054,8 +5054,10 @@ public final class KeyClientImpl {
     private Mono<PagedResponse<BinaryData>> getKeyVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(context -> service.getKeyVersionsNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -5110,8 +5112,9 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getKeyVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.getKeyVersionsNextSync(nextLink, this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getKeyVersionsNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -5167,8 +5170,9 @@ public final class KeyClientImpl {
     private Mono<PagedResponse<BinaryData>> getKeysNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions, context))
+            .withContext(context -> service.getKeysNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -5224,7 +5228,8 @@ public final class KeyClientImpl {
     private PagedResponse<BinaryData> getKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.getKeysNextSync(nextLink, this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
+            = service.getKeysNextSync(KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()),
+                this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -5284,8 +5289,10 @@ public final class KeyClientImpl {
     private Mono<PagedResponse<BinaryData>> getDeletedKeysNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(context -> service.getDeletedKeysNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -5343,8 +5350,9 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getDeletedKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.getDeletedKeysNextSync(nextLink, this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getDeletedKeysNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

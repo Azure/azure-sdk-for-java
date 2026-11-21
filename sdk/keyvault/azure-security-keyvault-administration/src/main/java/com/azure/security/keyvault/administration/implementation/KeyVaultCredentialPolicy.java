@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.administration.implementation;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AccessTokenCache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -20,15 +22,18 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import static com.azure.core.http.HttpHeaderName.AUTHORIZATION;
 import static com.azure.core.http.HttpHeaderName.CONTENT_LENGTH;
 import static com.azure.core.http.HttpHeaderName.WWW_AUTHENTICATE;
 
@@ -42,9 +47,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultCredentialPolicy.class);
     private static final String KEY_VAULT_STASHED_CONTENT_KEY = "KeyVaultCredentialPolicyStashedBody";
     private static final String KEY_VAULT_STASHED_CONTENT_LENGTH_KEY = "KeyVaultCredentialPolicyStashedContentLength";
+    private static final String KEY_VAULT_REQUEST_ORIGIN_KEY = "KeyVaultCredentialPolicyRequestOrigin";
     private static final ConcurrentMap<String, ChallengeParameters> CHALLENGE_CACHE = new ConcurrentHashMap<>();
-    private ChallengeParameters challenge;
+    private volatile ChallengeParameters challenge;
     private final boolean disableChallengeResourceVerification;
+    private final TokenCredential credential;
+    private final ConcurrentMap<String, TokenCache> accessTokenCaches = new ConcurrentHashMap<>();
 
     /**
      * Creates a {@link KeyVaultCredentialPolicy}.
@@ -55,6 +63,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         super(credential);
 
         this.disableChallengeResourceVerification = disableChallengeResourceVerification;
+        this.credential = credential;
     }
 
     /**
@@ -82,17 +91,13 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         return Mono.defer(() -> {
             HttpRequest request = context.getHttpRequest();
 
-            // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
-            if (this.challenge == null) {
-                this.challenge = CHALLENGE_CACHE.get(getRequestAuthority(request));
-            }
+            ChallengeParameters challenge = getChallenge(context);
 
-            if (this.challenge != null) {
+            if (challenge != null) {
                 // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
-                TokenRequestContext tokenRequestContext
-                    = new TokenRequestContext().addScopes(this.challenge.getScopes())
-                        .setTenantId(this.challenge.getTenantId())
-                        .setCaeEnabled(true);
+                TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(challenge.getScopes())
+                    .setTenantId(challenge.getTenantId())
+                    .setCaeEnabled(true);
 
                 return setAuthorizationHeader(context, tokenRequestContext);
             }
@@ -130,7 +135,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 request.setHeader(CONTENT_LENGTH, (String) contentLengthOptional.get());
             }
 
-            String authority = getRequestAuthority(request);
+            String authority = getRequestAuthority(context);
             Map<String, String> challengeAttributes
                 = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE));
             String scope = challengeAttributes.get("resource");
@@ -141,10 +146,11 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 scope = challengeAttributes.get("scope");
             }
 
+            ChallengeParameters challenge;
             if (scope == null) {
-                this.challenge = CHALLENGE_CACHE.get(authority);
+                challenge = CHALLENGE_CACHE.get(authority);
 
-                if (this.challenge == null) {
+                if (challenge == null) {
                     return Mono.just(false);
                 }
             } else {
@@ -173,13 +179,14 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                         String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
                 }
 
-                this.challenge = new ChallengeParameters(authorizationUri, new String[] { scope });
+                challenge = new ChallengeParameters(authority, authorizationUri, new String[] { scope });
 
-                CHALLENGE_CACHE.put(authority, this.challenge);
+                CHALLENGE_CACHE.put(authority, challenge);
             }
+            this.challenge = challenge;
 
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(this.challenge.getScopes())
-                .setTenantId(this.challenge.getTenantId())
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(challenge.getScopes())
+                .setTenantId(challenge.getTenantId())
                 .setCaeEnabled(true);
 
             String error = challengeAttributes.get("error");
@@ -205,15 +212,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     public void authorizeRequestSync(HttpPipelineCallContext context) {
         HttpRequest request = context.getHttpRequest();
 
-        // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
-        if (this.challenge == null) {
-            this.challenge = CHALLENGE_CACHE.get(getRequestAuthority(request));
-        }
+        ChallengeParameters challenge = getChallenge(context);
 
-        if (this.challenge != null) {
+        if (challenge != null) {
             // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(this.challenge.getScopes())
-                .setTenantId(this.challenge.getTenantId())
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(challenge.getScopes())
+                .setTenantId(challenge.getTenantId())
                 .setCaeEnabled(true);
 
             setAuthorizationHeaderSync(context, tokenRequestContext);
@@ -248,7 +252,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             request.setHeader(CONTENT_LENGTH, (String) contentLengthOptional.get());
         }
 
-        String authority = getRequestAuthority(request);
+        String authority = getRequestAuthority(context);
         Map<String, String> challengeAttributes = extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE));
         String scope = challengeAttributes.get("resource");
 
@@ -258,10 +262,11 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             scope = challengeAttributes.get("scope");
         }
 
+        ChallengeParameters challenge;
         if (scope == null) {
-            this.challenge = CHALLENGE_CACHE.get(authority);
+            challenge = CHALLENGE_CACHE.get(authority);
 
-            if (this.challenge == null) {
+            if (challenge == null) {
                 return false;
             }
         } else {
@@ -291,13 +296,14 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     String.format("The challenge authorization URI '%s' is invalid.", authorization), e));
             }
 
-            this.challenge = new ChallengeParameters(authorizationUri, new String[] { scope });
+            challenge = new ChallengeParameters(authority, authorizationUri, new String[] { scope });
 
-            CHALLENGE_CACHE.put(authority, this.challenge);
+            CHALLENGE_CACHE.put(authority, challenge);
         }
+        this.challenge = challenge;
 
-        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(this.challenge.getScopes())
-            .setTenantId(this.challenge.getTenantId())
+        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(challenge.getScopes())
+            .setTenantId(challenge.getTenantId())
             .setCaeEnabled(true);
 
         String error = challengeAttributes.get("error");
@@ -317,6 +323,28 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         setAuthorizationHeaderSync(context, tokenRequestContext);
 
         return true;
+    }
+
+    @Override
+    public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
+        return Mono.defer(() -> {
+            String authority = getRequestAuthority(context);
+            return getAccessTokenCache(authority, tokenRequestContext).getToken(tokenRequestContext, true)
+                .flatMap(token -> {
+                    // The request is mutable while asynchronous credential acquisition is in progress.
+                    validateRequestAuthority(context, authority);
+                    context.getHttpRequest().setHeader(AUTHORIZATION, "Bearer " + token.getToken());
+                    return Mono.empty();
+                });
+        });
+    }
+
+    @Override
+    public void setAuthorizationHeaderSync(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
+        String authority = getRequestAuthority(context);
+        AccessToken token = getAccessTokenCache(authority, tokenRequestContext).getTokenSync(tokenRequestContext, true);
+        validateRequestAuthority(context, authority);
+        context.getHttpRequest().setHeader(AUTHORIZATION, "Bearer " + token.getToken());
     }
 
     @Override
@@ -426,12 +454,48 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         return false;
     }
 
+    private AccessTokenCache getAccessTokenCache(String authority, TokenRequestContext context) {
+        if (context == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tokenRequestContext' cannot be null."));
+        }
+        // Keep one current context per origin. A failed refresh must never expose a token from an older context.
+        return accessTokenCaches.compute(authority,
+            (ignored, existing) -> existing != null && existing.matches(context)
+                ? existing
+                : new TokenCache(credential, context)).cache;
+    }
+
+    private static final class TokenCache {
+        private final AccessTokenCache cache;
+        private final List<String> scopes;
+        private final String tenantId;
+        private final String claims;
+        private final boolean caeEnabled;
+
+        private TokenCache(TokenCredential credential, TokenRequestContext context) {
+            cache = new AccessTokenCache(credential);
+            scopes = new ArrayList<>(context.getScopes());
+            tenantId = context.getTenantId();
+            claims = context.getClaims();
+            caeEnabled = context.isCaeEnabled();
+        }
+
+        private boolean matches(TokenRequestContext context) {
+            return scopes.equals(context.getScopes())
+                && Objects.equals(tenantId, context.getTenantId())
+                && Objects.equals(claims, context.getClaims())
+                && caeEnabled == context.isCaeEnabled();
+        }
+    }
+
     private static class ChallengeParameters {
+        private final String authority;
         private final URI authorizationUri;
         private final String tenantId;
         private final String[] scopes;
 
-        ChallengeParameters(URI authorizationUri, String[] scopes) {
+        ChallengeParameters(String authority, URI authorizationUri, String[] scopes) {
+            this.authority = authority;
             this.authorizationUri = authorizationUri;
             tenantId = authorizationUri.getPath().split("/")[1];
             this.scopes = scopes;
@@ -464,24 +528,39 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         CHALLENGE_CACHE.clear();
     }
 
-    /**
-     * Gets the host name and port of the Key Vault or Managed HSM endpoint.
-     *
-     * @param request The {@link HttpRequest} to extract the host name and port from.
-     *
-     * @return The host name and port of the Key Vault or Managed HSM endpoint.
-     */
-    private static String getRequestAuthority(HttpRequest request) {
-        URL url = request.getUrl();
-        String authority = url.getAuthority();
-        int port = url.getPort();
-
-        // Append port for complete authority.
-        if (!authority.contains(":") && port > 0) {
-            authority = authority + ":" + port;
+    private ChallengeParameters getChallenge(HttpPipelineCallContext context) {
+        String authority = getRequestAuthority(context);
+        // Use one immutable snapshot so concurrent requests cannot mix origins, scopes, or tenants.
+        ChallengeParameters cachedChallenge = this.challenge;
+        if (cachedChallenge == null || !authority.equals(cachedChallenge.authority)) {
+            cachedChallenge = CHALLENGE_CACHE.get(authority);
+            this.challenge = cachedChallenge;
         }
+        return cachedChallenge;
+    }
 
+    private static String getRequestAuthority(HttpPipelineCallContext context) {
+        String authority = (String) context.getData(KEY_VAULT_REQUEST_ORIGIN_KEY).orElse(null);
+        if (authority == null) {
+            authority = KeyVaultEndpointValidation.getOrigin(context.getHttpRequest().getUrl().toString());
+            context.setData(KEY_VAULT_REQUEST_ORIGIN_KEY, authority);
+        }
+        validateRequestAuthority(context, authority);
         return authority;
+    }
+
+    private static void validateRequestAuthority(HttpPipelineCallContext context, String authority) {
+        HttpRequest request = context.getHttpRequest();
+        try {
+            if (!authority.equals(KeyVaultEndpointValidation.getOrigin(request.getUrl().toString()))) {
+                throw new IllegalArgumentException(
+                    "The request URL must have the same origin as the original request.");
+            }
+        } catch (RuntimeException e) {
+            // A previous attempt may already have authorized this request before its destination changed.
+            request.getHeaders().remove(AUTHORIZATION);
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
 
     private static boolean isChallengeResourceValid(HttpRequest request, String scope) {

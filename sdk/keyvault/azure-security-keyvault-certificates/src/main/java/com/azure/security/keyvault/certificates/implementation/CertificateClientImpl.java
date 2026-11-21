@@ -6004,8 +6004,10 @@ public final class CertificateClientImpl {
     private Mono<PagedResponse<BinaryData>> getCertificatesNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(context -> service.getCertificatesNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -6048,8 +6050,9 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getCertificatesNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.getCertificatesNextSync(nextLink, this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getCertificatesNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -6083,8 +6086,9 @@ public final class CertificateClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getCertificateIssuersNext(nextLink, this.getVaultBaseUrl(), accept,
-                requestOptions, context))
+            .withContext(context -> service.getCertificateIssuersNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -6116,8 +6120,9 @@ public final class CertificateClientImpl {
     private PagedResponse<BinaryData> getCertificateIssuersNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.getCertificateIssuersNextSync(nextLink, this.getVaultBaseUrl(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getCertificateIssuersNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -6162,8 +6167,9 @@ public final class CertificateClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getCertificateVersionsNext(nextLink, this.getVaultBaseUrl(), accept,
-                requestOptions, context))
+            .withContext(context -> service.getCertificateVersionsNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -6207,8 +6213,9 @@ public final class CertificateClientImpl {
     private PagedResponse<BinaryData> getCertificateVersionsNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.getCertificateVersionsNextSync(nextLink, this.getVaultBaseUrl(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getCertificateVersionsNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -6257,8 +6264,9 @@ public final class CertificateClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept,
-                requestOptions, context))
+            .withContext(context -> service.getDeletedCertificatesNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -6305,8 +6313,9 @@ public final class CertificateClientImpl {
     private PagedResponse<BinaryData> getDeletedCertificatesNextSinglePage(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.getDeletedCertificatesNextSync(nextLink, this.getVaultBaseUrl(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getDeletedCertificatesNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

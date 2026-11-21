@@ -9,6 +9,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.comments.LineComment;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.javadoc.Javadoc;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ public class SecretsCustomizations extends Customization {
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         removeFiles(libraryCustomization.getRawEditor());
         customizeServiceVersion(libraryCustomization);
+        customizePaging(libraryCustomization);
         customizeModuleInfo(libraryCustomization.getRawEditor());
         customizePackageInfos(libraryCustomization.getRawEditor());
     }
@@ -34,6 +36,15 @@ public class SecretsCustomizations extends Customization {
         editor.removeFile("src/main/java/com/azure/security/keyvault/secrets/SecretAsyncClient.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/secrets/SecretClient.java");
         editor.removeFile("src/main/java/com/azure/security/keyvault/secrets/SecretClientBuilder.java");
+    }
+
+    private static void customizePaging(LibraryCustomization customization) {
+        customization.getClass("com.azure.security.keyvault.secrets.implementation", "SecretClientImpl")
+            .customizeAst(ast -> ast.findAll(MethodCallExpr.class).stream()
+                .filter(call -> call.getScope().map(Object::toString).orElse("").equals("service")
+                    && !call.getArguments().isEmpty() && call.getArgument(0).toString().equals("nextLink"))
+                .forEach(call -> call.setArgument(0, StaticJavaParser.parseExpression(
+                    "KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl())"))));
     }
 
     private static void customizeServiceVersion(LibraryCustomization customization) {

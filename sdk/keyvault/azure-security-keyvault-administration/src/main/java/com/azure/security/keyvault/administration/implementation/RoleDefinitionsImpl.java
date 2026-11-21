@@ -896,8 +896,9 @@ public final class RoleDefinitionsImpl {
     public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listNext(nextLink, this.client.getVaultBaseUrl(), accept, requestOptions, context))
+            .withContext(context -> service.listNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.client.getVaultBaseUrl()),
+                this.client.getVaultBaseUrl(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -952,7 +953,8 @@ public final class RoleDefinitionsImpl {
     private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listNextSync(nextLink, this.client.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
+            = service.listNextSync(KeyVaultEndpointValidation.validateNextLink(nextLink, this.client.getVaultBaseUrl()),
+                this.client.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

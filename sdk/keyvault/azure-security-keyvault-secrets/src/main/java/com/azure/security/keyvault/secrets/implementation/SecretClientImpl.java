@@ -2120,8 +2120,9 @@ public final class SecretClientImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions, context))
+            .withContext(context -> service.getSecretsNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -2166,7 +2167,8 @@ public final class SecretClientImpl {
     private PagedResponse<BinaryData> getSecretsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.getSecretsNextSync(nextLink, this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
+            = service.getSecretsNextSync(KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()),
+                this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -2211,8 +2213,10 @@ public final class SecretClientImpl {
     private Mono<PagedResponse<BinaryData>> getSecretVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(context -> service.getSecretVersionsNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -2256,8 +2260,9 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getSecretVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.getSecretVersionsNextSync(nextLink, this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getSecretVersionsNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -2305,8 +2310,10 @@ public final class SecretClientImpl {
     private Mono<PagedResponse<BinaryData>> getDeletedSecretsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getDeletedSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions, context))
+        return FluxUtil
+            .withContext(context -> service.getDeletedSecretsNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -2353,8 +2360,9 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> getDeletedSecretsNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.getDeletedSecretsNextSync(nextLink, this.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getDeletedSecretsNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.getVaultBaseUrl()), this.getVaultBaseUrl(),
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

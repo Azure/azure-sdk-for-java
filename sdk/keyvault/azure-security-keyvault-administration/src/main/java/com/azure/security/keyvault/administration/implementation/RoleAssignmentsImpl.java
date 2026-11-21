@@ -649,8 +649,9 @@ public final class RoleAssignmentsImpl {
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept,
-                requestOptions, context))
+            .withContext(context -> service.listForScopeNext(
+                KeyVaultEndpointValidation.validateNextLink(nextLink, this.client.getVaultBaseUrl()),
+                this.client.getVaultBaseUrl(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -685,8 +686,9 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listForScopeNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res = service.listForScopeNextSync(nextLink, this.client.getVaultBaseUrl(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listForScopeNextSync(
+            KeyVaultEndpointValidation.validateNextLink(nextLink, this.client.getVaultBaseUrl()),
+            this.client.getVaultBaseUrl(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
