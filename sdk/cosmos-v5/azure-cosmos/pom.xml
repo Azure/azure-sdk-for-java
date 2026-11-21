@@ -10,10 +10,9 @@
     <relativePath>../../parents/azure-client-sdk-parent-v2</relativePath>
   </parent>
 
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.v2</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <!-- Opt-in version configuration: ../versions.txt, not the shared v4 registration. -->
-  <version>5.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+  <version>5.0.0-beta.1</version> <!-- {x-version-update;com.azure.v2:azure-cosmos;current} -->
   <name>Azure Cosmos DB SDK for Java - v5 (not for distribution)</name>
   <description>Nonfunctional, nonpublishing Java 17 foundation for the Azure Cosmos DB v5 SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -36,6 +35,12 @@
       <version>2.0.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure.v2:azure-core;dependency} -->
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>4.83.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.13.4</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
@@ -51,14 +56,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <configuration>
-          <!-- The approved successor retains com.azure.cosmos, not the v2 parent's com.azure.v2 namespace. -->
-          <configLocation>${project.basedir}/${relative.path.to.eng.folder}/eng/lintingconfigs/checkstyle/track2/checkstyle.xml</configLocation>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -84,6 +81,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.15.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <!-- Override execution-level releases, not just the top-level compiler properties. -->
         <executions>
           <execution>
@@ -124,7 +122,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.6</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
+          <!-- Coexistence tests create their own module layer without a second v5 module in the boot layer. -->
+          <useModulePath>false</useModulePath>
           <systemPropertyVariables>
             <cosmos.expectedVersion>${project.version}</cosmos.expectedVersion>
           </systemPropertyVariables>
@@ -133,12 +134,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.12.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
           <source>17</source>
           <sourceFileExcludes combine.self="override"/>
           <!-- Document the reserved package even though this foundation exports no public APIs. -->
           <additionalOptions>
-            <additionalOption>--module com.azure.cosmos</additionalOption>
+            <additionalOption>--module com.azure.v2.cosmos</additionalOption>
             <additionalOption>--show-packages all</additionalOption>
             <additionalOption>--show-module-contents all</additionalOption>
           </additionalOptions>
@@ -147,6 +149,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <!-- Compare the future v5 API within its own major, without changing the existing v4 SDK. -->
           <versionFormat>^5\.\d+\.\d+$</versionFormat>

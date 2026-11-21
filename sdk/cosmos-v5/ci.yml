@@ -37,6 +37,6 @@ extends:
   parameters:
     ServiceDirectory: cosmos-v5
     SDKType: client
-    # Do not register a second com.azure:azure-cosmos with shared package/release tooling.
+    # The distinct v2 coordinates are discoverable, but this foundation is not releasable.
     Artifacts: []
     AdditionalModules: []
