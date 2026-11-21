@@ -10,18 +10,23 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -41,6 +46,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.appender.WriterAppender;
+import org.apache.logging.log4j.core.layout.PatternLayout;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -49,16 +57,21 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
+import java.io.StringWriter;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -597,6 +610,147 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read, FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS);
         } finally {
             serverErrorRuleByFeedRange.disable();
+        }
+    }
+
+    @Test(groups = {"multi-region", "long"}, timeOut = 120000)
+    public void cancellationProneReplicaRecoversAfterEndToEndTimeouts() throws Exception {
+        String region = this.accountLevelReadRegions.get(0);
+        CosmosClientBuilder builder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .preferredRegions(Collections.singletonList(region))
+            .directMode(DirectConnectionConfig.getDefaultConfig()
+                .setConnectTimeout(Duration.ofSeconds(1))
+                // Separate E2E cancellation from an ordinary network/transit timeout.
+                .setNetworkRequestTimeout(Duration.ofSeconds(10))
+                .setMaxConnectionsPerEndpoint(1)
+                .setConnectionEndpointRediscoveryEnabled(true));
+        ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
+            .setPerPartitionAutomaticFailoverEnabled(builder, false);
+
+        try (CosmosAsyncClient client = builder.buildAsyncClient()) {
+            CosmosAsyncContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(cosmosAsyncContainer.getId());
+            TestObject item = TestObject.create();
+            PartitionKey partitionKey = new PartitionKey(item.getId());
+            container.createItem(item).block(Duration.ofSeconds(30));
+            try {
+                verifyCancellationProneRecovery(container, item.getId(), partitionKey, region);
+            } finally {
+                container.deleteItem(item.getId(), partitionKey).block(Duration.ofSeconds(30));
+            }
+        }
+    }
+
+    static void verifyCancellationProneRecovery(CosmosAsyncContainer container, String itemId,
+                                               PartitionKey partitionKey, String region) throws Exception {
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+            .setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
+            .setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(5)).build());
+        // Context negotiation and cold-channel probes must finish before counting cancellations.
+        for (int i = 0; i < 4; i++) {
+            container.readItem(itemId, partitionKey, options, JsonNode.class).block(Duration.ofSeconds(10));
+        }
+
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder("cancellation-recovery-" + UUID.randomUUID())
+            .condition(new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .region(region)
+                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(partitionKey))
+                    .replicaCount(1).includePrimary(false).build())
+                .build())
+            .result(FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                // Delay before processing: no response/read completion resets the channel's cancellation count.
+                .suppressServiceRequests(true).delay(Duration.ofSeconds(30)).build())
+            .duration(Duration.ofMinutes(2))
+            .build();
+
+        StringWriter warnings = new StringWriter();
+        WriterAppender appender = WriterAppender.newBuilder()
+            .setName(rule.getId())
+            .setTarget(warnings)
+            .setLayout(PatternLayout.newBuilder().withPattern("%m%n").build())
+            .build();
+        org.apache.logging.log4j.core.Logger healthLogger =
+            (org.apache.logging.log4j.core.Logger) LogManager.getLogger(RntbdClientChannelHealthChecker.class);
+        appender.start();
+        healthLogger.addAppender(appender);
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Collections.singletonList(rule))
+                .block(Duration.ofSeconds(30));
+            assertThat(rule.getAddresses().size()).isEqualTo(1);
+            String target = rule.getAddresses().get(0);
+            Map<String, Integer> cancellationsSinceRead = new HashMap<>();
+            String unhealthyChannel = null;
+            boolean recovered = false;
+            for (int attempt = 0; attempt < 12 && !recovered; attempt++) {
+                CosmosDiagnostics diagnostics;
+                boolean success;
+                try {
+                    diagnostics = container.readItem(itemId, partitionKey, options, JsonNode.class)
+                        .block(Duration.ofSeconds(10)).getDiagnostics();
+                    success = true;
+                } catch (CosmosException error) {
+                    assertThat(error.getStatusCode()).isEqualTo(408);
+                    assertThat(error.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+                    diagnostics = error.getDiagnostics();
+                    success = false;
+                }
+                org.slf4j.LoggerFactory.getLogger(FaultInjectionServerErrorRuleOnDirectTests.class)
+                    .info("Cancellation recovery attempt {}: {}", attempt, diagnostics);
+                JsonNode diagnostic = Utils.getSimpleObjectMapper().readTree(diagnostics.toString());
+                assertThat(diagnostic.path("retryContext").path("retryCount").asInt(-1)).isZero();
+                boolean healthyReplica = false;
+                boolean usedTarget = false;
+                for (JsonNode response : diagnostic.path("responseStatisticsList")) {
+                    JsonNode result = response.path("storeResult");
+                    boolean isTarget = target.equals(result.path("storePhysicalAddress").asText());
+                    usedTarget |= isTarget;
+                    healthyReplica |= !isTarget && result.path("statusCode").asInt() == 200;
+                    if (isTarget && result.path("statusCode").asInt() == 408) {
+                        assertThat(result.path("subStatusCode").asInt())
+                            .isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+                        JsonNode channel = result.path("channelStatistics");
+                        assertThat(channel.path("channelId").asText()).isNotEmpty();
+                        assertThat(channel.path("lastReadTime").asText()).isNotEmpty();
+                        String key = channel.path("channelId").asText() + "|" + channel.path("lastReadTime").asText();
+                        cancellationsSinceRead.merge(key, 1, Integer::sum);
+                    }
+                }
+                assertThat(healthyReplica).as("A different replica must continue responding").isTrue();
+                for (Map.Entry<String, Integer> entry : cancellationsSinceRead.entrySet()) {
+                    String[] channelAndRead = entry.getKey().split("\\|", 2);
+                    for (String warning : warnings.toString().split("\\R")) {
+                        Matcher count = Pattern.compile("cancellationCountSinceLastSuccessfulRead: (\\d+)")
+                            .matcher(warning);
+                        if (entry.getValue() >= 3
+                            && warning.contains("health check failed due to channel being cancellation prone")
+                            && warning.contains("[id: 0x" + channelAndRead[0] + ",")
+                            && warning.contains("lastChannelRead: " + channelAndRead[1] + ",")
+                            && count.find() && Integer.parseInt(count.group(1)) >= 3) {
+                            Matcher currentTime = Pattern.compile("currentTime: ([^,]+),").matcher(warning);
+                            assertThat(currentTime.find()).isTrue();
+                            assertThat(Duration.between(Instant.parse(channelAndRead[1]),
+                                Instant.parse(currentTime.group(1))).compareTo(Duration.ofSeconds(10)))
+                                .isGreaterThanOrEqualTo(0);
+                            unhealthyChannel = channelAndRead[0];
+                        }
+                    }
+                }
+                // Require recovery while the fault is still active, not merely after disabling it.
+                recovered = unhealthyChannel != null && success && !usedTarget;
+            }
+            assertThat(rule.getHitCount()).isGreaterThanOrEqualTo(3);
+            assertThat(unhealthyChannel).as("Same-channel cancellations must trigger the cancellation-prone detector")
+                .isNotNull();
+            assertThat(recovered).as("Reads must recover on other replicas while the rule remains enabled").isTrue();
+        } finally {
+            rule.disable();
+            healthLogger.removeAppender(appender);
+            appender.stop();
         }
     }
 
