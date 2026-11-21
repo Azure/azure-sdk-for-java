@@ -4,4 +4,4 @@
 /**
  * Pure-Java checks for the Cosmos v5 build metadata.
  */
-package com.azure.cosmos;
+package com.azure.v2.cosmos;

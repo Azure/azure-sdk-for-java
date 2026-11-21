@@ -5,4 +5,4 @@
  * Reserved namespace for the Azure Cosmos DB v5 SDK.
  * This feature-branch foundation does not yet expose a public client API.
  */
-package com.azure.cosmos;
+package com.azure.v2.cosmos;

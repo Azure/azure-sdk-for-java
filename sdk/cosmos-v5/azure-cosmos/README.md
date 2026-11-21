@@ -4,12 +4,26 @@
 > This is the first migration slice on `feature/cosmos/vnext`, not a release.
 > It contains no service clients, operations, native loader, or native binaries.
 
-The isolated v5 foundation retains `com.azure:azure-cosmos` and the `com.azure.cosmos`
-Java namespace and module name. It requires Java 17 or newer. It is not designed
-to coexist with v4 in the same application's dependency graph.
+The v5 foundation uses `com.azure.v2:azure-cosmos` and the `com.azure.v2.cosmos`
+Java namespace and module name, aligned with the new Azure Core family.
+The `v2` prefix identifies that SDK family, not the Cosmos release version:
+this module remains version `5.0.0-beta.1` and requires Java 17 or newer.
 The existing `sdk/cosmos` v4 implementation, reactor, CI, version registration,
 connectors, and tests are unchanged. The two versions occupy separate source
-directories but must not be selected in the same Maven reactor or application.
+directories and have distinct Maven and Java identities:
+
+| Identity | v4 | v5 |
+| --- | --- | --- |
+| Maven coordinates | `com.azure:azure-cosmos:4.x` | `com.azure.v2:azure-cosmos:5.x` |
+| Java package/module | `com.azure.cosmos` | `com.azure.v2.cosmos` |
+
+This enables side-by-side migration without dependency mediation selecting one
+Cosmos version over the other. Foundation tests load the released v4 SDK alongside
+the v5 metadata on the classpath and in a JPMS module layer. The JUnit harness
+runs on the classpath so its module-layer test can resolve both SDKs without
+inheriting another v5 module in the boot layer; inherited JaCoCo hooks remain.
+This is not yet proof of service-operation or native-runtime interoperability;
+those capabilities do not exist in this slice.
 
 ## Getting started
 
@@ -81,16 +95,16 @@ repository. This selects Core and its parents/dependencies, **not Cosmos**, and
 uses the repository's quick-build options for those dependencies:
 
 ```text
-mvn -B -ntp "-Dmaven.repo.local=$COSMOS_MAVEN_REPO" "-Dgpg.skip" -f sdk/cosmos-v5/reactor.xml -pl com.azure.v2:azure-core -am clean install "-Dmaven.test.skip=true" "-Dcheckstyle.skip" "-Dmaven.javadoc.skip" "-Drevapi.skip" "-Dspotbugs.skip" "-Djacoco.skip" "-Dspotless.skip"
+mvn -B -ntp "-Dmaven.repo.local=$COSMOS_MAVEN_REPO" "-Dgpg.skip" -f sdk/cosmos-v5/pom.xml -pl com.azure.v2:azure-core -am clean install "-Dmaven.test.skip=true" "-Dcheckstyle.skip" "-Dmaven.javadoc.skip" "-Drevapi.skip" "-Dspotbugs.skip" "-Djacoco.skip" "-Dspotless.skip"
 ```
 
 After that command succeeds, build the v5 module with its tests and quality checks:
 
 ```text
-mvn -B -ntp "-Dmaven.repo.local=$COSMOS_MAVEN_REPO" "-Dgpg.skip" -f sdk/cosmos-v5/reactor.xml -pl com.azure:azure-cosmos clean verify "-Dspotless.apply.skip=true"
+mvn -B -ntp "-Dmaven.repo.local=$COSMOS_MAVEN_REPO" "-Dgpg.skip" -f sdk/cosmos-v5/pom.xml -pl com.azure.v2:azure-cosmos clean verify "-Dspotless.apply.skip=true"
 ```
 
-The second command runs the four JUnit 5 metadata tests, Checkstyle, SpotBugs,
+The second command runs six JUnit 5 metadata/coexistence tests, Checkstyle, SpotBugs,
 formatting verification, and artifact generation without disabling those checks
 for Cosmos. Outputs are under `sdk/cosmos-v5/azure-cosmos/target`. Reuse this
 Maven repository for iterative builds; rerun the bootstrap after changing the
@@ -100,8 +114,8 @@ same-checkout Core dependencies. Neither command deploys packages.
 
 `verify-build.py` is a **validation harness, not a build system or code generator**.
 It invokes the same Maven commands above, then checks invariants that a successful
-`mvn verify` alone does not establish: local/shared version-map consistency,
-v4/v5 discovery isolation, effective compiler-execution configuration, Java 17
+`mvn verify` alone does not establish: shared version-map consistency,
+unambiguous v4/v5 discovery, effective compiler-execution configuration, Java 17
 class-file versions, expected artifact contents, and the deployment guard.
 It also rejects implementation classes and native payloads for this initial
 migration slice. Those last assertions must evolve deliberately in later PRs.
@@ -134,43 +148,24 @@ The Core versions used by this branch are not yet available from Maven Central.
 A successful cold reactor build is not a claim that a standalone published
 consumer can resolve the future SDK today.
 
-### Opt-in build and version configuration
+### Standard Maven and version configuration
 
-This is **Cosmos-specific coexistence scaffolding, not a Core v2 convention**.
-Core v2 uses ordinary `pom.xml` files. Here, `sdk-build.xml` and `reactor.xml` are
-also ordinary Maven POMs; Maven's standard `-f` option selects them. Python does
-not translate them or supply Maven's version values. Maven reads the literal
-versions in the descriptors; the local text maps are consistency-check inputs.
+`sdk/cosmos-v5/pom.xml` is a dedicated reactor for this foundation and its
+same-checkout Core dependencies. It is not included in the root reactor, whose
+Cosmos selection remains v4. The SDK uses a normal
+`sdk/cosmos-v5/azure-cosmos/pom.xml`, which can also be built directly with `mvn -f`
+after bootstrapping Core. An IDE can import these POMs as ordinary Maven projects.
 
-The nonstandard filenames keep the approved same-coordinate v5 source from
-colliding with v4 in shared repository discovery. Renaming to `pom.xml` alone
-would expose both `com.azure:azure-cosmos` modules to that tooling and allow the
-shared v4 version map to rewrite the v5 descriptor. Returning to conventional
-filenames therefore requires a coordinated discovery/versioning change or an
-SDK identity decision; it is not required by the choice of Core dependency.
+Distinct Maven groups let shared tooling discover and version both SDKs without
+overwriting one with the other. `eng/versioning/version_client.txt` now has a
+separate `com.azure.v2:azure-cosmos` entry, while the `com.azure:azure-cosmos` entry
+is unchanged. Build plugin versions use `eng/versioning/external_dependencies.txt`.
+There are no Cosmos-local version maps or alternate Maven descriptors.
 
-`sdk/cosmos-v5/reactor.xml` is a dedicated reactor for this foundation and its
-same-checkout Core dependencies. It is not included in the repository's root
-reactor. The SDK's Maven build descriptor is `sdk-build.xml`, not `pom.xml`;
-invoke it explicitly with `mvn -f sdk/cosmos-v5/azure-cosmos/sdk-build.xml`
-after bootstrapping the dependencies. The validation script performs both steps.
-
-These alternate filenames intentionally exclude v5 from the shared `pom*.xml`
-discovery used by aggregate builds, version updates, and version scanning.
-`sdk/cosmos-v5/versions.txt` supplies the isolated Cosmos version; it is **not**
-an additional registration in `eng/versioning/version_client.txt`.
-`sdk/cosmos-v5/external_dependencies.txt` pins build plugins used only by the
-alternate descriptor. Such plugins must not be added to the shared external
-dependency manifest: its unused-entry checker scans only `pom*.xml` references.
-The validation script loads the local plugin pins into the shared external
-dependency map using the existing loader, rejecting duplicates within the local
-file or across both maps. It then uses the existing version-update implementation
-on a temporary descriptor copy to check local and shared versions, failing on
-drift without rewriting source files.
-Configuration regression tests also exercise actual shared aggregate discovery
-and the shared unused-entry checker, reject local plugin version drift and
-duplicate entries, and check that the default and opt-in reactors each select
-only their own Cosmos version. Run them independently with:
+The validator reuses the shared updater on a temporary copy, detecting marker
+drift without rewriting source files. Configuration tests exercise actual shared
+aggregate discovery of both coordinates, the shared unused-entry checker, and
+the separate root/v5 reactor selections. Run them independently with:
 
 ```bash
 python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p test_build_configuration.py
@@ -178,17 +173,19 @@ python3 -B -m unittest discover -s sdk/cosmos-v5/azure-cosmos -p test_build_conf
 
 On Windows, replace `python3` with `py -3`.
 
-When changing the v5 version, update both the local manifest and `sdk-build.xml`.
-Do not run the shared version updater's `--target-file` option on this descriptor:
-without the local override it would apply the v4 version.
-When changing a v5-only plugin version, update its local external dependency
-entry and the corresponding version marker in `sdk-build.xml` together.
+Use the repository's [versioning tools](../../../docs/contributor/versioning.md)
+with the full `com.azure.v2:azure-cosmos` identity when changing v5 versions.
+Do not change the v4 entry as part of a v5 update.
 
 The v5 CI `Artifacts` and `AdditionalModules` lists are empty intentionally, so
-shared package/release discovery still registers only v4. CI uploads validation
-outputs, not releasable SDK packages. Do not rename these descriptors to
-`pom*.xml`, register this SDK in shared release metadata, or add this reactor
-to the root build while the same-GA v4 source remains selected there.
+shared release-package discovery still registers only v4. Maven/version discovery
+is not release enablement: CI uploads nonproduction validation outputs, not
+releasable SDK packages. Keep the empty release registration, literal Maven
+deployment prohibition, and dedicated validation-only pipeline until publishing
+is separately approved.
+
+SDK metadata lives at `com.azure.v2.cosmos.properties` so classpath
+resource lookup cannot shadow v4's root-level `azure-cosmos.properties`.
 
 ## Validation and release boundaries
 
@@ -201,24 +198,19 @@ the repository maintainers; adding YAML does not create branch protection.
 The durable entrypoints are `verify-build.py` and the `cosmos-v5-validation.yml`
 pipeline template. Their current-slice assertions still forbid implementation
 classes, native payloads, and module exports/opens. Future native/API changes
-must deliberately evolve those assertions; this naming cleanup does not relax
+must deliberately evolve those assertions; the naming change does not relax
 them or the Java baseline, artifact, isolation, or deployment checks.
 
-Checkstyle uses the existing `track2` ruleset because the v2 parent's `vnext`
-ruleset hardcodes `com.azure.v2` and has no configurable namespace property.
-This is not equivalent to the vnext ruleset: track2 permits Reactor types in
-public APIs, expects the older Core logger and throw conventions, and includes
-`StepVerifierCheck`; vnext permits Client Core types and instead checks
-formatted exception messages, raw throws, and created-but-unthrown exceptions.
-No rules are modified or suppressed. With no public API or implementation in
-this slice, track2 validates the retained namespace and ordinary code style.
-Before functional APIs or logging are introduced, maintainers must establish
-namespace-compatible Core v2 linting. SpotBugs includes the build metadata tests
-because the production artifact contains only module/package metadata.
+Checkstyle now inherits the Core v2 parent's unmodified `vnext` ruleset:
+the `com.azure.v2.cosmos` namespace no longer needs a track2 override.
+No rules are modified or suppressed. SpotBugs includes the build metadata and
+coexistence tests because production still contains only module/package metadata.
 
 The default Cosmos reactor and both shared version-manifest columns remain on
 v4. The v5 foundation is not a replacement dependency for any existing consumer.
-The dedicated validation reactor never includes the v4 SDK or its consumers.
+The dedicated validation reactor does not build v4 SDK sources or its consumers.
+It resolves the released v4 SDK as a test-only dependency for coexistence checks;
+v4 is not a runtime dependency of the v5 artifact.
 
 ## Key concepts
 
