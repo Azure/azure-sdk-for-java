@@ -1532,7 +1532,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                           Configs.isQueryPlanCachingEnabled(), queryPlanCache, isQueryCancelledOnTimeout);
 
         AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-        return executionContext.flatMap(iDocumentQueryExecutionContext -> {
+        Function<IDocumentQueryExecutionContext<T>, Flux<FeedResponse<T>>> executeQuery = iDocumentQueryExecutionContext -> {
             QueryInfo queryInfo = null;
             if (iDocumentQueryExecutionContext instanceof PipelinedQueryExecutionContextBase) {
                 queryInfo = ((PipelinedQueryExecutionContextBase<T>) iDocumentQueryExecutionContext).getQueryInfo();
@@ -1571,10 +1571,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             return feedResponseFlux;
-            // concurrency is set to Queues.SMALL_BUFFER_SIZE to
-            // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
-            // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
-        }, Queues.SMALL_BUFFER_SIZE, 1);
+        };
+        // Keep the existing concurrency and prefetch defaults unless prefetch is explicitly disabled.
+        return options != null && Integer.valueOf(0).equals(options.getMaxPrefetchPageCount())
+            ? executionContext.concatMap(executeQuery, 0)
+            : executionContext.flatMap(executeQuery, Queues.SMALL_BUFFER_SIZE, 1);
     }
 
     private void addToActiveClients() {

@@ -18,6 +18,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private Boolean emitVerboseTracesInQuery;
     private int maxDegreeOfParallelism;
     private int maxBufferedItemCount;
+    private Integer maxPrefetchPageCount;
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
@@ -59,6 +60,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.emitVerboseTracesInQuery = options.emitVerboseTracesInQuery;
         this.maxDegreeOfParallelism = options.maxDegreeOfParallelism;
         this.maxBufferedItemCount = options.maxBufferedItemCount;
+        this.maxPrefetchPageCount = options.maxPrefetchPageCount;
         this.maxItemCount = options.maxItemCount;
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
@@ -211,7 +213,15 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     @Override
     public Integer getMaxPrefetchPageCount() {
-        return null;
+        return this.maxPrefetchPageCount;
+    }
+
+    public CosmosQueryRequestOptionsImpl setMaxPrefetchPageCount(Integer maxPrefetchPageCount) {
+        if (maxPrefetchPageCount != null && maxPrefetchPageCount < 0) {
+            throw new IllegalArgumentException("Argument 'maxPrefetchPageCount' must be non-negative.");
+        }
+        this.maxPrefetchPageCount = maxPrefetchPageCount;
+        return this;
     }
 
     /**
@@ -398,6 +408,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.scanInQueryEnabled = overrideOption(cosmosRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
         this.maxDegreeOfParallelism = overrideOption(cosmosRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
         this.maxBufferedItemCount = overrideOption(cosmosRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
+        this.maxPrefetchPageCount = overrideOption(cosmosRequestOptions.getMaxPrefetchPageCount(), this.maxPrefetchPageCount);
         this.maxItemCount = overrideOption(cosmosRequestOptions.getMaxItemCount(), this.maxItemCount);
         this.queryName = overrideOption(cosmosRequestOptions.getQueryName(), this.queryName);
     }
