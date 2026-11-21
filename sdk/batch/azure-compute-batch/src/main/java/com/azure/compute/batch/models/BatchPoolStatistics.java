@@ -96,7 +96,6 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
             this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
         jsonWriter.writeStringField("lastUpdateTime",
             this.lastUpdateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateTime));
-        jsonWriter.writeJsonField("usageStats", this.usageStatistics);
         jsonWriter.writeJsonField("resourceStats", this.resourceStatistics);
         return jsonWriter.writeEndObject();
     }
@@ -116,7 +115,6 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
             String url = null;
             OffsetDateTime startTime = null;
             OffsetDateTime lastUpdateTime = null;
-            BatchPoolUsageStatistics usageStatistics = null;
             BatchPoolResourceStatistics resourceStatistics = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -129,8 +127,6 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
                 } else if ("lastUpdateTime".equals(fieldName)) {
                     lastUpdateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("usageStats".equals(fieldName)) {
-                    usageStatistics = BatchPoolUsageStatistics.fromJson(reader);
                 } else if ("resourceStats".equals(fieldName)) {
                     resourceStatistics = BatchPoolResourceStatistics.fromJson(reader);
                 } else {
@@ -139,33 +135,16 @@ public final class BatchPoolStatistics implements JsonSerializable<BatchPoolStat
             }
             BatchPoolStatistics deserializedBatchPoolStatistics
                 = new BatchPoolStatistics(url, startTime, lastUpdateTime);
-            deserializedBatchPoolStatistics.usageStatistics = usageStatistics;
             deserializedBatchPoolStatistics.resourceStatistics = resourceStatistics;
             return deserializedBatchPoolStatistics;
         });
     }
 
     /*
-     * Statistics related to Pool usage, such as the amount of core-time used.
-     */
-    @Generated
-    private BatchPoolUsageStatistics usageStatistics;
-
-    /*
      * Statistics related to resource consumption by Compute Nodes in the Pool.
      */
     @Generated
     private BatchPoolResourceStatistics resourceStatistics;
-
-    /**
-     * Get the usageStatistics property: Statistics related to Pool usage, such as the amount of core-time used.
-     *
-     * @return the usageStatistics value.
-     */
-    @Generated
-    public BatchPoolUsageStatistics getUsageStatistics() {
-        return this.usageStatistics;
-    }
 
     /**
      * Get the resourceStatistics property: Statistics related to resource consumption by Compute Nodes in the Pool.

@@ -696,6 +696,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
         jsonWriter.writeStringField("vmSize", this.vmSize);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
+        jsonWriter.writeJsonField("vmSkuProfile", this.vmSkuProfile);
         jsonWriter.writeStringField("resizeTimeout", CoreUtils.durationToStringWithDays(this.resizeTimeout));
         jsonWriter.writeNumberField("targetDedicatedNodes", this.targetDedicatedNodes);
         jsonWriter.writeNumberField("targetLowPriorityNodes", this.targetLowPriorityNodes);
@@ -734,6 +735,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
             String vmSize = null;
             String displayName = null;
             VirtualMachineConfiguration virtualMachineConfiguration = null;
+            VirtualMachineSkuProfile vmSkuProfile = null;
             Duration resizeTimeout = null;
             Integer targetDedicatedNodes = null;
             Integer targetLowPriorityNodes = null;
@@ -761,6 +763,8 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
                     displayName = reader.getString();
                 } else if ("virtualMachineConfiguration".equals(fieldName)) {
                     virtualMachineConfiguration = VirtualMachineConfiguration.fromJson(reader);
+                } else if ("vmSkuProfile".equals(fieldName)) {
+                    vmSkuProfile = VirtualMachineSkuProfile.fromJson(reader);
                 } else if ("resizeTimeout".equals(fieldName)) {
                     resizeTimeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("targetDedicatedNodes".equals(fieldName)) {
@@ -802,6 +806,7 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
             BatchPoolCreateParameters deserializedBatchPoolCreateParameters = new BatchPoolCreateParameters(id, vmSize);
             deserializedBatchPoolCreateParameters.displayName = displayName;
             deserializedBatchPoolCreateParameters.virtualMachineConfiguration = virtualMachineConfiguration;
+            deserializedBatchPoolCreateParameters.vmSkuProfile = vmSkuProfile;
             deserializedBatchPoolCreateParameters.resizeTimeout = resizeTimeout;
             deserializedBatchPoolCreateParameters.targetDedicatedNodes = targetDedicatedNodes;
             deserializedBatchPoolCreateParameters.targetLowPriorityNodes = targetLowPriorityNodes;
@@ -820,5 +825,39 @@ public final class BatchPoolCreateParameters implements JsonSerializable<BatchPo
             deserializedBatchPoolCreateParameters.upgradePolicy = upgradePolicy;
             return deserializedBatchPoolCreateParameters;
         });
+    }
+
+    /*
+     * Specifies the profile of VM sizes and the allocation strategy used to allocate Compute Nodes for an Instance Mix
+     * Pool. When specified, vmSize must be 'Mix'. This property can only be changed while the Pool has no Compute
+     * Nodes.
+     */
+    @Generated
+    private VirtualMachineSkuProfile vmSkuProfile;
+
+    /**
+     * Get the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * Compute Nodes for an Instance Mix Pool. When specified, vmSize must be 'Mix'. This property can only be changed
+     * while the Pool has no Compute Nodes.
+     *
+     * @return the vmSkuProfile value.
+     */
+    @Generated
+    public VirtualMachineSkuProfile getVmSkuProfile() {
+        return this.vmSkuProfile;
+    }
+
+    /**
+     * Set the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * Compute Nodes for an Instance Mix Pool. When specified, vmSize must be 'Mix'. This property can only be changed
+     * while the Pool has no Compute Nodes.
+     *
+     * @param vmSkuProfile the vmSkuProfile value to set.
+     * @return the BatchPoolCreateParameters object itself.
+     */
+    @Generated
+    public BatchPoolCreateParameters setVmSkuProfile(VirtualMachineSkuProfile vmSkuProfile) {
+        this.vmSkuProfile = vmSkuProfile;
+        return this;
     }
 }
