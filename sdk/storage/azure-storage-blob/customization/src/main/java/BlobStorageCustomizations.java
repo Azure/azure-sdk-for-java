@@ -745,9 +745,9 @@ public class BlobStorageCustomizations extends Customization {
      * @param implPackage The implementation package.
      */
     private static void updateImplToMapInternalException(PackageCustomization implPackage) {
-        List<String> implsToUpdate = Arrays.asList("ServicesImpl", "ContainersImpl", "BlobsImpl", "AppendBlobsImpl", "BlockBlobsImpl",
-            "PageBlobsImpl");
-        for (String implToUpdate : implsToUpdate) {
+        List<String> implClassesToUpdate = Arrays.asList("ServicesImpl", "ContainersImpl", "BlobsImpl",
+            "AppendBlobsImpl", "BlockBlobsImpl", "PageBlobsImpl");
+        for (String implToUpdate : implClassesToUpdate) {
             implPackage.getClass(implToUpdate).customizeAst(ast -> {
                 ast.addImport("com.azure.storage.blob.implementation.util.ModelHelper");
                 ast.addImport("com.azure.storage.blob.models.BlobStorageException");
