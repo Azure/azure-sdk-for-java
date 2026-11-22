@@ -14,6 +14,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -1629,6 +1630,82 @@ public class BlobTestBase extends TestProxyTestBase {
                 });
             }
         };
+    }
+
+    /**
+     * Creates a per-retry policy that records each GET of {@code blobName}, keyed by download range, as
+     * {@code <Session|Bearer>[+StructuredMessage]:<status>}. Because it runs after the authentication policy, it observes
+     * the final authorization scheme of every attempt, including bearer fallbacks after a rejected session.
+     *
+     * @param blobName The name of the blob whose downloads are recorded.
+     * @param attemptsByRange The map that receives the recorded attempts.
+     * @return The recording policy.
+     */
+    protected static HttpPipelinePolicy getBlobDownloadAttemptRecorder(String blobName,
+        Map<String, List<String>> attemptsByRange) {
+        return new HttpPipelinePolicy() {
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_RETRY;
+            }
+
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return next.process().doOnNext(response -> record(context.getHttpRequest(), response));
+            }
+
+            @Override
+            public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+                HttpResponse response = next.processSync();
+                record(context.getHttpRequest(), response);
+                return response;
+            }
+
+            private void record(HttpRequest request, HttpResponse response) {
+                String auth = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+                String path = request.getUrl().getPath();
+                String query = request.getUrl().getQuery();
+                if (auth == null
+                    || request.getHttpMethod() != HttpMethod.GET
+                    || path == null
+                    || !path.endsWith("/" + blobName)
+                    || (query != null && query.contains("comp="))) {
+                    return;
+                }
+                String range = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+                if (range == null) {
+                    range = request.getHeaders().getValue(HttpHeaderName.RANGE);
+                }
+                String attempt = (auth.startsWith("Session ") ? "Session" : "Bearer")
+                    + (request.getHeaders().getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME) == null
+                        ? ""
+                        : "+StructuredMessage")
+                    + ":" + response.getStatusCode();
+                synchronized (attemptsByRange) {
+                    attemptsByRange.computeIfAbsent(range == null ? "<no range>" : range, ignored -> new ArrayList<>())
+                        .add(attempt);
+                }
+            }
+        };
+    }
+
+    /**
+     * Asserts that every recorded download range was served by a successful session-authenticated structured message
+     * response, so a rejected session attempt followed by a successful bearer retry does not satisfy the check.
+     *
+     * @param attemptsByRange Attempts recorded by {@link #getBlobDownloadAttemptRecorder(String, Map)}.
+     */
+    protected static void assertEveryRangeServedBySessionStructuredMessage(Map<String, List<String>> attemptsByRange) {
+        synchronized (attemptsByRange) {
+            assertTrue(attemptsByRange.size() > 1, "Expected multiple chunked download ranges; saw " + attemptsByRange);
+            assertTrue(
+                attemptsByRange.values()
+                    .stream()
+                    .allMatch(attempts -> attempts.stream()
+                        .anyMatch(attempt -> attempt.startsWith("Session+StructuredMessage:2"))),
+                "Expected every download range to succeed with Session auth and a structured message; saw "
+                    + attemptsByRange);
+        }
     }
 
     protected static boolean hasStructuredMessageDownloadRequestHeaders(List<HttpHeaders> recordedRequestHeaders,
