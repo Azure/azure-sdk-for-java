@@ -24,7 +24,8 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 public class AzureGlobalPropertiesAutoConfiguration {
 
     @Bean(name = AZURE_GLOBAL_PROPERTY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = AZURE_GLOBAL_PROPERTY_BEAN_NAME)
+    @ConditionalOnMissingBean(name = AZURE_GLOBAL_PROPERTY_BEAN_NAME,
+        search = org.springframework.boot.autoconfigure.condition.SearchStrategy.CURRENT)
     static AzureGlobalProperties azureGlobalProperties(Environment environment) {
         return Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class);
     }
