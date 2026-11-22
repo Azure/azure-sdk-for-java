@@ -149,6 +149,8 @@ public class BlobStorageCustomizations extends Customization {
 
         allowEmptyGetLayoutResponse(customization.getPackage(IMPL_PACKAGE));
 
+        allowNullBlockListType(customization.getPackage(IMPL_PACKAGE));
+
         updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE));
     }
 
@@ -426,6 +428,32 @@ public class BlobStorageCustomizations extends Customization {
                                 new BinaryExpr(
                                     new MethodCallExpr(new NameExpr("protocolMethodResponse"), "getStatusCode"),
                                     new IntegerLiteralExpr("204"), BinaryExpr.Operator.EQUALS),
+                                new NullLiteralExpr(), call.clone()))))));
+        }
+    }
+
+    /**
+     * The service defaults Get Block List to committed blocks when {@code blocklisttype} is omitted, and the shipped
+     * {@code listBlocks} accepted a null type for that. The spec declares the parameter required, so the generated
+     * convenience methods call {@code listType.toString()}. A null type is now passed through as null, which the
+     * protocol layer omits from the query, as the shipped client did.
+     *
+     * @param implPackage The implementation package holding the relocated convenience clients.
+     */
+    private static void allowNullBlockListType(PackageCustomization implPackage) {
+        for (String className : Arrays.asList("BlockBlobAsyncClientInternal", "BlockBlobClientInternal")) {
+            implPackage.getClass(className)
+                .customizeAst(ast -> ast.getClassByName(className)
+                    .ifPresent(clazz -> clazz.getMethods()
+                        .stream()
+                        .filter(method -> method.getNameAsString().startsWith("getBlockList"))
+                        .forEach(method -> method
+                            .findAll(MethodCallExpr.class, call -> "toString".equals(call.getNameAsString())
+                                && call.getScope().filter(scope -> scope.isNameExpr()
+                                    && "listType".equals(scope.asNameExpr().getNameAsString())).isPresent())
+                            .forEach(call -> call.replace(new ConditionalExpr(
+                                new BinaryExpr(new NameExpr("listType"), new NullLiteralExpr(),
+                                    BinaryExpr.Operator.EQUALS),
                                 new NullLiteralExpr(), call.clone()))))));
         }
     }
