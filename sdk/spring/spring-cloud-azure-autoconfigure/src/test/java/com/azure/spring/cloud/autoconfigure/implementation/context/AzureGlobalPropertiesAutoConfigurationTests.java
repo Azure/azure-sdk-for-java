@@ -5,11 +5,14 @@ package com.azure.spring.cloud.autoconfigure.implementation.context;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusPropertiesConfiguration;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.aot.test.generate.TestGenerationContext;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.aot.ApplicationContextAotGenerator;
@@ -22,6 +25,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.AZURE_GLOBAL_PROPERTY_BEAN_NAME;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
@@ -38,6 +42,14 @@ class AzureGlobalPropertiesAutoConfigurationTests {
             assertThat(context).hasSingleBean(AzureGlobalPropertiesAutoConfiguration.class);
             assertThat(context).hasSingleBean(AzureGlobalProperties.class);
         });
+    }
+
+    @Test
+    void existingNamedGlobalPropertiesArePreserved() {
+        AzureGlobalProperties properties = new AzureGlobalProperties();
+        this.contextRunner
+            .withBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME, AzureGlobalProperties.class, () -> properties)
+            .run(context -> assertThat(context.getBean(AzureGlobalProperties.class)).isSameAs(properties));
     }
 
     @Test
@@ -169,13 +181,54 @@ class AzureGlobalPropertiesAutoConfigurationTests {
 
     @Test
     @CompileWithForkedClassLoader
-    void processAheadOfTimeDoesNotRegisterAzureGlobalProperties() {
+    void processAheadOfTimeRegistersAzureGlobalProperties() {
         GenericApplicationContext context = new AnnotationConfigApplicationContext();
         context.registerBean(AzureGlobalPropertiesAutoConfiguration.class);
-        compile(context, (freshContext) -> {
+        compile(context, freshContext -> {
             freshContext.refresh();
-            assertThat(freshContext.getBeansOfType(AzureGlobalProperties.class)).isEmpty();
+            assertThat(freshContext.getBeansOfType(AzureGlobalProperties.class)).hasSize(1);
+            assertThat(freshContext.getBean(AzureGlobalProperties.class).getProfile().getCloudType()).isEqualTo(AZURE);
         });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeResolvesServiceBusNamespace() {
+        GenericApplicationContext context = serviceBusContext();
+        compile(context, freshContext -> {
+            TestPropertyValues.of("spring.cloud.azure.servicebus.namespace=runtime-namespace").applyTo(freshContext);
+            freshContext.refresh();
+            AzureServiceBusProperties properties = freshContext.getBean(AzureServiceBusProperties.class);
+            assertThat(properties.getFullyQualifiedNamespace()).isEqualTo("runtime-namespace.servicebus.windows.net");
+        });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeBindsRuntimeCloudProperties() {
+        GenericApplicationContext context = serviceBusContext();
+        compile(context, freshContext -> {
+            TestPropertyValues.of(
+                "spring.cloud.azure.servicebus.namespace=runtime-namespace",
+                "spring.cloud.azure.profile.cloud-type=azure_china",
+                "spring.cloud.azure.credential.client-id=runtime-client-id"
+            ).applyTo(freshContext);
+            freshContext.refresh();
+            AzureGlobalProperties globalProperties = freshContext.getBean(AzureGlobalProperties.class);
+            assertThat(globalProperties.getProfile().getCloudType()).isEqualTo(AZURE_CHINA);
+            AzureServiceBusProperties properties = freshContext.getBean(AzureServiceBusProperties.class);
+            assertThat(properties.getFullyQualifiedNamespace())
+                .isEqualTo("runtime-namespace.servicebus.chinacloudapi.cn");
+            assertThat(properties.getCredential().getClientId()).isEqualTo("runtime-client-id");
+        });
+    }
+
+    private GenericApplicationContext serviceBusContext() {
+        GenericApplicationContext context = new AnnotationConfigApplicationContext();
+        TestPropertyValues.of("spring.cloud.azure.servicebus.namespace=build-namespace").applyTo(context);
+        context.registerBean(AzureGlobalPropertiesAutoConfiguration.class);
+        context.registerBean(AzureServiceBusPropertiesConfiguration.class);
+        return context;
     }
 
     @SuppressWarnings("unchecked")

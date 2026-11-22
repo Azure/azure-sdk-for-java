@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed missing Azure global configuration properties in AOT-generated contexts, including Service Bus binder child contexts. ([#51366](https://github.com/Azure/azure-sdk-for-java/issues/51366))
+
 ### Other Changes
 
 - Aligned Reactor version resolution and test HTTP transport dependencies with Netty 4.2, and added offline transport compatibility tests.

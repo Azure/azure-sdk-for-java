@@ -15,6 +15,8 @@ Upgrade Spring Boot dependencies version to 4.1.1 and Spring Cloud dependencies 
 
 #### Bugs Fixed
 
+- Fixed missing Azure global configuration properties in AOT-generated contexts, including Service Bus binder child contexts. ([#51366](https://github.com/Azure/azure-sdk-for-java/issues/51366))
+
 - Fixed the default Microsoft Entra ID resource server filter chain to require authentication for every request. ([#51191](https://github.com/Azure/azure-sdk-for-java/issues/51191))
 - Fixed Spring Boot 4.1.2 compatibility test compilation for the default Microsoft Entra ID security configuration. ([#51106](https://github.com/Azure/azure-sdk-for-java/pull/51106))
 - Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
