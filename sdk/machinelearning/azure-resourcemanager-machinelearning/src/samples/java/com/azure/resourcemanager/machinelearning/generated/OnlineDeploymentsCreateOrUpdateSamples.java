@@ -26,7 +26,7 @@ import java.util.Map;
  */
 public final class OnlineDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Kubernetes Online Deployment.
@@ -77,7 +77,7 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Managed Online Deployment.

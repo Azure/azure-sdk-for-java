@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class OnlineEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/get.json
+     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/get.json
      */
     /**
      * Sample code: Get Workspace Online Endpoint.

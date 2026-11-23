@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class RegistryEnvironmentContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Registry/EnvironmentContainer/delete.json
+     * x-ms-original-file: 2026-09-01/Registry/EnvironmentContainer/delete.json
      */
     /**
      * Sample code: Delete Registry Environment Container.

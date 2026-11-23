@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class FeaturesetVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/list.json
+     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/list.json
      */
     /**
      * Sample code: List Workspace Featureset Version.

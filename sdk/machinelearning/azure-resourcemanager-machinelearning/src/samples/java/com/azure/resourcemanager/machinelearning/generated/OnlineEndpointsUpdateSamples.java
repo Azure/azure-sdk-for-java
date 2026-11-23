@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class OnlineEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/update.json
+     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/update.json
      */
     /**
      * Sample code: Update Workspace Online Endpoint.

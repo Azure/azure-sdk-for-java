@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ModelVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/ModelVersion/delete.json
+     * x-ms-original-file: 2026-09-01/Workspace/ModelVersion/delete.json
      */
     /**
      * Sample code: Delete Workspace Model Version.

@@ -222,7 +222,7 @@ public final class AzureDataLakeGen2Datastore extends DatastoreProperties {
 
     /**
      * Get the isDefault property: Readonly property to indicate if datastore is the workspace default datastore.
-     *
+     * 
      * @return the isDefault value.
      */
     @Override

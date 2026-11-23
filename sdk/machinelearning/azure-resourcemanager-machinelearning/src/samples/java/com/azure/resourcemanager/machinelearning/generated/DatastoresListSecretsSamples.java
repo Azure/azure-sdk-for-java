@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.SecretExpiry;
  */
 public final class DatastoresListSecretsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Datastore/listSecrets.json
+     * x-ms-original-file: 2026-09-01/Datastore/listSecrets.json
      */
     /**
      * Sample code: Get datastore secrets.

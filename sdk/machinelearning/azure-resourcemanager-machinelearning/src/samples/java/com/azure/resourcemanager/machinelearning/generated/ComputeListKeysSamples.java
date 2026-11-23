@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ComputeListKeysSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Compute/listKeys.json
+     * x-ms-original-file: 2026-09-01/Compute/listKeys.json
      */
     /**
      * Sample code: List AKS Compute Keys.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class DatastoresDeleteSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Datastore/delete.json
+     * x-ms-original-file: 2026-09-01/Datastore/delete.json
      */
     /**
      * Sample code: Delete datastore.

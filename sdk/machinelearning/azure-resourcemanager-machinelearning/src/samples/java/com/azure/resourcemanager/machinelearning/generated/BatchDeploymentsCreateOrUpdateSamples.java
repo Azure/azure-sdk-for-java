@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public final class BatchDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/BatchDeployment/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/BatchDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Batch Deployment.

@@ -88,7 +88,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core-test</artifactId>
-      <version>7.0.9</version> <!-- {x-version-update;springboot4_org.springframework:spring-core-test;external_dependency} -->
+      <version>7.0.10</version> <!-- {x-version-update;springboot4_org.springframework:spring-core-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- byte-buddy dependencies are required for Mockito to work with Java 21. -->

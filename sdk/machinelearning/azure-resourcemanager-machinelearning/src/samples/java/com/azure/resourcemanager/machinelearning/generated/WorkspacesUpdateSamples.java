@@ -12,7 +12,7 @@ import com.azure.resourcemanager.machinelearning.models.Workspace;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/update.json
+     * x-ms-original-file: 2026-09-01/Workspace/update.json
      */
     /**
      * Sample code: Update Workspace.

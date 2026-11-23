@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class OnlineDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/OnlineDeployment/KubernetesOnlineDeployment/get.json
+     * x-ms-original-file: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/get.json
      */
     /**
      * Sample code: Get Kubernetes Online Deployment.
@@ -24,7 +24,7 @@ public final class OnlineDeploymentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-07-01/OnlineDeployment/ManagedOnlineDeployment/get.json
+     * x-ms-original-file: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/get.json
      */
     /**
      * Sample code: Get Managed Online Deployment.

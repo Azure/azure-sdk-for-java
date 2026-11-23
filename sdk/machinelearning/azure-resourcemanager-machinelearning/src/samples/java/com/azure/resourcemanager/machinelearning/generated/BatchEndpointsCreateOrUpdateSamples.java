@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class BatchEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/BatchEndpoint/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/BatchEndpoint/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Batch Endpoint.

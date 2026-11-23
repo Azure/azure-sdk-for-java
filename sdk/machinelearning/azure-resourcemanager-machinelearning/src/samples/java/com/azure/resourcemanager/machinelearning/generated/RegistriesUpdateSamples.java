@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class RegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Registries/update.json
+     * x-ms-original-file: 2026-09-01/Registries/update.json
      */
     /**
      * Sample code: Update Registry with system created accounts.

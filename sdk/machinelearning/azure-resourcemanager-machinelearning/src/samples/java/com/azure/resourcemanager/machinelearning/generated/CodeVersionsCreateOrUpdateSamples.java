@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class CodeVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Code Version.

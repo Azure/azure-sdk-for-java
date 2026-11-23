@@ -169,7 +169,7 @@ public final class PipelineJob extends JobBaseProperties {
 
     /**
      * Get the status property: Status of the job.
-     *
+     * 
      * @return the status value.
      */
     @Override

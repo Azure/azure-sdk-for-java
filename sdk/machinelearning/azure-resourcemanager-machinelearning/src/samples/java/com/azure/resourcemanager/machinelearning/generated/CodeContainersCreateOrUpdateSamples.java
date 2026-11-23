@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class CodeContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/CodeContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/CodeContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Code Container.

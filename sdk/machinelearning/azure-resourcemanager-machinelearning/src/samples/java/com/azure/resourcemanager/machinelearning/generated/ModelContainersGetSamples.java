@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ModelContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/ModelContainer/get.json
+     * x-ms-original-file: 2026-09-01/Workspace/ModelContainer/get.json
      */
     /**
      * Sample code: Get Workspace Model Container.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class WorkspaceConnectionsListSecretsSamples {
     /*
-     * x-ms-original-file: 2026-07-01/WorkspaceConnection/listSecrets.json
+     * x-ms-original-file: 2026-09-01/WorkspaceConnection/listSecrets.json
      */
     /**
      * Sample code: GetWorkspaceConnection.

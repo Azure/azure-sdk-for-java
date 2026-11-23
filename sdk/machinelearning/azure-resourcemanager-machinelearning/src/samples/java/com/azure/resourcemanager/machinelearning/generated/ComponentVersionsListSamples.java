@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ComponentVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/ComponentVersion/list.json
+     * x-ms-original-file: 2026-09-01/Workspace/ComponentVersion/list.json
      */
     /**
      * Sample code: List Workspace Component Version.

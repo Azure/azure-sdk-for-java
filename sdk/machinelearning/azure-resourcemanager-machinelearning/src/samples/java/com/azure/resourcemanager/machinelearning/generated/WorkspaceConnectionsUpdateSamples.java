@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class WorkspaceConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/WorkspaceConnection/update.json
+     * x-ms-original-file: 2026-09-01/WorkspaceConnection/update.json
      */
     /**
      * Sample code: UpdateWorkspaceConnection.

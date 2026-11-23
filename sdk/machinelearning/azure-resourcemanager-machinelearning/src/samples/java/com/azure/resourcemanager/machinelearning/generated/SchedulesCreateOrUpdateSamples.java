@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class SchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Schedule/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Schedule/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Schedule.

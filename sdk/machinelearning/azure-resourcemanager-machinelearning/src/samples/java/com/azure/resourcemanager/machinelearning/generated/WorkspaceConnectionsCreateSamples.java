@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  */
 public final class WorkspaceConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/WorkspaceConnection/create.json
+     * x-ms-original-file: 2026-09-01/WorkspaceConnection/create.json
      */
     /**
      * Sample code: CreateWorkspaceConnection.

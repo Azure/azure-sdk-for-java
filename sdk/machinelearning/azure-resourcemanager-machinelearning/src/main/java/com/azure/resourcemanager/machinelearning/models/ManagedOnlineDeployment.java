@@ -44,7 +44,7 @@ public final class ManagedOnlineDeployment extends OnlineDeploymentProperties {
 
     /**
      * Get the provisioningState property: Provisioning state for the endpoint deployment.
-     *
+     * 
      * @return the provisioningState value.
      */
     @Override

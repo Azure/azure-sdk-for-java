@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ComputeListSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Compute/list.json
+     * x-ms-original-file: 2026-09-01/Compute/list.json
      */
     /**
      * Sample code: Get Computes.

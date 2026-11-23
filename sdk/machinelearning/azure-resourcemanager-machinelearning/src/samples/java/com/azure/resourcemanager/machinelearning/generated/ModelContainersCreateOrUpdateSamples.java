@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ModelContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-07-01/Workspace/ModelContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-09-01/Workspace/ModelContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Model Container.
