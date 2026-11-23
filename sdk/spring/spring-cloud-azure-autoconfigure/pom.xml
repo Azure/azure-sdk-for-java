@@ -37,27 +37,28 @@
     <compiler.failondeprecatedstatus/>
     <spotless.skip>true</spotless.skip>
   </properties>
-  <dependencyManagement>
-    <dependencies>
-      <!-- Align this module with azure-core-http-netty when optional Redis and JMS dependencies are present. -->
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-bom</artifactId>
-        <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-bom;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.projectreactor</groupId>
-        <artifactId>reactor-bom</artifactId>
-        <version>2025.0.7</version> <!-- {x-version-update;io.projectreactor:reactor-bom;external_dependency} -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
+    <!-- Prefer the Azure SDK transport's Netty versions at equal dependency depth. -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.17.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <!-- Prevent the legacy 4.1 codec aggregate from sharing classes with the split 4.2 codecs. -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec</artifactId>
+      <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-codec;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.8.7</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-service</artifactId>
@@ -571,6 +572,8 @@
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.21.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.21.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.lettuce:lettuce-core:[6.6.0.RELEASE]</include> <!-- {x-include-update;springboot3_io.lettuce:lettuce-core;external_dependency} -->
+                <include>io.netty:netty-codec:[4.2.19.Final]</include> <!-- {x-include-update;io.netty:netty-codec;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.8.7]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;springboot3_jakarta.validation:jakarta.validation-api;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[8.0.3.Final]</include> <!-- {x-include-update;springboot3_org.hibernate.validator:hibernate-validator;external_dependency} -->
