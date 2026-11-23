@@ -12,9 +12,15 @@ import java.util.Collection;
  */
 public final class StorageClassType extends ExpandableStringEnum<StorageClassType> {
     /**
-     * Cold storage class.
+     * Cold storage class. Requests that use COLD are rejected during validation; use COOL for the infrequent-access
+     * tier.
      */
-    public static final StorageClassType COOL = fromString("COLD");
+    public static final StorageClassType COLD = fromString("COLD");
+
+    /**
+     * Cool (infrequent-access) storage class.
+     */
+    public static final StorageClassType COOL = fromString("COOL");
 
     /**
      * Hot storage class.

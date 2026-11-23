@@ -27,7 +27,7 @@ public final class ParameterGroupsCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"parameters\":[{\"name\":\"xykxhdj\",\"description\":\"immbcx\",\"value\":\"bcporxvxcjzhqizx\",\"defaultValue\":\"xtgqscjavftjuh\",\"valueSource\":\"UserOverride\",\"dataType\":\"k\",\"allowedValues\":\"gg\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"ajc\",\"unit\":\"m\"},{\"name\":\"hfcf\",\"description\":\"rxgkne\",\"value\":\"yinzqodfvpgs\",\"defaultValue\":\"xgsg\",\"valueSource\":\"UserOverride\",\"dataType\":\"zdjtxvzflbqv\",\"allowedValues\":\"qvlgafcqusrdvetn\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"nwlduycvuzhyrmew\",\"unit\":\"mvekdxukuqgsjj\"},{\"name\":\"n\",\"description\":\"gketwzhhzjhf\",\"value\":\"hvvmuvgpmun\",\"defaultValue\":\"sx\",\"valueSource\":\"UserOverride\",\"dataType\":\"buzjyih\",\"allowedValues\":\"sbhud\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"emslynsqyrp\",\"unit\":\"obrltt\"},{\"name\":\"sjnygqdnfwqzdzgt\",\"description\":\"axhnfh\",\"value\":\"yvi\",\"defaultValue\":\"uwivkxoy\",\"valueSource\":\"SystemDefault\",\"dataType\":\"ixxrtikvcpw\",\"allowedValues\":\"clrcivtsox\",\"isDynamic\":false,\"isReadOnly\":true,\"documentationLink\":\"pmyyefrpmpdnqq\",\"unit\":\"awaoqvmmbnpqfrt\"}],\"description\":\"kzmegnitgvkxlz\",\"postgreSqlVersion\":\"18\",\"provisioningState\":\"Succeeded\"},\"location\":\"eg\",\"tags\":{\"oyqhlwig\":\"lzxwhcansy\",\"wasqvdaeyyg\":\"ivbkbxgomfaj\",\"zkgimsid\":\"xakjsqzhzb\"},\"id\":\"asi\",\"name\":\"ddyvvjskgfmo\",\"type\":\"wa\"}";
+            = "{\"properties\":{\"parameters\":[{\"name\":\"rxpdlcgqlsi\",\"description\":\"jqfrddgamquh\",\"value\":\"srsjuivfc\",\"defaultValue\":\"syirnx\",\"valueSource\":\"UserOverride\",\"dataType\":\"exrxzbujrtrhq\",\"allowedValues\":\"revkhgnlnzo\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"qywncvjtsz\",\"unit\":\"fizehtdhgbjk\"},{\"name\":\"eljeamurvzmlovua\",\"description\":\"shcxlpmjerbdk\",\"value\":\"vidizozsdb\",\"defaultValue\":\"xjmonf\",\"valueSource\":\"UserOverride\",\"dataType\":\"n\",\"allowedValues\":\"puuw\",\"isDynamic\":true,\"isReadOnly\":false,\"documentationLink\":\"jctzenkei\",\"unit\":\"zhmkdasvflyh\"}],\"description\":\"cu\",\"postgreSqlVersion\":\"17\",\"provisioningState\":\"Succeeded\"},\"location\":\"srboldforobw\",\"tags\":{\"btuodxeszabbel\":\"izbfhfovvacq\",\"rrwoycqucwyhahn\":\"wumuaslzk\"},\"id\":\"mdr\",\"name\":\"ywuhpsvfuur\",\"type\":\"tlwexxwlalniexz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,23 +37,23 @@ public final class ParameterGroupsCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ParameterGroup response = manager.parameterGroups()
-            .define("brxjjsto")
-            .withRegion("thwwn")
-            .withExistingResourceGroup("hvv")
-            .withTags(mapOf("zswpchwa", "l"))
+            .define("vgcxtx")
+            .withRegion("wjscjpah")
+            .withExistingResourceGroup("ppipifhpfeoa")
+            .withTags(mapOf("mqt", "eabfqxnm", "ttadijae", "bxyijddtvq", "ieekpndzaa", "kmr", "igpibud", "mudqmeq"))
             .withProperties(new ParameterGroupProperties()
-                .withParameters(
-                    Arrays.asList(new ParameterProperties().withName("pkxztmoobkl").withValue("mpimaqxzhemjyh")))
-                .withDescription("z")
-                .withPostgreSqlVersion(PostgreSqlVersion.V18))
+                .withParameters(Arrays.asList(new ParameterProperties().withName("afidltugsres").withValue("gpr"),
+                    new ParameterProperties().withName("ylhjlm").withValue("rimrs")))
+                .withDescription("wm")
+                .withPostgreSqlVersion(PostgreSqlVersion.V17))
             .create();
 
-        Assertions.assertEquals("eg", response.location());
-        Assertions.assertEquals("lzxwhcansy", response.tags().get("oyqhlwig"));
-        Assertions.assertEquals("xykxhdj", response.properties().parameters().get(0).name());
-        Assertions.assertEquals("bcporxvxcjzhqizx", response.properties().parameters().get(0).value());
-        Assertions.assertEquals("kzmegnitgvkxlz", response.properties().description());
-        Assertions.assertEquals(PostgreSqlVersion.V18, response.properties().postgreSqlVersion());
+        Assertions.assertEquals("srboldforobw", response.location());
+        Assertions.assertEquals("izbfhfovvacq", response.tags().get("btuodxeszabbel"));
+        Assertions.assertEquals("rxpdlcgqlsi", response.properties().parameters().get(0).name());
+        Assertions.assertEquals("srsjuivfc", response.properties().parameters().get(0).value());
+        Assertions.assertEquals("cu", response.properties().description());
+        Assertions.assertEquals(PostgreSqlVersion.V17, response.properties().postgreSqlVersion());
     }
 
     // Use "Map.of" if available

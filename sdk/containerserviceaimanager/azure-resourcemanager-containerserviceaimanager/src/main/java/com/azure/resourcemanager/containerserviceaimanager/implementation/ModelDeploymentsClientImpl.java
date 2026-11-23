@@ -449,7 +449,7 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
      * default).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ModelDeploymentInner>, ModelDeploymentInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<ModelDeploymentInner>, ModelDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String aiManagerName, String namespaceName, String modelDeploymentName,
         ModelDeploymentInner resource, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, namespaceName,
@@ -772,7 +772,7 @@ public final class ModelDeploymentsClientImpl implements ModelDeploymentsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String namespaceName, String modelDeploymentName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, aiManagerName, namespaceName, modelDeploymentName, ifMatch);

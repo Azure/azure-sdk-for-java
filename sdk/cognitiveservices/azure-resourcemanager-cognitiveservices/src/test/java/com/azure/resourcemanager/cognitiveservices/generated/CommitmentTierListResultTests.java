@@ -12,8 +12,8 @@ public final class CommitmentTierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ilyrzoxp\",\"value\":[{\"kind\":\"frolq\",\"skuName\":\"nkiuajewnah\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"jmztnlmso\",\"tier\":\"tmvecdhdyswcrptv\",\"maxCount\":514575285,\"quota\":{\"quantity\":2680840819981566847,\"unit\":\"gsrgkrfizr\"},\"cost\":{\"commitmentMeterId\":\"lptyuqhr\",\"overageMeterId\":\"cs\"}}]}")
+            "{\"nextLink\":\"rspnrsjsem\",\"value\":[{\"kind\":\"rsnqpljpetex\",\"skuName\":\"ikelpmwgr\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"udhvos\",\"tier\":\"zscueza\",\"maxCount\":1749500004,\"quota\":{\"quantity\":3115708463968498372,\"unit\":\"j\"},\"cost\":{\"commitmentMeterId\":\"cffrx\",\"overageMeterId\":\"ezkhzp\"}},{\"kind\":\"qissen\",\"skuName\":\"rusyzai\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"jnp\",\"tier\":\"plujyduonb\",\"maxCount\":516656741,\"quota\":{\"quantity\":962189313188844173,\"unit\":\"vvm\"},\"cost\":{\"commitmentMeterId\":\"xjarsbb\",\"overageMeterId\":\"dwokqx\"}}]}")
             .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("ilyrzoxp", model.nextLink());
+        Assertions.assertEquals("rspnrsjsem", model.nextLink());
     }
 }

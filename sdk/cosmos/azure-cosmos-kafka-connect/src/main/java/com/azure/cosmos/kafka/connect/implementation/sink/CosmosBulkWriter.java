@@ -321,6 +321,11 @@ public class CosmosBulkWriter extends CosmosWriterBase {
         switch (this.writeConfig.getItemWriteStrategy()) {
             case ITEM_APPEND:
                 return KafkaCosmosExceptionsHelper.isResourceExistsException(failedException);
+            case ITEM_PATCH:
+                // A 412 on patch can only originate from the configured filter predicate because etag/If-Match
+                // is not wired for patch today. If etag support is added, these two causes must be distinguished.
+                return StringUtils.isNotEmpty(this.writeConfig.getCosmosPatchConfig().getFilter())
+                    && KafkaCosmosExceptionsHelper.isPreconditionFailedException(failedException);
             case ITEM_DELETE:
                 return KafkaCosmosExceptionsHelper.isNotFoundException(failedException);
             case ITEM_DELETE_IF_NOT_MODIFIED:
@@ -373,4 +378,3 @@ public class CosmosBulkWriter extends CosmosWriterBase {
         }
     }
 }
-

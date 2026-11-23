@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SvmPeerCommandResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SvmPeerCommandResponseProperties model = BinaryData.fromString("{\"svmPeeringCommand\":\"vithh\"}")
+        SvmPeerCommandResponseProperties model = BinaryData.fromString("{\"svmPeeringCommand\":\"hhvh\"}")
             .toObject(SvmPeerCommandResponseProperties.class);
-        Assertions.assertEquals("vithh", model.svmPeeringCommand());
+        Assertions.assertEquals("hhvh", model.svmPeeringCommand());
     }
 }

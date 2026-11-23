@@ -4,7 +4,6 @@
 package com.azure.ai.agents.models;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.implementation.utils.Beta;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
@@ -25,7 +24,6 @@ import java.util.List;
  * A user message item in a Realtime conversation.
  */
 @Fluent
-@Beta(warningText = "Preview API. VoiceAgents=V1Preview")
 public final class RealtimeConversationItemUserMessage extends RealtimeConversationItemMessage {
 
     /*
@@ -47,15 +45,15 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
     private String id;
 
     /*
-     * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
+     * The status of the item. Has no effect on the conversation.
      */
     @Generated
-    private RealtimeConversationItemObjectType object;
-
-    // AI Tooling: openai-java de-dup
     private Status status;
 
-    // AI Tooling: openai-java de-dup
+    /*
+     * The content of the message.
+     */
+    @Generated
     private final List<Content> content;
 
     /*
@@ -125,36 +123,12 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
     }
 
     /**
-     * Get the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public RealtimeConversationItemObjectType getObject() {
-        return this.object;
-    }
-
-    /**
-     * Set the object property: Identifier for the API object being returned - always `realtime.item`. Optional when
-     * creating a new item.
-     *
-     * @param object the object value to set.
-     * @return the RealtimeConversationItemUserMessage object itself.
-     */
-    @Generated
-    public RealtimeConversationItemUserMessage setObject(RealtimeConversationItemObjectType object) {
-        this.object = object;
-        return this;
-    }
-
-    /**
      * Get the status property: The status of the item. Has no effect on the conversation.
      *
      * @return the status value.
      */
+    @Generated
     public Status getStatus() {
-        // AI Tooling: openai-java de-dup
         return this.status;
     }
 
@@ -163,8 +137,8 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
      *
      * @return the content value.
      */
+    @Generated
     public List<Content> getContent() {
-        // AI Tooling: openai-java de-dup
         return this.content;
     }
 
@@ -208,7 +182,7 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
         });
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.asString());
         return jsonWriter.writeEndObject();
     }
@@ -256,7 +230,7 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
             RealtimeConversationItemUserMessage deserializedRealtimeConversationItemUserMessage
                 = new RealtimeConversationItemUserMessage(content);
             deserializedRealtimeConversationItemUserMessage.id = id;
-            deserializedRealtimeConversationItemUserMessage.object = object;
+            deserializedRealtimeConversationItemUserMessage.objectType = object;
             deserializedRealtimeConversationItemUserMessage.status = status;
             deserializedRealtimeConversationItemUserMessage.createdAt = createdAt;
             deserializedRealtimeConversationItemUserMessage.responseId = responseId;
@@ -270,9 +244,39 @@ public final class RealtimeConversationItemUserMessage extends RealtimeConversat
      * @param status the status value to set.
      * @return the RealtimeConversationItemUserMessage object itself.
      */
+    @Generated
     public RealtimeConversationItemUserMessage setStatus(Status status) {
-        // AI Tooling: openai-java de-dup
         this.status = status;
+        return this;
+    }
+
+    /*
+     * Identifier for the API object being returned - always `realtime.item`. Optional when creating a new item.
+     */
+    @Generated
+    private RealtimeConversationItemObjectType objectType;
+
+    /**
+     * Get the objectType property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public RealtimeConversationItemObjectType getObjectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Set the objectType property: Identifier for the API object being returned - always `realtime.item`. Optional when
+     * creating a new item.
+     *
+     * @param objectType the objectType value to set.
+     * @return the RealtimeConversationItemUserMessage object itself.
+     */
+    @Generated
+    public RealtimeConversationItemUserMessage setObjectType(RealtimeConversationItemObjectType objectType) {
+        this.objectType = objectType;
         return this;
     }
 }

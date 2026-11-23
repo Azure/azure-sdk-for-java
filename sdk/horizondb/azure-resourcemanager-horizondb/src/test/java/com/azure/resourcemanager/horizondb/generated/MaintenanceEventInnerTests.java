@@ -11,7 +11,7 @@ public final class MaintenanceEventInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MaintenanceEventInner model = BinaryData.fromString(
-            "{\"properties\":{\"maintenanceEventId\":\"ufgmjzrwrdg\",\"maintenanceType\":\"PlannedMaintenance\",\"description\":\"aenuuz\",\"status\":\"Canceled\",\"startTimeUtc\":\"2021-07-21T23:33:14Z\",\"endTimeUtc\":\"2021-12-02T02:53:31Z\",\"estimatedDowntime\":\"PT79H24M26S\",\"deferrable\":false,\"deferralDeadlineUtc\":\"2021-08-21T09:11:53Z\",\"rescheduledFromUtc\":\"2021-06-23T20:23:29Z\",\"lastUpdatedTimeUtc\":\"2021-12-10T08:12:44Z\",\"originalStartTimeUtc\":\"2021-07-25T01:07:20Z\"},\"id\":\"hziuiefozbhdms\",\"name\":\"l\",\"type\":\"zqhof\"}")
+            "{\"properties\":{\"maintenanceEventId\":\"znoigbrn\",\"maintenanceType\":\"PlannedMaintenance\",\"description\":\"wkpnbsaz\",\"status\":\"Rescheduled\",\"startTimeUtc\":\"2021-11-02T03:52:01Z\",\"endTimeUtc\":\"2021-07-29T15:17:39Z\",\"estimatedDowntime\":\"PT171H36M6S\",\"deferrable\":true,\"deferralDeadlineUtc\":\"2021-10-04T03:24:40Z\",\"rescheduledFromUtc\":\"2021-03-05T04:18:27Z\",\"lastUpdatedTimeUtc\":\"2021-09-12T22:34:01Z\",\"originalStartTimeUtc\":\"2020-12-25T13:36:23Z\"},\"id\":\"ugzxnf\",\"name\":\"azpxdtnkdmkqjjl\",\"type\":\"uenvrkp\"}")
             .toObject(MaintenanceEventInner.class);
     }
 }

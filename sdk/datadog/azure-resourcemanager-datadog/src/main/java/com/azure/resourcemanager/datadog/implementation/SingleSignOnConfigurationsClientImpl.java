@@ -351,7 +351,7 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * using a specific property type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
+    private SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName,
             DatadogSingleSignOnResourceInner body) {
         Response<BinaryData> response

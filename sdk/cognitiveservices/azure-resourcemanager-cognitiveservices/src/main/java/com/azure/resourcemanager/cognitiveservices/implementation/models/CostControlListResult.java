@@ -9,24 +9,24 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.CostControlInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountCostControlInner;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * A page of cost controls.
+ * A page of cost controls owned by an account.
  */
 @Immutable
 public final class CostControlListResult implements JsonSerializable<CostControlListResult> {
     /*
-     * The link used to get the next page of cost controls.
+     * The link used to retrieve the next page, when present.
      */
     private String nextLink;
 
     /*
      * The cost controls in this page.
      */
-    private List<CostControlInner> value;
+    private List<AccountCostControlInner> value;
 
     /**
      * Creates an instance of CostControlListResult class.
@@ -35,7 +35,7 @@ public final class CostControlListResult implements JsonSerializable<CostControl
     }
 
     /**
-     * Get the nextLink property: The link used to get the next page of cost controls.
+     * Get the nextLink property: The link used to retrieve the next page, when present.
      * 
      * @return the nextLink value.
      */
@@ -48,7 +48,7 @@ public final class CostControlListResult implements JsonSerializable<CostControl
      * 
      * @return the value value.
      */
-    public List<CostControlInner> value() {
+    public List<AccountCostControlInner> value() {
         return this.value;
     }
 
@@ -80,7 +80,8 @@ public final class CostControlListResult implements JsonSerializable<CostControl
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<CostControlInner> value = reader.readArray(reader1 -> CostControlInner.fromJson(reader1));
+                    List<AccountCostControlInner> value
+                        = reader.readArray(reader1 -> AccountCostControlInner.fromJson(reader1));
                     deserializedCostControlListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedCostControlListResult.nextLink = reader.getString();

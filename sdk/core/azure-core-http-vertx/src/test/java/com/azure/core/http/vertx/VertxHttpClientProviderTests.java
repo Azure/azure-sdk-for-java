@@ -37,7 +37,7 @@ public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests
     public void nullOptionsReturnsBaseClient() {
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(null);
 
-        ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
+        ProxyOptions environmentProxy = loadEnvironmentProxy();
         io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
@@ -52,7 +52,7 @@ public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests
         VertxHttpClient httpClient
             = (VertxHttpClient) new VertxHttpClientProvider().createInstance(new HttpClientOptions());
 
-        ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
+        ProxyOptions environmentProxy = loadEnvironmentProxy();
         io.vertx.core.net.ProxyOptions proxyOptions = httpClient.buildOptions.getProxyOptions();
         if (environmentProxy == null) {
             assertNull(proxyOptions);
@@ -60,6 +60,15 @@ public class VertxHttpClientProviderTests extends HttpClientOptionsProviderTests
             assertNotNull(proxyOptions);
             assertEquals(environmentProxy.getAddress().getHostName(), proxyOptions.getHost());
         }
+    }
+
+    /*
+     * Loads the environment proxy the way VertxHttpClientBuilder does, unresolved. Resolving it would make
+     * getHostName() perform a reverse DNS lookup when the proxy host is an IP address, returning a name that doesn't
+     * match the host the client was configured with.
+     */
+    private static ProxyOptions loadEnvironmentProxy() {
+        return ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration(), true);
     }
 
     @Test

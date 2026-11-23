@@ -9,7 +9,7 @@ package com.azure.resourcemanager.commvaultcontentstore.generated;
  */
 public final class StoragesEnableComplianceLockSamples {
     /*
-     * x-ms-original-file: 2026-09-30/Storages_EnableComplianceLock_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-11-03/Storages_EnableComplianceLock_MaximumSet_Gen.json
      */
     /**
      * Sample code: Storages_EnableComplianceLock_MaximumSet - Enable compliance lock on storage.

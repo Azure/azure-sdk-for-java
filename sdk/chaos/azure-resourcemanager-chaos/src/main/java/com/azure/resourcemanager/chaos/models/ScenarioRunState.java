@@ -72,6 +72,12 @@ public final class ScenarioRunState extends ExpandableStringEnum<ScenarioRunStat
     public static final ScenarioRunState SUCCEEDED = fromString("Succeeded");
 
     /**
+     * The scenario run completed, but one or more actions failed and every one of those
+     * failures was suppressed by the effective `failureBehavior`.
+     */
+    public static final ScenarioRunState PARTIALLY_SUCCEEDED = fromString("PartiallySucceeded");
+
+    /**
      * The scenario run has failed.
      */
     public static final ScenarioRunState FAILED = fromString("Failed");

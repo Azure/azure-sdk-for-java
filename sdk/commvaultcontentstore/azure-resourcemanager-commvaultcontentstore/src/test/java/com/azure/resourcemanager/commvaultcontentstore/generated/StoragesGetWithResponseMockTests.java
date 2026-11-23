@@ -24,7 +24,7 @@ public final class StoragesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"location\":\"ktt\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COLD\",\"provisioningState\":\"Failed\",\"complianceLockStatus\":\"DisablementPending\"},\"id\":\"mhzrn\",\"name\":\"sdtclusiypbs\",\"type\":\"gytguslfead\"}";
+            = "{\"properties\":{\"location\":\"rcgp\",\"storageType\":\"Air_Gap_Protect\",\"vendor\":\"Azure_Blob_Storage\",\"class\":\"COLD\",\"provisioningState\":\"Canceled\",\"complianceLockStatus\":\"Enabled\"},\"id\":\"anlfzxiavrmbz\",\"name\":\"nokixrjqcirgz\",\"type\":\"frl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class StoragesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Storage response = manager.storages()
-            .getWithResponse("z", "wmsweypqwd", "ggicccnxqhue", com.azure.core.util.Context.NONE)
+            .getWithResponse("wbdsr", "zpdrhneu", "owqkdwytisi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ktt", response.properties().location());
+        Assertions.assertEquals("rcgp", response.properties().location());
         Assertions.assertEquals(StorageType.AIR_GAP_PROTECT, response.properties().storageType());
         Assertions.assertEquals(Vendor.AZURE_BLOB_STORAGE, response.properties().vendor());
-        Assertions.assertEquals(StorageClassType.COOL, response.properties().classProperty());
+        Assertions.assertEquals(StorageClassType.COLD, response.properties().classProperty());
     }
 }

@@ -1213,7 +1213,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
         UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
@@ -2132,7 +2132,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
+    private SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
         UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,
@@ -3089,7 +3089,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
+    private SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
         String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
         UnmanageActionResourceGroupMode unmanageActionResourceGroups,
         UnmanageActionManagementGroupMode unmanageActionManagementGroups,

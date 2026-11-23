@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.AdapterDeploymentPrope
  */
 public final class AdapterDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-15-preview/CreateOrUpdateAdapterDeployment.json
+     * x-ms-original-file: 2026-11-15-preview/CreateOrUpdateAdapterDeployment.json
      */
     /**
      * Sample code: CreateOrUpdateAdapterDeployment.

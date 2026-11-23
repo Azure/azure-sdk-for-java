@@ -13,14 +13,14 @@ public final class PoolHighAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolHighAvailability model
-            = BinaryData.fromString("{\"mode\":\"AnyZone\"}").toObject(PoolHighAvailability.class);
-        Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, model.mode());
+            = BinaryData.fromString("{\"mode\":\"ZoneRedundant\"}").toObject(PoolHighAvailability.class);
+        Assertions.assertEquals(PoolHighAvailabilityMode.ZONE_REDUNDANT, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolHighAvailability model = new PoolHighAvailability().withMode(PoolHighAvailabilityMode.ANY_ZONE);
+        PoolHighAvailability model = new PoolHighAvailability().withMode(PoolHighAvailabilityMode.ZONE_REDUNDANT);
         model = BinaryData.fromObject(model).toObject(PoolHighAvailability.class);
-        Assertions.assertEquals(PoolHighAvailabilityMode.ANY_ZONE, model.mode());
+        Assertions.assertEquals(PoolHighAvailabilityMode.ZONE_REDUNDANT, model.mode());
     }
 }

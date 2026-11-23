@@ -14,6 +14,7 @@ import com.azure.resourcemanager.chaos.models.WorkspaceDiscovery;
 import com.azure.resourcemanager.chaos.models.WorkspaceEvaluation;
 import com.azure.resourcemanager.chaos.models.WorkspaceProperties;
 import com.azure.resourcemanager.chaos.models.WorkspaceUpdate;
+import com.azure.resourcemanager.chaos.models.WorkspaceUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -83,6 +84,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     private String workspaceName;
 
+    private String createIfNoneMatch;
+
+    private String createIfMatch;
+
     private WorkspaceUpdate updateProperties;
 
     public WorkspaceImpl withExistingResourceGroup(String resourceGroupName) {
@@ -93,14 +98,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     public Workspace create() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkspaces()
-            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), createIfNoneMatch, createIfMatch,
+                Context.NONE);
         return this;
     }
 
     public Workspace create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkspaces()
-            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), createIfNoneMatch, createIfMatch,
+                context);
         return this;
     }
 
@@ -108,6 +115,8 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         this.innerObject = new WorkspaceInner();
         this.serviceManager = serviceManager;
         this.workspaceName = name;
+        this.createIfNoneMatch = null;
+        this.createIfMatch = null;
     }
 
     public WorkspaceImpl update() {
@@ -205,6 +214,21 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             this.updateProperties.withIdentity(identity);
             return this;
         }
+    }
+
+    public WorkspaceImpl withIfNoneMatch(String ifNoneMatch) {
+        this.createIfNoneMatch = ifNoneMatch;
+        return this;
+    }
+
+    public WorkspaceImpl withIfMatch(String ifMatch) {
+        this.createIfMatch = ifMatch;
+        return this;
+    }
+
+    public WorkspaceImpl withProperties(WorkspaceUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
     }
 
     private boolean isInCreateMode() {

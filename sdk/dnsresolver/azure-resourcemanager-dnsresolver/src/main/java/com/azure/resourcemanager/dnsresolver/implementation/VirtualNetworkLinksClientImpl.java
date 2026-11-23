@@ -432,7 +432,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return the {@link SyncPoller} for polling of describes a virtual network link.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
+    private SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginCreateOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
         VirtualNetworkLinkInner parameters, String ifMatch, String ifNoneMatch) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, dnsForwardingRulesetName,
@@ -722,7 +722,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return the {@link SyncPoller} for polling of describes a virtual network link.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
+    private SyncPoller<PollResult<VirtualNetworkLinkInner>, VirtualNetworkLinkInner> beginUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, String virtualNetworkLinkName,
         VirtualNetworkLinkPatch parameters, String ifMatch) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, dnsForwardingRulesetName,
@@ -985,7 +985,7 @@ public final class VirtualNetworkLinksClientImpl implements VirtualNetworkLinksC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
+    private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
         String virtualNetworkLinkName, String ifMatch) {
         Response<BinaryData> response
             = deleteWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, ifMatch);

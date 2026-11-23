@@ -31,6 +31,13 @@ public final class SecurityAssessmentMetadataResponseImpl
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.assessmentMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}",
+            "assessmentMetadataName");
+        if (this.assessmentMetadataName == null) {
+            this.assessmentMetadataName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}", "assessmentMetadataName");
+        }
     }
 
     public String id() {
