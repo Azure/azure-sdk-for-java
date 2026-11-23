@@ -47,6 +47,7 @@ public class ShareByteBufferVariantUploadTests {
     private static final String ENDPOINT = "https://account.file.core.windows.net";
     // Small sizes keep the tests fast; the partitioning logic doesn't depend on the absolute sizes.
     private static final int RANGE_SIZE = 1024;
+    private static final HttpHeaderName X_MS_RANGE = HttpHeaderName.fromString("x-ms-range");
     private static final Pattern RANGE_PATTERN = Pattern.compile("bytes=(\\d+)-(\\d+)");
 
     /**
@@ -183,7 +184,7 @@ public class ShareByteBufferVariantUploadTests {
                 ? Mono.just(new byte[0])
                 : FluxUtil.collectBytesInByteBufferStream(request.getBody());
             return body.map(bytes -> {
-                Matcher matcher = RANGE_PATTERN.matcher(request.getHeaders().getValue(HttpHeaderName.RANGE));
+                Matcher matcher = RANGE_PATTERN.matcher(request.getHeaders().getValue(X_MS_RANGE));
                 assertTrue(matcher.matches());
                 long start = Long.parseLong(matcher.group(1));
                 assertEquals(Long.parseLong(matcher.group(2)) - start + 1, bytes.length);

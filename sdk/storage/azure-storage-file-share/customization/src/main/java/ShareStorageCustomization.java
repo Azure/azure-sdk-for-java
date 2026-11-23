@@ -14,9 +14,12 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.modules.ModuleDirective;
 import com.github.javaparser.ast.modules.ModuleExportsDirective;
 import com.github.javaparser.ast.modules.ModuleOpensDirective;
@@ -40,6 +43,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Customization class for File Share Storage.
@@ -87,6 +91,12 @@ public class ShareStorageCustomization extends Customization {
         "FileClient", "FileAsyncClient",
         "ShareClient", "ShareAsyncClient");
 
+    private static final String IMPL_PACKAGE = "com.azure.storage.file.share.implementation";
+
+    // The generated operation groups that send the service requests.
+    private static final List<String> OPERATION_GROUP_CLASSES
+        = Arrays.asList("DirectoriesImpl", "FilesImpl", "ServicesImpl", "SharesImpl");
+
     private static final String MODULE_INFO_PATH = "src/main/java/module-info.java";
 
     // Directives the hand-written code needs that the generated module-info doesn't declare: the storage-common
@@ -104,7 +114,7 @@ public class ShareStorageCustomization extends Customization {
 
     // Generated implementation classes typed to the generated FileServiceVersion enum, which is deleted (above) in
     // favor of the hand-written public ShareServiceVersion. These are retyped to ShareServiceVersion after generation.
-    private static final List<String> IMPLS_USING_SERVICE_VERSION
+    private static final List<String> IMPL_CLASSES_USING_SERVICE_VERSION
         = Arrays.asList("AzureFileStorageImpl", "DirectoriesImpl", "FilesImpl", "ServicesImpl", "SharesImpl");
 
     @Override
@@ -123,7 +133,9 @@ public class ShareStorageCustomization extends Customization {
 
         restoreShareStorageErrorJson(customization, logger);
 
-        updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
+        sendRangesInXMsRangeHeader(customization);
+
+        updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE));
     }
 
     /**
@@ -224,6 +236,41 @@ public class ShareStorageCustomization extends Customization {
     }
 
     /**
+     * Sends ranges in the {@code x-ms-range} header, as the shipped client did. The spec uses the standard
+     * {@code Range} header, which the service treats the same, but custom pipeline policies, recorded tests and HTTP
+     * intermediaries all see the header name. Renaming it where the request is built covers every pipeline, including
+     * the ones callers supply.
+     *
+     * @param customization The library customization.
+     */
+    private static void sendRangesInXMsRangeHeader(LibraryCustomization customization) {
+        PackageCustomization implPackage = customization.getPackage(IMPL_PACKAGE);
+        Editor editor = customization.getRawEditor();
+        Stream.concat(OPERATION_GROUP_CLASSES.stream(),
+            CONVENIENCE_CLIENTS_TO_RELOCATE.stream().map(ShareStorageCustomization::internalClientName))
+            // Only reprint the classes that send a range, so the others keep the generator's formatting.
+            .filter(className -> {
+                String content = editor.getFileContent(PKG_ROOT + "implementation/" + className + ".java");
+                return content.contains("@HeaderParam(\"Range\")") || content.contains("HttpHeaderName.RANGE");
+            })
+            .forEach(className -> implPackage.getClass(className)
+                .customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
+                    // @HeaderParam("Range") on the RestProxy service interface methods.
+                    clazz.findAll(SingleMemberAnnotationExpr.class,
+                        annotation -> "HeaderParam".equals(annotation.getNameAsString())
+                            && annotation.getMemberValue().isStringLiteralExpr()
+                            && "Range".equals(annotation.getMemberValue().asStringLiteralExpr().getValue()))
+                        .forEach(annotation -> annotation.setMemberValue(new StringLiteralExpr("x-ms-range")));
+                    // requestOptions.setHeader(HttpHeaderName.RANGE, ...) for optional ranges.
+                    clazz.findAll(FieldAccessExpr.class,
+                        field -> "RANGE".equals(field.getNameAsString()) && field.getScope().isNameExpr()
+                            && "HttpHeaderName".equals(field.getScope().asNameExpr().getNameAsString()))
+                        .forEach(field -> field.replace(new MethodCallExpr(new NameExpr("HttpHeaderName"),
+                            "fromString", new NodeList<>(new StringLiteralExpr("x-ms-range")))));
+                })));
+    }
+
+    /**
      * Retypes the generated {@code implementation/*Impl} classes from the generated {@code FileServiceVersion} enum
      * (deleted by {@link #removeGeneratedConvenienceClients}) to the hand-written public
      * {@code com.azure.storage.file.share.ShareServiceVersion}. Both enums live in {@code com.azure.storage.file.share}
@@ -236,7 +283,7 @@ public class ShareStorageCustomization extends Customization {
      */
     private static void retypeServiceVersionToShareServiceVersion(LibraryCustomization customization, Logger logger) {
         Editor editor = customization.getRawEditor();
-        for (String implName : IMPLS_USING_SERVICE_VERSION) {
+        for (String implName : IMPL_CLASSES_USING_SERVICE_VERSION) {
             String path = PKG_ROOT + "implementation/" + implName + ".java";
             String content = editor.getFileContent(path);
             if (content.contains("FileServiceVersion")) {
@@ -603,8 +650,7 @@ public class ShareStorageCustomization extends Customization {
      * @param implPackage The implementation package.
      */
     private static void updateImplToMapInternalException(PackageCustomization implPackage) {
-        List<String> implsToUpdate = Arrays.asList("DirectoriesImpl", "FilesImpl", "ServicesImpl", "SharesImpl");
-        for (String implToUpdate : implsToUpdate) {
+        for (String implToUpdate : OPERATION_GROUP_CLASSES) {
             implPackage.getClass(implToUpdate).customizeAst(ast -> {
                 ast.addImport("com.azure.storage.file.share.implementation.util.ModelHelper");
                 ast.addImport("com.azure.storage.file.share.models.ShareStorageException");
