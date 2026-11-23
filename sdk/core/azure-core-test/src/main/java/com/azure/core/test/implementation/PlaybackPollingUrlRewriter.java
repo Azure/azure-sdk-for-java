@@ -50,13 +50,28 @@ public final class PlaybackPollingUrlRewriter {
      * onto the host and port of the response's request.
      * <p>
      * Only absolute HTTP and HTTPS URLs are rewritten, keeping their scheme, path, query, and fragment and dropping any
-     * user information. Relative and other values are left as recorded. {@code Location} isn't rewritten on redirect
-     * responses as it's followed by the redirect policy rather than used for polling.
+     * user information. Relative and malformed values are left as recorded. {@code Location} is never rewritten on
+     * redirect (3xx) responses; otherwise it's rewritten only when the response also contains
+     * {@code Operation-Location} or {@code Azure-AsyncOperation}. A response alone can't show whether a
+     * {@code Location} is a polling URL or a resource or upload URL, so other {@code Location} values are left as
+     * recorded unless the caller opts in with {@link #rewritePollingUrls(HttpResponse, boolean)}.
      *
      * @param response The playback response, with its request URL restored to the original request URL.
      * @return A response with the rewritten polling URLs, or {@code response} if no polling URL needs rewriting.
      */
     public static HttpResponse rewritePollingUrls(HttpResponse response) {
+        return rewritePollingUrls(response, false);
+    }
+
+    /**
+     * Rewrites polling URLs, optionally including {@code Location} on any non-redirect response.
+     *
+     * @param response The playback response, with its request URL restored to the original request URL.
+     * @param rewriteLocation Whether to also rewrite {@code Location} on non-redirect responses without an LRO-specific
+     * header, as for Location-only LROs. Redirect locations are never rewritten.
+     * @return A response with the rewritten polling URLs, or {@code response} if no polling URL needs rewriting.
+     */
+    public static HttpResponse rewritePollingUrls(HttpResponse response, boolean rewriteLocation) {
         URL requestUrl = response.getRequest().getUrl();
         HttpHeaders headers = response.getHeaders();
 
@@ -64,7 +79,10 @@ public final class PlaybackPollingUrlRewriter {
         rewritten = rewriteHeader(headers, rewritten, HttpHeaderName.AZURE_ASYNCOPERATION, requestUrl);
 
         int statusCode = response.getStatusCode();
-        if (statusCode < 300 || statusCode >= 400) {
+        if ((statusCode < 300 || statusCode >= 400)
+            && (rewriteLocation
+                || headers.get(HttpHeaderName.OPERATION_LOCATION) != null
+                || headers.get(HttpHeaderName.AZURE_ASYNCOPERATION) != null)) {
             rewritten = rewriteHeader(headers, rewritten, HttpHeaderName.LOCATION, requestUrl);
         }
 
@@ -110,6 +128,16 @@ public final class PlaybackPollingUrlRewriter {
 
         String scheme = uri.getScheme();
         if (uri.getRawAuthority() == null || !(HTTP.equalsIgnoreCase(scheme) || HTTPS.equalsIgnoreCase(scheme))) {
+            return url;
+        }
+
+        try {
+            uri = uri.parseServerAuthority();
+        } catch (URISyntaxException ignored) {
+            // Don't turn a malformed recorded authority into a valid playback URL.
+            return url;
+        }
+        if (uri.getPort() > 65535 || uri.getRawAuthority().endsWith(":")) {
             return url;
         }
 

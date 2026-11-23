@@ -4,9 +4,11 @@
 
 ### Features Added
 
-- Test proxy playback now rewrites the `Operation-Location`, `Azure-AsyncOperation`, and non-redirect `Location`
-  response headers onto the host and port of the request, so long-running operation polling stays on the playback
-  endpoint instead of the sanitized or real host stored in the recording. Record and live modes are unchanged.
+- Test proxy playback now rewrites valid absolute HTTP(S) `Operation-Location` and `Azure-AsyncOperation` response
+  headers onto the request host and port. Absolute non-redirect `Location` is rewritten only alongside one of these
+  headers, or when the request context opts in using `TestProxyPlaybackClient.REWRITE_LOCATION_HEADER`, which
+  Location-only LROs, including ARM, need to keep polling on the playback host. Other locations, relative locations,
+  and malformed authorities are preserved. Recorded schemes are retained. Record and live modes are unchanged.
 
 ### Breaking Changes
 
