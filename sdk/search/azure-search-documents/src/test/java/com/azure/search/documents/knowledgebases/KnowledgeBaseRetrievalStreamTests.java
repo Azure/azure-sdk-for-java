@@ -154,6 +154,38 @@ public class KnowledgeBaseRetrievalStreamTests {
     }
 
     @ParameterizedTest
+    @MethodSource("authorizationCases")
+    public void workIqOverloadsPreserveBothAuthorizationHeaders(String option, String explicit,
+        boolean useExplicitOverload, String expected) throws IOException {
+        KnowledgeBaseRetrievalOptions options = new KnowledgeBaseRetrievalOptions().setQuerySourceAuthorization(option);
+        String authorization = useExplicitOverload ? explicit : null;
+        KnowledgeBaseRetrievalClientBuilder regular
+            = authorizationBuilder("{}", expected, false).addPolicy((context, next) -> {
+                assertEquals("work-iq-token",
+                    context.getHttpRequest().getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
+                return next.process();
+            });
+        assertNotNull(regular.buildClient().retrieve(options, authorization, "work-iq-token"));
+        assertNotNull(regular.buildAsyncClient().retrieve(options, authorization, "work-iq-token").block());
+
+        KnowledgeBaseRetrievalClientBuilder streaming
+            = authorizationBuilder(frame("response.completed", RESPONSE_COMPLETED_JSON), expected, true)
+                .addPolicy((context, next) -> {
+                    assertEquals("work-iq-token",
+                        context.getHttpRequest().getHeaders().getValue(QUERY_WORK_IQ_SOURCE_AUTHORIZATION));
+                    return next.process();
+                });
+        try (CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent> events
+            = streaming.buildClient().retrieveStream(options, authorization, "work-iq-token")) {
+            assertEvent(events.iterator().next(), "response.completed", true);
+        }
+        StepVerifier.create(streaming.buildAsyncClient().retrieveStream(options, authorization, "work-iq-token"))
+            .assertNext(event -> assertEvent(event, "response.completed", true))
+            .verifyComplete();
+        assertEquals(option, options.getQuerySourceAuthorization());
+    }
+
+    @ParameterizedTest
     @ValueSource(booleans = { false, true })
     public void typedResponsesForwardOptionWithNullRequestOptions(boolean async) {
         KnowledgeBaseRetrievalOptions options
