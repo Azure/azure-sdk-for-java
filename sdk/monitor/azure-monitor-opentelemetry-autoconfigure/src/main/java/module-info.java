@@ -8,8 +8,6 @@ module com.azure.monitor.opentelemetry.autoconfigure {
 
     requires java.management;
 
-    requires io.netty.handler;
-
     requires io.opentelemetry.api;
     requires io.opentelemetry.context;
     requires io.opentelemetry.sdk.autoconfigure.spi;

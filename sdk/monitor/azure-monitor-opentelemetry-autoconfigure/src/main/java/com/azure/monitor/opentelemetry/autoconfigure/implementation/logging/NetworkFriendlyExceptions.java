@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.logging;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import io.netty.handler.ssl.SslHandshakeTimeoutException;
 import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
 
@@ -29,6 +28,7 @@ public class NetworkFriendlyExceptions {
 
     private static final List<FriendlyExceptionDetector> DETECTORS;
     private static final ClientLogger logger = new ClientLogger(NetworkFriendlyExceptions.class);
+    private static final String SSL_HANDSHAKE_TIMEOUT_EXCEPTION = "io.netty.handler.ssl.SslHandshakeTimeoutException";
 
     static {
         DETECTORS = new ArrayList<>();
@@ -132,7 +132,8 @@ public class NetworkFriendlyExceptions {
 
         @Override
         public boolean detect(Throwable error) {
-            if (error instanceof SslHandshakeTimeoutException) {
+            // Check class name for netty ssl handshake timeout exception type without creating a hard dependency
+            if (SSL_HANDSHAKE_TIMEOUT_EXCEPTION.equals(error.getClass().getName())) {
                 return false;
             }
             // we are getting lots of SSLHandshakeExceptions in app services, and we suspect some may not
