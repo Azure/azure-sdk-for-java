@@ -26,6 +26,11 @@ public final class StandardAssignmentImpl implements StandardAssignment, Standar
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}", "resourceId");
+        this.standardAssignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/standardAssignments/{standardAssignmentName}",
+            "standardAssignmentName");
     }
 
     public String id() {

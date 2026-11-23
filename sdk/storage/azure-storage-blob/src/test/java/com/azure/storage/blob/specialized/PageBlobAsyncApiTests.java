@@ -264,6 +264,19 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnABlobOfAnotherType() {
+        String blobName = ccAsync.getBlobAsyncClient(generateBlobName()).getBlobName();
+        bc = ccAsync.getBlobAsyncClient(blobName).getPageBlobAsyncClient();
+
+        StepVerifier
+            .create(ccAsync.getBlobAsyncClient(blobName)
+                .getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong())
+                .then(bc.createIfNotExists(PageBlobClient.PAGE_BYTES)))
+            .verifyErrorSatisfies(e -> assertExceptionStatusCodeAndMessage(e, 409, BlobErrorCode.INVALID_BLOB_TYPE));
+    }
+
+    @Test
     public void createIfNotExistsMin() {
         String blobName = ccAsync.getBlobAsyncClient(generateBlobName()).getBlobName();
         bc = ccAsync.getBlobAsyncClient(blobName).getPageBlobAsyncClient();

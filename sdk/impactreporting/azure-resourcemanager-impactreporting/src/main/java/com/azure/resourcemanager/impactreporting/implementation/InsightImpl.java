@@ -19,6 +19,12 @@ public final class InsightImpl implements Insight, Insight.Definition {
         com.azure.resourcemanager.impactreporting.ImpactReportingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.workloadImpactName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}",
+            "workloadImpactName");
+        this.insightName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}",
+            "insightName");
     }
 
     public String id() {

@@ -19,6 +19,9 @@ public final class AutoProvisioningSettingImpl implements AutoProvisioningSettin
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.settingName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/autoProvisioningSettings/{settingName}",
+            "settingName");
     }
 
     public String id() {
