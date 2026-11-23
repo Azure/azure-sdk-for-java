@@ -9,6 +9,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.fillArray;
@@ -33,14 +41,42 @@ public class LengthValidatingInputStreamTests {
     }
 
     @Test
-    public void oversizedReadFailsBeforeReturningBytes() {
+    public void oversizedReadDoesNotReturnBytesBeyondDeclaredLength() throws Exception {
         InputStream stream
             = new LengthValidatingInputStream(new ByteArrayInputStream(new byte[] { 1, 2, 3, 4, 5, 6 }), 4);
         byte[] buffer = new byte[] { -1, -1, -1, -1, -1, -1 };
 
-        assertThrows(UnexpectedLengthException.class, () -> stream.read(buffer));
+        assertEquals(4, stream.read(buffer));
         assertEquals(-1, buffer[4]);
         assertEquals(-1, buffer[5]);
+        assertThrows(UnexpectedLengthException.class, () -> stream.read(buffer));
+    }
+
+    @Test
+    public void readSyncFlushedGzipDoesNotWaitForProducerToClose() throws Exception {
+        byte[] data = new byte[] { 1, 2, 3, 4 };
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        GZIPInputStream gzipInput = null;
+        try (PipedInputStream input = new PipedInputStream();
+            PipedOutputStream output = new PipedOutputStream(input);
+            GZIPOutputStream gzipOutput = new GZIPOutputStream(output, true)) {
+            gzipOutput.write(data);
+            gzipOutput.flush();
+
+            gzipInput = new GZIPInputStream(input);
+            assertEquals(1, gzipInput.available());
+            InputStream stream = new LengthValidatingInputStream(gzipInput, data.length);
+            byte[] buffer = new byte[8];
+            Future<Integer> read = executor.submit(() -> stream.read(buffer));
+
+            assertEquals(data.length, read.get(5, TimeUnit.SECONDS).intValue());
+            assertArraysEqual(data, 0, data.length, buffer, data.length);
+        } finally {
+            executor.shutdownNow();
+            if (gzipInput != null) {
+                gzipInput.close();
+            }
+        }
     }
 
     @Test

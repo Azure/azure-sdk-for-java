@@ -17,12 +17,11 @@ import static com.azure.core.implementation.http.rest.RestProxyUtils.BODY_TOO_SM
  * an exception if the number of bytes read doesn't match what was expected.
  * <p>
  * Bulk reads within the expected length are capped at its remaining bytes; excess bytes are never returned.
- * Once the expected length has been read, excess data is detected without blocking only when the inner
- * stream reports it as {@link InputStream#available() available}, or when the reader reads past the expected length.
- * A reader that stops at the expected length without reading to EOF, as HTTP clients sending a fixed Content-Length
- * may do, can therefore leave unread excess data in a stream that cannot report it without blocking. Probing for it
- * with a blocking read could stall valid streaming bodies whose source isn't closed promptly. The reader must read
- * until EOF to detect a body shorter than the expected length.
+ * Excess data is detected only when the caller reads or skips past the expected length. A reader that stops at the
+ * expected length, as HTTP clients sending a fixed Content-Length may do, can therefore leave unread excess data.
+ * Probing for it could stall valid streaming bodies whose source isn't closed promptly, even if the inner stream
+ * reports data as {@link InputStream#available() available}. The reader must read until EOF to detect a body shorter
+ * than the expected length.
  */
 final class LengthValidatingInputStream extends InputStream {
 
@@ -88,13 +87,6 @@ final class LengthValidatingInputStream extends InputStream {
                 totalRead = -1;
             }
         } while (readSize != -1 && totalRead != toRead);
-
-        if (position == expectedReadSize && inner.available() > 0) {
-            // Readers such as HTTP clients may stop at the declared length without reading to EOF. Only probe for
-            // excess data when it can be read without blocking, as a blocking probe could stall valid streaming bodies.
-            int read = inner.read();
-            validateLength(read == -1 ? -1 : 1);
-        }
 
         return totalRead;
     }
