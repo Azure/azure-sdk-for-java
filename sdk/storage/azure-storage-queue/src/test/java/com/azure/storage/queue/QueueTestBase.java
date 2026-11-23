@@ -47,9 +47,13 @@ public class QueueTestBase extends TestProxyTestBase {
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
+        // The 'Accept' header is excluded from matching because the TypeSpec-generated protocol layer omits it (sending
+        // the default '*/*') on operations without a response body, whereas the AutoRest recordings captured
+        // 'application/xml'. This mirrors the .NET migration, which added Accept to its LegacyExcludedHeaders.
         // TODO (alzimmer): Once all Storage libraries are migrated to test proxy move this into the common parent.
-        interceptorManager.addMatchers(Arrays
-            .asList(new CustomMatcher().setQueryOrderingIgnored(true).setIgnoredQueryParameters(Arrays.asList("sv"))));
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setQueryOrderingIgnored(true)
+            .setIgnoredQueryParameters(Arrays.asList("sv"))
+            .setExcludedHeaders(Arrays.asList("Accept"))));
     }
 
     /**
