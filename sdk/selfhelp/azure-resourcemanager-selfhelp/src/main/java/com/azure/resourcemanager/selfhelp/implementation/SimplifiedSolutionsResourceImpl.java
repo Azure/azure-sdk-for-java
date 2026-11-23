@@ -22,6 +22,11 @@ public final class SimplifiedSolutionsResourceImpl
         com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}", "scope");
+        this.simplifiedSolutionsResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Help/simplifiedSolutions/{simplifiedSolutionsResourceName}",
+            "simplifiedSolutionsResourceName");
     }
 
     public String id() {

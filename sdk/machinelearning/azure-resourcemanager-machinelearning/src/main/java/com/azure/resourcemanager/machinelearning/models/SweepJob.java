@@ -274,7 +274,7 @@ public final class SweepJob extends JobBaseProperties {
 
     /**
      * Get the status property: Status of the job.
-     *
+     * 
      * @return the status value.
      */
     @Override

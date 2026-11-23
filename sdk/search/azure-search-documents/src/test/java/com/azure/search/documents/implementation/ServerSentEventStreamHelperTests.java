@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.models.implementation.sse;
+package com.azure.search.documents.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ServerSentEventStreamTests {
+public class ServerSentEventStreamHelperTests {
     private static final BiFunction<String, String, String> CONVERTER = (event, data) -> event + ":" + data;
 
     @ParameterizedTest
@@ -56,7 +56,7 @@ public class ServerSentEventStreamTests {
         List<String> events = new ArrayList<>();
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
             stream.forEach(events::add);
             assertEquals(expectedFramedEvents(), events);
             assertEquals(1, body.closes.get());
@@ -70,7 +70,7 @@ public class ServerSentEventStreamTests {
     public void asyncFramingPreservesDataAcrossBufferBoundaries(int chunkSize) {
         BinaryData body = reactiveBody(chunks(framedEvents().getBytes(StandardCharsets.UTF_8), chunkSize));
 
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(body), CONVERTER))
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(body), CONVERTER))
             .expectNextSequence(expectedFramedEvents())
             .verifyComplete();
     }
@@ -105,7 +105,7 @@ public class ServerSentEventStreamTests {
         }));
         DemandSubscriber subscriber = new DemandSubscriber();
 
-        ServerSentEventStreams.toFlux(response(body), (event, data) -> {
+        ServerSentEventStreamHelper.toFlux(response(body), (event, data) -> {
             conversions.incrementAndGet();
             return event + ":" + data;
         }).subscribe(subscriber);
@@ -140,7 +140,7 @@ public class ServerSentEventStreamTests {
         AtomicInteger conversions = new AtomicInteger();
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), (event, data) -> {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), (event, data) -> {
                 conversions.incrementAndGet();
                 return data;
             })) {
@@ -171,7 +171,7 @@ public class ServerSentEventStreamTests {
     public void syncCloseBeforeIterationReleasesBodyWithoutReading() throws IOException {
         TrackedInputStream body = new TrackedInputStream("data: unread\n\n");
         CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER);
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER);
 
         stream.close();
         stream.close();
@@ -193,7 +193,8 @@ public class ServerSentEventStreamTests {
             .doOnRequest(ignored -> requests.incrementAndGet())
             .doOnNext(ignored -> buffers.incrementAndGet())
             .doOnCancel(cancellations::incrementAndGet));
-        CloseableIterableStream<String> stream = ServerSentEventStreams.toIterableStream(response(body), CONVERTER);
+        CloseableIterableStream<String> stream
+            = ServerSentEventStreamHelper.toIterableStream(response(body), CONVERTER);
 
         assertEquals(0, subscriptions.get());
         stream.close();
@@ -209,7 +210,7 @@ public class ServerSentEventStreamTests {
     public void syncCloseAfterLookaheadDiscardsCachedEvent() throws IOException {
         TrackedInputStream body = new TrackedInputStream("data: first\n\ndata: second\n\n");
         CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER);
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER);
         Iterator<String> iterator = stream.iterator();
         assertTrue(iterator.hasNext());
 
@@ -225,7 +226,7 @@ public class ServerSentEventStreamTests {
     public void javaStreamCloseReleasesBodyAfterEarlyTermination() throws IOException {
         TrackedInputStream body = new TrackedInputStream("data: first\n\ndata: second\n\n");
         CloseableIterableStream<String> iterable
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER);
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER);
 
         try (Stream<String> stream = iterable.stream()) {
             assertEquals("message:first", stream.findFirst().get());
@@ -246,7 +247,7 @@ public class ServerSentEventStreamTests {
         AtomicInteger conversions = new AtomicInteger();
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), (event, data) -> {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), (event, data) -> {
                 conversions.incrementAndGet();
                 return event + ":" + data;
             }, event -> event.startsWith("done:"))) {
@@ -273,7 +274,7 @@ public class ServerSentEventStreamTests {
             Flux.just(ByteBuffer.wrap(bytes)).concatWith(Flux.never()).doOnCancel(cancellations::incrementAndGet));
 
         StepVerifier
-            .create(ServerSentEventStreams.toFlux(response(body), CONVERTER, event -> event.startsWith("done:")))
+            .create(ServerSentEventStreamHelper.toFlux(response(body), CONVERTER, event -> event.startsWith("done:")))
             .expectNext("message:first", "done:last")
             .verifyComplete();
         assertEquals(1, cancellations.get());
@@ -299,7 +300,7 @@ public class ServerSentEventStreamTests {
         AtomicInteger conversions = new AtomicInteger();
         AtomicInteger cancellations = new AtomicInteger();
         BinaryData body = reactiveBody(buffers.concatWith(Flux.never()).doOnCancel(cancellations::incrementAndGet));
-        Flux<String> stream = ServerSentEventStreams.toFlux(response(body), (event, data) -> {
+        Flux<String> stream = ServerSentEventStreamHelper.toFlux(response(body), (event, data) -> {
             conversions.incrementAndGet();
             assertFalse("trailing".equals(event), "The trailing frame must not be converted.");
             return event + ":" + data;
@@ -322,7 +323,7 @@ public class ServerSentEventStreamTests {
             .concatWith(Flux.error(new IOException("after terminal event"))));
 
         StepVerifier
-            .create(ServerSentEventStreams.toFlux(response(body), CONVERTER, event -> event.startsWith("done:")))
+            .create(ServerSentEventStreamHelper.toFlux(response(body), CONVERTER, event -> event.startsWith("done:")))
             .expectNext("done:last")
             .verifyComplete();
     }
@@ -337,7 +338,7 @@ public class ServerSentEventStreamTests {
         IOException failure = new IOException("after terminal event");
         AtomicInteger conversions = new AtomicInteger();
         BinaryData body = reactiveBody(buffers.concatWith(Flux.error(failure)));
-        Flux<String> stream = ServerSentEventStreams.toFlux(response(body), (event, data) -> {
+        Flux<String> stream = ServerSentEventStreamHelper.toFlux(response(body), (event, data) -> {
             conversions.incrementAndGet();
             return event + ":" + data;
         }, event -> event.startsWith("done:"));
@@ -359,7 +360,7 @@ public class ServerSentEventStreamTests {
         BinaryData body = reactiveBody(Flux.just(buffer("data: first\n\n"))
             .concatWith(Flux.error(failure))
             .concatWith(Flux.just(buffer("event: done\ndata: unreachable\n\n"))));
-        Flux<String> stream = ServerSentEventStreams.toFlux(response(body), (event, data) -> {
+        Flux<String> stream = ServerSentEventStreamHelper.toFlux(response(body), (event, data) -> {
             conversions.incrementAndGet();
             return event + ":" + data;
         }, event -> event.startsWith("done:"));
@@ -378,14 +379,14 @@ public class ServerSentEventStreamTests {
         String text = "data: skip\n\ndata: keep\n\n";
         BiFunction<String, String, String> converter = (event, data) -> "skip".equals(data) ? null : data;
 
-        try (CloseableIterableStream<String> stream = ServerSentEventStreams
+        try (CloseableIterableStream<String> stream = ServerSentEventStreamHelper
             .toIterableStream(response(BinaryData.fromString(text)), converter, event -> event.equals("keep"))) {
             Iterator<String> iterator = stream.iterator();
             assertEquals("keep", iterator.next());
             assertFalse(iterator.hasNext());
         }
 
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(BinaryData.fromString(text)), converter,
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(BinaryData.fromString(text)), converter,
             event -> event.equals("keep"))).expectNext("keep").verifyComplete();
     }
 
@@ -398,7 +399,7 @@ public class ServerSentEventStreamTests {
         TrackedInputStream syncBody = new TrackedInputStream("data: payload\n\n");
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(syncBody)), converter)) {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(syncBody)), converter)) {
             Iterator<String> iterator = stream.iterator();
             assertSame(failure, assertThrows(IllegalArgumentException.class, iterator::hasNext));
             assertEquals(1, syncBody.closes.get());
@@ -408,7 +409,7 @@ public class ServerSentEventStreamTests {
         AtomicInteger cancellations = new AtomicInteger();
         BinaryData asyncBody = reactiveBody(
             Flux.just(buffer("data: payload\n\n")).concatWith(Flux.never()).doOnCancel(cancellations::incrementAndGet));
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(asyncBody), converter))
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(asyncBody), converter))
             .verifyErrorSatisfies(error -> assertSame(failure, error));
         assertEquals(1, cancellations.get());
     }
@@ -418,8 +419,8 @@ public class ServerSentEventStreamTests {
         IllegalArgumentException failure = new IllegalArgumentException("terminal predicate");
         TrackedInputStream syncBody = new TrackedInputStream("data: payload\n\n");
 
-        try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(syncBody)), CONVERTER, event -> {
+        try (CloseableIterableStream<String> stream = ServerSentEventStreamHelper
+            .toIterableStream(response(BinaryData.fromStream(syncBody)), CONVERTER, event -> {
                 throw failure;
             })) {
             assertSame(failure, assertThrows(IllegalArgumentException.class, () -> stream.iterator().hasNext()));
@@ -429,7 +430,7 @@ public class ServerSentEventStreamTests {
         AtomicInteger cancellations = new AtomicInteger();
         BinaryData asyncBody = reactiveBody(
             Flux.just(buffer("data: payload\n\n")).concatWith(Flux.never()).doOnCancel(cancellations::incrementAndGet));
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(asyncBody), CONVERTER, event -> {
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(asyncBody), CONVERTER, event -> {
             throw failure;
         })).expectNext("message:payload").verifyErrorSatisfies(error -> assertSame(failure, error));
         assertEquals(1, cancellations.get());
@@ -441,7 +442,7 @@ public class ServerSentEventStreamTests {
         TrackedInputStream syncBody = new TrackedInputStream(bytes, 1);
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(syncBody)), CONVERTER)) {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(syncBody)), CONVERTER)) {
             IllegalStateException error = assertThrows(IllegalStateException.class, () -> stream.iterator().hasNext());
             assertInstanceOf(CharacterCodingException.class, error.getCause());
             assertEquals(1, syncBody.closes.get());
@@ -449,7 +450,7 @@ public class ServerSentEventStreamTests {
 
         AtomicInteger releases = new AtomicInteger();
         BinaryData asyncBody = reactiveBody(chunks(bytes, 1).doFinally(ignored -> releases.incrementAndGet()));
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(asyncBody), CONVERTER))
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(asyncBody), CONVERTER))
             .verifyErrorSatisfies(error -> {
                 assertInstanceOf(IllegalStateException.class, error);
                 assertInstanceOf(CharacterCodingException.class, error.getCause());
@@ -480,7 +481,7 @@ public class ServerSentEventStreamTests {
         };
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
             UncheckedIOException error = assertThrows(UncheckedIOException.class, () -> stream.iterator().hasNext());
             assertSame(failure, error.getCause());
             assertEquals(1, closes.get());
@@ -507,7 +508,7 @@ public class ServerSentEventStreamTests {
         };
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
             Iterator<String> iterator = stream.iterator();
             UncheckedIOException error = assertThrows(UncheckedIOException.class, iterator::hasNext);
             assertSame(readFailure, error.getCause());
@@ -529,7 +530,7 @@ public class ServerSentEventStreamTests {
         InputStream body = failingCloseBody(bytes, closeFailure, reads, closes);
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
             Iterator<String> iterator = stream.iterator();
             IllegalStateException error = assertThrows(IllegalStateException.class, iterator::hasNext);
             assertInstanceOf(CharacterCodingException.class, error.getCause());
@@ -552,7 +553,7 @@ public class ServerSentEventStreamTests {
             AtomicInteger closes = new AtomicInteger();
             InputStream body = failingCloseBody("event: done\ndata: last\n\n".getBytes(StandardCharsets.UTF_8),
                 closeFailure, reads, closes);
-            try (CloseableIterableStream<String> stream = ServerSentEventStreams.toIterableStream(
+            try (CloseableIterableStream<String> stream = ServerSentEventStreamHelper.toIterableStream(
                 response(BinaryData.fromStream(body)), CONVERTER, event -> event.startsWith("done:"))) {
                 Iterator<String> iterator = stream.iterator();
                 assertTrue(iterator.hasNext());
@@ -579,7 +580,7 @@ public class ServerSentEventStreamTests {
         AtomicInteger closes = new AtomicInteger();
         InputStream body = failingCloseBody("event: done\ndata: last\n\n".getBytes(StandardCharsets.UTF_8),
             closeFailure, reads, closes);
-        CloseableIterableStream<String> stream = ServerSentEventStreams
+        CloseableIterableStream<String> stream = ServerSentEventStreamHelper
             .toIterableStream(response(BinaryData.fromStream(body)), CONVERTER, event -> event.startsWith("done:"));
         assertEquals("done:last", stream.iterator().next());
         assertEquals(1, closes.get());
@@ -597,7 +598,7 @@ public class ServerSentEventStreamTests {
         InputStream body = failingCloseBody("event: done\ndata: last\n\n".getBytes(StandardCharsets.UTF_8),
             closeFailure, reads, closes);
         assertSame(closeFailure, assertThrows(closeFailure.getClass(), () -> {
-            try (CloseableIterableStream<String> stream = ServerSentEventStreams.toIterableStream(
+            try (CloseableIterableStream<String> stream = ServerSentEventStreamHelper.toIterableStream(
                 response(BinaryData.fromStream(body)), CONVERTER, event -> event.startsWith("done:"))) {
                 assertEquals("done:last", stream.iterator().next());
                 delivered.incrementAndGet();
@@ -616,7 +617,7 @@ public class ServerSentEventStreamTests {
         InputStream body
             = failingCloseBody("data: unread\n\n".getBytes(StandardCharsets.UTF_8), closeFailure, reads, closes);
         CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER);
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER);
 
         assertSame(closeFailure, assertThrows(closeFailure.getClass(), stream::close));
         stream.close();
@@ -631,7 +632,7 @@ public class ServerSentEventStreamTests {
         IOException failure = new IOException("transport failed");
         BinaryData body = reactiveBody(Flux.just(buffer("data: first\n\n")).concatWith(Flux.error(failure)));
 
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(body), CONVERTER))
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(body), CONVERTER))
             .expectNext("message:first")
             .verifyErrorSatisfies(error -> assertSame(failure, error));
     }
@@ -644,7 +645,7 @@ public class ServerSentEventStreamTests {
             Flux<ByteBuffer> bytes = Flux.just(buffer("data: first\r\n\r\n" + suffix));
             BinaryData body = reactiveBody(transportError ? bytes.concatWith(Flux.error(failure)) : bytes);
             StepVerifier.Step<String> verifier
-                = StepVerifier.create(ServerSentEventStreams.toFlux(response(body), CONVERTER), 1)
+                = StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(body), CONVERTER), 1)
                     .expectNext("message:first");
             if (transportError) {
                 verifier.expectErrorSatisfies(error -> assertSame(failure, error)).verify(Duration.ofSeconds(5));
@@ -662,7 +663,7 @@ public class ServerSentEventStreamTests {
             .concatWith(Flux.never())
             .doOnSubscribe(ignored -> subscriptions.incrementAndGet())
             .doOnCancel(cancellations::incrementAndGet));
-        Flux<String> stream = ServerSentEventStreams.toFlux(response(body), CONVERTER);
+        Flux<String> stream = ServerSentEventStreamHelper.toFlux(response(body), CONVERTER);
 
         assertEquals(0, subscriptions.get());
         StepVerifier.create(stream, 0).thenRequest(1).expectNext("message:first").thenCancel().verify();
@@ -678,40 +679,63 @@ public class ServerSentEventStreamTests {
         TrackedInputStream body = new TrackedInputStream(text);
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
+            = ServerSentEventStreamHelper.toIterableStream(response(BinaryData.fromStream(body)), CONVERTER)) {
             assertFalse(stream.iterator().hasNext());
             assertEquals(1, body.closes.get());
         }
 
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(BinaryData.fromString(text)), CONVERTER))
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(BinaryData.fromString(text)), CONVERTER))
             .verifyComplete();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "text/event-stream", "TEXT/EVENT-STREAM", " text/event-stream ; charset=utf-8" })
+    @ValueSource(
+        strings = {
+            "text/event-stream",
+            "TEXT/EVENT-STREAM",
+            " text/event-stream ; charset=utf-8",
+            "text/event-stream; note=\"one,two\"",
+            "text/event-stream; note=\"one;two\"" })
     public void validContentTypesAreAccepted(String contentType) throws IOException {
-        try (CloseableIterableStream<String> stream = ServerSentEventStreams
+        try (CloseableIterableStream<String> stream = ServerSentEventStreamHelper
             .toIterableStream(response(200, contentType, BinaryData.fromString("data: value\n\n")), CONVERTER)) {
             assertEquals("message:value", stream.iterator().next());
         }
 
         StepVerifier
-            .create(ServerSentEventStreams.toFlux(response(200, contentType, BinaryData.fromString("data: value\n\n")),
-                CONVERTER))
+            .create(ServerSentEventStreamHelper
+                .toFlux(response(200, contentType, BinaryData.fromString("data: value\n\n")), CONVERTER))
             .expectNext("message:value")
             .verifyComplete();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "", "application/json", "text/event-streaming", "text/event-stream, application/json" })
+    @ValueSource(
+        strings = {
+            "",
+            "application/json",
+            "text/event-streaming",
+            "text/event-stream, application/json",
+            "text/event-stream, application/json; charset=utf-8",
+            "application/json, text/event-stream" })
     public void invalidContentTypesReleaseBodies(String contentType) {
         assertInvalidResponseReleasesBody(200, contentType);
     }
 
     @ParameterizedTest
     @ValueSource(ints = { 201, 202, 400, 500 })
-    public void invalidStatusCodesReleaseBodies(int statusCode) {
-        assertInvalidResponseReleasesBody(statusCode, "text/event-stream");
+    public void nonNoContentStatusCodesDecodeBodies(int statusCode) throws IOException {
+        String text = "data: value\n\n";
+        try (CloseableIterableStream<String> stream = ServerSentEventStreamHelper
+            .toIterableStream(response(statusCode, "text/event-stream", BinaryData.fromString(text)), CONVERTER)) {
+            assertEquals("message:value", stream.iterator().next());
+        }
+
+        StepVerifier
+            .create(ServerSentEventStreamHelper
+                .toFlux(response(statusCode, "text/event-stream", BinaryData.fromString(text)), CONVERTER))
+            .expectNext("message:value")
+            .verifyComplete();
     }
 
     @Test
@@ -721,7 +745,7 @@ public class ServerSentEventStreamTests {
 
     private static void assertInvalidResponseReleasesBody(int statusCode, String contentType) {
         TrackedInputStream body = new TrackedInputStream("data: unread\n\n");
-        assertThrows(IllegalStateException.class, () -> ServerSentEventStreams
+        assertThrows(IllegalStateException.class, () -> ServerSentEventStreamHelper
             .toIterableStream(response(statusCode, contentType, BinaryData.fromStream(body)), CONVERTER));
         assertEquals(0, body.reads.get());
         assertEquals(1, body.closes.get());
@@ -731,7 +755,8 @@ public class ServerSentEventStreamTests {
         BinaryData asyncBody = reactiveBody(Flux.<ByteBuffer>never()
             .doOnRequest(ignored -> requests.incrementAndGet())
             .doOnCancel(cancellations::incrementAndGet));
-        Flux<String> stream = ServerSentEventStreams.toFlux(response(statusCode, contentType, asyncBody), CONVERTER);
+        Flux<String> stream
+            = ServerSentEventStreamHelper.toFlux(response(statusCode, contentType, asyncBody), CONVERTER);
         assertEquals(0, cancellations.get());
         StepVerifier.create(stream).verifyError(IllegalStateException.class);
         assertEquals(0, requests.get());
@@ -747,7 +772,7 @@ public class ServerSentEventStreamTests {
             InputStream body
                 = failingCloseBody("data: unread\n\n".getBytes(StandardCharsets.UTF_8), closeFailure, reads, closes);
 
-            IllegalStateException error = assertThrows(IllegalStateException.class, () -> ServerSentEventStreams
+            IllegalStateException error = assertThrows(IllegalStateException.class, () -> ServerSentEventStreamHelper
                 .toIterableStream(response(statusCode, "application/json", BinaryData.fromStream(body)), CONVERTER));
 
             assertTrue(error.getMessage().startsWith("Expected a "));
@@ -766,8 +791,8 @@ public class ServerSentEventStreamTests {
     @Test
     public void noContentResponseCompletesAndReleasesBodyWithoutReading() throws IOException {
         TrackedInputStream body = new TrackedInputStream("data: unread\n\n");
-        try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(204, null, BinaryData.fromStream(body)), CONVERTER)) {
+        try (CloseableIterableStream<String> stream = ServerSentEventStreamHelper
+            .toIterableStream(response(204, null, BinaryData.fromStream(body)), CONVERTER)) {
             assertFalse(stream.iterator().hasNext());
             assertEquals(0, body.reads.get());
             assertEquals(1, body.closes.get());
@@ -779,7 +804,8 @@ public class ServerSentEventStreamTests {
         BinaryData asyncBody = reactiveBody(Flux.<ByteBuffer>never()
             .doOnRequest(ignored -> requests.incrementAndGet())
             .doOnCancel(cancellations::incrementAndGet));
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(204, null, asyncBody), CONVERTER)).verifyComplete();
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(204, null, asyncBody), CONVERTER))
+            .verifyComplete();
         assertEquals(0, requests.get());
         assertEquals(1, cancellations.get());
     }
@@ -787,27 +813,27 @@ public class ServerSentEventStreamTests {
     @Test
     public void nullBodyIsOnlyAllowedForNoContentResponse() throws IOException {
         assertThrows(NullPointerException.class,
-            () -> ServerSentEventStreams.toIterableStream(response(null), CONVERTER));
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(null), CONVERTER))
+            () -> ServerSentEventStreamHelper.toIterableStream(response(null), CONVERTER));
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(null), CONVERTER))
             .verifyError(NullPointerException.class);
 
         try (CloseableIterableStream<String> stream
-            = ServerSentEventStreams.toIterableStream(response(204, null, null), CONVERTER)) {
+            = ServerSentEventStreamHelper.toIterableStream(response(204, null, null), CONVERTER)) {
             assertFalse(stream.iterator().hasNext());
         }
-        StepVerifier.create(ServerSentEventStreams.toFlux(response(204, null, null), CONVERTER)).verifyComplete();
+        StepVerifier.create(ServerSentEventStreamHelper.toFlux(response(204, null, null), CONVERTER)).verifyComplete();
     }
 
     @Test
     public void nullFactoryArgumentsAreRejected() {
         Response<BinaryData> response = response(BinaryData.fromString(""));
-        assertThrows(NullPointerException.class, () -> ServerSentEventStreams.toIterableStream(null, CONVERTER));
-        assertThrows(NullPointerException.class, () -> ServerSentEventStreams.toIterableStream(response, null));
+        assertThrows(NullPointerException.class, () -> ServerSentEventStreamHelper.toIterableStream(null, CONVERTER));
+        assertThrows(NullPointerException.class, () -> ServerSentEventStreamHelper.toIterableStream(response, null));
         assertThrows(NullPointerException.class,
-            () -> ServerSentEventStreams.toIterableStream(response, CONVERTER, null));
-        assertThrows(NullPointerException.class, () -> ServerSentEventStreams.toFlux(null, CONVERTER));
-        assertThrows(NullPointerException.class, () -> ServerSentEventStreams.toFlux(response, null));
-        assertThrows(NullPointerException.class, () -> ServerSentEventStreams.toFlux(response, CONVERTER, null));
+            () -> ServerSentEventStreamHelper.toIterableStream(response, CONVERTER, null));
+        assertThrows(NullPointerException.class, () -> ServerSentEventStreamHelper.toFlux(null, CONVERTER));
+        assertThrows(NullPointerException.class, () -> ServerSentEventStreamHelper.toFlux(response, null));
+        assertThrows(NullPointerException.class, () -> ServerSentEventStreamHelper.toFlux(response, CONVERTER, null));
     }
 
     private static String framedEvents() {

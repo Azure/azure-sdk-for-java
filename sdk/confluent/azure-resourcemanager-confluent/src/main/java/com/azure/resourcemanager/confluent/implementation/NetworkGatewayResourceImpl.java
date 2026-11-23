@@ -19,6 +19,18 @@ public final class NetworkGatewayResourceImpl implements NetworkGatewayResource,
         com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/networkGateways/{networkGatewayId}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/networkGateways/{networkGatewayId}",
+            "organizationName");
+        this.environmentId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/networkGateways/{networkGatewayId}",
+            "environmentId");
+        this.networkGatewayId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/networkGateways/{networkGatewayId}",
+            "networkGatewayId");
     }
 
     public String id() {

@@ -395,7 +395,7 @@ public final class SparkJob extends JobBaseProperties {
 
     /**
      * Get the status property: Status of the job.
-     *
+     * 
      * @return the status value.
      */
     @Override

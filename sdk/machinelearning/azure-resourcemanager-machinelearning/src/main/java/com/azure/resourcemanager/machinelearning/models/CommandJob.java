@@ -310,7 +310,7 @@ public final class CommandJob extends JobBaseProperties {
 
     /**
      * Get the status property: Status of the job.
-     *
+     * 
      * @return the status value.
      */
     @Override
