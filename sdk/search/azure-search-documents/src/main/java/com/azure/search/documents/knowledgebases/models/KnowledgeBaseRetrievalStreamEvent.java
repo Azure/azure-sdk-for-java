@@ -4,7 +4,7 @@
 package com.azure.search.documents.knowledgebases.models;
 
 import com.azure.core.annotation.Generated;
-import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventConverter;
+import com.azure.search.documents.knowledgebases.implementation.KnowledgeBaseRetrievalStreamEventSerializer;
 import java.util.List;
 
 /**
@@ -58,11 +58,11 @@ public abstract class KnowledgeBaseRetrievalStreamEvent {
     }
 
     static {
-        KnowledgeBaseRetrievalStreamEventConverter
-            .setConstructorAccessor(new KnowledgeBaseRetrievalStreamEventConverter.ConstructorAccessor() {
+        KnowledgeBaseRetrievalStreamEventSerializer
+            .setConstructorAccessor(new KnowledgeBaseRetrievalStreamEventSerializer.SseEventConstructorAccessor() {
 
                 @Override
-                public KnowledgeBaseRetrievalStreamEvent createEvent(String eventName) {
+                public KnowledgeBaseRetrievalStreamEvent unknownEvent(String eventName) {
                     return new KnowledgeBaseRetrievalStreamEvent(eventName) {
                     };
                 }
