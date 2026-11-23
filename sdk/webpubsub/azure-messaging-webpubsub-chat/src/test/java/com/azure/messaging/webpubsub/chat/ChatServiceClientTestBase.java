@@ -89,9 +89,6 @@ abstract class ChatServiceClientTestBase extends TestProxyTestBase {
                 .systemAccessToken(config.get("SYSTEM_ACCESSTOKEN"))
                 .build();
         }
-        if ("true".equalsIgnoreCase(config.get("TF_BUILD"))) {
-            throw new IllegalStateException("Azure Pipelines service connection ID is required for live tests.");
-        }
         return new DefaultAzureCredentialBuilder().configuration(config).build();
     }
 

@@ -192,14 +192,7 @@ public class WebPubSubChatServiceClientBuilderTests {
     }
 
     @Test
-    public void liveTestCredentialRejectsPipelineWithoutServiceConnectionId() {
-        Configuration config = testConfiguration().put("TF_BUILD", "true");
-        assertThrows(IllegalStateException.class,
-            () -> ChatServiceClientTestBase.getIdentityTestCredential(TestMode.LIVE, config));
-    }
-
-    @Test
-    public void liveTestCredentialUsesDefaultCredentialOutsidePipeline() {
+    public void liveTestCredentialUsesDefaultCredentialWithoutServiceConnection() {
         assertInstanceOf(DefaultAzureCredential.class,
             ChatServiceClientTestBase.getIdentityTestCredential(TestMode.LIVE, testConfiguration()));
     }
@@ -211,8 +204,7 @@ public class WebPubSubChatServiceClientBuilderTests {
                 .put("AZURESUBSCRIPTION_CLIENT_ID", null)
                 .put("AZURESUBSCRIPTION_TENANT_ID", null)
                 .put("SYSTEM_ACCESSTOKEN", null)
-                .put("SYSTEM_OIDCREQUESTURI", null)
-                .put("TF_BUILD", null);
+                .put("SYSTEM_OIDCREQUESTURI", null);
         return new ConfigurationBuilder(empty, source, source).build();
     }
 
