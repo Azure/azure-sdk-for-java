@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * Configuration and status of a scheduled action.
+ * Configuration and status of a recurring bulk action.
  */
 @Fluent
 public final class ScheduledActionProperties implements JsonSerializable<ScheduledActionProperties> {
@@ -46,7 +46,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     private ScheduledActionsSchedule schedule;
 
     /*
-     * Notification settings that apply to the scheduled action.
+     * Notification settings that apply to the recurring bulk action.
      */
     private List<NotificationProperties> notificationSettings;
 
@@ -56,7 +56,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     private Boolean disabled;
 
     /*
-     * Read-only. The provisioning state of the scheduled action.
+     * Read-only. The provisioning state of the recurring bulk action.
      */
     private ScheduledActionsProvisioningState provisioningState;
 
@@ -167,7 +167,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the notificationSettings property: Notification settings that apply to the scheduled action.
+     * Get the notificationSettings property: Notification settings that apply to the recurring bulk action.
      * 
      * @return the notificationSettings value.
      */
@@ -176,7 +176,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Set the notificationSettings property: Notification settings that apply to the scheduled action.
+     * Set the notificationSettings property: Notification settings that apply to the recurring bulk action.
      * 
      * @param notificationSettings the notificationSettings value to set.
      * @return the ScheduledActionProperties object itself.
@@ -207,7 +207,7 @@ public final class ScheduledActionProperties implements JsonSerializable<Schedul
     }
 
     /**
-     * Get the provisioningState property: Read-only. The provisioning state of the scheduled action.
+     * Get the provisioningState property: Read-only. The provisioning state of the recurring bulk action.
      * 
      * @return the provisioningState value.
      */

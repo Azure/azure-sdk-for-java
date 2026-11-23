@@ -5,7 +5,6 @@ package com.azure.ai.agents.streaming;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.util.StreamingResponseUtils;
@@ -79,7 +78,7 @@ public class SimpleStreamingAsync {
                 });
                 // END: com.azure.ai.agents.streaming.simple_async
 
-                return SampleUtils.pinAgentVersion(agentsAsyncClient, agent).then(streamingCompletion);
+                return streamingCompletion;
             })
             .then(Mono.defer(() -> {
                 AgentVersionDetails agent = agentRef.get();

@@ -6,10 +6,8 @@ package com.azure.ai.agents.tools;
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.AgentsServiceVersion;
-import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.ComputerEnvironment;
-import com.azure.ai.agents.models.ComputerUsePreviewTool;
+import com.azure.ai.agents.models.ComputerTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.tools.ComputerUseUtil.HandleActionResult;
 import com.azure.ai.agents.tools.ComputerUseUtil.ScreenshotInfo;
@@ -50,8 +48,8 @@ import java.util.stream.Collectors;
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint, as found in the Overview
  *       page of your Microsoft Foundry portal.</li>
  *   <li>(Optional) AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME - The deployment name of the
- *       computer-use-preview model, as found under the "Name" column in the "Models + endpoints"
- *       tab in your Microsoft Foundry project.</li>
+ *       computer-use model, as found under the "Name" column in the "Models + endpoints"
+ *       tab in your Microsoft Foundry project. If not set, defaults to "gpt-5.4".</li>
  * </ul>
  */
 public class ComputerUseSync {
@@ -59,7 +57,7 @@ public class ComputerUseSync {
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
         String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "computer-use-preview");
+        String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "gpt-5.4");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -86,11 +84,7 @@ public class ComputerUseSync {
 
         try {
             // BEGIN: com.azure.ai.agents.define_computer_use
-            ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
-                ComputerEnvironment.WINDOWS,
-                1026,
-                769
-            );
+            ComputerTool tool = new ComputerTool();
             // END: com.azure.ai.agents.define_computer_use
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
@@ -102,7 +96,6 @@ public class ComputerUseSync {
             System.out.printf("Agent created (id: %s, name: %s, version: %s)%n",
                 agent.getId(), agent.getName(), agent.getVersion());
 
-            SampleUtils.pinAgentVersion(agentsClient, agent);
             OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agent.getName());
 
             // Initial request with screenshot - start with Bing search page

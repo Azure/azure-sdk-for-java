@@ -18,23 +18,23 @@ public final class ConnectionStringTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectionStringType model = BinaryData.fromString(
-            "{\"allConnectionStrings\":{\"high\":\"vkhbejdznx\",\"low\":\"dsrhnjiv\",\"medium\":\"v\"},\"dedicated\":\"ovqfzge\",\"high\":\"dftuljltduce\",\"low\":\"tmczuomejwcwwqi\",\"medium\":\"nssxmojmsvpk\",\"profiles\":[{\"consumerGroup\":\"Tp\",\"displayName\":\"wcfzqljyxgt\",\"hostFormat\":\"Ip\",\"isRegional\":false,\"protocol\":\"TCP\",\"sessionMode\":\"Direct\",\"syntaxFormat\":\"Ezconnectplus\",\"tlsAuthentication\":\"Mutual\",\"value\":\"shmkxmaehvbbxur\"},{\"consumerGroup\":\"Medium\",\"displayName\":\"tfnhtbaxkgxywr\",\"hostFormat\":\"Fqdn\",\"isRegional\":true,\"protocol\":\"TCP\",\"sessionMode\":\"Redirect\",\"syntaxFormat\":\"Long\",\"tlsAuthentication\":\"Server\",\"value\":\"lu\"}]}")
+            "{\"allConnectionStrings\":{\"high\":\"wzf\",\"low\":\"sttktlahbqa\",\"medium\":\"xtgzukxitmmqtgqq\"},\"dedicated\":\"hrnxrxc\",\"high\":\"uisavokq\",\"low\":\"fvazivjlfrqttba\",\"medium\":\"katnwxyi\",\"profiles\":[{\"consumerGroup\":\"Low\",\"displayName\":\"qqfkuv\",\"hostFormat\":\"Ip\",\"isRegional\":true,\"protocol\":\"TCPS\",\"sessionMode\":\"Direct\",\"syntaxFormat\":\"Ezconnect\",\"tlsAuthentication\":\"Mutual\",\"value\":\"ovibrxkp\"}]}")
             .toObject(ConnectionStringType.class);
-        Assertions.assertEquals("vkhbejdznx", model.allConnectionStrings().high());
-        Assertions.assertEquals("dsrhnjiv", model.allConnectionStrings().low());
-        Assertions.assertEquals("v", model.allConnectionStrings().medium());
-        Assertions.assertEquals("ovqfzge", model.dedicated());
-        Assertions.assertEquals("dftuljltduce", model.high());
-        Assertions.assertEquals("tmczuomejwcwwqi", model.low());
-        Assertions.assertEquals("nssxmojmsvpk", model.medium());
-        Assertions.assertEquals(ConsumerGroup.TP, model.profiles().get(0).consumerGroup());
-        Assertions.assertEquals("wcfzqljyxgt", model.profiles().get(0).displayName());
+        Assertions.assertEquals("wzf", model.allConnectionStrings().high());
+        Assertions.assertEquals("sttktlahbqa", model.allConnectionStrings().low());
+        Assertions.assertEquals("xtgzukxitmmqtgqq", model.allConnectionStrings().medium());
+        Assertions.assertEquals("hrnxrxc", model.dedicated());
+        Assertions.assertEquals("uisavokq", model.high());
+        Assertions.assertEquals("fvazivjlfrqttba", model.low());
+        Assertions.assertEquals("katnwxyi", model.medium());
+        Assertions.assertEquals(ConsumerGroup.LOW, model.profiles().get(0).consumerGroup());
+        Assertions.assertEquals("qqfkuv", model.profiles().get(0).displayName());
         Assertions.assertEquals(HostFormatType.IP, model.profiles().get(0).hostFormat());
-        Assertions.assertFalse(model.profiles().get(0).isRegional());
-        Assertions.assertEquals(ProtocolType.TCP, model.profiles().get(0).protocol());
+        Assertions.assertTrue(model.profiles().get(0).isRegional());
+        Assertions.assertEquals(ProtocolType.TCPS, model.profiles().get(0).protocol());
         Assertions.assertEquals(SessionModeType.DIRECT, model.profiles().get(0).sessionMode());
-        Assertions.assertEquals(SyntaxFormatType.EZCONNECTPLUS, model.profiles().get(0).syntaxFormat());
+        Assertions.assertEquals(SyntaxFormatType.EZCONNECT, model.profiles().get(0).syntaxFormat());
         Assertions.assertEquals(TlsAuthenticationType.MUTUAL, model.profiles().get(0).tlsAuthentication());
-        Assertions.assertEquals("shmkxmaehvbbxur", model.profiles().get(0).value());
+        Assertions.assertEquals("ovibrxkp", model.profiles().get(0).value());
     }
 }

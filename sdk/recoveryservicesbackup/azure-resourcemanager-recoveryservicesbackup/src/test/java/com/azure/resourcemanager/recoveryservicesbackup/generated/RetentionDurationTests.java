@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RetentionDurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RetentionDuration model = BinaryData.fromString("{\"count\":391317433,\"durationType\":\"Days\"}")
+        RetentionDuration model = BinaryData.fromString("{\"count\":1097433567,\"durationType\":\"Years\"}")
             .toObject(RetentionDuration.class);
-        Assertions.assertEquals(391317433, model.count());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.durationType());
+        Assertions.assertEquals(1097433567, model.count());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RetentionDuration model
-            = new RetentionDuration().withCount(391317433).withDurationType(RetentionDurationType.DAYS);
+            = new RetentionDuration().withCount(1097433567).withDurationType(RetentionDurationType.YEARS);
         model = BinaryData.fromObject(model).toObject(RetentionDuration.class);
-        Assertions.assertEquals(391317433, model.count());
-        Assertions.assertEquals(RetentionDurationType.DAYS, model.durationType());
+        Assertions.assertEquals(1097433567, model.count());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.durationType());
     }
 }

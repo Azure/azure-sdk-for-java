@@ -20,8 +20,10 @@ import com.azure.resourcemanager.dataprotection.models.EncryptionState;
 import com.azure.resourcemanager.dataprotection.models.FeatureSettings;
 import com.azure.resourcemanager.dataprotection.models.GranularityLevel;
 import com.azure.resourcemanager.dataprotection.models.IdentityType;
+import com.azure.resourcemanager.dataprotection.models.ImmutabilityConfiguration;
 import com.azure.resourcemanager.dataprotection.models.ImmutabilitySettings;
 import com.azure.resourcemanager.dataprotection.models.ImmutabilityState;
+import com.azure.resourcemanager.dataprotection.models.ImmutabilityType;
 import com.azure.resourcemanager.dataprotection.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.dataprotection.models.MonitoringSettings;
 import com.azure.resourcemanager.dataprotection.models.SecuritySettings;
@@ -39,7 +41,7 @@ import java.util.Map;
  */
 public final class BackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVault.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PutBackupVault.json
      */
     /**
      * Sample code: Create BackupVault.
@@ -67,7 +69,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/PutBackupVaultWithUndelete.json
+     * x-ms-original-file: 2026-07-01/PutBackupVaultWithUndelete.json
      */
     /**
      * Sample code: Restore a soft-deleted backup vault.
@@ -102,7 +104,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVaultWithCMK.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PutBackupVaultWithCMK.json
      */
     /**
      * Sample code: Create BackupVault With CMK.
@@ -136,7 +138,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVaultCMKSettings_ResourceGuardEnabled.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PutBackupVaultCMKSettings_ResourceGuardEnabled.json
      */
     /**
      * Sample code: Create or Update Backup Vault With CMK and Resource Guard Enabled.
@@ -171,7 +173,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVaultWithCostManagementSettings.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PutBackupVaultWithCostManagementSettings.json
      */
     /**
      * Sample code: Create BackupVault With Cost Management Settings.
@@ -202,7 +204,7 @@ public final class BackupVaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/VaultCRUD/PutBackupVaultWithMSI.json
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PutBackupVaultWithMSI.json
      */
     /**
      * Sample code: Create BackupVault With MSI.
@@ -227,6 +229,35 @@ public final class BackupVaultsCreateOrUpdateSamples {
                 .withFeatureSettings(new FeatureSettings().withCrossRegionRestoreSettings(
                     new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/VaultCRUD/PutBackupVaultWithTimedImmutability.json
+     */
+    /**
+     * Sample code: Create BackupVault With Timed Immutability.
+     * 
+     * @param manager Entry point to DataProtectionManager.
+     */
+    public static void
+        createBackupVaultWithTimedImmutability(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupVaults()
+            .define("swaggerExample")
+            .withRegion("WestUS")
+            .withExistingResourceGroup("SampleResourceGroup")
+            .withProperties(new BackupVault()
+                .withSecuritySettings(new SecuritySettings()
+                    .withSoftDeleteSettings(
+                        new SoftDeleteSettings().withState(SoftDeleteState.ON).withRetentionDurationInDays(14.0D))
+                    .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)
+                        .withConfiguration(new ImmutabilityConfiguration().withType(ImmutabilityType.TIME_BASED)
+                            .withDurationInDays(30))))
+                .withStorageSettings(
+                    Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                        .withType(StorageSettingTypes.LOCALLY_REDUNDANT))))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .withIdentity(new DppIdentityDetails().withType("None"))
             .create();
     }
 

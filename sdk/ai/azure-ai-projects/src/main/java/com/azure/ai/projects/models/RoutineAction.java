@@ -29,7 +29,7 @@ public class RoutineAction implements JsonSerializable<RoutineAction> {
      * Creates an instance of RoutineAction class.
      */
     @Generated
-    public RoutineAction() {
+    protected RoutineAction() {
     }
 
     /**

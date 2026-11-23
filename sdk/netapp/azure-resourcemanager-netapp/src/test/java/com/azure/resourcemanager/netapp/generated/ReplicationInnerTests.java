@@ -14,11 +14,11 @@ public final class ReplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationInner model = BinaryData.fromString(
-            "{\"replicationId\":\"szhedplvw\",\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"mbes\",\"remoteVolumeRegion\":\"nkww\",\"mirrorState\":\"Uninitialized\",\"replicationCreationTime\":\"2021-05-13T14:02:05Z\",\"replicationDeletionTime\":\"2021-11-04T18:03:15Z\"}")
+            "{\"replicationId\":\"eriofzpyqs\",\"endpointType\":\"src\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"ets\",\"remoteVolumeRegion\":\"szhedplvw\",\"mirrorState\":\"Uninitialized\",\"replicationCreationTime\":\"2021-06-28T18:18:03Z\",\"replicationDeletionTime\":\"2021-05-24T21:25:26Z\"}")
             .toObject(ReplicationInner.class);
-        Assertions.assertEquals(EndpointType.DST, model.endpointType());
+        Assertions.assertEquals(EndpointType.SRC, model.endpointType());
         Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
-        Assertions.assertEquals("mbes", model.remoteVolumeResourceId());
-        Assertions.assertEquals("nkww", model.remoteVolumeRegion());
+        Assertions.assertEquals("ets", model.remoteVolumeResourceId());
+        Assertions.assertEquals("szhedplvw", model.remoteVolumeRegion());
     }
 }

@@ -12,9 +12,9 @@ public final class AgentReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentReference model = BinaryData.fromString(
-            "{\"properties\":{\"agentId\":\"hqhsknd\",\"agentName\":\"lqkaadlknwf\"},\"id\":\"nniyopetxi\",\"name\":\"cnrly\",\"type\":\"nucaephblkwqpat\"}")
+            "{\"properties\":{\"agentId\":\"c\",\"agentName\":\"za\"},\"id\":\"nbxqaeht\",\"name\":\"bjmbnvynfaooeac\",\"type\":\"edcgl\"}")
             .toObject(AgentReference.class);
-        Assertions.assertEquals("hqhsknd", model.properties().agentId());
-        Assertions.assertEquals("lqkaadlknwf", model.properties().agentName());
+        Assertions.assertEquals("c", model.properties().agentId());
+        Assertions.assertEquals("za", model.properties().agentName());
     }
 }

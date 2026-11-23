@@ -19,7 +19,6 @@ import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolUpgrade
 import com.azure.resourcemanager.containerservice.fluent.models.PoolBootstrapDataInner;
 import com.azure.resourcemanager.containerservice.models.AgentPoolDeleteMachinesParameter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpdate;
-import com.azure.resourcemanager.containerservice.models.ListBootstrapDataRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -928,7 +927,6 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -937,7 +935,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PoolBootstrapDataInner>> listBootstrapDataWithResponseAsync(String resourceGroupName,
-        String resourceName, String agentPoolName, ListBootstrapDataRequest body);
+        String resourceName, String agentPoolName);
 
     /**
      * Lists bootstrap data for a FlexNode agent pool.
@@ -947,7 +945,6 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -955,7 +952,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PoolBootstrapDataInner> listBootstrapDataAsync(String resourceGroupName, String resourceName,
-        String agentPoolName, ListBootstrapDataRequest body);
+        String agentPoolName);
 
     /**
      * Lists bootstrap data for a FlexNode agent pool.
@@ -965,7 +962,6 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -974,7 +970,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PoolBootstrapDataInner> listBootstrapDataWithResponse(String resourceGroupName, String resourceName,
-        String agentPoolName, ListBootstrapDataRequest body, Context context);
+        String agentPoolName, Context context);
 
     /**
      * Lists bootstrap data for a FlexNode agent pool.
@@ -984,15 +980,13 @@ public interface AgentPoolsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param body The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bootstrap configuration for a FlexNode pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolBootstrapDataInner listBootstrapData(String resourceGroupName, String resourceName, String agentPoolName,
-        ListBootstrapDataRequest body);
+    PoolBootstrapDataInner listBootstrapData(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
      * Updates an agent pool in the specified managed cluster. Visit https://aka.ms/aks/concurrent-node-operations for

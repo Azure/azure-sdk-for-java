@@ -64,6 +64,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemOper
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerRefreshOperationResultsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerRefreshOperationStatusesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionIntentsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionPoliciesClient;
@@ -851,6 +852,20 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
     }
 
     /**
+     * The ProtectionContainerRefreshOperationStatusesClient object to access its operations.
+     */
+    private final ProtectionContainerRefreshOperationStatusesClient protectionContainerRefreshOperationStatuses;
+
+    /**
+     * Gets the ProtectionContainerRefreshOperationStatusesClient object to access its operations.
+     * 
+     * @return the ProtectionContainerRefreshOperationStatusesClient object.
+     */
+    public ProtectionContainerRefreshOperationStatusesClient getProtectionContainerRefreshOperationStatuses() {
+        return this.protectionContainerRefreshOperationStatuses;
+    }
+
+    /**
      * The ProtectionIntentsClient object to access its operations.
      */
     private final ProtectionIntentsClient protectionIntents;
@@ -937,7 +952,7 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-08-01";
+        this.apiVersion = "2026-10-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
@@ -987,6 +1002,8 @@ public final class RecoveryServicesBackupManagementClientImpl implements Recover
         this.fetchTieringCosts = new FetchTieringCostsClientImpl(this);
         this.getTieringCostOperationResults = new GetTieringCostOperationResultsClientImpl(this);
         this.tieringCostOperationStatus = new TieringCostOperationStatusClientImpl(this);
+        this.protectionContainerRefreshOperationStatuses
+            = new ProtectionContainerRefreshOperationStatusesClientImpl(this);
         this.protectionIntents = new ProtectionIntentsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateEndpoints = new PrivateEndpointsClientImpl(this);

@@ -61,7 +61,9 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public Application getById(String id) {
-        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
+        String applicationId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
+            "applicationId");
         if (applicationId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -70,7 +72,9 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public Response<Application> getByIdWithResponse(String id, Context context) {
-        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
+        String applicationId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
+            "applicationId");
         if (applicationId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -79,7 +83,9 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public void deleteById(String id) {
-        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
+        String applicationId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
+            "applicationId");
         if (applicationId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -88,7 +94,9 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String applicationId = ResourceManagerUtils.getValueFromIdByName(id, "applications");
+        String applicationId = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/applications/{applicationId}",
+            "applicationId");
         if (applicationId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));

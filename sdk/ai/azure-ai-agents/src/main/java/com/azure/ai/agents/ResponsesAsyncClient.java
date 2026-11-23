@@ -5,6 +5,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.telemetry.GenAiResponseTracing;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.util.StreamingResponseUtils;
 import com.azure.core.annotation.ReturnType;
@@ -32,14 +33,17 @@ import java.util.Objects;
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ResponsesAsyncClient {
     private final ResponseServiceAsync responseServiceAsync;
+    private final GenAiResponseTracing tracer;
 
     /**
      * Initializes an instance of ResponsesAsyncClient class using the official OpenAI client library.
      *
      * @param openAIClientAsync the OpenAI async client.
+     * @param tracer the tracer used to emit GenAI spans for response operations.
      */
-    ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync) {
+    ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync, GenAiResponseTracing tracer) {
         this.responseServiceAsync = openAIClientAsync.responses();
+        this.tracer = tracer;
     }
 
     /**
@@ -67,7 +71,14 @@ public final class ResponsesAsyncClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+
+        if (!tracer.isEnabled()) {
+            return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        return tracer.traceResponseAsync(createResponse, builtParams,
+            tracedParams -> Mono.fromFuture(this.responseServiceAsync.create(tracedParams)));
     }
 
     /**
@@ -86,7 +97,14 @@ public final class ResponsesAsyncClient {
 
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return StreamingResponseUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
+
+        if (!tracer.isEnabled()) {
+            return StreamingResponseUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
+        }
+
+        ResponseCreateParams builtParams = params.build();
+        return tracer.traceStreamingResponseAsync(createResponse, builtParams,
+            tracedParams -> StreamingResponseUtils.toFlux(this.responseServiceAsync.createStreaming(tracedParams)));
     }
 
     /**
@@ -120,11 +138,12 @@ public final class ResponsesAsyncClient {
         RequestOptions requestOptions) {
         Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
 
-        ResponseCreateParams params = ResponseCreateParams.builder()
-            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
-            .build();
-        return Mono.fromFuture(this.responseServiceAsync.withRawResponse()
-            .create(params, requestOptions == null ? RequestOptions.none() : requestOptions));
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(createResponseRequest);
+        AzureCreateResponseOptions azureOptions = OpenAIJsonHelper
+            .fromAdditionalProperties(params._additionalBodyProperties(), AzureCreateResponseOptions::fromJson);
+        return tracer.traceRawResponseAsync(azureOptions == null ? new AzureCreateResponseOptions() : azureOptions,
+            params, tracedParams -> Mono.fromFuture(this.responseServiceAsync.withRawResponse()
+                .create(tracedParams, requestOptions == null ? RequestOptions.none() : requestOptions)));
     }
 
     /**
@@ -152,10 +171,12 @@ public final class ResponsesAsyncClient {
         createResponseStreamWithResponse(BinaryData createResponseRequest, RequestOptions requestOptions) {
         Objects.requireNonNull(createResponseRequest, "createResponseRequest cannot be null");
 
-        ResponseCreateParams params = ResponseCreateParams.builder()
-            .additionalBodyProperties(OpenAIJsonHelper.jsonBodyToValueMap(createResponseRequest))
-            .build();
-        return Mono.fromFuture(this.responseServiceAsync.withRawResponse()
-            .createStreaming(params, requestOptions == null ? RequestOptions.none() : requestOptions));
+        ResponseCreateParams params = OpenAIJsonHelper.toRawResponseCreateParams(createResponseRequest);
+        AzureCreateResponseOptions azureOptions = OpenAIJsonHelper
+            .fromAdditionalProperties(params._additionalBodyProperties(), AzureCreateResponseOptions::fromJson);
+        return tracer.traceRawStreamingResponseAsync(
+            azureOptions == null ? new AzureCreateResponseOptions() : azureOptions, params,
+            tracedParams -> Mono.fromFuture(this.responseServiceAsync.withRawResponse()
+                .createStreaming(tracedParams, requestOptions == null ? RequestOptions.none() : requestOptions)));
     }
 }

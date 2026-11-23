@@ -47,7 +47,6 @@ public class OpenApiSample {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
 
         // Load the OpenAPI spec from a JSON file
@@ -64,23 +63,25 @@ public class OpenApiSample {
             .setInstructions("Use the OpenAPI tool for HTTP request metadata.")
             .setTools(Arrays.asList(new OpenApiTool(toolDefinition)));
 
+        OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient("openapi-agent");
+        ConversationService conversationService = openAIClient.conversations();
+        Conversation conversation = null;
+
         AgentVersionDetails agentVersion = agentsClient.createAgentVersion("openapi-agent", agentDefinition);
-        System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());
-
-        // Create a conversation and add a user message
-        Conversation conversation = conversationService.create();
-        conversationService.items().create(
-            ItemCreateParams.builder()
-                .conversationId(conversation.id())
-                .addItem(EasyInputMessage.builder()
-                    .role(EasyInputMessage.Role.USER)
-                    .content("Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
-                    .build())
-                .build());
-
         try {
-            SampleUtils.pinAgentVersion(agentsClient, agentVersion);
-            OpenAIClient openAIClient = builder.buildAgentScopedOpenAIClient(agentVersion.getName());
+            System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());
+
+            // Create a conversation and add a user message
+            conversation = conversationService.create();
+            System.out.println("Created conversation: " + conversation.id());
+            conversationService.items().create(
+                ItemCreateParams.builder()
+                    .conversationId(conversation.id())
+                    .addItem(EasyInputMessage.builder()
+                        .role(EasyInputMessage.Role.USER)
+                        .content("Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
+                        .build())
+                    .build());
 
             Response response = openAIClient.responses().create(
                 ResponseCreateParams.builder()
@@ -100,8 +101,15 @@ public class OpenApiSample {
             System.out.println("Status: " + response.status().map(Object::toString).orElse("unknown"));
             System.out.println("Response: " + text);
         } finally {
-            agentsClient.deleteAgentVersion(agentVersion.getName(), agentVersion.getVersion());
-            System.out.println("Agent deleted");
+            try {
+                if (conversation != null) {
+                    conversationService.delete(conversation.id());
+                    System.out.println("Conversation deleted");
+                }
+            } finally {
+                agentsClient.deleteAgentVersion(agentVersion.getName(), agentVersion.getVersion());
+                System.out.println("Agent deleted");
+            }
         }
     }
 }

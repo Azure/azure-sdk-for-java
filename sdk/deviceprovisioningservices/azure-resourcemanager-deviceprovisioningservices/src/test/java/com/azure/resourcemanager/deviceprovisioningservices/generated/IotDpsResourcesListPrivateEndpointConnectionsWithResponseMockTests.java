@@ -23,7 +23,7 @@ public final class IotDpsResourcesListPrivateEndpointConnectionsWithResponseMock
     @Test
     public void testListPrivateEndpointConnectionsWithResponse() throws Exception {
         String responseStr
-            = "[{\"properties\":{\"privateEndpoint\":{\"id\":\"thnzd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"sl\",\"actionsRequired\":\"ayqigynduhav\"}},\"id\":\"lkthu\",\"name\":\"aqolbgycduiertg\",\"type\":\"cym\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"l\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"slqlfmmdn\",\"actionsRequired\":\"glzpswiydm\"}},\"id\":\"yhz\",\"name\":\"xssadbzmnvdf\",\"type\":\"n\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"od\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"zbn\",\"actionsRequired\":\"lylpstdb\"}},\"id\":\"xsrz\",\"name\":\"zucerscdntnev\",\"type\":\"iwjmygtdssls\"}]";
+            = "[{\"properties\":{\"privateEndpoint\":{\"id\":\"jsjqbjhhyx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"wlycoduhpkxkg\",\"actionsRequired\":\"areqna\"}},\"id\":\"qugjhkycube\",\"name\":\"dgssofwqmzqal\",\"type\":\"rmnjijpx\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"qudf\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"yxbaaabjyvayf\",\"actionsRequired\":\"m\"}},\"id\":\"rtuzqogs\",\"name\":\"xnevfdnwn\",\"type\":\"mewzsyyc\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"soibjudpfrx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"thzvaytdwkqbrqu\",\"actionsRequired\":\"axhexiilivp\"}},\"id\":\"iirqtd\",\"name\":\"oaxoruzfgsqu\",\"type\":\"fxrxxle\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"amxjezwlw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"xuqlcvydypat\",\"actionsRequired\":\"oa\"}},\"id\":\"kniod\",\"name\":\"oo\",\"type\":\"bw\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,14 @@ public final class IotDpsResourcesListPrivateEndpointConnectionsWithResponseMock
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<PrivateEndpointConnection> response = manager.iotDpsResources()
-            .listPrivateEndpointConnectionsWithResponse("ervnaenqpehi", "doy", com.azure.core.util.Context.NONE)
+            .listPrivateEndpointConnectionsWithResponse("su", "arm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
             response.get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("sl", response.get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("ayqigynduhav",
+        Assertions.assertEquals("wlycoduhpkxkg",
+            response.get(0).properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("areqna",
             response.get(0).properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

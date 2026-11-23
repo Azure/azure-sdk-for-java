@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceprovisioningservices.generated;
  */
 public final class IotDpsResourceGetOperationResultSamples {
     /*
-     * x-ms-original-file: 2026-08-31/DPSGetOperationResult.json
+     * x-ms-original-file: 2026-11-01/DPSGetOperationResult.json
      */
     /**
      * Sample code: DPSGetOperationResult.

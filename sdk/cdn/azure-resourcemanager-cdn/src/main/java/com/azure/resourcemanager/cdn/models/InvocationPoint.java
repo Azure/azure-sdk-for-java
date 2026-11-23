@@ -22,6 +22,12 @@ public final class InvocationPoint extends ExpandableStringEnum<InvocationPoint>
     public static final InvocationPoint ORIGIN_REQUEST = fromString("OriginRequest");
 
     /**
+     * Invoked at the client response stage, before the response is returned to the client. Currently only supported for
+     * edge actions.
+     */
+    public static final InvocationPoint CLIENT_RESPONSE = fromString("ClientResponse");
+
+    /**
      * Creates a new instance of InvocationPoint value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

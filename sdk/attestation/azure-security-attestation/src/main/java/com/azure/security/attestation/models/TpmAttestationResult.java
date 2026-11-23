@@ -12,7 +12,7 @@ import com.azure.core.util.BinaryData;
  */
 
 @Immutable
-public class TpmAttestationResult {
+public final class TpmAttestationResult {
     private final BinaryData tpmResult;
 
     /**

@@ -102,9 +102,15 @@ public final class EnrollmentImpl implements Enrollment, Enrollment.Definition, 
         com.azure.resourcemanager.resiliencemanagement.ResilienceManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.usagePlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "usagePlans");
-        this.enrollmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "enrollments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}",
+            "resourceGroupName");
+        this.usagePlanName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}",
+            "usagePlanName");
+        this.enrollmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureResilienceManagement/usagePlans/{usagePlanName}/enrollments/{enrollmentName}",
+            "enrollmentName");
     }
 
     public Enrollment refresh() {

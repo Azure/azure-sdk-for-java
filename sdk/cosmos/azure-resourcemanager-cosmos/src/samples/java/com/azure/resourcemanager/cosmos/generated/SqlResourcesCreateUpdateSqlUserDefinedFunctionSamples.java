@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionResource;
  */
 public final class SqlResourcesCreateUpdateSqlUserDefinedFunctionSamples {
     /*
-     * x-ms-original-file: 2026-03-15/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
+     * x-ms-original-file: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionCreateUpdate.

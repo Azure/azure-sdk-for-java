@@ -63,6 +63,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.Protected
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectedItemsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionContainerOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionContainerRefreshOperationResultsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionContainerRefreshOperationStatusesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionIntentsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ProtectionPoliciesImpl;
@@ -117,6 +118,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemOper
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerRefreshOperationResults;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerRefreshOperationStatuses;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainers;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionIntents;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicies;
@@ -240,6 +242,8 @@ public final class RecoveryServicesBackupManager {
     private GetTieringCostOperationResults getTieringCostOperationResults;
 
     private TieringCostOperationStatus tieringCostOperationStatus;
+
+    private ProtectionContainerRefreshOperationStatuses protectionContainerRefreshOperationStatuses;
 
     private ProtectionIntents protectionIntents;
 
@@ -1065,6 +1069,19 @@ public final class RecoveryServicesBackupManager {
                 = new TieringCostOperationStatusImpl(clientObject.getTieringCostOperationStatus(), this);
         }
         return tieringCostOperationStatus;
+    }
+
+    /**
+     * Gets the resource collection API of ProtectionContainerRefreshOperationStatuses.
+     * 
+     * @return Resource collection API of ProtectionContainerRefreshOperationStatuses.
+     */
+    public ProtectionContainerRefreshOperationStatuses protectionContainerRefreshOperationStatuses() {
+        if (this.protectionContainerRefreshOperationStatuses == null) {
+            this.protectionContainerRefreshOperationStatuses = new ProtectionContainerRefreshOperationStatusesImpl(
+                clientObject.getProtectionContainerRefreshOperationStatuses(), this);
+        }
+        return protectionContainerRefreshOperationStatuses;
     }
 
     /**

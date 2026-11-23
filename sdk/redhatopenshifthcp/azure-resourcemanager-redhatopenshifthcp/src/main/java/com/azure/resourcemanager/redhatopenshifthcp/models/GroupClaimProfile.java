@@ -29,8 +29,8 @@ public final class GroupClaimProfile implements JsonSerializable<GroupClaimProfi
 
     /*
      * 
-     * Prefix for the claim external profile
-     * If this is specified prefixPolicy will be set to "Prefix" by default
+     * Prefix for the claim external profile.
+     * If this is specified, prefixPolicy will be set to "Prefix" by default.
      */
     private String prefix;
 
@@ -62,8 +62,8 @@ public final class GroupClaimProfile implements JsonSerializable<GroupClaimProfi
 
     /**
      * Get the prefix property:
-     * Prefix for the claim external profile
-     * If this is specified prefixPolicy will be set to "Prefix" by default.
+     * Prefix for the claim external profile.
+     * If this is specified, prefixPolicy will be set to "Prefix" by default.
      * 
      * @return the prefix value.
      */
@@ -73,8 +73,8 @@ public final class GroupClaimProfile implements JsonSerializable<GroupClaimProfi
 
     /**
      * Set the prefix property:
-     * Prefix for the claim external profile
-     * If this is specified prefixPolicy will be set to "Prefix" by default.
+     * Prefix for the claim external profile.
+     * If this is specified, prefixPolicy will be set to "Prefix" by default.
      * 
      * @param prefix the prefix value to set.
      * @return the GroupClaimProfile object itself.

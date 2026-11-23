@@ -22,7 +22,7 @@ public final class KnowledgeBaseResponseCompletedEvent
      * The semantic HTTP status of the completed retrieval.
      */
     @Generated
-    private final KnowledgeBaseRetrievalStatusCode statusCode;
+    private final Integer statusCode;
 
     /*
      * The authoritative completed retrieval response.
@@ -31,25 +31,14 @@ public final class KnowledgeBaseResponseCompletedEvent
     private final KnowledgeBaseRetrievalResult response;
 
     /**
-     * Creates an instance of KnowledgeBaseResponseCompletedEvent class.
+     * Get the statusCode property: The semantic HTTP status of the completed retrieval, not the actual HTTP transport
+     * response status. The service wire schema requires this value, but the SDK treats it as nullable: it returns null
+     * when the status code is missing or JSON null, and unknown values round trip as plain integers.
      *
-     * @param statusCode the statusCode value to set.
-     * @param response the response value to set.
+     * @return the statusCode value, or null if it was not provided.
      */
     @Generated
-    private KnowledgeBaseResponseCompletedEvent(KnowledgeBaseRetrievalStatusCode statusCode,
-        KnowledgeBaseRetrievalResult response) {
-        this.statusCode = statusCode;
-        this.response = response;
-    }
-
-    /**
-     * Get the statusCode property: The semantic HTTP status of the completed retrieval.
-     *
-     * @return the statusCode value.
-     */
-    @Generated
-    public KnowledgeBaseRetrievalStatusCode getStatusCode() {
+    public Integer getStatusCode() {
         return this.statusCode;
     }
 
@@ -70,7 +59,7 @@ public final class KnowledgeBaseResponseCompletedEvent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("statusCode", this.statusCode == null ? null : this.statusCode.getValue());
+        jsonWriter.writeNumberField("statusCode", this.statusCode);
         jsonWriter.writeJsonField("response", this.response);
         return jsonWriter.writeEndObject();
     }
@@ -87,13 +76,13 @@ public final class KnowledgeBaseResponseCompletedEvent
     @Generated
     public static KnowledgeBaseResponseCompletedEvent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KnowledgeBaseRetrievalStatusCode statusCode = null;
+            Integer statusCode = null;
             KnowledgeBaseRetrievalResult response = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("statusCode".equals(fieldName)) {
-                    statusCode = KnowledgeBaseRetrievalStatusCode.fromValue(reader.getInt());
+                    statusCode = reader.getNullable(JsonReader::getInt);
                 } else if ("response".equals(fieldName)) {
                     response = KnowledgeBaseRetrievalResult.fromJson(reader);
                 } else {
@@ -102,5 +91,17 @@ public final class KnowledgeBaseResponseCompletedEvent
             }
             return new KnowledgeBaseResponseCompletedEvent(statusCode, response);
         });
+    }
+
+    /**
+     * Creates an instance of KnowledgeBaseResponseCompletedEvent class.
+     *
+     * @param statusCode the statusCode value to set.
+     * @param response the response value to set.
+     */
+    @Generated
+    private KnowledgeBaseResponseCompletedEvent(Integer statusCode, KnowledgeBaseRetrievalResult response) {
+        this.statusCode = statusCode;
+        this.response = response;
     }
 }

@@ -39,6 +39,21 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
      */
     private AutoScaleProperties autoScaleProperties;
 
+    /*
+     * Total Provisioned IOPS of the Elastic San appliance. Supported only for ElasticSanVersion V2.
+     */
+    private Long totalIops;
+
+    /*
+     * Total Provisioned MBps Elastic San appliance. Supported only for ElasticSanVersion V2.
+     */
+    private Long totalMBps;
+
+    /*
+     * Total size of the Elastic San appliance in TB. Supported only for ElasticSanVersion V2.
+     */
+    private Long totalSizeTiB;
+
     /**
      * Creates an instance of ElasticSanUpdateProperties class.
      */
@@ -128,6 +143,72 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
     }
 
     /**
+     * Get the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Supported only for
+     * ElasticSanVersion V2.
+     * 
+     * @return the totalIops value.
+     */
+    public Long totalIops() {
+        return this.totalIops;
+    }
+
+    /**
+     * Set the totalIops property: Total Provisioned IOPS of the Elastic San appliance. Supported only for
+     * ElasticSanVersion V2.
+     * 
+     * @param totalIops the totalIops value to set.
+     * @return the ElasticSanUpdateProperties object itself.
+     */
+    public ElasticSanUpdateProperties withTotalIops(Long totalIops) {
+        this.totalIops = totalIops;
+        return this;
+    }
+
+    /**
+     * Get the totalMBps property: Total Provisioned MBps Elastic San appliance. Supported only for ElasticSanVersion
+     * V2.
+     * 
+     * @return the totalMBps value.
+     */
+    public Long totalMBps() {
+        return this.totalMBps;
+    }
+
+    /**
+     * Set the totalMBps property: Total Provisioned MBps Elastic San appliance. Supported only for ElasticSanVersion
+     * V2.
+     * 
+     * @param totalMBps the totalMBps value to set.
+     * @return the ElasticSanUpdateProperties object itself.
+     */
+    public ElasticSanUpdateProperties withTotalMBps(Long totalMBps) {
+        this.totalMBps = totalMBps;
+        return this;
+    }
+
+    /**
+     * Get the totalSizeTiB property: Total size of the Elastic San appliance in TB. Supported only for
+     * ElasticSanVersion V2.
+     * 
+     * @return the totalSizeTiB value.
+     */
+    public Long totalSizeTiB() {
+        return this.totalSizeTiB;
+    }
+
+    /**
+     * Set the totalSizeTiB property: Total size of the Elastic San appliance in TB. Supported only for
+     * ElasticSanVersion V2.
+     * 
+     * @param totalSizeTiB the totalSizeTiB value to set.
+     * @return the ElasticSanUpdateProperties object itself.
+     */
+    public ElasticSanUpdateProperties withTotalSizeTiB(Long totalSizeTiB) {
+        this.totalSizeTiB = totalSizeTiB;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -149,6 +230,9 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
         jsonWriter.writeStringField("publicNetworkAccess",
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeJsonField("autoScaleProperties", this.autoScaleProperties);
+        jsonWriter.writeNumberField("totalIops", this.totalIops);
+        jsonWriter.writeNumberField("totalMBps", this.totalMBps);
+        jsonWriter.writeNumberField("totalSizeTiB", this.totalSizeTiB);
         return jsonWriter.writeEndObject();
     }
 
@@ -177,6 +261,12 @@ public final class ElasticSanUpdateProperties implements JsonSerializable<Elasti
                         = PublicNetworkAccess.fromString(reader.getString());
                 } else if ("autoScaleProperties".equals(fieldName)) {
                     deserializedElasticSanUpdateProperties.autoScaleProperties = AutoScaleProperties.fromJson(reader);
+                } else if ("totalIops".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.totalIops = reader.getNullable(JsonReader::getLong);
+                } else if ("totalMBps".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.totalMBps = reader.getNullable(JsonReader::getLong);
+                } else if ("totalSizeTiB".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.totalSizeTiB = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

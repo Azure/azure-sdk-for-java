@@ -115,7 +115,14 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @param parameter The Key Vault load-store configuration.
      */
     public KeyVaultCertificates(KeyVaultLoadStoreParameter parameter) {
-        updateKeyVaultClient(parameter);
+        this(Objects.requireNonNull(parameter, "'parameter' cannot be null."),
+            parameter.getUri() == null ? null : new KeyVaultClient(parameter));
+    }
+
+    KeyVaultCertificates(KeyVaultLoadStoreParameter parameter, KeyVaultClient keyVaultClient) {
+        Objects.requireNonNull(parameter, "'parameter' cannot be null.");
+        updateCertificateConfiguration(parameter);
+        setKeyVaultClient(keyVaultClient);
     }
 
     private void updateCertificateConfiguration(KeyVaultLoadStoreParameter parameter) {
@@ -124,7 +131,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
         List<Pattern> updatedIncludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, false);
         List<Pattern> updatedExcludeAliasPatterns = getAliasPatterns(normalizedFilterPatterns, true);
 
-        certificatesRefreshIntervalInMs = parameter.getCertificatesRefreshIntervalInMs();
+        certificatesRefreshIntervalInMs = parameter.getCertificatesRefreshInterval().toMillis();
         includeAliasPatterns = updatedIncludeAliasPatterns;
         excludeAliasPatterns = updatedExcludeAliasPatterns;
     }
@@ -615,20 +622,18 @@ public final class KeyVaultCertificates implements AzureCertificates {
             aliasesSnapshot = new ArrayList<>(aliases);
         }
 
-        aliasesSnapshot.forEach(this::loadCertificateIfNeeded);
-
-        Map<String, Certificate> certificatesSnapshot;
-        synchronized (this) {
-            certificatesSnapshot = new HashMap<>(certificates);
+        for (String alias : aliasesSnapshot) {
+            loadCertificateIfNeeded(alias);
+            Certificate loadedCertificate;
+            synchronized (this) {
+                loadedCertificate = certificates.get(alias);
+            }
+            if (certificate.equals(loadedCertificate)) {
+                return alias;
+            }
         }
 
-        return certificatesSnapshot.entrySet()
-            .stream()
-            .filter(entry -> certificate.equals(entry.getValue()))
-            .findFirst()
-            .map(Map.Entry::getKey)
-            .orElse(null);
-
+        return null;
     }
 
     /**

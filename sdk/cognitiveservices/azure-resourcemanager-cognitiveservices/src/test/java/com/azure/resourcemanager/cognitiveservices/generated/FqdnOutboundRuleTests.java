@@ -14,21 +14,21 @@ public final class FqdnOutboundRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FqdnOutboundRule model = BinaryData.fromString(
-            "{\"type\":\"FQDN\",\"destination\":\"qnt\",\"category\":\"Recommended\",\"status\":\"Provisioning\",\"errorInformation\":\"hvmaxgnuyeamcmhu\",\"parentRuleNames\":[\"ecehokw\",\"pqtwloesqrggvrb\",\"yrukoi\"]}")
+            "{\"type\":\"FQDN\",\"destination\":\"ifjua\",\"category\":\"Required\",\"status\":\"Failed\",\"errorInformation\":\"mmp\",\"parentRuleNames\":[\"y\",\"qvcml\",\"exbzbqufpnezsjza\"]}")
             .toObject(FqdnOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
-        Assertions.assertEquals("qnt", model.destination());
+        Assertions.assertEquals(RuleCategory.REQUIRED, model.category());
+        Assertions.assertEquals(RuleStatus.FAILED, model.status());
+        Assertions.assertEquals("ifjua", model.destination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FqdnOutboundRule model = new FqdnOutboundRule().withCategory(RuleCategory.RECOMMENDED)
-            .withStatus(RuleStatus.PROVISIONING)
-            .withDestination("qnt");
+        FqdnOutboundRule model = new FqdnOutboundRule().withCategory(RuleCategory.REQUIRED)
+            .withStatus(RuleStatus.FAILED)
+            .withDestination("ifjua");
         model = BinaryData.fromObject(model).toObject(FqdnOutboundRule.class);
-        Assertions.assertEquals(RuleCategory.RECOMMENDED, model.category());
-        Assertions.assertEquals(RuleStatus.PROVISIONING, model.status());
-        Assertions.assertEquals("qnt", model.destination());
+        Assertions.assertEquals(RuleCategory.REQUIRED, model.category());
+        Assertions.assertEquals(RuleStatus.FAILED, model.status());
+        Assertions.assertEquals("ifjua", model.destination());
     }
 }

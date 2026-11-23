@@ -24,7 +24,7 @@ public final class SkusListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"Premium_LRS\",\"tier\":\"Premium\",\"resourceType\":\"cwaekrrjre\",\"locations\":[\"tsgumhj\"],\"locationInfo\":[{\"location\":\"kxw\",\"zones\":[\"lbqpvuzlmvfelf\"]}],\"capabilities\":[{\"name\":\"lcrpw\",\"value\":\"eznoig\"},{\"name\":\"njwmwkpnbsazejj\",\"value\":\"kagfhsxtt\"},{\"name\":\"gzxnfaazpxdtnk\",\"value\":\"kqjjlwuenvrkp\"},{\"name\":\"uaibrebqaaysj\",\"value\":\"xqtnq\"}]}]}";
+            = "{\"value\":[{\"name\":\"ElasticSAN_LRS\",\"tier\":\"Premium\",\"resourceType\":\"ibyfmo\",\"locations\":[\"rkjpvdwxfzwii\",\"wzjbh\"],\"locationInfo\":[{\"location\":\"jrkambtrnegvmnv\",\"zones\":[\"qvldspastjbkkd\",\"flvestmjlxrrilo\",\"apeewchpxlkt\"],\"zoneDetails\":[{\"name\":[\"ycslevufuztcktyh\",\"tqedcgzulwm\",\"rqzz\"],\"capabilities\":[{},{},{}]},{\"name\":[\"gl\",\"dzgkr\"],\"capabilities\":[{}]}]},{\"location\":\"vtoepryutnw\",\"zones\":[\"zdmovzv\"],\"zoneDetails\":[{\"name\":[\"zqadf\"],\"capabilities\":[{}]},{\"name\":[\"iglaecx\",\"dticokpvzml\"],\"capabilities\":[{},{},{}]},{\"name\":[\"gxobfirclnp\",\"ciayzriykhya\",\"fvjlboxqvkjlmx\"],\"capabilities\":[{}]}]}],\"capabilities\":[{\"name\":\"hdwdi\",\"value\":\"mbnraauzzp\"},{\"name\":\"a\",\"value\":\"sdzhezww\"},{\"name\":\"iqyuvvfo\",\"value\":\"p\"}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class SkusListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<SkuInformation> response = manager.skus().list("ronzmyhgfip", com.azure.core.util.Context.NONE);
+        PagedIterable<SkuInformation> response = manager.skus().list("tlvofq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SkuName.PREMIUM_LRS, response.iterator().next().name());
+        Assertions.assertEquals(SkuName.ELASTIC_SAN_LRS, response.iterator().next().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().tier());
     }
 }

@@ -13,14 +13,14 @@ public final class ExecutionConfigurationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecutionConfigurations model
-            = BinaryData.fromString("{\"userConsent\":\"Allowed\"}").toObject(ExecutionConfigurations.class);
-        Assertions.assertEquals(UserConsent.ALLOWED, model.userConsent());
+            = BinaryData.fromString("{\"userConsent\":\"Unspecified\"}").toObject(ExecutionConfigurations.class);
+        Assertions.assertEquals(UserConsent.UNSPECIFIED, model.userConsent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecutionConfigurations model = new ExecutionConfigurations().withUserConsent(UserConsent.ALLOWED);
+        ExecutionConfigurations model = new ExecutionConfigurations().withUserConsent(UserConsent.UNSPECIFIED);
         model = BinaryData.fromObject(model).toObject(ExecutionConfigurations.class);
-        Assertions.assertEquals(UserConsent.ALLOWED, model.userConsent());
+        Assertions.assertEquals(UserConsent.UNSPECIFIED, model.userConsent());
     }
 }

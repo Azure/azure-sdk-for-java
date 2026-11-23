@@ -13,10 +13,10 @@ public final class HcpOpenShiftVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HcpOpenShiftVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"channelGroup\":\"hzceuojgjrwjue\",\"enabled\":false,\"endOfLifeTimestamp\":\"2021-12-06T14:18:50Z\"},\"id\":\"mcdytdxwitxnrj\",\"name\":\"wgqwgxhn\",\"type\":\"skxfbk\"}")
+            "{\"properties\":{\"channelGroup\":\"hzxct\",\"enabled\":true,\"endOfLifeTimestamp\":\"2021-10-01T04:47:29Z\"},\"id\":\"kdmoi\",\"name\":\"postmgrcfbunrm\",\"type\":\"qjhhkxbpv\"}")
             .toObject(HcpOpenShiftVersionInner.class);
-        Assertions.assertEquals("hzceuojgjrwjue", model.properties().channelGroup());
-        Assertions.assertFalse(model.properties().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-06T14:18:50Z"), model.properties().endOfLifeTimestamp());
+        Assertions.assertEquals("hzxct", model.properties().channelGroup());
+        Assertions.assertTrue(model.properties().enabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T04:47:29Z"), model.properties().endOfLifeTimestamp());
     }
 }

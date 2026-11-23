@@ -8,41 +8,41 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * A day of the week on which the scheduled action can run.
+ * A day of the week on which the recurring bulk action can run.
  */
 public final class WeekDay extends ExpandableStringEnum<WeekDay> {
     /**
-     * The scheduled action can run on Monday.
+     * The recurring bulk action can run on Monday.
      */
     public static final WeekDay MONDAY = fromString("Monday");
 
     /**
-     * The scheduled action can run on Tuesday.
+     * The recurring bulk action can run on Tuesday.
      */
     public static final WeekDay TUESDAY = fromString("Tuesday");
 
     /**
-     * The scheduled action can run on Wednesday.
+     * The recurring bulk action can run on Wednesday.
      */
     public static final WeekDay WEDNESDAY = fromString("Wednesday");
 
     /**
-     * The scheduled action can run on Thursday.
+     * The recurring bulk action can run on Thursday.
      */
     public static final WeekDay THURSDAY = fromString("Thursday");
 
     /**
-     * The scheduled action can run on Friday.
+     * The recurring bulk action can run on Friday.
      */
     public static final WeekDay FRIDAY = fromString("Friday");
 
     /**
-     * The scheduled action can run on Saturday.
+     * The recurring bulk action can run on Saturday.
      */
     public static final WeekDay SATURDAY = fromString("Saturday");
 
     /**
-     * The scheduled action can run on Sunday.
+     * The recurring bulk action can run on Sunday.
      */
     public static final WeekDay SUNDAY = fromString("Sunday");
 

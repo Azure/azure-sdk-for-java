@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
  */
 public interface ScheduledActionOperationStatus {
     /**
-     * Gets the status of the specified scheduled action operation.
+     * Gets the status of the specified recurring bulk action operation.
      * 
      * @param location The Azure region where the operation is running.
      * @param operationId The operation ID in UUID format.
@@ -20,19 +20,19 @@ public interface ScheduledActionOperationStatus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified scheduled action operation along with {@link Response}.
+     * @return the status of the specified recurring bulk action operation along with {@link Response}.
      */
     Response<OperationStatusResult> getWithResponse(String location, String operationId, Context context);
 
     /**
-     * Gets the status of the specified scheduled action operation.
+     * Gets the status of the specified recurring bulk action operation.
      * 
      * @param location The Azure region where the operation is running.
      * @param operationId The operation ID in UUID format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the specified scheduled action operation.
+     * @return the status of the specified recurring bulk action operation.
      */
     OperationStatusResult get(String location, String operationId);
 }

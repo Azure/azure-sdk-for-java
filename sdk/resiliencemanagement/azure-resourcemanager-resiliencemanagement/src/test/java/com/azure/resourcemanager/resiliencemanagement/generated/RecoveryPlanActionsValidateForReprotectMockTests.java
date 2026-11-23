@@ -14,6 +14,8 @@ import com.azure.resourcemanager.resiliencemanagement.models.ManagedServiceIdent
 import com.azure.resourcemanager.resiliencemanagement.models.QualificationState;
 import com.azure.resourcemanager.resiliencemanagement.models.ReprotectRequest;
 import com.azure.resourcemanager.resiliencemanagement.models.ReprotectRequestProperties;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewStatus;
+import com.azure.resourcemanager.resiliencemanagement.models.ResourceFeasibilityReviewType;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceInclusionState;
 import com.azure.resourcemanager.resiliencemanagement.models.ResourceProtectionSolutionType;
 import com.azure.resourcemanager.resiliencemanagement.models.ValidateForRecoveryOperationBaseResponse;
@@ -28,7 +30,7 @@ public final class RecoveryPlanActionsValidateForReprotectMockTests {
     @Test
     public void testValidateForReprotect() throws Exception {
         String responseStr
-            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"awetzq\",\"provisioningState\":\"Succeeded\",\"resourceId\":\"wflj\",\"resourceLocation\":\"namtuatmzw\",\"resourcePhysicalZones\":[\"nc\",\"tjzmi\",\"vgbgatzuuvbxng\"],\"inclusionState\":\"Included\",\"needsAttention\":false,\"attentionReasons\":[\"httzlswvajqfutlx\",\"oqza\",\"unwqr\",\"zfrgqhaohcm\"],\"protectionStatus\":\"Unknown\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true},{\"isAutoFailover\":false},{\"isAutoFailover\":false}],\"selectedProtectionSolutionType\":\"None\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"yryxameblydyv\",\"associatedIdentity\":{\"type\":\"SystemAssigned\"},\"errorDetails\":{}},\"id\":\"ocxnehvsmtodl\",\"name\":\"pyapucygvoav\",\"type\":\"unssxlghieegjl\"},\"operationQualificationDetails\":{\"qualificationState\":\"Unknown\",\"notQualifiedReasons\":[\"aseksgbuxantuyg\",\"hgaqipirpiwrq\"]}},{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"ulopmjnlexwhcb\",\"provisioningState\":\"Canceled\",\"resourceId\":\"k\",\"resourceLocation\":\"hu\",\"resourcePhysicalZones\":[\"rctat\",\"yintqpbrlcy\",\"duczkgof\"],\"inclusionState\":\"Included\",\"needsAttention\":true,\"attentionReasons\":[\"vcrrpcj\",\"tbstvjeaqnrmv\"],\"protectionStatus\":\"Protected\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true},{\"isAutoFailover\":true}],\"selectedProtectionSolutionType\":\"AzureNative\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"uidvrmazlpdwwex\",\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"errorDetails\":{}},\"id\":\"azipbhpwvqsg\",\"name\":\"yy\",\"type\":\"uzivensrpmeyyvp\"},\"operationQualificationDetails\":{\"qualificationState\":\"Qualified\",\"notQualifiedReasons\":[\"lbijpzgsksrfhfvo\",\"mknbnxwcdommpv\"]}}]}";
+            = "{\"recoveryResourceQualifications\":[{\"recoveryResource\":{\"properties\":{\"recoveryResourceUniqueId\":\"isglrrc\",\"provisioningState\":\"Accepted\",\"resourceId\":\"hhltnjadhqo\",\"resourceLocation\":\"jqoyueayfbpcm\",\"resourcePhysicalZones\":[\"byrrueqth\",\"mg\"],\"inclusionState\":\"Included\",\"needsAttention\":true,\"attentionReasons\":[\"xigdhxiidlope\",\"bwdpyqyyb\",\"ubmdnafcbqwre\"],\"protectionStatus\":\"Unknown\",\"resourceProtectionSolutions\":[{\"isAutoFailover\":true},{\"isAutoFailover\":false},{\"isAutoFailover\":true}],\"selectedProtectionSolutionType\":\"None\",\"selectedProtectionSolutionSetting\":{\"protectionSolutionType\":\"ResourceBaseProtectionSolutionSetting\"},\"recoveryGroupId\":\"eohdbvqvwz\",\"associatedIdentity\":{\"type\":\"SystemAssigned,UserAssigned\"},\"errorDetails\":{}},\"id\":\"beonrlkwzdq\",\"name\":\"bxcea\",\"type\":\"xcptsoqfyiaseqc\"},\"operationQualificationDetails\":{\"qualificationState\":\"Unknown\",\"notQualifiedReasons\":[\"tzrazisgyk\",\"uem\",\"anbwzohmnrxxbso\"],\"resourceFeasibilityReviews\":[{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"nhmdptysprqs\",\"status\":\"NotApplicable\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"xojpslsvjgp\",\"status\":\"Passed\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"fiqwoy\",\"status\":\"Flagged\"},{\"feasibilityType\":\"SkuCapacity\",\"resourceType\":\"apcohhouc\",\"status\":\"Passed\"}]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,12 +40,12 @@ public final class RecoveryPlanActionsValidateForReprotectMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ValidateForRecoveryOperationBaseResponse response = manager.recoveryPlanActions()
-            .validateForReprotect("mnrxxbsojkl", "nhmdptysprqs", "nzxojpslsvjgpli",
+            .validateForReprotect("ypxrx", "bfihw", "hvcta",
                 new ReprotectRequest().withReprotectRequestProperties(new ReprotectRequestProperties()
-                    .withSelectedResourceIds(Arrays.asList("woyxqvapcohhou", "qpqojxcxzrzd", "gdzbenr"))),
+                    .withSelectedResourceIds(Arrays.asList("xrblmliowxihs", "nxw", "agnepzwaklsb", "bqqqagwwrxa"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("awetzq",
+        Assertions.assertEquals("isglrrc",
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
@@ -57,9 +59,9 @@ public final class RecoveryPlanActionsValidateForReprotectMockTests {
                 .recoveryResource()
                 .properties()
                 .selectedProtectionSolutionType());
-        Assertions.assertEquals("yryxameblydyv",
+        Assertions.assertEquals("eohdbvqvwz",
             response.recoveryResourceQualifications().get(0).recoveryResource().properties().recoveryGroupId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
             response.recoveryResourceQualifications()
                 .get(0)
                 .recoveryResource()
@@ -68,11 +70,32 @@ public final class RecoveryPlanActionsValidateForReprotectMockTests {
                 .type());
         Assertions.assertEquals(QualificationState.UNKNOWN,
             response.recoveryResourceQualifications().get(0).operationQualificationDetails().qualificationState());
-        Assertions.assertEquals("aseksgbuxantuyg",
+        Assertions.assertEquals("tzrazisgyk",
             response.recoveryResourceQualifications()
                 .get(0)
                 .operationQualificationDetails()
                 .notQualifiedReasons()
                 .get(0));
+        Assertions.assertEquals(ResourceFeasibilityReviewType.SKU_CAPACITY,
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .feasibilityType());
+        Assertions.assertEquals("nhmdptysprqs",
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .resourceType());
+        Assertions.assertEquals(ResourceFeasibilityReviewStatus.NOT_APPLICABLE,
+            response.recoveryResourceQualifications()
+                .get(0)
+                .operationQualificationDetails()
+                .resourceFeasibilityReviews()
+                .get(0)
+                .status());
     }
 }

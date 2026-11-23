@@ -1294,7 +1294,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginValidateBackupProperties(
+    private SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginValidateBackupProperties(
         String resourceGroupName, String cloudHsmClusterName, BackupRequestProperties backupRequestProperties) {
         Response<BinaryData> response
             = validateBackupPropertiesWithResponse(resourceGroupName, cloudHsmClusterName, backupRequestProperties);
@@ -1551,7 +1551,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginBackup(String resourceGroupName,
+    private SyncPoller<PollResult<BackupResultInner>, BackupResultInner> beginBackup(String resourceGroupName,
         String cloudHsmClusterName, BackupRequestProperties backupRequestProperties) {
         Response<BinaryData> response
             = backupWithResponse(resourceGroupName, cloudHsmClusterName, backupRequestProperties);
@@ -1796,7 +1796,7 @@ public final class CloudHsmClustersClientImpl implements CloudHsmClustersClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RestoreResultInner>, RestoreResultInner> beginValidateRestoreProperties(
+    private SyncPoller<PollResult<RestoreResultInner>, RestoreResultInner> beginValidateRestoreProperties(
         String resourceGroupName, String cloudHsmClusterName, RestoreRequestProperties restoreRequestProperties) {
         Response<BinaryData> response
             = validateRestorePropertiesWithResponse(resourceGroupName, cloudHsmClusterName, restoreRequestProperties);

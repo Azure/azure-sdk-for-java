@@ -51,6 +51,10 @@ public final class ManagedComputeUsageImpl implements ManagedComputeUsage {
         return this.innerModel().offerScope();
     }
 
+    public String scopeId() {
+        return this.innerModel().scopeId();
+    }
+
     public List<ManagedComputeDeploymentInfo> deployments() {
         List<ManagedComputeDeploymentInfo> inner = this.innerModel().deployments();
         if (inner != null) {

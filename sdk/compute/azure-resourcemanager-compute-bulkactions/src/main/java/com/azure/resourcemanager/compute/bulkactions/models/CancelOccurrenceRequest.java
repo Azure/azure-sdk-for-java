@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Request body for canceling a scheduled action occurrence.
+ * Request body for canceling a recurring bulk action occurrence.
  */
 @Fluent
 public final class CancelOccurrenceRequest implements JsonSerializable<CancelOccurrenceRequest> {

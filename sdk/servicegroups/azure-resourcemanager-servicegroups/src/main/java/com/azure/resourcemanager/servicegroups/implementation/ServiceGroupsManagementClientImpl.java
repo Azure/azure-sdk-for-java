@@ -26,6 +26,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.servicegroups.fluent.OperationsClient;
 import com.azure.resourcemanager.servicegroups.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.servicegroups.fluent.ServiceGroupsClient;
 import com.azure.resourcemanager.servicegroups.fluent.ServiceGroupsManagementClient;
@@ -142,6 +143,20 @@ public final class ServiceGroupsManagementClientImpl implements ServiceGroupsMan
     }
 
     /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
      * Initializes an instance of ServiceGroupsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -156,9 +171,10 @@ public final class ServiceGroupsManagementClientImpl implements ServiceGroupsMan
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-02-01-preview";
+        this.apiVersion = "2026-08-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.serviceGroups = new ServiceGroupsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
     }
 
     /**

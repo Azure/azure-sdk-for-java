@@ -241,6 +241,53 @@ public final class ClusterUpdate implements JsonSerializable<ClusterUpdate> {
     }
 
     /**
+     * Get the firewallRules property: The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At
+     * most 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+     * 
+     * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears
+     * all rules.
+     * 
+     * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules
+     * absent from it are deleted. Supplying an empty array clears all rules.
+     * 
+     * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set
+     * allows all public traffic; it does not deny all traffic.
+     * 
+     * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+     * 
+     * @return the firewallRules value.
+     */
+    public List<FirewallRule> firewallRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().firewallRules();
+    }
+
+    /**
+     * Set the firewallRules property: The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At
+     * most 250 rules are supported, and non-empty rules require publicNetworkAccess to be Enabled.
+     * 
+     * On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears
+     * all rules.
+     * 
+     * On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules
+     * absent from it are deleted. Supplying an empty array clears all rules.
+     * 
+     * Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set
+     * allows all public traffic; it does not deny all traffic.
+     * 
+     * Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+     * 
+     * @param firewallRules the firewallRules value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withFirewallRules(List<FirewallRule> firewallRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterUpdateProperties();
+        }
+        this.innerProperties().withFirewallRules(firewallRules);
+        return this;
+    }
+
+    /**
      * Get the hostname property: DNS name of the cluster endpoint.
      * 
      * @return the hostname value.

@@ -9,12 +9,12 @@ package com.azure.ai.agents.models;
  */
 public enum PageOrder {
     /**
-     * Enum value asc.
+     * Return items in ascending creation-time order.
      */
     ASC("asc"),
 
     /**
-     * Enum value desc.
+     * Return items in descending creation-time order.
      */
     DESC("desc");
 

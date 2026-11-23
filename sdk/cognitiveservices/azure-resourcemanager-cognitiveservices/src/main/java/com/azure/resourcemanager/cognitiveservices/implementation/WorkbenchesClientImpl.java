@@ -37,6 +37,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.WorkbenchesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.WorkbenchInner;
 import com.azure.resourcemanager.cognitiveservices.implementation.models.WorkbenchListResult;
+import com.azure.resourcemanager.cognitiveservices.models.WorkbenchUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -114,24 +115,24 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             @BodyParam("application/json") WorkbenchInner resource, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkbenchInner>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("projectName") String projectName, @PathParam("workbenchName") String workbenchName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") WorkbenchInner properties, Context context);
+            @BodyParam("application/json") WorkbenchUpdate properties, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint,
+        Response<WorkbenchInner> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("projectName") String projectName, @PathParam("workbenchName") String workbenchName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") WorkbenchInner properties, Context context);
+            @BodyParam("application/json") WorkbenchUpdate properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/workbenches/{workbenchName}")
@@ -553,8 +554,8 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
-        String projectName, String workbenchName, WorkbenchInner properties) {
+    private Mono<Response<WorkbenchInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String projectName, String workbenchName, WorkbenchUpdate properties) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -576,16 +577,13 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development along with {@link Response}.
+     * Provides interactive compute with data access for AI development on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String projectName,
-        String workbenchName, WorkbenchInner properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, workbenchName, contentType,
-            accept, properties, Context.NONE);
+    private Mono<WorkbenchInner> updateAsync(String resourceGroupName, String accountName, String projectName,
+        String workbenchName, WorkbenchUpdate properties) {
+        return updateWithResponseAsync(resourceGroupName, accountName, projectName, workbenchName, properties)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -604,8 +602,8 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
      * Provides interactive compute with data access for AI development along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> updateWithResponse(String resourceGroupName, String accountName, String projectName,
-        String workbenchName, WorkbenchInner properties, Context context) {
+    public Response<WorkbenchInner> updateWithResponse(String resourceGroupName, String accountName, String projectName,
+        String workbenchName, WorkbenchUpdate properties, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -624,126 +622,14 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkbenchInner>, WorkbenchInner> beginUpdateAsync(String resourceGroupName,
-        String accountName, String projectName, String workbenchName, WorkbenchInner properties) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, accountName, projectName, workbenchName, properties);
-        return this.client.<WorkbenchInner, WorkbenchInner>getLroResult(mono, this.client.getHttpPipeline(),
-            WorkbenchInner.class, WorkbenchInner.class, this.client.getContext());
-    }
-
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkbenchInner>, WorkbenchInner> beginUpdate(String resourceGroupName,
-        String accountName, String projectName, String workbenchName, WorkbenchInner properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, accountName, projectName, workbenchName, properties);
-        return this.client.<WorkbenchInner, WorkbenchInner>getLroResult(response, WorkbenchInner.class,
-            WorkbenchInner.class, Context.NONE);
-    }
-
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkbenchInner>, WorkbenchInner> beginUpdate(String resourceGroupName,
-        String accountName, String projectName, String workbenchName, WorkbenchInner properties, Context context) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, accountName, projectName, workbenchName, properties, context);
-        return this.client.<WorkbenchInner, WorkbenchInner>getLroResult(response, WorkbenchInner.class,
-            WorkbenchInner.class, context);
-    }
-
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkbenchInner> updateAsync(String resourceGroupName, String accountName, String projectName,
-        String workbenchName, WorkbenchInner properties) {
-        return beginUpdateAsync(resourceGroupName, accountName, projectName, workbenchName, properties).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workbench resource under a Cognitive Services project.
      * Provides interactive compute with data access for AI development.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbenchInner update(String resourceGroupName, String accountName, String projectName, String workbenchName,
-        WorkbenchInner properties) {
-        return beginUpdate(resourceGroupName, accountName, projectName, workbenchName, properties).getFinalResult();
-    }
-
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkbenchInner update(String resourceGroupName, String accountName, String projectName, String workbenchName,
-        WorkbenchInner properties, Context context) {
-        return beginUpdate(resourceGroupName, accountName, projectName, workbenchName, properties, context)
-            .getFinalResult();
+        WorkbenchUpdate properties) {
+        return updateWithResponse(resourceGroupName, accountName, projectName, workbenchName, properties, Context.NONE)
+            .getValue();
     }
 
     /**

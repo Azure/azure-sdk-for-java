@@ -19,32 +19,96 @@ import java.util.Arrays;
  */
 public final class VirtualMachineBulkOperationsBulkReimageOperationSamples {
     /*
-     * x-ms-original-file: 2026-09-06-preview/VirtualMachineBulkOperations_BulkReimage_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkReimage_BasicSuccess.json
      */
     /**
-     * Sample code: VirtualMachineBulkOperations_BulkReimage_Example.
+     * Sample code: 01 - Reimage multiple virtual machines.
      * 
      * @param manager Entry point to ComputeBulkActionsManager.
      */
-    public static void virtualMachineBulkOperationsBulkReimageExample(
+    public static void zeroOneSpaceHyphenMinusSpaceReimageSpacemultipleSpacevirtualSpacemachines(
         com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
         manager.virtualMachineBulkOperations()
-            .bulkReimageOperationWithResponse("rgBulkactions", "useast2euap", new ExecuteReimageRequest()
-                .withExecutionParameters(new ExecutionParameters()
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(2).withRetryWindowInMinutes(19)))
+            .bulkReimageOperationWithResponse("example-rg", "eastus", new ExecuteReimageRequest()
+                .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")))
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkReimage_WithReimagePayload.json
+     */
+    /**
+     * Sample code: 03 - Reimage virtual machines with per-VM temporary disk settings.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroThreeSpaceHyphenMinusSpaceReimageSpacevirtualSpacemachinesSpacewithSpaceperHyphenMinusVMSpacetemporarySpacediskSpacesettings(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkReimageOperationWithResponse("example-rg", "eastus", new ExecuteReimageRequest()
+                .withExecutionParameters(new ExecutionParameters())
+                .withResources(new Resources().withIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-02")))
                 .withReimageParameters(new ReimagePayload()
-                    .withBaseProfile(new VirtualMachineReimageParameters().withTempDisk(true)
-                        .withExactVersion("zjmkrnqjmzs")
-                        .withOsProfile(new OSProfileProvisioningData().withAdminPassword("fakeTokenPlaceholder")
-                            .withCustomData("teyngslcznlxihiitqbul")))
+                    .withBaseProfile(new VirtualMachineReimageParameters().withTempDisk(true))
                     .withResourceOverrides(Arrays.asList(new ReimageResourceOverride().withResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")
-                        .withProfile(new VirtualMachineReimageParameters().withTempDisk(true)
-                            .withExactVersion("zjmkrnqjmzs")
-                            .withOsProfile(new OSProfileProvisioningData().withAdminPassword("fakeTokenPlaceholder")
-                                .withCustomData("teyngslcznlxihiitqbul")))))),
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/ephemeral-vm-02")
+                        .withProfile(new VirtualMachineReimageParameters().withTempDisk(false))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkReimage_ComprehensiveSuccess.json
+     */
+    /**
+     * Sample code: 02 - Reimage virtual machines with shared settings and a per-VM override.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroTwoSpaceHyphenMinusSpaceReimageSpacevirtualSpacemachinesSpacewithSpacesharedSpacesettingsSpaceandSpaceaSpaceperHyphenMinusVMSpaceoverride(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkReimageOperationWithResponse("example-rg", "eastus", new ExecuteReimageRequest()
+                .withExecutionParameters(
+                    new ExecutionParameters().withRetryPolicy(new RetryPolicy().withRetryWindowInMinutes(30)))
+                .withResources(new Resources().withIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02")))
+                .withReimageParameters(new ReimagePayload()
+                    .withBaseProfile(new VirtualMachineReimageParameters().withTempDisk(false)
+                        .withExactVersion("1.0.0")
+                        .withOsProfile(new OSProfileProvisioningData()
+                            .withCustomData("I2Nsb3VkLWNvbmZpZwpwYWNrYWdlX3VwZ3JhZGU6IHRydWUK")))
+                    .withResourceOverrides(Arrays.asList(new ReimageResourceOverride().withResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-02")
+                        .withProfile(
+                            new VirtualMachineReimageParameters().withTempDisk(false).withExactVersion("1.1.0"))))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-06-preview/VirtualMachineBulkOperations_BulkReimage_VmNotFoundError.json
+     */
+    /**
+     * Sample code: 04 - Response when a virtual machine does not exist.
+     * 
+     * @param manager Entry point to ComputeBulkActionsManager.
+     */
+    public static void
+        zeroFourSpaceHyphenMinusSpaceResponseSpacewhenSpaceaSpacevirtualSpacemachineSpacedoesSpacenotSpaceexist(
+            com.azure.resourcemanager.compute.bulkactions.ComputeBulkActionsManager manager) {
+        manager.virtualMachineBulkOperations()
+            .bulkReimageOperationWithResponse("example-rg", "eastus", new ExecuteReimageRequest()
+                .withExecutionParameters(new ExecutionParameters())
+                .withResources(new Resources().withIds(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/bulk-vm-01",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Compute/virtualMachines/missing-vm"))),
                 com.azure.core.util.Context.NONE);
     }
 }

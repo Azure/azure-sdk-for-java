@@ -246,16 +246,6 @@ recipeList:
       # TODO: Migrate Methods and Fields
 
   # --------------------------------------------------------------------
-  # SharedExecutorService
-  # --------------------------------------------------------------------
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.SharedExecutorService
-      newFullyQualifiedTypeName: io.clientcore.core.utils.SharedExecutorService
-
-      # TODO: Migrate Methods and Fields
-
-  # --------------------------------------------------------------------
   # TelemetryAttributes
   # --------------------------------------------------------------------
 
@@ -406,7 +396,7 @@ recipeList:
   # --------------------------------------------------------------------
   # NoopMeter
   # --------------------------------------------------------------------
-  
+
   # paging
 
   # --------------------------------------------------------------------

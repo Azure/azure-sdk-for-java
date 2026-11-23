@@ -9,7 +9,7 @@ package com.azure.resourcemanager.azurestackhci.generated;
  */
 public final class UpdateRunsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-04-30/DeleteUpdateRuns.json
+     * x-ms-original-file: 2026-10-01/DeleteUpdateRuns.json
      */
     /**
      * Sample code: Delete an Update.

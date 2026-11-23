@@ -14,10 +14,10 @@ public final class FallbackRoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FallbackRouteProperties model = BinaryData.fromString(
-            "{\"name\":\"debfqkkrbmpukgri\",\"source\":\"DeviceMessages\",\"condition\":\"zlfbxzpuzycispnq\",\"endpointNames\":[\"hmgkbrpyy\",\"hibnuqqkpika\"],\"isEnabled\":false}")
+            "{\"name\":\"debfqkkrbmpukgri\",\"source\":\"TwinChangeEvents\",\"condition\":\"zlfbxzpuzycispnq\",\"endpointNames\":[\"hmgkbrpyy\",\"hibnuqqkpika\"],\"isEnabled\":false}")
             .toObject(FallbackRouteProperties.class);
         Assertions.assertEquals("debfqkkrbmpukgri", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.source());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.source());
         Assertions.assertEquals("zlfbxzpuzycispnq", model.condition());
         Assertions.assertEquals("hmgkbrpyy", model.endpointNames().get(0));
         Assertions.assertFalse(model.isEnabled());
@@ -26,13 +26,13 @@ public final class FallbackRoutePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FallbackRouteProperties model = new FallbackRouteProperties().withName("debfqkkrbmpukgri")
-            .withSource(RoutingSource.DEVICE_MESSAGES)
+            .withSource(RoutingSource.TWIN_CHANGE_EVENTS)
             .withCondition("zlfbxzpuzycispnq")
             .withEndpointNames(Arrays.asList("hmgkbrpyy", "hibnuqqkpika"))
             .withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(FallbackRouteProperties.class);
         Assertions.assertEquals("debfqkkrbmpukgri", model.name());
-        Assertions.assertEquals(RoutingSource.DEVICE_MESSAGES, model.source());
+        Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, model.source());
         Assertions.assertEquals("zlfbxzpuzycispnq", model.condition());
         Assertions.assertEquals("hmgkbrpyy", model.endpointNames().get(0));
         Assertions.assertFalse(model.isEnabled());

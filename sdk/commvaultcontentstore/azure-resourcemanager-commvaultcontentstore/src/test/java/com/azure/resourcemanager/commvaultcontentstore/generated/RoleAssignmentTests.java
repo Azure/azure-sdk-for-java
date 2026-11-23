@@ -16,24 +16,26 @@ public final class RoleAssignmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoleAssignment model = BinaryData.fromString(
-            "{\"roleName\":\"BackupAdmin\",\"entities\":[{\"id\":\"tdtbnnhadooc\",\"displayName\":\"vcikhnvpamqgx\",\"entityType\":\"User\"}]}")
+            "{\"roleName\":\"SecurityAdmin\",\"entities\":[{\"id\":\"asy\",\"displayName\":\"nddhsgcbacph\",\"entityType\":\"User\"},{\"id\":\"tynqgoul\",\"displayName\":\"dlikwyqkgfgibma\",\"entityType\":\"User\"}]}")
             .toObject(RoleAssignment.class);
-        Assertions.assertEquals(RoleName.BACKUP_ADMIN, model.roleName());
-        Assertions.assertEquals("tdtbnnhadooc", model.entities().get(0).id());
-        Assertions.assertEquals("vcikhnvpamqgx", model.entities().get(0).displayName());
+        Assertions.assertEquals(RoleName.SECURITY_ADMIN, model.roleName());
+        Assertions.assertEquals("asy", model.entities().get(0).id());
+        Assertions.assertEquals("nddhsgcbacph", model.entities().get(0).displayName());
         Assertions.assertEquals(EntityType.USER, model.entities().get(0).entityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleAssignment model = new RoleAssignment().withRoleName(RoleName.BACKUP_ADMIN)
-            .withEntities(Arrays.asList(new EntityInfo().withId("tdtbnnhadooc")
-                .withDisplayName("vcikhnvpamqgx")
-                .withEntityType(EntityType.USER)));
+        RoleAssignment model = new RoleAssignment().withRoleName(RoleName.SECURITY_ADMIN)
+            .withEntities(Arrays.asList(
+                new EntityInfo().withId("asy").withDisplayName("nddhsgcbacph").withEntityType(EntityType.USER),
+                new EntityInfo().withId("tynqgoul")
+                    .withDisplayName("dlikwyqkgfgibma")
+                    .withEntityType(EntityType.USER)));
         model = BinaryData.fromObject(model).toObject(RoleAssignment.class);
-        Assertions.assertEquals(RoleName.BACKUP_ADMIN, model.roleName());
-        Assertions.assertEquals("tdtbnnhadooc", model.entities().get(0).id());
-        Assertions.assertEquals("vcikhnvpamqgx", model.entities().get(0).displayName());
+        Assertions.assertEquals(RoleName.SECURITY_ADMIN, model.roleName());
+        Assertions.assertEquals("asy", model.entities().get(0).id());
+        Assertions.assertEquals("nddhsgcbacph", model.entities().get(0).displayName());
         Assertions.assertEquals(EntityType.USER, model.entities().get(0).entityType());
     }
 }

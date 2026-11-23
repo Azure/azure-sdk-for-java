@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties of a HorizonDB parameters.
+ * Properties of a HorizonDB parameter.
  */
 @Fluent
 public final class ParameterProperties implements JsonSerializable<ParameterProperties> {
@@ -32,6 +32,17 @@ public final class ParameterProperties implements JsonSerializable<ParameterProp
     private String value;
 
     /*
+     * The system-defined default value of the parameter, independent of the effective value.
+     */
+    private String defaultValue;
+
+    /*
+     * The source of the effective parameter value. UserOverride means that the value was explicitly supplied by the
+     * user, even when it equals defaultValue.
+     */
+    private ParameterValueSource valueSource;
+
+    /*
      * The data type of the parameter.
      */
     private String dataType;
@@ -47,7 +58,7 @@ public final class ParameterProperties implements JsonSerializable<ParameterProp
     private Boolean isDynamic;
 
     /*
-     * Whether the parameter is a read-only parameter.
+     * Whether the parameter is read-only. Read-only parameters cannot be overridden.
      */
     private Boolean isReadOnly;
 
@@ -117,6 +128,26 @@ public final class ParameterProperties implements JsonSerializable<ParameterProp
     }
 
     /**
+     * Get the defaultValue property: The system-defined default value of the parameter, independent of the effective
+     * value.
+     * 
+     * @return the defaultValue value.
+     */
+    public String defaultValue() {
+        return this.defaultValue;
+    }
+
+    /**
+     * Get the valueSource property: The source of the effective parameter value. UserOverride means that the value was
+     * explicitly supplied by the user, even when it equals defaultValue.
+     * 
+     * @return the valueSource value.
+     */
+    public ParameterValueSource valueSource() {
+        return this.valueSource;
+    }
+
+    /**
      * Get the dataType property: The data type of the parameter.
      * 
      * @return the dataType value.
@@ -144,7 +175,7 @@ public final class ParameterProperties implements JsonSerializable<ParameterProp
     }
 
     /**
-     * Get the isReadOnly property: Whether the parameter is a read-only parameter.
+     * Get the isReadOnly property: Whether the parameter is read-only. Read-only parameters cannot be overridden.
      * 
      * @return the isReadOnly value.
      */
@@ -202,6 +233,10 @@ public final class ParameterProperties implements JsonSerializable<ParameterProp
                     deserializedParameterProperties.description = reader.getString();
                 } else if ("value".equals(fieldName)) {
                     deserializedParameterProperties.value = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedParameterProperties.defaultValue = reader.getString();
+                } else if ("valueSource".equals(fieldName)) {
+                    deserializedParameterProperties.valueSource = ParameterValueSource.fromString(reader.getString());
                 } else if ("dataType".equals(fieldName)) {
                     deserializedParameterProperties.dataType = reader.getString();
                 } else if ("allowedValues".equals(fieldName)) {

@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Azure OpenAI file output for a data generation job.
+ * Azure OpenAI file output for a data generation job. This is a preview feature.
  */
 @Immutable
 @Beta(warningText = "Preview API. DataGenerationJobs=V1Preview")

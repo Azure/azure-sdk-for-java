@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class NodePoolPlatformProfile implements JsonSerializable<NodePoolPlatformProfile> {
     /*
-     * The Azure resource ID of the worker subnet
+     * The Azure resource ID of the worker subnet.
      * Note that a subnet cannot be reused between ARO-HCP Clusters, however the
      * same subnet can be used for NodePools of the same cluster.
      */
@@ -55,7 +55,7 @@ public final class NodePoolPlatformProfile implements JsonSerializable<NodePoolP
     }
 
     /**
-     * Get the subnetId property: The Azure resource ID of the worker subnet
+     * Get the subnetId property: The Azure resource ID of the worker subnet.
      * Note that a subnet cannot be reused between ARO-HCP Clusters, however the
      * same subnet can be used for NodePools of the same cluster.
      * 
@@ -66,7 +66,7 @@ public final class NodePoolPlatformProfile implements JsonSerializable<NodePoolP
     }
 
     /**
-     * Set the subnetId property: The Azure resource ID of the worker subnet
+     * Set the subnetId property: The Azure resource ID of the worker subnet.
      * Note that a subnet cannot be reused between ARO-HCP Clusters, however the
      * same subnet can be used for NodePools of the same cluster.
      * 

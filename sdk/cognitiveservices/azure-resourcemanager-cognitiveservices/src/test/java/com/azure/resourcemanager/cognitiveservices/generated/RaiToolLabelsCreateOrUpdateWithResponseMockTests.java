@@ -27,7 +27,7 @@ public final class RaiToolLabelsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"toolConnectionName\":\"isnomwnwnghoj\",\"accountScope\":{\"labelValues\":{\"micjixxfsf\":\"y\"}},\"projectScopes\":[{\"project\":\"tnuguefxxij\",\"labelValues\":{\"lmcnwepfgsv\":\"bdveywetkrhl\",\"qdljnpe\":\"bv\"}},{\"project\":\"l\",\"labelValues\":{\"jzvdovbrblerlp\":\"rdetawevxehuekdx\"}},{\"project\":\"daqccddcbnygd\",\"labelValues\":{\"yykdig\":\"cxwbp\"}},{\"project\":\"zlrz\",\"labelValues\":{\"id\":\"asd\",\"arhqt\":\"jqmvytgkiq\"}}]},\"etag\":\"caz\",\"tags\":{\"tsmpchgg\":\"zdzffzjw\"},\"id\":\"elgfyatigfgfrr\",\"name\":\"dknczgorywn\",\"type\":\"ojtvmdev\"}";
+            = "{\"properties\":{\"toolConnectionName\":\"zsu\",\"accountScope\":{\"labelValues\":{\"fenintzunh\":\"utbricvv\"}},\"projectScopes\":[{\"project\":\"xckdlxjpisrdn\",\"labelValues\":{\"iiytqx\":\"incbesfvijnubx\",\"dpor\":\"wjsyutezlghkvo\",\"vbkutogecyqoy\":\"k\"}}]},\"etag\":\"ssbvqnpwdwdmu\",\"tags\":{\"zrmiukothyfjbpnh\":\"krbqpwxnb\"},\"id\":\"frvsizfwgnp\",\"name\":\"jniaffwcgj\",\"type\":\"ioqwuuogdkp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,30 +37,30 @@ public final class RaiToolLabelsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiToolLabel response = manager.raiToolLabels()
-            .define("yt")
-            .withExistingAccount("eupcknecexkgrv", "psjdmng")
-            .withTags(
-                mapOf("spboxhifp", "ywpj", "xwwvcmmpeg", "skpeswyhhmifjua", "qvcml", "y", "m", "exbzbqufpnezsjza"))
-            .withProperties(new RaiToolLabelProperties().withToolConnectionName("dzfyxcnwawoxcg")
+            .define("amiyfgunrukcyyaa")
+            .withExistingAccount("icbogsfo", "k")
+            .withTags(mapOf("sdgktluifiqg", "cfsssmyaemkrh"))
+            .withProperties(new RaiToolLabelProperties().withToolConnectionName("kubzq")
                 .withAccountScope(new RaiToolLabelPropertiesAccountScope()
-                    .withLabelValues(mapOf("fjxdwdrp", "qfbifo", "bwotfcuuugtji", "zqjkrf")))
+                    .withLabelValues(mapOf("kifqbxmnnidot", "rkvit", "odttq", "pumzuh", "umvuwjyulqfpqql", "pva")))
                 .withProjectScopes(Arrays.asList(
-                    new RaiToolLabelPropertiesProjectScopesItem().withProject("ayiawohfm")
-                        .withLabelValues(mapOf("jkmqenhaidzrpv", "nzmec")),
-                    new RaiToolLabelPropertiesProjectScopesItem().withProject("gloiovsl")
-                        .withLabelValues(mapOf("suvw", "v", "i", "enbg", "oa", "pkhc")),
-                    new RaiToolLabelPropertiesProjectScopesItem().withProject("xukuicjuftekio")
-                        .withLabelValues(mapOf("ewfhvpxjh", "nd", "vzuaixc", "zubfjzabbwz")),
-                    new RaiToolLabelPropertiesProjectScopesItem().withProject("ckixsps")
-                        .withLabelValues(mapOf("xzerej", "gavkmv", "eitwhlbecgi", "kpzjbyetjxryopt")))))
+                    new RaiToolLabelPropertiesProjectScopesItem().withProject("z")
+                        .withLabelValues(mapOf("apqra", "jgmrodb", "tniwfcu", "z")),
+                    new RaiToolLabelPropertiesProjectScopesItem().withProject("whxm")
+                        .withLabelValues(mapOf("tcxbbjbeyqo", "bxkcegcttgxk", "rerdlgbvtpxowg", "viawpjfkr")),
+                    new RaiToolLabelPropertiesProjectScopesItem().withProject("wwdocjasu")
+                        .withLabelValues(
+                            mapOf("vwesl", "egjkfiszhexumf", "osanjso", "blitxrrsjs", "nclxhwkz", "trztogujg")),
+                    new RaiToolLabelPropertiesProjectScopesItem().withProject("ggsuzkvd")
+                        .withLabelValues(mapOf("wazoabthutctc", "tpzu", "zfihszfkpoidfzw", "bcpwa")))))
             .create();
 
-        Assertions.assertEquals("isnomwnwnghoj", response.properties().toolConnectionName());
-        Assertions.assertEquals("y", response.properties().accountScope().labelValues().get("micjixxfsf"));
-        Assertions.assertEquals("tnuguefxxij", response.properties().projectScopes().get(0).project());
-        Assertions.assertEquals("bdveywetkrhl",
-            response.properties().projectScopes().get(0).labelValues().get("lmcnwepfgsv"));
-        Assertions.assertEquals("zdzffzjw", response.tags().get("tsmpchgg"));
+        Assertions.assertEquals("zsu", response.properties().toolConnectionName());
+        Assertions.assertEquals("utbricvv", response.properties().accountScope().labelValues().get("fenintzunh"));
+        Assertions.assertEquals("xckdlxjpisrdn", response.properties().projectScopes().get(0).project());
+        Assertions.assertEquals("incbesfvijnubx",
+            response.properties().projectScopes().get(0).labelValues().get("iiytqx"));
+        Assertions.assertEquals("krbqpwxnb", response.tags().get("zrmiukothyfjbpnh"));
     }
 
     // Use "Map.of" if available

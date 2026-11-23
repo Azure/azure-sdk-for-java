@@ -26,20 +26,24 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.fluent.ConfluentManagementClient;
 import com.azure.resourcemanager.confluent.implementation.AccessImpl;
+import com.azure.resourcemanager.confluent.implementation.AccessPointResourcesImpl;
 import com.azure.resourcemanager.confluent.implementation.ClustersImpl;
 import com.azure.resourcemanager.confluent.implementation.ConfluentManagementClientBuilder;
 import com.azure.resourcemanager.confluent.implementation.ConnectorsImpl;
 import com.azure.resourcemanager.confluent.implementation.EnvironmentsImpl;
 import com.azure.resourcemanager.confluent.implementation.MarketplaceAgreementsImpl;
+import com.azure.resourcemanager.confluent.implementation.NetworkGatewayResourcesImpl;
 import com.azure.resourcemanager.confluent.implementation.OrganizationOperationsImpl;
 import com.azure.resourcemanager.confluent.implementation.OrganizationsImpl;
 import com.azure.resourcemanager.confluent.implementation.TopicsImpl;
 import com.azure.resourcemanager.confluent.implementation.ValidationsImpl;
 import com.azure.resourcemanager.confluent.models.Access;
+import com.azure.resourcemanager.confluent.models.AccessPointResources;
 import com.azure.resourcemanager.confluent.models.Clusters;
 import com.azure.resourcemanager.confluent.models.Connectors;
 import com.azure.resourcemanager.confluent.models.Environments;
 import com.azure.resourcemanager.confluent.models.MarketplaceAgreements;
+import com.azure.resourcemanager.confluent.models.NetworkGatewayResources;
 import com.azure.resourcemanager.confluent.models.OrganizationOperations;
 import com.azure.resourcemanager.confluent.models.Organizations;
 import com.azure.resourcemanager.confluent.models.Topics;
@@ -56,6 +60,10 @@ import java.util.stream.Collectors;
  * Entry point to ConfluentManager.
  */
 public final class ConfluentManager {
+    private NetworkGatewayResources networkGatewayResources;
+
+    private AccessPointResources accessPointResources;
+
     private OrganizationOperations organizationOperations;
 
     private Organizations organizations;
@@ -287,6 +295,31 @@ public final class ConfluentManager {
                 .build();
             return new ConfluentManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of NetworkGatewayResources. It manages NetworkGatewayResource.
+     * 
+     * @return Resource collection API of NetworkGatewayResources.
+     */
+    public NetworkGatewayResources networkGatewayResources() {
+        if (this.networkGatewayResources == null) {
+            this.networkGatewayResources
+                = new NetworkGatewayResourcesImpl(clientObject.getNetworkGatewayResources(), this);
+        }
+        return networkGatewayResources;
+    }
+
+    /**
+     * Gets the resource collection API of AccessPointResources. It manages AccessPointResource.
+     * 
+     * @return Resource collection API of AccessPointResources.
+     */
+    public AccessPointResources accessPointResources() {
+        if (this.accessPointResources == null) {
+            this.accessPointResources = new AccessPointResourcesImpl(clientObject.getAccessPointResources(), this);
+        }
+        return accessPointResources;
     }
 
     /**

@@ -16,37 +16,37 @@ public final class VectorEmbeddingPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VectorEmbeddingPolicy model = BinaryData.fromString(
-            "{\"vectorEmbeddings\":[{\"path\":\"zb\",\"dataType\":\"int8\",\"distanceFunction\":\"dotproduct\",\"dimensions\":1373073585},{\"path\":\"eivsiykzkdnc\",\"dataType\":\"float16\",\"distanceFunction\":\"dotproduct\",\"dimensions\":1690186599},{\"path\":\"nbzoggcu\",\"dataType\":\"int8\",\"distanceFunction\":\"dotproduct\",\"dimensions\":119467014},{\"path\":\"wyrpgogtqxepnyl\",\"dataType\":\"uint8\",\"distanceFunction\":\"dotproduct\",\"dimensions\":1407382097}]}")
+            "{\"vectorEmbeddings\":[{\"path\":\"dchxgsrboldfor\",\"dataType\":\"float32\",\"distanceFunction\":\"euclidean\",\"dimensions\":1131661980},{\"path\":\"lvizb\",\"dataType\":\"int8\",\"distanceFunction\":\"euclidean\",\"dimensions\":65114282},{\"path\":\"vvacqpb\",\"dataType\":\"uint8\",\"distanceFunction\":\"euclidean\",\"dimensions\":538516969},{\"path\":\"xesz\",\"dataType\":\"float16\",\"distanceFunction\":\"dotproduct\",\"dimensions\":1654037219}]}")
             .toObject(VectorEmbeddingPolicy.class);
-        Assertions.assertEquals("zb", model.vectorEmbeddings().get(0).path());
-        Assertions.assertEquals(VectorDataType.INT8, model.vectorEmbeddings().get(0).dataType());
-        Assertions.assertEquals(DistanceFunction.DOTPRODUCT, model.vectorEmbeddings().get(0).distanceFunction());
-        Assertions.assertEquals(1373073585, model.vectorEmbeddings().get(0).dimensions());
+        Assertions.assertEquals("dchxgsrboldfor", model.vectorEmbeddings().get(0).path());
+        Assertions.assertEquals(VectorDataType.FLOAT32, model.vectorEmbeddings().get(0).dataType());
+        Assertions.assertEquals(DistanceFunction.EUCLIDEAN, model.vectorEmbeddings().get(0).distanceFunction());
+        Assertions.assertEquals(1131661980, model.vectorEmbeddings().get(0).dimensions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VectorEmbeddingPolicy model = new VectorEmbeddingPolicy().withVectorEmbeddings(Arrays.asList(
-            new VectorEmbedding().withPath("zb")
+            new VectorEmbedding().withPath("dchxgsrboldfor")
+                .withDataType(VectorDataType.FLOAT32)
+                .withDistanceFunction(DistanceFunction.EUCLIDEAN)
+                .withDimensions(1131661980),
+            new VectorEmbedding().withPath("lvizb")
                 .withDataType(VectorDataType.INT8)
-                .withDistanceFunction(DistanceFunction.DOTPRODUCT)
-                .withDimensions(1373073585),
-            new VectorEmbedding().withPath("eivsiykzkdnc")
+                .withDistanceFunction(DistanceFunction.EUCLIDEAN)
+                .withDimensions(65114282),
+            new VectorEmbedding().withPath("vvacqpb")
+                .withDataType(VectorDataType.UINT8)
+                .withDistanceFunction(DistanceFunction.EUCLIDEAN)
+                .withDimensions(538516969),
+            new VectorEmbedding().withPath("xesz")
                 .withDataType(VectorDataType.FLOAT16)
                 .withDistanceFunction(DistanceFunction.DOTPRODUCT)
-                .withDimensions(1690186599),
-            new VectorEmbedding().withPath("nbzoggcu")
-                .withDataType(VectorDataType.INT8)
-                .withDistanceFunction(DistanceFunction.DOTPRODUCT)
-                .withDimensions(119467014),
-            new VectorEmbedding().withPath("wyrpgogtqxepnyl")
-                .withDataType(VectorDataType.UINT8)
-                .withDistanceFunction(DistanceFunction.DOTPRODUCT)
-                .withDimensions(1407382097)));
+                .withDimensions(1654037219)));
         model = BinaryData.fromObject(model).toObject(VectorEmbeddingPolicy.class);
-        Assertions.assertEquals("zb", model.vectorEmbeddings().get(0).path());
-        Assertions.assertEquals(VectorDataType.INT8, model.vectorEmbeddings().get(0).dataType());
-        Assertions.assertEquals(DistanceFunction.DOTPRODUCT, model.vectorEmbeddings().get(0).distanceFunction());
-        Assertions.assertEquals(1373073585, model.vectorEmbeddings().get(0).dimensions());
+        Assertions.assertEquals("dchxgsrboldfor", model.vectorEmbeddings().get(0).path());
+        Assertions.assertEquals(VectorDataType.FLOAT32, model.vectorEmbeddings().get(0).dataType());
+        Assertions.assertEquals(DistanceFunction.EUCLIDEAN, model.vectorEmbeddings().get(0).distanceFunction());
+        Assertions.assertEquals(1131661980, model.vectorEmbeddings().get(0).dimensions());
     }
 }

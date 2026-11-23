@@ -20,38 +20,37 @@ public final class ExternalAuthClaimProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalAuthClaimProfile model = BinaryData.fromString(
-            "{\"mappings\":{\"username\":{\"claim\":\"zkd\",\"prefix\":\"lpvlopw\",\"prefixPolicy\":\"NoPrefix\"},\"groups\":{\"claim\":\"hxpkd\",\"prefix\":\"baiuebbaumny\"}},\"validationRules\":[{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"ojnabckhsmtxpsie\",\"requiredValue\":\"tfhvpesapskrdqmh\"}}]}")
+            "{\"mappings\":{\"username\":{\"claim\":\"crpab\",\"prefix\":\"epsbjtazqu\",\"prefixPolicy\":\"Prefix\"},\"groups\":{\"claim\":\"pmueefjzwfqk\",\"prefix\":\"jidsuyonobglaoc\"}},\"validationRules\":[{\"type\":\"RequiredClaim\",\"requiredClaim\":{\"claim\":\"g\",\"requiredValue\":\"udxytlmoyrx\"}}]}")
             .toObject(ExternalAuthClaimProfile.class);
-        Assertions.assertEquals("zkd", model.mappings().username().claim());
-        Assertions.assertEquals("lpvlopw", model.mappings().username().prefix());
-        Assertions.assertEquals(UsernameClaimPrefixPolicy.NO_PREFIX, model.mappings().username().prefixPolicy());
-        Assertions.assertEquals("hxpkd", model.mappings().groups().claim());
-        Assertions.assertEquals("baiuebbaumny", model.mappings().groups().prefix());
+        Assertions.assertEquals("crpab", model.mappings().username().claim());
+        Assertions.assertEquals("epsbjtazqu", model.mappings().username().prefix());
+        Assertions.assertEquals(UsernameClaimPrefixPolicy.PREFIX, model.mappings().username().prefixPolicy());
+        Assertions.assertEquals("pmueefjzwfqk", model.mappings().groups().claim());
+        Assertions.assertEquals("jidsuyonobglaoc", model.mappings().groups().prefix());
         Assertions.assertEquals(TokenValidationRuleType.REQUIRED_CLAIM, model.validationRules().get(0).type());
-        Assertions.assertEquals("ojnabckhsmtxpsie", model.validationRules().get(0).requiredClaim().claim());
-        Assertions.assertEquals("tfhvpesapskrdqmh", model.validationRules().get(0).requiredClaim().requiredValue());
+        Assertions.assertEquals("g", model.validationRules().get(0).requiredClaim().claim());
+        Assertions.assertEquals("udxytlmoyrx", model.validationRules().get(0).requiredClaim().requiredValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalAuthClaimProfile model = new ExternalAuthClaimProfile()
             .withMappings(new TokenClaimMappingsProfile()
-                .withUsername(new UsernameClaimProfile().withClaim("zkd")
-                    .withPrefix("lpvlopw")
-                    .withPrefixPolicy(UsernameClaimPrefixPolicy.NO_PREFIX))
-                .withGroups(new GroupClaimProfile().withClaim("hxpkd").withPrefix("baiuebbaumny")))
+                .withUsername(new UsernameClaimProfile().withClaim("crpab")
+                    .withPrefix("epsbjtazqu")
+                    .withPrefixPolicy(UsernameClaimPrefixPolicy.PREFIX))
+                .withGroups(new GroupClaimProfile().withClaim("pmueefjzwfqk").withPrefix("jidsuyonobglaoc")))
             .withValidationRules(
                 Arrays.asList(new TokenClaimValidationRule().withType(TokenValidationRuleType.REQUIRED_CLAIM)
-                    .withRequiredClaim(
-                        new TokenRequiredClaim().withClaim("ojnabckhsmtxpsie").withRequiredValue("tfhvpesapskrdqmh"))));
+                    .withRequiredClaim(new TokenRequiredClaim().withClaim("g").withRequiredValue("udxytlmoyrx"))));
         model = BinaryData.fromObject(model).toObject(ExternalAuthClaimProfile.class);
-        Assertions.assertEquals("zkd", model.mappings().username().claim());
-        Assertions.assertEquals("lpvlopw", model.mappings().username().prefix());
-        Assertions.assertEquals(UsernameClaimPrefixPolicy.NO_PREFIX, model.mappings().username().prefixPolicy());
-        Assertions.assertEquals("hxpkd", model.mappings().groups().claim());
-        Assertions.assertEquals("baiuebbaumny", model.mappings().groups().prefix());
+        Assertions.assertEquals("crpab", model.mappings().username().claim());
+        Assertions.assertEquals("epsbjtazqu", model.mappings().username().prefix());
+        Assertions.assertEquals(UsernameClaimPrefixPolicy.PREFIX, model.mappings().username().prefixPolicy());
+        Assertions.assertEquals("pmueefjzwfqk", model.mappings().groups().claim());
+        Assertions.assertEquals("jidsuyonobglaoc", model.mappings().groups().prefix());
         Assertions.assertEquals(TokenValidationRuleType.REQUIRED_CLAIM, model.validationRules().get(0).type());
-        Assertions.assertEquals("ojnabckhsmtxpsie", model.validationRules().get(0).requiredClaim().claim());
-        Assertions.assertEquals("tfhvpesapskrdqmh", model.validationRules().get(0).requiredClaim().requiredValue());
+        Assertions.assertEquals("g", model.validationRules().get(0).requiredClaim().claim());
+        Assertions.assertEquals("udxytlmoyrx", model.validationRules().get(0).requiredClaim().requiredValue());
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface GetOperationStatusResponse {
     /**
-     * Gets the results property: An array of resource operations based on their operation ids.
+     * Gets the results property: The current result for each requested operation.
      * 
      * @return the results value.
      */

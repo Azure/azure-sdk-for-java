@@ -11,7 +11,7 @@ public final class ManagedComputeCapacityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedComputeCapacityProperties model = BinaryData.fromString(
-            "{\"acceleratorType\":\"olro\",\"availableAccelerators\":939213609,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":747691713,\"totalAvailableCapacity\":1765457014,\"largestDeploymentCapacity\":1608092819},{\"modelInstanceAcceleratorCount\":91707091,\"totalAvailableCapacity\":1622527750,\"largestDeploymentCapacity\":1114664926},{\"modelInstanceAcceleratorCount\":1458682570,\"totalAvailableCapacity\":819255519,\"largestDeploymentCapacity\":4557833}]}")
+            "{\"acceleratorType\":\"a\",\"offerScope\":\"yi\",\"scopeId\":\"kd\",\"availableAccelerators\":1445832439,\"totalAvailableAccelerators\":404820470,\"deploymentSizeCapacities\":[{\"modelInstanceAcceleratorCount\":1845044427,\"totalAvailableCapacity\":1574399654,\"largestDeploymentCapacity\":2081993290}]}")
             .toObject(ManagedComputeCapacityProperties.class);
     }
 }

@@ -4,63 +4,63 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Recovery point tier type.
  */
-public enum RecoveryPointTierType {
+public final class RecoveryPointTierType extends ExpandableStringEnum<RecoveryPointTierType> {
     /**
-     * Enum value Invalid.
+     * Static value Invalid for RecoveryPointTierType.
      */
-    INVALID("Invalid"),
+    public static final RecoveryPointTierType INVALID = fromString("Invalid");
 
     /**
-     * Enum value InstantRP.
+     * Static value InstantRP for RecoveryPointTierType.
      */
-    INSTANT_RP("InstantRP"),
+    public static final RecoveryPointTierType INSTANT_RP = fromString("InstantRP");
 
     /**
-     * Enum value HardenedRP.
+     * Static value HardenedRP for RecoveryPointTierType.
      */
-    HARDENED_RP("HardenedRP"),
+    public static final RecoveryPointTierType HARDENED_RP = fromString("HardenedRP");
 
     /**
-     * Enum value ArchivedRP.
+     * Static value ArchivedRP for RecoveryPointTierType.
      */
-    ARCHIVED_RP("ArchivedRP");
+    public static final RecoveryPointTierType ARCHIVED_RP = fromString("ArchivedRP");
 
     /**
-     * The actual serialized value for a RecoveryPointTierType instance.
+     * Instant Access snapshot tier, retained for the policy's instantAccessDurationMinutes.
      */
-    private final String value;
-
-    RecoveryPointTierType(String value) {
-        this.value = value;
-    }
+    public static final RecoveryPointTierType IASNAPSHOT_RP = fromString("IASnapshotRP");
 
     /**
-     * Parses a serialized value to a RecoveryPointTierType instance.
+     * Creates a new instance of RecoveryPointTierType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed RecoveryPointTierType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RecoveryPointTierType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RecoveryPointTierType[] items = RecoveryPointTierType.values();
-        for (RecoveryPointTierType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public RecoveryPointTierType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a RecoveryPointTierType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding RecoveryPointTierType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static RecoveryPointTierType fromString(String name) {
+        return fromString(name, RecoveryPointTierType.class);
+    }
+
+    /**
+     * Gets known RecoveryPointTierType values.
+     * 
+     * @return known RecoveryPointTierType values.
+     */
+    public static Collection<RecoveryPointTierType> values() {
+        return values(RecoveryPointTierType.class);
     }
 }
