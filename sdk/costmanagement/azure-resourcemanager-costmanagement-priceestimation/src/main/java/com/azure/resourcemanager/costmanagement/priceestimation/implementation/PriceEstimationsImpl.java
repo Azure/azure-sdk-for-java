@@ -43,24 +43,6 @@ public final class PriceEstimationsImpl implements PriceEstimations {
         }
     }
 
-    public EstimateResult getEstimatePricesOperationResult(String operationId) {
-        EstimateResultInner inner = this.serviceClient().getEstimatePricesOperationResult(operationId);
-        if (inner != null) {
-            return new EstimateResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public EstimateResult getEstimatePricesOperationResult(String operationId, Context context) {
-        EstimateResultInner inner = this.serviceClient().getEstimatePricesOperationResult(operationId, context);
-        if (inner != null) {
-            return new EstimateResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     private PriceEstimationsClient serviceClient() {
         return this.innerClient;
     }

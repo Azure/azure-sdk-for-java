@@ -8,7 +8,6 @@
 ## PriceEstimation
 
 - [EstimatePrices](#priceestimation_estimateprices)
-- [GetEstimatePricesOperationResult](#priceestimation_getestimatepricesoperationresult)
 ### Operations_List
 
 ```java
@@ -211,29 +210,6 @@ public final class PriceEstimationEstimatePricesSamples {
                                                             .withValue(new EstimateStringValue()
                                                                 .withValue("PayAsYouGo"))))))))),
                 com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### PriceEstimation_GetEstimatePricesOperationResult
-
-```java
-/**
- * Samples for PriceEstimation GetEstimatePricesOperationResult.
- */
-public final class PriceEstimationGetEstimatePricesOperationResultSamples {
-    /*
-     * x-ms-original-file: 2026-10-01-preview/EstimatePricesOperationResultGet.json
-     */
-    /**
-     * Sample code: Get the result of a price estimation operation.
-     * 
-     * @param manager Entry point to CostManagementPriceEstimationManager.
-     */
-    public static void getTheResultOfAPriceEstimationOperation(
-        com.azure.resourcemanager.costmanagement.priceestimation.CostManagementPriceEstimationManager manager) {
-        manager.priceEstimations()
-            .getEstimatePricesOperationResult("2f0d4b7a9c1e4d6f8a3b5c7d9e1f2a4b", com.azure.core.util.Context.NONE);
     }
 }
 ```
