@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class RegistryDataContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataContainer/registryList.json
+     * x-ms-original-file: 2026-07-01/Registry/DataContainer/registryList.json
      */
     /**
      * Sample code: RegistryList Registry Data Container.

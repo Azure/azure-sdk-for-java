@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public final class DatastoresListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/list.json
+     * x-ms-original-file: 2026-07-01/Datastore/list.json
      */
     /**
      * Sample code: List datastores.

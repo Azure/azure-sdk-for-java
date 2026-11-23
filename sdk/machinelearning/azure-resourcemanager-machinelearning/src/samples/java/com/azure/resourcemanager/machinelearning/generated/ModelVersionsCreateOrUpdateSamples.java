@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class ModelVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Model Version.

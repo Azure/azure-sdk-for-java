@@ -14,7 +14,7 @@ import java.time.Duration;
  */
 public final class ComputeUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/patch.json
+     * x-ms-original-file: 2026-07-01/Compute/patch.json
      */
     /**
      * Sample code: Update a AmlCompute Compute.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/delete.json
      */
     /**
      * Sample code: Delete Workspace.

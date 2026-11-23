@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class FeaturestoreEntityContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityContainer/delete.json
      */
     /**
      * Sample code: Delete Workspace Featurestore Entity Container.

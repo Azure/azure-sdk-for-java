@@ -12,10 +12,10 @@ public final class AgentReferenceResourceArmPaginatedResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentReferenceResourceArmPaginatedResultInner model = BinaryData.fromString(
-            "{\"nextLink\":\"jptnvwjhrsidqpx\",\"value\":[{\"properties\":{\"agentId\":\"akftng\",\"agentName\":\"wmykyutry\"},\"id\":\"wmfjhp\",\"name\":\"cvjqdv\",\"type\":\"wkqp\"},{\"properties\":{\"agentId\":\"rlefgnaavu\",\"agentName\":\"n\"},\"id\":\"taoutnpdct\",\"name\":\"hspfefyihd\",\"type\":\"yeuyldph\"}]}")
+            "{\"nextLink\":\"gnwxl\",\"value\":[{\"properties\":{\"agentId\":\"yohxpth\",\"agentName\":\"opvkvtwfves\"},\"id\":\"pbokhmmlcdyar\",\"name\":\"ggcjfwblqhx\",\"type\":\"asmcolmugpyvaos\"},{\"properties\":{\"agentId\":\"l\",\"agentName\":\"zxeygzvtye\"},\"id\":\"hubnobgu\",\"name\":\"isqsqkpdmioy\",\"type\":\"pnml\"},{\"properties\":{\"agentId\":\"qcpszp\",\"agentName\":\"vqdvrdmvxyrxdhg\"},\"id\":\"oj\",\"name\":\"xao\",\"type\":\"cgbzxm\"},{\"properties\":{\"agentId\":\"plefoi\",\"agentName\":\"idoxznvgvdtmuuv\"},\"id\":\"wsxmrszb\",\"name\":\"nimx\",\"type\":\"pnerxrzut\"}]}")
             .toObject(AgentReferenceResourceArmPaginatedResultInner.class);
-        Assertions.assertEquals("jptnvwjhrsidqpx", model.nextLink());
-        Assertions.assertEquals("akftng", model.value().get(0).properties().agentId());
-        Assertions.assertEquals("wmykyutry", model.value().get(0).properties().agentName());
+        Assertions.assertEquals("gnwxl", model.nextLink());
+        Assertions.assertEquals("yohxpth", model.value().get(0).properties().agentId());
+        Assertions.assertEquals("opvkvtwfves", model.value().get(0).properties().agentName());
     }
 }

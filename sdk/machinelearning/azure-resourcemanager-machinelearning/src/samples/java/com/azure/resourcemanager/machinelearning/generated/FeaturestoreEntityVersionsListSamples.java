@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class FeaturestoreEntityVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityVersion/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityVersion/list.json
      */
     /**
      * Sample code: List Workspace Featurestore Entity Version.

@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class FeaturesetVersionsBackfillSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/backfill.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/backfill.json
      */
     /**
      * Sample code: Backfill Workspace Featureset Version.

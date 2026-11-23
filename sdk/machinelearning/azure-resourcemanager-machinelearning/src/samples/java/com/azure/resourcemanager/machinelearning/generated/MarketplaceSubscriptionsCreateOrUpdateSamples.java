@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.MarketplaceSubscriptionP
  */
 public final class MarketplaceSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/MarketplaceSubscription/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/MarketplaceSubscription/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Marketplace Subscription.

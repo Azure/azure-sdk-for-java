@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class DataVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataVersionBase/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataVersionBase/get.json
      */
     /**
      * Sample code: Get Workspace Data Version Base.

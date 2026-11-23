@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class RegistryComponentContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Component Container.

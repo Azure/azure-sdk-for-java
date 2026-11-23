@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/create.json
+     * x-ms-original-file: 2026-07-01/Workspace/create.json
      */
     /**
      * Sample code: Create Workspace.

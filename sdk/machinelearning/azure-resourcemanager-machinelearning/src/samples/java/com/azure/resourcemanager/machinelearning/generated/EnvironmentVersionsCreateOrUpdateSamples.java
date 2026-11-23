@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class EnvironmentVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Environment Version.

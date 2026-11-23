@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class EnvironmentVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentVersion/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentVersion/get.json
      */
     /**
      * Sample code: Get Workspace Environment Version.

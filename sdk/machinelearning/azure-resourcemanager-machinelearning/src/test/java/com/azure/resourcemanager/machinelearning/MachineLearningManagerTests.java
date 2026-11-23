@@ -26,6 +26,7 @@ import com.azure.resourcemanager.machinelearning.models.Workspace;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import org.junit.jupiter.api.Assertions;
@@ -117,11 +118,12 @@ public class MachineLearningManagerTests extends TestProxyTestBase {
                     .withRegion(REGION)
                     .withExistingResourceGroup(resourceGroupName)
                     .withSku(StorageAccountSkuType.STANDARD_LRS)
-                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_2)
+                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
                     .withHnsEnabled(false)
                     .withAccessFromAzureServices()
                     .withOnlyHttpsTraffic()
-                    .withGeneralPurposeAccountKindV2()
+                    .withBlobStorageAccountKind()
+                    .withAccessTier(AccessTier.HOT)
                     .create()
                     .id())
                 .withKeyVault(keyVaultManager.vaults()

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class ComputeGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/get/AKSCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/get/AKSCompute.json
      */
     /**
      * Sample code: Get a AKS Compute.
@@ -22,7 +22,7 @@ public final class ComputeGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/get/ComputeInstance.json
+     * x-ms-original-file: 2026-07-01/Compute/get/ComputeInstance.json
      */
     /**
      * Sample code: Get an ComputeInstance.
@@ -35,7 +35,7 @@ public final class ComputeGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/get/KubernetesCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/get/KubernetesCompute.json
      */
     /**
      * Sample code: Get a Kubernetes Compute.
@@ -48,7 +48,7 @@ public final class ComputeGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/get/AmlCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/get/AmlCompute.json
      */
     /**
      * Sample code: Get a AML Compute.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class OnlineDeploymentsListSkusSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/listSkus.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/ManagedOnlineDeployment/listSkus.json
      */
     /**
      * Sample code: List Managed Online Deployment Skus.
@@ -24,7 +24,7 @@ public final class OnlineDeploymentsListSkusSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/listSkus.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/KubernetesOnlineDeployment/listSkus.json
      */
     /**
      * Sample code: List Kubernetes Online Deployment Skus.

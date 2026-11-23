@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class WorkspacesResyncKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/resyncKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/resyncKeys.json
      */
     /**
      * Sample code: Resync Workspace Keys.

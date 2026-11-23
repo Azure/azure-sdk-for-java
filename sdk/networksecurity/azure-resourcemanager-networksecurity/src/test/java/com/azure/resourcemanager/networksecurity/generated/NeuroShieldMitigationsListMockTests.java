@@ -21,7 +21,7 @@ public final class NeuroShieldMitigationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"findingId\":\"yvpnqicvinvkjj\",\"cveId\":\"dxrbuukzcle\",\"virtualMachineArmId\":\"yhmlwpaztzp\",\"rank\":437728645,\"commandsSummary\":\"ncckw\",\"isRollbackable\":false,\"status\":\"Skipped\",\"statusDetails\":\"whxxbuyqax\",\"appliedTime\":\"2021-07-31T20:27:49Z\"},\"id\":\"ztppriolxorjalto\",\"name\":\"mncwsobqwcsdb\",\"type\":\"wdcfhucqdpfuv\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"findingId\":\"nac\",\"cveId\":\"cc\",\"virtualMachineArmId\":\"knh\",\"rank\":1718381075,\"commandsSummary\":\"izvy\",\"isRollbackable\":true,\"status\":\"RollbackInProgress\",\"statusDetails\":\"vuljraaeranokqg\",\"appliedTime\":\"2021-05-13T13:18:34Z\"},\"id\":\"qnvb\",\"name\":\"oylaxxul\",\"type\":\"disdosfjbjsvgj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class NeuroShieldMitigationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NeuroShieldMitigation> response = manager.neuroShieldMitigations()
-            .list("gaowpulpqblylsyx", "qjnsjervtia", "xsdszuempsb", 1594763587, "f", com.azure.core.util.Context.NONE);
+            .list("mes", "kdlpa", "zrcxfailcfxwmdbo", 1074201202, "fgsftufqob", com.azure.core.util.Context.NONE);
 
     }
 }

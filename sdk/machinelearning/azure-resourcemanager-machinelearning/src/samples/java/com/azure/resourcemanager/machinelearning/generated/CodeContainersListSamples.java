@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class CodeContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeContainer/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeContainer/list.json
      */
     /**
      * Sample code: List Workspace Code Container.

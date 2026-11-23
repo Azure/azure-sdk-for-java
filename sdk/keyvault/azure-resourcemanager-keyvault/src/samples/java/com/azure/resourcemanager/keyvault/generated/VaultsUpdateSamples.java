@@ -7,14 +7,22 @@ package com.azure.resourcemanager.keyvault.generated;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
 import com.azure.resourcemanager.keyvault.models.KeyPermissions;
+import com.azure.resourcemanager.keyvault.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.keyvault.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.keyvault.models.Permissions;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Sku;
 import com.azure.resourcemanager.keyvault.models.SkuFamily;
 import com.azure.resourcemanager.keyvault.models.SkuName;
+import com.azure.resourcemanager.keyvault.models.UserAssignedIdentity;
 import com.azure.resourcemanager.keyvault.models.VaultPatchParameters;
 import com.azure.resourcemanager.keyvault.models.VaultPatchProperties;
+import com.azure.resourcemanager.keyvault.models.WrappingKeyAuthenticationData;
+import com.azure.resourcemanager.keyvault.models.WrappingKeyConfiguration;
+import com.azure.resourcemanager.keyvault.models.WrappingKeyValue;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -22,7 +30,102 @@ import java.util.UUID;
  */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15/updateVault.json
+     * x-ms-original-file: 2026-10-01-preview/updateVaultWithIdentity.json
+     */
+    /**
+     * Sample code: Add or retain a user-assigned identity on a vault.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void
+        addOrRetainAUserAssignedIdentityOnAVault(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .updateWithResponse("sample-resource-group", "sample-vault",
+                new VaultPatchParameters().withIdentity(new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sample-identity",
+                        new UserAssignedIdentity()))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/updateVaultPreservingIdentity.json
+     */
+    /**
+     * Sample code: Preserve existing user-assigned identities by omitting identity from PATCH.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void preserveExistingUserAssignedIdentitiesByOmittingIdentityFromPATCH(
+        com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .updateWithResponse("sample-resource-group", "sample-vault",
+                new VaultPatchParameters().withTags(mapOf("environment", "production")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/updateVaultWithCrossTenantAccessProtection.json
+     */
+    /**
+     * Sample code: Enable cross-tenant access protection on an existing vault.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void
+        enableCrossTenantAccessProtectionOnAnExistingVault(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .updateWithResponse("sample-resource-group", "sample-vault",
+                new VaultPatchParameters()
+                    .withProperties(new VaultPatchProperties().withEnableCrossTenantAccessProtection(true)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/updateVaultWithProtectionKeyWrapping.json
+     */
+    /**
+     * Sample code: Configure protection key wrapping on an existing vault.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void
+        configureProtectionKeyWrappingOnAnExistingVault(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .updateWithResponse("sample-resource-group", "sample-vault",
+                new VaultPatchParameters().withProperties(
+                    new VaultPatchProperties().withProtectionKeysWrappingKey(new WrappingKeyConfiguration()
+                        .withKeyValue(
+                            new WrappingKeyValue().withUrl("https://sample-hsm.managedhsm.azure.net/keys/wrapping-key"))
+                        .withKeyAuthenticationData(new WrappingKeyAuthenticationData()))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/removeVaultWithIdentity.json
+     */
+    /**
+     * Sample code: Remove all user-assigned identities and their certificates from a vault using PATCH.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void removeAllUserAssignedIdentitiesAndTheirCertificatesFromAVaultUsingPATCH(
+        com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .updateWithResponse("sample-resource-group", "sample-vault",
+                new VaultPatchParameters()
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/updateVault.json
      */
     /**
      * Sample code: Update an existing vault.
@@ -61,5 +164,38 @@ public final class VaultsUpdateSamples {
                         .withEnabledForTemplateDeployment(true)
                         .withPublicNetworkAccess("Enabled")),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01-preview/updateVaultRemoveIdentity.json
+     */
+    /**
+     * Sample code: Remove only the specified user-assigned identity using a null PATCH entry.
+     * 
+     * @param manager Entry point to KeyVaultManager.
+     */
+    public static void removeOnlyTheSpecifiedUserAssignedIdentityUsingANullPATCHEntry(
+        com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
+        manager.serviceClient()
+            .getVaults()
+            .updateWithResponse("sample-resource-group", "sample-vault",
+                new VaultPatchParameters().withIdentity(new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-to-remove",
+                        null))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

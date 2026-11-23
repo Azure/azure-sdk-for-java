@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class RegistryComponentVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentVersion/delete.json
      */
     /**
      * Sample code: Delete Registry Component Version.

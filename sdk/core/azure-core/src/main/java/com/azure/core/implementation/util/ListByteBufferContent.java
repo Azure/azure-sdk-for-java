@@ -75,7 +75,7 @@ public class ListByteBufferContent extends BinaryDataContent {
 
     @Override
     public InputStream toStream() {
-        return new IterableOfByteBuffersInputStream(content);
+        return InputStreamUtils.createInputStream(content);
     }
 
     @Override
@@ -148,10 +148,7 @@ public class ListByteBufferContent extends BinaryDataContent {
         int offset = 0;
 
         for (ByteBuffer bb : content) {
-            bb = bb.duplicate();
-            int count = bb.remaining();
-            bb.get(bytes, offset, count);
-            offset += count;
+            offset += ByteBufferUtils.copyToArray(bb, bytes, offset);
         }
 
         return bytes;

@@ -13,18 +13,19 @@ public final class RaiAcsHarmConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiAcsHarmConfiguration model
-            = BinaryData.fromString("{\"category\":\"PromptInjection\",\"harm_config_id\":\"zjcjbtr\"}")
+            = BinaryData.fromString("{\"category\":\"ProtectedMaterialText\",\"harm_config_id\":\"qkkyihztgeqmg\"}")
                 .toObject(RaiAcsHarmConfiguration.class);
-        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION, model.category());
-        Assertions.assertEquals("zjcjbtr", model.harmConfigId());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT, model.category());
+        Assertions.assertEquals("qkkyihztgeqmg", model.harmConfigId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiAcsHarmConfiguration model = new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROMPT_INJECTION)
-            .withHarmConfigId("zjcjbtr");
+        RaiAcsHarmConfiguration model
+            = new RaiAcsHarmConfiguration().withCategory(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT)
+                .withHarmConfigId("qkkyihztgeqmg");
         model = BinaryData.fromObject(model).toObject(RaiAcsHarmConfiguration.class);
-        Assertions.assertEquals(RaiAcsHarmCategory.PROMPT_INJECTION, model.category());
-        Assertions.assertEquals("zjcjbtr", model.harmConfigId());
+        Assertions.assertEquals(RaiAcsHarmCategory.PROTECTED_MATERIAL_TEXT, model.category());
+        Assertions.assertEquals("qkkyihztgeqmg", model.harmConfigId());
     }
 }

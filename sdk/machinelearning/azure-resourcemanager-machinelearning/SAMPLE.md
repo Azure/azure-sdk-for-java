@@ -390,7 +390,7 @@ import java.util.Map;
  */
 public final class BatchDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchDeployment/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Batch Deployment.
@@ -459,7 +459,7 @@ public final class BatchDeploymentsCreateOrUpdateSamples {
  */
 public final class BatchDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchDeployment/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchDeployment/delete.json
      */
     /**
      * Sample code: Delete Workspace Batch Deployment.
@@ -483,7 +483,7 @@ public final class BatchDeploymentsDeleteSamples {
  */
 public final class BatchDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchDeployment/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchDeployment/get.json
      */
     /**
      * Sample code: Get Workspace Batch Deployment.
@@ -507,7 +507,7 @@ public final class BatchDeploymentsGetSamples {
  */
 public final class BatchDeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchDeployment/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchDeployment/list.json
      */
     /**
      * Sample code: List Workspace Batch Deployment.
@@ -536,7 +536,7 @@ import java.util.Map;
  */
 public final class BatchDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchDeployment/update.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchDeployment/update.json
      */
     /**
      * Sample code: Update Workspace Batch Deployment.
@@ -588,7 +588,7 @@ import java.util.Map;
  */
 public final class BatchEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchEndpoint/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchEndpoint/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Batch Endpoint.
@@ -639,7 +639,7 @@ public final class BatchEndpointsCreateOrUpdateSamples {
  */
 public final class BatchEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchEndpoint/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchEndpoint/delete.json
      */
     /**
      * Sample code: Delete Workspace Batch Endpoint.
@@ -662,7 +662,7 @@ public final class BatchEndpointsDeleteSamples {
  */
 public final class BatchEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchEndpoint/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchEndpoint/get.json
      */
     /**
      * Sample code: Get Workspace Batch Endpoint.
@@ -685,7 +685,7 @@ public final class BatchEndpointsGetSamples {
  */
 public final class BatchEndpointsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchEndpoint/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchEndpoint/list.json
      */
     /**
      * Sample code: List Workspace Batch Endpoint.
@@ -707,7 +707,7 @@ public final class BatchEndpointsListSamples {
  */
 public final class BatchEndpointsListKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchEndpoint/listKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchEndpoint/listKeys.json
      */
     /**
      * Sample code: ListKeys Workspace Batch Endpoint.
@@ -739,7 +739,7 @@ import java.util.Map;
  */
 public final class BatchEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchEndpoint/update.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchEndpoint/update.json
      */
     /**
      * Sample code: Update Workspace Batch Endpoint.
@@ -785,7 +785,7 @@ import java.util.Arrays;
  */
 public final class CapabilityHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/CapabilityHost/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/CapabilityHost/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate CapabilityHost.
@@ -818,7 +818,7 @@ public final class CapabilityHostsCreateOrUpdateSamples {
  */
 public final class CapabilityHostsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/CapabilityHost/delete.json
+     * x-ms-original-file: 2026-07-01/CapabilityHost/delete.json
      */
     /**
      * Sample code: Delete CapabilityHost.
@@ -840,7 +840,7 @@ public final class CapabilityHostsDeleteSamples {
  */
 public final class CapabilityHostsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/CapabilityHost/get.json
+     * x-ms-original-file: 2026-07-01/CapabilityHost/get.json
      */
     /**
      * Sample code: Get CapabilityHost.
@@ -866,7 +866,7 @@ import java.util.Map;
  */
 public final class CodeContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Code Container.
@@ -905,7 +905,7 @@ public final class CodeContainersCreateOrUpdateSamples {
  */
 public final class CodeContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeContainer/delete.json
      */
     /**
      * Sample code: Delete Workspace Code Container.
@@ -928,7 +928,7 @@ public final class CodeContainersDeleteSamples {
  */
 public final class CodeContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeContainer/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeContainer/get.json
      */
     /**
      * Sample code: Get Workspace Code Container.
@@ -951,7 +951,7 @@ public final class CodeContainersGetSamples {
  */
 public final class CodeContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeContainer/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeContainer/list.json
      */
     /**
      * Sample code: List Workspace Code Container.
@@ -976,7 +976,7 @@ import com.azure.resourcemanager.machinelearning.models.PendingUploadType;
  */
 public final class CodeVersionsCreateOrGetStartPendingUploadSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/createOrGetStartPendingUpload.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/createOrGetStartPendingUpload.json
      */
     /**
      * Sample code: CreateOrGetStartPendingUpload Workspace Code Version.
@@ -1006,7 +1006,7 @@ import java.util.Map;
  */
 public final class CodeVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Code Version.
@@ -1048,7 +1048,7 @@ public final class CodeVersionsCreateOrUpdateSamples {
  */
 public final class CodeVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/delete.json
      */
     /**
      * Sample code: Delete Workspace Code Version.
@@ -1071,7 +1071,7 @@ public final class CodeVersionsDeleteSamples {
  */
 public final class CodeVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/get.json
      */
     /**
      * Sample code: Get Workspace Code Version.
@@ -1094,7 +1094,7 @@ public final class CodeVersionsGetSamples {
  */
 public final class CodeVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/list.json
      */
     /**
      * Sample code: List Workspace Code Version.
@@ -1120,7 +1120,7 @@ import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
  */
 public final class CodeVersionsPublishSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/publish.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/publish.json
      */
     /**
      * Sample code: Publish Workspace Code Version.
@@ -1151,7 +1151,7 @@ import java.util.Map;
  */
 public final class ComponentContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Component Container.
@@ -1191,7 +1191,7 @@ public final class ComponentContainersCreateOrUpdateSamples {
  */
 public final class ComponentContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentContainer/delete.json
      */
     /**
      * Sample code: Delete Workspace Component Container.
@@ -1214,7 +1214,7 @@ public final class ComponentContainersDeleteSamples {
  */
 public final class ComponentContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentContainer/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentContainer/get.json
      */
     /**
      * Sample code: Get Workspace Component Container.
@@ -1238,7 +1238,7 @@ public final class ComponentContainersGetSamples {
  */
 public final class ComponentContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentContainer/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentContainer/list.json
      */
     /**
      * Sample code: List Workspace Component Container.
@@ -1267,7 +1267,7 @@ import java.util.Map;
  */
 public final class ComponentVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Component Version.
@@ -1311,7 +1311,7 @@ public final class ComponentVersionsCreateOrUpdateSamples {
  */
 public final class ComponentVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentVersion/delete.json
      */
     /**
      * Sample code: Delete Workspace Component Version.
@@ -1334,7 +1334,7 @@ public final class ComponentVersionsDeleteSamples {
  */
 public final class ComponentVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentVersion/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentVersion/get.json
      */
     /**
      * Sample code: Get Workspace Component Version.
@@ -1358,7 +1358,7 @@ public final class ComponentVersionsGetSamples {
  */
 public final class ComponentVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentVersion/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentVersion/list.json
      */
     /**
      * Sample code: List Workspace Component Version.
@@ -1383,7 +1383,7 @@ import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
  */
 public final class ComponentVersionsPublishSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ComponentVersion/publish.json
+     * x-ms-original-file: 2026-07-01/Workspace/ComponentVersion/publish.json
      */
     /**
      * Sample code: Publish Workspace Component Version.
@@ -1455,7 +1455,7 @@ import java.util.Map;
  */
 public final class ComputeCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/AKSCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/AKSCompute.json
      */
     /**
      * Sample code: Update an AKS Compute.
@@ -1475,7 +1475,7 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/BasicAKSCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/BasicAKSCompute.json
      */
     /**
      * Sample code: Create an AKS Compute.
@@ -1492,7 +1492,7 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/KubernetesCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/KubernetesCompute.json
      */
     /**
      * Sample code: Attach a Kubernetes Compute.
@@ -1518,7 +1518,7 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/ComputeInstanceWithSchedules.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/ComputeInstanceWithSchedules.json
      */
     /**
      * Sample code: Create an ComputeInstance Compute with Schedules.
@@ -1550,7 +1550,7 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/BasicAmlCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/BasicAmlCompute.json
      */
     /**
      * Sample code: Create a AML Compute.
@@ -1577,7 +1577,7 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/ComputeInstance.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/ComputeInstance.json
      */
     /**
      * Sample code: Create an ComputeInstance Compute.
@@ -1625,7 +1625,7 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/ComputeInstanceMinimal.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/ComputeInstanceMinimal.json
      */
     /**
      * Sample code: Create an ComputeInstance Compute with minimal inputs.
@@ -1644,7 +1644,7 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/AmlCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/AmlCompute.json
      */
     /**
      * Sample code: Update a AML Compute.
@@ -1664,7 +1664,7 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/createOrUpdate/BasicDataFactoryCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/createOrUpdate/BasicDataFactoryCompute.json
      */
     /**
      * Sample code: Create a DataFactory Compute.
@@ -1705,7 +1705,7 @@ import com.azure.resourcemanager.machinelearning.models.UnderlyingResourceAction
  */
 public final class ComputeDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/delete.json
+     * x-ms-original-file: 2026-07-01/Compute/delete.json
      */
     /**
      * Sample code: Delete Compute.
@@ -1728,7 +1728,7 @@ public final class ComputeDeleteSamples {
  */
 public final class ComputeGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/get/AKSCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/get/AKSCompute.json
      */
     /**
      * Sample code: Get a AKS Compute.
@@ -1741,7 +1741,7 @@ public final class ComputeGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/get/ComputeInstance.json
+     * x-ms-original-file: 2026-07-01/Compute/get/ComputeInstance.json
      */
     /**
      * Sample code: Get an ComputeInstance.
@@ -1754,7 +1754,7 @@ public final class ComputeGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/get/KubernetesCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/get/KubernetesCompute.json
      */
     /**
      * Sample code: Get a Kubernetes Compute.
@@ -1767,7 +1767,7 @@ public final class ComputeGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Compute/get/AmlCompute.json
+     * x-ms-original-file: 2026-07-01/Compute/get/AmlCompute.json
      */
     /**
      * Sample code: Get a AML Compute.
@@ -1789,7 +1789,7 @@ public final class ComputeGetSamples {
  */
 public final class ComputeListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/list.json
+     * x-ms-original-file: 2026-07-01/Compute/list.json
      */
     /**
      * Sample code: Get Computes.
@@ -1810,7 +1810,7 @@ public final class ComputeListSamples {
  */
 public final class ComputeListKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/listKeys.json
+     * x-ms-original-file: 2026-07-01/Compute/listKeys.json
      */
     /**
      * Sample code: List AKS Compute Keys.
@@ -1832,7 +1832,7 @@ public final class ComputeListKeysSamples {
  */
 public final class ComputeListNodesSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/listNodes.json
+     * x-ms-original-file: 2026-07-01/Compute/listNodes.json
      */
     /**
      * Sample code: Get compute nodes information for a compute.
@@ -1854,7 +1854,7 @@ public final class ComputeListNodesSamples {
  */
 public final class ComputeRestartSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/restart.json
+     * x-ms-original-file: 2026-07-01/Compute/restart.json
      */
     /**
      * Sample code: Restart ComputeInstance Compute.
@@ -1876,7 +1876,7 @@ public final class ComputeRestartSamples {
  */
 public final class ComputeStartSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/start.json
+     * x-ms-original-file: 2026-07-01/Compute/start.json
      */
     /**
      * Sample code: Start ComputeInstance Compute.
@@ -1898,7 +1898,7 @@ public final class ComputeStartSamples {
  */
 public final class ComputeStopSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/stop.json
+     * x-ms-original-file: 2026-07-01/Compute/stop.json
      */
     /**
      * Sample code: Stop ComputeInstance Compute.
@@ -1925,7 +1925,7 @@ import java.time.Duration;
  */
 public final class ComputeUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/patch.json
+     * x-ms-original-file: 2026-07-01/Compute/patch.json
      */
     /**
      * Sample code: Update a AmlCompute Compute.
@@ -1959,7 +1959,7 @@ import java.util.Map;
  */
 public final class DataContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Data Container.
@@ -2000,7 +2000,7 @@ public final class DataContainersCreateOrUpdateSamples {
  */
 public final class DataContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataContainer/delete.json
      */
     /**
      * Sample code: Delete Workspace Data Container.
@@ -2023,7 +2023,7 @@ public final class DataContainersDeleteSamples {
  */
 public final class DataContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataContainer/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataContainer/get.json
      */
     /**
      * Sample code: Get Workspace Data Container.
@@ -2047,7 +2047,7 @@ public final class DataContainersGetSamples {
  */
 public final class DataContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataContainer/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataContainer/list.json
      */
     /**
      * Sample code: List Workspace Data Container.
@@ -2073,7 +2073,7 @@ import java.util.Map;
  */
 public final class DataVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataVersionBase/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataVersionBase/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Data Version Base.
@@ -2115,7 +2115,7 @@ public final class DataVersionsCreateOrUpdateSamples {
  */
 public final class DataVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataVersionBase/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataVersionBase/delete.json
      */
     /**
      * Sample code: Delete Workspace Data Version Base.
@@ -2138,7 +2138,7 @@ public final class DataVersionsDeleteSamples {
  */
 public final class DataVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataVersionBase/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataVersionBase/get.json
      */
     /**
      * Sample code: Get Workspace Data Version Base.
@@ -2162,7 +2162,7 @@ public final class DataVersionsGetSamples {
  */
 public final class DataVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataVersionBase/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataVersionBase/list.json
      */
     /**
      * Sample code: List Workspace Data Version Base.
@@ -2188,7 +2188,7 @@ import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
  */
 public final class DataVersionsPublishSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/DataVersionBase/publish.json
+     * x-ms-original-file: 2026-07-01/Workspace/DataVersionBase/publish.json
      */
     /**
      * Sample code: Publish Workspace Data Version Base.
@@ -2226,7 +2226,7 @@ import java.util.Map;
  */
 public final class DatastoresCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/AzureDataLakeGen1WServicePrincipal/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Datastore/AzureDataLakeGen1WServicePrincipal/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate datastore (Azure Data Lake Gen1 w/ ServicePrincipal).
@@ -2251,7 +2251,7 @@ public final class DatastoresCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/AzureDataLakeGen2WServicePrincipal/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Datastore/AzureDataLakeGen2WServicePrincipal/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate datastore (Azure Data Lake Gen2 w/ Service Principal).
@@ -2279,7 +2279,7 @@ public final class DatastoresCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/AzureBlobWAccountKey/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Datastore/AzureBlobWAccountKey/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate datastore (AzureBlob w/ AccountKey).
@@ -2304,7 +2304,7 @@ public final class DatastoresCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/AzureFileWAccountKey/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Datastore/AzureFileWAccountKey/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate datastore (Azure File store w/ AccountKey).
@@ -2350,7 +2350,7 @@ public final class DatastoresCreateOrUpdateSamples {
  */
 public final class DatastoresDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/delete.json
+     * x-ms-original-file: 2026-07-01/Datastore/delete.json
      */
     /**
      * Sample code: Delete datastore.
@@ -2372,7 +2372,7 @@ public final class DatastoresDeleteSamples {
  */
 public final class DatastoresGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/get.json
+     * x-ms-original-file: 2026-07-01/Datastore/get.json
      */
     /**
      * Sample code: Get datastore.
@@ -2395,7 +2395,7 @@ import java.util.Arrays;
  */
 public final class DatastoresListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/list.json
+     * x-ms-original-file: 2026-07-01/Datastore/list.json
      */
     /**
      * Sample code: List datastores.
@@ -2420,7 +2420,7 @@ import com.azure.resourcemanager.machinelearning.models.SecretExpiry;
  */
 public final class DatastoresListSecretsSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Datastore/listSecrets.json
+     * x-ms-original-file: 2026-07-01/Datastore/listSecrets.json
      */
     /**
      * Sample code: Get datastore secrets.
@@ -2448,7 +2448,7 @@ import java.util.Map;
  */
 public final class EnvironmentContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Environment Container.
@@ -2489,7 +2489,7 @@ public final class EnvironmentContainersCreateOrUpdateSamples {
  */
 public final class EnvironmentContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentContainer/delete.json
      */
     /**
      * Sample code: Delete Workspace Environment Container.
@@ -2512,7 +2512,7 @@ public final class EnvironmentContainersDeleteSamples {
  */
 public final class EnvironmentContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentContainer/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentContainer/get.json
      */
     /**
      * Sample code: Get Workspace Environment Container.
@@ -2536,7 +2536,7 @@ public final class EnvironmentContainersGetSamples {
  */
 public final class EnvironmentContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentContainer/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentContainer/list.json
      */
     /**
      * Sample code: List Workspace Environment Container.
@@ -2566,7 +2566,7 @@ import java.util.Map;
  */
 public final class EnvironmentVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Environment Version.
@@ -2616,7 +2616,7 @@ public final class EnvironmentVersionsCreateOrUpdateSamples {
  */
 public final class EnvironmentVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentVersion/delete.json
      */
     /**
      * Sample code: Delete Workspace Environment Version.
@@ -2639,7 +2639,7 @@ public final class EnvironmentVersionsDeleteSamples {
  */
 public final class EnvironmentVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentVersion/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentVersion/get.json
      */
     /**
      * Sample code: Get Workspace Environment Version.
@@ -2663,7 +2663,7 @@ public final class EnvironmentVersionsGetSamples {
  */
 public final class EnvironmentVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentVersion/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentVersion/list.json
      */
     /**
      * Sample code: List Workspace Environment Version.
@@ -2688,7 +2688,7 @@ import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
  */
 public final class EnvironmentVersionsPublishSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/EnvironmentVersion/publish.json
+     * x-ms-original-file: 2026-07-01/Workspace/EnvironmentVersion/publish.json
      */
     /**
      * Sample code: Publish Workspace Environment Version.
@@ -2715,7 +2715,7 @@ public final class EnvironmentVersionsPublishSamples {
  */
 public final class FeaturesGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Feature/get.json
+     * x-ms-original-file: 2026-07-01/Feature/get.json
      */
     /**
      * Sample code: Get Feature.
@@ -2739,7 +2739,7 @@ public final class FeaturesGetSamples {
  */
 public final class FeaturesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Feature/list.json
+     * x-ms-original-file: 2026-07-01/Feature/list.json
      */
     /**
      * Sample code: List Feature.
@@ -2766,7 +2766,7 @@ import java.util.Map;
  */
 public final class FeaturesetContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Featureset Container.
@@ -2807,7 +2807,7 @@ public final class FeaturesetContainersCreateOrUpdateSamples {
  */
 public final class FeaturesetContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetContainer/delete.json
      */
     /**
      * Sample code: Delete Workspace Featureset Container.
@@ -2830,7 +2830,7 @@ public final class FeaturesetContainersDeleteSamples {
  */
 public final class FeaturesetContainersGetEntitySamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetContainer/getEntity.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetContainer/getEntity.json
      */
     /**
      * Sample code: GetEntity Workspace Featureset Container.
@@ -2855,7 +2855,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class FeaturesetContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetContainer/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetContainer/list.json
      */
     /**
      * Sample code: List Workspace Featureset Container.
@@ -2888,7 +2888,7 @@ import java.util.Map;
  */
 public final class FeaturesetVersionsBackfillSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/backfill.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/backfill.json
      */
     /**
      * Sample code: Backfill Workspace Featureset Version.
@@ -2950,7 +2950,7 @@ import java.util.Map;
  */
 public final class FeaturesetVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Featureset Version.
@@ -3011,7 +3011,7 @@ public final class FeaturesetVersionsCreateOrUpdateSamples {
  */
 public final class FeaturesetVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/delete.json
      */
     /**
      * Sample code: Delete Workspace Featureset Version.
@@ -3034,7 +3034,7 @@ public final class FeaturesetVersionsDeleteSamples {
  */
 public final class FeaturesetVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/get.json
      */
     /**
      * Sample code: Get Workspace Featureset Version.
@@ -3059,7 +3059,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class FeaturesetVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/list.json
      */
     /**
      * Sample code: List Workspace Featureset Version.
@@ -3087,7 +3087,7 @@ import java.util.Map;
  */
 public final class FeaturestoreEntityContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Featurestore Entity Container.
@@ -3128,7 +3128,7 @@ public final class FeaturestoreEntityContainersCreateOrUpdateSamples {
  */
 public final class FeaturestoreEntityContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityContainer/delete.json
      */
     /**
      * Sample code: Delete Workspace Featurestore Entity Container.
@@ -3151,7 +3151,7 @@ public final class FeaturestoreEntityContainersDeleteSamples {
  */
 public final class FeaturestoreEntityContainersGetEntitySamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityContainer/getEntity.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityContainer/getEntity.json
      */
     /**
      * Sample code: GetEntity Workspace Featurestore Entity Container.
@@ -3176,7 +3176,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class FeaturestoreEntityContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityContainer/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityContainer/list.json
      */
     /**
      * Sample code: List Workspace Featurestore Entity Container.
@@ -3207,7 +3207,7 @@ import java.util.Map;
  */
 public final class FeaturestoreEntityVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Featurestore Entity Version.
@@ -3252,7 +3252,7 @@ public final class FeaturestoreEntityVersionsCreateOrUpdateSamples {
  */
 public final class FeaturestoreEntityVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityVersion/delete.json
      */
     /**
      * Sample code: Delete Workspace Featurestore Entity Version.
@@ -3275,7 +3275,7 @@ public final class FeaturestoreEntityVersionsDeleteSamples {
  */
 public final class FeaturestoreEntityVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityVersion/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityVersion/get.json
      */
     /**
      * Sample code: Get Workspace Featurestore Entity Version.
@@ -3300,7 +3300,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class FeaturestoreEntityVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturestoreEntityVersion/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturestoreEntityVersion/list.json
      */
     /**
      * Sample code: List Workspace Featurestore Entity Version.
@@ -3324,7 +3324,7 @@ public final class FeaturestoreEntityVersionsListSamples {
  */
 public final class JobsCancelSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Job/cancel.json
+     * x-ms-original-file: 2026-07-01/Job/cancel.json
      */
     /**
      * Sample code: Cancel Job.
@@ -3377,7 +3377,7 @@ import java.util.Map;
  */
 public final class JobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Job/AutoMLJob/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Job/AutoMLJob/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate AutoML Job.
@@ -3424,7 +3424,7 @@ public final class JobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/SweepJob/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Job/SweepJob/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Sweep Job.
@@ -3470,7 +3470,7 @@ public final class JobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/PipelineJob/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Job/PipelineJob/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Pipeline Job.
@@ -3504,7 +3504,7 @@ public final class JobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/CommandJob/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Job/CommandJob/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Command Job.
@@ -3570,7 +3570,7 @@ public final class JobsCreateOrUpdateSamples {
  */
 public final class JobsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Job/delete.json
+     * x-ms-original-file: 2026-07-01/Job/delete.json
      */
     /**
      * Sample code: Delete Job.
@@ -3594,7 +3594,7 @@ public final class JobsDeleteSamples {
  */
 public final class JobsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Job/CommandJob/get.json
+     * x-ms-original-file: 2026-07-01/Job/CommandJob/get.json
      */
     /**
      * Sample code: Get Command Job.
@@ -3606,7 +3606,7 @@ public final class JobsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/AutoMLJob/get.json
+     * x-ms-original-file: 2026-07-01/Job/AutoMLJob/get.json
      */
     /**
      * Sample code: Get AutoML Job.
@@ -3618,7 +3618,7 @@ public final class JobsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/SweepJob/get.json
+     * x-ms-original-file: 2026-07-01/Job/SweepJob/get.json
      */
     /**
      * Sample code: Get Sweep Job.
@@ -3630,7 +3630,7 @@ public final class JobsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/PipelineJob/get.json
+     * x-ms-original-file: 2026-07-01/Job/PipelineJob/get.json
      */
     /**
      * Sample code: Get Pipeline Job.
@@ -3652,7 +3652,7 @@ public final class JobsGetSamples {
  */
 public final class JobsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Job/CommandJob/list.json
+     * x-ms-original-file: 2026-07-01/Job/CommandJob/list.json
      */
     /**
      * Sample code: List Command Job.
@@ -3666,7 +3666,7 @@ public final class JobsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/PipelineJob/list.json
+     * x-ms-original-file: 2026-07-01/Job/PipelineJob/list.json
      */
     /**
      * Sample code: List Pipeline Job.
@@ -3680,7 +3680,7 @@ public final class JobsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/SweepJob/list.json
+     * x-ms-original-file: 2026-07-01/Job/SweepJob/list.json
      */
     /**
      * Sample code: List Sweep Job.
@@ -3694,7 +3694,7 @@ public final class JobsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/AutoMLJob/list.json
+     * x-ms-original-file: 2026-07-01/Job/AutoMLJob/list.json
      */
     /**
      * Sample code: List AutoML Job.
@@ -3718,7 +3718,7 @@ import com.azure.resourcemanager.machinelearning.models.ManagedNetworkProvisionO
  */
 public final class ManagedNetworkProvisionsProvisionManagedNetworkSamples {
     /*
-     * x-ms-original-file: 2026-09-01/ManagedNetwork/provision.json
+     * x-ms-original-file: 2026-07-01/ManagedNetwork/provision.json
      */
     /**
      * Sample code: Provision ManagedNetwork.
@@ -3746,7 +3746,7 @@ import com.azure.resourcemanager.machinelearning.models.RuleStatus;
  */
 public final class ManagedNetworkSettingsRuleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/ManagedNetwork/createOrUpdateRule.json
+     * x-ms-original-file: 2026-07-01/ManagedNetwork/createOrUpdateRule.json
      */
     /**
      * Sample code: CreateOrUpdate ManagedNetworkSettingsRule.
@@ -3774,7 +3774,7 @@ public final class ManagedNetworkSettingsRuleCreateOrUpdateSamples {
  */
 public final class ManagedNetworkSettingsRuleDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/ManagedNetwork/deleteRule.json
+     * x-ms-original-file: 2026-07-01/ManagedNetwork/deleteRule.json
      */
     /**
      * Sample code: Delete ManagedNetworkSettingsRule.
@@ -3797,7 +3797,7 @@ public final class ManagedNetworkSettingsRuleDeleteSamples {
  */
 public final class ManagedNetworkSettingsRuleGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/ManagedNetwork/getRule.json
+     * x-ms-original-file: 2026-07-01/ManagedNetwork/getRule.json
      */
     /**
      * Sample code: Get ManagedNetworkSettingsRule.
@@ -3821,7 +3821,7 @@ public final class ManagedNetworkSettingsRuleGetSamples {
  */
 public final class ManagedNetworkSettingsRuleListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/ManagedNetwork/listRule.json
+     * x-ms-original-file: 2026-07-01/ManagedNetwork/listRule.json
      */
     /**
      * Sample code: List ManagedNetworkSettingsRule.
@@ -3845,7 +3845,7 @@ import com.azure.resourcemanager.machinelearning.models.MarketplaceSubscriptionP
  */
 public final class MarketplaceSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/MarketplaceSubscription/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/MarketplaceSubscription/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Marketplace Subscription.
@@ -3871,7 +3871,7 @@ public final class MarketplaceSubscriptionsCreateOrUpdateSamples {
  */
 public final class MarketplaceSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/MarketplaceSubscription/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/MarketplaceSubscription/delete.json
      */
     /**
      * Sample code: Delete Workspace Marketplace Subscription.
@@ -3894,7 +3894,7 @@ public final class MarketplaceSubscriptionsDeleteSamples {
  */
 public final class MarketplaceSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/MarketplaceSubscription/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/MarketplaceSubscription/get.json
      */
     /**
      * Sample code: Get Workspace Marketplace Subscription.
@@ -3917,7 +3917,7 @@ public final class MarketplaceSubscriptionsGetSamples {
  */
 public final class MarketplaceSubscriptionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/MarketplaceSubscription/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/MarketplaceSubscription/list.json
      */
     /**
      * Sample code: List Workspace Marketplace Subscription.
@@ -3943,7 +3943,7 @@ import java.util.Map;
  */
 public final class ModelContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Model Container.
@@ -3982,7 +3982,7 @@ public final class ModelContainersCreateOrUpdateSamples {
  */
 public final class ModelContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelContainer/delete.json
      */
     /**
      * Sample code: Delete Workspace Model Container.
@@ -4005,7 +4005,7 @@ public final class ModelContainersDeleteSamples {
  */
 public final class ModelContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelContainer/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelContainer/get.json
      */
     /**
      * Sample code: Get Workspace Model Container.
@@ -4029,7 +4029,7 @@ public final class ModelContainersGetSamples {
  */
 public final class ModelContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelContainer/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelContainer/list.json
      */
     /**
      * Sample code: List Workspace Model Container.
@@ -4056,7 +4056,7 @@ import java.util.Map;
  */
 public final class ModelVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Model Version.
@@ -4100,7 +4100,7 @@ public final class ModelVersionsCreateOrUpdateSamples {
  */
 public final class ModelVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelVersion/delete.json
      */
     /**
      * Sample code: Delete Workspace Model Version.
@@ -4123,7 +4123,7 @@ public final class ModelVersionsDeleteSamples {
  */
 public final class ModelVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelVersion/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelVersion/get.json
      */
     /**
      * Sample code: Get Workspace Model Version.
@@ -4147,7 +4147,7 @@ public final class ModelVersionsGetSamples {
  */
 public final class ModelVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelVersion/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelVersion/list.json
      */
     /**
      * Sample code: List Workspace Model Version.
@@ -4173,7 +4173,7 @@ import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
  */
 public final class ModelVersionsPublishSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ModelVersion/publish.json
+     * x-ms-original-file: 2026-07-01/Workspace/ModelVersion/publish.json
      */
     /**
      * Sample code: Publish Workspace Model Version.
@@ -4217,7 +4217,7 @@ import java.util.Map;
  */
 public final class OnlineDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Kubernetes Online Deployment.
@@ -4268,7 +4268,7 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Managed Online Deployment.
@@ -4340,7 +4340,7 @@ public final class OnlineDeploymentsCreateOrUpdateSamples {
  */
 public final class OnlineDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineDeployment/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineDeployment/delete.json
      */
     /**
      * Sample code: Delete Workspace Online Deployment.
@@ -4363,7 +4363,7 @@ public final class OnlineDeploymentsDeleteSamples {
  */
 public final class OnlineDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/get.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/KubernetesOnlineDeployment/get.json
      */
     /**
      * Sample code: Get Kubernetes Online Deployment.
@@ -4378,7 +4378,7 @@ public final class OnlineDeploymentsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/get.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/ManagedOnlineDeployment/get.json
      */
     /**
      * Sample code: Get Managed Online Deployment.
@@ -4405,7 +4405,7 @@ import com.azure.resourcemanager.machinelearning.models.DeploymentLogsRequest;
  */
 public final class OnlineDeploymentsGetLogsSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/getLogs.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/getLogs.json
      */
     /**
      * Sample code: Get Online Deployment Logs.
@@ -4430,7 +4430,7 @@ public final class OnlineDeploymentsGetLogsSamples {
  */
 public final class OnlineDeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/list.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/list.json
      */
     /**
      * Sample code: List Online Deployments.
@@ -4453,7 +4453,7 @@ public final class OnlineDeploymentsListSamples {
  */
 public final class OnlineDeploymentsListSkusSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/listSkus.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/ManagedOnlineDeployment/listSkus.json
      */
     /**
      * Sample code: List Managed Online Deployment Skus.
@@ -4468,7 +4468,7 @@ public final class OnlineDeploymentsListSkusSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/listSkus.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/KubernetesOnlineDeployment/listSkus.json
      */
     /**
      * Sample code: List Kubernetes Online Deployment Skus.
@@ -4498,7 +4498,7 @@ import java.util.Map;
  */
 public final class OnlineDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/update.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/ManagedOnlineDeployment/update.json
      */
     /**
      * Sample code: Update Managed Online Deployment.
@@ -4522,7 +4522,7 @@ public final class OnlineDeploymentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/update.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/KubernetesOnlineDeployment/update.json
      */
     /**
      * Sample code: Update Kubernetes Online Deployment.
@@ -4577,7 +4577,7 @@ import java.util.Map;
  */
 public final class OnlineEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Online Endpoint.
@@ -4629,7 +4629,7 @@ public final class OnlineEndpointsCreateOrUpdateSamples {
  */
 public final class OnlineEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/delete.json
      */
     /**
      * Sample code: Delete Workspace Online Endpoint.
@@ -4652,7 +4652,7 @@ public final class OnlineEndpointsDeleteSamples {
  */
 public final class OnlineEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/get.json
      */
     /**
      * Sample code: Get Workspace Online Endpoint.
@@ -4675,7 +4675,7 @@ public final class OnlineEndpointsGetSamples {
  */
 public final class OnlineEndpointsGetTokenSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/getToken.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/getToken.json
      */
     /**
      * Sample code: GetToken Workspace Online Endpoint.
@@ -4701,7 +4701,7 @@ import com.azure.resourcemanager.machinelearning.models.OrderString;
  */
 public final class OnlineEndpointsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/list.json
      */
     /**
      * Sample code: List Workspace Online Endpoint.
@@ -4725,7 +4725,7 @@ public final class OnlineEndpointsListSamples {
  */
 public final class OnlineEndpointsListKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/listKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/listKeys.json
      */
     /**
      * Sample code: ListKeys Workspace Online Endpoint.
@@ -4751,7 +4751,7 @@ import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRe
  */
 public final class OnlineEndpointsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/regenerateKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/regenerateKeys.json
      */
     /**
      * Sample code: RegenerateKeys Workspace Online Endpoint.
@@ -4785,7 +4785,7 @@ import java.util.Map;
  */
 public final class OnlineEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/update.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/update.json
      */
     /**
      * Sample code: Update Workspace Online Endpoint.
@@ -4828,7 +4828,7 @@ public final class OnlineEndpointsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/operationsList.json
+     * x-ms-original-file: 2026-07-01/Workspace/operationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -4852,7 +4852,7 @@ import com.azure.resourcemanager.machinelearning.models.PrivateLinkServiceConnec
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/PrivateEndpointConnection/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/PrivateEndpointConnection/createOrUpdate.json
      */
     /**
      * Sample code: WorkspacePutPrivateEndpointConnection.
@@ -4880,7 +4880,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/PrivateEndpointConnection/delete.json
+     * x-ms-original-file: 2026-07-01/PrivateEndpointConnection/delete.json
      */
     /**
      * Sample code: WorkspacePutPrivateEndpointConnection.
@@ -4904,7 +4904,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/PrivateEndpointConnection/get.json
+     * x-ms-original-file: 2026-07-01/PrivateEndpointConnection/get.json
      */
     /**
      * Sample code: WorkspaceGetPrivateEndpointConnection.
@@ -4928,7 +4928,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/PrivateEndpointConnection/list.json
+     * x-ms-original-file: 2026-07-01/PrivateEndpointConnection/list.json
      */
     /**
      * Sample code: StorageAccountListPrivateEndpointConnections.
@@ -4950,7 +4950,7 @@ public final class PrivateEndpointConnectionsListSamples {
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/PrivateLinkResource/list.json
+     * x-ms-original-file: 2026-07-01/PrivateLinkResource/list.json
      */
     /**
      * Sample code: WorkspaceListPrivateLinkResources.
@@ -4972,7 +4972,7 @@ public final class PrivateLinkResourcesListSamples {
  */
 public final class QuotasListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Quota/list.json
+     * x-ms-original-file: 2026-07-01/Quota/list.json
      */
     /**
      * Sample code: List workspace quotas by VMFamily.
@@ -4999,7 +4999,7 @@ import java.util.Arrays;
  */
 public final class QuotasUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Quota/update.json
+     * x-ms-original-file: 2026-07-01/Quota/update.json
      */
     /**
      * Sample code: update quotas.
@@ -5051,7 +5051,7 @@ import java.util.Map;
  */
 public final class RegistriesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registries/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registries/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry with system created accounts.
@@ -5125,7 +5125,7 @@ public final class RegistriesCreateOrUpdateSamples {
  */
 public final class RegistriesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registries/delete.json
+     * x-ms-original-file: 2026-07-01/Registries/delete.json
      */
     /**
      * Sample code: Delete Registry.
@@ -5146,7 +5146,7 @@ public final class RegistriesDeleteSamples {
  */
 public final class RegistriesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registries/get.json
+     * x-ms-original-file: 2026-07-01/Registries/get.json
      */
     /**
      * Sample code: Get Registry with system created accounts.
@@ -5168,7 +5168,7 @@ public final class RegistriesGetByResourceGroupSamples {
  */
 public final class RegistriesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registries/listBySubscription.json
+     * x-ms-original-file: 2026-07-01/Registries/listBySubscription.json
      */
     /**
      * Sample code: List registries by subscription.
@@ -5190,7 +5190,7 @@ public final class RegistriesListSamples {
  */
 public final class RegistriesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registries/list.json
+     * x-ms-original-file: 2026-07-01/Registries/list.json
      */
     /**
      * Sample code: List registries with system created accounts.
@@ -5232,7 +5232,7 @@ import java.util.Map;
  */
 public final class RegistriesRemoveRegionsSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registries/removeRegions.json
+     * x-ms-original-file: 2026-07-01/Registries/removeRegions.json
      */
     /**
      * Sample code: Remove regions from registry.
@@ -5315,7 +5315,7 @@ import java.util.Map;
  */
 public final class RegistriesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registries/update.json
+     * x-ms-original-file: 2026-07-01/Registries/update.json
      */
     /**
      * Sample code: Update Registry with system created accounts.
@@ -5367,7 +5367,7 @@ import java.util.Map;
  */
 public final class RegistryCodeContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Code Container.
@@ -5405,7 +5405,7 @@ public final class RegistryCodeContainersCreateOrUpdateSamples {
  */
 public final class RegistryCodeContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeContainer/delete.json
      */
     /**
      * Sample code: Delete Registry Code Container.
@@ -5428,7 +5428,7 @@ public final class RegistryCodeContainersDeleteSamples {
  */
 public final class RegistryCodeContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeContainer/get.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeContainer/get.json
      */
     /**
      * Sample code: Get Registry Code Container.
@@ -5451,7 +5451,7 @@ public final class RegistryCodeContainersGetSamples {
  */
 public final class RegistryCodeContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeContainer/list.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeContainer/list.json
      */
     /**
      * Sample code: List Registry Code Container.
@@ -5476,7 +5476,7 @@ import com.azure.resourcemanager.machinelearning.models.PendingUploadType;
  */
 public final class RegistryCodeVersionsCreateOrGetStartPendingUploadSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeVersion/createOrGetStartPendingUpload.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeVersion/createOrGetStartPendingUpload.json
      */
     /**
      * Sample code: CreateOrGetStartPendingUpload Registry Code Version.
@@ -5507,7 +5507,7 @@ import java.util.Map;
  */
 public final class RegistryCodeVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Code Version.
@@ -5548,7 +5548,7 @@ public final class RegistryCodeVersionsCreateOrUpdateSamples {
  */
 public final class RegistryCodeVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeVersion/delete.json
      */
     /**
      * Sample code: Delete Registry Code Version.
@@ -5571,7 +5571,7 @@ public final class RegistryCodeVersionsDeleteSamples {
  */
 public final class RegistryCodeVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeVersion/get.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeVersion/get.json
      */
     /**
      * Sample code: Get Registry Code Version.
@@ -5594,7 +5594,7 @@ public final class RegistryCodeVersionsGetSamples {
  */
 public final class RegistryCodeVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/CodeVersion/list.json
+     * x-ms-original-file: 2026-07-01/Registry/CodeVersion/list.json
      */
     /**
      * Sample code: List Registry Code Version.
@@ -5622,7 +5622,7 @@ import java.util.Map;
  */
 public final class RegistryComponentContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Component Container.
@@ -5662,7 +5662,7 @@ public final class RegistryComponentContainersCreateOrUpdateSamples {
  */
 public final class RegistryComponentContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentContainer/delete.json
      */
     /**
      * Sample code: Delete Registry Component Container.
@@ -5685,7 +5685,7 @@ public final class RegistryComponentContainersDeleteSamples {
  */
 public final class RegistryComponentContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentContainer/get.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentContainer/get.json
      */
     /**
      * Sample code: Get Registry Component Container.
@@ -5708,7 +5708,7 @@ public final class RegistryComponentContainersGetSamples {
  */
 public final class RegistryComponentContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentContainer/list.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentContainer/list.json
      */
     /**
      * Sample code: List Registry Component Container.
@@ -5739,7 +5739,7 @@ import java.util.Map;
  */
 public final class RegistryComponentVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Component Version.
@@ -5782,7 +5782,7 @@ public final class RegistryComponentVersionsCreateOrUpdateSamples {
  */
 public final class RegistryComponentVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentVersion/delete.json
      */
     /**
      * Sample code: Delete Registry Component Version.
@@ -5805,7 +5805,7 @@ public final class RegistryComponentVersionsDeleteSamples {
  */
 public final class RegistryComponentVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentVersion/get.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentVersion/get.json
      */
     /**
      * Sample code: Get Registry Component Version.
@@ -5828,7 +5828,7 @@ public final class RegistryComponentVersionsGetSamples {
  */
 public final class RegistryComponentVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ComponentVersion/list.json
+     * x-ms-original-file: 2026-07-01/Registry/ComponentVersion/list.json
      */
     /**
      * Sample code: List Registry Component Version.
@@ -5857,7 +5857,7 @@ import java.util.Map;
  */
 public final class RegistryDataContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/DataContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Data Container.
@@ -5898,7 +5898,7 @@ public final class RegistryDataContainersCreateOrUpdateSamples {
  */
 public final class RegistryDataContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/DataContainer/delete.json
      */
     /**
      * Sample code: Delete Registry Data Container.
@@ -5920,7 +5920,7 @@ public final class RegistryDataContainersDeleteSamples {
  */
 public final class RegistryDataContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataContainer/get.json
+     * x-ms-original-file: 2026-07-01/Registry/DataContainer/get.json
      */
     /**
      * Sample code: Get Registry Data Container.
@@ -5945,7 +5945,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class RegistryDataContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataContainer/registryList.json
+     * x-ms-original-file: 2026-07-01/Registry/DataContainer/registryList.json
      */
     /**
      * Sample code: RegistryList Registry Data Container.
@@ -5970,7 +5970,7 @@ import com.azure.resourcemanager.machinelearning.models.GetBlobReferenceSasReque
  */
 public final class RegistryDataReferencesGetBlobReferenceSasSamples {
     /*
-     * x-ms-original-file: 2026-09-01/DataReference/getBlobReferenceSAS.json
+     * x-ms-original-file: 2026-07-01/DataReference/getBlobReferenceSAS.json
      */
     /**
      * Sample code: GetBlobReferenceSAS Data Reference.
@@ -5999,7 +5999,7 @@ import com.azure.resourcemanager.machinelearning.models.PendingUploadType;
  */
 public final class RegistryDataVersionsCreateOrGetStartPendingUploadSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataVersionBase/createOrGetStartPendingUpload.json
+     * x-ms-original-file: 2026-07-01/Registry/DataVersionBase/createOrGetStartPendingUpload.json
      */
     /**
      * Sample code: CreateOrGetStartPendingUpload Registry Data Version Base.
@@ -6031,7 +6031,7 @@ import java.util.Map;
  */
 public final class RegistryDataVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataVersionBase/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/DataVersionBase/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Data Version Base.
@@ -6074,7 +6074,7 @@ public final class RegistryDataVersionsCreateOrUpdateSamples {
  */
 public final class RegistryDataVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataVersionBase/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/DataVersionBase/delete.json
      */
     /**
      * Sample code: Delete Registry Data Version Base.
@@ -6097,7 +6097,7 @@ public final class RegistryDataVersionsDeleteSamples {
  */
 public final class RegistryDataVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataVersionBase/get.json
+     * x-ms-original-file: 2026-07-01/Registry/DataVersionBase/get.json
      */
     /**
      * Sample code: Get Registry Data Version Base.
@@ -6122,7 +6122,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class RegistryDataVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataVersionBase/registryList.json
+     * x-ms-original-file: 2026-07-01/Registry/DataVersionBase/registryList.json
      */
     /**
      * Sample code: RegistryList Registry Data Version Base.
@@ -6151,7 +6151,7 @@ import java.util.Map;
  */
 public final class RegistryEnvironmentContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Environment Container.
@@ -6193,7 +6193,7 @@ public final class RegistryEnvironmentContainersCreateOrUpdateSamples {
  */
 public final class RegistryEnvironmentContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentContainer/delete.json
      */
     /**
      * Sample code: Delete Registry Environment Container.
@@ -6216,7 +6216,7 @@ public final class RegistryEnvironmentContainersDeleteSamples {
  */
 public final class RegistryEnvironmentContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentContainer/get.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentContainer/get.json
      */
     /**
      * Sample code: Get Registry Environment Container.
@@ -6240,7 +6240,7 @@ public final class RegistryEnvironmentContainersGetSamples {
  */
 public final class RegistryEnvironmentContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentContainer/list.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentContainer/list.json
      */
     /**
      * Sample code: List Registry Environment Container.
@@ -6271,7 +6271,7 @@ import java.util.Map;
  */
 public final class RegistryEnvironmentVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Environment Version.
@@ -6321,7 +6321,7 @@ public final class RegistryEnvironmentVersionsCreateOrUpdateSamples {
  */
 public final class RegistryEnvironmentVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentVersion/delete.json
      */
     /**
      * Sample code: Delete Registry Environment Version.
@@ -6344,7 +6344,7 @@ public final class RegistryEnvironmentVersionsDeleteSamples {
  */
 public final class RegistryEnvironmentVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentVersion/get.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentVersion/get.json
      */
     /**
      * Sample code: Get Registry Environment Version.
@@ -6368,7 +6368,7 @@ public final class RegistryEnvironmentVersionsGetSamples {
  */
 public final class RegistryEnvironmentVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentVersion/list.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentVersion/list.json
      */
     /**
      * Sample code: List Registry Environment Version.
@@ -6396,7 +6396,7 @@ import java.util.Map;
  */
 public final class RegistryModelContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelContainer/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelContainer/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Model Container.
@@ -6435,7 +6435,7 @@ public final class RegistryModelContainersCreateOrUpdateSamples {
  */
 public final class RegistryModelContainersDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelContainer/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelContainer/delete.json
      */
     /**
      * Sample code: Delete Registry Model Container.
@@ -6458,7 +6458,7 @@ public final class RegistryModelContainersDeleteSamples {
  */
 public final class RegistryModelContainersGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelContainer/get.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelContainer/get.json
      */
     /**
      * Sample code: Get Registry Model Container.
@@ -6482,7 +6482,7 @@ public final class RegistryModelContainersGetSamples {
  */
 public final class RegistryModelContainersListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelContainer/list.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelContainer/list.json
      */
     /**
      * Sample code: List Registry Model Container.
@@ -6508,7 +6508,7 @@ import com.azure.resourcemanager.machinelearning.models.PendingUploadType;
  */
 public final class RegistryModelVersionsCreateOrGetStartPendingUploadSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelVersion/createOrGetStartPendingUpload.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelVersion/createOrGetStartPendingUpload.json
      */
     /**
      * Sample code: CreateOrGetStartPendingUpload Registry Model Version.
@@ -6540,7 +6540,7 @@ import java.util.Map;
  */
 public final class RegistryModelVersionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelVersion/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelVersion/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Registry Model Version.
@@ -6583,7 +6583,7 @@ public final class RegistryModelVersionsCreateOrUpdateSamples {
  */
 public final class RegistryModelVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelVersion/delete.json
      */
     /**
      * Sample code: Delete Registry Model Version.
@@ -6606,7 +6606,7 @@ public final class RegistryModelVersionsDeleteSamples {
  */
 public final class RegistryModelVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelVersion/get.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelVersion/get.json
      */
     /**
      * Sample code: Get Registry Model Version.
@@ -6630,7 +6630,7 @@ public final class RegistryModelVersionsGetSamples {
  */
 public final class RegistryModelVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/ModelVersion/list.json
+     * x-ms-original-file: 2026-07-01/Registry/ModelVersion/list.json
      */
     /**
      * Sample code: List Registry Model Version.
@@ -6663,7 +6663,7 @@ import java.util.Map;
  */
 public final class SchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Schedule/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Schedule/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Schedule.
@@ -6713,7 +6713,7 @@ public final class SchedulesCreateOrUpdateSamples {
  */
 public final class SchedulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Schedule/delete.json
+     * x-ms-original-file: 2026-07-01/Schedule/delete.json
      */
     /**
      * Sample code: Delete Schedule.
@@ -6734,7 +6734,7 @@ public final class SchedulesDeleteSamples {
  */
 public final class SchedulesGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Schedule/get.json
+     * x-ms-original-file: 2026-07-01/Schedule/get.json
      */
     /**
      * Sample code: Get Schedule.
@@ -6756,7 +6756,7 @@ public final class SchedulesGetSamples {
  */
 public final class SchedulesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Schedule/list.json
+     * x-ms-original-file: 2026-07-01/Schedule/list.json
      */
     /**
      * Sample code: List Schedules.
@@ -6790,7 +6790,7 @@ import java.util.Map;
  */
 public final class ServerlessEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/createOrUpdate.json
+     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Workspace Serverless Endpoint.
@@ -6840,7 +6840,7 @@ public final class ServerlessEndpointsCreateOrUpdateSamples {
  */
 public final class ServerlessEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/delete.json
      */
     /**
      * Sample code: Delete Workspace Serverless Endpoint.
@@ -6862,7 +6862,7 @@ public final class ServerlessEndpointsDeleteSamples {
  */
 public final class ServerlessEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/get.json
      */
     /**
      * Sample code: Get Workspace Serverless Endpoint.
@@ -6885,7 +6885,7 @@ public final class ServerlessEndpointsGetSamples {
  */
 public final class ServerlessEndpointsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/list.json
      */
     /**
      * Sample code: List Workspace Serverless Endpoint.
@@ -6907,7 +6907,7 @@ public final class ServerlessEndpointsListSamples {
  */
 public final class ServerlessEndpointsListKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/listKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/listKeys.json
      */
     /**
      * Sample code: ListKeys Workspace Serverless Endpoint.
@@ -6933,7 +6933,7 @@ import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRe
  */
 public final class ServerlessEndpointsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/regenerateKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/regenerateKeys.json
      */
     /**
      * Sample code: RegenerateKeys Workspace Serverless Endpoint.
@@ -6969,7 +6969,7 @@ import java.util.Map;
  */
 public final class ServerlessEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/update.json
+     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/update.json
      */
     /**
      * Sample code: Update Workspace Serverless Endpoint.
@@ -7017,7 +7017,7 @@ public final class ServerlessEndpointsUpdateSamples {
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Usage/list.json
+     * x-ms-original-file: 2026-07-01/Usage/list.json
      */
     /**
      * Sample code: List Usages.
@@ -7038,7 +7038,7 @@ public final class UsagesListSamples {
  */
 public final class VirtualMachineSizesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/VirtualMachineSize/list.json
+     * x-ms-original-file: 2026-07-01/VirtualMachineSize/list.json
      */
     /**
      * Sample code: List VM Sizes.
@@ -7063,7 +7063,7 @@ import java.time.OffsetDateTime;
  */
 public final class WorkspaceConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/WorkspaceConnection/create.json
+     * x-ms-original-file: 2026-07-01/WorkspaceConnection/create.json
      */
     /**
      * Sample code: CreateWorkspaceConnection.
@@ -7092,7 +7092,7 @@ public final class WorkspaceConnectionsCreateSamples {
  */
 public final class WorkspaceConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/WorkspaceConnection/delete.json
+     * x-ms-original-file: 2026-07-01/WorkspaceConnection/delete.json
      */
     /**
      * Sample code: DeleteWorkspaceConnection.
@@ -7115,7 +7115,7 @@ public final class WorkspaceConnectionsDeleteSamples {
  */
 public final class WorkspaceConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/WorkspaceConnection/get.json
+     * x-ms-original-file: 2026-07-01/WorkspaceConnection/get.json
      */
     /**
      * Sample code: GetWorkspaceConnection.
@@ -7138,7 +7138,7 @@ public final class WorkspaceConnectionsGetSamples {
  */
 public final class WorkspaceConnectionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/WorkspaceConnection/list.json
+     * x-ms-original-file: 2026-07-01/WorkspaceConnection/list.json
      */
     /**
      * Sample code: ListWorkspaceConnections.
@@ -7162,7 +7162,7 @@ public final class WorkspaceConnectionsListSamples {
  */
 public final class WorkspaceConnectionsListSecretsSamples {
     /*
-     * x-ms-original-file: 2026-09-01/WorkspaceConnection/listSecrets.json
+     * x-ms-original-file: 2026-07-01/WorkspaceConnection/listSecrets.json
      */
     /**
      * Sample code: GetWorkspaceConnection.
@@ -7193,7 +7193,7 @@ import java.util.Map;
  */
 public final class WorkspaceConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/WorkspaceConnection/update.json
+     * x-ms-original-file: 2026-07-01/WorkspaceConnection/update.json
      */
     /**
      * Sample code: UpdateWorkspaceConnection.
@@ -7238,7 +7238,7 @@ public final class WorkspaceConnectionsUpdateSamples {
  */
 public final class WorkspaceFeaturesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/WorkspaceFeature/list.json
+     * x-ms-original-file: 2026-07-01/WorkspaceFeature/list.json
      */
     /**
      * Sample code: List Workspace features.
@@ -7272,7 +7272,7 @@ import java.util.Map;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/create.json
+     * x-ms-original-file: 2026-07-01/Workspace/create.json
      */
     /**
      * Sample code: Create Workspace.
@@ -7337,7 +7337,7 @@ public final class WorkspacesCreateOrUpdateSamples {
  */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/delete.json
      */
     /**
      * Sample code: Delete Workspace.
@@ -7363,7 +7363,7 @@ import java.util.Map;
  */
 public final class WorkspacesDiagnoseSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/diagnose.json
+     * x-ms-original-file: 2026-07-01/Workspace/diagnose.json
      */
     /**
      * Sample code: Diagnose Workspace.
@@ -7408,7 +7408,7 @@ public final class WorkspacesDiagnoseSamples {
  */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/get.json
      */
     /**
      * Sample code: Get Workspace.
@@ -7430,7 +7430,7 @@ public final class WorkspacesGetByResourceGroupSamples {
  */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/listBySubscription.json
+     * x-ms-original-file: 2026-07-01/Workspace/listBySubscription.json
      */
     /**
      * Sample code: Get Workspaces by subscription.
@@ -7452,7 +7452,7 @@ public final class WorkspacesListSamples {
  */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/listByResourceGroup.json
+     * x-ms-original-file: 2026-07-01/Workspace/listByResourceGroup.json
      */
     /**
      * Sample code: Get Workspaces by Resource Group.
@@ -7474,7 +7474,7 @@ public final class WorkspacesListByResourceGroupSamples {
  */
 public final class WorkspacesListKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/listKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/listKeys.json
      */
     /**
      * Sample code: List Workspace Keys.
@@ -7495,7 +7495,7 @@ public final class WorkspacesListKeysSamples {
  */
 public final class WorkspacesListNotebookAccessTokenSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/listNotebookAccessToken.json
+     * x-ms-original-file: 2026-07-01/Workspace/listNotebookAccessToken.json
      */
     /**
      * Sample code: List Workspace Keys.
@@ -7517,7 +7517,7 @@ public final class WorkspacesListNotebookAccessTokenSamples {
  */
 public final class WorkspacesListNotebookKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Notebook/listKeys.json
+     * x-ms-original-file: 2026-07-01/Notebook/listKeys.json
      */
     /**
      * Sample code: List Workspace Keys.
@@ -7539,7 +7539,7 @@ public final class WorkspacesListNotebookKeysSamples {
  */
 public final class WorkspacesListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: 2026-09-01/ExternalFQDN/get.json
+     * x-ms-original-file: 2026-07-01/ExternalFQDN/get.json
      */
     /**
      * Sample code: ListOutboundNetworkDependenciesEndpoints.
@@ -7563,7 +7563,7 @@ public final class WorkspacesListOutboundNetworkDependenciesEndpointsSamples {
  */
 public final class WorkspacesListStorageAccountKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/listStorageAccountKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/listStorageAccountKeys.json
      */
     /**
      * Sample code: List Workspace Keys.
@@ -7585,7 +7585,7 @@ public final class WorkspacesListStorageAccountKeysSamples {
  */
 public final class WorkspacesPrepareNotebookSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Notebook/prepare.json
+     * x-ms-original-file: 2026-07-01/Notebook/prepare.json
      */
     /**
      * Sample code: Prepare Notebook.
@@ -7606,7 +7606,7 @@ public final class WorkspacesPrepareNotebookSamples {
  */
 public final class WorkspacesResyncKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/resyncKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/resyncKeys.json
      */
     /**
      * Sample code: Resync Workspace Keys.
@@ -7630,7 +7630,7 @@ import com.azure.resourcemanager.machinelearning.models.Workspace;
  */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/update.json
+     * x-ms-original-file: 2026-07-01/Workspace/update.json
      */
     /**
      * Sample code: Update Workspace.

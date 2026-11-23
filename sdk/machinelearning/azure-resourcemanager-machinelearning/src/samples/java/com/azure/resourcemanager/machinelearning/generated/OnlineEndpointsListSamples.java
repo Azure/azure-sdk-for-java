@@ -12,7 +12,7 @@ import com.azure.resourcemanager.machinelearning.models.OrderString;
  */
 public final class OnlineEndpointsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/list.json
      */
     /**
      * Sample code: List Workspace Online Endpoint.

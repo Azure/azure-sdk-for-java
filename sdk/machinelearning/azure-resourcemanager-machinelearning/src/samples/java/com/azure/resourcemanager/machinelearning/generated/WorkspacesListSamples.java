@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/listBySubscription.json
+     * x-ms-original-file: 2026-07-01/Workspace/listBySubscription.json
      */
     /**
      * Sample code: Get Workspaces by subscription.

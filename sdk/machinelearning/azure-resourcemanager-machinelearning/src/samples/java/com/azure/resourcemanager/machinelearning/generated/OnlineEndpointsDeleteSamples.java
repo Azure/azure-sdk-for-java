@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class OnlineEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/OnlineEndpoint/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/OnlineEndpoint/delete.json
      */
     /**
      * Sample code: Delete Workspace Online Endpoint.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class OnlineDeploymentsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/list.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/list.json
      */
     /**
      * Sample code: List Online Deployments.

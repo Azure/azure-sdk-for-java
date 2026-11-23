@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.UnderlyingResourceAction
  */
 public final class ComputeDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Compute/delete.json
+     * x-ms-original-file: 2026-07-01/Compute/delete.json
      */
     /**
      * Sample code: Delete Compute.

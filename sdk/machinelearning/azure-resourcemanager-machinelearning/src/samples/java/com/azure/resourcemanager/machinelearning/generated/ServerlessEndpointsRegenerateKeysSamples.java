@@ -12,7 +12,7 @@ import com.azure.resourcemanager.machinelearning.models.RegenerateEndpointKeysRe
  */
 public final class ServerlessEndpointsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/ServerlessEndpoint/regenerateKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/ServerlessEndpoint/regenerateKeys.json
      */
     /**
      * Sample code: RegenerateKeys Workspace Serverless Endpoint.

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.machinelearning.models.RuleStatus;
  */
 public final class ManagedNetworkSettingsRuleCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-09-01/ManagedNetwork/createOrUpdateRule.json
+     * x-ms-original-file: 2026-07-01/ManagedNetwork/createOrUpdateRule.json
      */
     /**
      * Sample code: CreateOrUpdate ManagedNetworkSettingsRule.

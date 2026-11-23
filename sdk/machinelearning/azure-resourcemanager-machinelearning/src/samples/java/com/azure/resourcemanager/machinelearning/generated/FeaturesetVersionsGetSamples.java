@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class FeaturesetVersionsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/FeaturesetVersion/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/FeaturesetVersion/get.json
      */
     /**
      * Sample code: Get Workspace Featureset Version.

@@ -12,14 +12,14 @@ public final class GatedModelAccessPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatedModelAccessProperties model
-            = BinaryData.fromString("{\"connectionId\":\"bfcmkrfts\"}").toObject(GatedModelAccessProperties.class);
-        Assertions.assertEquals("bfcmkrfts", model.connectionId());
+            = BinaryData.fromString("{\"connectionId\":\"qqwypvn\"}").toObject(GatedModelAccessProperties.class);
+        Assertions.assertEquals("qqwypvn", model.connectionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatedModelAccessProperties model = new GatedModelAccessProperties().withConnectionId("bfcmkrfts");
+        GatedModelAccessProperties model = new GatedModelAccessProperties().withConnectionId("qqwypvn");
         model = BinaryData.fromObject(model).toObject(GatedModelAccessProperties.class);
-        Assertions.assertEquals("bfcmkrfts", model.connectionId());
+        Assertions.assertEquals("qqwypvn", model.connectionId());
     }
 }

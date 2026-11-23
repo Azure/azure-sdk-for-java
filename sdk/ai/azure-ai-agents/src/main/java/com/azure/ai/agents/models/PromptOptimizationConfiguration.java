@@ -24,7 +24,8 @@ public final class PromptOptimizationConfiguration extends AgentOptimizationConf
     private AgentOptimizationConfigurationType type = AgentOptimizationConfigurationType.PROMPT_OPTIMIZATION;
 
     /*
-     * Context used to steer prompt optimization. Omitted when no context is supplied.
+     * Steering context for prompt optimization. Agent trace and skill reference context are supported only by skill
+     * optimization. Omitted when no context is supplied.
      */
     @Generated
     private List<OptimizationContext> context;
@@ -48,7 +49,8 @@ public final class PromptOptimizationConfiguration extends AgentOptimizationConf
     }
 
     /**
-     * Get the context property: Context used to steer prompt optimization. Omitted when no context is supplied.
+     * Get the context property: Steering context for prompt optimization. Agent trace and skill reference context are
+     * supported only by skill optimization. Omitted when no context is supplied.
      *
      * @return the context value.
      */
@@ -58,7 +60,8 @@ public final class PromptOptimizationConfiguration extends AgentOptimizationConf
     }
 
     /**
-     * Set the context property: Context used to steer prompt optimization. Omitted when no context is supplied.
+     * Set the context property: Steering context for prompt optimization. Agent trace and skill reference context are
+     * supported only by skill optimization. Omitted when no context is supplied.
      *
      * @param context the context value to set.
      * @return the PromptOptimizationConfiguration object itself.

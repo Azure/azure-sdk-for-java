@@ -86,6 +86,54 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
     public static final AzureOpenAIModelName GPT54NANO = fromString("gpt-5.4-nano");
 
     /**
+     * Gpt4o model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT4O = fromString("gpt-4o");
+
+    /**
+     * Gpt4oMini model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT4O_MINI = fromString("gpt-4o-mini");
+
+    /**
+     * Gpt41 model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT41 = fromString("gpt-4.1");
+
+    /**
+     * Gpt41Mini model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT41MINI = fromString("gpt-4.1-mini");
+
+    /**
+     * Gpt41Nano model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT41NANO = fromString("gpt-4.1-nano");
+
+    /**
+     * Gpt5 model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT5 = fromString("gpt-5");
+
+    /**
+     * Gpt51 model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT51 = fromString("gpt-5.1");
+
+    /**
+     * Gpt52 model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT52 = fromString("gpt-5.2");
+
+    /**
      * Gpt54 model.
      */
     @Generated
@@ -114,4 +162,28 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
      */
     @Generated
     public static final AzureOpenAIModelName GPT56LUNA = fromString("gpt-5.6-luna");
+
+    /**
+     * Gpt6Astra model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT6ASTRA = fromString("gpt-6-astra");
+
+    /**
+     * Gpt6Sol model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT6SOL = fromString("gpt-6-sol");
+
+    /**
+     * Gpt6Luna model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT6LUNA = fromString("gpt-6-luna");
+
+    /**
+     * Gpt61Sol model.
+     */
+    @Generated
+    public static final AzureOpenAIModelName GPT61SOL = fromString("gpt-6.1-sol");
 }

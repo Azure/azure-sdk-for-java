@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class BatchEndpointsListKeysSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchEndpoint/listKeys.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchEndpoint/listKeys.json
      */
     /**
      * Sample code: ListKeys Workspace Batch Endpoint.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class CodeVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/CodeVersion/list.json
+     * x-ms-original-file: 2026-07-01/Workspace/CodeVersion/list.json
      */
     /**
      * Sample code: List Workspace Code Version.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class MarketplaceSubscriptionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/MarketplaceSubscription/delete.json
+     * x-ms-original-file: 2026-07-01/Workspace/MarketplaceSubscription/delete.json
      */
     /**
      * Sample code: Delete Workspace Marketplace Subscription.

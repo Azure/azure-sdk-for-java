@@ -39,7 +39,12 @@ public final class EvaluationDataGenerationJobOutputConfiguration
 
     /*
      * Controls how dataset outputs are written. If omitted, defaults to `overwrite` and creates the next dataset
-     * version using only newly generated rows.
+     * version using only newly generated rows. `merge` combines newly generated rows with the latest existing dataset
+     * version and de-duplicates trace rows. For conversation jobs, a newly generated conversation snapshot replaces the
+     * existing snapshot of the same conversation wholesale. The replacement snapshot may omit earlier turns outside the
+     * selected time window. Existing conversations without a newly generated replacement remain unchanged. Merging
+     * replaces whole conversation snapshots rather than unioning individual turns, so it does not retain every previous
+     * turn from the replaced snapshot.
      */
     @Generated
     private DataGenerationJobOutputWriteMode writeMode;
@@ -119,7 +124,12 @@ public final class EvaluationDataGenerationJobOutputConfiguration
 
     /**
      * Get the writeMode property: Controls how dataset outputs are written. If omitted, defaults to `overwrite` and
-     * creates the next dataset version using only newly generated rows.
+     * creates the next dataset version using only newly generated rows. `merge` combines newly generated rows with the
+     * latest existing dataset version and de-duplicates trace rows. For conversation jobs, a newly generated
+     * conversation snapshot replaces the existing snapshot of the same conversation wholesale. The replacement snapshot
+     * may omit earlier turns outside the selected time window. Existing conversations without a newly generated
+     * replacement remain unchanged. Merging replaces whole conversation snapshots rather than unioning individual
+     * turns, so it does not retain every previous turn from the replaced snapshot.
      *
      * @return the writeMode value.
      */
@@ -130,7 +140,12 @@ public final class EvaluationDataGenerationJobOutputConfiguration
 
     /**
      * Set the writeMode property: Controls how dataset outputs are written. If omitted, defaults to `overwrite` and
-     * creates the next dataset version using only newly generated rows.
+     * creates the next dataset version using only newly generated rows. `merge` combines newly generated rows with the
+     * latest existing dataset version and de-duplicates trace rows. For conversation jobs, a newly generated
+     * conversation snapshot replaces the existing snapshot of the same conversation wholesale. The replacement snapshot
+     * may omit earlier turns outside the selected time window. Existing conversations without a newly generated
+     * replacement remain unchanged. Merging replaces whole conversation snapshots rather than unioning individual
+     * turns, so it does not retain every previous turn from the replaced snapshot.
      *
      * @param writeMode the writeMode value to set.
      * @return the EvaluationDataGenerationJobOutputConfiguration object itself.

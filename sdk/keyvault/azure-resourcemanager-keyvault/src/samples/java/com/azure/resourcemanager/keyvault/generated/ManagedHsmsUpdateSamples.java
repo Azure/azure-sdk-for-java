@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ManagedHsmsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-15/ManagedHsm_Update.json
+     * x-ms-original-file: 2026-10-01-preview/ManagedHsm_Update.json
      */
     /**
      * Sample code: Update an existing managed HSM Pool.

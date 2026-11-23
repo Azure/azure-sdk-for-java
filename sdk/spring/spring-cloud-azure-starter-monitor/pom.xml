@@ -57,7 +57,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>4.1.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -130,13 +130,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>2.0.18</version> <!-- {x-version-update;springboot4_org.slf4j:slf4j-simple;external_dependency} -->
+      <version>2.0.20</version> <!-- {x-version-update;springboot4_org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>4.1.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>4.1.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- End of test dependencies -->
@@ -192,7 +192,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.65.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[4.1.1]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[4.1.2]</include> <!-- {x-include-update;springboot4_org.springframework.boot:spring-boot-starter;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class JobsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Job/CommandJob/get.json
+     * x-ms-original-file: 2026-07-01/Job/CommandJob/get.json
      */
     /**
      * Sample code: Get Command Job.
@@ -21,7 +21,7 @@ public final class JobsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/AutoMLJob/get.json
+     * x-ms-original-file: 2026-07-01/Job/AutoMLJob/get.json
      */
     /**
      * Sample code: Get AutoML Job.
@@ -33,7 +33,7 @@ public final class JobsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/SweepJob/get.json
+     * x-ms-original-file: 2026-07-01/Job/SweepJob/get.json
      */
     /**
      * Sample code: Get Sweep Job.
@@ -45,7 +45,7 @@ public final class JobsGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-09-01/Job/PipelineJob/get.json
+     * x-ms-original-file: 2026-07-01/Job/PipelineJob/get.json
      */
     /**
      * Sample code: Get Pipeline Job.

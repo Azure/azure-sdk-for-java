@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class BatchDeploymentsGetSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Workspace/BatchDeployment/get.json
+     * x-ms-original-file: 2026-07-01/Workspace/BatchDeployment/get.json
      */
     /**
      * Sample code: Get Workspace Batch Deployment.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.ManagedNetworkProvisionO
  */
 public final class ManagedNetworkProvisionsProvisionManagedNetworkSamples {
     /*
-     * x-ms-original-file: 2026-09-01/ManagedNetwork/provision.json
+     * x-ms-original-file: 2026-07-01/ManagedNetwork/provision.json
      */
     /**
      * Sample code: Provision ManagedNetwork.

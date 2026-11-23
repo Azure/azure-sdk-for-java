@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Usage/list.json
+     * x-ms-original-file: 2026-07-01/Usage/list.json
      */
     /**
      * Sample code: List Usages.

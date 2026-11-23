@@ -12,7 +12,7 @@ import com.azure.resourcemanager.machinelearning.models.DeploymentLogsRequest;
  */
 public final class OnlineDeploymentsGetLogsSamples {
     /*
-     * x-ms-original-file: 2026-09-01/OnlineDeployment/getLogs.json
+     * x-ms-original-file: 2026-07-01/OnlineDeployment/getLogs.json
      */
     /**
      * Sample code: Get Online Deployment Logs.

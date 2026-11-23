@@ -5,29 +5,43 @@ package com.azure.spring.cloud.autoconfigure.implementation.context;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusPropertiesConfiguration;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.springframework.aot.test.generate.TestGenerationContext;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.aot.ApplicationContextAotGenerator;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.test.tools.CompileWithForkedClassLoader;
 import org.springframework.core.test.tools.TestCompiler;
 import org.springframework.javapoet.ClassName;
+import org.springframework.mock.env.MockEnvironment;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Consumer;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.AZURE_GLOBAL_PROPERTY_BEAN_NAME;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Isolated("AOT compilation uses a forked class loader")
 class AzureGlobalPropertiesAutoConfigurationTests {
+
+    private static final String CLIENT_ID_PROPERTY = "spring.cloud.azure.credential.client-id";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class));
@@ -37,7 +51,104 @@ class AzureGlobalPropertiesAutoConfigurationTests {
         this.contextRunner.run(context -> {
             assertThat(context).hasSingleBean(AzureGlobalPropertiesAutoConfiguration.class);
             assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+            BeanDefinition definition = context.getBeanFactory().getBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME);
+            assertThat(definition.getBeanClassName()).isEqualTo(AzureGlobalProperties.class.getName());
+            assertThat(definition.getRole()).isEqualTo(BeanDefinition.ROLE_APPLICATION);
+            assertThat(definition.isLazyInit()).isFalse();
+            assertThat(context.getBeanFactory().containsSingleton(AZURE_GLOBAL_PROPERTY_BEAN_NAME)).isTrue();
         });
+    }
+
+    @Test
+    void userBeanWithSameNameIsRetained() {
+        AzureGlobalProperties userProperties = new AzureGlobalProperties();
+        userProperties.getCredential().setClientId("user-client");
+        this.contextRunner
+            .withBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME, AzureGlobalProperties.class, () -> userProperties)
+            .withPropertyValues(CLIENT_ID_PROPERTY + "=configured-client")
+            .run(context -> assertThat(context.getBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME)).isSameAs(userProperties));
+    }
+
+    @Test
+    void beanWithSameNameAndDifferentTypeStillSuppressesRegistration() {
+        this.contextRunner
+            .withBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME, String.class, () -> "user-bean")
+            .run(context -> assertThat(context).doesNotHaveBean(AzureGlobalProperties.class));
+    }
+
+    @Test
+    void differentNamePrimaryBeanDoesNotSuppressGlobalBean() {
+        AzureGlobalProperties userProperties = new AzureGlobalProperties();
+        this.contextRunner
+            .withBean("userGlobalProperties", AzureGlobalProperties.class, () -> userProperties,
+                definition -> definition.setPrimary(true))
+            .withPropertyValues(CLIENT_ID_PROPERTY + "=configured-client")
+            .run(context -> {
+                assertThat(context.getBeansOfType(AzureGlobalProperties.class)).hasSize(2);
+                assertThat(context.getBean(AzureGlobalProperties.class)).isSameAs(userProperties);
+                AzureGlobalProperties global = context.getBean(
+                    AZURE_GLOBAL_PROPERTY_BEAN_NAME, AzureGlobalProperties.class);
+                assertThat(global).isNotSameAs(userProperties);
+                assertThat(global.getCredential().getClientId()).isEqualTo("configured-client");
+            });
+    }
+
+    @Test
+    void parentBeanWithSameNameDoesNotSuppressChildBean() {
+        try (GenericApplicationContext parent = new GenericApplicationContext()) {
+            AzureGlobalProperties parentProperties = new AzureGlobalProperties();
+            parentProperties.getCredential().setClientId("parent-client");
+            parent.registerBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME, AzureGlobalProperties.class, () -> parentProperties);
+            parent.refresh();
+            this.contextRunner.withParent(parent)
+                .withPropertyValues(CLIENT_ID_PROPERTY + "=child-client")
+                .run(context -> {
+                    assertThat(context.containsLocalBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME)).isTrue();
+                    AzureGlobalProperties child = context.getBean(
+                        AZURE_GLOBAL_PROPERTY_BEAN_NAME, AzureGlobalProperties.class);
+                    assertThat(child).isNotSameAs(parentProperties);
+                    assertThat(child.getCredential().getClientId()).isEqualTo("child-client");
+                    assertThat(parentProperties.getCredential().getClientId()).isEqualTo("parent-client");
+                });
+        }
+    }
+
+    @Test
+    void primaryEnvironmentBeanDoesNotChangeBindingEnvironment() {
+        Environment customEnvironment = new MockEnvironment().withProperty(CLIENT_ID_PROPERTY, "other-client");
+        this.contextRunner
+            .withBean("customEnvironment", Environment.class, () -> customEnvironment,
+                definition -> definition.setPrimary(true))
+            .withPropertyValues(CLIENT_ID_PROPERTY + "=context-client")
+            .run(context -> {
+                assertThat(context.getBean(Environment.class)).isSameAs(customEnvironment);
+                assertThat(context.getBean(AzureGlobalProperties.class).getCredential().getClientId())
+                    .isEqualTo("context-client");
+            });
+    }
+
+    @Test
+    void namedEnvironmentBeanDoesNotChangeBindingEnvironment() {
+        this.contextRunner
+            .withBean("environment", Environment.class,
+                () -> new MockEnvironment().withProperty(CLIENT_ID_PROPERTY, "other-client"))
+            .withPropertyValues(CLIENT_ID_PROPERTY + "=context-client")
+            .run(context -> assertThat(context.getBean(AzureGlobalProperties.class).getCredential().getClientId())
+                .isEqualTo("context-client"));
+    }
+
+    @Test
+    void primaryApplicationContextBeanDoesNotChangeBindingEnvironment() {
+        try (GenericApplicationContext customContext = new GenericApplicationContext()) {
+            customContext.getEnvironment().getPropertySources()
+                .addFirst(new MapPropertySource("custom", Map.of(CLIENT_ID_PROPERTY, "other-client")));
+            this.contextRunner
+                .withBean("customApplicationContext", ApplicationContext.class, () -> customContext,
+                    definition -> definition.setPrimary(true))
+                .withPropertyValues(CLIENT_ID_PROPERTY + "=context-client")
+                .run(context -> assertThat(context.getBean(AzureGlobalProperties.class).getCredential().getClientId())
+                    .isEqualTo("context-client"));
+        }
     }
 
     @Test
@@ -169,13 +280,97 @@ class AzureGlobalPropertiesAutoConfigurationTests {
 
     @Test
     @CompileWithForkedClassLoader
-    void processAheadOfTimeDoesNotRegisterAzureGlobalProperties() {
+    void processAheadOfTimeRegistersAzureGlobalProperties() {
         GenericApplicationContext context = new AnnotationConfigApplicationContext();
         context.registerBean(AzureGlobalPropertiesAutoConfiguration.class);
         compile(context, (freshContext) -> {
             freshContext.refresh();
-            assertThat(freshContext.getBeansOfType(AzureGlobalProperties.class)).isEmpty();
+            assertThat(freshContext.getBeansOfType(AzureGlobalProperties.class)).hasSize(1);
+            assertThat(freshContext.getBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME)).isInstanceOf(AzureGlobalProperties.class);
+            assertThat(freshContext.getBean(AzureGlobalProperties.class).getProfile().getCloudType()).isEqualTo(AZURE);
         });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeResolvesServiceBusNamespace() {
+        GenericApplicationContext context = serviceBusContext();
+        compile(context, freshContext -> {
+            TestPropertyValues.of("spring.cloud.azure.servicebus.namespace=runtime-namespace").applyTo(freshContext);
+            freshContext.refresh();
+            AzureServiceBusProperties properties = freshContext.getBean(AzureServiceBusProperties.class);
+            assertThat(properties.getFullyQualifiedNamespace()).isEqualTo("runtime-namespace.servicebus.windows.net");
+        });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeBindsRuntimeCloudProperties() {
+        GenericApplicationContext context = serviceBusContext();
+        compile(context, freshContext -> {
+            TestPropertyValues.of(
+                "spring.cloud.azure.servicebus.namespace=runtime-namespace",
+                "spring.cloud.azure.profile.cloud-type=azure_china",
+                CLIENT_ID_PROPERTY + "=runtime-client-id"
+            ).applyTo(freshContext);
+            freshContext.refresh();
+            AzureGlobalProperties globalProperties = freshContext.getBean(AzureGlobalProperties.class);
+            assertThat(globalProperties.getProfile().getCloudType()).isEqualTo(AZURE_CHINA);
+            AzureServiceBusProperties properties = freshContext.getBean(AzureServiceBusProperties.class);
+            assertThat(properties.getFullyQualifiedNamespace())
+                .isEqualTo("runtime-namespace.servicebus.chinacloudapi.cn");
+            assertThat(properties.getCredential().getClientId()).isEqualTo("runtime-client-id");
+        });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeBindsRuntimeEnvironment() {
+        GenericApplicationContext context = new AnnotationConfigApplicationContext();
+        context.getEnvironment().getPropertySources()
+            .addFirst(new MapPropertySource("build", Map.of(CLIENT_ID_PROPERTY, "build-client")));
+        context.registerBean(AzureGlobalPropertiesAutoConfiguration.class);
+        compile(context, freshContext -> {
+            freshContext.getEnvironment().getPropertySources()
+                .addFirst(new MapPropertySource("runtime", Map.of(CLIENT_ID_PROPERTY, "runtime-client")));
+            freshContext.refresh();
+            assertThat(freshContext.getBeansOfType(AzureGlobalProperties.class)).hasSize(1);
+            assertThat(freshContext.getBean(AzureGlobalProperties.class).getCredential().getClientId())
+                .isEqualTo("runtime-client");
+        });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeRetainsChildLocalBean() {
+        try (GenericApplicationContext parent = new GenericApplicationContext()) {
+            parent.registerBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME, AzureGlobalProperties.class);
+            parent.refresh();
+            AzureGlobalProperties parentProperties = parent.getBean(AzureGlobalProperties.class);
+            parentProperties.getCredential().setClientId("parent-client");
+            GenericApplicationContext context = new AnnotationConfigApplicationContext();
+            context.setParent(parent);
+            context.registerBean(AzureGlobalPropertiesAutoConfiguration.class);
+            compile(context, freshContext -> {
+                freshContext.setParent(parent);
+                freshContext.getEnvironment().getPropertySources()
+                    .addFirst(new MapPropertySource("runtime", Map.of(CLIENT_ID_PROPERTY, "child-client")));
+                freshContext.refresh();
+                assertThat(freshContext.containsLocalBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME)).isTrue();
+                AzureGlobalProperties child = freshContext.getBean(
+                    AZURE_GLOBAL_PROPERTY_BEAN_NAME, AzureGlobalProperties.class);
+                assertThat(child).isNotSameAs(parentProperties);
+                assertThat(child.getCredential().getClientId()).isEqualTo("child-client");
+            });
+        }
+    }
+
+    private GenericApplicationContext serviceBusContext() {
+        GenericApplicationContext context = new AnnotationConfigApplicationContext();
+        TestPropertyValues.of("spring.cloud.azure.servicebus.namespace=build-namespace").applyTo(context);
+        context.registerBean(AzureGlobalPropertiesAutoConfiguration.class);
+        context.registerBean(AzureServiceBusPropertiesConfiguration.class);
+        return context;
     }
 
     @SuppressWarnings("unchecked")
@@ -185,12 +380,14 @@ class AzureGlobalPropertiesAutoConfigurationTests {
         ClassName className = new ApplicationContextAotGenerator().processAheadOfTime(context, generationContext);
         generationContext.writeGeneratedContent();
         TestCompiler.forSystem().with(generationContext).compile((compiled) -> {
-            GenericApplicationContext freshApplicationContext = new GenericApplicationContext();
-            ApplicationContextInitializer<GenericApplicationContext> initializer = compiled
-                .getInstance(ApplicationContextInitializer.class, className.toString());
-            initializer.initialize(freshApplicationContext);
-            freshContext.accept(freshApplicationContext);
+            try (GenericApplicationContext freshApplicationContext = new GenericApplicationContext()) {
+                ApplicationContextInitializer<GenericApplicationContext> initializer = compiled
+                    .getInstance(ApplicationContextInitializer.class, className.toString());
+                initializer.initialize(freshApplicationContext);
+                freshContext.accept(freshApplicationContext);
+            }
         });
+        context.close();
     }
 
 }

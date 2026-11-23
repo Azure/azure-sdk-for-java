@@ -11,7 +11,7 @@ import com.azure.resourcemanager.machinelearning.models.ListViewType;
  */
 public final class RegistryDataVersionsListSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/DataVersionBase/registryList.json
+     * x-ms-original-file: 2026-07-01/Registry/DataVersionBase/registryList.json
      */
     /**
      * Sample code: RegistryList Registry Data Version Base.

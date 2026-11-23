@@ -9,7 +9,7 @@ package com.azure.resourcemanager.machinelearning.generated;
  */
 public final class RegistryEnvironmentVersionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-09-01/Registry/EnvironmentVersion/delete.json
+     * x-ms-original-file: 2026-07-01/Registry/EnvironmentVersion/delete.json
      */
     /**
      * Sample code: Delete Registry Environment Version.

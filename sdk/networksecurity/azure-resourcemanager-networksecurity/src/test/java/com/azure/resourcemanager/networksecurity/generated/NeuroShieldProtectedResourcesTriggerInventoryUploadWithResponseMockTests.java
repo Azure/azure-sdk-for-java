@@ -21,7 +21,7 @@ public final class NeuroShieldProtectedResourcesTriggerInventoryUploadWithRespon
     @Test
     public void testTriggerInventoryUploadWithResponse() throws Exception {
         String responseStr
-            = "{\"requestId\":\"nsikvmkqzeqqkdl\",\"requestedAt\":\"2021-09-09T14:39:27Z\",\"expiresAt\":\"2021-08-01T10:38:27Z\",\"deduplicated\":true}";
+            = "{\"requestId\":\"vluwmncsttij\",\"requestedAt\":\"2021-03-23T19:08:07Z\",\"expiresAt\":\"2021-04-05T16:52:36Z\",\"deduplicated\":false}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class NeuroShieldProtectedResourcesTriggerInventoryUploadWithRespon
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NeuroShieldInventoryUploadRequestResult response = manager.neuroShieldProtectedResources()
-            .triggerInventoryUploadWithResponse("k", "wtppjflcxogaoko", "z", com.azure.core.util.Context.NONE)
+            .triggerInventoryUploadWithResponse("qyuvvfonkp", "hqyikvy", "auy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nsikvmkqzeqqkdl", response.requestId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T14:39:27Z"), response.requestedAt());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-01T10:38:27Z"), response.expiresAt());
-        Assertions.assertTrue(response.deduplicated());
+        Assertions.assertEquals("vluwmncsttij", response.requestId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-23T19:08:07Z"), response.requestedAt());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T16:52:36Z"), response.expiresAt());
+        Assertions.assertFalse(response.deduplicated());
     }
 }
