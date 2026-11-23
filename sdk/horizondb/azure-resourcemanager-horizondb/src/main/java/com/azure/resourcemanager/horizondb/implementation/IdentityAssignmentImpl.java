@@ -19,6 +19,18 @@ public final class IdentityAssignmentImpl implements IdentityAssignment, Identit
         com.azure.resourcemanager.horizondb.HorizonDbManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/changeDataCaptureDestinations/{destinationName}/identityAssignments/{assignmentName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/changeDataCaptureDestinations/{destinationName}/identityAssignments/{assignmentName}",
+            "clusterName");
+        this.destinationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/changeDataCaptureDestinations/{destinationName}/identityAssignments/{assignmentName}",
+            "destinationName");
+        this.assignmentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/changeDataCaptureDestinations/{destinationName}/identityAssignments/{assignmentName}",
+            "assignmentName");
     }
 
     public String id() {
