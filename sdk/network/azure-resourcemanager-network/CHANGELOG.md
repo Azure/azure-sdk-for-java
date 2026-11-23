@@ -1,14 +1,32 @@
 # Release History
 
-## 2.65.0-beta.1 (Unreleased)
+## 2.65.0 (2026-11-23)
 
-### Features Added
+- Package api-version 2026-05-01.
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SubgroupProperties` was removed
 
-### Other Changes
+#### `models.InterconnectGroupPropertiesFormat` was removed
+
+#### `models.ProxyResourceVirtualNetworkApplianceCapabilityProperties` was removed
+
+#### `models.Nat64Capability` was modified
+
+* `withProperties(models.VirtualNetworkApplianceCapabilityProperties)` was removed
+
+#### `models.PLGatewayFastpathCapability` was modified
+
+* `withProperties(models.VirtualNetworkApplianceCapabilityProperties)` was removed
+
+#### `models.PLGatewayCapability` was modified
+
+* `withProperties(models.VirtualNetworkApplianceCapabilityProperties)` was removed
+
+#### `models.PLIPForwardersCapability` was modified
+
+* `withProperties(models.VirtualNetworkApplianceCapabilityProperties)` was removed
 
 ## 2.64.0 (2026-11-18)
 

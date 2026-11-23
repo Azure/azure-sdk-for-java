@@ -148,125 +148,6 @@ public interface NetworkInterfacesClient extends InnerSupportsGet<NetworkInterfa
         String cloudServiceName, String roleInstanceName, Context context);
 
     /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
-        String networkInterfaceName, String expand);
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName);
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceWithResponse(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand,
-        Context context);
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName);
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex);
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex);
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex, Context context);
-
-    /**
      * Gets information about the specified network interface.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -856,49 +737,6 @@ public interface NetworkInterfacesClient extends InnerSupportsGet<NetworkInterfa
         String networkInterfaceName, Context context);
 
     /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(String resourceGroupName,
-        String cloudServiceName);
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
-        String cloudServiceName);
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
-        String cloudServiceName, Context context);
-
-    /**
      * Gets all network interfaces in a virtual machine scale set.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -940,6 +778,125 @@ public interface NetworkInterfacesClient extends InnerSupportsGet<NetworkInterfa
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetNetworkInterfaces(String resourceGroupName,
         String virtualMachineScaleSetName, Context context);
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String expand);
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName);
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceWithResponse(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String expand,
+        Context context);
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName);
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex);
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex);
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, Context context);
 
     /**
      * Get the specified network interface ip configuration in a virtual machine scale set.
@@ -1093,4 +1050,47 @@ public interface NetworkInterfacesClient extends InnerSupportsGet<NetworkInterfa
     PagedIterable<NetworkInterfaceIpConfigurationInner> listVirtualMachineScaleSetIpConfigurations(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
         String networkInterfaceName, String expand, Context context);
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(String resourceGroupName,
+        String cloudServiceName);
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
+        String cloudServiceName);
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
+        String cloudServiceName, Context context);
 }

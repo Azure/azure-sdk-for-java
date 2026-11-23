@@ -106,31 +106,6 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterface(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
-            @PathParam("virtualmachineIndex") String virtualmachineIndex,
-            @PathParam("networkInterfaceName") String networkInterfaceName, @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetVMNetworkInterfaces(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
-            @PathParam("virtualmachineIndex") String virtualmachineIndex, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -207,17 +182,6 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/networkInterfaces")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listCloudServiceNetworkInterfaces(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("cloudServiceName") String cloudServiceName, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/networkInterfaces")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -227,6 +191,31 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterface(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
+            @PathParam("virtualmachineIndex") String virtualmachineIndex,
+            @PathParam("networkInterfaceName") String networkInterfaceName, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetVMNetworkInterfaces(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
+            @PathParam("virtualmachineIndex") String virtualmachineIndex, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations/{ipConfigurationName}")
@@ -256,18 +245,21 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/networkInterfaces")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listCloudServiceRoleInstanceNetworkInterfacesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<NetworkInterfaceListResult>> listCloudServiceNetworkInterfaces(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudServiceName") String cloudServiceName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetVMNetworkInterfacesNext(
+        Mono<Response<NetworkInterfaceListResult>> listCloudServiceRoleInstanceNetworkInterfacesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -291,14 +283,6 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceListResult>> listCloudServiceNetworkInterfacesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetNetworkInterfacesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -307,7 +291,23 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkInterfaceListResult>> listVirtualMachineScaleSetVMNetworkInterfacesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkInterfaceIPConfigurationListResult>> listVirtualMachineScaleSetIpConfigurationsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkInterfaceListResult>> listCloudServiceNetworkInterfacesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -647,345 +647,6 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         String cloudServiceName, String roleInstanceName, Context context) {
         return new PagedIterable<>(listCloudServiceRoleInstanceNetworkInterfacesAsync(resourceGroupName,
             cloudServiceName, roleInstanceName, context));
-    }
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
-        String networkInterfaceName, String expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualMachineScaleSetName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
-        }
-        if (virtualmachineIndex == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        final String apiVersion = "2018-10-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getVirtualMachineScaleSetNetworkInterface(this.client.getEndpoint(),
-                apiVersion, this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName,
-                virtualmachineIndex, networkInterfaceName, expand, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
-        String networkInterfaceName, String expand, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualMachineScaleSetName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
-        }
-        if (virtualmachineIndex == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
-        }
-        if (networkInterfaceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
-        }
-        final String apiVersion = "2018-10-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getVirtualMachineScaleSetNetworkInterface(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex,
-            networkInterfaceName, expand, accept, context);
-    }
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
-        final String expand = null;
-        return getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
-            virtualmachineIndex, networkInterfaceName, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceWithResponse(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
-        String networkInterfaceName, String expand, Context context) {
-        return getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
-            virtualmachineIndex, networkInterfaceName, expand, context).block();
-    }
-
-    /**
-     * Get the specified network interface in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param networkInterfaceName The networkInterfaceName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface in a virtual machine scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
-        final String expand = null;
-        return getVirtualMachineScaleSetNetworkInterfaceWithResponse(resourceGroupName, virtualMachineScaleSetName,
-            virtualmachineIndex, networkInterfaceName, expand, Context.NONE).getValue();
-    }
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualMachineScaleSetName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
-        }
-        if (virtualmachineIndex == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
-        }
-        final String apiVersion = "2018-10-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listVirtualMachineScaleSetVMNetworkInterfaces(this.client.getEndpoint(),
-                apiVersion, this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName,
-                virtualmachineIndex, accept, context))
-            .<PagedResponse<NetworkInterfaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualMachineScaleSetName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
-        }
-        if (virtualmachineIndex == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
-        }
-        final String apiVersion = "2018-10-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listVirtualMachineScaleSetVMNetworkInterfaces(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex,
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex) {
-        return new PagedFlux<>(
-            () -> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName,
-                virtualMachineScaleSetName, virtualmachineIndex),
-            nextLink -> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(
-        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, Context context) {
-        return new PagedFlux<>(
-            () -> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName,
-                virtualMachineScaleSetName, virtualmachineIndex, context),
-            nextLink -> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex) {
-        return new PagedIterable<>(listVirtualMachineScaleSetVMNetworkInterfacesAsync(resourceGroupName,
-            virtualMachineScaleSetName, virtualmachineIndex));
-    }
-
-    /**
-     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
-     * @param virtualmachineIndex The virtualmachineIndex parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
-     * response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
-        String virtualMachineScaleSetName, String virtualmachineIndex, Context context) {
-        return new PagedIterable<>(listVirtualMachineScaleSetVMNetworkInterfacesAsync(resourceGroupName,
-            virtualMachineScaleSetName, virtualmachineIndex, context));
     }
 
     /**
@@ -2394,158 +2055,6 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
     }
 
     /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>>
-        listCloudServiceNetworkInterfacesSinglePageAsync(String resourceGroupName, String cloudServiceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
-        }
-        final String apiVersion = "2026-05-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listCloudServiceNetworkInterfaces(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, cloudServiceName, accept, context))
-            .<PagedResponse<NetworkInterfaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesSinglePageAsync(
-        String resourceGroupName, String cloudServiceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
-        }
-        final String apiVersion = "2026-05-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listCloudServiceNetworkInterfaces(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, cloudServiceName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(String resourceGroupName,
-        String cloudServiceName) {
-        return new PagedFlux<>(
-            () -> listCloudServiceNetworkInterfacesSinglePageAsync(resourceGroupName, cloudServiceName),
-            nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(String resourceGroupName,
-        String cloudServiceName, Context context) {
-        return new PagedFlux<>(
-            () -> listCloudServiceNetworkInterfacesSinglePageAsync(resourceGroupName, cloudServiceName, context),
-            nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
-        String cloudServiceName) {
-        return new PagedIterable<>(listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName));
-    }
-
-    /**
-     * Gets all network interfaces in a cloud service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudServiceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
-        String cloudServiceName, Context context) {
-        return new PagedIterable<>(
-            listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName, context));
-    }
-
-    /**
      * Gets all network interfaces in a virtual machine scale set.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2699,6 +2208,345 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         String virtualMachineScaleSetName, Context context) {
         return new PagedIterable<>(
             listVirtualMachineScaleSetNetworkInterfacesAsync(resourceGroupName, virtualMachineScaleSetName, context));
+    }
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String expand) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualMachineScaleSetName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
+        }
+        if (virtualmachineIndex == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getVirtualMachineScaleSetNetworkInterface(this.client.getEndpoint(),
+                apiVersion, this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName,
+                virtualmachineIndex, networkInterfaceName, expand, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NetworkInterfaceInner>> getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String expand, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualMachineScaleSetName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
+        }
+        if (virtualmachineIndex == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getVirtualMachineScaleSetNetworkInterface(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex,
+            networkInterfaceName, expand, accept, context);
+    }
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
+        final String expand = null;
+        return getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
+            virtualmachineIndex, networkInterfaceName, expand).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkInterfaceInner> getVirtualMachineScaleSetNetworkInterfaceWithResponse(
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
+        String networkInterfaceName, String expand, Context context) {
+        return getVirtualMachineScaleSetNetworkInterfaceWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
+            virtualmachineIndex, networkInterfaceName, expand, context).block();
+    }
+
+    /**
+     * Get the specified network interface in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param networkInterfaceName The networkInterfaceName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface in a virtual machine scale set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkInterfaceInner getVirtualMachineScaleSetNetworkInterface(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName) {
+        final String expand = null;
+        return getVirtualMachineScaleSetNetworkInterfaceWithResponse(resourceGroupName, virtualMachineScaleSetName,
+            virtualmachineIndex, networkInterfaceName, expand, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualMachineScaleSetName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
+        }
+        if (virtualmachineIndex == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
+        }
+        final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listVirtualMachineScaleSetVMNetworkInterfaces(this.client.getEndpoint(),
+                apiVersion, this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName,
+                virtualmachineIndex, accept, context))
+            .<PagedResponse<NetworkInterfaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualMachineScaleSetName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null."));
+        }
+        if (virtualmachineIndex == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null."));
+        }
+        final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listVirtualMachineScaleSetVMNetworkInterfaces(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex) {
+        return new PagedFlux<>(
+            () -> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName,
+                virtualMachineScaleSetName, virtualmachineIndex),
+            nextLink -> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
+     * response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfacesAsync(
+        String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, Context context) {
+        return new PagedFlux<>(
+            () -> listVirtualMachineScaleSetVMNetworkInterfacesSinglePageAsync(resourceGroupName,
+                virtualMachineScaleSetName, virtualmachineIndex, context),
+            nextLink -> listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex) {
+        return new PagedIterable<>(listVirtualMachineScaleSetVMNetworkInterfacesAsync(resourceGroupName,
+            virtualMachineScaleSetName, virtualmachineIndex));
+    }
+
+    /**
+     * Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineScaleSetName The virtualMachineScaleSetName parameter.
+     * @param virtualmachineIndex The virtualmachineIndex parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set as paginated
+     * response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkInterfaceInner> listVirtualMachineScaleSetVMNetworkInterfaces(String resourceGroupName,
+        String virtualMachineScaleSetName, String virtualmachineIndex, Context context) {
+        return new PagedIterable<>(listVirtualMachineScaleSetVMNetworkInterfacesAsync(resourceGroupName,
+            virtualMachineScaleSetName, virtualmachineIndex, context));
     }
 
     /**
@@ -3112,6 +2960,158 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
     }
 
     /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>>
+        listCloudServiceNetworkInterfacesSinglePageAsync(String resourceGroupName, String cloudServiceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCloudServiceNetworkInterfaces(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, cloudServiceName, accept, context))
+            .<PagedResponse<NetworkInterfaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>> listCloudServiceNetworkInterfacesSinglePageAsync(
+        String resourceGroupName, String cloudServiceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        final String apiVersion = "2026-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCloudServiceNetworkInterfaces(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, cloudServiceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(String resourceGroupName,
+        String cloudServiceName) {
+        return new PagedFlux<>(
+            () -> listCloudServiceNetworkInterfacesSinglePageAsync(resourceGroupName, cloudServiceName),
+            nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<NetworkInterfaceInner> listCloudServiceNetworkInterfacesAsync(String resourceGroupName,
+        String cloudServiceName, Context context) {
+        return new PagedFlux<>(
+            () -> listCloudServiceNetworkInterfacesSinglePageAsync(resourceGroupName, cloudServiceName, context),
+            nextLink -> listCloudServiceNetworkInterfacesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
+        String cloudServiceName) {
+        return new PagedIterable<>(listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName));
+    }
+
+    /**
+     * Gets all network interfaces in a cloud service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NetworkInterfaceInner> listCloudServiceNetworkInterfaces(String resourceGroupName,
+        String cloudServiceName, Context context) {
+        return new PagedIterable<>(
+            listCloudServiceNetworkInterfacesAsync(resourceGroupName, cloudServiceName, context));
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3165,64 +3165,6 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         context = this.client.mergeContext(context);
         return service
             .listCloudServiceRoleInstanceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>>
-        listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listVirtualMachineScaleSetVMNetworkInterfacesNext(nextLink,
-                this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkInterfaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all network interfaces in a virtual machine in a virtual machine scale set along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>>
-        listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listVirtualMachineScaleSetVMNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3341,63 +3283,6 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>>
-        listCloudServiceNetworkInterfacesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listCloudServiceNetworkInterfacesNext(nextLink, this.client.getEndpoint(),
-                accept, context))
-            .<PagedResponse<NetworkInterfaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network interfaces in a cloud service along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceInner>>
-        listCloudServiceNetworkInterfacesNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listCloudServiceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network interfaces in a virtual machine scale set along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
@@ -3456,6 +3341,64 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>>
+        listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listVirtualMachineScaleSetVMNetworkInterfacesNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NetworkInterfaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all network interfaces in a virtual machine in a virtual machine scale set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>>
+        listVirtualMachineScaleSetVMNetworkInterfacesNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listVirtualMachineScaleSetVMNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network interface ip configuration in a virtual machine scale set along with
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
@@ -3503,6 +3446,63 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetIpConfigurationsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>>
+        listCloudServiceNetworkInterfacesNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listCloudServiceNetworkInterfacesNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<NetworkInterfaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network interfaces in a cloud service along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<NetworkInterfaceInner>>
+        listCloudServiceNetworkInterfacesNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listCloudServiceNetworkInterfacesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

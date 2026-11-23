@@ -5,12 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.CommonProvisioningState;
 import com.azure.resourcemanager.network.models.SubResourceModel;
-import com.azure.resourcemanager.network.models.SubgroupProperties;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A subgroup in an interconnect group.
@@ -20,7 +22,7 @@ public final class SubgroupInner extends SubResourceModel {
     /*
      * Properties of the subgroup.
      */
-    private SubgroupProperties properties;
+    private SubgroupProperties innerProperties;
 
     /*
      * Resource type.
@@ -34,12 +36,12 @@ public final class SubgroupInner extends SubResourceModel {
     }
 
     /**
-     * Get the properties property: Properties of the subgroup.
+     * Get the innerProperties property: Properties of the subgroup.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public SubgroupProperties properties() {
-        return this.properties;
+    private SubgroupProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -53,14 +55,50 @@ public final class SubgroupInner extends SubResourceModel {
     }
 
     /**
+     * Get the internalSubgroupId property: The unique identifier of the subgroup.
+     * 
+     * @return the internalSubgroupId value.
+     */
+    public String internalSubgroupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().internalSubgroupId();
+    }
+
+    /**
+     * Get the interconnectBlock property: The reference to an interconnect block resource.
+     * 
+     * @return the interconnectBlock value.
+     */
+    public SubResource interconnectBlock() {
+        return this.innerProperties() == null ? null : this.innerProperties().interconnectBlock();
+    }
+
+    /**
+     * Get the virtualMachines property: A list of virtual machine references.
+     * 
+     * @return the virtualMachines value.
+     */
+    public List<SubResource> virtualMachines() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachines();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the subgroup.
+     * 
+     * @return the provisioningState value.
+     */
+    public CommonProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 
@@ -72,7 +110,7 @@ public final class SubgroupInner extends SubResourceModel {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", id());
         jsonWriter.writeStringField("name", name());
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -98,7 +136,7 @@ public final class SubgroupInner extends SubResourceModel {
                 } else if ("type".equals(fieldName)) {
                     deserializedSubgroupInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedSubgroupInner.properties = SubgroupProperties.fromJson(reader);
+                    deserializedSubgroupInner.innerProperties = SubgroupProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
