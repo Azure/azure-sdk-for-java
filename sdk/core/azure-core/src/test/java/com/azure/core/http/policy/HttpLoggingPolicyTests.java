@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -242,6 +243,54 @@ public class HttpLoggingPolicyTests {
 
         String logString = convertOutputStreamToString(logCaptureStream);
         assertTrue(logString.contains(new String(data, StandardCharsets.UTF_8)));
+    }
+
+    @Test
+    public void bodyLoggingCanBeDisabledForAsyncCall() {
+        String requestBody = "sensitive-request";
+        String responseBody = "sensitive-response";
+        HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON)
+            .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(responseBody.length()));
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
+            .httpClient(request -> Mono
+                .just(new MockHttpResponse(request, responseHeaders, BinaryData.fromString(responseBody))))
+            .build();
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "https://test.com/sensitive")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON)
+            .setBody(BinaryData.fromString(requestBody));
+        Context context = getCallerMethodContext("bodyLoggingCanBeDisabledForAsyncCall", LogLevel.INFORMATIONAL)
+            .addData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT, true);
+
+        StepVerifier.create(pipeline.send(request, context)).expectNextCount(1).verifyComplete();
+
+        String logString = convertOutputStreamToString(logCaptureStream);
+        assertTrue(!logString.contains(requestBody));
+        assertTrue(!logString.contains(responseBody));
+    }
+
+    @Test
+    public void bodyLoggingCanBeDisabledForSyncCall() {
+        String requestBody = "sensitive-request";
+        String responseBody = "sensitive-response";
+        HttpHeaders responseHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON)
+            .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(responseBody.length()));
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY)))
+            .httpClient(request -> Mono
+                .just(new MockHttpResponse(request, responseHeaders, BinaryData.fromString(responseBody))))
+            .build();
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "https://test.com/sensitive")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON)
+            .setBody(BinaryData.fromString(requestBody));
+        Context context = getCallerMethodContext("bodyLoggingCanBeDisabledForSyncCall", LogLevel.INFORMATIONAL)
+            .addData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT, true);
+
+        pipeline.sendSync(request, context).close();
+
+        String logString = convertOutputStreamToString(logCaptureStream);
+        assertTrue(!logString.contains(requestBody));
+        assertTrue(!logString.contains(responseBody));
     }
 
     private static Stream<Arguments> validateLoggingDoesNotConsumeSupplierSync() {

@@ -3,7 +3,6 @@
 
 package com.azure.core.management.implementation.evaluation;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -13,55 +12,31 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Internal representation of the {@code missingPolicyTokenDetails} object that the Azure Resource Manager returns in
- * the body of a {@code 403 RequestDisallowedByPolicy} response when a resource operation requires an external
- * evaluation ("Invoke") policy token.
- * <p>
- * The presence of this object is the discriminator that distinguishes an external evaluation scenario from a plain
- * policy deny (both share the {@code RequestDisallowedByPolicy} error code). The parsed fields are used only to guard
- * the assumptions of the current SDK version before attempting to acquire a token; they are not part of the acquire
- * request itself.
+ * Internal representation of the external evaluation details returned in a policy-denied response.
  */
 public final class MissingPolicyTokenDetails {
     private static final ClientLogger LOGGER = new ClientLogger(MissingPolicyTokenDetails.class);
 
+    private static final String ERROR = "error";
+    private static final String CODE = "code";
+    private static final String REQUEST_DISALLOWED_BY_POLICY = "RequestDisallowedByPolicy";
+    private static final String ADDITIONAL_INFO = "additionalInfo";
+    private static final String TYPE = "type";
+    private static final String POLICY_VIOLATION = "PolicyViolation";
+    private static final String INFO = "info";
+    private static final String EVALUATION_DETAILS = "evaluationDetails";
     private static final String MISSING_POLICY_TOKEN_DETAILS = "missingPolicyTokenDetails";
     private static final String SHOULD_DENY = "shouldDeny";
-    private static final String ENDPOINT_KIND = "endpointKind";
     private static final String IS_CHANGE_REFERENCE_REQUIRED = "isChangeReferenceRequired";
 
-    private final boolean shouldDeny;
-    private final String endpointKind;
     private final boolean changeReferenceRequired;
 
-    private MissingPolicyTokenDetails(boolean shouldDeny, String endpointKind, boolean changeReferenceRequired) {
-        this.shouldDeny = shouldDeny;
-        this.endpointKind = endpointKind;
+    private MissingPolicyTokenDetails(boolean changeReferenceRequired) {
         this.changeReferenceRequired = changeReferenceRequired;
     }
 
     /**
-     * Whether the resource operation will ultimately be denied when the policy token is not supplied.
-     *
-     * @return whether the operation will be denied without a policy token.
-     */
-    public boolean isShouldDeny() {
-        return shouldDeny;
-    }
-
-    /**
-     * The kind of external evaluation endpoint that backs the policy (for example, {@code AzureResourceGraph}).
-     *
-     * @return the endpoint kind, may be {@code null} if not present in the response.
-     */
-    public String getEndpointKind() {
-        return endpointKind;
-    }
-
-    /**
-     * Whether the service requires a change-safety reference to be supplied when acquiring the policy token. The
-     * current SDK does not support supplying a change reference, so a value of {@code true} indicates the SDK cannot
-     * satisfy the flow.
+     * Whether the service requires a change-safety reference to acquire the policy token.
      *
      * @return whether a change reference is required.
      */
@@ -70,72 +45,83 @@ public final class MissingPolicyTokenDetails {
     }
 
     /**
-     * Attempts to parse the {@code missingPolicyTokenDetails} object out of a {@code 403 RequestDisallowedByPolicy}
-     * response body. The object is located by recursively searching the JSON document so that the parser is resilient
-     * to the exact nesting of the ARM error contract.
+     * Parses an actionable external evaluation response.
+     * <p>
+     * A response is actionable only when it is a {@code RequestDisallowedByPolicy} error containing at least one
+     * {@code PolicyViolation}, and every policy violation contains
+     * {@code evaluationDetails.missingPolicyTokenDetails.shouldDeny=true}.
      *
-     * @param body the raw response body bytes; may be {@code null} or empty.
-     * @return the parsed {@link MissingPolicyTokenDetails}, or {@code null} when the object is not present (indicating
-     * the response is not an external evaluation scenario) or when the body cannot be parsed.
+     * @param body the raw response body.
+     * @return the aggregated details, or {@code null} when token acquisition should not be attempted.
      */
+    @SuppressWarnings("unchecked")
     public static MissingPolicyTokenDetails parse(byte[] body) {
         if (body == null || body.length == 0) {
             return null;
         }
+
         try (JsonReader jsonReader = JsonProviders.createReader(body)) {
-            Object root = jsonReader.readUntyped();
-            Map<String, Object> details = findMissingPolicyTokenDetails(root);
-            if (details == null) {
+            Object rootValue = jsonReader.readUntyped();
+            if (!(rootValue instanceof Map)) {
                 return null;
             }
-            boolean shouldDeny = asBoolean(details.get(SHOULD_DENY), true);
-            String endpointKind = asString(details.get(ENDPOINT_KIND));
-            boolean changeReferenceRequired = asBoolean(details.get(IS_CHANGE_REFERENCE_REQUIRED), false);
-            return new MissingPolicyTokenDetails(shouldDeny, endpointKind, changeReferenceRequired);
+
+            Object errorValue = ((Map<String, Object>) rootValue).get(ERROR);
+            if (!(errorValue instanceof Map)) {
+                return null;
+            }
+            Map<String, Object> error = (Map<String, Object>) errorValue;
+            if (!REQUEST_DISALLOWED_BY_POLICY.equalsIgnoreCase(asString(error.get(CODE)))) {
+                return null;
+            }
+
+            Object additionalInfoValue = error.get(ADDITIONAL_INFO);
+            if (!(additionalInfoValue instanceof List)) {
+                return null;
+            }
+
+            boolean foundPolicyViolation = false;
+            boolean changeReferenceRequired = false;
+            for (Object additionalInfoEntry : (List<Object>) additionalInfoValue) {
+                if (!(additionalInfoEntry instanceof Map)) {
+                    continue;
+                }
+
+                Map<String, Object> additionalInfo = (Map<String, Object>) additionalInfoEntry;
+                if (!POLICY_VIOLATION.equalsIgnoreCase(asString(additionalInfo.get(TYPE)))) {
+                    continue;
+                }
+
+                foundPolicyViolation = true;
+                Map<String, Object> missingTokenDetails = getMissingTokenDetails(additionalInfo.get(INFO));
+                if (missingTokenDetails == null || !Boolean.TRUE.equals(missingTokenDetails.get(SHOULD_DENY))) {
+                    return null;
+                }
+                changeReferenceRequired |= Boolean.TRUE.equals(missingTokenDetails.get(IS_CHANGE_REFERENCE_REQUIRED));
+            }
+
+            return foundPolicyViolation ? new MissingPolicyTokenDetails(changeReferenceRequired) : null;
         } catch (IOException | RuntimeException ex) {
-            // A malformed or unexpected body simply means this is treated as a non-external-evaluation response.
-            LOGGER.verbose("Failed to parse missingPolicyTokenDetails from the response body.", ex);
+            LOGGER.verbose("Failed to parse the policy violation details from the response body.", ex);
             return null;
         }
     }
 
     @SuppressWarnings("unchecked")
-    private static Map<String, Object> findMissingPolicyTokenDetails(Object node) {
-        if (node instanceof Map) {
-            Map<String, Object> map = (Map<String, Object>) node;
-            Object direct = map.get(MISSING_POLICY_TOKEN_DETAILS);
-            if (direct instanceof Map) {
-                return (Map<String, Object>) direct;
-            }
-            for (Object value : map.values()) {
-                Map<String, Object> found = findMissingPolicyTokenDetails(value);
-                if (found != null) {
-                    return found;
-                }
-            }
-        } else if (node instanceof List) {
-            for (Object value : (List<Object>) node) {
-                Map<String, Object> found = findMissingPolicyTokenDetails(value);
-                if (found != null) {
-                    return found;
-                }
-            }
+    private static Map<String, Object> getMissingTokenDetails(Object infoValue) {
+        if (!(infoValue instanceof Map)) {
+            return null;
         }
-        return null;
-    }
-
-    private static boolean asBoolean(Object value, boolean defaultValue) {
-        if (value instanceof Boolean) {
-            return (Boolean) value;
+        Object evaluationDetailsValue = ((Map<String, Object>) infoValue).get(EVALUATION_DETAILS);
+        if (!(evaluationDetailsValue instanceof Map)) {
+            return null;
         }
-        if (value instanceof String) {
-            return Boolean.parseBoolean((String) value);
-        }
-        return defaultValue;
+        Object missingTokenDetailsValue
+            = ((Map<String, Object>) evaluationDetailsValue).get(MISSING_POLICY_TOKEN_DETAILS);
+        return missingTokenDetailsValue instanceof Map ? (Map<String, Object>) missingTokenDetailsValue : null;
     }
 
     private static String asString(Object value) {
-        String stringValue = value == null ? null : value.toString();
-        return CoreUtils.isNullOrEmpty(stringValue) ? null : stringValue;
+        return value instanceof String ? (String) value : null;
     }
 }

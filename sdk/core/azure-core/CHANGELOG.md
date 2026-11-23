@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT` to suppress request and response body logging for sensitive
+  pipeline calls.
+
 ### Breaking Changes
 
 ### Bugs Fixed

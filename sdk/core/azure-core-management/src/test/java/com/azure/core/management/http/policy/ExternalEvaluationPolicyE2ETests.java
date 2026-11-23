@@ -6,19 +6,9 @@ package com.azure.core.management.http.policy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.evaluation.PolicyToken;
-import com.azure.core.management.evaluation.PolicyTokenProvider;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.CoreUtils;
-import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.models.PolicyTokenOperation;
-import com.azure.resourcemanager.resources.models.PolicyTokenRequest;
-import com.azure.resourcemanager.resources.models.PolicyTokenResult;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.storage.models.Kind;
@@ -35,7 +25,6 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.absent;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
@@ -52,12 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * End-to-end test for {@link ExternalEvaluationPolicy} that exercises the full external evaluation ("Invoke") flow
- * against a real (generated) Storage management client and the real {@code acquirePolicyToken} API exposed by
- * {@code azure-resourcemanager-resources}, with Azure Resource Manager itself faked by WireMock.
- * <p>
- * This mirrors how a user would opt in: they import the policy library that exposes {@code acquirePolicyToken}, write
- * a small {@link PolicyTokenProvider} wrapper that converts the SDK-provided {@link com.azure.core.management.evaluation.PolicyTokenRequestContext}
- * into a {@link PolicyTokenRequest}, and add {@link ExternalEvaluationPolicy} to their client's pipeline.
+ * against a real generated Storage management client, with Azure Resource Manager faked by WireMock.
  */
 public class ExternalEvaluationPolicyE2ETests {
     private static final String SUBSCRIPTION_ID = "00000000-0000-0000-0000-000000000000";
@@ -68,13 +52,13 @@ public class ExternalEvaluationPolicyE2ETests {
 
     private static final String STORAGE_PATH = "/subscriptions/" + SUBSCRIPTION_ID + "/resourceGroups/" + RESOURCE_GROUP
         + "/providers/Microsoft.Storage/storageAccounts/" + ACCOUNT_NAME;
-    private static final String ACQUIRE_PATH
-        = "/subscriptions/" + SUBSCRIPTION_ID + "/providers/Microsoft.Authorization/acquirePolicyToken";
+    private static final String ACQUIRE_PATH = "/subscriptions/" + SUBSCRIPTION_ID + "/resourceGroups/" + RESOURCE_GROUP
+        + "/providers/Microsoft.Authorization/acquirePolicyToken";
 
     private static final String DENY_BODY = "{\"error\":{\"code\":\"RequestDisallowedByPolicy\","
         + "\"message\":\"Resource was disallowed by policy.\",\"additionalInfo\":[{\"type\":\"PolicyViolation\","
-        + "\"info\":{\"missingPolicyTokenDetails\":{\"shouldDeny\":true,\"endpointKind\":\"AzureResourceGraph\","
-        + "\"isChangeReferenceRequired\":false}}}]}}";
+        + "\"info\":{\"evaluationDetails\":{\"missingPolicyTokenDetails\":{\"shouldDeny\":true,"
+        + "\"endpointKind\":\"AzureResourceGraph\",\"isChangeReferenceRequired\":false}}}}]}}";
 
     private static final String STORAGE_BODY = "{\"id\":\"" + STORAGE_PATH + "\",\"name\":\"" + ACCOUNT_NAME + "\","
         + "\"type\":\"Microsoft.Storage/storageAccounts\",\"location\":\"eastus\","
@@ -101,9 +85,7 @@ public class ExternalEvaluationPolicyE2ETests {
             String endpoint = "https://localhost:" + server.httpsPort();
             HttpClient httpClient = trustAllHttpClient();
 
-            // The exact UTF-8 acquire request body: PolicyTokenRequest serializes {"operation":{...}} with the
-            // operation's uri, httpMethod, and content in that order; content is the guarded request body echoed
-            // verbatim. The mock service asserts on this exact string (byte-for-byte), not a JSON-path match.
+            // The exact UTF-8 acquire request body includes the guarded request body verbatim.
             String expectedAcquireBody = "{\"operation\":{\"uri\":\"" + endpoint + STORAGE_PATH + "?api-version="
                 + API_VERSION + "\",\"httpMethod\":\"PUT\",\"content\":" + EXPECTED_REQUEST_BODY + "}}";
 
@@ -123,7 +105,8 @@ public class ExternalEvaluationPolicyE2ETests {
 
             // The acquirePolicyToken API issues the token. The mock service asserts the exact UTF-8 request body: the
             // operation echoed to it must match the guarded request byte-for-byte (uri, method, and content).
-            server.stubFor(post(urlPathEqualTo(ACQUIRE_PATH)).withRequestBody(equalTo(expectedAcquireBody))
+            server.stubFor(post(urlPathEqualTo(ACQUIRE_PATH)).withQueryParam("api-version", equalTo("2026-07-01"))
+                .withRequestBody(equalTo(expectedAcquireBody))
                 .willReturn(
                     aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(ACQUIRE_BODY)));
 
@@ -133,41 +116,13 @@ public class ExternalEvaluationPolicyE2ETests {
             endpoints.put(AzureEnvironment.Endpoint.ACTIVE_DIRECTORY.identifier(), endpoint);
             AzureProfile profile = new AzureProfile("tenant", SUBSCRIPTION_ID, new AzureEnvironment(endpoints));
 
-            // The user-provided policy library that knows how to call acquirePolicyToken.
-            HttpPipeline acquirePipeline
-                = new HttpPipelineBuilder().httpClient(httpClient).policies(new RetryPolicy()).build();
-            ResourceManager resourceManager
-                = ResourceManager.authenticate(acquirePipeline, profile).withSubscription(SUBSCRIPTION_ID);
-
-            // The small opt-in wrapper the user writes to bridge the SDK context to the acquirePolicyToken API.
-            AtomicInteger acquireCount = new AtomicInteger();
-            PolicyTokenProvider policyTokenProvider = context -> {
-                acquireCount.incrementAndGet();
-                Object content = context.getContent() == null ? null : context.getContent().toObject(Object.class);
-                PolicyTokenOperation operation = new PolicyTokenOperation().withUri(context.getUri())
-                    .withHttpMethod(context.getHttpMethod().toString())
-                    .withContent(content);
-                return resourceManager.policyClient()
-                    .getPolicyTokens()
-                    .acquireAsync(new PolicyTokenRequest().withOperation(operation))
-                    .flatMap(response -> {
-                        if (response.result() != PolicyTokenResult.SUCCEEDED
-                            || CoreUtils.isNullOrEmpty(response.token())) {
-                            return Mono.error(new IllegalStateException(
-                                "Failed to acquire a policy token (result: " + response.result() + ")."));
-                        }
-                        return Mono.just(new PolicyToken(response.token(), response.expiration()));
-                    });
-            };
-
-            // The guarded client opts in exactly as a user would: add the External Evaluation policy to the manager's
-            // pipeline via the Configurable builder. A dummy credential is enough because the mock service does not
-            // assert on the Authorization header.
+            // The guarded client opts in by adding the policy to its pipeline. A dummy credential is enough because
+            // the mock service does not assert on the Authorization header.
             TokenCredential credential
                 = request -> Mono.just(new AccessToken("dummy-token", OffsetDateTime.now().plusHours(1)));
             StorageManager storageManager = StorageManager.configure()
                 .withHttpClient(httpClient)
-                .withPolicy(new ExternalEvaluationPolicy(policyTokenProvider))
+                .withPolicy(new ExternalEvaluationPolicy())
                 .authenticate(credential, profile);
 
             StorageAccountInner result = storageManager.serviceClient()
@@ -179,7 +134,6 @@ public class ExternalEvaluationPolicyE2ETests {
 
             assertNotNull(result);
             assertEquals(ACCOUNT_NAME, result.name());
-            assertEquals(1, acquireCount.get());
             // The guarded operation is sent twice against the exact URL and method, each carrying the exact same body:
             // once denied (no token header) and once retried with the acquired token.
             server.verify(2,
@@ -191,7 +145,8 @@ public class ExternalEvaluationPolicyE2ETests {
                     .withRequestBody(equalTo(EXPECTED_REQUEST_BODY)));
             // The token is acquired exactly once, with the operation echoing the guarded request verbatim.
             server.verify(1,
-                postRequestedFor(urlPathEqualTo(ACQUIRE_PATH)).withRequestBody(equalTo(expectedAcquireBody)));
+                postRequestedFor(urlPathEqualTo(ACQUIRE_PATH)).withQueryParam("api-version", equalTo("2026-07-01"))
+                    .withRequestBody(equalTo(expectedAcquireBody)));
         } finally {
             server.stop();
         }

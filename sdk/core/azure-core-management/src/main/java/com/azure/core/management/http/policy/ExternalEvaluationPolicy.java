@@ -11,10 +11,8 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.management.evaluation.PolicyToken;
-import com.azure.core.management.evaluation.PolicyTokenProvider;
-import com.azure.core.management.evaluation.PolicyTokenRequestContext;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.implementation.evaluation.MissingPolicyTokenDetails;
@@ -22,10 +20,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Objects;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,44 +38,41 @@ import java.util.regex.Pattern;
  * The pipeline policy that drives the Azure Policy external evaluation ("Invoke") flow.
  * <p>
  * When a resource operation is disallowed by policy because an external evaluation policy token is missing, Azure
- * Resource Manager responds with {@code 403 RequestDisallowedByPolicy} and a {@code missingPolicyTokenDetails} object
- * in the response body. This policy detects that response, acquires a policy token via the supplied
- * {@link PolicyTokenProvider}, applies the token to the {@code x-ms-policy-external-evaluations} header and retries
- * the original operation once.
+ * Resource Manager responds with {@code 403 RequestDisallowedByPolicy}. This policy acquires a token through the same
+ * downstream pipeline, applies it to the {@code x-ms-policy-external-evaluations} header, and retries the original
+ * operation once.
  * <p>
- * The flow applies to all resource operations except {@code GET}. Requests that already carry the
- * {@code x-ms-policy-external-evaluations} header (a replay, or a caller-supplied token) are left untouched, which
- * guards against re-entering the flow. Operations without a request body (for example {@code DELETE}) acquire a token
- * with a {@code null} {@code operation.content}.
- * <p>
- * The policy is positioned {@link HttpPipelinePosition#PER_CALL} so it observes the response after the retry policy
- * has exhausted its own retries. The original operation is retried by replaying the downstream pipeline (reusing the
- * retry and authentication policies), while the token acquisition is delegated out-of-band to the
- * {@link PolicyTokenProvider} so that this policy is never re-entered.
+ * The flow applies to all resource operations except {@code GET}. Requests that already carry the token header are
+ * left untouched to prevent the replay from re-entering the flow.
  */
 public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(ExternalEvaluationPolicy.class);
 
     private static final HttpHeaderName POLICY_EXTERNAL_EVALUATIONS
         = HttpHeaderName.fromString("x-ms-policy-external-evaluations");
+    private static final HttpHeaderName CONTENT_TYPE = HttpHeaderName.fromString("Content-Type");
+    private static final HttpHeaderName ACCEPT = HttpHeaderName.fromString("Accept");
+
+    private static final String APPLICATION_JSON = "application/json";
+    private static final String POLICY_API_VERSION = "2026-07-01";
+    private static final String ACQUIRE_POLICY_TOKEN
+        = "/providers/Microsoft.Authorization/acquirePolicyToken?api-version=" + POLICY_API_VERSION;
 
     private static final int FORBIDDEN = 403;
-
-    private static final Pattern SUBSCRIPTION_ID_PATTERN
-        = Pattern.compile("/subscriptions/([^/?]+)", Pattern.CASE_INSENSITIVE);
-
     private static final byte[] EMPTY_BODY = new byte[0];
+    private static final byte[] ACQUIRE_BODY_SUFFIX = "}}".getBytes(StandardCharsets.UTF_8);
 
-    private final PolicyTokenProvider policyTokenProvider;
+    private static final Pattern MANAGEMENT_GROUP_SCOPE = Pattern
+        .compile("^/providers/Microsoft\\.Management/managementGroups/([^/]+)(?:/|$)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern RESOURCE_GROUP_SCOPE
+        = Pattern.compile("^/subscriptions/([^/]+)/resourceGroups/([^/]+)(?:/|$)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern SUBSCRIPTION_SCOPE
+        = Pattern.compile("^/subscriptions/([^/]+)(?:/|$)", Pattern.CASE_INSENSITIVE);
 
     /**
      * Creates an {@link ExternalEvaluationPolicy}.
-     *
-     * @param policyTokenProvider the {@link PolicyTokenProvider} used to acquire a policy token when required.
-     * @throws NullPointerException if {@code policyTokenProvider} is {@code null}.
      */
-    public ExternalEvaluationPolicy(PolicyTokenProvider policyTokenProvider) {
-        this.policyTokenProvider = Objects.requireNonNull(policyTokenProvider, "'policyTokenProvider' cannot be null.");
+    public ExternalEvaluationPolicy() {
     }
 
     @Override
@@ -84,44 +86,48 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
         if (shouldSkip(request)) {
             return next.process();
         }
-        HttpPipelineNextPolicy replay = next.clone();
-        return makeBodyReplayable(request).then(Mono.defer(next::process)).flatMap(response -> {
-            if (response.getStatusCode() != FORBIDDEN) {
-                return Mono.just(response);
-            }
-            HttpResponse bufferedResponse = response.buffer();
-            return bufferedResponse.getBodyAsByteArray().defaultIfEmpty(EMPTY_BODY).flatMap(body -> {
-                MissingPolicyTokenDetails details = MissingPolicyTokenDetails.parse(body);
-                if (details == null) {
-                    // Not an external evaluation scenario (for example, a plain policy deny); pass the response back.
-                    return Mono.just(bufferedResponse);
+
+        return makeBodyReplayable(request).then(Mono.defer(() -> {
+            HttpRequest originalRequest = context.getHttpRequest().copy();
+            PolicyScope scope = PolicyScope.from(originalRequest.getUrl());
+            HttpPipelineNextPolicy original = next.clone();
+            HttpPipelineNextPolicy acquire = next.clone();
+            HttpPipelineNextPolicy replay = next.clone();
+            boolean bodyLoggingWasDisabled = isBodyLoggingDisabled(context);
+
+            context.setHttpRequest(originalRequest.copy());
+            return original.process().flatMap(response -> {
+                if (response.getStatusCode() != FORBIDDEN) {
+                    return Mono.just(response);
                 }
-                RuntimeException guardError = validate(details);
-                if (guardError != null) {
-                    bufferedResponse.close();
-                    return Mono.error(guardError);
-                }
-                PolicyTokenRequestContext acquireContext = buildAcquireContext(request);
-                if (acquireContext == null) {
-                    // Unable to determine the subscription; surface the original response.
-                    return Mono.just(bufferedResponse);
-                }
-                return policyTokenProvider.getPolicyToken(acquireContext)
-                    // If the token cannot be acquired, the operation remains denied by policy. Re-surface the original
-                    // 403 as the ManagementException the caller would otherwise see, chaining the acquisition failure
-                    // as its cause for diagnosability.
-                    .onErrorResume(
-                        acquisitionError -> Mono.error(policyDeniedException(bufferedResponse, body, acquisitionError)))
-                    .flatMap(policyToken -> {
-                        // Apply the token to the request currently held by the context. The retry policy below this
-                        // policy replaces the context's request with a fresh copy on each attempt, so mutating the
-                        // early-captured request instance would be lost on the replay.
-                        context.getHttpRequest().setHeader(POLICY_EXTERNAL_EVALUATIONS, policyToken.getToken());
+
+                HttpResponse bufferedResponse = response.buffer();
+                return bufferedResponse.getBodyAsByteArray().defaultIfEmpty(EMPTY_BODY).flatMap(body -> {
+                    MissingPolicyTokenDetails details = MissingPolicyTokenDetails.parse(body);
+                    if (details == null || scope == null) {
+                        return Mono.just(bufferedResponse);
+                    }
+
+                    RuntimeException guardError = validate(details);
+                    if (guardError != null) {
+                        bufferedResponse.close();
+                        return Mono.error(guardError);
+                    }
+
+                    return acquirePolicyToken(context, acquire, originalRequest, scope).onErrorMap(error -> {
+                        context.setData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT, bodyLoggingWasDisabled);
+                        return policyDeniedException(bufferedResponse, body, error);
+                    }).flatMap(token -> {
+                        HttpRequest replayRequest = originalRequest.copy();
+                        replayRequest.setHeader(POLICY_EXTERNAL_EVALUATIONS, token);
+                        context.setHttpRequest(replayRequest);
+                        context.setData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT, bodyLoggingWasDisabled);
                         bufferedResponse.close();
                         return replay.process();
                     });
+                });
             });
-        });
+        }));
     }
 
     @Override
@@ -130,41 +136,172 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
         if (shouldSkip(request)) {
             return next.processSync();
         }
-        HttpPipelineNextSyncPolicy replay = next.clone();
+
         makeBodyReplayableSync(request);
-        HttpResponse response = next.processSync();
+        HttpRequest originalRequest = context.getHttpRequest().copy();
+        PolicyScope scope = PolicyScope.from(originalRequest.getUrl());
+        HttpPipelineNextSyncPolicy original = next.clone();
+        HttpPipelineNextSyncPolicy acquire = next.clone();
+        HttpPipelineNextSyncPolicy replay = next.clone();
+        boolean bodyLoggingWasDisabled = isBodyLoggingDisabled(context);
+
+        context.setHttpRequest(originalRequest.copy());
+        HttpResponse response = original.processSync();
         if (response.getStatusCode() != FORBIDDEN) {
             return response;
         }
+
         HttpResponse bufferedResponse = response.buffer();
         byte[] body = bufferedResponse.getBodyAsByteArray().block();
         MissingPolicyTokenDetails details = MissingPolicyTokenDetails.parse(body);
-        if (details == null) {
+        if (details == null || scope == null) {
             return bufferedResponse;
         }
+
         RuntimeException guardError = validate(details);
         if (guardError != null) {
             bufferedResponse.close();
             throw LOGGER.logExceptionAsError(guardError);
         }
-        PolicyTokenRequestContext acquireContext = buildAcquireContext(request);
-        if (acquireContext == null) {
-            return bufferedResponse;
-        }
-        PolicyToken policyToken;
+
+        String token;
         try {
-            policyToken = policyTokenProvider.getPolicyTokenSync(acquireContext);
+            token = acquirePolicyTokenSync(context, acquire, originalRequest, scope);
         } catch (RuntimeException acquisitionError) {
-            // If the token cannot be acquired, the operation remains denied by policy. Re-surface the original 403 as
-            // the ManagementException the caller would otherwise see, chaining the acquisition failure as its cause.
+            context.setData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT, bodyLoggingWasDisabled);
             throw LOGGER.logExceptionAsError(policyDeniedException(bufferedResponse, body, acquisitionError));
         }
-        // Apply the token to the request currently held by the context. The retry policy below this policy replaces
-        // the context's request with a fresh copy on each attempt, so mutating the early-captured request instance
-        // would be lost on the replay.
-        context.getHttpRequest().setHeader(POLICY_EXTERNAL_EVALUATIONS, policyToken.getToken());
+
+        HttpRequest replayRequest = originalRequest.copy();
+        replayRequest.setHeader(POLICY_EXTERNAL_EVALUATIONS, token);
+        context.setHttpRequest(replayRequest);
+        context.setData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT, bodyLoggingWasDisabled);
         bufferedResponse.close();
         return replay.processSync();
+    }
+
+    private static Mono<String> acquirePolicyToken(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
+        HttpRequest originalRequest, PolicyScope scope) {
+        return createAcquireRequest(originalRequest, scope).flatMap(request -> {
+            context.setHttpRequest(request);
+            context.setData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT, true);
+            return next.process();
+        }).flatMap(ExternalEvaluationPolicy::readPolicyToken);
+    }
+
+    private static String acquirePolicyTokenSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next,
+        HttpRequest originalRequest, PolicyScope scope) {
+        context.setHttpRequest(createAcquireRequestSync(originalRequest, scope));
+        context.setData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT, true);
+        return readPolicyTokenSync(next.processSync());
+    }
+
+    private static Mono<HttpRequest> createAcquireRequest(HttpRequest originalRequest, PolicyScope scope) {
+        byte[] prefix = createAcquireBodyPrefix(originalRequest);
+        BinaryData originalBody = originalRequest.getBodyAsBinaryData();
+        Flux<ByteBuffer> serializedBody = originalBody == null
+            ? Flux.just(ByteBuffer.wrap(prefix), ByteBuffer.wrap(ACQUIRE_BODY_SUFFIX))
+            : Flux.concat(Flux.just(ByteBuffer.wrap(prefix)), originalBody.toFluxByteBuffer(),
+                Flux.just(ByteBuffer.wrap(ACQUIRE_BODY_SUFFIX)));
+
+        return BinaryData.fromFlux(serializedBody)
+            .map(body -> createAcquireRequest(originalRequest.getUrl(), scope, body));
+    }
+
+    private static HttpRequest createAcquireRequestSync(HttpRequest originalRequest, PolicyScope scope) {
+        byte[] prefix = createAcquireBodyPrefix(originalRequest);
+        BinaryData originalBody = originalRequest.getBodyAsBinaryData();
+        byte[] body = originalBody == null ? EMPTY_BODY : originalBody.toBytes();
+        int bodyLength = body.length;
+        byte[] serializedBody = new byte[prefix.length + bodyLength + ACQUIRE_BODY_SUFFIX.length];
+        System.arraycopy(prefix, 0, serializedBody, 0, prefix.length);
+        if (originalBody != null) {
+            System.arraycopy(body, 0, serializedBody, prefix.length, body.length);
+        }
+        System.arraycopy(ACQUIRE_BODY_SUFFIX, 0, serializedBody, prefix.length + bodyLength,
+            ACQUIRE_BODY_SUFFIX.length);
+        return createAcquireRequest(originalRequest.getUrl(), scope, BinaryData.fromBytes(serializedBody));
+    }
+
+    private static HttpRequest createAcquireRequest(URL originalUrl, PolicyScope scope, BinaryData body) {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, scope.acquireUrl(originalUrl));
+        request.setHeader(CONTENT_TYPE, APPLICATION_JSON);
+        request.setHeader(ACCEPT, APPLICATION_JSON);
+        request.setBody(body);
+        return request;
+    }
+
+    private static byte[] createAcquireBodyPrefix(HttpRequest request) {
+        String prefix = "{\"operation\":{\"uri\":" + toJsonString(request.getUrl().toString()) + ",\"httpMethod\":"
+            + toJsonString(request.getHttpMethod().toString());
+        if (request.getBodyAsBinaryData() != null) {
+            prefix += ",\"content\":";
+        }
+        return prefix.getBytes(StandardCharsets.UTF_8);
+    }
+
+    private static String toJsonString(String value) {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try (JsonWriter writer = JsonProviders.createWriter(output)) {
+            writer.writeString(value);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Failed to serialize the acquire request.", e));
+        }
+        return new String(output.toByteArray(), StandardCharsets.UTF_8);
+    }
+
+    private static Mono<String> readPolicyToken(HttpResponse response) {
+        HttpResponse bufferedResponse = response.buffer();
+        return bufferedResponse.getBodyAsByteArray().defaultIfEmpty(EMPTY_BODY).flatMap(body -> {
+            try {
+                String token = extractPolicyToken(bufferedResponse, body);
+                bufferedResponse.close();
+                return Mono.just(token);
+            } catch (ManagementException e) {
+                return Mono.error(e);
+            } catch (RuntimeException e) {
+                bufferedResponse.close();
+                return Mono.error(e);
+            }
+        });
+    }
+
+    private static String readPolicyTokenSync(HttpResponse response) {
+        HttpResponse bufferedResponse = response.buffer();
+        byte[] body = bufferedResponse.getBodyAsByteArray().block();
+        try {
+            String token = extractPolicyToken(bufferedResponse, body);
+            bufferedResponse.close();
+            return token;
+        } catch (ManagementException e) {
+            throw e;
+        } catch (RuntimeException e) {
+            bufferedResponse.close();
+            throw e;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static String extractPolicyToken(HttpResponse response, byte[] body) {
+        if (response.getStatusCode() < 200 || response.getStatusCode() >= 300) {
+            ManagementError error = parseManagementError(body);
+            String message = error != null && error.getMessage() != null
+                ? error.getMessage()
+                : "The policy token acquisition request failed with status code " + response.getStatusCode() + ".";
+            throw new ManagementException(message, response, error);
+        }
+
+        try (JsonReader reader = JsonProviders.createReader(body)) {
+            Object root = reader.readUntyped();
+            Object tokenValue = root instanceof Map ? ((Map<String, Object>) root).get("token") : null;
+            String token = tokenValue instanceof String ? (String) tokenValue : null;
+            if (token != null && !token.trim().isEmpty()) {
+                return token;
+            }
+            throw new IllegalStateException("The policy token acquisition response did not contain a valid token.");
+        } catch (IOException e) {
+            throw new IllegalStateException("The policy token acquisition response could not be parsed.", e);
+        }
     }
 
     private static Mono<Void> makeBodyReplayable(HttpRequest request) {
@@ -172,10 +309,7 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
         if (body == null || body.isReplayable()) {
             return Mono.empty();
         }
-        return body.toReplayableBinaryDataAsync().map(replayable -> {
-            request.setBody(replayable);
-            return replayable;
-        }).then();
+        return body.toReplayableBinaryDataAsync().doOnNext(request::setBody).then();
     }
 
     private static void makeBodyReplayableSync(HttpRequest request) {
@@ -185,7 +319,7 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private RuntimeException validate(MissingPolicyTokenDetails details) {
+    private static RuntimeException validate(MissingPolicyTokenDetails details) {
         if (details.isChangeReferenceRequired()) {
             return new IllegalStateException("The policy external evaluation flow requires a change reference, which "
                 + "is not supported by this version of the SDK. Please upgrade to a newer version of the Azure SDK.");
@@ -196,7 +330,7 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
     private static ManagementException policyDeniedException(HttpResponse deniedResponse, byte[] deniedBody,
         Throwable cause) {
         ManagementError error = parseManagementError(deniedBody);
-        String message = (error != null && error.getMessage() != null)
+        String message = error != null && error.getMessage() != null
             ? error.getMessage()
             : "The resource operation was disallowed by policy and a policy token could not be acquired.";
         ManagementException exception = new ManagementException(message, deniedResponse, error);
@@ -215,45 +349,53 @@ public class ExternalEvaluationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private PolicyTokenRequestContext buildAcquireContext(HttpRequest request) {
-        String uri = request.getUrl().toString();
-        String subscriptionId = extractSubscriptionId(uri);
-        if (subscriptionId == null) {
-            LOGGER.verbose("Unable to extract the subscription ID from the request URL; "
-                + "skipping the policy external evaluation flow.");
-            return null;
-        }
-        // When the operation has no request body (for example a DELETE), the content is left null so that
-        // operation.content is null/omitted rather than being sent as an empty value.
-        BinaryData content = request.getBodyAsBinaryData();
-        return new PolicyTokenRequestContext().setUri(uri)
-            .setHttpMethod(request.getHttpMethod())
-            .setContent(content)
-            .setSubscriptionId(subscriptionId);
-    }
-
-    /**
-     * Determines whether the external evaluation flow should be bypassed for the given request.
-     * <p>
-     * The flow applies to all resource operations except {@code GET}, so a {@code GET} is always skipped.
-     * <p>
-     * The presence of the {@code x-ms-policy-external-evaluations} header is used as a loop guard. Per the service
-     * contract, a request that already carries this header will not produce a {@code 403} with a
-     * {@code missingPolicyTokenDetails} hint, so there is nothing for this policy to act on. Skipping such requests
-     * guarantees we never re-enter the acquire-and-retry flow, which matters now that non-idempotent methods such as
-     * {@code POST} are in scope: it prevents a token that is still rejected from driving an infinite retry loop, and it
-     * also leaves a caller-supplied token untouched.
-     *
-     * @param request the outgoing request.
-     * @return {@code true} if the external evaluation flow should be skipped.
-     */
     private static boolean shouldSkip(HttpRequest request) {
         return request.getHttpMethod() == HttpMethod.GET
             || request.getHeaders().getValue(POLICY_EXTERNAL_EVALUATIONS) != null;
     }
 
-    private static String extractSubscriptionId(String uri) {
-        Matcher matcher = SUBSCRIPTION_ID_PATTERN.matcher(uri);
-        return matcher.find() ? matcher.group(1) : null;
+    private static boolean isBodyLoggingDisabled(HttpPipelineCallContext context) {
+        return Boolean.TRUE.equals(context.getData(HttpLoggingPolicy.BODY_LOGGING_DISABLED_CONTEXT).orElse(false));
+    }
+
+    private static final class PolicyScope {
+        private final String acquirePath;
+
+        private PolicyScope(String acquirePath) {
+            this.acquirePath = acquirePath;
+        }
+
+        private static PolicyScope from(URL url) {
+            String path = url.getPath();
+            Matcher managementGroup = MANAGEMENT_GROUP_SCOPE.matcher(path);
+            if (managementGroup.find()) {
+                return new PolicyScope("/providers/Microsoft.Management/managementGroups/" + managementGroup.group(1)
+                    + ACQUIRE_POLICY_TOKEN);
+            }
+
+            Matcher resourceGroup = RESOURCE_GROUP_SCOPE.matcher(path);
+            if (resourceGroup.find()) {
+                return new PolicyScope("/subscriptions/" + resourceGroup.group(1) + "/resourceGroups/"
+                    + resourceGroup.group(2) + ACQUIRE_POLICY_TOKEN);
+            }
+
+            Matcher subscription = SUBSCRIPTION_SCOPE.matcher(path);
+            if (subscription.find()) {
+                return new PolicyScope("/subscriptions/" + subscription.group(1) + ACQUIRE_POLICY_TOKEN);
+            }
+
+            LOGGER.verbose("Unable to determine the ARM scope from the request URL; "
+                + "skipping the policy external evaluation flow.");
+            return null;
+        }
+
+        private URL acquireUrl(URL originalUrl) {
+            try {
+                return new URL(originalUrl.getProtocol(), originalUrl.getHost(), originalUrl.getPort(), acquirePath);
+            } catch (MalformedURLException e) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Failed to construct the policy token acquisition URL.", e));
+            }
+        }
     }
 }

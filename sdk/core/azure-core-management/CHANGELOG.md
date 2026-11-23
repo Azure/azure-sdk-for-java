@@ -4,7 +4,9 @@
 
 ### Features Added
 
-- Added `ExternalEvaluationPolicy`, `PolicyTokenProvider`, `PolicyToken` and `PolicyTokenRequestContext` to support the Azure Policy external evaluation ("Invoke") flow. When a resource operation is disallowed by policy because an external evaluation policy token is missing, the policy acquires a token and retries the operation.
+- Added `ExternalEvaluationPolicy` to support the Azure Policy external evaluation ("Invoke") flow. When every
+  blocking policy violation requires a policy token, the policy acquires one through the client pipeline and retries
+  the operation.
 
 ### Breaking Changes
 
