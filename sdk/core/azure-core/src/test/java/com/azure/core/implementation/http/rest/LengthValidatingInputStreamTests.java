@@ -34,9 +34,47 @@ public class LengthValidatingInputStreamTests {
 
     @Test
     public void oversizedReadFailsBeforeReturningBytes() {
-        InputStream stream = new LengthValidatingInputStream(new ByteArrayInputStream(new byte[8]), 4);
+        InputStream stream
+            = new LengthValidatingInputStream(new ByteArrayInputStream(new byte[] { 1, 2, 3, 4, 5, 6 }), 4);
+        byte[] buffer = new byte[] { -1, -1, -1, -1, -1, -1 };
 
-        assertThrows(UnexpectedLengthException.class, () -> stream.read(new byte[8]));
+        assertThrows(UnexpectedLengthException.class, () -> stream.read(buffer));
+        assertEquals(-1, buffer[4]);
+        assertEquals(-1, buffer[5]);
+    }
+
+    @Test
+    public void readAtDeclaredLengthDoesNotBlockForUnavailableData() throws Exception {
+        byte[] data = new byte[] { 1, 2, 3, 4 };
+        InputStream inner = new InputStream() {
+            private int position;
+
+            @Override
+            public int read() {
+                throw new AssertionError("Single byte reads must not be used before the caller reads past the body.");
+            }
+
+            @Override
+            public int read(byte[] b, int off, int len) {
+                if (position == data.length) {
+                    throw new AssertionError("Reads must not block waiting for data beyond the declared length.");
+                }
+                int read = Math.min(len, data.length - position);
+                System.arraycopy(data, position, b, off, read);
+                position += read;
+                return read;
+            }
+
+            @Override
+            public int available() {
+                return 0;
+            }
+        };
+        InputStream stream = new LengthValidatingInputStream(inner, data.length);
+        byte[] buffer = new byte[8];
+
+        assertEquals(data.length, stream.read(buffer));
+        assertArraysEqual(data, 0, data.length, buffer, data.length);
     }
 
     @Test

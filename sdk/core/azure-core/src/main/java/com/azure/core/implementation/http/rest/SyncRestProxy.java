@@ -76,8 +76,13 @@ public class SyncRestProxy extends RestProxyBase {
                 requestCallback.accept(request);
             }
 
-            if (request.getBodyAsBinaryData() != null) {
-                request.setBody(RestProxyUtils.validateLengthSync(request));
+            BinaryData body = request.getBodyAsBinaryData();
+            if (body != null) {
+                // Only replace the body when validation wrapped or buffered it, as setting the body re-infers framing.
+                BinaryData validatedBody = RestProxyUtils.validateLengthSync(request);
+                if (validatedBody != body) {
+                    request.setBody(validatedBody);
+                }
             }
 
             final HttpResponse response = send(request, context);

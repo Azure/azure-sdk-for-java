@@ -183,7 +183,7 @@ public class JsonPatchDocumentTests {
             .of("\"text\"", "\"quotes\\\" backslash\\\\ newline\\n tab\\t\"",
                 "\"0,\\\"path\\\":\\\"/privileged\\\",\\\"value\\\":1\"",
                 "{\"nested\":[\"quoted\\\"\",{\"enabled\":true,\"empty\":null}]}", "[1,\"two\",false,null]", "42",
-                "-1.25", "true", "false", "null")
+                "-1.25", "true", "false", "null", "\"\\uD800\"", "\"a\\uDC00b\\uD83D\"")
             .map(value -> "[{\"op\":\"add\",\"path\":\"/allowed\",\"value\":" + value + "}]");
     }
 
@@ -201,7 +201,8 @@ public class JsonPatchDocumentTests {
     private static Stream<String> escapedPaths() {
         return Stream.of("[{\"op\":\"remove\",\"path\":\"/quoted\\\"path\\\\line\\n\"}]",
             "[{\"op\":\"copy\",\"from\":\"/quoted\\\"from\",\"path\":\"/allowed\"}]",
-            "[{\"op\":\"remove\",\"path\":\"/allowed\"}]");
+            "[{\"op\":\"remove\",\"path\":\"/allowed\"}]",
+            "[{\"op\":\"copy\",\"from\":\"/\\uDC00\",\"path\":\"/unpaired\\uD800\"}]");
     }
 
     private static String constructExpectedOperation(String op, String from, String path, String value) {

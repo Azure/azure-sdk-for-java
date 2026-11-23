@@ -100,6 +100,100 @@ public class RequestOptionsTests {
     }
 
     @Test
+    public void unknownLengthBodyRemovesLengthInferredFromReplacedBody() {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, "https://request.url").setBody(BinaryData.fromBytes(new byte[5]));
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1, 2, 3 }));
+
+        new RequestOptions().setBody(body).getRequestCallback().accept(request);
+
+        assertSame(body, request.getBodyAsBinaryData());
+        assertNull(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
+    public void unknownLengthBodyRemovesLengthOfReplacedZeroLengthBody() {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, "https://request.url").setBody(BinaryData.fromBytes(new byte[0]));
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1, 2, 3 }));
+
+        new RequestOptions().setBody(body).getRequestCallback().accept(request);
+
+        assertNull(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
+    public void explicitLengthSetBeforeUnknownLengthBodyIsPreserved() {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, "https://request.url").setBody(BinaryData.fromBytes(new byte[5]));
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1, 2, 3 }));
+
+        new RequestOptions().setHeader(HttpHeaderName.CONTENT_LENGTH, "3")
+            .setBody(body)
+            .getRequestCallback()
+            .accept(request);
+
+        assertEquals("3", request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
+    public void explicitLengthMatchingReplacedBodyIsPreserved() {
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, "https://request.url").setBody(BinaryData.fromBytes(new byte[5]));
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[5]));
+
+        new RequestOptions().setHeader(HttpHeaderName.CONTENT_LENGTH, "5")
+            .setBody(body)
+            .getRequestCallback()
+            .accept(request);
+
+        assertSame(body, request.getBodyAsBinaryData());
+        assertEquals("5", request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
+    public void explicitZeroLengthFromCallbackIsPreserved() {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "https://request.url");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[0]));
+
+        new RequestOptions().addRequestCallback(r -> r.setHeader(HttpHeaderName.CONTENT_LENGTH, "0"))
+            .setBody(body)
+            .getRequestCallback()
+            .accept(request);
+
+        assertEquals("0", request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
+    public void unknownLengthBodyRemovesLengthInferredFromPreviouslySetBody() {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "https://request.url");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[] { 1, 2, 3 }));
+
+        new RequestOptions().setBody(BinaryData.fromBytes(new byte[5]))
+            .setBody(body)
+            .getRequestCallback()
+            .accept(request);
+
+        assertSame(body, request.getBodyAsBinaryData());
+        assertNull(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
+    public void explicitLengthBetweenBodyReplacementsIsPreserved() {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "https://request.url");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[5]));
+
+        new RequestOptions().setBody(BinaryData.fromBytes(new byte[5]))
+            .addRequestCallback(r -> r.setHeader(HttpHeaderName.CONTENT_LENGTH, "5"))
+            .setBody(body)
+            .getRequestCallback()
+            .accept(request);
+
+        assertSame(body, request.getBodyAsBinaryData());
+        assertEquals("5", request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+    }
+
+    @Test
     public void addRequestCallback() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
 

@@ -25,8 +25,10 @@
 - Fixed cached `UrlBuilder` copies sharing mutable query values and clearing a query before lazy initialization.
 - Fixed JSON escaping of string data in `CloudEvent` and nested strings and property names when deserializing `BinaryData`.
 - Fixed oversized `InputStream` request chunks being returned before their length was validated.
-- Fixed unknown-length request bodies without a Content-Length header failing length validation. Setting an
-  unknown-length body through `RequestOptions` also removes the stale zero Content-Length of an empty request.
+- Fixed unknown-length request bodies without a Content-Length header failing length validation, and synchronous
+  requests re-adding a Content-Length header for known-length bodies that didn't need validation. Setting an
+  unknown-length body through `RequestOptions` also removes a stale Content-Length that described the replaced body,
+  or the zero Content-Length of an empty request, while preserving Content-Length values set explicitly.
 
 ### Other Changes
 
