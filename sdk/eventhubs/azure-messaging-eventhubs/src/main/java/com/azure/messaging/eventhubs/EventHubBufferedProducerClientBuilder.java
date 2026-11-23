@@ -489,6 +489,12 @@ public final class EventHubBufferedProducerClientBuilder
 
     /**
      * The callback to invoke when publishing a set of events fails.
+     * <p>
+     * An event that cannot fit in a batch, or whose batch cannot be created, also reaches this callback.
+     * Later events can retry batch creation. Callbacks run serially for each partition.
+     * A rejected event can reach this callback while an earlier batch is still in flight.
+     * The client logs ordinary callback exceptions and continues publishing. Fatal errors propagate.
+     * </p>
      *
      * @param sendFailedContext The callback to invoke.
      *
@@ -501,6 +507,10 @@ public final class EventHubBufferedProducerClientBuilder
 
     /**
      * The callback to invoke when publishing a set of events succeeds.
+     * <p>
+     * The client logs ordinary callback exceptions and continues publishing. Fatal errors propagate.
+     * Callbacks run serially for each partition.
+     * </p>
      *
      * @param sendSucceededContext The callback to invoke when publishing a ste of events succeeds.
      *
