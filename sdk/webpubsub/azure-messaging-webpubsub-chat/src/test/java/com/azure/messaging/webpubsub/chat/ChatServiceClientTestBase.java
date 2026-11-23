@@ -3,6 +3,7 @@
 
 package com.azure.messaging.webpubsub.chat;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -11,7 +12,9 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
@@ -62,9 +65,7 @@ abstract class ChatServiceClientTestBase extends TestProxyTestBase {
         asyncClient = builder.buildAsyncClient();
 
         WebPubSubChatServiceClientBuilder entraBuilder = new WebPubSubChatServiceClientBuilder().endpoint(ENDPOINT)
-            .credential(getTestMode() == TestMode.PLAYBACK
-                ? new MockTokenCredential()
-                : new DefaultAzureCredentialBuilder().build())
+            .credential(getIdentityTestCredential(getTestMode(), Configuration.getGlobalConfiguration()))
             .hub(HUB)
             .httpClient(httpClient);
         if (getTestMode() == TestMode.RECORD) {
@@ -72,6 +73,26 @@ abstract class ChatServiceClientTestBase extends TestProxyTestBase {
         }
         entraClient = entraBuilder.buildClient();
         entraAsyncClient = entraBuilder.buildAsyncClient();
+    }
+
+    static TokenCredential getIdentityTestCredential(TestMode mode, Configuration config) {
+        if (mode == TestMode.PLAYBACK) {
+            return new MockTokenCredential();
+        }
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)) {
+            return new AzurePipelinesCredentialBuilder().configuration(config)
+                .serviceConnectionId(serviceConnectionId)
+                .clientId(config.get("AZURESUBSCRIPTION_CLIENT_ID"))
+                .tenantId(config.get("AZURESUBSCRIPTION_TENANT_ID"))
+                .systemAccessToken(config.get("SYSTEM_ACCESSTOKEN"))
+                .build();
+        }
+        if ("true".equalsIgnoreCase(config.get("TF_BUILD"))) {
+            throw new IllegalStateException("Azure Pipelines service connection ID is required for live tests.");
+        }
+        return new DefaultAzureCredentialBuilder().configuration(config).build();
     }
 
     protected static void cleanup(Runnable cleanup) {
