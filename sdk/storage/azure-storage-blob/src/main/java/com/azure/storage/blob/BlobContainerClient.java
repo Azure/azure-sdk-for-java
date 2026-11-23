@@ -41,6 +41,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -369,6 +370,8 @@ public final class BlobContainerClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.create -->
@@ -383,6 +386,10 @@ public final class BlobContainerClient {
      * &#125;
      * </pre>
      * <!-- end com.azure.storage.blob.BlobContainerClient.create -->
+     *
+     * @throws BlobStorageException If the container could not be created, for example because a container with the same
+     * name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted (status code
+     * 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create() {
@@ -393,6 +400,8 @@ public final class BlobContainerClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -413,6 +422,9 @@ public final class BlobContainerClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
+     * @throws BlobStorageException If the container could not be created, for example because a container with the same
+     * name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted (status code
+     * 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
@@ -428,6 +440,8 @@ public final class BlobContainerClient {
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
@@ -438,6 +452,8 @@ public final class BlobContainerClient {
      * <!-- end com.azure.storage.blob.BlobContainerClient.createIfNotExists -->
      *
      * @return {@code true} if container is successfully created, {@code false} if container already exists.
+     * @throws BlobStorageException If the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean createIfNotExists() {
@@ -447,6 +463,8 @@ public final class BlobContainerClient {
     /**
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -471,6 +489,8 @@ public final class BlobContainerClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 201, a new
      * container was successfully created. If status code is 409, a container already existed at this location.
+     * @throws BlobStorageException If the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Duration timeout,
@@ -481,7 +501,7 @@ public final class BlobContainerClient {
                 = createWithResponse(finalOptions.getMetadata(), finalOptions.getPublicAccessType(), timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 409) {
+            if (ModelHelper.isConflictWithErrorCode(e, BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
             } else {

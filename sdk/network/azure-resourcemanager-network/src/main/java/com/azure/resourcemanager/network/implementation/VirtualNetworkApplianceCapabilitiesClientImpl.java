@@ -154,7 +154,7 @@ public final class VirtualNetworkApplianceCapabilitiesClientImpl implements Virt
         if (capabilityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capabilityName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -197,7 +197,7 @@ public final class VirtualNetworkApplianceCapabilitiesClientImpl implements Virt
         if (capabilityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capabilityName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -297,7 +297,7 @@ public final class VirtualNetworkApplianceCapabilitiesClientImpl implements Virt
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -349,7 +349,7 @@ public final class VirtualNetworkApplianceCapabilitiesClientImpl implements Virt
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -561,7 +561,7 @@ public final class VirtualNetworkApplianceCapabilitiesClientImpl implements Virt
         if (capabilityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capabilityName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         return FluxUtil
             .withContext(
                 context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -603,7 +603,7 @@ public final class VirtualNetworkApplianceCapabilitiesClientImpl implements Virt
         if (capabilityName == null) {
             return Mono.error(new IllegalArgumentException("Parameter capabilityName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
             virtualNetworkApplianceName, capabilityName, context);
@@ -785,7 +785,7 @@ public final class VirtualNetworkApplianceCapabilitiesClientImpl implements Virt
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -826,7 +826,7 @@ public final class VirtualNetworkApplianceCapabilitiesClientImpl implements Virt
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkApplianceName is required and cannot be null."));
         }
-        final String apiVersion = "2026-03-01";
+        final String apiVersion = "2026-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

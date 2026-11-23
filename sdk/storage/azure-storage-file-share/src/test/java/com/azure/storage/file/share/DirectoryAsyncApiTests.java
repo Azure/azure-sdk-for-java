@@ -410,6 +410,17 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
+    public void createIfNotExistsDirectoryOnAFile() {
+        String name = generatePathName();
+        shareClient.getFileClient(name).create(1024);
+        ShareDirectoryAsyncClient client = directoryBuilderHelper(shareName, name).buildDirectoryAsyncClient();
+
+        StepVerifier.create(client.createIfNotExists())
+            .verifyErrorSatisfies(r -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(r, 409,
+                ShareErrorCode.RESOURCE_TYPE_MISMATCH));
+    }
+
+    @Test
     public void createIfNotExistsDirectoryThatAlreadyExists() {
         ShareDirectoryAsyncClient client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName());
         Mono<Response<ShareDirectoryInfo>> initialResponseMono

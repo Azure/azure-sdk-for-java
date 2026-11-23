@@ -201,6 +201,37 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createIfNotExistsOnContainerBeingDeleted() {
+        StepVerifier.create(ccAsync.delete().then(ccAsync.createIfNotExists()))
+            .verifyErrorSatisfies(
+                r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    @Test
+    public void createOnContainerBeingDeleted() {
+        StepVerifier.create(ccAsync.delete().then(ccAsync.create()))
+            .verifyErrorSatisfies(
+                r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    // Live only: it waits for the service to finish deleting the container, typically 30 to 60 seconds (see
+    // createAfterContainerDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createIfNotExistsAfterContainerDeleteCompletes() {
+        StepVerifier
+            .create(
+                ccAsync.delete().then(createAfterContainerDeleteCompletes(ccAsync.createIfNotExistsWithResponse(null))))
+            .assertNext(response -> {
+                assertResponseStatusCode(response, 201);
+                assertTrue(response.getValue());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(ccAsync.exists()).expectNext(true).verifyComplete();
+    }
+
+    @Test
     public void createIfNotExistsBlobServiceThatAlreadyExists() {
         String containerName = generateContainerName();
 
