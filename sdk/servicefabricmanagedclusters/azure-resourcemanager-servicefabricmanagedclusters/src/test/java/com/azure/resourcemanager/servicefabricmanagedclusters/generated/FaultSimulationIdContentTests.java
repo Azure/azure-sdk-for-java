@@ -12,14 +12,14 @@ public final class FaultSimulationIdContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultSimulationIdContent model
-            = BinaryData.fromString("{\"simulationId\":\"yhmlwpaztzp\"}").toObject(FaultSimulationIdContent.class);
-        Assertions.assertEquals("yhmlwpaztzp", model.simulationId());
+            = BinaryData.fromString("{\"simulationId\":\"vvwxqi\"}").toObject(FaultSimulationIdContent.class);
+        Assertions.assertEquals("vvwxqi", model.simulationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FaultSimulationIdContent model = new FaultSimulationIdContent().withSimulationId("yhmlwpaztzp");
+        FaultSimulationIdContent model = new FaultSimulationIdContent().withSimulationId("vvwxqi");
         model = BinaryData.fromObject(model).toObject(FaultSimulationIdContent.class);
-        Assertions.assertEquals("yhmlwpaztzp", model.simulationId());
+        Assertions.assertEquals("vvwxqi", model.simulationId());
     }
 }

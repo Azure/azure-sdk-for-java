@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointRangeDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointRangeDescription model = BinaryData.fromString("{\"startPort\":1393630743,\"endPort\":700198802}")
+        EndpointRangeDescription model = BinaryData.fromString("{\"startPort\":843222419,\"endPort\":1161175344}")
             .toObject(EndpointRangeDescription.class);
-        Assertions.assertEquals(1393630743, model.startPort());
-        Assertions.assertEquals(700198802, model.endPort());
+        Assertions.assertEquals(843222419, model.startPort());
+        Assertions.assertEquals(1161175344, model.endPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointRangeDescription model
-            = new EndpointRangeDescription().withStartPort(1393630743).withEndPort(700198802);
+            = new EndpointRangeDescription().withStartPort(843222419).withEndPort(1161175344);
         model = BinaryData.fromObject(model).toObject(EndpointRangeDescription.class);
-        Assertions.assertEquals(1393630743, model.startPort());
-        Assertions.assertEquals(700198802, model.endPort());
+        Assertions.assertEquals(843222419, model.startPort());
+        Assertions.assertEquals(1161175344, model.endPort());
     }
 }

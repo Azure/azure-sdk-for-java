@@ -10,9 +10,8 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.Mana
 public final class ManagedVMSizeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedVMSizeInner model = BinaryData
-            .fromString(
-                "{\"properties\":{\"size\":\"k\"},\"id\":\"oxafn\",\"name\":\"lpichk\",\"type\":\"mkcdyhbpkkpwdre\"}")
+        ManagedVMSizeInner model = BinaryData.fromString(
+            "{\"properties\":{\"size\":\"ymareqnajxqugj\"},\"id\":\"ycubeddgs\",\"name\":\"fwqmzqalkrmn\",\"type\":\"jpxac\"}")
             .toObject(ManagedVMSizeInner.class);
     }
 }

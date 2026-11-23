@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceCorrelationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceCorrelation model
-            = BinaryData.fromString("{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"bncblylpstdbhhx\"}")
-                .toObject(ServiceCorrelation.class);
-        Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY, model.scheme());
-        Assertions.assertEquals("bncblylpstdbhhx", model.serviceName());
+        ServiceCorrelation model = BinaryData.fromString("{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"q\"}")
+            .toObject(ServiceCorrelation.class);
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY, model.scheme());
+        Assertions.assertEquals("q", model.serviceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceCorrelation model = new ServiceCorrelation().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
-            .withServiceName("bncblylpstdbhhx");
+        ServiceCorrelation model
+            = new ServiceCorrelation().withScheme(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY).withServiceName("q");
         model = BinaryData.fromObject(model).toObject(ServiceCorrelation.class);
-        Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY, model.scheme());
-        Assertions.assertEquals("bncblylpstdbhhx", model.serviceName());
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY, model.scheme());
+        Assertions.assertEquals("q", model.serviceName());
     }
 }

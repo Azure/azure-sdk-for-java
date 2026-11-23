@@ -15,10 +15,10 @@ public final class FaultSimulationContentWrapperTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultSimulationContentWrapper model = BinaryData.fromString(
-            "{\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":true,\"constraints\":{\"expirationTime\":\"2021-08-04T06:20:25Z\"}}}")
+            "{\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":true,\"constraints\":{\"expirationTime\":\"2021-09-19T13:57:49Z\"}}}")
             .toObject(FaultSimulationContentWrapper.class);
         Assertions.assertTrue(model.parameters().force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T06:20:25Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-19T13:57:49Z"),
             model.parameters().constraints().expirationTime());
     }
 
@@ -27,10 +27,10 @@ public final class FaultSimulationContentWrapperTests {
         FaultSimulationContentWrapper model
             = new FaultSimulationContentWrapper().withParameters(new FaultSimulationContent().withForce(true)
                 .withConstraints(
-                    new FaultSimulationConstraints().withExpirationTime(OffsetDateTime.parse("2021-08-04T06:20:25Z"))));
+                    new FaultSimulationConstraints().withExpirationTime(OffsetDateTime.parse("2021-09-19T13:57:49Z"))));
         model = BinaryData.fromObject(model).toObject(FaultSimulationContentWrapper.class);
         Assertions.assertTrue(model.parameters().force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T06:20:25Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-19T13:57:49Z"),
             model.parameters().constraints().expirationTime());
     }
 }

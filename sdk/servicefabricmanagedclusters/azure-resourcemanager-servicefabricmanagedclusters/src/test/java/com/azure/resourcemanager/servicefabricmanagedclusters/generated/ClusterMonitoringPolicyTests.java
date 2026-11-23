@@ -12,27 +12,27 @@ public final class ClusterMonitoringPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterMonitoringPolicy model = BinaryData.fromString(
-            "{\"healthCheckWaitDuration\":\"uqlcvydy\",\"healthCheckStableDuration\":\"atdooaojkniod\",\"healthCheckRetryTimeout\":\"oo\",\"upgradeTimeout\":\"bw\",\"upgradeDomainTimeout\":\"ujhemmsbvdkcrodt\"}")
+            "{\"healthCheckWaitDuration\":\"zywemhzrncsdtclu\",\"healthCheckStableDuration\":\"iypbsfgytgusl\",\"healthCheckRetryTimeout\":\"eadcygqukyhejhz\",\"upgradeTimeout\":\"sx\",\"upgradeDomainTimeout\":\"fpel\"}")
             .toObject(ClusterMonitoringPolicy.class);
-        Assertions.assertEquals("uqlcvydy", model.healthCheckWaitDuration());
-        Assertions.assertEquals("atdooaojkniod", model.healthCheckStableDuration());
-        Assertions.assertEquals("oo", model.healthCheckRetryTimeout());
-        Assertions.assertEquals("bw", model.upgradeTimeout());
-        Assertions.assertEquals("ujhemmsbvdkcrodt", model.upgradeDomainTimeout());
+        Assertions.assertEquals("zywemhzrncsdtclu", model.healthCheckWaitDuration());
+        Assertions.assertEquals("iypbsfgytgusl", model.healthCheckStableDuration());
+        Assertions.assertEquals("eadcygqukyhejhz", model.healthCheckRetryTimeout());
+        Assertions.assertEquals("sx", model.upgradeTimeout());
+        Assertions.assertEquals("fpel", model.upgradeDomainTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterMonitoringPolicy model = new ClusterMonitoringPolicy().withHealthCheckWaitDuration("uqlcvydy")
-            .withHealthCheckStableDuration("atdooaojkniod")
-            .withHealthCheckRetryTimeout("oo")
-            .withUpgradeTimeout("bw")
-            .withUpgradeDomainTimeout("ujhemmsbvdkcrodt");
+        ClusterMonitoringPolicy model = new ClusterMonitoringPolicy().withHealthCheckWaitDuration("zywemhzrncsdtclu")
+            .withHealthCheckStableDuration("iypbsfgytgusl")
+            .withHealthCheckRetryTimeout("eadcygqukyhejhz")
+            .withUpgradeTimeout("sx")
+            .withUpgradeDomainTimeout("fpel");
         model = BinaryData.fromObject(model).toObject(ClusterMonitoringPolicy.class);
-        Assertions.assertEquals("uqlcvydy", model.healthCheckWaitDuration());
-        Assertions.assertEquals("atdooaojkniod", model.healthCheckStableDuration());
-        Assertions.assertEquals("oo", model.healthCheckRetryTimeout());
-        Assertions.assertEquals("bw", model.upgradeTimeout());
-        Assertions.assertEquals("ujhemmsbvdkcrodt", model.upgradeDomainTimeout());
+        Assertions.assertEquals("zywemhzrncsdtclu", model.healthCheckWaitDuration());
+        Assertions.assertEquals("iypbsfgytgusl", model.healthCheckStableDuration());
+        Assertions.assertEquals("eadcygqukyhejhz", model.healthCheckRetryTimeout());
+        Assertions.assertEquals("sx", model.upgradeTimeout());
+        Assertions.assertEquals("fpel", model.upgradeDomainTimeout());
     }
 }

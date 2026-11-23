@@ -14,21 +14,21 @@ public final class NodeTypeActionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeActionParameters model
-            = BinaryData.fromString("{\"nodes\":[\"bqplh\",\"vnuuepzl\"],\"force\":false,\"updateType\":\"Default\"}")
+            = BinaryData.fromString("{\"nodes\":[\"yavluwmncstt\"],\"force\":false,\"updateType\":\"ByUpgradeDomain\"}")
                 .toObject(NodeTypeActionParameters.class);
-        Assertions.assertEquals("bqplh", model.nodes().get(0));
+        Assertions.assertEquals("yavluwmncstt", model.nodes().get(0));
         Assertions.assertFalse(model.force());
-        Assertions.assertEquals(UpdateType.DEFAULT, model.updateType());
+        Assertions.assertEquals(UpdateType.BY_UPGRADE_DOMAIN, model.updateType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeTypeActionParameters model = new NodeTypeActionParameters().withNodes(Arrays.asList("bqplh", "vnuuepzl"))
+        NodeTypeActionParameters model = new NodeTypeActionParameters().withNodes(Arrays.asList("yavluwmncstt"))
             .withForce(false)
-            .withUpdateType(UpdateType.DEFAULT);
+            .withUpdateType(UpdateType.BY_UPGRADE_DOMAIN);
         model = BinaryData.fromObject(model).toObject(NodeTypeActionParameters.class);
-        Assertions.assertEquals("bqplh", model.nodes().get(0));
+        Assertions.assertEquals("yavluwmncstt", model.nodes().get(0));
         Assertions.assertFalse(model.force());
-        Assertions.assertEquals(UpdateType.DEFAULT, model.updateType());
+        Assertions.assertEquals(UpdateType.BY_UPGRADE_DOMAIN, model.updateType());
     }
 }

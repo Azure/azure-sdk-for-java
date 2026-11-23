@@ -18,6 +18,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimula
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeActionParameters;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypes;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ReimageAllDisksParameters;
 
 public final class NodeTypesImpl implements NodeTypes {
     private static final ClientLogger LOGGER = new ClientLogger(NodeTypesImpl.class);
@@ -107,6 +108,16 @@ public final class NodeTypesImpl implements NodeTypes {
     public void reimage(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
         this.serviceClient().reimage(resourceGroupName, clusterName, nodeTypeName, parameters, context);
+    }
+
+    public void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
+        ReimageAllDisksParameters parameters) {
+        this.serviceClient().reimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters);
+    }
+
+    public void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
+        ReimageAllDisksParameters parameters, Context context) {
+        this.serviceClient().reimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters, context);
     }
 
     public void restart(String resourceGroupName, String clusterName, String nodeTypeName,

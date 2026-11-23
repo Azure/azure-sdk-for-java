@@ -8,6 +8,8 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.AdditionalNetworkInterfaceConfiguration;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.AllocationStrategy;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskCachingType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EvictionPolicyType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FrontendConfiguration;
@@ -22,6 +24,8 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPoli
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicyMode;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.SkuProfile;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.SkuProfileVmSize;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultCertificate;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
@@ -41,7 +45,7 @@ import java.util.Map;
  */
 public final class NodeTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationStateless_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationStateless_example.json
      */
     /**
      * Sample code: Put an stateless node type with temporary disk for service fabric.
@@ -76,7 +80,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperation_example_max.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperation_example_max.json
      */
     /**
      * Sample code: Put a node type with maximum parameters.
@@ -96,7 +100,7 @@ public final class NodeTypesCreateOrUpdateSamples {
             .withDataDiskLetter("S")
             .withPlacementProperties(mapOf("HasSSD", "true", "NodeColor", "green", "SomeProperty", "5"))
             .withCapacities(mapOf("ClientConnections", "65536"))
-            .withVmSize("Standard_DS3")
+            .withVmSize("Mix")
             .withVmImagePublisher("MicrosoftWindowsServer")
             .withVmImageOffer("WindowsServer")
             .withVmImageSku("2016-Datacenter-Server-Core")
@@ -132,11 +136,19 @@ public final class NodeTypesCreateOrUpdateSamples {
                 new VmssDataDisk().withLun(1)
                     .withDiskSizeGB(256)
                     .withDiskType(DiskType.STANDARD_SSD_LRS)
-                    .withDiskLetter("F"),
+                    .withDiskLetter("F")
+                    .withCaching(DiskCachingType.READ_ONLY)
+                    .withWriteAcceleratorEnabled(false)
+                    .withDiskIOPSReadWrite(3000)
+                    .withDiskMBpsReadWrite(125),
                 new VmssDataDisk().withLun(2)
                     .withDiskSizeGB(150)
                     .withDiskType(DiskType.PREMIUM_LRS)
-                    .withDiskLetter("G")))
+                    .withDiskLetter("G")
+                    .withCaching(DiskCachingType.READ_ONLY)
+                    .withWriteAcceleratorEnabled(false)
+                    .withDiskIOPSReadWrite(3000)
+                    .withDiskMBpsReadWrite(125)))
             .withEnableEncryptionAtHost(true)
             .withEnableAcceleratedNetworking(true)
             .withUseDefaultPublicLoadBalancer(true)
@@ -197,11 +209,19 @@ public final class NodeTypesCreateOrUpdateSamples {
                 .withImds(new HostEndpointSettings().withMode("Audit")
                     .withInVMAccessControlProfileReferenceId("someReferenceId"))
                 .withAddProxyAgentExtension(true))
+            .withSkuProfile(new SkuProfile()
+                .withVmSizes(Arrays.asList(new SkuProfileVmSize().withName("Standard_D2s_v3").withRank(1),
+                    new SkuProfileVmSize().withName("Standard_D4s_v3").withRank(2)))
+                .withAllocationStrategy(AllocationStrategy.PRIORITIZED))
+            .withDataDiskCaching(DiskCachingType.READ_ONLY)
+            .withDataDiskWriteAcceleratorEnabled(false)
+            .withDataDiskIOPSReadWrite(5000)
+            .withDataDiskMBpsReadWrite(200)
             .create();
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationAutoScale_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationAutoScale_example.json
      */
     /**
      * Sample code: Put a node type with auto-scale parameters.
@@ -247,7 +267,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperation_example_min.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperation_example_min.json
      */
     /**
      * Sample code: Put a node type with minimum parameters.
@@ -271,7 +291,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationDedicatedHost_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationDedicatedHost_example.json
      */
     /**
      * Sample code: Put node type with dedicated hosts.
@@ -301,7 +321,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationVmImagePlan_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationVmImagePlan_example.json
      */
     /**
      * Sample code: Put node type with vm image plan.
@@ -328,7 +348,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
      */
     /**
      * Sample code: Put node type with shared galleries custom vm image.
@@ -350,7 +370,7 @@ public final class NodeTypesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-05-01-preview/NodeTypePutOperationCustomImage_example.json
+     * x-ms-original-file: 2026-09-01-preview/NodeTypePutOperationCustomImage_example.json
      */
     /**
      * Sample code: Put node type with custom vm image.

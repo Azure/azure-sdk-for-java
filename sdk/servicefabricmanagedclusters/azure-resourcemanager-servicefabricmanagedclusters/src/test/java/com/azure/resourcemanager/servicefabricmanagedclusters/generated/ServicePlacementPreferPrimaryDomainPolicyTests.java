@@ -12,16 +12,16 @@ public final class ServicePlacementPreferPrimaryDomainPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServicePlacementPreferPrimaryDomainPolicy model
-            = BinaryData.fromString("{\"type\":\"PreferredPrimaryDomain\",\"domainName\":\"abnetshh\"}")
+            = BinaryData.fromString("{\"type\":\"PreferredPrimaryDomain\",\"domainName\":\"um\"}")
                 .toObject(ServicePlacementPreferPrimaryDomainPolicy.class);
-        Assertions.assertEquals("abnetshh", model.domainName());
+        Assertions.assertEquals("um", model.domainName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServicePlacementPreferPrimaryDomainPolicy model
-            = new ServicePlacementPreferPrimaryDomainPolicy().withDomainName("abnetshh");
+            = new ServicePlacementPreferPrimaryDomainPolicy().withDomainName("um");
         model = BinaryData.fromObject(model).toObject(ServicePlacementPreferPrimaryDomainPolicy.class);
-        Assertions.assertEquals("abnetshh", model.domainName());
+        Assertions.assertEquals("um", model.domainName());
     }
 }

@@ -29,10 +29,10 @@ public final class ManagedApplyMaintenanceWindowsPostWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.managedApplyMaintenanceWindows()
-            .postWithResponse("t", "vzbglbyvi",
-                new ApplyMaintenanceWindowRequest().withStartDateTime("ctbrxkjzwrgxffm")
-                    .withDuration("kwfbkgo")
-                    .withTimeZone("wopdbydpiz"),
+            .postWithResponse("gcl", "xoe",
+                new ApplyMaintenanceWindowRequest().withStartDateTime("injipnwjf")
+                    .withDuration("qlafcbahhpzpofoi")
+                    .withTimeZone("w"),
                 com.azure.core.util.Context.NONE);
 
     }

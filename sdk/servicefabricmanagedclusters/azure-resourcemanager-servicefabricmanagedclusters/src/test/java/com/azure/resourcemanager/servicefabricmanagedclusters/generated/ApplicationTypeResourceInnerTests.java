@@ -14,19 +14,21 @@ public final class ApplicationTypeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"xdbabphlwr\"},\"tags\":{\"azt\":\"ktsthsucocmny\"},\"location\":\"twwrqp\",\"id\":\"dckzywbiexz\",\"name\":\"eyueaxibxujwb\",\"type\":\"qwalmuzyoxaepd\"}")
+            "{\"properties\":{\"provisioningState\":\"qlfktsths\"},\"tags\":{\"wwrq\":\"cmnyyazttb\",\"ywbiexzfeyueax\":\"uedck\",\"wbhqwal\":\"bxu\",\"kzjancuxrhdwbav\":\"uzyoxaep\"},\"location\":\"niwdjsw\",\"id\":\"s\",\"name\":\"bpg\",\"type\":\"xytxhpzxbz\"}")
             .toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("ktsthsucocmny", model.tags().get("azt"));
-        Assertions.assertEquals("twwrqp", model.location());
+        Assertions.assertEquals("cmnyyazttb", model.tags().get("wwrq"));
+        Assertions.assertEquals("niwdjsw", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeResourceInner model
-            = new ApplicationTypeResourceInner().withTags(mapOf("azt", "ktsthsucocmny")).withLocation("twwrqp");
+        ApplicationTypeResourceInner model = new ApplicationTypeResourceInner()
+            .withTags(
+                mapOf("wwrq", "cmnyyazttb", "ywbiexzfeyueax", "uedck", "wbhqwal", "bxu", "kzjancuxrhdwbav", "uzyoxaep"))
+            .withLocation("niwdjsw");
         model = BinaryData.fromObject(model).toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("ktsthsucocmny", model.tags().get("azt"));
-        Assertions.assertEquals("twwrqp", model.location());
+        Assertions.assertEquals("cmnyyazttb", model.tags().get("wwrq"));
+        Assertions.assertEquals("niwdjsw", model.location());
     }
 
     // Use "Map.of" if available

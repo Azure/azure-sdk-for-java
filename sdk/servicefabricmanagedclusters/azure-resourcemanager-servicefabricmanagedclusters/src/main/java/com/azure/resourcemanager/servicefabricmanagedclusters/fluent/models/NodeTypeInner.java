@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.AdditionalNetworkInterfaceConfiguration;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskCachingType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EndpointRangeDescription;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EvictionPolicyType;
@@ -23,6 +24,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ProxyAgentS
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicy;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.SkuProfile;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmImagePlan;
@@ -1558,6 +1560,129 @@ public final class NodeTypeInner extends ProxyResource {
             this.innerProperties = new NodeTypeProperties();
         }
         this.innerProperties().withProxyAgentSettings(proxyAgentSettings);
+        return this;
+    }
+
+    /**
+     * Get the skuProfile property: Specifies the sku profile for the node type when vmSize is set to Mix. This allows
+     * specifying multiple VM sizes and an allocation strategy for Instance Mix scenarios.
+     * 
+     * @return the skuProfile value.
+     */
+    public SkuProfile skuProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().skuProfile();
+    }
+
+    /**
+     * Set the skuProfile property: Specifies the sku profile for the node type when vmSize is set to Mix. This allows
+     * specifying multiple VM sizes and an allocation strategy for Instance Mix scenarios.
+     * 
+     * @param skuProfile the skuProfile value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withSkuProfile(SkuProfile skuProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withSkuProfile(skuProfile);
+        return this;
+    }
+
+    /**
+     * Get the dataDiskCaching property: Specifies the caching requirements for the primary Service Fabric data disk.
+     * Possible values include: None, ReadOnly, ReadWrite.
+     * 
+     * @return the dataDiskCaching value.
+     */
+    public DiskCachingType dataDiskCaching() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataDiskCaching();
+    }
+
+    /**
+     * Set the dataDiskCaching property: Specifies the caching requirements for the primary Service Fabric data disk.
+     * Possible values include: None, ReadOnly, ReadWrite.
+     * 
+     * @param dataDiskCaching the dataDiskCaching value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withDataDiskCaching(DiskCachingType dataDiskCaching) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withDataDiskCaching(dataDiskCaching);
+        return this;
+    }
+
+    /**
+     * Get the dataDiskWriteAcceleratorEnabled property: Specifies whether write accelerator should be enabled or
+     * disabled on the primary Service Fabric data disk.
+     * 
+     * @return the dataDiskWriteAcceleratorEnabled value.
+     */
+    public Boolean dataDiskWriteAcceleratorEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataDiskWriteAcceleratorEnabled();
+    }
+
+    /**
+     * Set the dataDiskWriteAcceleratorEnabled property: Specifies whether write accelerator should be enabled or
+     * disabled on the primary Service Fabric data disk.
+     * 
+     * @param dataDiskWriteAcceleratorEnabled the dataDiskWriteAcceleratorEnabled value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withDataDiskWriteAcceleratorEnabled(Boolean dataDiskWriteAcceleratorEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withDataDiskWriteAcceleratorEnabled(dataDiskWriteAcceleratorEnabled);
+        return this;
+    }
+
+    /**
+     * Get the dataDiskIOPSReadWrite property: Specifies the Read-Write IOPS for the primary Service Fabric data disk.
+     * 
+     * @return the dataDiskIOPSReadWrite value.
+     */
+    public Integer dataDiskIOPSReadWrite() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataDiskIOPSReadWrite();
+    }
+
+    /**
+     * Set the dataDiskIOPSReadWrite property: Specifies the Read-Write IOPS for the primary Service Fabric data disk.
+     * 
+     * @param dataDiskIOPSReadWrite the dataDiskIOPSReadWrite value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withDataDiskIOPSReadWrite(Integer dataDiskIOPSReadWrite) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withDataDiskIOPSReadWrite(dataDiskIOPSReadWrite);
+        return this;
+    }
+
+    /**
+     * Get the dataDiskMBpsReadWrite property: Specifies the bandwidth in MB per second for the primary Service Fabric
+     * data disk.
+     * 
+     * @return the dataDiskMBpsReadWrite value.
+     */
+    public Integer dataDiskMBpsReadWrite() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataDiskMBpsReadWrite();
+    }
+
+    /**
+     * Set the dataDiskMBpsReadWrite property: Specifies the bandwidth in MB per second for the primary Service Fabric
+     * data disk.
+     * 
+     * @param dataDiskMBpsReadWrite the dataDiskMBpsReadWrite value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withDataDiskMBpsReadWrite(Integer dataDiskMBpsReadWrite) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withDataDiskMBpsReadWrite(dataDiskMBpsReadWrite);
         return this;
     }
 

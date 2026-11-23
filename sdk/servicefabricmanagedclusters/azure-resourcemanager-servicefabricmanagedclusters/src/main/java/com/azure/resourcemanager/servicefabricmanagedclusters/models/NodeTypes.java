@@ -215,6 +215,35 @@ public interface NodeTypes {
         Context context);
 
     /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
+        ReimageAllDisksParameters parameters);
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
+        ReimageAllDisksParameters parameters, Context context);
+
+    /**
      * Restarts one or more nodes on the node type. It will disable the fabric nodes, trigger a restart on the VMs and
      * activate the nodes back again.
      * 

@@ -43,6 +43,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimula
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationIdContent;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeActionParameters;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeUpdateParameters;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ReimageAllDisksParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -252,6 +253,26 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") NodeTypeActionParameters parameters, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/reimageAllDisks")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> reimageAllDisks(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") ReimageAllDisksParameters parameters, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/reimageAllDisks")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> reimageAllDisksSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("nodeTypeName") String nodeTypeName, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") ReimageAllDisksParameters parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/nodeTypes/{nodeTypeName}/restart")
@@ -1906,6 +1927,188 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     public void reimage(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
         beginReimage(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> reimageAllDisksWithResponseAsync(String resourceGroupName,
+        String clusterName, String nodeTypeName, ReimageAllDisksParameters parameters) {
+        final String contentType = "application/json";
+        return FluxUtil
+            .withContext(context -> service.reimageAllDisks(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> reimageAllDisksWithResponse(String resourceGroupName, String clusterName,
+        String nodeTypeName, ReimageAllDisksParameters parameters) {
+        final String contentType = "application/json";
+        return service.reimageAllDisksSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            Context.NONE);
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> reimageAllDisksWithResponse(String resourceGroupName, String clusterName,
+        String nodeTypeName, ReimageAllDisksParameters parameters, Context context) {
+        final String contentType = "application/json";
+        return service.reimageAllDisksSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
+            context);
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginReimageAllDisksAsync(String resourceGroupName, String clusterName,
+        String nodeTypeName, ReimageAllDisksParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = reimageAllDisksWithResponseAsync(resourceGroupName, clusterName, nodeTypeName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginReimageAllDisks(String resourceGroupName, String clusterName,
+        String nodeTypeName, ReimageAllDisksParameters parameters) {
+        Response<BinaryData> response
+            = reimageAllDisksWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginReimageAllDisks(String resourceGroupName, String clusterName,
+        String nodeTypeName, ReimageAllDisksParameters parameters, Context context) {
+        Response<BinaryData> response
+            = reimageAllDisksWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> reimageAllDisksAsync(String resourceGroupName, String clusterName, String nodeTypeName,
+        ReimageAllDisksParameters parameters) {
+        return beginReimageAllDisksAsync(resourceGroupName, clusterName, nodeTypeName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
+        ReimageAllDisksParameters parameters) {
+        beginReimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+    }
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param nodeTypeName The name of the node type.
+     * @param parameters The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reimageAllDisks(String resourceGroupName, String clusterName, String nodeTypeName,
+        ReimageAllDisksParameters parameters, Context context) {
+        beginReimageAllDisks(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
     }
 
     /**

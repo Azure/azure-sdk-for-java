@@ -12,22 +12,22 @@ public final class AddRemoveIncrementalNamedPartitionScalingMechanismTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddRemoveIncrementalNamedPartitionScalingMechanism model = BinaryData.fromString(
-            "{\"kind\":\"AddRemoveIncrementalNamedPartition\",\"minPartitionCount\":983156788,\"maxPartitionCount\":1386333367,\"scaleIncrement\":452971481}")
+            "{\"kind\":\"AddRemoveIncrementalNamedPartition\",\"minPartitionCount\":360418478,\"maxPartitionCount\":1550349603,\"scaleIncrement\":983544677}")
             .toObject(AddRemoveIncrementalNamedPartitionScalingMechanism.class);
-        Assertions.assertEquals(983156788, model.minPartitionCount());
-        Assertions.assertEquals(1386333367, model.maxPartitionCount());
-        Assertions.assertEquals(452971481, model.scaleIncrement());
+        Assertions.assertEquals(360418478, model.minPartitionCount());
+        Assertions.assertEquals(1550349603, model.maxPartitionCount());
+        Assertions.assertEquals(983544677, model.scaleIncrement());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AddRemoveIncrementalNamedPartitionScalingMechanism model
-            = new AddRemoveIncrementalNamedPartitionScalingMechanism().withMinPartitionCount(983156788)
-                .withMaxPartitionCount(1386333367)
-                .withScaleIncrement(452971481);
+            = new AddRemoveIncrementalNamedPartitionScalingMechanism().withMinPartitionCount(360418478)
+                .withMaxPartitionCount(1550349603)
+                .withScaleIncrement(983544677);
         model = BinaryData.fromObject(model).toObject(AddRemoveIncrementalNamedPartitionScalingMechanism.class);
-        Assertions.assertEquals(983156788, model.minPartitionCount());
-        Assertions.assertEquals(1386333367, model.maxPartitionCount());
-        Assertions.assertEquals(452971481, model.scaleIncrement());
+        Assertions.assertEquals(360418478, model.minPartitionCount());
+        Assertions.assertEquals(1550349603, model.maxPartitionCount());
+        Assertions.assertEquals(983544677, model.scaleIncrement());
     }
 }

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.AdditionalNetworkInterfaceConfiguration;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskCachingType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EndpointRangeDescription;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EvictionPolicyType;
@@ -21,6 +22,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ProxyAgentS
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ScaleInPolicy;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityEncryptionType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.SkuProfile;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmImagePlan;
@@ -350,6 +352,33 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
      * Specifies the settings for the proxy agent on the node type.
      */
     private ProxyAgentSettings proxyAgentSettings;
+
+    /*
+     * Specifies the sku profile for the node type when vmSize is set to Mix. This allows specifying multiple VM sizes
+     * and an allocation strategy for Instance Mix scenarios.
+     */
+    private SkuProfile skuProfile;
+
+    /*
+     * Specifies the caching requirements for the primary Service Fabric data disk. Possible values include: None,
+     * ReadOnly, ReadWrite.
+     */
+    private DiskCachingType dataDiskCaching;
+
+    /*
+     * Specifies whether write accelerator should be enabled or disabled on the primary Service Fabric data disk.
+     */
+    private Boolean dataDiskWriteAcceleratorEnabled;
+
+    /*
+     * Specifies the Read-Write IOPS for the primary Service Fabric data disk.
+     */
+    private Integer dataDiskIOPSReadWrite;
+
+    /*
+     * Specifies the bandwidth in MB per second for the primary Service Fabric data disk.
+     */
+    private Integer dataDiskMBpsReadWrite;
 
     /**
      * Creates an instance of NodeTypeProperties class.
@@ -1584,6 +1613,114 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
     }
 
     /**
+     * Get the skuProfile property: Specifies the sku profile for the node type when vmSize is set to Mix. This allows
+     * specifying multiple VM sizes and an allocation strategy for Instance Mix scenarios.
+     * 
+     * @return the skuProfile value.
+     */
+    public SkuProfile skuProfile() {
+        return this.skuProfile;
+    }
+
+    /**
+     * Set the skuProfile property: Specifies the sku profile for the node type when vmSize is set to Mix. This allows
+     * specifying multiple VM sizes and an allocation strategy for Instance Mix scenarios.
+     * 
+     * @param skuProfile the skuProfile value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withSkuProfile(SkuProfile skuProfile) {
+        this.skuProfile = skuProfile;
+        return this;
+    }
+
+    /**
+     * Get the dataDiskCaching property: Specifies the caching requirements for the primary Service Fabric data disk.
+     * Possible values include: None, ReadOnly, ReadWrite.
+     * 
+     * @return the dataDiskCaching value.
+     */
+    public DiskCachingType dataDiskCaching() {
+        return this.dataDiskCaching;
+    }
+
+    /**
+     * Set the dataDiskCaching property: Specifies the caching requirements for the primary Service Fabric data disk.
+     * Possible values include: None, ReadOnly, ReadWrite.
+     * 
+     * @param dataDiskCaching the dataDiskCaching value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withDataDiskCaching(DiskCachingType dataDiskCaching) {
+        this.dataDiskCaching = dataDiskCaching;
+        return this;
+    }
+
+    /**
+     * Get the dataDiskWriteAcceleratorEnabled property: Specifies whether write accelerator should be enabled or
+     * disabled on the primary Service Fabric data disk.
+     * 
+     * @return the dataDiskWriteAcceleratorEnabled value.
+     */
+    public Boolean dataDiskWriteAcceleratorEnabled() {
+        return this.dataDiskWriteAcceleratorEnabled;
+    }
+
+    /**
+     * Set the dataDiskWriteAcceleratorEnabled property: Specifies whether write accelerator should be enabled or
+     * disabled on the primary Service Fabric data disk.
+     * 
+     * @param dataDiskWriteAcceleratorEnabled the dataDiskWriteAcceleratorEnabled value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withDataDiskWriteAcceleratorEnabled(Boolean dataDiskWriteAcceleratorEnabled) {
+        this.dataDiskWriteAcceleratorEnabled = dataDiskWriteAcceleratorEnabled;
+        return this;
+    }
+
+    /**
+     * Get the dataDiskIOPSReadWrite property: Specifies the Read-Write IOPS for the primary Service Fabric data disk.
+     * 
+     * @return the dataDiskIOPSReadWrite value.
+     */
+    public Integer dataDiskIOPSReadWrite() {
+        return this.dataDiskIOPSReadWrite;
+    }
+
+    /**
+     * Set the dataDiskIOPSReadWrite property: Specifies the Read-Write IOPS for the primary Service Fabric data disk.
+     * 
+     * @param dataDiskIOPSReadWrite the dataDiskIOPSReadWrite value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withDataDiskIOPSReadWrite(Integer dataDiskIOPSReadWrite) {
+        this.dataDiskIOPSReadWrite = dataDiskIOPSReadWrite;
+        return this;
+    }
+
+    /**
+     * Get the dataDiskMBpsReadWrite property: Specifies the bandwidth in MB per second for the primary Service Fabric
+     * data disk.
+     * 
+     * @return the dataDiskMBpsReadWrite value.
+     */
+    public Integer dataDiskMBpsReadWrite() {
+        return this.dataDiskMBpsReadWrite;
+    }
+
+    /**
+     * Set the dataDiskMBpsReadWrite property: Specifies the bandwidth in MB per second for the primary Service Fabric
+     * data disk.
+     * 
+     * @param dataDiskMBpsReadWrite the dataDiskMBpsReadWrite value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withDataDiskMBpsReadWrite(Integer dataDiskMBpsReadWrite) {
+        this.dataDiskMBpsReadWrite = dataDiskMBpsReadWrite;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -1654,6 +1791,12 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
         jsonWriter.writeBooleanField("enableResilientEphemeralOsDisk", this.enableResilientEphemeralOsDisk);
         jsonWriter.writeJsonField("scaleInPolicy", this.scaleInPolicy);
         jsonWriter.writeJsonField("proxyAgentSettings", this.proxyAgentSettings);
+        jsonWriter.writeJsonField("skuProfile", this.skuProfile);
+        jsonWriter.writeStringField("dataDiskCaching",
+            this.dataDiskCaching == null ? null : this.dataDiskCaching.toString());
+        jsonWriter.writeBooleanField("dataDiskWriteAcceleratorEnabled", this.dataDiskWriteAcceleratorEnabled);
+        jsonWriter.writeNumberField("dataDiskIOPSReadWrite", this.dataDiskIOPSReadWrite);
+        jsonWriter.writeNumberField("dataDiskMBpsReadWrite", this.dataDiskMBpsReadWrite);
         return jsonWriter.writeEndObject();
     }
 
@@ -1809,6 +1952,17 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
                     deserializedNodeTypeProperties.scaleInPolicy = ScaleInPolicy.fromJson(reader);
                 } else if ("proxyAgentSettings".equals(fieldName)) {
                     deserializedNodeTypeProperties.proxyAgentSettings = ProxyAgentSettings.fromJson(reader);
+                } else if ("skuProfile".equals(fieldName)) {
+                    deserializedNodeTypeProperties.skuProfile = SkuProfile.fromJson(reader);
+                } else if ("dataDiskCaching".equals(fieldName)) {
+                    deserializedNodeTypeProperties.dataDiskCaching = DiskCachingType.fromString(reader.getString());
+                } else if ("dataDiskWriteAcceleratorEnabled".equals(fieldName)) {
+                    deserializedNodeTypeProperties.dataDiskWriteAcceleratorEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dataDiskIOPSReadWrite".equals(fieldName)) {
+                    deserializedNodeTypeProperties.dataDiskIOPSReadWrite = reader.getNullable(JsonReader::getInt);
+                } else if ("dataDiskMBpsReadWrite".equals(fieldName)) {
+                    deserializedNodeTypeProperties.dataDiskMBpsReadWrite = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

@@ -23,7 +23,7 @@ public final class ApplicationTypesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"mvpdvjdhttzaef\"},\"tags\":{\"dfzpbgtgkylkdg\":\"ihchrphkmcrjdqn\"},\"location\":\"jeuut\",\"id\":\"xezw\",\"name\":\"hokvbwnh\",\"type\":\"tqlgehgppi\"}";
+            = "{\"properties\":{\"provisioningState\":\"bqqxlaj\"},\"tags\":{\"jkuyxoafgaoq\":\"xaceve\",\"nm\":\"tfaeyl\",\"irpghriypoqeyh\":\"gv\"},\"location\":\"h\",\"id\":\"prlpy\",\"name\":\"nuciqdsmexiit\",\"type\":\"fuxtyasiibmiybnn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,15 @@ public final class ApplicationTypesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationTypeResource response = manager.applicationTypes()
-            .define("kdlpa")
-            .withExistingManagedCluster("z", "mes")
-            .withRegion("disdosfjbjsvgj")
-            .withTags(mapOf("fqob", "ft", "cgcckknhxkizvyt", "jln", "r", "rzvul", "roylaxxu", "aeranokqgukkjqnv"))
+            .define("fuojrngif")
+            .withExistingManagedCluster("aiouaubrjt", "oq")
+            .withRegion("zbgomfgbeg")
+            .withTags(mapOf("kyoqufdv", "zdlyjdfqw", "tngfdgugeyzihgr", "uzslzojhpctfnmdx", "absnmfpp", "yui", "yhsgz",
+                "ojeevy"))
             .create();
 
-        Assertions.assertEquals("ihchrphkmcrjdqn", response.tags().get("dfzpbgtgkylkdg"));
-        Assertions.assertEquals("jeuut", response.location());
+        Assertions.assertEquals("xaceve", response.tags().get("jkuyxoafgaoq"));
+        Assertions.assertEquals("h", response.location());
     }
 
     // Use "Map.of" if available

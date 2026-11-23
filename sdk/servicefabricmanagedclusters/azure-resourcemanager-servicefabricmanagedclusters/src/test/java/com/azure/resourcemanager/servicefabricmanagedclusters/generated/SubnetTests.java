@@ -14,27 +14,27 @@ public final class SubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Subnet model = BinaryData.fromString(
-            "{\"name\":\"krmnjijpxacqqud\",\"enableIpv6\":true,\"privateEndpointNetworkPolicies\":\"disabled\",\"privateLinkServiceNetworkPolicies\":\"disabled\",\"networkSecurityGroupId\":\"abjy\"}")
+            "{\"name\":\"kufgmj\",\"enableIpv6\":false,\"privateEndpointNetworkPolicies\":\"disabled\",\"privateLinkServiceNetworkPolicies\":\"disabled\",\"networkSecurityGroupId\":\"wae\"}")
             .toObject(Subnet.class);
-        Assertions.assertEquals("krmnjijpxacqqud", model.name());
-        Assertions.assertTrue(model.enableIpv6());
+        Assertions.assertEquals("kufgmj", model.name());
+        Assertions.assertFalse(model.enableIpv6());
         Assertions.assertEquals(PrivateEndpointNetworkPolicies.DISABLED, model.privateEndpointNetworkPolicies());
         Assertions.assertEquals(PrivateLinkServiceNetworkPolicies.DISABLED, model.privateLinkServiceNetworkPolicies());
-        Assertions.assertEquals("abjy", model.networkSecurityGroupId());
+        Assertions.assertEquals("wae", model.networkSecurityGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Subnet model = new Subnet().withName("krmnjijpxacqqud")
-            .withEnableIpv6(true)
+        Subnet model = new Subnet().withName("kufgmj")
+            .withEnableIpv6(false)
             .withPrivateEndpointNetworkPolicies(PrivateEndpointNetworkPolicies.DISABLED)
             .withPrivateLinkServiceNetworkPolicies(PrivateLinkServiceNetworkPolicies.DISABLED)
-            .withNetworkSecurityGroupId("abjy");
+            .withNetworkSecurityGroupId("wae");
         model = BinaryData.fromObject(model).toObject(Subnet.class);
-        Assertions.assertEquals("krmnjijpxacqqud", model.name());
-        Assertions.assertTrue(model.enableIpv6());
+        Assertions.assertEquals("kufgmj", model.name());
+        Assertions.assertFalse(model.enableIpv6());
         Assertions.assertEquals(PrivateEndpointNetworkPolicies.DISABLED, model.privateEndpointNetworkPolicies());
         Assertions.assertEquals(PrivateLinkServiceNetworkPolicies.DISABLED, model.privateLinkServiceNetworkPolicies());
-        Assertions.assertEquals("abjy", model.networkSecurityGroupId());
+        Assertions.assertEquals("wae", model.networkSecurityGroupId());
     }
 }

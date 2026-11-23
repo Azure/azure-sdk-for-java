@@ -12,8 +12,8 @@ public final class ManagedVMSizesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedVMSizesResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"size\":\"s\"},\"id\":\"sytgadgvraea\",\"name\":\"e\",\"type\":\"zar\"},{\"properties\":{\"size\":\"q\"},\"id\":\"ijfqkacewiipfp\",\"name\":\"ji\",\"type\":\"wifto\"},{\"properties\":{\"size\":\"vpuvks\"},\"id\":\"lsa\",\"name\":\"ynfs\",\"type\":\"ljphuopxodl\"},{\"properties\":{\"size\":\"ntorzihleosjswsr\"},\"id\":\"lyzrpzbchckqqzqi\",\"name\":\"iysui\",\"type\":\"ynkedyatrwyhqmib\"}],\"nextLink\":\"hwit\"}")
+            "{\"value\":[{\"properties\":{\"size\":\"yvayffimrzr\"},\"id\":\"zqogse\",\"name\":\"evfdnwnwm\",\"type\":\"zsyyceuzso\"}],\"nextLink\":\"judpfrxt\"}")
             .toObject(ManagedVMSizesResult.class);
-        Assertions.assertEquals("hwit", model.nextLink());
+        Assertions.assertEquals("judpfrxt", model.nextLink());
     }
 }

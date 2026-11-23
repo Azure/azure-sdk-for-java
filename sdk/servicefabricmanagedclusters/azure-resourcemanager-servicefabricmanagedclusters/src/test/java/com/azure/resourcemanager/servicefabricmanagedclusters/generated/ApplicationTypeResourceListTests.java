@@ -12,10 +12,10 @@ public final class ApplicationTypeResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"kfssxqukkf\"},\"tags\":{\"xnkjzkdesl\":\"mg\",\"kdwzbaiuebbaumny\":\"vlopwiyighx\",\"txp\":\"upedeojnabckhs\"},\"location\":\"ebtfhvpesap\",\"id\":\"rdqmhjjdhtldwkyz\",\"name\":\"uutkncw\",\"type\":\"cwsvlxotog\"},{\"properties\":{\"provisioningState\":\"upqsx\"},\"tags\":{\"ykvceoveil\":\"i\",\"k\":\"vnotyfjfcnj\",\"kphywpnvjto\":\"nxdhbt\",\"plpho\":\"nermcl\"},\"location\":\"scrpabgyepsbjt\",\"id\":\"qugxywpmueefjzwf\",\"name\":\"kqujidsuyono\",\"type\":\"glaocq\"},{\"properties\":{\"provisioningState\":\"cmgyud\"},\"tags\":{\"wfudwpzntxhdzhl\":\"lmoyrx\",\"hckfrlhrx\":\"qj\"},\"location\":\"kyv\",\"id\":\"ca\",\"name\":\"uzbpzkafku\",\"type\":\"b\"}],\"nextLink\":\"nwbmeh\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"jzkdeslpvlopwi\"},\"tags\":{\"zb\":\"hxpkd\",\"upedeojnabckhs\":\"iuebbaumny\"},\"location\":\"xpsiebtfhvpes\",\"id\":\"skrdqmhjj\",\"name\":\"htldwk\",\"type\":\"zxuutkncwscwsvl\"},{\"properties\":{\"provisioningState\":\"ogtwrupqsxvnmi\"},\"tags\":{\"vei\":\"vce\",\"dhbt\":\"ovnotyfjfcnjbkcn\",\"nermcl\":\"kphywpnvjto\",\"uscrpabgyepsb\":\"plpho\"},\"location\":\"azqugxywpmueefj\",\"id\":\"fqkquj\",\"name\":\"dsuyonobgla\",\"type\":\"cq\"},{\"properties\":{\"provisioningState\":\"cmgyud\"},\"tags\":{\"wfudwpzntxhdzhl\":\"lmoyrx\",\"hckfrlhrx\":\"qj\"},\"location\":\"kyv\",\"id\":\"ca\",\"name\":\"uzbpzkafku\",\"type\":\"b\"}],\"nextLink\":\"nwbmeh\"}")
             .toObject(ApplicationTypeResourceList.class);
-        Assertions.assertEquals("mg", model.value().get(0).tags().get("xnkjzkdesl"));
-        Assertions.assertEquals("ebtfhvpesap", model.value().get(0).location());
+        Assertions.assertEquals("hxpkd", model.value().get(0).tags().get("zb"));
+        Assertions.assertEquals("xpsiebtfhvpes", model.value().get(0).location());
         Assertions.assertEquals("nwbmeh", model.nextLink());
     }
 }

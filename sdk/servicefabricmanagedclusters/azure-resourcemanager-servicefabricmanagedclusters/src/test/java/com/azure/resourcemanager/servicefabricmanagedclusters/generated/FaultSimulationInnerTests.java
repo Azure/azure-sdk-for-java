@@ -15,21 +15,22 @@ public final class FaultSimulationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultSimulationInner model = BinaryData.fromString(
-            "{\"simulationId\":\"ncckw\",\"status\":\"Active\",\"startTime\":\"2021-06-29T06:08:24Z\",\"endTime\":\"2021-07-28T19:48:05Z\",\"details\":{\"clusterId\":\"uyqaxzfeqztppr\",\"operationId\":\"lxorjaltolmncws\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"csdbnwdcfhuc\",\"status\":\"Done\",\"operationId\":\"uvglsbjjcanvx\",\"operationStatus\":\"Canceled\"},{\"nodeTypeName\":\"udutnco\",\"status\":\"Stopping\",\"operationId\":\"xqtvcofu\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"kgjubgdknnqvsazn\",\"status\":\"Active\",\"operationId\":\"rudsg\",\"operationStatus\":\"Aborted\"},{\"nodeTypeName\":\"kycgrauwj\",\"status\":\"Starting\",\"operationId\":\"eburu\",\"operationStatus\":\"Canceled\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-06-02T15:45:41Z\"}}}}")
+            "{\"simulationId\":\"qunyowxwlmdjr\",\"status\":\"Active\",\"startTime\":\"2021-11-11T06:04:24Z\",\"endTime\":\"2021-11-13T18:34:35Z\",\"details\":{\"clusterId\":\"dbodacizsjqlhkrr\",\"operationId\":\"deibqip\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"vxndz\",\"status\":\"Stopping\",\"operationId\":\"efajpj\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"qnyhgb\",\"status\":\"Active\",\"operationId\":\"ivfxzsjabibsyst\",\"operationStatus\":\"Aborted\"},{\"nodeTypeName\":\"djpvkvpbjxbkz\",\"status\":\"Active\",\"operationId\":\"vncjabudurgk\",\"operationStatus\":\"Aborted\"},{\"nodeTypeName\":\"kzhjj\",\"status\":\"Done\",\"operationId\":\"hmouwqlgzrfze\",\"operationStatus\":\"Succeeded\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-08-01T17:17:52Z\"}}}}")
             .toObject(FaultSimulationInner.class);
-        Assertions.assertEquals("ncckw", model.simulationId());
+        Assertions.assertEquals("qunyowxwlmdjr", model.simulationId());
         Assertions.assertEquals(FaultSimulationStatus.ACTIVE, model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T06:08:24Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-28T19:48:05Z"), model.endTime());
-        Assertions.assertEquals("uyqaxzfeqztppr", model.details().clusterId());
-        Assertions.assertEquals("lxorjaltolmncws", model.details().operationId());
-        Assertions.assertEquals("csdbnwdcfhuc", model.details().nodeTypeFaultSimulation().get(0).nodeTypeName());
-        Assertions.assertEquals(FaultSimulationStatus.DONE, model.details().nodeTypeFaultSimulation().get(0).status());
-        Assertions.assertEquals("uvglsbjjcanvx", model.details().nodeTypeFaultSimulation().get(0).operationId());
-        Assertions.assertEquals(SfmcOperationStatus.CANCELED,
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T06:04:24Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T18:34:35Z"), model.endTime());
+        Assertions.assertEquals("dbodacizsjqlhkrr", model.details().clusterId());
+        Assertions.assertEquals("deibqip", model.details().operationId());
+        Assertions.assertEquals("vxndz", model.details().nodeTypeFaultSimulation().get(0).nodeTypeName());
+        Assertions.assertEquals(FaultSimulationStatus.STOPPING,
+            model.details().nodeTypeFaultSimulation().get(0).status());
+        Assertions.assertEquals("efajpj", model.details().nodeTypeFaultSimulation().get(0).operationId());
+        Assertions.assertEquals(SfmcOperationStatus.STARTED,
             model.details().nodeTypeFaultSimulation().get(0).operationStatus());
         Assertions.assertFalse(model.details().parameters().force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T15:45:41Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-01T17:17:52Z"),
             model.details().parameters().constraints().expirationTime());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskCachingType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmssDataDisk;
 import org.junit.jupiter.api.Assertions;
@@ -13,24 +14,36 @@ public final class VmssDataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmssDataDisk model = BinaryData.fromString(
-            "{\"lun\":210534625,\"diskSizeGB\":605018835,\"diskType\":\"Standard_LRS\",\"diskLetter\":\"ipmdscwx\"}")
+            "{\"lun\":547871572,\"diskSizeGB\":662703919,\"diskType\":\"Premium_LRS\",\"diskLetter\":\"oookkqfq\",\"caching\":\"ReadOnly\",\"writeAcceleratorEnabled\":false,\"diskIOPSReadWrite\":151095052,\"diskMBpsReadWrite\":471659562}")
             .toObject(VmssDataDisk.class);
-        Assertions.assertEquals(210534625, model.lun());
-        Assertions.assertEquals(605018835, model.diskSizeGB());
-        Assertions.assertEquals(DiskType.STANDARD_LRS, model.diskType());
-        Assertions.assertEquals("ipmdscwx", model.diskLetter());
+        Assertions.assertEquals(547871572, model.lun());
+        Assertions.assertEquals(662703919, model.diskSizeGB());
+        Assertions.assertEquals(DiskType.PREMIUM_LRS, model.diskType());
+        Assertions.assertEquals("oookkqfq", model.diskLetter());
+        Assertions.assertEquals(DiskCachingType.READ_ONLY, model.caching());
+        Assertions.assertFalse(model.writeAcceleratorEnabled());
+        Assertions.assertEquals(151095052, model.diskIOPSReadWrite());
+        Assertions.assertEquals(471659562, model.diskMBpsReadWrite());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmssDataDisk model = new VmssDataDisk().withLun(210534625)
-            .withDiskSizeGB(605018835)
-            .withDiskType(DiskType.STANDARD_LRS)
-            .withDiskLetter("ipmdscwx");
+        VmssDataDisk model = new VmssDataDisk().withLun(547871572)
+            .withDiskSizeGB(662703919)
+            .withDiskType(DiskType.PREMIUM_LRS)
+            .withDiskLetter("oookkqfq")
+            .withCaching(DiskCachingType.READ_ONLY)
+            .withWriteAcceleratorEnabled(false)
+            .withDiskIOPSReadWrite(151095052)
+            .withDiskMBpsReadWrite(471659562);
         model = BinaryData.fromObject(model).toObject(VmssDataDisk.class);
-        Assertions.assertEquals(210534625, model.lun());
-        Assertions.assertEquals(605018835, model.diskSizeGB());
-        Assertions.assertEquals(DiskType.STANDARD_LRS, model.diskType());
-        Assertions.assertEquals("ipmdscwx", model.diskLetter());
+        Assertions.assertEquals(547871572, model.lun());
+        Assertions.assertEquals(662703919, model.diskSizeGB());
+        Assertions.assertEquals(DiskType.PREMIUM_LRS, model.diskType());
+        Assertions.assertEquals("oookkqfq", model.diskLetter());
+        Assertions.assertEquals(DiskCachingType.READ_ONLY, model.caching());
+        Assertions.assertFalse(model.writeAcceleratorEnabled());
+        Assertions.assertEquals(151095052, model.diskIOPSReadWrite());
+        Assertions.assertEquals(471659562, model.diskMBpsReadWrite());
     }
 }

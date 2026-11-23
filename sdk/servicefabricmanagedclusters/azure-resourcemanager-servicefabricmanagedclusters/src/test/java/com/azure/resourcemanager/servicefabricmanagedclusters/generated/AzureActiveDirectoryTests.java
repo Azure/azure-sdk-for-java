@@ -12,21 +12,21 @@ public final class AzureActiveDirectoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureActiveDirectory model = BinaryData.fromString(
-            "{\"tenantId\":\"qidbqfatpxllrxcy\",\"clusterApplication\":\"oadsuvar\",\"clientApplication\":\"wdmjsjqbjhhyx\"}")
+            "{\"tenantId\":\"zfoqouicybxar\",\"clusterApplication\":\"szufoxciqopidoa\",\"clientApplication\":\"iodhkhazxkhnz\"}")
             .toObject(AzureActiveDirectory.class);
-        Assertions.assertEquals("qidbqfatpxllrxcy", model.tenantId());
-        Assertions.assertEquals("oadsuvar", model.clusterApplication());
-        Assertions.assertEquals("wdmjsjqbjhhyx", model.clientApplication());
+        Assertions.assertEquals("zfoqouicybxar", model.tenantId());
+        Assertions.assertEquals("szufoxciqopidoa", model.clusterApplication());
+        Assertions.assertEquals("iodhkhazxkhnz", model.clientApplication());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureActiveDirectory model = new AzureActiveDirectory().withTenantId("qidbqfatpxllrxcy")
-            .withClusterApplication("oadsuvar")
-            .withClientApplication("wdmjsjqbjhhyx");
+        AzureActiveDirectory model = new AzureActiveDirectory().withTenantId("zfoqouicybxar")
+            .withClusterApplication("szufoxciqopidoa")
+            .withClientApplication("iodhkhazxkhnz");
         model = BinaryData.fromObject(model).toObject(AzureActiveDirectory.class);
-        Assertions.assertEquals("qidbqfatpxllrxcy", model.tenantId());
-        Assertions.assertEquals("oadsuvar", model.clusterApplication());
-        Assertions.assertEquals("wdmjsjqbjhhyx", model.clientApplication());
+        Assertions.assertEquals("zfoqouicybxar", model.tenantId());
+        Assertions.assertEquals("szufoxciqopidoa", model.clusterApplication());
+        Assertions.assertEquals("iodhkhazxkhnz", model.clientApplication());
     }
 }

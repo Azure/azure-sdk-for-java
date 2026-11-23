@@ -13,16 +13,14 @@ public final class VmManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmManagedIdentity model
-            = BinaryData.fromString("{\"userAssignedIdentities\":[\"qaaysjkixqt\",\"qttezlwfffiakpjp\"]}")
-                .toObject(VmManagedIdentity.class);
-        Assertions.assertEquals("qaaysjkixqt", model.userAssignedIdentities().get(0));
+            = BinaryData.fromString("{\"userAssignedIdentities\":[\"u\"]}").toObject(VmManagedIdentity.class);
+        Assertions.assertEquals("u", model.userAssignedIdentities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmManagedIdentity model
-            = new VmManagedIdentity().withUserAssignedIdentities(Arrays.asList("qaaysjkixqt", "qttezlwfffiakpjp"));
+        VmManagedIdentity model = new VmManagedIdentity().withUserAssignedIdentities(Arrays.asList("u"));
         model = BinaryData.fromObject(model).toObject(VmManagedIdentity.class);
-        Assertions.assertEquals("qaaysjkixqt", model.userAssignedIdentities().get(0));
+        Assertions.assertEquals("u", model.userAssignedIdentities().get(0));
     }
 }

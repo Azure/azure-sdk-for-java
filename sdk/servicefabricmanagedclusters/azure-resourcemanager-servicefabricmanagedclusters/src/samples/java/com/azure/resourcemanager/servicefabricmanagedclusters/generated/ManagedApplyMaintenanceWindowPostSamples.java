@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplyMainte
  */
 public final class ManagedApplyMaintenanceWindowPostSamples {
     /*
-     * x-ms-original-file: 2026-05-01-preview/ManagedApplyMaintenanceWindowPost_example.json
+     * x-ms-original-file: 2026-09-01-preview/ManagedApplyMaintenanceWindowPost_example.json
      */
     /**
      * Sample code: Apply Maintenance Window Status.

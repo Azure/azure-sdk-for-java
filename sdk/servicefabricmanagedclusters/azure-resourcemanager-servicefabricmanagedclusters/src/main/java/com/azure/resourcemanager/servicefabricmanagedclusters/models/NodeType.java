@@ -509,6 +509,45 @@ public interface NodeType {
     ProxyAgentSettings proxyAgentSettings();
 
     /**
+     * Gets the skuProfile property: Specifies the sku profile for the node type when vmSize is set to Mix. This allows
+     * specifying multiple VM sizes and an allocation strategy for Instance Mix scenarios.
+     * 
+     * @return the skuProfile value.
+     */
+    SkuProfile skuProfile();
+
+    /**
+     * Gets the dataDiskCaching property: Specifies the caching requirements for the primary Service Fabric data disk.
+     * Possible values include: None, ReadOnly, ReadWrite.
+     * 
+     * @return the dataDiskCaching value.
+     */
+    DiskCachingType dataDiskCaching();
+
+    /**
+     * Gets the dataDiskWriteAcceleratorEnabled property: Specifies whether write accelerator should be enabled or
+     * disabled on the primary Service Fabric data disk.
+     * 
+     * @return the dataDiskWriteAcceleratorEnabled value.
+     */
+    Boolean dataDiskWriteAcceleratorEnabled();
+
+    /**
+     * Gets the dataDiskIOPSReadWrite property: Specifies the Read-Write IOPS for the primary Service Fabric data disk.
+     * 
+     * @return the dataDiskIOPSReadWrite value.
+     */
+    Integer dataDiskIOPSReadWrite();
+
+    /**
+     * Gets the dataDiskMBpsReadWrite property: Specifies the bandwidth in MB per second for the primary Service Fabric
+     * data disk.
+     * 
+     * @return the dataDiskMBpsReadWrite value.
+     */
+    Integer dataDiskMBpsReadWrite();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -581,7 +620,9 @@ public interface NodeType {
             DefinitionStages.WithAdditionalNetworkInterfaceConfigurations, DefinitionStages.WithComputerNamePrefix,
             DefinitionStages.WithVmApplications, DefinitionStages.WithZoneBalance, DefinitionStages.WithIsOutboundOnly,
             DefinitionStages.WithEnableResilientEphemeralOsDisk, DefinitionStages.WithScaleInPolicy,
-            DefinitionStages.WithProxyAgentSettings {
+            DefinitionStages.WithProxyAgentSettings, DefinitionStages.WithSkuProfile,
+            DefinitionStages.WithDataDiskCaching, DefinitionStages.WithDataDiskWriteAcceleratorEnabled,
+            DefinitionStages.WithDataDiskIOPSReadWrite, DefinitionStages.WithDataDiskMBpsReadWrite {
             /**
              * Executes the create request.
              * 
@@ -1465,6 +1506,80 @@ public interface NodeType {
              */
             WithCreate withProxyAgentSettings(ProxyAgentSettings proxyAgentSettings);
         }
+
+        /**
+         * The stage of the NodeType definition allowing to specify skuProfile.
+         */
+        interface WithSkuProfile {
+            /**
+             * Specifies the skuProfile property: Specifies the sku profile for the node type when vmSize is set to Mix.
+             * This allows specifying multiple VM sizes and an allocation strategy for Instance Mix scenarios..
+             * 
+             * @param skuProfile Specifies the sku profile for the node type when vmSize is set to Mix. This allows
+             * specifying multiple VM sizes and an allocation strategy for Instance Mix scenarios.
+             * @return the next definition stage.
+             */
+            WithCreate withSkuProfile(SkuProfile skuProfile);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify dataDiskCaching.
+         */
+        interface WithDataDiskCaching {
+            /**
+             * Specifies the dataDiskCaching property: Specifies the caching requirements for the primary Service Fabric
+             * data disk. Possible values include: None, ReadOnly, ReadWrite..
+             * 
+             * @param dataDiskCaching Specifies the caching requirements for the primary Service Fabric data disk.
+             * Possible values include: None, ReadOnly, ReadWrite.
+             * @return the next definition stage.
+             */
+            WithCreate withDataDiskCaching(DiskCachingType dataDiskCaching);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify dataDiskWriteAcceleratorEnabled.
+         */
+        interface WithDataDiskWriteAcceleratorEnabled {
+            /**
+             * Specifies the dataDiskWriteAcceleratorEnabled property: Specifies whether write accelerator should be
+             * enabled or disabled on the primary Service Fabric data disk..
+             * 
+             * @param dataDiskWriteAcceleratorEnabled Specifies whether write accelerator should be enabled or disabled
+             * on the primary Service Fabric data disk.
+             * @return the next definition stage.
+             */
+            WithCreate withDataDiskWriteAcceleratorEnabled(Boolean dataDiskWriteAcceleratorEnabled);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify dataDiskIOPSReadWrite.
+         */
+        interface WithDataDiskIOPSReadWrite {
+            /**
+             * Specifies the dataDiskIOPSReadWrite property: Specifies the Read-Write IOPS for the primary Service
+             * Fabric data disk..
+             * 
+             * @param dataDiskIOPSReadWrite Specifies the Read-Write IOPS for the primary Service Fabric data disk.
+             * @return the next definition stage.
+             */
+            WithCreate withDataDiskIOPSReadWrite(Integer dataDiskIOPSReadWrite);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify dataDiskMBpsReadWrite.
+         */
+        interface WithDataDiskMBpsReadWrite {
+            /**
+             * Specifies the dataDiskMBpsReadWrite property: Specifies the bandwidth in MB per second for the primary
+             * Service Fabric data disk..
+             * 
+             * @param dataDiskMBpsReadWrite Specifies the bandwidth in MB per second for the primary Service Fabric data
+             * disk.
+             * @return the next definition stage.
+             */
+            WithCreate withDataDiskMBpsReadWrite(Integer dataDiskMBpsReadWrite);
+        }
     }
 
     /**
@@ -1631,6 +1746,27 @@ public interface NodeType {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void reimage(NodeTypeActionParameters parameters, Context context);
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param parameters The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reimageAllDisks(ReimageAllDisksParameters parameters);
+
+    /**
+     * Reimages a single node on the node type, including its OS disk and all data disks.
+     * 
+     * @param parameters The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reimageAllDisks(ReimageAllDisksParameters parameters, Context context);
 
     /**
      * Restarts one or more nodes on the node type. It will disable the fabric nodes, trigger a restart on the VMs and

@@ -13,31 +13,31 @@ public final class RollingUpgradeMonitoringPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RollingUpgradeMonitoringPolicy model = BinaryData.fromString(
-            "{\"failureAction\":\"Rollback\",\"healthCheckWaitDuration\":\"rujqg\",\"healthCheckStableDuration\":\"hmuouqfprwzwbn\",\"healthCheckRetryTimeout\":\"uitnwuiz\",\"upgradeTimeout\":\"a\",\"upgradeDomainTimeout\":\"x\"}")
+            "{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"mmnkzsmodmgl\",\"healthCheckStableDuration\":\"ugpbkw\",\"healthCheckRetryTimeout\":\"mutduqktaps\",\"upgradeTimeout\":\"wgcu\",\"upgradeDomainTimeout\":\"rtumkdosvq\"}")
             .toObject(RollingUpgradeMonitoringPolicy.class);
-        Assertions.assertEquals(FailureAction.ROLLBACK, model.failureAction());
-        Assertions.assertEquals("rujqg", model.healthCheckWaitDuration());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.healthCheckStableDuration());
-        Assertions.assertEquals("uitnwuiz", model.healthCheckRetryTimeout());
-        Assertions.assertEquals("a", model.upgradeTimeout());
-        Assertions.assertEquals("x", model.upgradeDomainTimeout());
+        Assertions.assertEquals(FailureAction.MANUAL, model.failureAction());
+        Assertions.assertEquals("mmnkzsmodmgl", model.healthCheckWaitDuration());
+        Assertions.assertEquals("ugpbkw", model.healthCheckStableDuration());
+        Assertions.assertEquals("mutduqktaps", model.healthCheckRetryTimeout());
+        Assertions.assertEquals("wgcu", model.upgradeTimeout());
+        Assertions.assertEquals("rtumkdosvq", model.upgradeDomainTimeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RollingUpgradeMonitoringPolicy model
-            = new RollingUpgradeMonitoringPolicy().withFailureAction(FailureAction.ROLLBACK)
-                .withHealthCheckWaitDuration("rujqg")
-                .withHealthCheckStableDuration("hmuouqfprwzwbn")
-                .withHealthCheckRetryTimeout("uitnwuiz")
-                .withUpgradeTimeout("a")
-                .withUpgradeDomainTimeout("x");
+            = new RollingUpgradeMonitoringPolicy().withFailureAction(FailureAction.MANUAL)
+                .withHealthCheckWaitDuration("mmnkzsmodmgl")
+                .withHealthCheckStableDuration("ugpbkw")
+                .withHealthCheckRetryTimeout("mutduqktaps")
+                .withUpgradeTimeout("wgcu")
+                .withUpgradeDomainTimeout("rtumkdosvq");
         model = BinaryData.fromObject(model).toObject(RollingUpgradeMonitoringPolicy.class);
-        Assertions.assertEquals(FailureAction.ROLLBACK, model.failureAction());
-        Assertions.assertEquals("rujqg", model.healthCheckWaitDuration());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.healthCheckStableDuration());
-        Assertions.assertEquals("uitnwuiz", model.healthCheckRetryTimeout());
-        Assertions.assertEquals("a", model.upgradeTimeout());
-        Assertions.assertEquals("x", model.upgradeDomainTimeout());
+        Assertions.assertEquals(FailureAction.MANUAL, model.failureAction());
+        Assertions.assertEquals("mmnkzsmodmgl", model.healthCheckWaitDuration());
+        Assertions.assertEquals("ugpbkw", model.healthCheckStableDuration());
+        Assertions.assertEquals("mutduqktaps", model.healthCheckRetryTimeout());
+        Assertions.assertEquals("wgcu", model.upgradeTimeout());
+        Assertions.assertEquals("rtumkdosvq", model.upgradeDomainTimeout());
     }
 }

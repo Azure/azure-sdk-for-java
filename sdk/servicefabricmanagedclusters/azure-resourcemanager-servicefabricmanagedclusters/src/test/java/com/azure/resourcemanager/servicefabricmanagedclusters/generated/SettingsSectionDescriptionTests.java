@@ -13,21 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class SettingsSectionDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SettingsSectionDescription model
-            = BinaryData.fromString("{\"name\":\"rw\",\"parameters\":[{\"name\":\"co\",\"value\":\"uhpkxkgymar\"}]}")
-                .toObject(SettingsSectionDescription.class);
-        Assertions.assertEquals("rw", model.name());
-        Assertions.assertEquals("co", model.parameters().get(0).name());
-        Assertions.assertEquals("uhpkxkgymar", model.parameters().get(0).value());
+        SettingsSectionDescription model = BinaryData.fromString(
+            "{\"name\":\"onlwntoeg\",\"parameters\":[{\"name\":\"dwbwhkszzcmrvexz\",\"value\":\"vbtqgsfraoyzk\"},{\"name\":\"owtlmnguxawqald\",\"value\":\"yuuximerqfobwyzn\"},{\"name\":\"bykutw\",\"value\":\"fhpagmhrskdsnf\"}]}")
+            .toObject(SettingsSectionDescription.class);
+        Assertions.assertEquals("onlwntoeg", model.name());
+        Assertions.assertEquals("dwbwhkszzcmrvexz", model.parameters().get(0).name());
+        Assertions.assertEquals("vbtqgsfraoyzk", model.parameters().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsSectionDescription model = new SettingsSectionDescription().withName("rw")
-            .withParameters(Arrays.asList(new SettingsParameterDescription().withName("co").withValue("uhpkxkgymar")));
+        SettingsSectionDescription model = new SettingsSectionDescription().withName("onlwntoeg")
+            .withParameters(Arrays.asList(
+                new SettingsParameterDescription().withName("dwbwhkszzcmrvexz").withValue("vbtqgsfraoyzk"),
+                new SettingsParameterDescription().withName("owtlmnguxawqald").withValue("yuuximerqfobwyzn"),
+                new SettingsParameterDescription().withName("bykutw").withValue("fhpagmhrskdsnf")));
         model = BinaryData.fromObject(model).toObject(SettingsSectionDescription.class);
-        Assertions.assertEquals("rw", model.name());
-        Assertions.assertEquals("co", model.parameters().get(0).name());
-        Assertions.assertEquals("uhpkxkgymar", model.parameters().get(0).value());
+        Assertions.assertEquals("onlwntoeg", model.name());
+        Assertions.assertEquals("dwbwhkszzcmrvexz", model.parameters().get(0).name());
+        Assertions.assertEquals("vbtqgsfraoyzk", model.parameters().get(0).value());
     }
 }

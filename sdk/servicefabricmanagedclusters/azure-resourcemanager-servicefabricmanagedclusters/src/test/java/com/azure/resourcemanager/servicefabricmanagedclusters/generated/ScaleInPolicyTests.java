@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ScaleInPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScaleInPolicy model = BinaryData.fromString("{\"mode\":\"OldestNodeFirst\"}").toObject(ScaleInPolicy.class);
-        Assertions.assertEquals(ScaleInPolicyMode.OLDEST_NODE_FIRST, model.mode());
+        ScaleInPolicy model = BinaryData.fromString("{\"mode\":\"NewestNodeFirst\"}").toObject(ScaleInPolicy.class);
+        Assertions.assertEquals(ScaleInPolicyMode.NEWEST_NODE_FIRST, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScaleInPolicy model = new ScaleInPolicy().withMode(ScaleInPolicyMode.OLDEST_NODE_FIRST);
+        ScaleInPolicy model = new ScaleInPolicy().withMode(ScaleInPolicyMode.NEWEST_NODE_FIRST);
         model = BinaryData.fromObject(model).toObject(ScaleInPolicy.class);
-        Assertions.assertEquals(ScaleInPolicyMode.OLDEST_NODE_FIRST, model.mode());
+        Assertions.assertEquals(ScaleInPolicyMode.NEWEST_NODE_FIRST, model.mode());
     }
 }
