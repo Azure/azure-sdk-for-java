@@ -2660,7 +2660,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
                 && path != null
                 && path.endsWith("/" + blobName)
                 && (query == null || !query.contains("comp="))) {
-                String range = req.getHeaders().getValue(HttpHeaderName.RANGE);
+                String range = req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
                 if (range == null) {
                     range = req.getHeaders().getValue(HttpHeaderName.fromString("Range"));
                 }

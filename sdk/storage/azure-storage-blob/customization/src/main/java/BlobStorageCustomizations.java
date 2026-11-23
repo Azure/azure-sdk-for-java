@@ -20,12 +20,14 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.ConditionalExpr;
 import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.IntegerLiteralExpr;
 import com.github.javaparser.ast.expr.LambdaExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.NullLiteralExpr;
 import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.modules.ModuleDirective;
 import com.github.javaparser.ast.modules.ModuleExportsDirective;
@@ -52,6 +54,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Customization class for Blob Storage.
@@ -107,6 +110,10 @@ public class BlobStorageCustomizations extends Customization {
         "ServicesImpl", "ContainersImpl", "BlobsImpl", "AppendBlobsImpl", "BlockBlobsImpl", "PageBlobsImpl",
         "MultipartFormDataHelper", "XmlSerializerProviders");
 
+    // The generated operation groups that send the service requests.
+    private static final List<String> OPERATION_GROUP_IMPLS = Arrays.asList(
+        "ServicesImpl", "ContainersImpl", "BlobsImpl", "AppendBlobsImpl", "BlockBlobsImpl", "PageBlobsImpl");
+
     private static final String MODULE_INFO_PATH = "src/main/java/module-info.java";
 
     // Directives the hand-written code needs that the generated module-info doesn't declare: the storage-common and
@@ -150,6 +157,8 @@ public class BlobStorageCustomizations extends Customization {
         allowEmptyGetLayoutResponse(customization.getPackage(IMPL_PACKAGE));
 
         allowNullBlockListType(customization.getPackage(IMPL_PACKAGE));
+
+        sendRangesInXMsRangeHeader(customization);
 
         updateImplToMapInternalException(customization.getPackage(IMPL_PACKAGE));
     }
@@ -430,6 +439,41 @@ public class BlobStorageCustomizations extends Customization {
                                     new IntegerLiteralExpr("204"), BinaryExpr.Operator.EQUALS),
                                 new NullLiteralExpr(), call.clone()))))));
         }
+    }
+
+    /**
+     * Sends ranges in the {@code x-ms-range} header, as the shipped client did. The spec uses the standard
+     * {@code Range} header, which the service treats the same, but custom pipeline policies, recorded tests and HTTP
+     * intermediaries all see the header name. Renaming it where the request is built covers every pipeline, including
+     * the ones Data Lake, Cryptography and callers supply.
+     *
+     * @param customization The library customization.
+     */
+    private static void sendRangesInXMsRangeHeader(LibraryCustomization customization) {
+        PackageCustomization implPackage = customization.getPackage(IMPL_PACKAGE);
+        Editor editor = customization.getRawEditor();
+        Stream.concat(OPERATION_GROUP_IMPLS.stream(),
+            CONVENIENCE_CLIENTS_TO_RELOCATE.stream().map(BlobStorageCustomizations::internalClientName))
+            // Only reprint the classes that send a range, so the others keep the generator's formatting.
+            .filter(className -> {
+                String content = editor.getFileContent(PKG_ROOT + "implementation/" + className + ".java");
+                return content.contains("@HeaderParam(\"Range\")") || content.contains("HttpHeaderName.RANGE");
+            })
+            .forEach(className -> implPackage.getClass(className)
+                .customizeAst(ast -> ast.getClassByName(className).ifPresent(clazz -> {
+                    // @HeaderParam("Range") on the RestProxy service interface methods.
+                    clazz.findAll(SingleMemberAnnotationExpr.class,
+                        annotation -> "HeaderParam".equals(annotation.getNameAsString())
+                            && annotation.getMemberValue().isStringLiteralExpr()
+                            && "Range".equals(annotation.getMemberValue().asStringLiteralExpr().getValue()))
+                        .forEach(annotation -> annotation.setMemberValue(new StringLiteralExpr("x-ms-range")));
+                    // requestOptions.setHeader(HttpHeaderName.RANGE, ...) for optional ranges.
+                    clazz.findAll(FieldAccessExpr.class,
+                        field -> "RANGE".equals(field.getNameAsString()) && field.getScope().isNameExpr()
+                            && "HttpHeaderName".equals(field.getScope().asNameExpr().getNameAsString()))
+                        .forEach(field -> field.replace(new MethodCallExpr(new NameExpr("HttpHeaderName"),
+                            "fromString", new NodeList<>(new StringLiteralExpr("x-ms-range")))));
+                })));
     }
 
     /**
@@ -745,9 +789,7 @@ public class BlobStorageCustomizations extends Customization {
      * @param implPackage The implementation package.
      */
     private static void updateImplToMapInternalException(PackageCustomization implPackage) {
-        List<String> implClassesToUpdate = Arrays.asList("ServicesImpl", "ContainersImpl", "BlobsImpl",
-            "AppendBlobsImpl", "BlockBlobsImpl", "PageBlobsImpl");
-        for (String implToUpdate : implClassesToUpdate) {
+        for (String implToUpdate : OPERATION_GROUP_IMPLS) {
             implPackage.getClass(implToUpdate).customizeAst(ast -> {
                 ast.addImport("com.azure.storage.blob.implementation.util.ModelHelper");
                 ast.addImport("com.azure.storage.blob.models.BlobStorageException");

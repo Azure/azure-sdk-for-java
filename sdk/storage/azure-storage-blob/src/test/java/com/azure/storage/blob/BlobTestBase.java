@@ -561,12 +561,12 @@ public class BlobTestBase extends TestProxyTestBase {
             }
 
             String clientRequestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
-            String range = request.getHeaders().getValue(HttpHeaderName.RANGE);
+            String range = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
             return next.process()
                 .doOnNext(response -> LOGGER.atInfo()
                     .addKeyValue("test", testName)
                     .addKeyValue("statusCode", response.getStatusCode())
-                    .addKeyValue("Range", range)
+                    .addKeyValue("x-ms-range", range)
                     .addKeyValue("hasMarker", query.contains("marker="))
                     .addKeyValue("x-ms-client-request-id", clientRequestId)
                     .addKeyValue("x-ms-request-id", response.getHeaderValue(X_MS_REQUEST_ID))

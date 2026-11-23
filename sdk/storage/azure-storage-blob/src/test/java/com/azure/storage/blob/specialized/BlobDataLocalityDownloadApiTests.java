@@ -1055,7 +1055,7 @@ public class BlobDataLocalityDownloadApiTests extends BlobTestBase {
 
             dataRequestRecords.add(record);
 
-            String rangeHeader = request.getHeaders().getValue(HttpHeaderName.RANGE);
+            String rangeHeader = request.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
             int start = 0;
             int end = contentBytes.length - 1;
             if (rangeHeader != null) {

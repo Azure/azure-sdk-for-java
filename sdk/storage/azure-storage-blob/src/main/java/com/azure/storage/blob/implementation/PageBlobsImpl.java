@@ -91,7 +91,7 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(BlobStorageErrorException.class)
         Mono<Response<Void>> uploadPages(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("Range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
             @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
@@ -99,21 +99,21 @@ public final class PageBlobsImpl {
         @UnexpectedResponseExceptionType(BlobStorageErrorException.class)
         Response<Void> uploadPagesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("Range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
             @BodyParam("application/octet-stream") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageErrorException.class)
         Mono<Response<Void>> clearPages(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Length") int contentLength, @HeaderParam("Range") String range,
+            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-page-write") String pageWrite, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(BlobStorageErrorException.class)
         Response<Void> clearPagesSync(@HostParam("url") String url, @HeaderParam("x-ms-version") String xMsVersion,
-            @HeaderParam("Content-Length") int contentLength, @HeaderParam("Range") String range,
+            @HeaderParam("Content-Length") int contentLength, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-page-write") String pageWrite, RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
@@ -122,7 +122,7 @@ public final class PageBlobsImpl {
         Mono<Response<Void>> uploadPagesFromUrl(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String sourceUrl,
             @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("Range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
             RequestOptions requestOptions, Context context);
 
         @Put("?comp=page")
@@ -131,7 +131,7 @@ public final class PageBlobsImpl {
         Response<Void> uploadPagesFromUrlSync(@HostParam("url") String url,
             @HeaderParam("x-ms-version") String xMsVersion, @HeaderParam("x-ms-copy-source") String sourceUrl,
             @HeaderParam("x-ms-source-range") String sourceRange, @HeaderParam("Content-Length") long contentLength,
-            @HeaderParam("Range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
+            @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-page-write") String pageWrite,
             RequestOptions requestOptions, Context context);
 
         @Get("?comp=pagelist")

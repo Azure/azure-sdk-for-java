@@ -23,10 +23,6 @@
 ### Other Changes
 - Migrated code generation from AutoRest (Swagger) to TypeSpec. The public API is unchanged apart from the items listed
   in this release.
-- Range operations (download, uploading and clearing pages, uploading pages from a URL, getting page ranges and page
-  range diffs, and getting the blob layout) now send the standard `Range` request header instead of `x-ms-range`. The
-  service treats both the same, so this does not change results. `Range` has been added to the headers logged by
-  default.
 
 ## 12.38.0-beta.1 (2026-11-05)
 
