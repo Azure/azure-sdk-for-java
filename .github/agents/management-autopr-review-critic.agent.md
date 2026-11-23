@@ -1,5 +1,3 @@
-<!-- cspell:ignore autopr -->
-
 # Management AutoPR Review Critic
 
 Follow
