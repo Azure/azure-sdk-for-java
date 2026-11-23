@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.context;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusPropertiesConfiguration;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -12,6 +14,7 @@ import org.springframework.aot.test.generate.TestGenerationContext;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -284,6 +287,39 @@ class AzureGlobalPropertiesAutoConfigurationTests {
             freshContext.refresh();
             assertThat(freshContext.getBeansOfType(AzureGlobalProperties.class)).hasSize(1);
             assertThat(freshContext.getBean(AZURE_GLOBAL_PROPERTY_BEAN_NAME)).isInstanceOf(AzureGlobalProperties.class);
+            assertThat(freshContext.getBean(AzureGlobalProperties.class).getProfile().getCloudType()).isEqualTo(AZURE);
+        });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeResolvesServiceBusNamespace() {
+        GenericApplicationContext context = serviceBusContext();
+        compile(context, freshContext -> {
+            TestPropertyValues.of("spring.cloud.azure.servicebus.namespace=runtime-namespace").applyTo(freshContext);
+            freshContext.refresh();
+            AzureServiceBusProperties properties = freshContext.getBean(AzureServiceBusProperties.class);
+            assertThat(properties.getFullyQualifiedNamespace()).isEqualTo("runtime-namespace.servicebus.windows.net");
+        });
+    }
+
+    @Test
+    @CompileWithForkedClassLoader
+    void processAheadOfTimeBindsRuntimeCloudProperties() {
+        GenericApplicationContext context = serviceBusContext();
+        compile(context, freshContext -> {
+            TestPropertyValues.of(
+                "spring.cloud.azure.servicebus.namespace=runtime-namespace",
+                "spring.cloud.azure.profile.cloud-type=azure_china",
+                CLIENT_ID_PROPERTY + "=runtime-client-id"
+            ).applyTo(freshContext);
+            freshContext.refresh();
+            AzureGlobalProperties globalProperties = freshContext.getBean(AzureGlobalProperties.class);
+            assertThat(globalProperties.getProfile().getCloudType()).isEqualTo(AZURE_CHINA);
+            AzureServiceBusProperties properties = freshContext.getBean(AzureServiceBusProperties.class);
+            assertThat(properties.getFullyQualifiedNamespace())
+                .isEqualTo("runtime-namespace.servicebus.chinacloudapi.cn");
+            assertThat(properties.getCredential().getClientId()).isEqualTo("runtime-client-id");
         });
     }
 
@@ -327,6 +363,14 @@ class AzureGlobalPropertiesAutoConfigurationTests {
                 assertThat(child.getCredential().getClientId()).isEqualTo("child-client");
             });
         }
+    }
+
+    private GenericApplicationContext serviceBusContext() {
+        GenericApplicationContext context = new AnnotationConfigApplicationContext();
+        TestPropertyValues.of("spring.cloud.azure.servicebus.namespace=build-namespace").applyTo(context);
+        context.registerBean(AzureGlobalPropertiesAutoConfiguration.class);
+        context.registerBean(AzureServiceBusPropertiesConfiguration.class);
+        return context;
     }
 
     @SuppressWarnings("unchecked")
