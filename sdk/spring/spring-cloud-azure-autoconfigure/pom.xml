@@ -37,6 +37,26 @@
     <compiler.failondeprecatedstatus/>
     <spotless.skip>true</spotless.skip>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <!-- Align this module with azure-core-http-netty when optional Redis and JMS dependencies are present. -->
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-bom</artifactId>
+        <version>4.2.19.Final</version> <!-- {x-version-update;io.netty:netty-bom;external_dependency} -->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.projectreactor</groupId>
+        <artifactId>reactor-bom</artifactId>
+        <version>2025.0.7</version> <!-- {x-version-update;io.projectreactor:reactor-bom;external_dependency} -->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
