@@ -111,7 +111,7 @@ public class BlobStorageCustomizations extends Customization {
         "MultipartFormDataHelper", "XmlSerializerProviders");
 
     // The generated operation groups that send the service requests.
-    private static final List<String> OPERATION_GROUP_IMPLS = Arrays.asList(
+    private static final List<String> OPERATION_GROUP_CLASSES = Arrays.asList(
         "ServicesImpl", "ContainersImpl", "BlobsImpl", "AppendBlobsImpl", "BlockBlobsImpl", "PageBlobsImpl");
 
     private static final String MODULE_INFO_PATH = "src/main/java/module-info.java";
@@ -452,7 +452,7 @@ public class BlobStorageCustomizations extends Customization {
     private static void sendRangesInXMsRangeHeader(LibraryCustomization customization) {
         PackageCustomization implPackage = customization.getPackage(IMPL_PACKAGE);
         Editor editor = customization.getRawEditor();
-        Stream.concat(OPERATION_GROUP_IMPLS.stream(),
+        Stream.concat(OPERATION_GROUP_CLASSES.stream(),
             CONVENIENCE_CLIENTS_TO_RELOCATE.stream().map(BlobStorageCustomizations::internalClientName))
             // Only reprint the classes that send a range, so the others keep the generator's formatting.
             .filter(className -> {
@@ -789,7 +789,7 @@ public class BlobStorageCustomizations extends Customization {
      * @param implPackage The implementation package.
      */
     private static void updateImplToMapInternalException(PackageCustomization implPackage) {
-        for (String implToUpdate : OPERATION_GROUP_IMPLS) {
+        for (String implToUpdate : OPERATION_GROUP_CLASSES) {
             implPackage.getClass(implToUpdate).customizeAst(ast -> {
                 ast.addImport("com.azure.storage.blob.implementation.util.ModelHelper");
                 ast.addImport("com.azure.storage.blob.models.BlobStorageException");
