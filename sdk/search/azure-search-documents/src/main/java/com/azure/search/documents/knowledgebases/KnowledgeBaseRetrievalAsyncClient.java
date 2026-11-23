@@ -470,7 +470,22 @@ public final class KnowledgeBaseRetrievalAsyncClient {
     }
 
     /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     *
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
+     *
+     * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
+     * subtype's {@code getValue()} to access its typed payload. Unrecognized events expose only their names through
+     * {@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before the stream
+     * completes. End-of-stream without a terminal event completes normally. Transport and decoding failures are
+     * propagated through the reactive error path. The client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process. If its
      * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the

@@ -269,12 +269,15 @@ public class SearchCustomizations extends Customization {
             method.getParameters().remove(2);
             method.getBody().get().getStatements().removeIf(statement -> statement.isIfStmt()
                 && statement.asIfStmt().getCondition().toString().equals("queryWorkIQSourceAuthorization != null"));
-            method.setJavadocComment("Retrieves relevant data from backing stores and streams progress and results "
-                + "as server-sent events.\n\n"
-                + "@param retrievalRequest The retrieval request to process.\n"
-                + "@param querySourceAuthorization Token identifying the user for which the query is being executed. "
-                + "This token is used to enforce security restrictions on documents.\n"
-                + "@return A stream of typed knowledge base retrieval events.");
+            method.getJavadocComment().ifPresent(javadoc -> {
+                String content = javadoc.getContent();
+                String updated = content.replaceFirst(
+                    "(?ms)^[ \\t*]*@param queryWorkIQSourceAuthorization\\b.*?(?=^[ \\t*]*@return\\b)", "");
+                if (updated.equals(content)) {
+                    throw new IllegalStateException("Could not locate queryWorkIQSourceAuthorization javadoc.");
+                }
+                javadoc.setContent(updated);
+            });
             clazz.addMember(method);
         }));
     }

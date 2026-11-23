@@ -426,7 +426,27 @@ public final class KnowledgeBaseRetrievalClient {
     }
 
     /**
-     * Retrieves relevant data from backing stores and streams progress and results as server-sent events.
+     * Retrieves relevant data from backing stores and streams progress and results as server-sent
+     * events.
+     *
+     * Process the response incrementally using server-sent event framing. Each event contains an
+     * event name and a JSON-encoded data payload. The stream ends with either a `response.completed`
+     * event or an `error` event. OpenAPI 2.0 represents the response body as a string, so generated
+     * clients may expose the raw response without typed event parsing. Do not deserialize the
+     * complete response body as a single JSON document.
+     *
+     * Events are polymorphic: see {@link KnowledgeBaseRetrievalStreamEvent} for the known subtypes. Use a known
+     * subtype's {@code getValue()} to access its typed payload. Unrecognized events expose only their names through
+     * {@link KnowledgeBaseRetrievalStreamEvent#getEventName()}; their payloads are not available.
+     *
+     * Events are decoded lazily by a single iterator. Use try-with-resources to close the stream when iteration ends
+     * early. The response is also closed on end-of-stream, a terminal event, or an iteration failure. Closing the
+     * stream is idempotent and may throw {@link java.io.IOException}.
+     *
+     * If received, the terminal {@code error} or {@code response.completed} event is emitted before iteration ends. A
+     * failure while closing after a terminal event is reported by the next iterator access or explicit close, after the
+     * terminal event is delivered. End-of-stream without a terminal event completes normally. Transport and decoding
+     * failures are thrown during iteration. The client does not reconnect automatically.
      *
      * @param retrievalRequest The retrieval request to process. If its
      * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()} is set, it is sent only as the
@@ -435,7 +455,7 @@ public final class KnowledgeBaseRetrievalClient {
      * used to enforce security restrictions on documents. A non-null value overrides
      * {@link KnowledgeBaseRetrievalOptions#getQuerySourceAuthorization()}; null falls back to it, and an empty string
      * is treated as an explicit value.
-     * @return A stream of typed knowledge base retrieval events.
+     * @return A closeable stream of typed knowledge base retrieval events.
      */
     @Generated
     public CloseableIterableStream<KnowledgeBaseRetrievalStreamEvent>
