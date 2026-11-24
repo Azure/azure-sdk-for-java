@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class OperationStatusGetSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/Get_OperationStatus.json
+     * x-ms-original-file: 2026-11-01/Get_OperationStatus.json
      */
     /**
      * Sample code: Get_OperationStatus.
@@ -18,6 +18,6 @@ public final class OperationStatusGetSamples {
      */
     public static void getOperationStatus(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.operationStatus()
-            .getWithResponse("testLocation", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", com.azure.core.util.Context.NONE);
+            .getWithResponse("eastus", "00000000-0000-0000-0000-000000000001", com.azure.core.util.Context.NONE);
     }
 }

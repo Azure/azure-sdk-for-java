@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.deviceregistry.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentity;
+import com.azure.resourcemanager.deviceregistry.models.OutboundIdentityType;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryUpdate;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistryUpdateProperties;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.deviceregistry.models.SystemAssignedServiceIdentityType;
+import com.azure.resourcemanager.deviceregistry.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -17,27 +20,34 @@ public final class SchemaRegistryUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"yqxtjjfzql\",\"tenantId\":\"ycavodggxdbees\",\"type\":\"None\"},\"tags\":{\"wqfbylyrfgiagt\":\"nlrariaawiuagy\",\"zjvusfzldmo\":\"ojocqwogf\",\"own\":\"uxylfsbtkadpy\",\"isofieypefojyqd\":\"tgkbugrjqctojc\"},\"properties\":{\"displayName\":\"plcplcwkhi\",\"description\":\"hlhzdsqtzbsrgno\"}}")
+            "{\"identity\":{\"principalId\":\"cp\",\"tenantId\":\"wkhihihlhzdsqt\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"e\":{\"principalId\":\"nowc\",\"clientId\":\"fgmvecactxmwo\"},\"wyivqikf\":{\"principalId\":\"wcluqovekqvgq\",\"clientId\":\"wifzmp\"},\"yklxubyjaffmmfbl\":{\"principalId\":\"vhrfsphuagrt\",\"clientId\":\"kteusqczk\"}}},\"tags\":{\"bgq\":\"u\",\"metttwgd\":\"brta\"},\"properties\":{\"displayName\":\"xih\",\"description\":\"moo\",\"outboundIdentity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"eypxiutcxapzhyr\"}}}")
             .toObject(SchemaRegistryUpdate.class);
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("nlrariaawiuagy", model.tags().get("wqfbylyrfgiagt"));
-        Assertions.assertEquals("plcplcwkhi", model.properties().displayName());
-        Assertions.assertEquals("hlhzdsqtzbsrgno", model.properties().description());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("u", model.tags().get("bgq"));
+        Assertions.assertEquals("xih", model.properties().displayName());
+        Assertions.assertEquals("moo", model.properties().description());
+        Assertions.assertEquals(OutboundIdentityType.USER_ASSIGNED, model.properties().outboundIdentity().type());
+        Assertions.assertEquals("eypxiutcxapzhyr", model.properties().outboundIdentity().userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaRegistryUpdate model = new SchemaRegistryUpdate()
-            .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
-            .withTags(mapOf("wqfbylyrfgiagt", "nlrariaawiuagy", "zjvusfzldmo", "ojocqwogf", "own", "uxylfsbtkadpy",
-                "isofieypefojyqd", "tgkbugrjqctojc"))
-            .withProperties(
-                new SchemaRegistryUpdateProperties().withDisplayName("plcplcwkhi").withDescription("hlhzdsqtzbsrgno"));
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("e", new UserAssignedIdentity(), "wyivqikf",
+                    new UserAssignedIdentity(), "yklxubyjaffmmfbl", new UserAssignedIdentity())))
+            .withTags(mapOf("bgq", "u", "metttwgd", "brta"))
+            .withProperties(new SchemaRegistryUpdateProperties().withDisplayName("xih")
+                .withDescription("moo")
+                .withOutboundIdentity(new OutboundIdentity().withType(OutboundIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentity("eypxiutcxapzhyr")));
         model = BinaryData.fromObject(model).toObject(SchemaRegistryUpdate.class);
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("nlrariaawiuagy", model.tags().get("wqfbylyrfgiagt"));
-        Assertions.assertEquals("plcplcwkhi", model.properties().displayName());
-        Assertions.assertEquals("hlhzdsqtzbsrgno", model.properties().description());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("u", model.tags().get("bgq"));
+        Assertions.assertEquals("xih", model.properties().displayName());
+        Assertions.assertEquals("moo", model.properties().description());
+        Assertions.assertEquals(OutboundIdentityType.USER_ASSIGNED, model.properties().outboundIdentity().type());
+        Assertions.assertEquals("eypxiutcxapzhyr", model.properties().outboundIdentity().userAssignedIdentity());
     }
 
     // Use "Map.of" if available

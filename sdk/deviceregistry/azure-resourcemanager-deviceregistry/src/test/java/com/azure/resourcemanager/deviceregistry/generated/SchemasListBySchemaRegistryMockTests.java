@@ -24,7 +24,7 @@ public final class SchemasListBySchemaRegistryMockTests {
     @Test
     public void testListBySchemaRegistry() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"uuid\":\"wsrsxkrplbja\",\"displayName\":\"jwwviy\",\"description\":\"ps\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"zycyqiqyhg\":\"jxsqwjhqkbiwetp\"}},\"id\":\"etzlexbsfledynoj\",\"name\":\"ziu\",\"type\":\"fbzkk\"}]}";
+            = "{\"value\":[{\"properties\":{\"uuid\":\"etvohkxdxuwsaifm\",\"displayName\":\"nosbz\",\"description\":\"hg\",\"format\":\"Delta/1.0\",\"schemaType\":\"ThingModel\",\"provisioningState\":\"Succeeded\",\"tags\":{\"erqzevxo\":\"jolgjyyxpvels\",\"waafrqulh\":\"eintxwaljglzobl\",\"afjrqpjiyrqjcrg\":\"zyqbhd\"}},\"id\":\"wmzwdfkbnrzorpdl\",\"name\":\"bqc\",\"type\":\"qjf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,12 @@ public final class SchemasListBySchemaRegistryMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Schema> response
-            = manager.schemas().listBySchemaRegistry("bfw", "rzx", com.azure.core.util.Context.NONE);
+            = manager.schemas().listBySchemaRegistry("chygtvxbyjane", "ubdpkxyqvgxi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jwwviy", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("ps", response.iterator().next().properties().description());
-        Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, response.iterator().next().properties().format());
-        Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, response.iterator().next().properties().schemaType());
-        Assertions.assertEquals("jxsqwjhqkbiwetp", response.iterator().next().properties().tags().get("zycyqiqyhg"));
+        Assertions.assertEquals("nosbz", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("hg", response.iterator().next().properties().description());
+        Assertions.assertEquals(Format.DELTA_1_0, response.iterator().next().properties().format());
+        Assertions.assertEquals(SchemaType.THING_MODEL, response.iterator().next().properties().schemaType());
+        Assertions.assertEquals("jolgjyyxpvels", response.iterator().next().properties().tags().get("erqzevxo"));
     }
 }

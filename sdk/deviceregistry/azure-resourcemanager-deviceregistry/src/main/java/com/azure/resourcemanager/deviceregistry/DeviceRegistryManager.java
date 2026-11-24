@@ -27,8 +27,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetEndpointProfilesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.AsyncOperationStatusImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.BillingContainersImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.CredentialsImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.CertificateAuthoritiesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.CertificatePoliciesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryManagementClientBuilder;
 import com.azure.resourcemanager.deviceregistry.implementation.NamespaceAssetsImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.NamespaceDevicesImpl;
@@ -37,14 +39,16 @@ import com.azure.resourcemanager.deviceregistry.implementation.NamespaceDiscover
 import com.azure.resourcemanager.deviceregistry.implementation.NamespacesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationsImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.PoliciesImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.RegistryDevicesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.SchemaRegistriesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.SchemaVersionsImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.SchemasImpl;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfiles;
 import com.azure.resourcemanager.deviceregistry.models.Assets;
+import com.azure.resourcemanager.deviceregistry.models.AsyncOperationStatus;
 import com.azure.resourcemanager.deviceregistry.models.BillingContainers;
-import com.azure.resourcemanager.deviceregistry.models.Credentials;
+import com.azure.resourcemanager.deviceregistry.models.CertificateAuthorities;
+import com.azure.resourcemanager.deviceregistry.models.CertificatePolicies;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceAssets;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDevices;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredAssets;
@@ -52,7 +56,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceDiscoveredDevice
 import com.azure.resourcemanager.deviceregistry.models.Namespaces;
 import com.azure.resourcemanager.deviceregistry.models.OperationStatus;
 import com.azure.resourcemanager.deviceregistry.models.Operations;
-import com.azure.resourcemanager.deviceregistry.models.Policies;
+import com.azure.resourcemanager.deviceregistry.models.RegistryDevices;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistries;
 import com.azure.resourcemanager.deviceregistry.models.SchemaVersions;
 import com.azure.resourcemanager.deviceregistry.models.Schemas;
@@ -73,6 +77,8 @@ public final class DeviceRegistryManager {
 
     private OperationStatus operationStatus;
 
+    private AsyncOperationStatus asyncOperationStatus;
+
     private Assets assets;
 
     private AssetEndpointProfiles assetEndpointProfiles;
@@ -80,10 +86,6 @@ public final class DeviceRegistryManager {
     private BillingContainers billingContainers;
 
     private Namespaces namespaces;
-
-    private Credentials credentials;
-
-    private Policies policies;
 
     private NamespaceAssets namespaceAssets;
 
@@ -98,6 +100,12 @@ public final class DeviceRegistryManager {
     private Schemas schemas;
 
     private SchemaVersions schemaVersions;
+
+    private CertificateAuthorities certificateAuthorities;
+
+    private CertificatePolicies certificatePolicies;
+
+    private RegistryDevices registryDevices;
 
     private final DeviceRegistryManagementClient clientObject;
 
@@ -339,6 +347,18 @@ public final class DeviceRegistryManager {
     }
 
     /**
+     * Gets the resource collection API of AsyncOperationStatus.
+     * 
+     * @return Resource collection API of AsyncOperationStatus.
+     */
+    public AsyncOperationStatus asyncOperationStatus() {
+        if (this.asyncOperationStatus == null) {
+            this.asyncOperationStatus = new AsyncOperationStatusImpl(clientObject.getAsyncOperationStatus(), this);
+        }
+        return asyncOperationStatus;
+    }
+
+    /**
      * Gets the resource collection API of Assets. It manages Asset.
      * 
      * @return Resource collection API of Assets.
@@ -384,30 +404,6 @@ public final class DeviceRegistryManager {
             this.namespaces = new NamespacesImpl(clientObject.getNamespaces(), this);
         }
         return namespaces;
-    }
-
-    /**
-     * Gets the resource collection API of Credentials.
-     * 
-     * @return Resource collection API of Credentials.
-     */
-    public Credentials credentials() {
-        if (this.credentials == null) {
-            this.credentials = new CredentialsImpl(clientObject.getCredentials(), this);
-        }
-        return credentials;
-    }
-
-    /**
-     * Gets the resource collection API of Policies. It manages Policy.
-     * 
-     * @return Resource collection API of Policies.
-     */
-    public Policies policies() {
-        if (this.policies == null) {
-            this.policies = new PoliciesImpl(clientObject.getPolicies(), this);
-        }
-        return policies;
     }
 
     /**
@@ -494,6 +490,43 @@ public final class DeviceRegistryManager {
             this.schemaVersions = new SchemaVersionsImpl(clientObject.getSchemaVersions(), this);
         }
         return schemaVersions;
+    }
+
+    /**
+     * Gets the resource collection API of CertificateAuthorities. It manages CertificateAuthority.
+     * 
+     * @return Resource collection API of CertificateAuthorities.
+     */
+    public CertificateAuthorities certificateAuthorities() {
+        if (this.certificateAuthorities == null) {
+            this.certificateAuthorities
+                = new CertificateAuthoritiesImpl(clientObject.getCertificateAuthorities(), this);
+        }
+        return certificateAuthorities;
+    }
+
+    /**
+     * Gets the resource collection API of CertificatePolicies. It manages CertificatePolicy.
+     * 
+     * @return Resource collection API of CertificatePolicies.
+     */
+    public CertificatePolicies certificatePolicies() {
+        if (this.certificatePolicies == null) {
+            this.certificatePolicies = new CertificatePoliciesImpl(clientObject.getCertificatePolicies(), this);
+        }
+        return certificatePolicies;
+    }
+
+    /**
+     * Gets the resource collection API of RegistryDevices. It manages RegistryDevice.
+     * 
+     * @return Resource collection API of RegistryDevices.
+     */
+    public RegistryDevices registryDevices() {
+        if (this.registryDevices == null) {
+            this.registryDevices = new RegistryDevicesImpl(clientObject.getRegistryDevices(), this);
+        }
+        return registryDevices;
     }
 
     /**

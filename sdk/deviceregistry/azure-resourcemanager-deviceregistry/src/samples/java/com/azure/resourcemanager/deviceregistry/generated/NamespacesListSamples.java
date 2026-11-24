@@ -9,15 +9,15 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class NamespacesListSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/List_Namespace_BySubscription.json
+     * x-ms-original-file: 2026-11-01/List_Namespace_BySubscription.json
      */
     /**
-     * Sample code: List_Namespaces_BySubscription.
+     * Sample code: List the Namespaces in a Subscription.
      * 
      * @param manager Entry point to DeviceRegistryManager.
      */
     public static void
-        listNamespacesBySubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
+        listTheNamespacesInASubscription(com.azure.resourcemanager.deviceregistry.DeviceRegistryManager manager) {
         manager.namespaces().list(com.azure.core.util.Context.NONE);
     }
 }
