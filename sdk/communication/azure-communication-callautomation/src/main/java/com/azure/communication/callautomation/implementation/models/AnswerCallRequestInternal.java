@@ -42,19 +42,19 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
-     * The identifier of the call automation entity which answers the call
+     * A user that got created with an Azure Communication Services resource.
      */
     @Generated
     private CommunicationUserIdentifierModel answeredBy;
 
     /*
-     * Media Streaming Options.
+     * Options for media streaming.
      */
     @Generated
     private MediaStreamingOptionsInternal mediaStreamingOptions;
 
     /*
-     * Transcription Options.
+     * Options for live transcription.
      */
     @Generated
     private TranscriptionOptionsInternal transcriptionOptions;
@@ -64,6 +64,12 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      */
     @Generated
     private Boolean enableLoopbackAudio;
+
+    /*
+     * Represents the configuration for DTMF functionality in calls.
+     */
+    @Generated
+    private DtmfConfigurationOptionsInternal dtmfOptions;
 
     /**
      * Creates an instance of AnswerCallRequestInternal class.
@@ -162,7 +168,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Get the answeredBy property: The identifier of the call automation entity which answers the call.
+     * Get the answeredBy property: A user that got created with an Azure Communication Services resource.
      * 
      * @return the answeredBy value.
      */
@@ -172,7 +178,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Set the answeredBy property: The identifier of the call automation entity which answers the call.
+     * Set the answeredBy property: A user that got created with an Azure Communication Services resource.
      * 
      * @param answeredBy the answeredBy value to set.
      * @return the AnswerCallRequestInternal object itself.
@@ -184,7 +190,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Get the mediaStreamingOptions property: Media Streaming Options.
+     * Get the mediaStreamingOptions property: Options for media streaming.
      * 
      * @return the mediaStreamingOptions value.
      */
@@ -194,7 +200,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Set the mediaStreamingOptions property: Media Streaming Options.
+     * Set the mediaStreamingOptions property: Options for media streaming.
      * 
      * @param mediaStreamingOptions the mediaStreamingOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
@@ -206,7 +212,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Get the transcriptionOptions property: Transcription Options.
+     * Get the transcriptionOptions property: Options for live transcription.
      * 
      * @return the transcriptionOptions value.
      */
@@ -216,7 +222,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Set the transcriptionOptions property: Transcription Options.
+     * Set the transcriptionOptions property: Options for live transcription.
      * 
      * @param transcriptionOptions the transcriptionOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
@@ -250,6 +256,28 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
+     * Get the dtmfOptions property: Represents the configuration for DTMF functionality in calls.
+     * 
+     * @return the dtmfOptions value.
+     */
+    @Generated
+    public DtmfConfigurationOptionsInternal getDtmfOptions() {
+        return this.dtmfOptions;
+    }
+
+    /**
+     * Set the dtmfOptions property: Represents the configuration for DTMF functionality in calls.
+     * 
+     * @param dtmfOptions the dtmfOptions value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    @Generated
+    public AnswerCallRequestInternal setDtmfOptions(DtmfConfigurationOptionsInternal dtmfOptions) {
+        this.dtmfOptions = dtmfOptions;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -264,6 +292,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
         jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
         jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
         jsonWriter.writeBooleanField("enableLoopbackAudio", this.enableLoopbackAudio);
+        jsonWriter.writeJsonField("dtmfOptions", this.dtmfOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -305,6 +334,9 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
                 } else if ("enableLoopbackAudio".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.enableLoopbackAudio
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dtmfOptions".equals(fieldName)) {
+                    deserializedAnswerCallRequestInternal.dtmfOptions
+                        = DtmfConfigurationOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

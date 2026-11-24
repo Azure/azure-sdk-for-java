@@ -31,7 +31,7 @@ public final class SummarizeCallRequestInternal implements JsonSerializable<Summ
     private String operationCallbackUri;
 
     /*
-     * Summarization configuration options.
+     * Configuration options for call summarization.
      */
     @Generated
     private SummarizationOptionsInternal summarizationOptions;
@@ -92,7 +92,7 @@ public final class SummarizeCallRequestInternal implements JsonSerializable<Summ
     }
 
     /**
-     * Get the summarizationOptions property: Summarization configuration options.
+     * Get the summarizationOptions property: Configuration options for call summarization.
      * 
      * @return the summarizationOptions value.
      */
@@ -102,7 +102,7 @@ public final class SummarizeCallRequestInternal implements JsonSerializable<Summ
     }
 
     /**
-     * Set the summarizationOptions property: Summarization configuration options.
+     * Set the summarizationOptions property: Configuration options for call summarization.
      * 
      * @param summarizationOptions the summarizationOptions value to set.
      * @return the SummarizeCallRequestInternal object itself.

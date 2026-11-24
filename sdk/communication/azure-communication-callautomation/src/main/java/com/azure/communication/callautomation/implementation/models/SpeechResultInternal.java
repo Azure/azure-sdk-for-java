@@ -36,7 +36,7 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     private String languageIdentified;
 
     /*
-     * Gets or sets the sentiment analysis result.
+     * The sentimentAnalysisResult property.
      */
     @Generated
     private SentimentAnalysisResultInternal sentimentAnalysisResult;
@@ -115,7 +115,7 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     }
 
     /**
-     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis result.
+     * Get the sentimentAnalysisResult property: The sentimentAnalysisResult property.
      * 
      * @return the sentimentAnalysisResult value.
      */
@@ -125,7 +125,7 @@ public final class SpeechResultInternal implements JsonSerializable<SpeechResult
     }
 
     /**
-     * Set the sentimentAnalysisResult property: Gets or sets the sentiment analysis result.
+     * Set the sentimentAnalysisResult property: The sentimentAnalysisResult property.
      * 
      * @param sentimentAnalysisResult the sentimentAnalysisResult value to set.
      * @return the SpeechResultInternal object itself.

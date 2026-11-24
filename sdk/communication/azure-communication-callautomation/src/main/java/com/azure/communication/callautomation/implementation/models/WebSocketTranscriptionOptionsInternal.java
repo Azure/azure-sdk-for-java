@@ -69,7 +69,7 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     private List<String> locales;
 
     /*
-     * Summarization configuration options.
+     * Configuration options for call summarization.
      */
     @Generated
     private SummarizationOptionsInternal summarizationOptions;
@@ -255,7 +255,7 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
-     * Get the summarizationOptions property: Summarization configuration options.
+     * Get the summarizationOptions property: Configuration options for call summarization.
      * 
      * @return the summarizationOptions value.
      */
@@ -265,7 +265,7 @@ public final class WebSocketTranscriptionOptionsInternal extends TranscriptionOp
     }
 
     /**
-     * Set the summarizationOptions property: Summarization configuration options.
+     * Set the summarizationOptions property: Configuration options for call summarization.
      * 
      * @param summarizationOptions the summarizationOptions value to set.
      * @return the WebSocketTranscriptionOptionsInternal object itself.

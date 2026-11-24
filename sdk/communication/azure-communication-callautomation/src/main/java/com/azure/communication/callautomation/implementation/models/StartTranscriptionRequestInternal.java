@@ -63,10 +63,16 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
     private List<String> locales;
 
     /*
-     * Summarization configuration options.
+     * Configuration options for call summarization.
      */
     @Generated
     private SummarizationOptionsInternal summarizationOptions;
+
+    /*
+     * List of phrases used to bias transcription, e.g. drug names, product SKUs.
+     */
+    @Generated
+    private List<String> phraseList;
 
     /**
      * Creates an instance of StartTranscriptionRequestInternal class.
@@ -236,7 +242,7 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the summarizationOptions property: Summarization configuration options.
+     * Get the summarizationOptions property: Configuration options for call summarization.
      * 
      * @return the summarizationOptions value.
      */
@@ -246,7 +252,7 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the summarizationOptions property: Summarization configuration options.
+     * Set the summarizationOptions property: Configuration options for call summarization.
      * 
      * @param summarizationOptions the summarizationOptions value to set.
      * @return the StartTranscriptionRequestInternal object itself.
@@ -255,6 +261,28 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
     public StartTranscriptionRequestInternal
         setSummarizationOptions(SummarizationOptionsInternal summarizationOptions) {
         this.summarizationOptions = summarizationOptions;
+        return this;
+    }
+
+    /**
+     * Get the phraseList property: List of phrases used to bias transcription, e.g. drug names, product SKUs.
+     * 
+     * @return the phraseList value.
+     */
+    @Generated
+    public List<String> getPhraseList() {
+        return this.phraseList;
+    }
+
+    /**
+     * Set the phraseList property: List of phrases used to bias transcription, e.g. drug names, product SKUs.
+     * 
+     * @param phraseList the phraseList value to set.
+     * @return the StartTranscriptionRequestInternal object itself.
+     */
+    @Generated
+    public StartTranscriptionRequestInternal setPhraseList(List<String> phraseList) {
+        this.phraseList = phraseList;
         return this;
     }
 
@@ -273,6 +301,7 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
         jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
         jsonWriter.writeArrayField("locales", this.locales, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("summarizationOptions", this.summarizationOptions);
+        jsonWriter.writeArrayField("phraseList", this.phraseList, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -313,6 +342,9 @@ public final class StartTranscriptionRequestInternal implements JsonSerializable
                 } else if ("summarizationOptions".equals(fieldName)) {
                     deserializedStartTranscriptionRequestInternal.summarizationOptions
                         = SummarizationOptionsInternal.fromJson(reader);
+                } else if ("phraseList".equals(fieldName)) {
+                    List<String> phraseList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStartTranscriptionRequestInternal.phraseList = phraseList;
                 } else {
                     reader.skipChildren();
                 }

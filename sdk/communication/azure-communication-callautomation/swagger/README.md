@@ -29,10 +29,10 @@ autorest README.md --java --v4
 ### Code generation settings
 
 ``` yaml
-tag: package-2025-08-15-preview
+tag: package-2026-10-05-preview
 use: '@autorest/java@4.1.52'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/a3f020da96fb5805c51378525842b9f6e55d4908/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/441ca53e77b47ff8028c4fa4932951c5969e6d44/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -244,6 +244,9 @@ directive:
 - rename-model:
     from: SummarizeCallRequest
     to: SummarizeCallRequestInternal
+- rename-model:
+    from: DtmfConfigurationOptions
+    to: DtmfConfigurationOptionsInternal
 
 
 # Remove models

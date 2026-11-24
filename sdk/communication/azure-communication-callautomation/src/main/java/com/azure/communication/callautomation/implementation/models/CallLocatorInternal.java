@@ -36,7 +36,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     private String roomId;
 
     /*
-     * The call locator kind.
+     * The call locator kind
      */
     @Generated
     private CallLocatorKindInternal kind;

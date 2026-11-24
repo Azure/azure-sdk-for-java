@@ -44,7 +44,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     private String languageIdentified;
 
     /*
-     * Gets or sets the sentiment analysis result.
+     * The sentimentAnalysisResult property.
      */
     @Generated
     private SentimentAnalysisResultInternal sentimentAnalysisResult;
@@ -149,7 +149,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     }
 
     /**
-     * Get the sentimentAnalysisResult property: Gets or sets the sentiment analysis result.
+     * Get the sentimentAnalysisResult property: The sentimentAnalysisResult property.
      * 
      * @return the sentimentAnalysisResult value.
      */
@@ -159,7 +159,7 @@ public final class ChoiceResultInternal implements JsonSerializable<ChoiceResult
     }
 
     /**
-     * Set the sentimentAnalysisResult property: Gets or sets the sentiment analysis result.
+     * Set the sentimentAnalysisResult property: The sentimentAnalysisResult property.
      * 
      * @param sentimentAnalysisResult the sentimentAnalysisResult value to set.
      * @return the ChoiceResultInternal object itself.

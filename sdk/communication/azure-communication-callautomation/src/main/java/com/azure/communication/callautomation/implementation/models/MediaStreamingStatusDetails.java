@@ -108,6 +108,25 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
         = fromString("initialWebSocketConnectionFailed");
 
     /**
+     * Static value streamUrlUpdated for MediaStreamingStatusDetails.
+     */
+    @Generated
+    public static final MediaStreamingStatusDetails STREAM_URL_UPDATED = fromString("streamUrlUpdated");
+
+    /**
+     * Static value streamingClosed for MediaStreamingStatusDetails.
+     */
+    @Generated
+    public static final MediaStreamingStatusDetails STREAMING_CLOSED = fromString("streamingClosed");
+
+    /**
+     * Static value streamingConnectionAborted for MediaStreamingStatusDetails.
+     */
+    @Generated
+    public static final MediaStreamingStatusDetails STREAMING_CONNECTION_ABORTED
+        = fromString("streamingConnectionAborted");
+
+    /**
      * Creates a new instance of MediaStreamingStatusDetails value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

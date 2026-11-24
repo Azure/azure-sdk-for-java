@@ -18,12 +18,6 @@ import java.io.IOException;
 @Fluent
 public final class MoveParticipantFailed implements JsonSerializable<MoveParticipantFailed> {
     /*
-     * The CallConnectionId for the call you want to move the participant from
-     */
-    @Generated
-    private String fromCall;
-
-    /*
      * Call connection ID.
      */
     @Generated
@@ -48,44 +42,30 @@ public final class MoveParticipantFailed implements JsonSerializable<MovePartici
     private String operationContext;
 
     /*
-     * Contains the resulting SIP code, sub-code and message.
+     * The resultInformation property.
      */
     @Generated
     private ResultInformation resultInformation;
 
     /*
-     * Participant
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel participant;
+
+    /*
+     * The CallConnectionId for the call you want to move the participant from
+     */
+    @Generated
+    private String fromCall;
 
     /**
      * Creates an instance of MoveParticipantFailed class.
      */
     @Generated
     public MoveParticipantFailed() {
-    }
-
-    /**
-     * Get the fromCall property: The CallConnectionId for the call you want to move the participant from.
-     * 
-     * @return the fromCall value.
-     */
-    @Generated
-    public String getFromCall() {
-        return this.fromCall;
-    }
-
-    /**
-     * Set the fromCall property: The CallConnectionId for the call you want to move the participant from.
-     * 
-     * @param fromCall the fromCall value to set.
-     * @return the MoveParticipantFailed object itself.
-     */
-    @Generated
-    public MoveParticipantFailed setFromCall(String fromCall) {
-        this.fromCall = fromCall;
-        return this;
     }
 
     /**
@@ -181,7 +161,7 @@ public final class MoveParticipantFailed implements JsonSerializable<MovePartici
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Get the resultInformation property: The resultInformation property.
      * 
      * @return the resultInformation value.
      */
@@ -191,7 +171,7 @@ public final class MoveParticipantFailed implements JsonSerializable<MovePartici
     }
 
     /**
-     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Set the resultInformation property: The resultInformation property.
      * 
      * @param resultInformation the resultInformation value to set.
      * @return the MoveParticipantFailed object itself.
@@ -203,7 +183,9 @@ public final class MoveParticipantFailed implements JsonSerializable<MovePartici
     }
 
     /**
-     * Get the participant property: Participant.
+     * Get the participant property: Identifies a participant in Azure Communication services. A participant is, for
+     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
+     * most one further property may be set which must match the kind enum value.
      * 
      * @return the participant value.
      */
@@ -213,7 +195,9 @@ public final class MoveParticipantFailed implements JsonSerializable<MovePartici
     }
 
     /**
-     * Set the participant property: Participant.
+     * Set the participant property: Identifies a participant in Azure Communication services. A participant is, for
+     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
+     * most one further property may be set which must match the kind enum value.
      * 
      * @param participant the participant value to set.
      * @return the MoveParticipantFailed object itself.
@@ -225,19 +209,41 @@ public final class MoveParticipantFailed implements JsonSerializable<MovePartici
     }
 
     /**
+     * Get the fromCall property: The CallConnectionId for the call you want to move the participant from.
+     * 
+     * @return the fromCall value.
+     */
+    @Generated
+    public String getFromCall() {
+        return this.fromCall;
+    }
+
+    /**
+     * Set the fromCall property: The CallConnectionId for the call you want to move the participant from.
+     * 
+     * @param fromCall the fromCall value to set.
+     * @return the MoveParticipantFailed object itself.
+     */
+    @Generated
+    public MoveParticipantFailed setFromCall(String fromCall) {
+        this.fromCall = fromCall;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fromCall", this.fromCall);
         jsonWriter.writeStringField("callConnectionId", this.callConnectionId);
         jsonWriter.writeStringField("serverCallId", this.serverCallId);
         jsonWriter.writeStringField("correlationId", this.correlationId);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("resultInformation", this.resultInformation);
         jsonWriter.writeJsonField("participant", this.participant);
+        jsonWriter.writeStringField("fromCall", this.fromCall);
         return jsonWriter.writeEndObject();
     }
 
@@ -257,9 +263,7 @@ public final class MoveParticipantFailed implements JsonSerializable<MovePartici
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("fromCall".equals(fieldName)) {
-                    deserializedMoveParticipantFailed.fromCall = reader.getString();
-                } else if ("callConnectionId".equals(fieldName)) {
+                if ("callConnectionId".equals(fieldName)) {
                     deserializedMoveParticipantFailed.callConnectionId = reader.getString();
                 } else if ("serverCallId".equals(fieldName)) {
                     deserializedMoveParticipantFailed.serverCallId = reader.getString();
@@ -271,6 +275,8 @@ public final class MoveParticipantFailed implements JsonSerializable<MovePartici
                     deserializedMoveParticipantFailed.resultInformation = ResultInformation.fromJson(reader);
                 } else if ("participant".equals(fieldName)) {
                     deserializedMoveParticipantFailed.participant = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("fromCall".equals(fieldName)) {
+                    deserializedMoveParticipantFailed.fromCall = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

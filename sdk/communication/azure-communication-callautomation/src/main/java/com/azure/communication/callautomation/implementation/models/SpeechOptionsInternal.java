@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Options for continuous speech recognition.
@@ -22,6 +23,12 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
      */
     @Generated
     private Long endSilenceTimeoutInMs;
+
+    /*
+     * List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+     */
+    @Generated
+    private List<String> phraseList;
 
     /**
      * Creates an instance of SpeechOptionsInternal class.
@@ -55,6 +62,28 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
     }
 
     /**
+     * Get the phraseList property: List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+     * 
+     * @return the phraseList value.
+     */
+    @Generated
+    public List<String> getPhraseList() {
+        return this.phraseList;
+    }
+
+    /**
+     * Set the phraseList property: List of phrases used to bias speech recognition, e.g. drug names, product SKUs.
+     * 
+     * @param phraseList the phraseList value to set.
+     * @return the SpeechOptionsInternal object itself.
+     */
+    @Generated
+    public SpeechOptionsInternal setPhraseList(List<String> phraseList) {
+        this.phraseList = phraseList;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -62,6 +91,7 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("endSilenceTimeoutInMs", this.endSilenceTimeoutInMs);
+        jsonWriter.writeArrayField("phraseList", this.phraseList, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -83,6 +113,9 @@ public final class SpeechOptionsInternal implements JsonSerializable<SpeechOptio
 
                 if ("endSilenceTimeoutInMs".equals(fieldName)) {
                     deserializedSpeechOptionsInternal.endSilenceTimeoutInMs = reader.getNullable(JsonReader::getLong);
+                } else if ("phraseList".equals(fieldName)) {
+                    List<String> phraseList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSpeechOptionsInternal.phraseList = phraseList;
                 } else {
                     reader.skipChildren();
                 }

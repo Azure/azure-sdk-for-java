@@ -38,17 +38,13 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     private String message;
 
     /*
-     * Sip response from SBC. This can be helpful to troubleshoot PSTN call if this result was unexpected.
-     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
-     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * The sipDetails property.
      */
     @Generated
     private SipDiagnosticInfo sipDetails;
 
     /*
-     * Q850 cause from SBC. This can be helpful to troubleshoot call issues if this result was unexpected.
-     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
-     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * The q850Details property.
      */
     @Generated
     private SipDiagnosticInfo q850Details;
@@ -131,10 +127,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     }
 
     /**
-     * Get the sipDetails property: Sip response from SBC. This can be helpful to troubleshoot PSTN call if this result
-     * was unexpected.
-     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
-     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * Get the sipDetails property: The sipDetails property.
      * 
      * @return the sipDetails value.
      */
@@ -144,10 +137,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     }
 
     /**
-     * Set the sipDetails property: Sip response from SBC. This can be helpful to troubleshoot PSTN call if this result
-     * was unexpected.
-     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
-     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * Set the sipDetails property: The sipDetails property.
      * 
      * @param sipDetails the sipDetails value to set.
      * @return the ResultInformation object itself.
@@ -159,10 +149,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     }
 
     /**
-     * Get the q850Details property: Q850 cause from SBC. This can be helpful to troubleshoot call issues if this result
-     * was unexpected.
-     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
-     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * Get the q850Details property: The q850Details property.
      * 
      * @return the q850Details value.
      */
@@ -172,10 +159,7 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     }
 
     /**
-     * Set the q850Details property: Q850 cause from SBC. This can be helpful to troubleshoot call issues if this result
-     * was unexpected.
-     * This is only applicable for PSTN calls and will be null if SBC/Carrier does not provide this information.
-     * Do not solely rely on this information for troubleshooting, as it may not always be available.
+     * Set the q850Details property: The q850Details property.
      * 
      * @param q850Details the q850Details value to set.
      * @return the ResultInformation object itself.

@@ -25,8 +25,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     private List<CommunicationIdentifierModel> targets;
 
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
-     * Required only when calling a PSTN callee.
+     * A phone number.
      */
     @Generated
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
@@ -38,7 +37,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     private String sourceDisplayName;
 
     /*
-     * The identifier of the source of the call
+     * A user that got created with an Azure Communication Services resource.
      */
     @Generated
     private CommunicationUserIdentifierModel source;
@@ -62,19 +61,19 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
-     * Media Streaming Options.
+     * Options for media streaming.
      */
     @Generated
     private MediaStreamingOptionsInternal mediaStreamingOptions;
 
     /*
-     * Transcription Options.
+     * Options for live transcription.
      */
     @Generated
     private TranscriptionOptionsInternal transcriptionOptions;
 
     /*
-     * The identifier of the source for creating call with Teams resource account ID.
+     * A Microsoft Teams application.
      */
     @Generated
     private MicrosoftTeamsAppIdentifierModel teamsAppSource;
@@ -84,6 +83,12 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
      */
     @Generated
     private Boolean enableLoopbackAudio;
+
+    /*
+     * Represents the configuration for DTMF functionality in calls.
+     */
+    @Generated
+    private DtmfConfigurationOptionsInternal dtmfOptions;
 
     /**
      * Creates an instance of CreateCallRequestInternal class.
@@ -115,9 +120,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
-     * Required only when calling a PSTN callee.
+     * Get the sourceCallerIdNumber property: A phone number.
      * 
      * @return the sourceCallerIdNumber value.
      */
@@ -127,9 +130,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited.
-     * Required only when calling a PSTN callee.
+     * Set the sourceCallerIdNumber property: A phone number.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the CreateCallRequestInternal object itself.
@@ -163,7 +164,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Get the source property: The identifier of the source of the call.
+     * Get the source property: A user that got created with an Azure Communication Services resource.
      * 
      * @return the source value.
      */
@@ -173,7 +174,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Set the source property: The identifier of the source of the call.
+     * Set the source property: A user that got created with an Azure Communication Services resource.
      * 
      * @param source the source value to set.
      * @return the CreateCallRequestInternal object itself.
@@ -252,7 +253,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Get the mediaStreamingOptions property: Media Streaming Options.
+     * Get the mediaStreamingOptions property: Options for media streaming.
      * 
      * @return the mediaStreamingOptions value.
      */
@@ -262,7 +263,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Set the mediaStreamingOptions property: Media Streaming Options.
+     * Set the mediaStreamingOptions property: Options for media streaming.
      * 
      * @param mediaStreamingOptions the mediaStreamingOptions value to set.
      * @return the CreateCallRequestInternal object itself.
@@ -274,7 +275,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Get the transcriptionOptions property: Transcription Options.
+     * Get the transcriptionOptions property: Options for live transcription.
      * 
      * @return the transcriptionOptions value.
      */
@@ -284,7 +285,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Set the transcriptionOptions property: Transcription Options.
+     * Set the transcriptionOptions property: Options for live transcription.
      * 
      * @param transcriptionOptions the transcriptionOptions value to set.
      * @return the CreateCallRequestInternal object itself.
@@ -296,7 +297,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Get the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     * Get the teamsAppSource property: A Microsoft Teams application.
      * 
      * @return the teamsAppSource value.
      */
@@ -306,7 +307,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Set the teamsAppSource property: The identifier of the source for creating call with Teams resource account ID.
+     * Set the teamsAppSource property: A Microsoft Teams application.
      * 
      * @param teamsAppSource the teamsAppSource value to set.
      * @return the CreateCallRequestInternal object itself.
@@ -340,6 +341,28 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
+     * Get the dtmfOptions property: Represents the configuration for DTMF functionality in calls.
+     * 
+     * @return the dtmfOptions value.
+     */
+    @Generated
+    public DtmfConfigurationOptionsInternal getDtmfOptions() {
+        return this.dtmfOptions;
+    }
+
+    /**
+     * Set the dtmfOptions property: Represents the configuration for DTMF functionality in calls.
+     * 
+     * @param dtmfOptions the dtmfOptions value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    @Generated
+    public CreateCallRequestInternal setDtmfOptions(DtmfConfigurationOptionsInternal dtmfOptions) {
+        this.dtmfOptions = dtmfOptions;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -357,6 +380,7 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
         jsonWriter.writeJsonField("teamsAppSource", this.teamsAppSource);
         jsonWriter.writeBooleanField("enableLoopbackAudio", this.enableLoopbackAudio);
+        jsonWriter.writeJsonField("dtmfOptions", this.dtmfOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -407,6 +431,9 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
                 } else if ("enableLoopbackAudio".equals(fieldName)) {
                     deserializedCreateCallRequestInternal.enableLoopbackAudio
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dtmfOptions".equals(fieldName)) {
+                    deserializedCreateCallRequestInternal.dtmfOptions
+                        = DtmfConfigurationOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

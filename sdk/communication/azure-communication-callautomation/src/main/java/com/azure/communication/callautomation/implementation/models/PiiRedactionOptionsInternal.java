@@ -24,7 +24,7 @@ public final class PiiRedactionOptionsInternal implements JsonSerializable<PiiRe
     private Boolean enable;
 
     /*
-     * Value indicating the PII redaction type to be used.
+     * The type of PII redaction.
      */
     @Generated
     private RedactionTypeInternal redactionType;
@@ -59,7 +59,7 @@ public final class PiiRedactionOptionsInternal implements JsonSerializable<PiiRe
     }
 
     /**
-     * Get the redactionType property: Value indicating the PII redaction type to be used.
+     * Get the redactionType property: The type of PII redaction.
      * 
      * @return the redactionType value.
      */
@@ -69,7 +69,7 @@ public final class PiiRedactionOptionsInternal implements JsonSerializable<PiiRe
     }
 
     /**
-     * Set the redactionType property: Value indicating the PII redaction type to be used.
+     * Set the redactionType property: The type of PII redaction.
      * 
      * @param redactionType the redactionType value to set.
      * @return the PiiRedactionOptionsInternal object itself.

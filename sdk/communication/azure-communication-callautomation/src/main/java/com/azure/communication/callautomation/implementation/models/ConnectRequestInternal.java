@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class ConnectRequestInternal implements JsonSerializable<ConnectRequestInternal> {
     /*
-     * The call locator.
+     * The locator used for joining or taking action on a call
      */
     @Generated
     private CallLocatorInternal callLocator;
@@ -42,13 +42,13 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
-     * Media Streaming Options.
+     * Options for media streaming.
      */
     @Generated
     private MediaStreamingOptionsInternal mediaStreamingOptions;
 
     /*
-     * Transcription Options.
+     * Options for live transcription.
      */
     @Generated
     private TranscriptionOptionsInternal transcriptionOptions;
@@ -67,7 +67,7 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     }
 
     /**
-     * Get the callLocator property: The call locator.
+     * Get the callLocator property: The locator used for joining or taking action on a call.
      * 
      * @return the callLocator value.
      */
@@ -77,7 +77,7 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     }
 
     /**
-     * Set the callLocator property: The call locator.
+     * Set the callLocator property: The locator used for joining or taking action on a call.
      * 
      * @param callLocator the callLocator value to set.
      * @return the ConnectRequestInternal object itself.
@@ -155,7 +155,7 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     }
 
     /**
-     * Get the mediaStreamingOptions property: Media Streaming Options.
+     * Get the mediaStreamingOptions property: Options for media streaming.
      * 
      * @return the mediaStreamingOptions value.
      */
@@ -165,7 +165,7 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     }
 
     /**
-     * Set the mediaStreamingOptions property: Media Streaming Options.
+     * Set the mediaStreamingOptions property: Options for media streaming.
      * 
      * @param mediaStreamingOptions the mediaStreamingOptions value to set.
      * @return the ConnectRequestInternal object itself.
@@ -177,7 +177,7 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     }
 
     /**
-     * Get the transcriptionOptions property: Transcription Options.
+     * Get the transcriptionOptions property: Options for live transcription.
      * 
      * @return the transcriptionOptions value.
      */
@@ -187,7 +187,7 @@ public final class ConnectRequestInternal implements JsonSerializable<ConnectReq
     }
 
     /**
-     * Set the transcriptionOptions property: Transcription Options.
+     * Set the transcriptionOptions property: Options for live transcription.
      * 
      * @param transcriptionOptions the transcriptionOptions value to set.
      * @return the ConnectRequestInternal object itself.

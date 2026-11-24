@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The UpdateTranscriptionRequestInternal model.
@@ -55,10 +56,16 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     private Boolean enableSentimentAnalysis;
 
     /*
-     * Summarization configuration options.
+     * Configuration options for call summarization.
      */
     @Generated
     private SummarizationOptionsInternal summarizationOptions;
+
+    /*
+     * List of phrases used to bias transcription. Replaces the existing list.
+     */
+    @Generated
+    private List<String> phraseList;
 
     /**
      * Creates an instance of UpdateTranscriptionRequestInternal class.
@@ -206,7 +213,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Get the summarizationOptions property: Summarization configuration options.
+     * Get the summarizationOptions property: Configuration options for call summarization.
      * 
      * @return the summarizationOptions value.
      */
@@ -216,7 +223,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Set the summarizationOptions property: Summarization configuration options.
+     * Set the summarizationOptions property: Configuration options for call summarization.
      * 
      * @param summarizationOptions the summarizationOptions value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
@@ -225,6 +232,28 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     public UpdateTranscriptionRequestInternal
         setSummarizationOptions(SummarizationOptionsInternal summarizationOptions) {
         this.summarizationOptions = summarizationOptions;
+        return this;
+    }
+
+    /**
+     * Get the phraseList property: List of phrases used to bias transcription. Replaces the existing list.
+     * 
+     * @return the phraseList value.
+     */
+    @Generated
+    public List<String> getPhraseList() {
+        return this.phraseList;
+    }
+
+    /**
+     * Set the phraseList property: List of phrases used to bias transcription. Replaces the existing list.
+     * 
+     * @param phraseList the phraseList value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    @Generated
+    public UpdateTranscriptionRequestInternal setPhraseList(List<String> phraseList) {
+        this.phraseList = phraseList;
         return this;
     }
 
@@ -242,6 +271,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
         jsonWriter.writeJsonField("piiRedactionOptions", this.piiRedactionOptions);
         jsonWriter.writeBooleanField("enableSentimentAnalysis", this.enableSentimentAnalysis);
         jsonWriter.writeJsonField("summarizationOptions", this.summarizationOptions);
+        jsonWriter.writeArrayField("phraseList", this.phraseList, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -279,6 +309,9 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
                 } else if ("summarizationOptions".equals(fieldName)) {
                     deserializedUpdateTranscriptionRequestInternal.summarizationOptions
                         = SummarizationOptionsInternal.fromJson(reader);
+                } else if ("phraseList".equals(fieldName)) {
+                    List<String> phraseList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUpdateTranscriptionRequestInternal.phraseList = phraseList;
                 } else {
                     reader.skipChildren();
                 }

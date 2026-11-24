@@ -19,7 +19,9 @@ import java.util.Map;
 @Fluent
 public final class TeamsPhoneSourceDetailsInternal implements JsonSerializable<TeamsPhoneSourceDetailsInternal> {
     /*
-     * ID of the source entity passing along the call details (ex. Application Instance ID of - CQ/AA)
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel source;
@@ -50,8 +52,9 @@ public final class TeamsPhoneSourceDetailsInternal implements JsonSerializable<T
     }
 
     /**
-     * Get the source property: ID of the source entity passing along the call details (ex. Application Instance ID of -
-     * CQ/AA).
+     * Get the source property: Identifies a participant in Azure Communication services. A participant is, for example,
+     * a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one
+     * further property may be set which must match the kind enum value.
      * 
      * @return the source value.
      */
@@ -61,8 +64,9 @@ public final class TeamsPhoneSourceDetailsInternal implements JsonSerializable<T
     }
 
     /**
-     * Set the source property: ID of the source entity passing along the call details (ex. Application Instance ID of -
-     * CQ/AA).
+     * Set the source property: Identifies a participant in Azure Communication services. A participant is, for example,
+     * a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one
+     * further property may be set which must match the kind enum value.
      * 
      * @param source the source value to set.
      * @return the TeamsPhoneSourceDetailsInternal object itself.

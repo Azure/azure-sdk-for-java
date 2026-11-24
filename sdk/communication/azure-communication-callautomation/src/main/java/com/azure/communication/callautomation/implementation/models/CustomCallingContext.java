@@ -31,7 +31,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     private Map<String, String> sipHeaders;
 
     /*
-     * Custom calling context TeamsPhoneCallDetails
+     * The call details which will be sent to the target
      */
     @Generated
     private TeamsPhoneCallDetailsInternal teamsPhoneCallDetails;
@@ -88,7 +88,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Get the teamsPhoneCallDetails property: Custom calling context TeamsPhoneCallDetails.
+     * Get the teamsPhoneCallDetails property: The call details which will be sent to the target.
      * 
      * @return the teamsPhoneCallDetails value.
      */
@@ -98,7 +98,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     }
 
     /**
-     * Set the teamsPhoneCallDetails property: Custom calling context TeamsPhoneCallDetails.
+     * Set the teamsPhoneCallDetails property: The call details which will be sent to the target.
      * 
      * @param teamsPhoneCallDetails the teamsPhoneCallDetails value to set.
      * @return the CustomCallingContext object itself.

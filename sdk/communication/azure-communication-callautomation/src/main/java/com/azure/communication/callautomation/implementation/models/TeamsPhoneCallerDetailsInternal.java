@@ -19,7 +19,9 @@ import java.util.Map;
 @Fluent
 public final class TeamsPhoneCallerDetailsInternal implements JsonSerializable<TeamsPhoneCallerDetailsInternal> {
     /*
-     * Caller's ID
+     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
+     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
+     * be set which must match the kind enum value.
      */
     @Generated
     private CommunicationIdentifierModel caller;
@@ -69,7 +71,9 @@ public final class TeamsPhoneCallerDetailsInternal implements JsonSerializable<T
     }
 
     /**
-     * Get the caller property: Caller's ID.
+     * Get the caller property: Identifies a participant in Azure Communication services. A participant is, for example,
+     * a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one
+     * further property may be set which must match the kind enum value.
      * 
      * @return the caller value.
      */
@@ -79,7 +83,9 @@ public final class TeamsPhoneCallerDetailsInternal implements JsonSerializable<T
     }
 
     /**
-     * Set the caller property: Caller's ID.
+     * Set the caller property: Identifies a participant in Azure Communication services. A participant is, for example,
+     * a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one
+     * further property may be set which must match the kind enum value.
      * 
      * @param caller the caller value to set.
      * @return the TeamsPhoneCallerDetailsInternal object itself.

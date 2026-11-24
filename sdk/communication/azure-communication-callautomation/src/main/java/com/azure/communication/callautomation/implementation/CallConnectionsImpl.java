@@ -83,21 +83,21 @@ public final class CallConnectionsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CallConnectionPropertiesInternal>> getCall(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/calling/callConnections/{callConnectionId}")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> hangupCall(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:terminate")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> terminateCall(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
             @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
@@ -106,7 +106,7 @@ public final class CallConnectionsImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<TransferCallResponseInternal>> transferToParticipant(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") TransferToParticipantRequestInternal transferToParticipantRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
@@ -116,14 +116,14 @@ public final class CallConnectionsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<GetParticipantsResponseInternal>> getParticipants(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Post("/calling/callConnections/{callConnectionId}/participants:add")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<AddParticipantResponseInternal>> addParticipant(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") AddParticipantRequestInternal addParticipantRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
@@ -133,7 +133,7 @@ public final class CallConnectionsImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RemoveParticipantResponseInternal>> removeParticipant(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") RemoveParticipantRequestInternal removeParticipantRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
@@ -143,7 +143,7 @@ public final class CallConnectionsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<MuteParticipantsResultInternal>> mute(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") MuteParticipantsRequestInternal muteParticipantsRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
@@ -153,7 +153,7 @@ public final class CallConnectionsImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CancelAddParticipantResponse>> cancelAddParticipant(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") CancelAddParticipantRequest cancelAddParticipantRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
@@ -163,7 +163,7 @@ public final class CallConnectionsImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<MoveParticipantsResponse>> moveParticipants(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @BodyParam("application/json") MoveParticipantsRequest moveParticipantRequest,
             @HeaderParam("Accept") String accept,
             @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
@@ -173,9 +173,9 @@ public final class CallConnectionsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CallParticipantInternal>> getParticipant(@HostParam("endpoint") String endpoint,
-            @PathParam("callConnectionId") String callConnectionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("callConnectionId") String callConnectionId,
             @PathParam(value = "participantRawId", encoded = true) String participantRawId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -215,7 +215,7 @@ public final class CallConnectionsImpl {
     public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(String callConnectionId,
         Context context) {
         final String accept = "application/json";
-        return service.getCall(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept,
+        return service.getCall(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId, accept,
             context);
     }
 
@@ -306,7 +306,7 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangupCallWithResponseAsync(String callConnectionId, Context context) {
         final String accept = "application/json";
-        return service.hangupCall(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept,
+        return service.hangupCall(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId, accept,
             context);
     }
 
@@ -398,7 +398,7 @@ public final class CallConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> terminateCallWithResponseAsync(String callConnectionId, Context context) {
         final String accept = "application/json";
-        return service.terminateCall(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept,
+        return service.terminateCall(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId, accept,
             CoreUtils.randomUuid().toString(), DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
 
@@ -493,7 +493,7 @@ public final class CallConnectionsImpl {
     public Mono<Response<TransferCallResponseInternal>> transferToParticipantWithResponseAsync(String callConnectionId,
         TransferToParticipantRequestInternal transferToParticipantRequest, Context context) {
         final String accept = "application/json";
-        return service.transferToParticipant(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.transferToParticipant(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             transferToParticipantRequest, accept, CoreUtils.randomUuid().toString(),
             DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
@@ -580,8 +580,8 @@ public final class CallConnectionsImpl {
     public Mono<PagedResponse<CallParticipantInternal>> getParticipantsSinglePageAsync(String callConnectionId) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getParticipants(this.client.getEndpoint(), callConnectionId,
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getParticipants(this.client.getEndpoint(), this.client.getApiVersion(),
+                callConnectionId, accept, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
@@ -601,7 +601,7 @@ public final class CallConnectionsImpl {
         Context context) {
         final String accept = "application/json";
         return service
-            .getParticipants(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept, context)
+            .getParticipants(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
@@ -729,7 +729,7 @@ public final class CallConnectionsImpl {
     public Mono<Response<AddParticipantResponseInternal>> addParticipantWithResponseAsync(String callConnectionId,
         AddParticipantRequestInternal addParticipantRequest, Context context) {
         final String accept = "application/json";
-        return service.addParticipant(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.addParticipant(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             addParticipantRequest, accept, CoreUtils.randomUuid().toString(),
             DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
@@ -836,7 +836,7 @@ public final class CallConnectionsImpl {
     public Mono<Response<RemoveParticipantResponseInternal>> removeParticipantWithResponseAsync(String callConnectionId,
         RemoveParticipantRequestInternal removeParticipantRequest, Context context) {
         final String accept = "application/json";
-        return service.removeParticipant(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.removeParticipant(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             removeParticipantRequest, accept, CoreUtils.randomUuid().toString(),
             DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
@@ -943,7 +943,7 @@ public final class CallConnectionsImpl {
     public Mono<Response<MuteParticipantsResultInternal>> muteWithResponseAsync(String callConnectionId,
         MuteParticipantsRequestInternal muteParticipantsRequest, Context context) {
         final String accept = "application/json";
-        return service.mute(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.mute(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             muteParticipantsRequest, accept, CoreUtils.randomUuid().toString(),
             DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
@@ -1050,7 +1050,7 @@ public final class CallConnectionsImpl {
     public Mono<Response<CancelAddParticipantResponse>> cancelAddParticipantWithResponseAsync(String callConnectionId,
         CancelAddParticipantRequest cancelAddParticipantRequest, Context context) {
         final String accept = "application/json";
-        return service.cancelAddParticipant(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.cancelAddParticipant(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             cancelAddParticipantRequest, accept, CoreUtils.randomUuid().toString(),
             DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
@@ -1124,7 +1124,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1142,7 +1142,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1157,13 +1157,13 @@ public final class CallConnectionsImpl {
     public Mono<Response<MoveParticipantsResponse>> moveParticipantsWithResponseAsync(String callConnectionId,
         MoveParticipantsRequest moveParticipantRequest, Context context) {
         final String accept = "application/json";
-        return service.moveParticipants(this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(),
+        return service.moveParticipants(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
             moveParticipantRequest, accept, CoreUtils.randomUuid().toString(),
             DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()), context);
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1180,7 +1180,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1198,7 +1198,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1215,7 +1215,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Add a participant to the call.
+     * Move a participant to the call.
      * 
      * @param callConnectionId The call connection Id.
      * @param moveParticipantRequest The move participants request.
@@ -1262,8 +1262,8 @@ public final class CallConnectionsImpl {
     public Mono<Response<CallParticipantInternal>> getParticipantWithResponseAsync(String callConnectionId,
         String participantRawId, Context context) {
         final String accept = "application/json";
-        return service.getParticipant(this.client.getEndpoint(), callConnectionId, participantRawId,
-            this.client.getApiVersion(), accept, context);
+        return service.getParticipant(this.client.getEndpoint(), this.client.getApiVersion(), callConnectionId,
+            participantRawId, accept, context);
     }
 
     /**

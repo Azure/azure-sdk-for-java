@@ -31,6 +31,12 @@ public final class MediaStreamingStatus extends ExpandableStringEnum<MediaStream
     public static final MediaStreamingStatus MEDIA_STREAMING_STOPPED = fromString("mediaStreamingStopped");
 
     /**
+     * Static value mediaStreamingUpdated for MediaStreamingStatus.
+     */
+    @Generated
+    public static final MediaStreamingStatus MEDIA_STREAMING_UPDATED = fromString("mediaStreamingUpdated");
+
+    /**
      * Static value unspecifiedError for MediaStreamingStatus.
      */
     @Generated
