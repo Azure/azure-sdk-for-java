@@ -345,8 +345,9 @@ public class EncryptionProcessorAndSettingsTest {
             .hasCauseInstanceOf(expectedCause)
             .hasMessageContaining("index 1")
             .hasMessageContaining("encrypted property '/sensitiveString'")
-            .hasMessageContaining("SDK version that wrote it")
-            .hasMessageContaining("rewrite the decrypted item")
+            .hasMessageContaining("For confirmed legacy mixed arrays")
+            .hasMessageContaining("migrate the item")
+            .hasMessageContaining("may leave scalars unencrypted")
             .hasMessageContaining("-DCOSMOS.ENCRYPTION_MIXED_ARRAYS_ENABLED=false")
             .hasMessageContaining("COSMOS_ENCRYPTION_MIXED_ARRAYS_ENABLED=false")
             .hasMessageNotContaining("secret")
@@ -380,7 +381,7 @@ public class EncryptionProcessorAndSettingsTest {
             "sensitiveString"))
             .isInstanceOf(IllegalStateException.class)
             .hasCause(authenticationFailure)
-            .hasMessageContaining("check the encryption key and ciphertext integrity");
+            .hasMessageContaining("Check the cause for key or ciphertext errors");
     }
 
     @DataProvider(name = "legacyArrayWrites")

@@ -635,15 +635,12 @@ public class EncryptionProcessor {
             return decryptAndSerializeValue(encryptionSettings, null, nodeInArray, StringUtils.EMPTY);
         } catch (MicrosoftDataEncryptionException | IOException | IllegalArgumentException ex) {
             throw new IllegalStateException("Unable to decrypt array element at index " + index
-                + " in encrypted property '/" + propertyName + "'. Mixed-type arrays written by previous "
-                + "SDK versions may contain unencrypted scalar values. If this is legacy data, read the "
-                + "item using the SDK version that wrote it and rewrite the decrypted item using the "
-                + "current SDK. Alternatively, temporarily restore legacy reads AND writes by setting "
+                + " in encrypted property '/" + propertyName + "'. For confirmed legacy mixed arrays, migrate "
+                + "the item or temporarily set "
                 + "-D" + EncryptionConfigs.MIXED_ARRAYS_ENABLED + "=false or "
                 + EncryptionConfigs.MIXED_ARRAYS_ENABLED_VARIABLE + "=false before creating clients. "
-                + "Legacy mode can leave scalar array elements unencrypted and cannot correctly read "
-                + "mixed arrays written with the fix enabled. Otherwise, check the encryption key and "
-                + "ciphertext integrity.", ex);
+                + "Opt-out restores legacy reads/writes and may leave scalars unencrypted. "
+                + "Check the cause for key or ciphertext errors.", ex);
         }
     }
 
