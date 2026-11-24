@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/digitalassets/ci.yml
+      - sdk/digitalassets/azure-resourcemanager-digitalassets/
+    exclude:
+      - sdk/digitalassets/pom.xml
+      - sdk/digitalassets/azure-resourcemanager-digitalassets/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/digitalassets/ci.yml
+      - sdk/digitalassets/azure-resourcemanager-digitalassets/
+    exclude:
+      - sdk/digitalassets/pom.xml
+      - sdk/digitalassets/azure-resourcemanager-digitalassets/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerdigitalassets
+    displayName: azure-resourcemanager-digitalassets
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: digitalassets
+    Artifacts:
+      - name: azure-resourcemanager-digitalassets
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdigitalassets
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdigitalassets }}
