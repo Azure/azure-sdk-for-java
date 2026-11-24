@@ -4,15 +4,10 @@ parameters:
     default: $(Build.ArtifactStagingDirectory)
 
 steps:
-  - task: JavaToolInstaller@0
-    displayName: Use Java 17 for API hashing
-    inputs:
-      versionSpec: '17'
-      jdkArchitectureOption: x64
-      jdkSourceOption: PreInstalled
-
   - task: PowerShell@2
     displayName: Build Java API hash tooling
+    env:
+      JAVA_HOME: $(JAVA_HOME_17_X64)
     inputs:
       pwsh: true
       targetType: filePath
@@ -23,6 +18,8 @@ steps:
 
   - task: PowerShell@2
     displayName: Save API hashes from staged release sources
+    env:
+      JAVA_HOME: $(JAVA_HOME_17_X64)
     inputs:
       pwsh: true
       targetType: filePath
@@ -30,3 +27,4 @@ steps:
       arguments: >-
         -ArtifactStagingDirectory "${{ parameters.ArtifactStagingDirectory }}"
         -ToolJar "$(Build.BinariesDirectory)/api-review-tools/api-review-maven-plugin.jar"
+        -JavaExecutable "$(JAVA_HOME_17_X64)/bin/java"

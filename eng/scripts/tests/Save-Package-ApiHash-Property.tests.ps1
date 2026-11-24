@@ -78,6 +78,32 @@ Describe 'Release artifact API hashes' {
         $saved.ApiHash | Should -Match '^[0-9a-f]{64}$'
     }
 
+    It 'uses the selected Java executable without changing the calling environment' {
+        $file = New-PackageFixture 'azure-example'
+        $selectedJava = Join-Path $TestDrive 'selected java.ps1'
+        Set-Content -LiteralPath $selectedJava -Value @'
+$destination = $args[-1]
+$packagePath = $args[-3]
+New-Item -ItemType Directory -Path $destination -Force | Out-Null
+$markdown = Join-Path $destination 'api.md'
+[IO.File]::WriteAllText($markdown, "Selected Java fixture`n")
+$hash = (Get-FileHash -LiteralPath $markdown -Algorithm SHA256).Hash.ToLowerInvariant()
+[IO.File]::WriteAllText((Join-Path $destination 'api.metadata.yml'),
+    "apiHash: $hash`npackageVersion: '1.0.0'`npackageRelativePath: '$packagePath'`n")
+$global:LASTEXITCODE = 0
+'@
+        $javaHome = $env:JAVA_HOME
+        $path = $env:PATH
+
+        & $script:HashScript -ArtifactStagingDirectory $script:Staging -ToolJar $tool `
+            -JavaExecutable $selectedJava
+
+        (Get-Content -LiteralPath $file -Raw | ConvertFrom-Json).ApiHash | Should -Match '^[0-9a-f]{64}$'
+        Should -Invoke java -Times 0
+        $env:JAVA_HOME | Should -Be $javaHome
+        $env:PATH | Should -Be $path
+    }
+
     It 'skips POM-only packages and metadata for packages not built' {
         $file = New-PackageFixture 'azure-parent' -PomOnly
         Copy-Item -LiteralPath $file -Destination (Join-Path $script:Staging 'PackageInfo' 'unused.json')

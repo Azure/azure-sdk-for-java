@@ -5,7 +5,8 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [Parameter(Mandatory)][string]$ArtifactStagingDirectory,
-    [Parameter(Mandatory)][string]$ToolJar
+    [Parameter(Mandatory)][string]$ToolJar,
+    [string]$JavaExecutable = 'java'
 )
 
 Set-StrictMode -Version 4
@@ -59,7 +60,7 @@ foreach ($file in Get-ChildItem -LiteralPath (Join-Path $root 'PackageInfo') -Fi
     }
     $temporary = Join-Path ([IO.Path]::GetTempPath()) "java-release-api-$([guid]::NewGuid().ToString('N'))"
     try {
-        & java -jar $tool --sources-jar $sources[0].File.FullName --package-relative-path $path `
+        & $JavaExecutable -jar $tool --sources-jar $sources[0].File.FullName --package-relative-path $path `
             --output-directory $temporary
         if ($LASTEXITCODE -ne 0) {
             throw "API hash generation failed for $($package.FullyQualifiedName) with exit code $LASTEXITCODE."
