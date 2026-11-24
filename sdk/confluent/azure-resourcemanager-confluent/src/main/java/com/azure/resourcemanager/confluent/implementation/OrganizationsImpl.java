@@ -69,7 +69,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public void deleteClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
-        this.serviceClient().deleteClusterApiKey(resourceGroupName, organizationName, apiKeyId);
+        this.deleteClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, Context.NONE);
     }
 
     public Response<OrganizationResource> getByResourceGroupWithResponse(String resourceGroupName,
@@ -90,7 +90,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String organizationName) {
-        this.serviceClient().delete(resourceGroupName, organizationName);
+        this.delete(resourceGroupName, organizationName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String organizationName, Context context) {
@@ -98,8 +98,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<OrganizationResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<OrganizationResource> listByResourceGroup(String resourceGroupName, Context context) {
@@ -109,8 +108,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public PagedIterable<OrganizationResource> list() {
-        PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<OrganizationResource> list(Context context) {
@@ -138,12 +136,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public OrganizationResource linkSaaS(String resourceGroupName, String organizationName, SaaSData body) {
-        OrganizationResourceInner inner = this.serviceClient().linkSaaS(resourceGroupName, organizationName, body);
-        if (inner != null) {
-            return new OrganizationResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.linkSaaS(resourceGroupName, organizationName, body, Context.NONE);
     }
 
     public OrganizationResource linkSaaS(String resourceGroupName, String organizationName, SaaSData body,
@@ -176,12 +169,7 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public SaaSResourceDetailsResponse activateResource(ActivateSaaSParameterRequest body) {
-        SaaSResourceDetailsResponseInner inner = this.serviceClient().activateResource(body);
-        if (inner != null) {
-            return new SaaSResourceDetailsResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.activateResource(body, Context.NONE);
     }
 
     public SaaSResourceDetailsResponse activateResource(ActivateSaaSParameterRequest body, Context context) {
@@ -315,74 +303,30 @@ public final class OrganizationsImpl implements Organizations {
     }
 
     public OrganizationResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<OrganizationResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
+            "organizationName", "organizations", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, organizationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
-        this.delete(resourceGroupName, organizationName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String organizationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String organizationName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}",
-            "organizationName");
-        if (organizationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'organizations'.", id)));
-        }
+            "organizationName", "organizations", LOGGER);
         this.delete(resourceGroupName, organizationName, context);
     }
 

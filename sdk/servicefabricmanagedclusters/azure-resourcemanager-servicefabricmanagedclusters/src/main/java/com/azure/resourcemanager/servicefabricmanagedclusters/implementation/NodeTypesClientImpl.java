@@ -443,18 +443,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric node type of a given managed cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NodeTypeInner> getWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         Context context) {
@@ -463,17 +452,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             resourceGroupName, clusterName, nodeTypeName, accept, context);
     }
 
-    /**
-     * Get a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric node type of a given managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeTypeInner get(String resourceGroupName, String clusterName, String nodeTypeName) {
         return getWithResponse(resourceGroupName, clusterName, nodeTypeName, Context.NONE).getValue();
@@ -520,11 +499,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -573,42 +548,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             NodeTypeInner.class, NodeTypeInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The node type resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a node type in the cluster, each node type represents sub
-     * set of nodes in the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodeTypeInner>, NodeTypeInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String nodeTypeName, NodeTypeInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<NodeTypeInner, NodeTypeInner>getLroResult(response, NodeTypeInner.class,
-            NodeTypeInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The node type resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a node type in the cluster, each node type represents sub
-     * set of nodes in the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodeTypeInner>, NodeTypeInner> beginCreateOrUpdate(String resourceGroupName,
         String clusterName, String nodeTypeName, NodeTypeInner parameters, Context context) {
@@ -638,41 +585,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The node type resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeTypeInner createOrUpdate(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Create or update a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The node type resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeTypeInner createOrUpdate(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -716,11 +641,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -769,41 +690,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             NodeTypeInner.class, NodeTypeInner.class, this.client.getContext());
     }
 
-    /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a node type in the cluster, each node type represents sub
-     * set of nodes in the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodeTypeInner>, NodeTypeInner> beginUpdate(String resourceGroupName,
         String clusterName, String nodeTypeName, NodeTypeUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<NodeTypeInner, NodeTypeInner>getLroResult(response, NodeTypeInner.class,
-            NodeTypeInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a node type in the cluster, each node type represents sub
-     * set of nodes in the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NodeTypeInner>, NodeTypeInner> beginUpdate(String resourceGroupName,
         String clusterName, String nodeTypeName, NodeTypeUpdateParameters parameters, Context context) {
@@ -833,41 +727,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeTypeInner update(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        return update(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters The parameters to update the node type configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a node type in the cluster, each node type represents sub set of nodes in the cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NodeTypeInner update(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeUpdateParameters parameters, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -903,8 +775,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName, String nodeTypeName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
     /**
@@ -945,36 +816,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String nodeTypeName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, nodeTypeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
-    /**
-     * Delete a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String nodeTypeName, Context context) {
@@ -999,35 +848,16 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String nodeTypeName) {
-        beginDelete(resourceGroupName, clusterName, nodeTypeName).getFinalResult();
+        delete(resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
-    /**
-     * Delete a Service Fabric node type of a given managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String nodeTypeName, Context context) {
-        beginDelete(resourceGroupName, clusterName, nodeTypeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, nodeTypeName, context));
     }
 
     /**
@@ -1082,12 +912,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersSinglePage(String resourceGroupName, String clusterName) {
-        final String accept = "application/json";
-        Response<NodeTypeListResult> res
-            = service.listByManagedClustersSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByManagedClustersSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -1112,33 +937,13 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all Node types of the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Node types of the specified managed cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodeTypeInner> listByManagedClusters(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listByManagedClustersSinglePage(resourceGroupName, clusterName),
-            nextLink -> listByManagedClustersNextSinglePage(nextLink));
+        return listByManagedClusters(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Gets all Node types of the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Node types of the specified managed cluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NodeTypeInner> listByManagedClusters(String resourceGroupName, String clusterName,
         Context context) {
@@ -1186,10 +991,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deallocateWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        final String contentType = "application/json";
-        return service.deallocateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return deallocateWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -1237,41 +1039,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deallocates one or more nodes on the node type. It will disable the fabric nodes, trigger a shutdown on the VMs
-     * and release them from the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for deallocate action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        Response<BinaryData> response
-            = deallocateWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeallocate(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Deallocates one or more nodes on the node type. It will disable the fabric nodes, trigger a shutdown on the VMs
-     * and release them from the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for deallocate action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters, Context context) {
@@ -1300,41 +1075,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deallocates one or more nodes on the node type. It will disable the fabric nodes, trigger a shutdown on the VMs
-     * and release them from the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for deallocate action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        beginDeallocate(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        deallocate(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Deallocates one or more nodes on the node type. It will disable the fabric nodes, trigger a shutdown on the VMs
-     * and release them from the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for deallocate action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        beginDeallocate(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDeallocate(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -1377,10 +1130,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteNodeWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        final String contentType = "application/json";
-        return service.deleteNodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return deleteNodeWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -1428,41 +1178,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes one or more nodes on the node type. It will disable the fabric nodes, trigger a delete on the VMs and
-     * removes the state from the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for delete action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteNode(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        Response<BinaryData> response
-            = deleteNodeWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteNode(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Deletes one or more nodes on the node type. It will disable the fabric nodes, trigger a delete on the VMs and
-     * removes the state from the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for delete action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteNode(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters, Context context) {
@@ -1491,41 +1214,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes one or more nodes on the node type. It will disable the fabric nodes, trigger a delete on the VMs and
-     * removes the state from the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for delete action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNode(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        beginDeleteNode(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        deleteNode(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Deletes one or more nodes on the node type. It will disable the fabric nodes, trigger a delete on the VMs and
-     * removes the state from the cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for delete action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteNode(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        beginDeleteNode(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDeleteNode(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -1568,10 +1269,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> redeployWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        final String contentType = "application/json";
-        return service.redeploySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return redeployWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -1619,40 +1317,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             this.client.getContext());
     }
 
-    /**
-     * Redeploys one or more nodes on the node type. It will disable the fabric nodes, trigger a shut down on the VMs,
-     * move them to a new node, and power them back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for redeploy action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        Response<BinaryData> response = redeployWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRedeploy(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Redeploys one or more nodes on the node type. It will disable the fabric nodes, trigger a shut down on the VMs,
-     * move them to a new node, and power them back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for redeploy action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters, Context context) {
@@ -1681,41 +1353,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Redeploys one or more nodes on the node type. It will disable the fabric nodes, trigger a shut down on the VMs,
-     * move them to a new node, and power them back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for redeploy action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void redeploy(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        beginRedeploy(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        redeploy(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Redeploys one or more nodes on the node type. It will disable the fabric nodes, trigger a shut down on the VMs,
-     * move them to a new node, and power them back on.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for redeploy action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void redeploy(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        beginRedeploy(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginRedeploy(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -1758,10 +1408,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> reimageWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        final String contentType = "application/json";
-        return service.reimageSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return reimageWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -1809,40 +1456,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             this.client.getContext());
     }
 
-    /**
-     * Reimages one or more nodes on the node type. It will disable the fabric nodes, trigger a reimage on the VMs and
-     * activate the nodes back again.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for reimage action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        Response<BinaryData> response = reimageWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginReimage(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Reimages one or more nodes on the node type. It will disable the fabric nodes, trigger a reimage on the VMs and
-     * activate the nodes back again.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for reimage action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters, Context context) {
@@ -1871,41 +1492,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Reimages one or more nodes on the node type. It will disable the fabric nodes, trigger a reimage on the VMs and
-     * activate the nodes back again.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for reimage action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        beginReimage(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        reimage(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Reimages one or more nodes on the node type. It will disable the fabric nodes, trigger a reimage on the VMs and
-     * activate the nodes back again.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for reimage action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        beginReimage(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginReimage(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -1948,10 +1547,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        final String contentType = "application/json";
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return restartWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -1999,40 +1595,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             this.client.getContext());
     }
 
-    /**
-     * Restarts one or more nodes on the node type. It will disable the fabric nodes, trigger a restart on the VMs and
-     * activate the nodes back again.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for restart action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestart(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Restarts one or more nodes on the node type. It will disable the fabric nodes, trigger a restart on the VMs and
-     * activate the nodes back again.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for restart action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters, Context context) {
@@ -2061,41 +1631,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restarts one or more nodes on the node type. It will disable the fabric nodes, trigger a restart on the VMs and
-     * activate the nodes back again.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for restart action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        beginRestart(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        restart(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Restarts one or more nodes on the node type. It will disable the fabric nodes, trigger a restart on the VMs and
-     * activate the nodes back again.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for restart action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        beginRestart(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginRestart(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -2138,10 +1686,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        final String contentType = "application/json";
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return startWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -2189,40 +1734,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             this.client.getContext());
     }
 
-    /**
-     * Starts one or more nodes on the node type. It will trigger an allocation of the fabric node if needed and
-     * activate them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for start action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Starts one or more nodes on the node type. It will trigger an allocation of the fabric node if needed and
-     * activate them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for start action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String clusterName,
         String nodeTypeName, NodeTypeActionParameters parameters, Context context) {
@@ -2251,41 +1770,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts one or more nodes on the node type. It will trigger an allocation of the fabric node if needed and
-     * activate them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for start action.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters) {
-        beginStart(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        start(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Starts one or more nodes on the node type. It will trigger an allocation of the fabric node if needed and
-     * activate them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters for start action.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String clusterName, String nodeTypeName,
         NodeTypeActionParameters parameters, Context context) {
-        beginStart(resourceGroupName, clusterName, nodeTypeName, parameters, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginStart(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -2326,10 +1823,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, FaultSimulationContentWrapper parameters) {
-        final String contentType = "application/json";
-        return service.startFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return startFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -2375,40 +1869,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
-    /**
-     * Starts a fault simulation on the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters describing the fault simulation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
         String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters) {
-        Response<BinaryData> response
-            = startFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
-            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
+        return beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Starts a fault simulation on the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters describing the fault simulation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStartFaultSimulation(
         String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationContentWrapper parameters,
@@ -2438,42 +1906,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts a fault simulation on the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters describing the fault simulation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters) {
-        return beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        return startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Starts a fault simulation on the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameters describing the fault simulation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner startFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationContentWrapper parameters, Context context) {
-        return beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginStartFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -2514,10 +1959,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, FaultSimulationIdContent parameters) {
-        final String contentType = "application/json";
-        return service.stopFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, contentType, parameters,
-            Context.NONE);
+        return stopFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
     /**
@@ -2563,40 +2005,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             FaultSimulationInner.class, FaultSimulationInner.class, this.client.getContext());
     }
 
-    /**
-     * Stops a fault simulation on the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameter with fault simulation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
         String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters) {
-        Response<BinaryData> response
-            = stopFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters);
-        return this.client.<FaultSimulationInner, FaultSimulationInner>getLroResult(response,
-            FaultSimulationInner.class, FaultSimulationInner.class, Context.NONE);
+        return beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Stops a fault simulation on the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameter with fault simulation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FaultSimulationInner>, FaultSimulationInner> beginStopFaultSimulation(
         String resourceGroupName, String clusterName, String nodeTypeName, FaultSimulationIdContent parameters,
@@ -2626,42 +2042,19 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops a fault simulation on the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameter with fault simulation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters) {
-        return beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters).getFinalResult();
+        return stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, Context.NONE);
     }
 
-    /**
-     * Stops a fault simulation on the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameter with fault simulation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner stopFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters, Context context) {
-        return beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginStopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context));
     }
 
     /**
@@ -2708,19 +2101,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a fault simulation by the simulationId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameter with fault simulation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a fault simulation by the simulationId along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FaultSimulationInner> getFaultSimulationWithResponse(String resourceGroupName, String clusterName,
         String nodeTypeName, FaultSimulationIdContent parameters, Context context) {
@@ -2731,18 +2112,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             parameters, context);
     }
 
-    /**
-     * Gets a fault simulation by the simulationId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param parameters parameter with fault simulation id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a fault simulation by the simulationId.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FaultSimulationInner getFaultSimulation(String resourceGroupName, String clusterName, String nodeTypeName,
         FaultSimulationIdContent parameters) {
@@ -2806,12 +2176,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationSinglePage(String resourceGroupName,
         String clusterName, String nodeTypeName) {
-        final String accept = "application/json";
-        Response<FaultSimulationListResult> res
-            = service.listFaultSimulationSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, clusterName, nodeTypeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listFaultSimulationSinglePage(resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
     /**
@@ -2837,36 +2202,14 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of recent fault simulations for the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the node type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FaultSimulationInner> listFaultSimulation(String resourceGroupName, String clusterName,
         String nodeTypeName) {
-        return new PagedIterable<>(() -> listFaultSimulationSinglePage(resourceGroupName, clusterName, nodeTypeName),
-            nextLink -> listFaultSimulationNextSinglePage(nextLink));
+        return listFaultSimulation(resourceGroupName, clusterName, nodeTypeName, Context.NONE);
     }
 
-    /**
-     * Gets the list of recent fault simulations for the node type.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param nodeTypeName The name of the node type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recent fault simulations for the node type as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FaultSimulationInner> listFaultSimulation(String resourceGroupName, String clusterName,
         String nodeTypeName, Context context) {
@@ -2907,11 +2250,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NodeTypeInner> listByManagedClustersNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NodeTypeListResult> res
-            = service.listByManagedClustersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByManagedClustersNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -2965,11 +2304,7 @@ public final class NodeTypesClientImpl implements NodeTypesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<FaultSimulationInner> listFaultSimulationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<FaultSimulationListResult> res
-            = service.listFaultSimulationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listFaultSimulationNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

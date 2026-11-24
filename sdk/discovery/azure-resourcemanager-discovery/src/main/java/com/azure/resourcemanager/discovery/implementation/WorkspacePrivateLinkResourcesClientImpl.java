@@ -158,18 +158,7 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified private link resource for the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspacePrivateLinkResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
         String privateLinkResourceName, Context context) {
@@ -178,17 +167,7 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
             resourceGroupName, workspaceName, privateLinkResourceName, accept, context);
     }
 
-    /**
-     * Gets the specified private link resource for the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource for the workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspacePrivateLinkResourceInner get(String resourceGroupName, String workspaceName,
         String privateLinkResourceName) {
@@ -249,12 +228,7 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspacePrivateLinkResourceInner> listByWorkspaceSinglePage(String resourceGroupName,
         String workspaceName) {
-        final String accept = "application/json";
-        Response<WorkspacePrivateLinkResourceListResult> res
-            = service.listByWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceSinglePage(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -279,36 +253,14 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all private link resources for the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkspacePrivateLinkResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspacePrivateLinkResourceInner> listByWorkspace(String resourceGroupName,
         String workspaceName) {
-        return new PagedIterable<>(() -> listByWorkspaceSinglePage(resourceGroupName, workspaceName),
-            nextLink -> listByWorkspaceNextSinglePage(nextLink));
+        return listByWorkspace(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Lists all private link resources for the workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the Workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkspacePrivateLinkResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspacePrivateLinkResourceInner> listByWorkspace(String resourceGroupName,
         String workspaceName, Context context) {
@@ -347,11 +299,7 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspacePrivateLinkResourceInner> listByWorkspaceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspacePrivateLinkResourceListResult> res
-            = service.listByWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByWorkspaceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

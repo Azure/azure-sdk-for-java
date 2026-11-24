@@ -78,10 +78,7 @@ public final class VolumeGroupSnapshotImpl implements VolumeGroupSnapshot, Volum
     }
 
     public VolumeGroupSnapshot create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroupSnapshots()
-            .create(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VolumeGroupSnapshot create(Context context) {
@@ -99,11 +96,7 @@ public final class VolumeGroupSnapshotImpl implements VolumeGroupSnapshot, Volum
     }
 
     public VolumeGroupSnapshot refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumeGroupSnapshots()
-            .getWithResponse(resourceGroupName, storagePoolName, volumeGroupName, snapshotName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VolumeGroupSnapshot refresh(Context context) {

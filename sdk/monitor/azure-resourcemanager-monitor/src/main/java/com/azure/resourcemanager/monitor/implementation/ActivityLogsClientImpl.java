@@ -178,57 +178,14 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Provides the list of records from the activity logs.
-     * 
-     * @param filter Reduces the set of data collected.&lt;br&gt;This argument is required and it also requires at least
-     * the start date/time.&lt;br&gt;The **$filter** argument is very restricted and allows only the following
-     * patterns.&lt;br&gt;- *List events for a resource group*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
-     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceGroupName eq 'resourceGroupName'.&lt;br&gt;-
-     * *List events for resource*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     * '2014-07-20T04:36:37.6407898Z' and resourceUri eq 'resourceURI'.&lt;br&gt;- *List events for a subscription in a
-     * time range*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     * '2014-07-20T04:36:37.6407898Z'.&lt;br&gt;- *List events for a resource provider*: $filter=eventTimestamp ge
-     * '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceProvider eq
-     * 'resourceProviderName'.&lt;br&gt;- *List events for a correlation Id*: $filter=eventTimestamp ge
-     * '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and correlationId eq
-     * 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other syntax is allowed.
-     * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     * separated list of property names to be returned. Possible values are: *authorization*, *claims*, *correlationId*,
-     * *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*, *operationId*,
-     * *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*, *status*,
-     * *submissionTimestamp*, *subStatus*, *subscriptionId*.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync(String filter, String select) {
         return new PagedFlux<>(() -> listSinglePageAsync(filter, select),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Provides the list of records from the activity logs.
-     * 
-     * @param filter Reduces the set of data collected.&lt;br&gt;This argument is required and it also requires at least
-     * the start date/time.&lt;br&gt;The **$filter** argument is very restricted and allows only the following
-     * patterns.&lt;br&gt;- *List events for a resource group*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
-     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceGroupName eq 'resourceGroupName'.&lt;br&gt;-
-     * *List events for resource*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     * '2014-07-20T04:36:37.6407898Z' and resourceUri eq 'resourceURI'.&lt;br&gt;- *List events for a subscription in a
-     * time range*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     * '2014-07-20T04:36:37.6407898Z'.&lt;br&gt;- *List events for a resource provider*: $filter=eventTimestamp ge
-     * '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceProvider eq
-     * 'resourceProviderName'.&lt;br&gt;- *List events for a correlation Id*: $filter=eventTimestamp ge
-     * '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and correlationId eq
-     * 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other syntax is allowed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventDataInner> listAsync(String filter) {
         final String select = null;
@@ -268,58 +225,14 @@ public final class ActivityLogsClientImpl implements ActivityLogsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Provides the list of records from the activity logs.
-     * 
-     * @param filter Reduces the set of data collected.&lt;br&gt;This argument is required and it also requires at least
-     * the start date/time.&lt;br&gt;The **$filter** argument is very restricted and allows only the following
-     * patterns.&lt;br&gt;- *List events for a resource group*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
-     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceGroupName eq 'resourceGroupName'.&lt;br&gt;-
-     * *List events for resource*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     * '2014-07-20T04:36:37.6407898Z' and resourceUri eq 'resourceURI'.&lt;br&gt;- *List events for a subscription in a
-     * time range*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     * '2014-07-20T04:36:37.6407898Z'.&lt;br&gt;- *List events for a resource provider*: $filter=eventTimestamp ge
-     * '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceProvider eq
-     * 'resourceProviderName'.&lt;br&gt;- *List events for a correlation Id*: $filter=eventTimestamp ge
-     * '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and correlationId eq
-     * 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other syntax is allowed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list(String filter) {
         final String select = null;
         return new PagedIterable<>(listAsync(filter, select));
     }
 
-    /**
-     * Provides the list of records from the activity logs.
-     * 
-     * @param filter Reduces the set of data collected.&lt;br&gt;This argument is required and it also requires at least
-     * the start date/time.&lt;br&gt;The **$filter** argument is very restricted and allows only the following
-     * patterns.&lt;br&gt;- *List events for a resource group*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z'
-     * and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceGroupName eq 'resourceGroupName'.&lt;br&gt;-
-     * *List events for resource*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     * '2014-07-20T04:36:37.6407898Z' and resourceUri eq 'resourceURI'.&lt;br&gt;- *List events for a subscription in a
-     * time range*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
-     * '2014-07-20T04:36:37.6407898Z'.&lt;br&gt;- *List events for a resource provider*: $filter=eventTimestamp ge
-     * '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceProvider eq
-     * 'resourceProviderName'.&lt;br&gt;- *List events for a correlation Id*: $filter=eventTimestamp ge
-     * '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and correlationId eq
-     * 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other syntax is allowed.
-     * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
-     * separated list of property names to be returned. Possible values are: *authorization*, *claims*, *correlationId*,
-     * *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*, *operationId*,
-     * *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*, *status*,
-     * *submissionTimestamp*, *subStatus*, *subscriptionId*.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of events as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list(String filter, String select, Context context) {
         return new PagedIterable<>(listAsync(filter, select, context));

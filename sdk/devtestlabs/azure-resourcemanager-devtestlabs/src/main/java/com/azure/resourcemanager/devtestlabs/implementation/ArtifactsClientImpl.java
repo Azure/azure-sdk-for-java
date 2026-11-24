@@ -187,20 +187,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the artifact.
-     * @param expand Specify the $expand query. Example: 'properties($select=title)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return artifact along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactInner> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,
         String name, String expand, Context context) {
@@ -209,18 +196,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             resourceGroupName, labName, artifactSourceName, name, expand, accept, context);
     }
 
-    /**
-     * Get artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the artifact.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return artifact.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArtifactInner get(String resourceGroupName, String labName, String artifactSourceName, String name) {
         final String expand = null;
@@ -319,12 +295,8 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactInner> listSinglePage(String resourceGroupName, String labName,
         String artifactSourceName, String expand, String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<ArtifactList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby,
+            Context.NONE);
     }
 
     /**
@@ -354,44 +326,17 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List artifacts in a given artifact source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param artifactSourceName The name of the artifact source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactInner> list(String resourceGroupName, String labName, String artifactSourceName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List artifacts in a given artifact source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param artifactSourceName The name of the artifact source.
-     * @param expand Specify the $expand query. Example: 'properties($select=title)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactInner> list(String resourceGroupName, String labName, String artifactSourceName,
         String expand, String filter, Integer top, String orderby, Context context) {
@@ -448,21 +393,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             generateArmTemplateRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
-     * the generated artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the artifact.
-     * @param generateArmTemplateRequest Parameters for generating an ARM template for deploying artifacts.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a generated ARM template along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArmTemplateInfoInner> generateArmTemplateWithResponse(String resourceGroupName, String labName,
         String artifactSourceName, String name, GenerateArmTemplateRequest generateArmTemplateRequest,
@@ -474,20 +405,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
             generateArmTemplateRequest, context);
     }
 
-    /**
-     * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
-     * the generated artifact.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param artifactSourceName The name of the artifact source.
-     * @param name The name of the artifact.
-     * @param generateArmTemplateRequest Parameters for generating an ARM template for deploying artifacts.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a generated ARM template.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArmTemplateInfoInner generateArmTemplate(String resourceGroupName, String labName, String artifactSourceName,
         String name, GenerateArmTemplateRequest generateArmTemplateRequest) {
@@ -525,10 +443,7 @@ public final class ArtifactsClientImpl implements ArtifactsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ArtifactList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

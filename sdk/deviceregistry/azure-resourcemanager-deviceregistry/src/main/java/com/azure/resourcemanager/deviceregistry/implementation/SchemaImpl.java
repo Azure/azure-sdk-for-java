@@ -70,12 +70,7 @@ public final class SchemaImpl implements Schema, Schema.Definition {
     }
 
     public Schema create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemas()
-            .createOrReplaceWithResponse(resourceGroupName, schemaRegistryName, schemaName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Schema create(Context context) {
@@ -93,11 +88,7 @@ public final class SchemaImpl implements Schema, Schema.Definition {
     }
 
     public Schema refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSchemas()
-            .getWithResponse(resourceGroupName, schemaRegistryName, schemaName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Schema refresh(Context context) {

@@ -290,19 +290,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified workbench associated with the project along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbenchInner> getWithResponse(String resourceGroupName, String accountName, String projectName,
         String workbenchName, Context context) {
@@ -311,18 +299,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             resourceGroupName, accountName, projectName, workbenchName, accept, context);
     }
 
-    /**
-     * Gets the specified workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified workbench associated with the project.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbenchInner get(String resourceGroupName, String accountName, String projectName, String workbenchName) {
         return getWithResponse(resourceGroupName, accountName, projectName, workbenchName, Context.NONE).getValue();
@@ -372,11 +349,8 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String accountName,
         String projectName, String workbenchName, WorkbenchInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, workbenchName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, accountName, projectName, workbenchName, resource,
+            Context.NONE);
     }
 
     /**
@@ -427,44 +401,14 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             WorkbenchInner.class, WorkbenchInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param resource The workbench properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkbenchInner>, WorkbenchInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String projectName, String workbenchName, WorkbenchInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, accountName, projectName, workbenchName, resource);
-        return this.client.<WorkbenchInner, WorkbenchInner>getLroResult(response, WorkbenchInner.class,
-            WorkbenchInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, workbenchName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param resource The workbench properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkbenchInner>, WorkbenchInner> beginCreateOrUpdate(String resourceGroupName,
         String accountName, String projectName, String workbenchName, WorkbenchInner resource, Context context) {
@@ -495,47 +439,19 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param resource The workbench properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbenchInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
         String workbenchName, WorkbenchInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, workbenchName, resource)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, accountName, projectName, workbenchName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param resource The workbench properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbenchInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
         String workbenchName, WorkbenchInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, accountName, projectName, workbenchName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, accountName, projectName, workbenchName, resource, context));
     }
 
     /**
@@ -586,21 +502,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkbenchInner> updateWithResponse(String resourceGroupName, String accountName, String projectName,
         String workbenchName, WorkbenchUpdate properties, Context context) {
@@ -611,20 +513,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             accept, properties, context);
     }
 
-    /**
-     * Updates a workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param properties The workbench properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workbench resource under a Cognitive Services project.
-     * Provides interactive compute with data access for AI development.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkbenchInner update(String resourceGroupName, String accountName, String projectName, String workbenchName,
         WorkbenchUpdate properties) {
@@ -668,8 +557,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String accountName, String projectName,
         String workbenchName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
     /**
@@ -713,38 +601,14 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String projectName, String workbenchName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, accountName, projectName, workbenchName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String projectName, String workbenchName, Context context) {
@@ -772,38 +636,18 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, String workbenchName) {
-        beginDelete(resourceGroupName, accountName, projectName, workbenchName).getFinalResult();
+        delete(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified workbench associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, String workbenchName,
         Context context) {
-        beginDelete(resourceGroupName, accountName, projectName, workbenchName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, accountName, projectName, workbenchName, context));
     }
 
     /**
@@ -861,11 +705,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbenchInner> listSinglePage(String resourceGroupName, String accountName,
         String projectName) {
-        final String accept = "application/json";
-        Response<WorkbenchListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
     /**
@@ -890,35 +730,13 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the workbenches associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workbenches associated with the project as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbenchInner> list(String resourceGroupName, String accountName, String projectName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, projectName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
-    /**
-     * Gets the workbenches associated with the project.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the workbenches associated with the project as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkbenchInner> list(String resourceGroupName, String accountName, String projectName,
         Context context) {
@@ -966,8 +784,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String accountName, String projectName,
         String workbenchName) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
+        return startWithResponse(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
     /**
@@ -1015,42 +832,14 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             this.client.getContext());
     }
 
-    /**
-     * Starts a stopped workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
         String projectName, String workbenchName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, accountName, projectName, workbenchName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
-    /**
-     * Starts a stopped workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String accountName,
         String projectName, String workbenchName, Context context) {
@@ -1080,42 +869,18 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Starts a stopped workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String accountName, String projectName, String workbenchName) {
-        beginStart(resourceGroupName, accountName, projectName, workbenchName).getFinalResult();
+        start(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
-    /**
-     * Starts a stopped workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String accountName, String projectName, String workbenchName,
         Context context) {
-        beginStart(resourceGroupName, accountName, projectName, workbenchName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginStart(resourceGroupName, accountName, projectName, workbenchName, context));
     }
 
     /**
@@ -1158,8 +923,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String accountName, String projectName,
         String workbenchName) {
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
+        return stopWithResponse(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
     /**
@@ -1207,42 +971,14 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             this.client.getContext());
     }
 
-    /**
-     * Stops a running workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName,
         String projectName, String workbenchName) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, accountName, projectName, workbenchName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStop(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
-    /**
-     * Stops a running workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String accountName,
         String projectName, String workbenchName, Context context) {
@@ -1272,42 +1008,18 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Stops a running workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String accountName, String projectName, String workbenchName) {
-        beginStop(resourceGroupName, accountName, projectName, workbenchName).getFinalResult();
+        stop(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
-    /**
-     * Stops a running workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String accountName, String projectName, String workbenchName,
         Context context) {
-        beginStop(resourceGroupName, accountName, projectName, workbenchName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginStop(resourceGroupName, accountName, projectName, workbenchName, context));
     }
 
     /**
@@ -1350,8 +1062,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String accountName, String projectName,
         String workbenchName) {
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
+        return restartWithResponse(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
     /**
@@ -1399,42 +1110,14 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             this.client.getContext());
     }
 
-    /**
-     * Restarts a running workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String accountName,
         String projectName, String workbenchName) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, accountName, projectName, workbenchName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestart(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
-    /**
-     * Restarts a running workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String accountName,
         String projectName, String workbenchName, Context context) {
@@ -1464,42 +1147,18 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Restarts a running workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String accountName, String projectName, String workbenchName) {
-        beginRestart(resourceGroupName, accountName, projectName, workbenchName).getFinalResult();
+        restart(resourceGroupName, accountName, projectName, workbenchName, Context.NONE);
     }
 
-    /**
-     * Restarts a running workbench resource.
-     * This is a long-running operation that returns 202 Accepted.
-     * Returns 204 if the workbench is already in the target state.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param workbenchName The name of the workbench associated with the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String accountName, String projectName, String workbenchName,
         Context context) {
-        beginRestart(resourceGroupName, accountName, projectName, workbenchName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginRestart(resourceGroupName, accountName, projectName, workbenchName, context));
     }
 
     /**
@@ -1532,11 +1191,7 @@ public final class WorkbenchesClientImpl implements WorkbenchesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkbenchInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkbenchListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

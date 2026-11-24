@@ -166,23 +166,7 @@ public final class WorkspaceDiscoveriesClientImpl implements WorkspaceDiscoverie
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a retained discovery result by its ID, or uses latest to select the most recently durably admitted
-     * discovery. Returns 200 with the current representation while processing or terminal. A Failed result can contain
-     * errors without a snapshot. Returns 404 if no qualifying retained result exists. This is not an LRO polling
-     * endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param discoveryName The service-generated discovery result ID. Use latest in the request path for the most
-     * recently durably admitted discovery; responses contain the canonical result ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a retained discovery result by its ID, or uses latest to select the most recently durably admitted
-     * discovery along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<WorkspaceDiscoveryInner> getWithResponse(String resourceGroupName, String workspaceName,
         String discoveryName, Context context) {
@@ -191,22 +175,7 @@ public final class WorkspaceDiscoveriesClientImpl implements WorkspaceDiscoverie
             resourceGroupName, workspaceName, discoveryName, accept, context);
     }
 
-    /**
-     * Gets a retained discovery result by its ID, or uses latest to select the most recently durably admitted
-     * discovery. Returns 200 with the current representation while processing or terminal. A Failed result can contain
-     * errors without a snapshot. Returns 404 if no qualifying retained result exists. This is not an LRO polling
-     * endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param discoveryName The service-generated discovery result ID. Use latest in the request path for the most
-     * recently durably admitted discovery; responses contain the canonical result ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a retained discovery result by its ID, or uses latest to select the most recently durably admitted
-     * discovery.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkspaceDiscoveryInner get(String resourceGroupName, String workspaceName, String discoveryName) {
         return getWithResponse(resourceGroupName, workspaceName, discoveryName, Context.NONE).getValue();
@@ -289,12 +258,7 @@ public final class WorkspaceDiscoveriesClientImpl implements WorkspaceDiscoverie
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceDiscoveryInner> listSinglePage(String resourceGroupName, String workspaceName,
         String continuationToken) {
-        final String accept = "application/json";
-        Response<WorkspaceDiscoveryListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, continuationToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, continuationToken, Context.NONE);
     }
 
     /**
@@ -321,37 +285,14 @@ public final class WorkspaceDiscoveriesClientImpl implements WorkspaceDiscoverie
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists retained discovery results under the workspace. Each result has its canonical ID; latest is an alias and is
-     * not a separate collection entry. This operation does not extend result retention.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkspaceDiscovery list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceDiscoveryInner> list(String resourceGroupName, String workspaceName) {
         final String continuationToken = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, continuationToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, continuationToken, Context.NONE);
     }
 
-    /**
-     * Lists retained discovery results under the workspace. Each result has its canonical ID; latest is an alias and is
-     * not a separate collection entry. This operation does not extend result retention.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName String that represents a Workspace resource name.
-     * @param continuationToken Opaque continuation token supplied by the returned nextLink.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a WorkspaceDiscovery list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkspaceDiscoveryInner> list(String resourceGroupName, String workspaceName,
         String continuationToken, Context context) {
@@ -389,11 +330,7 @@ public final class WorkspaceDiscoveriesClientImpl implements WorkspaceDiscoverie
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<WorkspaceDiscoveryInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<WorkspaceDiscoveryListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -238,20 +238,7 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns an auto export job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an auto export job instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutoExportJobInner> getWithResponse(String resourceGroupName, String amlFilesystemName,
         String autoExportJobName, Context context) {
@@ -260,19 +247,7 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             resourceGroupName, amlFilesystemName, autoExportJobName, accept, context);
     }
 
-    /**
-     * Returns an auto export job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoExportJobInner get(String resourceGroupName, String amlFilesystemName, String autoExportJobName) {
         return getWithResponse(resourceGroupName, amlFilesystemName, autoExportJobName, Context.NONE).getValue();
@@ -323,11 +298,8 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String amlFilesystemName,
         String autoExportJobName, AutoExportJobInner autoExportJob) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, autoExportJobName, contentType,
-            accept, autoExportJob, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob,
+            Context.NONE);
     }
 
     /**
@@ -381,46 +353,15 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             AutoExportJobInner.class, AutoExportJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update an auto export job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJob Object containing the user-selectable properties of the auto export job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutoExportJobInner>, AutoExportJobInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, String autoExportJobName, AutoExportJobInner autoExportJob) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob);
-        return this.client.<AutoExportJobInner, AutoExportJobInner>getLroResult(response, AutoExportJobInner.class,
-            AutoExportJobInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob,
+            Context.NONE);
     }
 
-    /**
-     * Create or update an auto export job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJob Object containing the user-selectable properties of the auto export job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutoExportJobInner>, AutoExportJobInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, String autoExportJobName, AutoExportJobInner autoExportJob, Context context) {
@@ -452,49 +393,19 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update an auto export job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJob Object containing the user-selectable properties of the auto export job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoExportJobInner createOrUpdate(String resourceGroupName, String amlFilesystemName,
         String autoExportJobName, AutoExportJobInner autoExportJob) {
-        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, Context.NONE);
     }
 
-    /**
-     * Create or update an auto export job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJob Object containing the user-selectable properties of the auto export job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoExportJobInner createOrUpdate(String resourceGroupName, String amlFilesystemName,
         String autoExportJobName, AutoExportJobInner autoExportJob, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, context));
     }
 
     /**
@@ -542,11 +453,7 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String amlFilesystemName,
         String autoExportJobName, AutoExportJobUpdate autoExportJob) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, autoExportJobName, contentType,
-            accept, autoExportJob, Context.NONE);
+        return updateWithResponse(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, Context.NONE);
     }
 
     /**
@@ -599,46 +506,14 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             AutoExportJobInner.class, AutoExportJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Update an auto export job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJob Object containing the user-selectable properties of the auto export job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutoExportJobInner>, AutoExportJobInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, String autoExportJobName, AutoExportJobUpdate autoExportJob) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob);
-        return this.client.<AutoExportJobInner, AutoExportJobInner>getLroResult(response, AutoExportJobInner.class,
-            AutoExportJobInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, Context.NONE);
     }
 
-    /**
-     * Update an auto export job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJob Object containing the user-selectable properties of the auto export job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AutoExportJobInner>, AutoExportJobInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, String autoExportJobName, AutoExportJobUpdate autoExportJob, Context context) {
@@ -670,48 +545,19 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an auto export job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJob Object containing the user-selectable properties of the auto export job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoExportJobInner update(String resourceGroupName, String amlFilesystemName, String autoExportJobName,
         AutoExportJobUpdate autoExportJob) {
-        return beginUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob).getFinalResult();
+        return update(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, Context.NONE);
     }
 
-    /**
-     * Update an auto export job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJob Object containing the user-selectable properties of the auto export job. If read-only
-     * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an auto export job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutoExportJobInner update(String resourceGroupName, String amlFilesystemName, String autoExportJobName,
         AutoExportJobUpdate autoExportJob, Context context) {
-        return beginUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, amlFilesystemName, autoExportJobName, autoExportJob, context));
     }
 
     /**
@@ -752,8 +598,7 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String amlFilesystemName,
         String autoExportJobName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, autoExportJobName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, amlFilesystemName, autoExportJobName, Context.NONE);
     }
 
     /**
@@ -799,40 +644,14 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Schedules an auto export job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         String autoExportJobName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, amlFilesystemName, autoExportJobName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, amlFilesystemName, autoExportJobName, Context.NONE);
     }
 
-    /**
-     * Schedules an auto export job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         String autoExportJobName, Context context) {
@@ -860,39 +679,17 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Schedules an auto export job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, String autoExportJobName) {
-        beginDelete(resourceGroupName, amlFilesystemName, autoExportJobName).getFinalResult();
+        delete(resourceGroupName, amlFilesystemName, autoExportJobName, Context.NONE);
     }
 
-    /**
-     * Schedules an auto export job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param autoExportJobName Name for the auto export job. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, String autoExportJobName, Context context) {
-        beginDelete(resourceGroupName, amlFilesystemName, autoExportJobName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, amlFilesystemName, autoExportJobName, context));
     }
 
     /**
@@ -950,12 +747,7 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutoExportJobInner> listByAmlFilesystemSinglePage(String resourceGroupName,
         String amlFilesystemName) {
-        final String accept = "application/json";
-        Response<AutoExportJobsListResult> res
-            = service.listByAmlFilesystemSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAmlFilesystemSinglePage(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
     /**
@@ -981,35 +773,13 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all the auto export jobs the user has access to under an AML File System.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list auto export jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoExportJobInner> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName) {
-        return new PagedIterable<>(() -> listByAmlFilesystemSinglePage(resourceGroupName, amlFilesystemName),
-            nextLink -> listByAmlFilesystemNextSinglePage(nextLink));
+        return listByAmlFilesystem(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
-    /**
-     * Returns all the auto export jobs the user has access to under an AML File System.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list auto export jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoExportJobInner> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName,
         Context context) {
@@ -1049,11 +819,7 @@ public final class AutoExportJobsClientImpl implements AutoExportJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AutoExportJobInner> listByAmlFilesystemNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AutoExportJobsListResult> res
-            = service.listByAmlFilesystemNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAmlFilesystemNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

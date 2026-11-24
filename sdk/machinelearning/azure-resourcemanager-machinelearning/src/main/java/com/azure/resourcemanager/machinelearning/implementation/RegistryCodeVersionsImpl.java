@@ -49,13 +49,7 @@ public final class RegistryCodeVersionsImpl implements RegistryCodeVersions {
 
     public CodeVersion createOrUpdate(String resourceGroupName, String registryName, String codeName, String version,
         CodeVersionInner body) {
-        CodeVersionInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, registryName, codeName, version, body);
-        if (inner != null) {
-            return new CodeVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, codeName, version, body, Context.NONE);
     }
 
     public CodeVersion createOrUpdate(String resourceGroupName, String registryName, String codeName, String version,
@@ -70,7 +64,7 @@ public final class RegistryCodeVersionsImpl implements RegistryCodeVersions {
     }
 
     public void delete(String resourceGroupName, String registryName, String codeName, String version) {
-        this.serviceClient().delete(resourceGroupName, registryName, codeName, version);
+        this.delete(resourceGroupName, registryName, codeName, version, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String codeName, String version,

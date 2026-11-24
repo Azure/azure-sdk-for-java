@@ -50,7 +50,7 @@ public final class ComputesImpl implements Computes {
 
     public void delete(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, computeName, underlyingResourceAction);
+        this.delete(resourceGroupName, workspaceName, computeName, underlyingResourceAction, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String workspaceName, String computeName,
@@ -72,7 +72,7 @@ public final class ComputesImpl implements Computes {
 
     public PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
         String computeName) {
-        return this.serviceClient().listNodes(resourceGroupName, workspaceName, computeName);
+        return this.listNodes(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
     public PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
@@ -98,7 +98,7 @@ public final class ComputesImpl implements Computes {
     }
 
     public void start(String resourceGroupName, String workspaceName, String computeName) {
-        this.serviceClient().start(resourceGroupName, workspaceName, computeName);
+        this.start(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
     public void start(String resourceGroupName, String workspaceName, String computeName, Context context) {
@@ -106,7 +106,7 @@ public final class ComputesImpl implements Computes {
     }
 
     public void stop(String resourceGroupName, String workspaceName, String computeName) {
-        this.serviceClient().stop(resourceGroupName, workspaceName, computeName);
+        this.stop(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
     public void stop(String resourceGroupName, String workspaceName, String computeName, Context context) {
@@ -114,7 +114,7 @@ public final class ComputesImpl implements Computes {
     }
 
     public void restart(String resourceGroupName, String workspaceName, String computeName) {
-        this.serviceClient().restart(resourceGroupName, workspaceName, computeName);
+        this.restart(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
     public void restart(String resourceGroupName, String workspaceName, String computeName, Context context) {
@@ -122,52 +122,19 @@ public final class ComputesImpl implements Computes {
     }
 
     public ComputeResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}",
-            "computeName");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ComputeResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String workspaceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String workspaceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}",
-            "workspaceName");
-        if (workspaceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
-        }
-        String computeName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "workspaceName", "workspaces", LOGGER);
+        String computeName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/computes/{computeName}",
-            "computeName");
-        if (computeName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'computes'.", id)));
-        }
+            "computeName", "computes", LOGGER);
         return this.getWithResponse(resourceGroupName, workspaceName, computeName, context);
     }
 

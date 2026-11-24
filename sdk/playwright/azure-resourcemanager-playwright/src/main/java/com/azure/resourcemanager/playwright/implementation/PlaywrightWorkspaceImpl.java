@@ -91,10 +91,7 @@ public final class PlaywrightWorkspaceImpl
     }
 
     public PlaywrightWorkspace create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPlaywrightWorkspaces()
-            .createOrUpdate(resourceGroupName, playwrightWorkspaceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PlaywrightWorkspace create(Context context) {
@@ -116,11 +113,7 @@ public final class PlaywrightWorkspaceImpl
     }
 
     public PlaywrightWorkspace apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPlaywrightWorkspaces()
-            .updateWithResponse(resourceGroupName, playwrightWorkspaceName, updateProperties, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PlaywrightWorkspace apply(Context context) {
@@ -144,11 +137,7 @@ public final class PlaywrightWorkspaceImpl
     }
 
     public PlaywrightWorkspace refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPlaywrightWorkspaces()
-            .getByResourceGroupWithResponse(resourceGroupName, playwrightWorkspaceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PlaywrightWorkspace refresh(Context context) {

@@ -29,8 +29,7 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
     }
 
     public PagedIterable<WorkItemConfiguration> list(String resourceGroupName, String resourceName) {
-        PagedIterable<WorkItemConfigurationInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkItemConfigurationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<WorkItemConfiguration> list(String resourceGroupName, String resourceName, Context context) {
@@ -81,7 +80,7 @@ public final class WorkItemConfigurationsImpl implements WorkItemConfigurations 
     }
 
     public void delete(String resourceGroupName, String resourceName, String workItemConfigId) {
-        this.serviceClient().delete(resourceGroupName, resourceName, workItemConfigId);
+        this.deleteWithResponse(resourceGroupName, resourceName, workItemConfigId, Context.NONE);
     }
 
     public Response<WorkItemConfiguration> getItemWithResponse(String resourceGroupName, String resourceName,

@@ -197,18 +197,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnvironmentContainerInner> getWithResponse(String resourceGroupName, String workspaceName,
         String name, Context context) {
@@ -217,17 +206,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
             resourceGroupName, workspaceName, name, accept, context);
     }
 
-    /**
-     * Get container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnvironmentContainerInner get(String resourceGroupName, String workspaceName, String name) {
         return getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
@@ -277,19 +256,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnvironmentContainerInner> createOrUpdateWithResponse(String resourceGroupName,
         String workspaceName, String name, EnvironmentContainerInner body, Context context) {
@@ -300,18 +267,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
             context);
     }
 
-    /**
-     * Create or update container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnvironmentContainerInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         EnvironmentContainerInner body) {
@@ -353,18 +309,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
         return deleteWithResponseAsync(resourceGroupName, workspaceName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
         Context context) {
@@ -372,16 +317,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, context);
     }
 
-    /**
-     * Delete container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name) {
         deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
@@ -464,12 +400,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnvironmentContainerInner> listSinglePage(String resourceGroupName, String workspaceName,
         String skip, ListViewType listViewType) {
-        final String accept = "application/json";
-        Response<EnvironmentContainerResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, skip, listViewType, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, skip, listViewType, Context.NONE);
     }
 
     /**
@@ -496,37 +427,15 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List environment containers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnvironmentContainerInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final ListViewType listViewType = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, skip, listViewType),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, skip, listViewType, Context.NONE);
     }
 
-    /**
-     * List environment containers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param skip Continuation token for pagination.
-     * @param listViewType View type for including/excluding (for example) archived entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnvironmentContainerInner> list(String resourceGroupName, String workspaceName, String skip,
         ListViewType listViewType, Context context) {
@@ -568,11 +477,7 @@ public final class EnvironmentContainersClientImpl implements EnvironmentContain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<EnvironmentContainerInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<EnvironmentContainerResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

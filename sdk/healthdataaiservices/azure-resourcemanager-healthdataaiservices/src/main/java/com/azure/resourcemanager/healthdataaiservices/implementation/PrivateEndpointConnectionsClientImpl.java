@@ -216,19 +216,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a specific private connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateEndpointConnectionResourceInner> getWithResponse(String resourceGroupName,
         String deidServiceName, String privateEndpointConnectionName, Context context) {
@@ -237,18 +225,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             resourceGroupName, deidServiceName, privateEndpointConnectionName, accept, context);
     }
 
-    /**
-     * Get a specific private connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionResourceInner get(String resourceGroupName, String deidServiceName,
         String privateEndpointConnectionName) {
@@ -298,11 +275,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String deidServiceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, privateEndpointConnectionName,
-            contentType, accept, resource, Context.NONE);
+        return createWithResponse(resourceGroupName, deidServiceName, privateEndpointConnectionName, resource,
+            Context.NONE);
     }
 
     /**
@@ -353,44 +327,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             PrivateEndpointConnectionResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create a Private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of holder for private endpoint connections.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionResourceInner>, PrivateEndpointConnectionResourceInner>
         beginCreate(String resourceGroupName, String deidServiceName, String privateEndpointConnectionName,
             PrivateEndpointConnectionResourceInner resource) {
-        Response<BinaryData> response
-            = createWithResponse(resourceGroupName, deidServiceName, privateEndpointConnectionName, resource);
-        return this.client.<PrivateEndpointConnectionResourceInner, PrivateEndpointConnectionResourceInner>getLroResult(
-            response, PrivateEndpointConnectionResourceInner.class, PrivateEndpointConnectionResourceInner.class,
-            Context.NONE);
+        return beginCreate(resourceGroupName, deidServiceName, privateEndpointConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of holder for private endpoint connections.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionResourceInner>, PrivateEndpointConnectionResourceInner>
         beginCreate(String resourceGroupName, String deidServiceName, String privateEndpointConnectionName,
@@ -422,45 +367,19 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a Private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holder for private endpoint connections.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionResourceInner create(String resourceGroupName, String deidServiceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource) {
-        return beginCreate(resourceGroupName, deidServiceName, privateEndpointConnectionName, resource)
-            .getFinalResult();
+        return create(resourceGroupName, deidServiceName, privateEndpointConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Create a Private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holder for private endpoint connections.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateEndpointConnectionResourceInner create(String resourceGroupName, String deidServiceName,
         String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner resource, Context context) {
-        return beginCreate(resourceGroupName, deidServiceName, privateEndpointConnectionName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreate(resourceGroupName, deidServiceName, privateEndpointConnectionName, resource, context));
     }
 
     /**
@@ -500,9 +419,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deidServiceName,
         String privateEndpointConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deidServiceName, privateEndpointConnectionName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, deidServiceName, privateEndpointConnectionName, Context.NONE);
     }
 
     /**
@@ -547,39 +464,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             this.client.getContext());
     }
 
-    /**
-     * Delete the private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deidServiceName,
         String privateEndpointConnectionName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, deidServiceName, privateEndpointConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deidServiceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete the private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deidServiceName,
         String privateEndpointConnectionName, Context context) {
@@ -607,38 +499,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete the private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deidServiceName, String privateEndpointConnectionName) {
-        beginDelete(resourceGroupName, deidServiceName, privateEndpointConnectionName).getFinalResult();
+        delete(resourceGroupName, deidServiceName, privateEndpointConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete the private endpoint connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     * resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deidServiceName, String privateEndpointConnectionName,
         Context context) {
-        beginDelete(resourceGroupName, deidServiceName, privateEndpointConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, deidServiceName, privateEndpointConnectionName, context));
     }
 
     /**
@@ -695,12 +567,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionResourceInner> listByDeidServiceSinglePage(String resourceGroupName,
         String deidServiceName) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionResourceListResult> res
-            = service.listByDeidServiceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, deidServiceName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDeidServiceSinglePage(resourceGroupName, deidServiceName, Context.NONE);
     }
 
     /**
@@ -725,36 +592,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List private endpoint connections on the given resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnectionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionResourceInner> listByDeidService(String resourceGroupName,
         String deidServiceName) {
-        return new PagedIterable<>(() -> listByDeidServiceSinglePage(resourceGroupName, deidServiceName),
-            nextLink -> listByDeidServiceNextSinglePage(nextLink));
+        return listByDeidService(resourceGroupName, deidServiceName, Context.NONE);
     }
 
-    /**
-     * List private endpoint connections on the given resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deidServiceName The name of the deid service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a PrivateEndpointConnectionResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PrivateEndpointConnectionResourceInner> listByDeidService(String resourceGroupName,
         String deidServiceName, Context context) {
@@ -794,11 +639,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PrivateEndpointConnectionResourceInner> listByDeidServiceNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PrivateEndpointConnectionResourceListResult> res
-            = service.listByDeidServiceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByDeidServiceNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

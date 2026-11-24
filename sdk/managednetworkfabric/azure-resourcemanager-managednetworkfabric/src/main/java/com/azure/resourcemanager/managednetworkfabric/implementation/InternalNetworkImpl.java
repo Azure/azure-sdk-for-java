@@ -174,10 +174,7 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
     }
 
     public InternalNetwork create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternalNetworks()
-            .create(resourceGroupName, l3IsolationDomainName, internalNetworkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public InternalNetwork create(Context context) {
@@ -200,10 +197,7 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
     }
 
     public InternalNetwork apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternalNetworks()
-            .update(resourceGroupName, l3IsolationDomainName, internalNetworkName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public InternalNetwork apply(Context context) {
@@ -229,11 +223,7 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
     }
 
     public InternalNetwork refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getInternalNetworks()
-            .getWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public InternalNetwork refresh(Context context) {

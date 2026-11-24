@@ -48,9 +48,7 @@ public final class RecoveryJobResourcesImpl implements RecoveryJobResources {
 
     public PagedIterable<RecoveryJobResource> list(String serviceGroupName, String recoveryPlanName,
         String recoveryJobName) {
-        PagedIterable<RecoveryJobResourceInner> inner
-            = this.serviceClient().list(serviceGroupName, recoveryPlanName, recoveryJobName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryJobResourceImpl(inner1, this.manager()));
+        return this.list(serviceGroupName, recoveryPlanName, recoveryJobName, Context.NONE);
     }
 
     public PagedIterable<RecoveryJobResource> list(String serviceGroupName, String recoveryPlanName,

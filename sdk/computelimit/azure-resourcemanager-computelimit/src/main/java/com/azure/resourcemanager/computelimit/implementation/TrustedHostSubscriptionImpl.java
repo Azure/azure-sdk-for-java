@@ -60,11 +60,7 @@ public final class TrustedHostSubscriptionImpl implements TrustedHostSubscriptio
     }
 
     public TrustedHostSubscription create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrustedHostSubscriptions()
-            .createWithResponse(location, hostSubscriptionId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public TrustedHostSubscription create(Context context) {
@@ -83,11 +79,7 @@ public final class TrustedHostSubscriptionImpl implements TrustedHostSubscriptio
     }
 
     public TrustedHostSubscription refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTrustedHostSubscriptions()
-            .getWithResponse(location, hostSubscriptionId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public TrustedHostSubscription refresh(Context context) {

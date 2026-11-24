@@ -121,19 +121,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the details of the shared private link resource managed by the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource group
-     * along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName,
         String searchServiceName, String sharedPrivateLinkResourceName) {
@@ -208,19 +196,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, accept, context);
     }
 
-    /**
-     * Gets the details of the shared private link resource managed by the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource group
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedPrivateLinkResourceInner> getAsync(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName) {
@@ -228,20 +204,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the details of the shared private link resource managed by the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource group
-     * along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharedPrivateLinkResourceInner> getWithResponse(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName, Context context) {
@@ -249,19 +212,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .block();
     }
 
-    /**
-     * Gets the details of the shared private link resource managed by the search service in the given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the shared private link resource managed by the search service in the given resource
-     * group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner get(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName) {
@@ -269,21 +220,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .getValue();
     }
 
-    /**
-     * Initiates the creation or update of a shared private link resource managed by the search service in the given
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a shared private link resource managed by the Azure AI Search service along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String searchServiceName, String sharedPrivateLinkResourceName,
@@ -377,21 +314,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             contentType, accept, sharedPrivateLinkResource, context);
     }
 
-    /**
-     * Initiates the creation or update of a shared private link resource managed by the search service in the given
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a shared private link resource managed by the Azure AI
-     * Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String searchServiceName,
@@ -432,21 +355,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             context);
     }
 
-    /**
-     * Initiates the creation or update of a shared private link resource managed by the search service in the given
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a shared private link resource managed by the Azure AI
-     * Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName,
@@ -457,22 +366,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .getSyncPoller();
     }
 
-    /**
-     * Initiates the creation or update of a shared private link resource managed by the search service in the given
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a shared private link resource managed by the Azure AI
-     * Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName,
@@ -483,21 +377,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .getSyncPoller();
     }
 
-    /**
-     * Initiates the creation or update of a shared private link resource managed by the search service in the given
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a shared private link resource managed by the Azure AI Search service on successful completion
-     * of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner sharedPrivateLinkResource) {
@@ -529,20 +409,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             sharedPrivateLinkResource, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Initiates the creation or update of a shared private link resource managed by the search service in the given
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a shared private link resource managed by the Azure AI Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner createOrUpdate(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner sharedPrivateLinkResource) {
@@ -550,21 +417,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             sharedPrivateLinkResource).block();
     }
 
-    /**
-     * Initiates the creation or update of a shared private link resource managed by the search service in the given
-     * resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param sharedPrivateLinkResource The definition of the shared private link resource to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a shared private link resource managed by the Azure AI Search service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SharedPrivateLinkResourceInner createOrUpdate(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName, SharedPrivateLinkResourceInner sharedPrivateLinkResource,
@@ -573,22 +426,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             sharedPrivateLinkResource, context).block();
     }
 
-    /**
-     * Initiates the deletion of the shared private link resource from the search service.
-     * Returns 202 (Accepted) for asynchronous deletion, 204 (No Content) if the service exists but the shared private
-     * link is not found, or 404 (Not Found) if the service is not found.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName) {
@@ -664,22 +502,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             resourceGroupName, searchServiceName, sharedPrivateLinkResourceName, context);
     }
 
-    /**
-     * Initiates the deletion of the shared private link resource from the search service.
-     * Returns 202 (Accepted) for asynchronous deletion, 204 (No Content) if the service exists but the shared private
-     * link is not found, or 404 (Not Found) if the service is not found.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName) {
@@ -716,22 +539,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             context);
     }
 
-    /**
-     * Initiates the deletion of the shared private link resource from the search service.
-     * Returns 202 (Accepted) for asynchronous deletion, 204 (No Content) if the service exists but the shared private
-     * link is not found, or 404 (Not Found) if the service is not found.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName) {
@@ -739,23 +547,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .getSyncPoller();
     }
 
-    /**
-     * Initiates the deletion of the shared private link resource from the search service.
-     * Returns 202 (Accepted) for asynchronous deletion, 204 (No Content) if the service exists but the shared private
-     * link is not found, or 404 (Not Found) if the service is not found.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName, Context context) {
@@ -763,22 +555,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .getSyncPoller();
     }
 
-    /**
-     * Initiates the deletion of the shared private link resource from the search service.
-     * Returns 202 (Accepted) for asynchronous deletion, 204 (No Content) if the service exists but the shared private
-     * link is not found, or 404 (Not Found) if the service is not found.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String searchServiceName,
         String sharedPrivateLinkResourceName) {
@@ -810,42 +587,13 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Initiates the deletion of the shared private link resource from the search service.
-     * Returns 202 (Accepted) for asynchronous deletion, 204 (No Content) if the service exists but the shared private
-     * link is not found, or 404 (Not Found) if the service is not found.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName) {
         deleteAsync(resourceGroupName, searchServiceName, sharedPrivateLinkResourceName).block();
     }
 
-    /**
-     * Initiates the deletion of the shared private link resource from the search service.
-     * Returns 202 (Accepted) for asynchronous deletion, 204 (No Content) if the service exists but the shared private
-     * link is not found, or 404 (Not Found) if the service is not found.
-     * NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in
-     * future versions and avoid new dependencies on the 404 response.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param sharedPrivateLinkResourceName The name of the shared private link resource managed by the Azure AI Search
-     * service within the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String searchServiceName, String sharedPrivateLinkResourceName,
         Context context) {
@@ -931,17 +679,7 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of all shared private link resources managed by the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedPrivateLinkResourceInner> listByServiceAsync(String resourceGroupName,
         String searchServiceName) {
@@ -968,35 +706,14 @@ public final class SharedPrivateLinkResourcesClientImpl implements SharedPrivate
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of all shared private link resources managed by the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedPrivateLinkResourceInner> listByService(String resourceGroupName,
         String searchServiceName) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, searchServiceName));
     }
 
-    /**
-     * Gets a list of all shared private link resources managed by the given service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param searchServiceName The name of the Azure AI Search service associated with the specified resource group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all shared private link resources managed by the given service as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedPrivateLinkResourceInner> listByService(String resourceGroupName,
         String searchServiceName, Context context) {

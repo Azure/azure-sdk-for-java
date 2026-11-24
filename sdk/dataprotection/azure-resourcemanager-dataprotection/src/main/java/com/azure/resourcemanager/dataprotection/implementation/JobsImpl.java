@@ -45,8 +45,7 @@ public final class JobsImpl implements Jobs {
     }
 
     public PagedIterable<AzureBackupJobResource> list(String resourceGroupName, String vaultName) {
-        PagedIterable<AzureBackupJobResourceInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, vaultName, Context.NONE);
     }
 
     public PagedIterable<AzureBackupJobResource> list(String resourceGroupName, String vaultName, Context context) {

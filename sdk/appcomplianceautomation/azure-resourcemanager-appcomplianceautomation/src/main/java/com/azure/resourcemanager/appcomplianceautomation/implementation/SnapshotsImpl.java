@@ -58,12 +58,7 @@ public final class SnapshotsImpl implements Snapshots {
     }
 
     public DownloadResponse download(String reportName, String snapshotName, SnapshotDownloadRequest body) {
-        DownloadResponseInner inner = this.serviceClient().download(reportName, snapshotName, body);
-        if (inner != null) {
-            return new DownloadResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.download(reportName, snapshotName, body, Context.NONE);
     }
 
     public DownloadResponse download(String reportName, String snapshotName, SnapshotDownloadRequest body,

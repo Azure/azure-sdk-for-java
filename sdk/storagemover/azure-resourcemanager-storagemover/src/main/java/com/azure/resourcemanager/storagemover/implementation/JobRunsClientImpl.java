@@ -164,20 +164,7 @@ public final class JobRunsClientImpl implements JobRunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a Job Run resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param jobRunName The name of the Job Run resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job Run resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobRunInner> getWithResponse(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName, String jobRunName, Context context) {
@@ -186,19 +173,7 @@ public final class JobRunsClientImpl implements JobRunsClient {
             resourceGroupName, storageMoverName, projectName, jobDefinitionName, jobRunName, accept, context);
     }
 
-    /**
-     * Gets a Job Run resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param jobRunName The name of the Job Run resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job Run resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobRunInner get(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName, String jobRunName) {
@@ -266,12 +241,7 @@ public final class JobRunsClientImpl implements JobRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobRunInner> listSinglePage(String resourceGroupName, String storageMoverName,
         String projectName, String jobDefinitionName) {
-        final String accept = "application/json";
-        Response<JobRunList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, storageMoverName, projectName, jobDefinitionName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE);
     }
 
     /**
@@ -298,39 +268,14 @@ public final class JobRunsClientImpl implements JobRunsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all Job Runs in a Job Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job Runs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobRunInner> list(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName) {
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, storageMoverName, projectName, jobDefinitionName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, storageMoverName, projectName, jobDefinitionName, Context.NONE);
     }
 
-    /**
-     * Lists all Job Runs in a Job Definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageMoverName The name of the Storage Mover resource.
-     * @param projectName The name of the Project resource.
-     * @param jobDefinitionName The name of the Job Definition resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Job Runs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobRunInner> list(String resourceGroupName, String storageMoverName, String projectName,
         String jobDefinitionName, Context context) {
@@ -368,10 +313,7 @@ public final class JobRunsClientImpl implements JobRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobRunInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<JobRunList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

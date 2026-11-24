@@ -124,9 +124,7 @@ public final class ManagedNetworkProvisionsClientImpl implements ManagedNetworkP
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> provisionManagedNetworkWithResponse(String resourceGroupName, String workspaceName,
         ManagedNetworkProvisionOptions body) {
-        final String accept = "application/json";
-        return service.provisionManagedNetworkSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, body, Context.NONE);
+        return provisionManagedNetworkWithResponse(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
     /**
@@ -211,44 +209,18 @@ public final class ManagedNetworkProvisionsClientImpl implements ManagedNetworkP
     private SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
         beginProvisionManagedNetwork(String resourceGroupName, String workspaceName,
             ManagedNetworkProvisionOptions body) {
-        Response<BinaryData> response = provisionManagedNetworkWithResponse(resourceGroupName, workspaceName, body);
-        return this.client.<ManagedNetworkProvisionStatusInner, ManagedNetworkProvisionStatusInner>getLroResult(
-            response, ManagedNetworkProvisionStatusInner.class, ManagedNetworkProvisionStatusInner.class, Context.NONE);
+        return beginProvisionManagedNetwork(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Provisions the managed network of a machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of the Provisioning for the managed network of a machine
-     * learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
         beginProvisionManagedNetwork(String resourceGroupName, String workspaceName) {
         final ManagedNetworkProvisionOptions body = null;
-        Response<BinaryData> response = provisionManagedNetworkWithResponse(resourceGroupName, workspaceName, body);
-        return this.client.<ManagedNetworkProvisionStatusInner, ManagedNetworkProvisionStatusInner>getLroResult(
-            response, ManagedNetworkProvisionStatusInner.class, ManagedNetworkProvisionStatusInner.class, Context.NONE);
+        return beginProvisionManagedNetwork(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Provisions the managed network of a machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body Managed Network Provisioning Options for a machine learning workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of status of the Provisioning for the managed network of a machine
-     * learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
         beginProvisionManagedNetwork(String resourceGroupName, String workspaceName,
@@ -297,37 +269,18 @@ public final class ManagedNetworkProvisionsClientImpl implements ManagedNetworkP
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Provisions the managed network of a machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the Provisioning for the managed network of a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkProvisionStatusInner provisionManagedNetwork(String resourceGroupName, String workspaceName) {
         final ManagedNetworkProvisionOptions body = null;
-        return beginProvisionManagedNetwork(resourceGroupName, workspaceName, body).getFinalResult();
+        return provisionManagedNetwork(resourceGroupName, workspaceName, body, Context.NONE);
     }
 
-    /**
-     * Provisions the managed network of a machine learning workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param body Managed Network Provisioning Options for a machine learning workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the Provisioning for the managed network of a machine learning workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkProvisionStatusInner provisionManagedNetwork(String resourceGroupName, String workspaceName,
         ManagedNetworkProvisionOptions body, Context context) {
-        return beginProvisionManagedNetwork(resourceGroupName, workspaceName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginProvisionManagedNetwork(resourceGroupName, workspaceName, body, context));
     }
 }

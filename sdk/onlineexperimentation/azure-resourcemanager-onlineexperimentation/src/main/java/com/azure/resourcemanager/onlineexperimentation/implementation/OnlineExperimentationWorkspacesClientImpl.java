@@ -251,17 +251,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experimentation workspace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OnlineExperimentationWorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String workspaceName, Context context) {
@@ -270,16 +260,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context);
     }
 
-    /**
-     * Gets an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experimentation workspace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineExperimentationWorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
@@ -323,11 +304,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         OnlineExperimentationWorkspaceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, resource, Context.NONE);
     }
 
     /**
@@ -373,39 +350,15 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             OnlineExperimentationWorkspaceInner.class, this.client.getContext());
     }
 
-    /**
-     * Create an online experimentation workspace, or update an existing workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineExperimentationWorkspaceInner>, OnlineExperimentationWorkspaceInner>
         beginCreateOrUpdate(String resourceGroupName, String workspaceName,
             OnlineExperimentationWorkspaceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, resource);
-        return this.client.<OnlineExperimentationWorkspaceInner, OnlineExperimentationWorkspaceInner>getLroResult(
-            response, OnlineExperimentationWorkspaceInner.class, OnlineExperimentationWorkspaceInner.class,
-            Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, resource, Context.NONE);
     }
 
-    /**
-     * Create an online experimentation workspace, or update an existing workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineExperimentationWorkspaceInner>, OnlineExperimentationWorkspaceInner>
         beginCreateOrUpdate(String resourceGroupName, String workspaceName,
@@ -433,39 +386,19 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create an online experimentation workspace, or update an existing workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineExperimentationWorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName,
         OnlineExperimentationWorkspaceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, resource, Context.NONE);
     }
 
-    /**
-     * Create an online experimentation workspace, or update an existing workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineExperimentationWorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName,
         OnlineExperimentationWorkspaceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, workspaceName, resource, context));
     }
 
     /**
@@ -506,11 +439,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName,
         OnlineExperimentationWorkspacePatch properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, properties, Context.NONE);
     }
 
     /**
@@ -556,38 +485,14 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             OnlineExperimentationWorkspaceInner.class, this.client.getContext());
     }
 
-    /**
-     * Patch an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineExperimentationWorkspaceInner>, OnlineExperimentationWorkspaceInner>
         beginUpdate(String resourceGroupName, String workspaceName, OnlineExperimentationWorkspacePatch properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, workspaceName, properties);
-        return this.client.<OnlineExperimentationWorkspaceInner, OnlineExperimentationWorkspaceInner>getLroResult(
-            response, OnlineExperimentationWorkspaceInner.class, OnlineExperimentationWorkspaceInner.class,
-            Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, properties, Context.NONE);
     }
 
-    /**
-     * Patch an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineExperimentationWorkspaceInner>, OnlineExperimentationWorkspaceInner> beginUpdate(
         String resourceGroupName, String workspaceName, OnlineExperimentationWorkspacePatch properties,
@@ -615,39 +520,18 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Patch an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineExperimentationWorkspaceInner update(String resourceGroupName, String workspaceName,
         OnlineExperimentationWorkspacePatch properties) {
-        return beginUpdate(resourceGroupName, workspaceName, properties).getFinalResult();
+        return update(resourceGroupName, workspaceName, properties, Context.NONE);
     }
 
-    /**
-     * Patch an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an online experimentation workspace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineExperimentationWorkspaceInner update(String resourceGroupName, String workspaceName,
         OnlineExperimentationWorkspacePatch properties, Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, workspaceName, properties, context));
     }
 
     /**
@@ -680,8 +564,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, Context.NONE);
     }
 
     /**
@@ -718,33 +601,13 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             this.client.getContext());
     }
 
-    /**
-     * Deletes an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Deletes an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         Context context) {
@@ -767,33 +630,16 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
         return beginDeleteAsync(resourceGroupName, workspaceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName) {
-        beginDelete(resourceGroupName, workspaceName).getFinalResult();
+        delete(resourceGroupName, workspaceName, Context.NONE);
     }
 
-    /**
-     * Deletes an online experimentation workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the OnlineExperimentationWorkspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, Context context) {
-        beginDelete(resourceGroupName, workspaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, context));
     }
 
     /**
@@ -844,12 +690,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineExperimentationWorkspaceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<OnlineExperimentationWorkspaceListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -873,33 +714,13 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all online experimentation workspaces in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all online experimentation workspaces in a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OnlineExperimentationWorkspaceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets all online experimentation workspaces in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all online experimentation workspaces in a resource group as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OnlineExperimentationWorkspaceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
@@ -949,11 +770,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineExperimentationWorkspaceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<OnlineExperimentationWorkspaceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -974,29 +791,13 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all online experimentation workspaces in the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all online experimentation workspaces in the specified subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OnlineExperimentationWorkspaceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets all online experimentation workspaces in the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all online experimentation workspaces in the specified subscription as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OnlineExperimentationWorkspaceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1036,11 +837,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineExperimentationWorkspaceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OnlineExperimentationWorkspaceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1096,11 +893,7 @@ public final class OnlineExperimentationWorkspacesClientImpl implements OnlineEx
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineExperimentationWorkspaceInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OnlineExperimentationWorkspaceListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

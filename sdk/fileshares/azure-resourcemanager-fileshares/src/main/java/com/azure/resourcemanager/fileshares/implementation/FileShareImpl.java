@@ -85,10 +85,7 @@ public final class FileShareImpl implements FileShare, FileShare.Definition, Fil
     }
 
     public FileShare create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShares()
-            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FileShare create(Context context) {
@@ -110,10 +107,7 @@ public final class FileShareImpl implements FileShare, FileShare.Definition, Fil
     }
 
     public FileShare apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShares()
-            .update(resourceGroupName, resourceName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FileShare apply(Context context) {
@@ -135,11 +129,7 @@ public final class FileShareImpl implements FileShare, FileShare.Definition, Fil
     }
 
     public FileShare refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFileShares()
-            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FileShare refresh(Context context) {

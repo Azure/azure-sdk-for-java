@@ -297,19 +297,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Inference Deployment Deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inference Deployment Deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OnlineDeploymentInner> getWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName, Context context) {
@@ -318,18 +306,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             resourceGroupName, workspaceName, endpointName, deploymentName, accept, context);
     }
 
-    /**
-     * Get Inference Deployment Deployment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inference Deployment Deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineDeploymentInner get(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName) {
@@ -379,11 +356,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName, OnlineDeploymentInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, deploymentName,
-            contentType, accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body,
+            Context.NONE);
     }
 
     /**
@@ -436,45 +410,15 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             this.client.getContext());
     }
 
-    /**
-     * Create or update Inference Endpoint Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body Inference Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         OnlineDeploymentInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body);
-        return this.client.<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(response,
-            OnlineDeploymentInner.class, OnlineDeploymentInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Create or update Inference Endpoint Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body Inference Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
@@ -506,45 +450,19 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update Inference Endpoint Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body Inference Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, OnlineDeploymentInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Create or update Inference Endpoint Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body Inference Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineDeploymentInner createOrUpdate(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, OnlineDeploymentInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, context));
     }
 
     /**
@@ -590,11 +508,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, PartialMinimalTrackedResourceWithSku body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, deploymentName,
-            contentType, accept, body, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
     /**
@@ -647,44 +561,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             this.client.getContext());
     }
 
-    /**
-     * Update Online Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(String resourceGroupName,
         String workspaceName, String endpointName, String deploymentName, PartialMinimalTrackedResourceWithSku body) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, body);
-        return this.client.<OnlineDeploymentInner, OnlineDeploymentInner>getLroResult(response,
-            OnlineDeploymentInner.class, OnlineDeploymentInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Update Online Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineDeploymentInner>, OnlineDeploymentInner> beginUpdate(String resourceGroupName,
         String workspaceName, String endpointName, String deploymentName, PartialMinimalTrackedResourceWithSku body,
@@ -716,44 +600,19 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update Online Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, PartialMinimalTrackedResourceWithSku body) {
-        return beginUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body).getFinalResult();
+        return update(resourceGroupName, workspaceName, endpointName, deploymentName, body, Context.NONE);
     }
 
-    /**
-     * Update Online Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body Online Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineDeploymentInner update(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, PartialMinimalTrackedResourceWithSku body, Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, body, context));
     }
 
     /**
@@ -791,9 +650,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, endpointName, deploymentName,
-            Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE);
     }
 
     /**
@@ -837,39 +694,14 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             this.client.getContext());
     }
 
-    /**
-     * Delete Inference Endpoint Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Delete Inference Endpoint Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName, Context context) {
@@ -897,38 +729,18 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Inference Endpoint Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName) {
-        beginDelete(resourceGroupName, workspaceName, endpointName, deploymentName).getFinalResult();
+        delete(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Delete Inference Endpoint Deployment (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String endpointName, String deploymentName,
         Context context) {
-        beginDelete(resourceGroupName, workspaceName, endpointName, deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, workspaceName, endpointName, deploymentName, context));
     }
 
     /**
@@ -1020,12 +832,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineDeploymentInner> listSinglePage(String resourceGroupName, String workspaceName,
         String endpointName, String orderBy, Integer top, String skip) {
-        final String accept = "application/json";
-        Response<OnlineDeploymentTrackedResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, endpointName, orderBy, top, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, Context.NONE);
     }
 
     /**
@@ -1054,43 +861,17 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Inference Endpoint Deployments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OnlineDeploymentInner> list(String resourceGroupName, String workspaceName,
         String endpointName) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, workspaceName, endpointName, orderBy, top, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, endpointName, orderBy, top, skip, Context.NONE);
     }
 
-    /**
-     * List Inference Endpoint Deployments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param orderBy Ordering of list.
-     * @param top Top of list.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of OnlineDeployment entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OnlineDeploymentInner> list(String resourceGroupName, String workspaceName,
         String endpointName, String orderBy, Integer top, String skip, Context context) {
@@ -1144,20 +925,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Polls an Endpoint operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body The request containing parameters for retrieving logs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentLogsInner> getLogsWithResponse(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName, DeploymentLogsRequest body, Context context) {
@@ -1168,19 +936,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             contentType, accept, body, context);
     }
 
-    /**
-     * Polls an Endpoint operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param body The request containing parameters for retrieving logs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentLogsInner getLogs(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, DeploymentLogsRequest body) {
@@ -1277,12 +1033,8 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner> listSkusSinglePage(String resourceGroupName, String workspaceName,
         String endpointName, String deploymentName, Integer count, String skip) {
-        final String accept = "application/json";
-        Response<SkuResourceArmPaginatedResult> res = service.listSkusSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, workspaceName,
-            endpointName, deploymentName, count, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSkusSinglePage(resourceGroupName, workspaceName, endpointName, deploymentName, count, skip,
+            Context.NONE);
     }
 
     /**
@@ -1311,43 +1063,16 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Inference Endpoint Deployment Skus.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of SkuResource entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName) {
         final Integer count = null;
         final String skip = null;
-        return new PagedIterable<>(
-            () -> listSkusSinglePage(resourceGroupName, workspaceName, endpointName, deploymentName, count, skip),
-            nextLink -> listSkusNextSinglePage(nextLink));
+        return listSkus(resourceGroupName, workspaceName, endpointName, deploymentName, count, skip, Context.NONE);
     }
 
-    /**
-     * List Inference Endpoint Deployment Skus.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param endpointName Online Endpoint name.
-     * @param deploymentName Inference Endpoint Deployment name.
-     * @param count Number of Skus to be retrieved in a page of results.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of SkuResource entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String workspaceName, String endpointName,
         String deploymentName, Integer count, String skip, Context context) {
@@ -1389,11 +1114,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OnlineDeploymentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OnlineDeploymentTrackedResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1452,11 +1173,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<SkuResourceInner> listSkusNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<SkuResourceArmPaginatedResult> res
-            = service.listSkusNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSkusNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

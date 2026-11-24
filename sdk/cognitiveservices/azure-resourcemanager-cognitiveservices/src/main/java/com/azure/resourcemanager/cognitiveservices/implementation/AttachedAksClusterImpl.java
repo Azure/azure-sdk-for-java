@@ -61,12 +61,7 @@ public final class AttachedAksClusterImpl
     }
 
     public AttachedAksCluster create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAttachedAksClusters()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, attachedAksClusterName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AttachedAksCluster create(Context context) {
@@ -90,12 +85,7 @@ public final class AttachedAksClusterImpl
     }
 
     public AttachedAksCluster apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAttachedAksClusters()
-            .createOrUpdateWithResponse(resourceGroupName, accountName, attachedAksClusterName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public AttachedAksCluster apply(Context context) {
@@ -123,11 +113,7 @@ public final class AttachedAksClusterImpl
     }
 
     public AttachedAksCluster refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAttachedAksClusters()
-            .getWithResponse(resourceGroupName, accountName, attachedAksClusterName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AttachedAksCluster refresh(Context context) {

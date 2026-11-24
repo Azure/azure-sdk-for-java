@@ -89,11 +89,7 @@ public final class ReplicationProtectionIntentImpl
     }
 
     public ReplicationProtectionIntent create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionIntents()
-            .createWithResponse(resourceGroupName, resourceName, intentObjectName, createInput, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ReplicationProtectionIntent create(Context context) {
@@ -112,11 +108,7 @@ public final class ReplicationProtectionIntentImpl
     }
 
     public ReplicationProtectionIntent refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationProtectionIntents()
-            .getWithResponse(resourceGroupName, resourceName, intentObjectName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ReplicationProtectionIntent refresh(Context context) {

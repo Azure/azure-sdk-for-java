@@ -61,11 +61,7 @@ public final class MonitoringTagRulesImpl
     }
 
     public MonitoringTagRules create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTagRules()
-            .createOrUpdateWithResponse(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MonitoringTagRules create(Context context) {
@@ -87,11 +83,7 @@ public final class MonitoringTagRulesImpl
     }
 
     public MonitoringTagRules apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTagRules()
-            .createOrUpdateWithResponse(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MonitoringTagRules apply(Context context) {
@@ -118,11 +110,7 @@ public final class MonitoringTagRulesImpl
     }
 
     public MonitoringTagRules refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getTagRules()
-            .getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MonitoringTagRules refresh(Context context) {

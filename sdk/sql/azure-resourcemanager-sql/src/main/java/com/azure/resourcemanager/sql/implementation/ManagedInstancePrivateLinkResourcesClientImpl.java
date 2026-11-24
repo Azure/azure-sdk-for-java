@@ -92,18 +92,7 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a private link resource for SQL server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param groupName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for SQL server along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstancePrivateLinkInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, String groupName) {
@@ -174,17 +163,7 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             resourceGroupName, managedInstanceName, groupName, accept, context);
     }
 
-    /**
-     * Gets a private link resource for SQL server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param groupName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for SQL server on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstancePrivateLinkInner> getAsync(String resourceGroupName, String managedInstanceName,
         String groupName) {
@@ -192,35 +171,14 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a private link resource for SQL server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param groupName The name of the private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for SQL server along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstancePrivateLinkInner> getWithResponse(String resourceGroupName,
         String managedInstanceName, String groupName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, groupName, context).block();
     }
 
-    /**
-     * Gets a private link resource for SQL server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param groupName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for SQL server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstancePrivateLinkInner get(String resourceGroupName, String managedInstanceName, String groupName) {
         return getWithResponse(resourceGroupName, managedInstanceName, groupName, Context.NONE).getValue();
@@ -306,16 +264,7 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the private link resources for SQL server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources for SQL server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstancePrivateLinkInner> listByManagedInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -342,33 +291,14 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the private link resources for SQL server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources for SQL server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets the private link resources for SQL server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources for SQL server as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

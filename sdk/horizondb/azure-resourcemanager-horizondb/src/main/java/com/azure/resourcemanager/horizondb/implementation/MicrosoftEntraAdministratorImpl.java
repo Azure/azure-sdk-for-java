@@ -76,10 +76,7 @@ public final class MicrosoftEntraAdministratorImpl
     }
 
     public MicrosoftEntraAdministrator create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMicrosoftEntraAdministrators()
-            .createOrReplace(resourceGroupName, clusterName, objectId, createResource, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MicrosoftEntraAdministrator create(Context context) {
@@ -96,11 +93,7 @@ public final class MicrosoftEntraAdministratorImpl
     }
 
     public MicrosoftEntraAdministrator refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMicrosoftEntraAdministrators()
-            .getWithResponse(resourceGroupName, clusterName, objectId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MicrosoftEntraAdministrator refresh(Context context) {

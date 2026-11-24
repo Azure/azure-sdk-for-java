@@ -69,12 +69,7 @@ public final class CredentialResourceImpl
     }
 
     public CredentialResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCredentialOperations()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, this.innerModel(),
-                createIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CredentialResource create(Context context) {
@@ -99,12 +94,7 @@ public final class CredentialResourceImpl
     }
 
     public CredentialResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCredentialOperations()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, this.innerModel(),
-                updateIfMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CredentialResource apply(Context context) {
@@ -132,12 +122,7 @@ public final class CredentialResourceImpl
     }
 
     public CredentialResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getCredentialOperations()
-            .getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CredentialResource refresh(Context context) {

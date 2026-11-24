@@ -109,17 +109,7 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed instance DTC settings along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagedInstanceDtcInner>> getWithResponseAsync(String resourceGroupName,
         String managedInstanceName, DtcName dtcName) {
@@ -189,17 +179,7 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             resourceGroupName, managedInstanceName, dtcName, accept, context);
     }
 
-    /**
-     * Gets managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed instance DTC settings on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceDtcInner> getAsync(String resourceGroupName, String managedInstanceName,
         DtcName dtcName) {
@@ -207,52 +187,20 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed instance DTC settings along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedInstanceDtcInner> getWithResponse(String resourceGroupName, String managedInstanceName,
         DtcName dtcName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, dtcName, context).block();
     }
 
-    /**
-     * Gets managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed instance DTC settings.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceDtcInner get(String resourceGroupName, String managedInstanceName, DtcName dtcName) {
         return getWithResponse(resourceGroupName, managedInstanceName, dtcName, Context.NONE).getValue();
     }
 
-    /**
-     * Updates managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @param parameters Managed instance DTC settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL Managed Instance DTC along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String managedInstanceName, DtcName dtcName, ManagedInstanceDtcInner parameters) {
@@ -337,18 +285,7 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             parameters, context);
     }
 
-    /**
-     * Updates managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @param parameters Managed instance DTC settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of sQL Managed Instance DTC.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ManagedInstanceDtcInner>, ManagedInstanceDtcInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String managedInstanceName, DtcName dtcName, ManagedInstanceDtcInner parameters) {
@@ -383,18 +320,7 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             this.client.getHttpPipeline(), ManagedInstanceDtcInner.class, ManagedInstanceDtcInner.class, context);
     }
 
-    /**
-     * Updates managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @param parameters Managed instance DTC settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sQL Managed Instance DTC.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceDtcInner>, ManagedInstanceDtcInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, DtcName dtcName, ManagedInstanceDtcInner parameters) {
@@ -402,19 +328,7 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             .getSyncPoller();
     }
 
-    /**
-     * Updates managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @param parameters Managed instance DTC settings.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sQL Managed Instance DTC.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedInstanceDtcInner>, ManagedInstanceDtcInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, DtcName dtcName, ManagedInstanceDtcInner parameters,
@@ -423,18 +337,7 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             .getSyncPoller();
     }
 
-    /**
-     * Updates managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @param parameters Managed instance DTC settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL Managed Instance DTC on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedInstanceDtcInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
         DtcName dtcName, ManagedInstanceDtcInner parameters) {
@@ -462,37 +365,14 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @param parameters Managed instance DTC settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL Managed Instance DTC.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceDtcInner createOrUpdate(String resourceGroupName, String managedInstanceName, DtcName dtcName,
         ManagedInstanceDtcInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, dtcName, parameters).block();
     }
 
-    /**
-     * Updates managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param dtcName The name of the managed instance DTC.
-     * @param parameters Managed instance DTC settings.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL Managed Instance DTC.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceDtcInner createOrUpdate(String resourceGroupName, String managedInstanceName, DtcName dtcName,
         ManagedInstanceDtcInner parameters, Context context) {
@@ -579,16 +459,7 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance DTC settings as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedInstanceDtcInner> listByManagedInstanceAsync(String resourceGroupName,
         String managedInstanceName) {
@@ -615,33 +486,14 @@ public final class ManagedInstanceDtcsClientImpl implements ManagedInstanceDtcsC
             nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance DTC settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceDtcInner> listByManagedInstance(String resourceGroupName,
         String managedInstanceName) {
         return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
-    /**
-     * Gets a list of managed instance DTC settings.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param managedInstanceName The name of the managed instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance DTC settings as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagedInstanceDtcInner> listByManagedInstance(String resourceGroupName,
         String managedInstanceName, Context context) {

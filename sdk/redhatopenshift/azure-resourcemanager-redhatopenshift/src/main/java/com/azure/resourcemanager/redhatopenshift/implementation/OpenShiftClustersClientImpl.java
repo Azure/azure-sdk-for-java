@@ -295,21 +295,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenShiftClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
         Context context) {
@@ -318,20 +304,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Gets a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftClusterInner getByResourceGroup(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -379,11 +352,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
         OpenShiftClusterInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
     /**
@@ -432,41 +401,14 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param parameters The OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of openShiftCluster represents an Azure Red Hat OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftClusterInner>, OpenShiftClusterInner>
         beginCreateOrUpdate(String resourceGroupName, String resourceName, OpenShiftClusterInner parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, resourceName, parameters);
-        return this.client.<OpenShiftClusterInner, OpenShiftClusterInner>getLroResult(response,
-            OpenShiftClusterInner.class, OpenShiftClusterInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param parameters The OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of openShiftCluster represents an Azure Red Hat OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftClusterInner>, OpenShiftClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, OpenShiftClusterInner parameters, Context context) {
@@ -496,43 +438,19 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param parameters The OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftCluster represents an Azure Red Hat OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftClusterInner createOrUpdate(String resourceGroupName, String resourceName,
         OpenShiftClusterInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param parameters The OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftCluster represents an Azure Red Hat OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftClusterInner createOrUpdate(String resourceGroupName, String resourceName,
         OpenShiftClusterInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, resourceName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, resourceName, parameters, context));
     }
 
     /**
@@ -575,11 +493,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String resourceName,
         OpenShiftClusterUpdate parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
     /**
@@ -627,41 +541,14 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param parameters The OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of openShiftCluster represents an Azure Red Hat OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftClusterInner>, OpenShiftClusterInner> beginUpdate(String resourceGroupName,
         String resourceName, OpenShiftClusterUpdate parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, resourceName, parameters);
-        return this.client.<OpenShiftClusterInner, OpenShiftClusterInner>getLroResult(response,
-            OpenShiftClusterInner.class, OpenShiftClusterInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param parameters The OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of openShiftCluster represents an Azure Red Hat OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftClusterInner>, OpenShiftClusterInner> beginUpdate(String resourceGroupName,
         String resourceName, OpenShiftClusterUpdate parameters, Context context) {
@@ -690,43 +577,18 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param parameters The OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftCluster represents an Azure Red Hat OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftClusterInner update(String resourceGroupName, String resourceName,
         OpenShiftClusterUpdate parameters) {
-        return beginUpdate(resourceGroupName, resourceName, parameters).getFinalResult();
+        return update(resourceGroupName, resourceName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns properties of a OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param parameters The OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftCluster represents an Azure Red Hat OpenShift cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftClusterInner update(String resourceGroupName, String resourceName,
         OpenShiftClusterUpdate parameters, Context context) {
-        return beginUpdate(resourceGroupName, resourceName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, resourceName, parameters, context));
     }
 
     /**
@@ -763,8 +625,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String resourceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, resourceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -805,37 +666,13 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             this.client.getContext());
     }
 
-    /**
-     * Deletes a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns nothing.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Deletes a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns nothing.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         Context context) {
@@ -860,37 +697,16 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
         return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns nothing.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName) {
-        beginDelete(resourceGroupName, resourceName).getFinalResult();
+        delete(resourceGroupName, resourceName, Context.NONE);
     }
 
-    /**
-     * Deletes a OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns nothing.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String resourceName, Context context) {
-        beginDelete(resourceGroupName, resourceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, resourceName, context));
     }
 
     /**
@@ -947,11 +763,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OpenShiftClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<OpenShiftClusterList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -976,37 +788,13 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists OpenShift clusters in the specified subscription and resource group.
-     * 
-     * The operation returns properties of each OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftClusterList represents a list of OpenShift clusters as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenShiftClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists OpenShift clusters in the specified subscription and resource group.
-     * 
-     * The operation returns properties of each OpenShift cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftClusterList represents a list of OpenShift clusters as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenShiftClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1060,11 +848,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OpenShiftClusterInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<OpenShiftClusterList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1087,33 +871,13 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists OpenShift clusters in the specified subscription.
-     * 
-     * The operation returns properties of each OpenShift cluster.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftClusterList represents a list of OpenShift clusters as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenShiftClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists OpenShift clusters in the specified subscription.
-     * 
-     * The operation returns properties of each OpenShift cluster.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftClusterList represents a list of OpenShift clusters as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenShiftClusterInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
@@ -1162,20 +926,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists admin kubeconfig of an OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns the admin kubeconfig.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftClusterAdminKubeconfig represents an OpenShift cluster's admin kubeconfig along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenShiftClusterAdminKubeconfigInner> listAdminCredentialsWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -1184,18 +935,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Lists admin kubeconfig of an OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns the admin kubeconfig.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftClusterAdminKubeconfig represents an OpenShift cluster's admin kubeconfig.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftClusterAdminKubeconfigInner listAdminCredentials(String resourceGroupName, String resourceName) {
         return listAdminCredentialsWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -1243,19 +983,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists credentials of an OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns the credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftClusterCredentials represents an OpenShift cluster's credentials along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenShiftClusterCredentialsInner> listCredentialsWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -1264,18 +992,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
             this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Lists credentials of an OpenShift cluster with the specified subscription, resource group and resource name.
-     * 
-     * The operation returns the credentials.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the OpenShift cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShiftClusterCredentials represents an OpenShift cluster's credentials.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftClusterCredentialsInner listCredentials(String resourceGroupName, String resourceName) {
         return listCredentialsWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -1317,11 +1034,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OpenShiftClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OpenShiftClusterList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1379,11 +1092,7 @@ public final class OpenShiftClustersClientImpl implements OpenShiftClustersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OpenShiftClusterInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OpenShiftClusterList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

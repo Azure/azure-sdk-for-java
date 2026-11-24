@@ -108,18 +108,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server's blob auditing policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExtendedServerBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, BlobAuditingPolicyName blobAuditingPolicyName) {
@@ -189,17 +178,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             resourceGroupName, serverName, blobAuditingPolicyName, accept, context);
     }
 
-    /**
-     * Gets an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server's blob auditing policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExtendedServerBlobAuditingPolicyInner> getAsync(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName) {
@@ -207,54 +186,21 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server's blob auditing policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtendedServerBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, blobAuditingPolicyName, context).block();
     }
 
-    /**
-     * Gets an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server's blob auditing policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtendedServerBlobAuditingPolicyInner get(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName) {
         return getWithResponse(resourceGroupName, serverName, blobAuditingPolicyName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters Properties of extended blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters) {
@@ -341,18 +287,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             parameters, context);
     }
 
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters Properties of extended blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an extended server blob auditing policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String serverName,
@@ -390,18 +325,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             ExtendedServerBlobAuditingPolicyInner.class, context);
     }
 
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters Properties of extended blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, BlobAuditingPolicyName blobAuditingPolicyName,
@@ -410,19 +334,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters Properties of extended blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an extended server blob auditing policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(String resourceGroupName, String serverName, BlobAuditingPolicyName blobAuditingPolicyName,
@@ -431,18 +343,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters Properties of extended blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExtendedServerBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters) {
@@ -472,37 +373,14 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters Properties of extended blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtendedServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, blobAuditingPolicyName, parameters).block();
     }
 
-    /**
-     * Creates or updates an extended server's blob auditing policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param blobAuditingPolicyName The name of the blob auditing policy.
-     * @param parameters Properties of extended blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended server blob auditing policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExtendedServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName,
         BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
@@ -587,17 +465,7 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists extended auditing settings of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExtendedServerBlobAuditingPolicy list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExtendedServerBlobAuditingPolicyInner> listByServerAsync(String resourceGroupName,
         String serverName) {
@@ -624,35 +492,14 @@ public final class ExtendedServerBlobAuditingPoliciesClientImpl implements Exten
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists extended auditing settings of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExtendedServerBlobAuditingPolicy list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByServer(String resourceGroupName,
         String serverName) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
     }
 
-    /**
-     * Lists extended auditing settings of a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExtendedServerBlobAuditingPolicy list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByServer(String resourceGroupName,
         String serverName, Context context) {

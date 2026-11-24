@@ -26,8 +26,7 @@ public final class AzureTrafficCollectorsBySubscriptionsImpl implements AzureTra
     }
 
     public PagedIterable<AzureTrafficCollector> list() {
-        PagedIterable<AzureTrafficCollectorInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureTrafficCollectorImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<AzureTrafficCollector> list(Context context) {

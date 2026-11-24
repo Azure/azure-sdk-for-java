@@ -50,13 +50,7 @@ public final class RegistryDataVersionsImpl implements RegistryDataVersions {
 
     public DataVersionBase createOrUpdate(String resourceGroupName, String registryName, String name, String version,
         DataVersionBaseInner body) {
-        DataVersionBaseInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, registryName, name, version, body);
-        if (inner != null) {
-            return new DataVersionBaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, name, version, body, Context.NONE);
     }
 
     public DataVersionBase createOrUpdate(String resourceGroupName, String registryName, String name, String version,
@@ -71,7 +65,7 @@ public final class RegistryDataVersionsImpl implements RegistryDataVersions {
     }
 
     public void delete(String resourceGroupName, String registryName, String name, String version) {
-        this.serviceClient().delete(resourceGroupName, registryName, name, version);
+        this.delete(resourceGroupName, registryName, name, version, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String name, String version, Context context) {

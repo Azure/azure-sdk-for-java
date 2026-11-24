@@ -272,17 +272,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AIManager along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AIManagerInner> getByResourceGroupWithResponse(String resourceGroupName, String aiManagerName,
         Context context) {
@@ -291,16 +281,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
             this.client.getSubscriptionId(), resourceGroupName, aiManagerName, accept, context);
     }
 
-    /**
-     * Get a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AIManager.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AIManagerInner getByResourceGroup(String resourceGroupName, String aiManagerName) {
         return getByResourceGroupWithResponse(resourceGroupName, aiManagerName, Context.NONE).getValue();
@@ -347,11 +328,8 @@ public final class AIManagersClientImpl implements AIManagersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String aiManagerName,
         AIManagerInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, aiManagerName, contentType,
-            accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
     /**
@@ -438,48 +416,19 @@ public final class AIManagersClientImpl implements AIManagersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<AIManagerInner>, AIManagerInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, AIManagerInner resource, String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch);
-        return this.client.<AIManagerInner, AIManagerInner>getLroResult(response, AIManagerInner.class,
-            AIManagerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the AI Manager resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AIManagerInner>, AIManagerInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, AIManagerInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch);
-        return this.client.<AIManagerInner, AIManagerInner>getLroResult(response, AIManagerInner.class,
-            AIManagerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the AI Manager resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AIManagerInner>, AIManagerInner> beginCreateOrUpdate(String resourceGroupName,
         String aiManagerName, AIManagerInner resource, String ifMatch, String ifNoneMatch, Context context) {
@@ -529,43 +478,20 @@ public final class AIManagersClientImpl implements AIManagersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AI Manager resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AIManagerInner createOrUpdate(String resourceGroupName, String aiManagerName, AIManagerInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch).getFinalResult();
+        return createOrUpdate(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch, Context.NONE);
     }
 
-    /**
-     * Create a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AI Manager resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AIManagerInner createOrUpdate(String resourceGroupName, String aiManagerName, AIManagerInner resource,
         String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, aiManagerName, resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -611,19 +537,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AI Manager resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AIManagerInner> updateWithResponse(String resourceGroupName, String aiManagerName,
         AIManagerPatch properties, String ifMatch, Context context) {
@@ -634,17 +548,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
             context);
     }
 
-    /**
-     * Update a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AI Manager resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AIManagerInner update(String resourceGroupName, String aiManagerName, AIManagerPatch properties) {
         final String ifMatch = null;
@@ -684,8 +588,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String aiManagerName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, aiManagerName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, aiManagerName, ifMatch, Context.NONE);
     }
 
     /**
@@ -758,39 +661,17 @@ public final class AIManagersClientImpl implements AIManagersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String ifMatch, Context context) {
@@ -832,35 +713,17 @@ public final class AIManagersClientImpl implements AIManagersClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, aiManagerName, ifMatch).getFinalResult();
+        delete(resourceGroupName, aiManagerName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String ifMatch, Context context) {
-        beginDelete(resourceGroupName, aiManagerName, ifMatch, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, aiManagerName, ifMatch, context));
     }
 
     /**
@@ -910,11 +773,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AIManagerInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<AIManagerListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -936,31 +795,13 @@ public final class AIManagersClientImpl implements AIManagersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AIManager resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AIManager list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AIManagerInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List AIManager resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AIManager list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AIManagerInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1008,11 +849,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AIManagerInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<AIManagerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1033,27 +870,13 @@ public final class AIManagersClientImpl implements AIManagersClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AIManager resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AIManager list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AIManagerInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List AIManager resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AIManager list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AIManagerInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1096,17 +919,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the credentials of an AI Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CredentialResultsInner> listCredentialWithResponse(String resourceGroupName, String aiManagerName,
         Context context) {
@@ -1115,16 +928,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
             this.client.getSubscriptionId(), resourceGroupName, aiManagerName, accept, context);
     }
 
-    /**
-     * Lists the credentials of an AI Manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialResultsInner listCredential(String resourceGroupName, String aiManagerName) {
         return listCredentialWithResponse(resourceGroupName, aiManagerName, Context.NONE).getValue();
@@ -1162,11 +966,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AIManagerInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AIManagerListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1220,11 +1020,7 @@ public final class AIManagersClientImpl implements AIManagersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AIManagerInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AIManagerListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

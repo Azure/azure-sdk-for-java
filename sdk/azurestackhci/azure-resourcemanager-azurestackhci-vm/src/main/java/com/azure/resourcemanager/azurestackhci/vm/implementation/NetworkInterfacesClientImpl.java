@@ -254,17 +254,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkInterfaceName, Context context) {
@@ -273,16 +263,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             this.client.getSubscriptionId(), resourceGroupName, networkInterfaceName, accept, context);
     }
 
-    /**
-     * Gets a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner getByResourceGroup(String resourceGroupName, String networkInterfaceName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkInterfaceName, Context.NONE).getValue();
@@ -328,11 +309,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String networkInterfaceName,
         NetworkInterfaceInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkInterfaceName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, networkInterfaceName, resource, Context.NONE);
     }
 
     /**
@@ -380,39 +357,14 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             this.client.getContext());
     }
 
-    /**
-     * The operation to create or update a network interface. Please note some properties can be set only during network
-     * interface creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the network interface resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner>
         beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner resource) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, networkInterfaceName, resource);
-        return this.client.<NetworkInterfaceInner, NetworkInterfaceInner>getLroResult(response,
-            NetworkInterfaceInner.class, NetworkInterfaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, networkInterfaceName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a network interface. Please note some properties can be set only during network
-     * interface creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the network interface resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner resource, Context context) {
@@ -441,41 +393,19 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to create or update a network interface. Please note some properties can be set only during network
-     * interface creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network interface resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName,
         NetworkInterfaceInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, networkInterfaceName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, networkInterfaceName, resource, Context.NONE);
     }
 
-    /**
-     * The operation to create or update a network interface. Please note some properties can be set only during network
-     * interface creation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network interface resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner createOrUpdate(String resourceGroupName, String networkInterfaceName,
         NetworkInterfaceInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, networkInterfaceName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, networkInterfaceName, resource, context));
     }
 
     /**
@@ -516,11 +446,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String networkInterfaceName,
         NetworkInterfacesUpdateRequest properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkInterfaceName, contentType, accept, properties,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, networkInterfaceName, properties, Context.NONE);
     }
 
     /**
@@ -566,37 +492,14 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             this.client.getContext());
     }
 
-    /**
-     * The operation to update a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the network interface resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginUpdate(String resourceGroupName,
         String networkInterfaceName, NetworkInterfacesUpdateRequest properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, networkInterfaceName, properties);
-        return this.client.<NetworkInterfaceInner, NetworkInterfaceInner>getLroResult(response,
-            NetworkInterfaceInner.class, NetworkInterfaceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, networkInterfaceName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the network interface resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginUpdate(String resourceGroupName,
         String networkInterfaceName, NetworkInterfacesUpdateRequest properties, Context context) {
@@ -624,39 +527,19 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to update a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network interface resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner update(String resourceGroupName, String networkInterfaceName,
         NetworkInterfacesUpdateRequest properties) {
-        return beginUpdate(resourceGroupName, networkInterfaceName, properties).getFinalResult();
+        return update(resourceGroupName, networkInterfaceName, properties, Context.NONE);
     }
 
-    /**
-     * The operation to update a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network interface resource definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceInner update(String resourceGroupName, String networkInterfaceName,
         NetworkInterfacesUpdateRequest properties, Context context) {
-        return beginUpdate(resourceGroupName, networkInterfaceName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, networkInterfaceName, properties, context));
     }
 
     /**
@@ -690,8 +573,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkInterfaceName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkInterfaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkInterfaceName, Context.NONE);
     }
 
     /**
@@ -729,33 +611,13 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             this.client.getContext());
     }
 
-    /**
-     * The operation to delete a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkInterfaceName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkInterfaceName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName,
         Context context) {
@@ -779,33 +641,16 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * The operation to delete a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkInterfaceName) {
-        beginDelete(resourceGroupName, networkInterfaceName).getFinalResult();
+        delete(resourceGroupName, networkInterfaceName, Context.NONE);
     }
 
-    /**
-     * The operation to delete a network interface.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkInterfaceName Name of the network interface.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkInterfaceName, Context context) {
-        beginDelete(resourceGroupName, networkInterfaceName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkInterfaceName, context));
     }
 
     /**
@@ -858,11 +703,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkInterfaceInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkInterfaceListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -886,33 +727,13 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the network interfaces in the specified resource group. Use the nextLink property in the response to
-     * get the next page of network interfaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkInterface list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Lists all of the network interfaces in the specified resource group. Use the nextLink property in the response to
-     * get the next page of network interfaces.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkInterface list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -962,11 +783,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkInterfaceInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkInterfaceListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -988,29 +805,13 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists all of the network interfaces in the specified subscription. Use the nextLink property in the response to
-     * get the next page of network interfaces.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkInterface list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Lists all of the network interfaces in the specified subscription. Use the nextLink property in the response to
-     * get the next page of network interfaces.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NetworkInterface list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1048,11 +849,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkInterfaceInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkInterfaceListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1105,11 +902,7 @@ public final class NetworkInterfacesClientImpl implements NetworkInterfacesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkInterfaceInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkInterfaceListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

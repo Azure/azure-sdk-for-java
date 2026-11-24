@@ -109,16 +109,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the singleton HorizonDB capability catalog entry available to a subscription in a specific region.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton HorizonDB capability catalog entry available to a subscription in a specific region along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CapabilityInner>> getWithResponseAsync(String location) {
         final String accept = "application/json";
@@ -128,32 +119,13 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets the singleton HorizonDB capability catalog entry available to a subscription in a specific region.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton HorizonDB capability catalog entry available to a subscription in a specific region on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CapabilityInner> getAsync(String location) {
         return getWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the singleton HorizonDB capability catalog entry available to a subscription in a specific region.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton HorizonDB capability catalog entry available to a subscription in a specific region along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CapabilityInner> getWithResponse(String location, Context context) {
         final String accept = "application/json";
@@ -161,15 +133,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             location, accept, context);
     }
 
-    /**
-     * Gets the singleton HorizonDB capability catalog entry available to a subscription in a specific region.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the singleton HorizonDB capability catalog entry available to a subscription in a specific region.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CapabilityInner get(String location) {
         return getWithResponse(location, Context.NONE).getValue();
@@ -197,16 +161,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the singleton HorizonDB capability catalog entry available to a subscription in a specific region. The
-     * result contains one item.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Capability list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapabilityInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location), nextLink -> listNextSinglePageAsync(nextLink));
@@ -224,11 +179,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listSinglePage(String location) {
-        final String accept = "application/json";
-        Response<CapabilityListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), location, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(location, Context.NONE);
     }
 
     /**
@@ -251,32 +202,13 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the singleton HorizonDB capability catalog entry available to a subscription in a specific region. The
-     * result contains one item.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Capability list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> list(String location) {
-        return new PagedIterable<>(() -> listSinglePage(location), nextLink -> listNextSinglePage(nextLink));
+        return list(location, Context.NONE);
     }
 
-    /**
-     * Lists the singleton HorizonDB capability catalog entry available to a subscription in a specific region. The
-     * result contains one item.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Capability list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityInner> list(String location, Context context) {
         return new PagedIterable<>(() -> listSinglePage(location, context),
@@ -313,11 +245,7 @@ public final class CapabilitiesClientImpl implements CapabilitiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CapabilityInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CapabilityListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

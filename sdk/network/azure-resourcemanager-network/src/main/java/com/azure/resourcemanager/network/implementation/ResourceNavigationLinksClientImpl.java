@@ -68,18 +68,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a list of resource navigation links for a subnet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource navigation links for a subnet along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ResourceNavigationLinksListResultInner>> listWithResponseAsync(String resourceGroupName,
         String virtualNetworkName, String subnetName) {
@@ -152,17 +141,7 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
             virtualNetworkName, subnetName, accept, context);
     }
 
-    /**
-     * Gets a list of resource navigation links for a subnet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource navigation links for a subnet on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResourceNavigationLinksListResultInner> listAsync(String resourceGroupName, String virtualNetworkName,
         String subnetName) {
@@ -170,35 +149,14 @@ public final class ResourceNavigationLinksClientImpl implements ResourceNavigati
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of resource navigation links for a subnet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource navigation links for a subnet along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceNavigationLinksListResultInner> listWithResponse(String resourceGroupName,
         String virtualNetworkName, String subnetName, Context context) {
         return listWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context).block();
     }
 
-    /**
-     * Gets a list of resource navigation links for a subnet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource navigation links for a subnet.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceNavigationLinksListResultInner list(String resourceGroupName, String virtualNetworkName,
         String subnetName) {

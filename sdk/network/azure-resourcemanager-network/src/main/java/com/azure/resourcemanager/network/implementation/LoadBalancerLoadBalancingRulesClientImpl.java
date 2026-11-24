@@ -109,18 +109,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the specified load balancer load balancing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LoadBalancingRuleInner>> getWithResponseAsync(String resourceGroupName,
         String loadBalancerName, String loadBalancingRuleName) {
@@ -195,17 +184,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             loadBalancerName, loadBalancingRuleName, accept, context);
     }
 
-    /**
-     * Gets the specified load balancer load balancing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancingRuleInner> getAsync(String resourceGroupName, String loadBalancerName,
         String loadBalancingRuleName) {
@@ -213,35 +192,14 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified load balancer load balancing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LoadBalancingRuleInner> getWithResponse(String resourceGroupName, String loadBalancerName,
         String loadBalancingRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, loadBalancerName, loadBalancingRuleName, context).block();
     }
 
-    /**
-     * Gets the specified load balancer load balancing rule.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer load balancing rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancingRuleInner get(String resourceGroupName, String loadBalancerName, String loadBalancingRuleName) {
         return getWithResponse(resourceGroupName, loadBalancerName, loadBalancingRuleName, Context.NONE).getValue();
@@ -328,16 +286,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the load balancing rules in a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LoadBalancingRuleInner> listAsync(String resourceGroupName, String loadBalancerName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, loadBalancerName),
@@ -362,50 +311,20 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the load balancing rules in a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancingRuleInner> list(String resourceGroupName, String loadBalancerName) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName));
     }
 
-    /**
-     * Gets all the load balancing rules in a load balancer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param loadBalancerName The name of the load balancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the load balancing rules in a load balancer as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancingRuleInner> list(String resourceGroupName, String loadBalancerName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, loadBalancerName, context));
     }
 
-    /**
-     * Get health details of a load balancing rule.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health details of a load balancing rule along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> healthWithResponseAsync(String groupName, String loadBalancerName,
         String loadBalancingRuleName) {
@@ -478,17 +397,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             loadBalancerName, loadBalancingRuleName, accept, context);
     }
 
-    /**
-     * Get health details of a load balancing rule.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of health details of a load balancing rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner>
         beginHealthAsync(String groupName, String loadBalancerName, String loadBalancingRuleName) {
@@ -522,52 +431,21 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             context);
     }
 
-    /**
-     * Get health details of a load balancing rule.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of health details of a load balancing rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner>
         beginHealth(String groupName, String loadBalancerName, String loadBalancingRuleName) {
         return this.beginHealthAsync(groupName, loadBalancerName, loadBalancingRuleName).getSyncPoller();
     }
 
-    /**
-     * Get health details of a load balancing rule.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of health details of a load balancing rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerHealthPerRuleInner>, LoadBalancerHealthPerRuleInner>
         beginHealth(String groupName, String loadBalancerName, String loadBalancingRuleName, Context context) {
         return this.beginHealthAsync(groupName, loadBalancerName, loadBalancingRuleName, context).getSyncPoller();
     }
 
-    /**
-     * Get health details of a load balancing rule.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health details of a load balancing rule on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LoadBalancerHealthPerRuleInner> healthAsync(String groupName, String loadBalancerName,
         String loadBalancingRuleName) {
@@ -594,35 +472,14 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Get health details of a load balancing rule.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health details of a load balancing rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerHealthPerRuleInner health(String groupName, String loadBalancerName,
         String loadBalancingRuleName) {
         return healthAsync(groupName, loadBalancerName, loadBalancingRuleName).block();
     }
 
-    /**
-     * Get health details of a load balancing rule.
-     * 
-     * @param groupName The groupName parameter.
-     * @param loadBalancerName The name of the load balancer.
-     * @param loadBalancingRuleName The name of the load balancing rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health details of a load balancing rule.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerHealthPerRuleInner health(String groupName, String loadBalancerName,
         String loadBalancingRuleName, Context context) {

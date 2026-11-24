@@ -26,8 +26,7 @@ public final class WebPubSubPrivateLinkResourcesImpl implements WebPubSubPrivate
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String resourceName) {
-        PagedIterable<PrivateLinkResourceInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String resourceName, Context context) {

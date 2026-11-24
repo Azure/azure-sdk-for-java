@@ -46,13 +46,7 @@ public final class RegistryComponentContainersImpl implements RegistryComponentC
 
     public ComponentContainer createOrUpdate(String resourceGroupName, String registryName, String componentName,
         ComponentContainerInner body) {
-        ComponentContainerInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, registryName, componentName, body);
-        if (inner != null) {
-            return new ComponentContainerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, componentName, body, Context.NONE);
     }
 
     public ComponentContainer createOrUpdate(String resourceGroupName, String registryName, String componentName,
@@ -67,7 +61,7 @@ public final class RegistryComponentContainersImpl implements RegistryComponentC
     }
 
     public void delete(String resourceGroupName, String registryName, String componentName) {
-        this.serviceClient().delete(resourceGroupName, registryName, componentName);
+        this.delete(resourceGroupName, registryName, componentName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String componentName, Context context) {

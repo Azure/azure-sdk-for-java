@@ -64,10 +64,7 @@ public final class DynamicSchemaImpl implements DynamicSchema, DynamicSchema.Def
     }
 
     public DynamicSchema create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemas()
-            .createOrUpdate(resourceGroupName, schemaName, dynamicSchemaName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DynamicSchema create(Context context) {
@@ -89,11 +86,7 @@ public final class DynamicSchemaImpl implements DynamicSchema, DynamicSchema.Def
     }
 
     public DynamicSchema apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemas()
-            .updateWithResponse(resourceGroupName, schemaName, dynamicSchemaName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DynamicSchema apply(Context context) {
@@ -120,11 +113,7 @@ public final class DynamicSchemaImpl implements DynamicSchema, DynamicSchema.Def
     }
 
     public DynamicSchema refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDynamicSchemas()
-            .getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DynamicSchema refresh(Context context) {

@@ -31,8 +31,7 @@ public final class AnnotationsImpl implements Annotations {
     }
 
     public PagedIterable<Annotation> list(String resourceGroupName, String resourceName, String start, String end) {
-        PagedIterable<AnnotationInner> inner = this.serviceClient().list(resourceGroupName, resourceName, start, end);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AnnotationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, start, end, Context.NONE);
     }
 
     public PagedIterable<Annotation> list(String resourceGroupName, String resourceName, String start, String end,
@@ -71,7 +70,7 @@ public final class AnnotationsImpl implements Annotations {
     }
 
     public void delete(String resourceGroupName, String resourceName, String annotationId) {
-        this.serviceClient().delete(resourceGroupName, resourceName, annotationId);
+        this.deleteWithResponse(resourceGroupName, resourceName, annotationId, Context.NONE);
     }
 
     public Response<List<Annotation>> getWithResponse(String resourceGroupName, String resourceName,

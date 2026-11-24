@@ -60,11 +60,7 @@ public final class ModelContainerImpl implements ModelContainer, ModelContainer.
     }
 
     public ModelContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelContainers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ModelContainer create(Context context) {
@@ -86,11 +82,7 @@ public final class ModelContainerImpl implements ModelContainer, ModelContainer.
     }
 
     public ModelContainer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelContainers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ModelContainer apply(Context context) {
@@ -127,11 +119,7 @@ public final class ModelContainerImpl implements ModelContainer, ModelContainer.
     }
 
     public ModelContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelContainers()
-            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ModelContainer refresh(Context context) {

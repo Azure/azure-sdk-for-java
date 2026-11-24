@@ -45,7 +45,7 @@ public final class RegistriesImpl implements Registries {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String registryName) {
-        this.serviceClient().delete(resourceGroupName, registryName);
+        this.delete(resourceGroupName, registryName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, Context context) {
@@ -53,8 +53,7 @@ public final class RegistriesImpl implements Registries {
     }
 
     public PagedIterable<Registry> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<RegistryInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegistryImpl(inner1, this.manager()));
+        return this.listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
     public PagedIterable<Registry> listByResourceGroup(String resourceGroupName, Context context) {
@@ -63,8 +62,7 @@ public final class RegistriesImpl implements Registries {
     }
 
     public PagedIterable<Registry> list() {
-        PagedIterable<RegistryInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegistryImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<Registry> list(Context context) {
@@ -73,12 +71,7 @@ public final class RegistriesImpl implements Registries {
     }
 
     public Registry removeRegions(String resourceGroupName, String registryName, RegistryInner body) {
-        RegistryInner inner = this.serviceClient().removeRegions(resourceGroupName, registryName, body);
-        if (inner != null) {
-            return new RegistryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.removeRegions(resourceGroupName, registryName, body, Context.NONE);
     }
 
     public Registry removeRegions(String resourceGroupName, String registryName, RegistryInner body, Context context) {
@@ -91,74 +84,30 @@ public final class RegistriesImpl implements Registries {
     }
 
     public Registry getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String registryName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}",
-            "registryName");
-        if (registryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registries'.", id)));
-        }
-        return this.getByResourceGroupWithResponse(resourceGroupName, registryName, Context.NONE).getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<Registry> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String registryName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String registryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}",
-            "registryName");
-        if (registryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registries'.", id)));
-        }
+            "registryName", "registries", LOGGER);
         return this.getByResourceGroupWithResponse(resourceGroupName, registryName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String registryName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}",
-            "registryName");
-        if (registryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registries'.", id)));
-        }
-        this.delete(resourceGroupName, registryName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String registryName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String registryName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}",
-            "registryName");
-        if (registryName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'registries'.", id)));
-        }
+            "registryName", "registries", LOGGER);
         this.delete(resourceGroupName, registryName, context);
     }
 

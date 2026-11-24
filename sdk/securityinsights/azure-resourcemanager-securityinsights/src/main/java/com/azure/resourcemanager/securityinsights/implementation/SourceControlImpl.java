@@ -142,11 +142,7 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSourceControls()
-            .createWithResponse(resourceGroupName, workspaceName, sourceControlId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SourceControl create(Context context) {
@@ -164,11 +160,7 @@ public final class SourceControlImpl implements SourceControl, SourceControl.Def
     }
 
     public SourceControl refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSourceControls()
-            .getWithResponse(resourceGroupName, workspaceName, sourceControlId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SourceControl refresh(Context context) {

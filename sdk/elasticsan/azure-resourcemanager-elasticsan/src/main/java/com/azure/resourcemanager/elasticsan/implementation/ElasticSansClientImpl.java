@@ -268,17 +268,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ElasticSan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ElasticSan along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ElasticSanInner> getByResourceGroupWithResponse(String resourceGroupName, String elasticSanName,
         Context context) {
@@ -305,16 +295,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             this.client.getSubscriptionId(), resourceGroupName, elasticSanName, accept, context);
     }
 
-    /**
-     * Get a ElasticSan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ElasticSan.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticSanInner getByResourceGroup(String resourceGroupName, String elasticSanName) {
         return getByResourceGroupWithResponse(resourceGroupName, elasticSanName, Context.NONE).getValue();
@@ -377,35 +358,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String elasticSanName,
         ElasticSanInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, contentType, accept, parameters,
-            Context.NONE);
+        return createWithResponse(resourceGroupName, elasticSanName, parameters, Context.NONE);
     }
 
     /**
@@ -473,37 +426,14 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             ElasticSanInner.class, ElasticSanInner.class, this.client.getContext());
     }
 
-    /**
-     * Create ElasticSan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param parameters Elastic San object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for ElasticSan request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSanInner>, ElasticSanInner> beginCreate(String resourceGroupName,
         String elasticSanName, ElasticSanInner parameters) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, elasticSanName, parameters);
-        return this.client.<ElasticSanInner, ElasticSanInner>getLroResult(response, ElasticSanInner.class,
-            ElasticSanInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, elasticSanName, parameters, Context.NONE);
     }
 
-    /**
-     * Create ElasticSan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param parameters Elastic San object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for ElasticSan request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSanInner>, ElasticSanInner> beginCreate(String resourceGroupName,
         String elasticSanName, ElasticSanInner parameters, Context context) {
@@ -530,38 +460,18 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create ElasticSan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param parameters Elastic San object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ElasticSan request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticSanInner create(String resourceGroupName, String elasticSanName, ElasticSanInner parameters) {
-        return beginCreate(resourceGroupName, elasticSanName, parameters).getFinalResult();
+        return create(resourceGroupName, elasticSanName, parameters, Context.NONE);
     }
 
-    /**
-     * Create ElasticSan.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param parameters Elastic San object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ElasticSan request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticSanInner create(String resourceGroupName, String elasticSanName, ElasticSanInner parameters,
         Context context) {
-        return beginCreate(resourceGroupName, elasticSanName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, elasticSanName, parameters, context));
     }
 
     /**
@@ -621,35 +531,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String elasticSanName,
         ElasticSanUpdate parameters) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, contentType, accept, parameters,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, elasticSanName, parameters, Context.NONE);
     }
 
     /**
@@ -717,37 +599,14 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             ElasticSanInner.class, ElasticSanInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a Elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param parameters Elastic San object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for ElasticSan request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSanInner>, ElasticSanInner> beginUpdate(String resourceGroupName,
         String elasticSanName, ElasticSanUpdate parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, elasticSanName, parameters);
-        return this.client.<ElasticSanInner, ElasticSanInner>getLroResult(response, ElasticSanInner.class,
-            ElasticSanInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, elasticSanName, parameters, Context.NONE);
     }
 
-    /**
-     * Update a Elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param parameters Elastic San object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for ElasticSan request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticSanInner>, ElasticSanInner> beginUpdate(String resourceGroupName,
         String elasticSanName, ElasticSanUpdate parameters, Context context) {
@@ -774,38 +633,18 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a Elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param parameters Elastic San object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ElasticSan request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticSanInner update(String resourceGroupName, String elasticSanName, ElasticSanUpdate parameters) {
-        return beginUpdate(resourceGroupName, elasticSanName, parameters).getFinalResult();
+        return update(resourceGroupName, elasticSanName, parameters, Context.NONE);
     }
 
-    /**
-     * Update a Elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param parameters Elastic San object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ElasticSan request.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElasticSanInner update(String resourceGroupName, String elasticSanName, ElasticSanUpdate parameters,
         Context context) {
-        return beginUpdate(resourceGroupName, elasticSanName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, elasticSanName, parameters, context));
     }
 
     /**
@@ -853,26 +692,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String elasticSanName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (elasticSanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter elasticSanName is required and cannot be null."));
-        }
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, elasticSanName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, elasticSanName, Context.NONE);
     }
 
     /**
@@ -927,33 +747,13 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete a Elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, elasticSanName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, elasticSanName, Context.NONE);
     }
 
-    /**
-     * Delete a Elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
         Context context) {
@@ -977,33 +777,16 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a Elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String elasticSanName) {
-        beginDelete(resourceGroupName, elasticSanName).getFinalResult();
+        delete(resourceGroupName, elasticSanName, Context.NONE);
     }
 
-    /**
-     * Delete a Elastic San.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param elasticSanName The name of the ElasticSan.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String elasticSanName, Context context) {
-        beginDelete(resourceGroupName, elasticSanName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, elasticSanName, context));
     }
 
     /**
@@ -1065,25 +848,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticSanInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ElasticSanList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -1119,31 +884,13 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of ElasticSan in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ElasticSan in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticSanInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets a list of ElasticSan in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ElasticSan in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticSanInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -1199,21 +946,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticSanInner> listSinglePage() {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ElasticSanList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -1244,27 +977,13 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets a list of ElasticSans in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ElasticSans in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticSanInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets a list of ElasticSans in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of ElasticSans in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ElasticSanInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1310,20 +1029,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticSanInner> listByResourceGroupNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ElasticSanList> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1393,20 +1099,7 @@ public final class ElasticSansClientImpl implements ElasticSansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ElasticSanInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<ElasticSanList> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -220,19 +220,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get artifact source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the artifact source.
-     * @param expand Specify the $expand query. Example: 'properties($select=displayName)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return artifact source along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactSourceInner> getWithResponse(String resourceGroupName, String labName, String name,
         String expand, Context context) {
@@ -241,17 +229,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
             resourceGroupName, labName, name, expand, accept, context);
     }
 
-    /**
-     * Get artifact source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the artifact source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return artifact source.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArtifactSourceInner get(String resourceGroupName, String labName, String name) {
         final String expand = null;
@@ -301,19 +279,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or replace an existing artifact source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the artifact source.
-     * @param artifactSource Properties of an artifact source.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an artifact source along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactSourceInner> createOrUpdateWithResponse(String resourceGroupName, String labName,
         String name, ArtifactSourceInner artifactSource, Context context) {
@@ -324,18 +290,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
             context);
     }
 
-    /**
-     * Create or replace an existing artifact source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the artifact source.
-     * @param artifactSource Properties of an artifact source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an artifact source.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArtifactSourceInner createOrUpdate(String resourceGroupName, String labName, String name,
         ArtifactSourceInner artifactSource) {
@@ -385,19 +340,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Allows modifying tags of artifact sources. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the artifact source.
-     * @param artifactSource Properties of an artifact source.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an artifact source along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ArtifactSourceInner> updateWithResponse(String resourceGroupName, String labName, String name,
         ArtifactSourceFragment artifactSource, Context context) {
@@ -408,18 +351,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
             context);
     }
 
-    /**
-     * Allows modifying tags of artifact sources. All other properties will be ignored.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the artifact source.
-     * @param artifactSource Properties of an artifact source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an artifact source.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ArtifactSourceInner update(String resourceGroupName, String labName, String name,
         ArtifactSourceFragment artifactSource) {
@@ -461,34 +393,14 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
         return deleteWithResponseAsync(resourceGroupName, labName, name).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete artifact source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the artifact source.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String name, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, labName, name, context);
     }
 
-    /**
-     * Delete artifact source.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param name The name of the artifact source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String labName, String name) {
         deleteWithResponse(resourceGroupName, labName, name, Context.NONE);
@@ -578,12 +490,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactSourceInner> listSinglePage(String resourceGroupName, String labName, String expand,
         String filter, Integer top, String orderby) {
-        final String accept = "application/json";
-        Response<ArtifactSourceList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, labName, expand, filter, top, orderby, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, labName, expand, filter, top, orderby, Context.NONE);
     }
 
     /**
@@ -611,41 +518,17 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List artifact sources in a given lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactSourceInner> list(String resourceGroupName, String labName) {
         final String expand = null;
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, labName, expand, filter, top, orderby),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, labName, expand, filter, top, orderby, Context.NONE);
     }
 
-    /**
-     * List artifact sources in a given lab.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab.
-     * @param expand Specify the $expand query. Example: 'properties($select=displayName)'.
-     * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
-     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
-     * @param orderby The ordering expression for the results, using OData notation. Example: '$orderby=name desc'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ArtifactSourceInner> list(String resourceGroupName, String labName, String expand,
         String filter, Integer top, String orderby, Context context) {
@@ -684,11 +567,7 @@ public final class ArtifactSourcesClientImpl implements ArtifactSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ArtifactSourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ArtifactSourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

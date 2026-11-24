@@ -91,11 +91,7 @@ public final class VirtualNetworkLinkImpl
     }
 
     public VirtualNetworkLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkLinks()
-            .createOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, this.innerModel(),
-                createIfMatch, createIfNoneMatch, Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public VirtualNetworkLink create(Context context) {
@@ -121,11 +117,7 @@ public final class VirtualNetworkLinkImpl
     }
 
     public VirtualNetworkLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkLinks()
-            .update(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, updateParameters,
-                updateIfMatch, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public VirtualNetworkLink apply(Context context) {
@@ -152,11 +144,7 @@ public final class VirtualNetworkLinkImpl
     }
 
     public VirtualNetworkLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVirtualNetworkLinks()
-            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public VirtualNetworkLink refresh(Context context) {

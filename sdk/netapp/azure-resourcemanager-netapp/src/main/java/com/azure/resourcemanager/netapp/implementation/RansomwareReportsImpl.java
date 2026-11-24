@@ -49,9 +49,7 @@ public final class RansomwareReportsImpl implements RansomwareReports {
 
     public PagedIterable<RansomwareReport> list(String resourceGroupName, String accountName, String poolName,
         String volumeName) {
-        PagedIterable<RansomwareReportInner> inner
-            = this.serviceClient().list(resourceGroupName, accountName, poolName, volumeName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RansomwareReportImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, accountName, poolName, volumeName, Context.NONE);
     }
 
     public PagedIterable<RansomwareReport> list(String resourceGroupName, String accountName, String poolName,
@@ -63,8 +61,8 @@ public final class RansomwareReportsImpl implements RansomwareReports {
 
     public void clearSuspects(String resourceGroupName, String accountName, String poolName, String volumeName,
         String ransomwareReportName, RansomwareSuspectsClearRequest body) {
-        this.serviceClient()
-            .clearSuspects(resourceGroupName, accountName, poolName, volumeName, ransomwareReportName, body);
+        this.clearSuspects(resourceGroupName, accountName, poolName, volumeName, ransomwareReportName, body,
+            Context.NONE);
     }
 
     public void clearSuspects(String resourceGroupName, String accountName, String poolName, String volumeName,

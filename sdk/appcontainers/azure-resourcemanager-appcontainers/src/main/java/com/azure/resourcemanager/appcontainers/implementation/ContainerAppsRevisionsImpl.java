@@ -63,7 +63,7 @@ public final class ContainerAppsRevisionsImpl implements ContainerAppsRevisions 
     }
 
     public void activateRevision(String resourceGroupName, String containerAppName, String revisionName) {
-        this.serviceClient().activateRevision(resourceGroupName, containerAppName, revisionName);
+        this.activateRevisionWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE);
     }
 
     public Response<Void> deactivateRevisionWithResponse(String resourceGroupName, String containerAppName,
@@ -73,7 +73,7 @@ public final class ContainerAppsRevisionsImpl implements ContainerAppsRevisions 
     }
 
     public void deactivateRevision(String resourceGroupName, String containerAppName, String revisionName) {
-        this.serviceClient().deactivateRevision(resourceGroupName, containerAppName, revisionName);
+        this.deactivateRevisionWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE);
     }
 
     public Response<Void> restartRevisionWithResponse(String resourceGroupName, String containerAppName,
@@ -83,7 +83,7 @@ public final class ContainerAppsRevisionsImpl implements ContainerAppsRevisions 
     }
 
     public void restartRevision(String resourceGroupName, String containerAppName, String revisionName) {
-        this.serviceClient().restartRevision(resourceGroupName, containerAppName, revisionName);
+        this.restartRevisionWithResponse(resourceGroupName, containerAppName, revisionName, Context.NONE);
     }
 
     private ContainerAppsRevisionsClient serviceClient() {

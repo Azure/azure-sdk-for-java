@@ -144,12 +144,7 @@ public final class PipelineResourceImpl
     }
 
     public PipelineResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, this.innerModel(), createIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PipelineResource create(Context context) {
@@ -174,12 +169,7 @@ public final class PipelineResourceImpl
     }
 
     public PipelineResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .createOrUpdateWithResponse(resourceGroupName, factoryName, pipelineName, this.innerModel(), updateIfMatch,
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public PipelineResource apply(Context context) {
@@ -207,12 +197,7 @@ public final class PipelineResourceImpl
     }
 
     public PipelineResource refresh() {
-        String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getPipelines()
-            .getWithResponse(resourceGroupName, factoryName, pipelineName, localIfNoneMatch, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PipelineResource refresh(Context context) {

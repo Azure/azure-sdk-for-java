@@ -168,12 +168,7 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobExecutionInner> listSinglePage(String resourceGroupName, String jobName, String filter) {
-        final String accept = "application/json";
-        Response<ContainerAppJobExecutionsInner> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, jobName, filter, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, jobName, filter, Context.NONE);
     }
 
     /**
@@ -199,35 +194,14 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get a Container Apps Job's executions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Container Apps Job's executions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobExecutionInner> list(String resourceGroupName, String jobName) {
         final String filter = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, jobName, filter),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, jobName, filter, Context.NONE);
     }
 
-    /**
-     * Get a Container Apps Job's executions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName Job Name.
-     * @param filter The filter to apply on the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Container Apps Job's executions as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobExecutionInner> list(String resourceGroupName, String jobName, String filter,
         Context context) {
@@ -269,11 +243,7 @@ public final class JobsExecutionsClientImpl implements JobsExecutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<JobExecutionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ContainerAppJobExecutionsInner> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

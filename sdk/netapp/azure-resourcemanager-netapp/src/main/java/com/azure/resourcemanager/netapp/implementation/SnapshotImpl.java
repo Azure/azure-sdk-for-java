@@ -105,11 +105,7 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSnapshots()
-            .create(resourceGroupName, accountName, poolName, volumeName, snapshotName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Snapshot create(Context context) {
@@ -126,11 +122,7 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSnapshots()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Snapshot refresh(Context context) {

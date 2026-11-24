@@ -65,12 +65,7 @@ public final class ComponentVersionImpl
     }
 
     public ComponentVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentVersions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ComponentVersion create(Context context) {
@@ -92,12 +87,7 @@ public final class ComponentVersionImpl
     }
 
     public ComponentVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentVersions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ComponentVersion apply(Context context) {
@@ -142,11 +132,7 @@ public final class ComponentVersionImpl
     }
 
     public ComponentVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComponentVersions()
-            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ComponentVersion refresh(Context context) {

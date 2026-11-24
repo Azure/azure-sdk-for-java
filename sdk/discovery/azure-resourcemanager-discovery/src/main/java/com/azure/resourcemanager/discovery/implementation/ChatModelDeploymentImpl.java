@@ -85,10 +85,7 @@ public final class ChatModelDeploymentImpl
     }
 
     public ChatModelDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChatModelDeployments()
-            .createOrUpdate(resourceGroupName, workspaceName, chatModelDeploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ChatModelDeployment create(Context context) {
@@ -109,10 +106,7 @@ public final class ChatModelDeploymentImpl
     }
 
     public ChatModelDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChatModelDeployments()
-            .update(resourceGroupName, workspaceName, chatModelDeploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ChatModelDeployment apply(Context context) {
@@ -138,11 +132,7 @@ public final class ChatModelDeploymentImpl
     }
 
     public ChatModelDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getChatModelDeployments()
-            .getWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ChatModelDeployment refresh(Context context) {

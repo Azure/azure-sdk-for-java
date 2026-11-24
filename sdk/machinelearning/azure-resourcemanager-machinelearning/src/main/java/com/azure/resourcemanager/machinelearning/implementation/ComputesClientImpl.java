@@ -336,19 +336,7 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
-     * 'keys' nested resource to get them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute definition by its name along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComputeResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
         String computeName, Context context) {
@@ -357,18 +345,7 @@ public final class ComputesClientImpl implements ComputesClient {
             resourceGroupName, workspaceName, computeName, accept, context);
     }
 
-    /**
-     * Gets compute definition by its name. Any secrets (storage keys, service credentials, etc) are not returned - use
-     * 'keys' nested resource to get them.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return compute definition by its name.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeResourceInner get(String resourceGroupName, String workspaceName, String computeName) {
         return getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE).getValue();
@@ -416,11 +393,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
         String computeName, ComputeResourceInner parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, computeName, contentType, accept,
-            parameters, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, computeName, parameters, Context.NONE);
     }
 
     /**
@@ -469,42 +442,14 @@ public final class ComputesClientImpl implements ComputesClient {
             ComputeResourceInner.class, ComputeResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-     * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Payload with Machine Learning compute definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of machine Learning compute object wrapped into ARM resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, workspaceName, computeName, parameters);
-        return this.client.<ComputeResourceInner, ComputeResourceInner>getLroResult(response,
-            ComputeResourceInner.class, ComputeResourceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, computeName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-     * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Payload with Machine Learning compute definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of machine Learning compute object wrapped into ARM resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String computeName, ComputeResourceInner parameters,
@@ -536,43 +481,19 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-     * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Payload with Machine Learning compute definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String computeName,
         ComputeResourceInner parameters) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, computeName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, computeName, parameters, Context.NONE);
     }
 
-    /**
-     * Creates or updates compute. This call will overwrite a compute if it exists. This is a nonrecoverable operation.
-     * If your intent is to create a new compute, do a GET first to verify that it does not exist yet.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Payload with Machine Learning compute definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeResourceInner createOrUpdate(String resourceGroupName, String workspaceName, String computeName,
         ComputeResourceInner parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, computeName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, workspaceName, computeName, parameters, context));
     }
 
     /**
@@ -617,11 +538,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName, String computeName,
         ClusterUpdateParameters parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, computeName, contentType, accept,
-            parameters, Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, computeName, parameters, Context.NONE);
     }
 
     /**
@@ -670,41 +587,14 @@ public final class ComputesClientImpl implements ComputesClient {
             ComputeResourceInner.class, ComputeResourceInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
-     * operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Additional parameters for cluster update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of machine Learning compute object wrapped into ARM resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(String resourceGroupName,
         String workspaceName, String computeName, ClusterUpdateParameters parameters) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, workspaceName, computeName, parameters);
-        return this.client.<ComputeResourceInner, ComputeResourceInner>getLroResult(response,
-            ComputeResourceInner.class, ComputeResourceInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, computeName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
-     * operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Additional parameters for cluster update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of machine Learning compute object wrapped into ARM resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComputeResourceInner>, ComputeResourceInner> beginUpdate(String resourceGroupName,
         String workspaceName, String computeName, ClusterUpdateParameters parameters, Context context) {
@@ -735,43 +625,19 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
-     * operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Additional parameters for cluster update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeResourceInner update(String resourceGroupName, String workspaceName, String computeName,
         ClusterUpdateParameters parameters) {
-        return beginUpdate(resourceGroupName, workspaceName, computeName, parameters).getFinalResult();
+        return update(resourceGroupName, workspaceName, computeName, parameters, Context.NONE);
     }
 
-    /**
-     * Updates properties of a compute. This call will overwrite a compute if it exists. This is a nonrecoverable
-     * operation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param parameters Additional parameters for cluster update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return machine Learning compute object wrapped into ARM resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeResourceInner update(String resourceGroupName, String workspaceName, String computeName,
         ClusterUpdateParameters parameters, Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, computeName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, workspaceName, computeName, parameters, context));
     }
 
     /**
@@ -813,8 +679,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, computeName, underlyingResourceAction,
+        return deleteWithResponse(resourceGroupName, workspaceName, computeName, underlyingResourceAction,
             Context.NONE);
     }
 
@@ -862,41 +727,14 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes specified Machine Learning compute.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     * workspace if 'Detach'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String computeName, UnderlyingResourceAction underlyingResourceAction) {
-        Response<BinaryData> response
-            = deleteWithResponse(resourceGroupName, workspaceName, computeName, underlyingResourceAction);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, computeName, underlyingResourceAction, Context.NONE);
     }
 
-    /**
-     * Deletes specified Machine Learning compute.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     * workspace if 'Detach'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
         String computeName, UnderlyingResourceAction underlyingResourceAction, Context context) {
@@ -925,41 +763,19 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes specified Machine Learning compute.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     * workspace if 'Detach'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction) {
-        beginDelete(resourceGroupName, workspaceName, computeName, underlyingResourceAction).getFinalResult();
+        delete(resourceGroupName, workspaceName, computeName, underlyingResourceAction, Context.NONE);
     }
 
-    /**
-     * Deletes specified Machine Learning compute.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param underlyingResourceAction Delete the underlying compute if 'Delete', or detach the underlying compute from
-     * workspace if 'Detach'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String computeName,
         UnderlyingResourceAction underlyingResourceAction, Context context) {
-        beginDelete(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context).getFinalResult();
+        this.client.getLroFinalResultOrError(
+            beginDelete(resourceGroupName, workspaceName, computeName, underlyingResourceAction, context));
     }
 
     /**
@@ -1034,12 +850,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ComputeResourceInner> listSinglePage(String resourceGroupName, String workspaceName,
         String skip) {
-        final String accept = "application/json";
-        Response<PaginatedComputeResourcesList> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, skip, Context.NONE);
     }
 
     /**
@@ -1065,35 +876,14 @@ public final class ComputesClientImpl implements ComputesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets computes in specified workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return computes in specified workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComputeResourceInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, skip, Context.NONE);
     }
 
-    /**
-     * Gets computes in specified workspace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return computes in specified workspace as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComputeResourceInner> list(String resourceGroupName, String workspaceName, String skip,
         Context context) {
@@ -1159,12 +949,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AmlComputeNodeInformation> listNodesSinglePage(String resourceGroupName, String workspaceName,
         String computeName) {
-        final String accept = "application/json";
-        Response<AmlComputeNodesInformation> res
-            = service.listNodesSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, workspaceName, computeName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().nodes(),
-            res.getValue().nextLink(), null);
+        return listNodesSinglePage(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
     /**
@@ -1191,38 +976,14 @@ public final class ComputesClientImpl implements ComputesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details (e.g IP address, port etc) of all the compute nodes in the compute as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
         String computeName) {
-        return new PagedIterable<>(() -> listNodesSinglePage(resourceGroupName, workspaceName, computeName),
-            nextLink -> listNodesNextSinglePage(nextLink));
+        return listNodes(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
-    /**
-     * Get the details (e.g IP address, port etc) of all the compute nodes in the compute.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details (e.g IP address, port etc) of all the compute nodes in the compute as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlComputeNodeInformation> listNodes(String resourceGroupName, String workspaceName,
         String computeName, Context context) {
@@ -1271,19 +1032,7 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc) along with
-     * {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComputeSecretsInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
         String computeName, Context context) {
@@ -1292,17 +1041,7 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, computeName, accept, context);
     }
 
-    /**
-     * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComputeSecretsInner listKeys(String resourceGroupName, String workspaceName, String computeName) {
         return listKeysWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE).getValue();
@@ -1341,8 +1080,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String workspaceName, String computeName) {
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, computeName, Context.NONE);
+        return startWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
     /**
@@ -1383,36 +1121,14 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getContext());
     }
 
-    /**
-     * Posts a start action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String workspaceName,
         String computeName) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, workspaceName, computeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStart(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
-    /**
-     * Posts a start action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String workspaceName,
         String computeName, Context context) {
@@ -1437,35 +1153,16 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Posts a start action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String workspaceName, String computeName) {
-        beginStart(resourceGroupName, workspaceName, computeName).getFinalResult();
+        start(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
-    /**
-     * Posts a start action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void start(String resourceGroupName, String workspaceName, String computeName, Context context) {
-        beginStart(resourceGroupName, workspaceName, computeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStart(resourceGroupName, workspaceName, computeName, context));
     }
 
     /**
@@ -1501,8 +1198,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> stopWithResponse(String resourceGroupName, String workspaceName, String computeName) {
-        return service.stopSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, workspaceName, computeName, Context.NONE);
+        return stopWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
     /**
@@ -1543,36 +1239,14 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getContext());
     }
 
-    /**
-     * Posts a stop action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String workspaceName,
         String computeName) {
-        Response<BinaryData> response = stopWithResponse(resourceGroupName, workspaceName, computeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginStop(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
-    /**
-     * Posts a stop action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String workspaceName,
         String computeName, Context context) {
@@ -1597,35 +1271,16 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Posts a stop action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String workspaceName, String computeName) {
-        beginStop(resourceGroupName, workspaceName, computeName).getFinalResult();
+        stop(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
-    /**
-     * Posts a stop action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void stop(String resourceGroupName, String workspaceName, String computeName, Context context) {
-        beginStop(resourceGroupName, workspaceName, computeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginStop(resourceGroupName, workspaceName, computeName, context));
     }
 
     /**
@@ -1662,8 +1317,7 @@ public final class ComputesClientImpl implements ComputesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> restartWithResponse(String resourceGroupName, String workspaceName,
         String computeName) {
-        return service.restartSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, computeName, Context.NONE);
+        return restartWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
     /**
@@ -1704,36 +1358,14 @@ public final class ComputesClientImpl implements ComputesClient {
             this.client.getContext());
     }
 
-    /**
-     * Posts a restart action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String workspaceName,
         String computeName) {
-        Response<BinaryData> response = restartWithResponse(resourceGroupName, workspaceName, computeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginRestart(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
-    /**
-     * Posts a restart action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String workspaceName,
         String computeName, Context context) {
@@ -1758,35 +1390,16 @@ public final class ComputesClientImpl implements ComputesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Posts a restart action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String workspaceName, String computeName) {
-        beginRestart(resourceGroupName, workspaceName, computeName).getFinalResult();
+        restart(resourceGroupName, workspaceName, computeName, Context.NONE);
     }
 
-    /**
-     * Posts a restart action to a compute instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param computeName Name of the Azure Machine Learning compute.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String workspaceName, String computeName, Context context) {
-        beginRestart(resourceGroupName, workspaceName, computeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginRestart(resourceGroupName, workspaceName, computeName, context));
     }
 
     /**
@@ -1819,11 +1432,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ComputeResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PaginatedComputeResourcesList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1877,11 +1486,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AmlComputeNodeInformation> listNodesNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AmlComputeNodesInformation> res
-            = service.listNodesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().nodes(),
-            res.getValue().nextLink(), null);
+        return listNodesNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

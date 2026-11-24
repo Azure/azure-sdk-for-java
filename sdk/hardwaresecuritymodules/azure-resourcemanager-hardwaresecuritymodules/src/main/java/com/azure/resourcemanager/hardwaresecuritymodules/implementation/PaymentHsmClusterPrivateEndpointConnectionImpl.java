@@ -77,12 +77,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionImpl
     }
 
     public PaymentHsmClusterPrivateEndpointConnection create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPaymentHsmClusterPrivateEndpointConnections()
-            .createWithResponse(resourceGroupName, paymentHsmClusterName, peConnectionName, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public PaymentHsmClusterPrivateEndpointConnection create(Context context) {
@@ -101,11 +96,7 @@ public final class PaymentHsmClusterPrivateEndpointConnectionImpl
     }
 
     public PaymentHsmClusterPrivateEndpointConnection refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getPaymentHsmClusterPrivateEndpointConnections()
-            .getWithResponse(resourceGroupName, paymentHsmClusterName, peConnectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public PaymentHsmClusterPrivateEndpointConnection refresh(Context context) {

@@ -215,25 +215,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             replicatedProtectedItemName, recoveryPointName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a recovery point.
-     * 
-     * Get the details of specified recovery point.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param recoveryPointName The recovery point name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recovery point.
-     * 
-     * Get the details of specified recovery point along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecoveryPointInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName,
@@ -279,24 +261,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             recoveryPointName, accept, context);
     }
 
-    /**
-     * Gets a recovery point.
-     * 
-     * Get the details of specified recovery point.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param recoveryPointName The recovery point name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recovery point.
-     * 
-     * Get the details of specified recovery point.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecoveryPointInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName) {
@@ -409,43 +374,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointInner> listByReplicationProtectedItemsSinglePage(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (fabricName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
-        }
-        if (protectionContainerName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
-        }
-        if (replicatedProtectedItemName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter replicatedProtectedItemName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<RecoveryPointCollection> res = service.listByReplicationProtectedItemsSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, fabricName,
-            protectionContainerName, replicatedProtectedItemName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectedItemsSinglePage(resourceGroupName, resourceName, fabricName,
+            protectionContainerName, replicatedProtectedItemName, Context.NONE);
     }
 
     /**
@@ -509,52 +439,15 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets the list of recovery points for a replication protected item.
-     * 
-     * Lists the available recovery points for a replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recovery points for a replication protected item.
-     * 
-     * Lists the available recovery points for a replication protected item as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointInner> listByReplicationProtectedItems(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
-        return new PagedIterable<>(
-            () -> listByReplicationProtectedItemsSinglePage(resourceGroupName, resourceName, fabricName,
-                protectionContainerName, replicatedProtectedItemName),
-            nextLink -> listByReplicationProtectedItemsNextSinglePage(nextLink));
+        return listByReplicationProtectedItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
+            replicatedProtectedItemName, Context.NONE);
     }
 
-    /**
-     * Gets the list of recovery points for a replication protected item.
-     * 
-     * Lists the available recovery points for a replication protected item.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Vault.
-     * @param fabricName Fabric name.
-     * @param protectionContainerName Protection container name.
-     * @param replicatedProtectedItemName Replication protected item name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of recovery points for a replication protected item.
-     * 
-     * Lists the available recovery points for a replication protected item as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoveryPointInner> listByReplicationProtectedItems(String resourceGroupName,
         String resourceName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
@@ -613,20 +506,7 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RecoveryPointInner> listByReplicationProtectedItemsNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        Response<RecoveryPointCollection> res = service.listByReplicationProtectedItemsNextSync(nextLink,
-            this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByReplicationProtectedItemsNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

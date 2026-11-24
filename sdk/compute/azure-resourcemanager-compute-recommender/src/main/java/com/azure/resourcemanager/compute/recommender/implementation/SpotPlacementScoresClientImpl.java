@@ -128,16 +128,7 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
         return getWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets Spot Placement Scores metadata.
-     * 
-     * @param location The name of the Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spot Placement Scores metadata along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SpotPlacementScoresBaseInner> getWithResponse(String location, Context context) {
         final String accept = "application/json";
@@ -145,15 +136,7 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
             location, accept, context);
     }
 
-    /**
-     * Gets Spot Placement Scores metadata.
-     * 
-     * @param location The name of the Azure region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spot Placement Scores metadata.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SpotPlacementScoresBaseInner get(String location) {
         return getWithResponse(location, Context.NONE).getValue();
@@ -199,18 +182,7 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Generates placement scores for Spot VM skus.
-     * 
-     * @param location The name of the Azure region.
-     * @param spotPlacementScoresInput SpotPlacementScores object supplied in the body of the Post spot placement scores
-     * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spotPlacementScores API response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SpotPlacementScoresResponseInner> postWithResponse(String location,
         SpotPlacementScoresInput spotPlacementScoresInput, Context context) {
@@ -220,17 +192,7 @@ public final class SpotPlacementScoresClientImpl implements SpotPlacementScoresC
             location, contentType, accept, spotPlacementScoresInput, context);
     }
 
-    /**
-     * Generates placement scores for Spot VM skus.
-     * 
-     * @param location The name of the Azure region.
-     * @param spotPlacementScoresInput SpotPlacementScores object supplied in the body of the Post spot placement scores
-     * operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spotPlacementScores API response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SpotPlacementScoresResponseInner post(String location, SpotPlacementScoresInput spotPlacementScoresInput) {
         return postWithResponse(location, spotPlacementScoresInput, Context.NONE).getValue();

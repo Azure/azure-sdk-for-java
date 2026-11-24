@@ -141,11 +141,7 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
     }
 
     public WebTest create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebTests()
-            .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WebTest create(Context context) {
@@ -168,11 +164,7 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
     }
 
     public WebTest apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebTests()
-            .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WebTest apply(Context context) {
@@ -196,11 +188,7 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
     }
 
     public WebTest refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWebTests()
-            .getByResourceGroupWithResponse(resourceGroupName, webTestName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WebTest refresh(Context context) {

@@ -125,20 +125,7 @@ public final class RegistryDataReferencesClientImpl implements RegistryDataRefer
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get blob reference SAS Uri.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param name Data reference name.
-     * @param version Version identifier.
-     * @param body Asset id and blob uri.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob reference SAS Uri along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetBlobReferenceSasResponseDtoInner> getBlobReferenceSasWithResponse(String resourceGroupName,
         String registryName, String name, String version, GetBlobReferenceSasRequestDto body, Context context) {
@@ -149,19 +136,7 @@ public final class RegistryDataReferencesClientImpl implements RegistryDataRefer
             context);
     }
 
-    /**
-     * Get blob reference SAS Uri.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param name Data reference name.
-     * @param version Version identifier.
-     * @param body Asset id and blob uri.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blob reference SAS Uri.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetBlobReferenceSasResponseDtoInner getBlobReferenceSas(String resourceGroupName, String registryName,
         String name, String version, GetBlobReferenceSasRequestDto body) {

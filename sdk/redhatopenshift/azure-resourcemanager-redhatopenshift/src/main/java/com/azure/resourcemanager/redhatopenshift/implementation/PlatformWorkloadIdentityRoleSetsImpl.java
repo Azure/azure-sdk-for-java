@@ -26,9 +26,7 @@ public final class PlatformWorkloadIdentityRoleSetsImpl implements PlatformWorkl
     }
 
     public PagedIterable<PlatformWorkloadIdentityRoleSet> list(String location) {
-        PagedIterable<PlatformWorkloadIdentityRoleSetInner> inner = this.serviceClient().list(location);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new PlatformWorkloadIdentityRoleSetImpl(inner1, this.manager()));
+        return this.list(location, Context.NONE);
     }
 
     public PagedIterable<PlatformWorkloadIdentityRoleSet> list(String location, Context context) {

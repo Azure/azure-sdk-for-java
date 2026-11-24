@@ -136,17 +136,7 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
         return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns current billing features for an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component billing features along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentBillingFeaturesInner> getWithResponse(String resourceGroupName,
         String resourceName, Context context) {
@@ -156,16 +146,7 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
             resourceGroupName, resourceName, accept, context);
     }
 
-    /**
-     * Returns current billing features for an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component billing features.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentBillingFeaturesInner get(String resourceGroupName, String resourceName) {
         return getWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
@@ -215,18 +196,7 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update current billing features for an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param billingFeaturesProperties The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component billing features along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentBillingFeaturesInner> updateWithResponse(String resourceGroupName,
         String resourceName, ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
@@ -238,17 +208,7 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
             resourceGroupName, resourceName, contentType, accept, billingFeaturesProperties, context);
     }
 
-    /**
-     * Update current billing features for an Application Insights component.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param billingFeaturesProperties The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component billing features.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInsightsComponentBillingFeaturesInner update(String resourceGroupName, String resourceName,
         ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties) {

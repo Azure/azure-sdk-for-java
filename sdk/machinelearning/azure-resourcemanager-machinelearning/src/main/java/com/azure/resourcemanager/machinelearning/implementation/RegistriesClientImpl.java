@@ -269,17 +269,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registry along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegistryInner> getByResourceGroupWithResponse(String resourceGroupName, String registryName,
         Context context) {
@@ -288,16 +278,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
             this.client.getSubscriptionId(), resourceGroupName, registryName, accept, context);
     }
 
-    /**
-     * Get registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return registry.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryInner getByResourceGroup(String resourceGroupName, String registryName) {
         return getByResourceGroupWithResponse(resourceGroupName, registryName, Context.NONE).getValue();
@@ -341,10 +322,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String registryName,
         RegistryInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, contentType, accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, registryName, body, Context.NONE);
     }
 
     /**
@@ -389,39 +367,14 @@ public final class RegistriesClientImpl implements RegistriesClient {
             RegistryInner.class, RegistryInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegistryInner>, RegistryInner> beginCreateOrUpdate(String resourceGroupName,
         String registryName, RegistryInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, registryName, body);
-        return this.client.<RegistryInner, RegistryInner>getLroResult(response, RegistryInner.class,
-            RegistryInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, registryName, body, Context.NONE);
     }
 
-    /**
-     * Create or update registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegistryInner>, RegistryInner> beginCreateOrUpdate(String resourceGroupName,
         String registryName, RegistryInner body, Context context) {
@@ -448,38 +401,18 @@ public final class RegistriesClientImpl implements RegistriesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryInner createOrUpdate(String resourceGroupName, String registryName, RegistryInner body) {
-        return beginCreateOrUpdate(resourceGroupName, registryName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, registryName, body, Context.NONE);
     }
 
-    /**
-     * Create or update registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryInner createOrUpdate(String resourceGroupName, String registryName, RegistryInner body,
         Context context) {
-        return beginCreateOrUpdate(resourceGroupName, registryName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, registryName, body, context));
     }
 
     /**
@@ -524,19 +457,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Update tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type along
-     * with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RegistryInner> updateWithResponse(String resourceGroupName, String registryName,
         PartialRegistryPartialTrackedResource body, Context context) {
@@ -546,17 +467,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
             this.client.getSubscriptionId(), resourceGroupName, registryName, contentType, accept, body, context);
     }
 
-    /**
-     * Update tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryInner update(String resourceGroupName, String registryName,
         PartialRegistryPartialTrackedResource body) {
@@ -593,8 +504,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String registryName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, registryName, Context.NONE);
     }
 
     /**
@@ -631,33 +541,13 @@ public final class RegistriesClientImpl implements RegistriesClient {
             this.client.getContext());
     }
 
-    /**
-     * Delete registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, registryName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, registryName, Context.NONE);
     }
 
-    /**
-     * Delete registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         Context context) {
@@ -680,33 +570,16 @@ public final class RegistriesClientImpl implements RegistriesClient {
         return beginDeleteAsync(resourceGroupName, registryName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName) {
-        beginDelete(resourceGroupName, registryName).getFinalResult();
+        delete(resourceGroupName, registryName, Context.NONE);
     }
 
-    /**
-     * Delete registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, Context context) {
-        beginDelete(resourceGroupName, registryName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, registryName, context));
     }
 
     /**
@@ -756,12 +629,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegistryInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<RegistryTrackedResourceArmPaginatedResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -784,31 +652,13 @@ public final class RegistriesClientImpl implements RegistriesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List registries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Registry entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List registries.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Registry entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -856,11 +706,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegistryInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<RegistryTrackedResourceArmPaginatedResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -881,27 +727,13 @@ public final class RegistriesClientImpl implements RegistriesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List registries by subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Registry entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List registries by subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of Registry entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RegistryInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -946,10 +778,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> removeRegionsWithResponse(String resourceGroupName, String registryName,
         RegistryInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.removeRegionsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, contentType, accept, body, Context.NONE);
+        return removeRegionsWithResponse(resourceGroupName, registryName, body, Context.NONE);
     }
 
     /**
@@ -994,39 +823,14 @@ public final class RegistriesClientImpl implements RegistriesClient {
             RegistryInner.class, RegistryInner.class, this.client.getContext());
     }
 
-    /**
-     * Remove regions from registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegistryInner>, RegistryInner> beginRemoveRegions(String resourceGroupName,
         String registryName, RegistryInner body) {
-        Response<BinaryData> response = removeRegionsWithResponse(resourceGroupName, registryName, body);
-        return this.client.<RegistryInner, RegistryInner>getLroResult(response, RegistryInner.class,
-            RegistryInner.class, Context.NONE);
+        return beginRemoveRegions(resourceGroupName, registryName, body, Context.NONE);
     }
 
-    /**
-     * Remove regions from registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RegistryInner>, RegistryInner> beginRemoveRegions(String resourceGroupName,
         String registryName, RegistryInner body, Context context) {
@@ -1053,38 +857,17 @@ public final class RegistriesClientImpl implements RegistriesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Remove regions from registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryInner removeRegions(String resourceGroupName, String registryName, RegistryInner body) {
-        return beginRemoveRegions(resourceGroupName, registryName, body).getFinalResult();
+        return removeRegions(resourceGroupName, registryName, body, Context.NONE);
     }
 
-    /**
-     * Remove regions from registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param body Details required to create the registry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegistryInner removeRegions(String resourceGroupName, String registryName, RegistryInner body,
         Context context) {
-        return beginRemoveRegions(resourceGroupName, registryName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginRemoveRegions(resourceGroupName, registryName, body, context));
     }
 
     /**
@@ -1121,11 +904,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegistryInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RegistryTrackedResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1185,11 +964,7 @@ public final class RegistriesClientImpl implements RegistriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RegistryInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RegistryTrackedResourceArmPaginatedResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

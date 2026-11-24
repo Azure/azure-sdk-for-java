@@ -179,12 +179,7 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskAssignmentInner> listSinglePage(String resourceGroupName, String storageTaskName,
         Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<StorageTaskAssignmentsListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, storageTaskName, maxpagesize, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, storageTaskName, maxpagesize, Context.NONE);
     }
 
     /**
@@ -212,38 +207,14 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName) {
         final Integer maxpagesize = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, storageTaskName, maxpagesize),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, storageTaskName, maxpagesize, Context.NONE);
     }
 
-    /**
-     * Lists Resource IDs of the Storage Task Assignments associated with this Storage Task.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
-     * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
-     * in the list response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String storageTaskName,
         Integer maxpagesize, Context context) {
@@ -281,11 +252,7 @@ public final class StorageTaskAssignmentsClientImpl implements StorageTaskAssign
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<StorageTaskAssignmentInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<StorageTaskAssignmentsListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

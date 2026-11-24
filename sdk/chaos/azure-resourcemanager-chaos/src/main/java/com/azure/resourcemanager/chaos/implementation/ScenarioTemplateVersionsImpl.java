@@ -45,8 +45,7 @@ public final class ScenarioTemplateVersionsImpl implements ScenarioTemplateVersi
     }
 
     public PagedIterable<ScenarioTemplateVersion> list(String scenarioTemplateName) {
-        PagedIterable<ScenarioTemplateVersionInner> inner = this.serviceClient().list(scenarioTemplateName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScenarioTemplateVersionImpl(inner1, this.manager()));
+        return this.list(scenarioTemplateName, Context.NONE);
     }
 
     public PagedIterable<ScenarioTemplateVersion> list(String scenarioTemplateName, Context context) {

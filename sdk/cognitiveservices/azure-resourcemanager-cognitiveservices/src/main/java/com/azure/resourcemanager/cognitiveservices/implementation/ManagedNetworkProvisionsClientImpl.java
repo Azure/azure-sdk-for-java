@@ -126,9 +126,7 @@ public final class ManagedNetworkProvisionsClientImpl implements ManagedNetworkP
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> provisionManagedNetworkWithResponse(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkProvisionOptions body) {
-        final String accept = "application/json";
-        return service.provisionManagedNetworkSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, accountName, managedNetworkName, accept, body,
+        return provisionManagedNetworkWithResponse(resourceGroupName, accountName, managedNetworkName, body,
             Context.NONE);
     }
 
@@ -218,48 +216,18 @@ public final class ManagedNetworkProvisionsClientImpl implements ManagedNetworkP
     private SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
         beginProvisionManagedNetwork(String resourceGroupName, String accountName, String managedNetworkName,
             ManagedNetworkProvisionOptions body) {
-        Response<BinaryData> response
-            = provisionManagedNetworkWithResponse(resourceGroupName, accountName, managedNetworkName, body);
-        return this.client.<ManagedNetworkProvisionStatusInner, ManagedNetworkProvisionStatusInner>getLroResult(
-            response, ManagedNetworkProvisionStatusInner.class, ManagedNetworkProvisionStatusInner.class, Context.NONE);
+        return beginProvisionManagedNetwork(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Provisions the managed network of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
         beginProvisionManagedNetwork(String resourceGroupName, String accountName, String managedNetworkName) {
         final ManagedNetworkProvisionOptions body = null;
-        Response<BinaryData> response
-            = provisionManagedNetworkWithResponse(resourceGroupName, accountName, managedNetworkName, body);
-        return this.client.<ManagedNetworkProvisionStatusInner, ManagedNetworkProvisionStatusInner>getLroResult(
-            response, ManagedNetworkProvisionStatusInner.class, ManagedNetworkProvisionStatusInner.class, Context.NONE);
+        return beginProvisionManagedNetwork(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Provisions the managed network of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body Managed Network Provisioning Options for a cognitive services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ManagedNetworkProvisionStatusInner>, ManagedNetworkProvisionStatusInner>
         beginProvisionManagedNetwork(String resourceGroupName, String accountName, String managedNetworkName,
@@ -310,43 +278,19 @@ public final class ManagedNetworkProvisionsClientImpl implements ManagedNetworkP
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Provisions the managed network of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkProvisionStatusInner provisionManagedNetwork(String resourceGroupName, String accountName,
         String managedNetworkName) {
         final ManagedNetworkProvisionOptions body = null;
-        return beginProvisionManagedNetwork(resourceGroupName, accountName, managedNetworkName, body).getFinalResult();
+        return provisionManagedNetwork(resourceGroupName, accountName, managedNetworkName, body, Context.NONE);
     }
 
-    /**
-     * Provisions the managed network of a cognitive services account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param managedNetworkName Name of the managedNetwork associated with the cognitive services account. Only
-     * 'default' is supported.
-     * @param body Managed Network Provisioning Options for a cognitive services account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedNetworkProvisionStatusInner provisionManagedNetwork(String resourceGroupName, String accountName,
         String managedNetworkName, ManagedNetworkProvisionOptions body, Context context) {
-        return beginProvisionManagedNetwork(resourceGroupName, accountName, managedNetworkName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginProvisionManagedNetwork(resourceGroupName, accountName, managedNetworkName, body, context));
     }
 }

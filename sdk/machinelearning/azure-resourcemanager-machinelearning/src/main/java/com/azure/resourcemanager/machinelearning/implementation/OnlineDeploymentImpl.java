@@ -110,11 +110,7 @@ public final class OnlineDeploymentImpl
     }
 
     public OnlineDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineDeployments()
-            .createOrUpdate(resourceGroupName, workspaceName, endpointName, deploymentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OnlineDeployment create(Context context) {
@@ -136,10 +132,7 @@ public final class OnlineDeploymentImpl
     }
 
     public OnlineDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineDeployments()
-            .update(resourceGroupName, workspaceName, endpointName, deploymentName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OnlineDeployment apply(Context context) {
@@ -168,11 +161,7 @@ public final class OnlineDeploymentImpl
     }
 
     public OnlineDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineDeployments()
-            .getWithResponse(resourceGroupName, workspaceName, endpointName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OnlineDeployment refresh(Context context) {

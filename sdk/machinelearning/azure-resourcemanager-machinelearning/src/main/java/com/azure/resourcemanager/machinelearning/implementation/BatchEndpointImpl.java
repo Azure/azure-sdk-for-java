@@ -104,10 +104,7 @@ public final class BatchEndpointImpl implements BatchEndpoint, BatchEndpoint.Def
     }
 
     public BatchEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchEndpoints()
-            .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public BatchEndpoint create(Context context) {
@@ -129,10 +126,7 @@ public final class BatchEndpointImpl implements BatchEndpoint, BatchEndpoint.Def
     }
 
     public BatchEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchEndpoints()
-            .update(resourceGroupName, workspaceName, endpointName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public BatchEndpoint apply(Context context) {
@@ -158,11 +152,7 @@ public final class BatchEndpointImpl implements BatchEndpoint, BatchEndpoint.Def
     }
 
     public BatchEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getBatchEndpoints()
-            .getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public BatchEndpoint refresh(Context context) {

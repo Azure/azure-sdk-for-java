@@ -256,17 +256,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkSecurityGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
         String networkSecurityGroupName, Context context) {
@@ -275,16 +265,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, accept, context);
     }
 
-    /**
-     * Gets the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network security group.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner getByResourceGroup(String resourceGroupName, String networkSecurityGroupName) {
         return getByResourceGroupWithResponse(resourceGroupName, networkSecurityGroupName, Context.NONE).getValue();
@@ -327,11 +308,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String networkSecurityGroupName,
         NetworkSecurityGroupInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, contentType, accept, resource,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, networkSecurityGroupName, resource, Context.NONE);
     }
 
     /**
@@ -377,38 +354,14 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             this.client.getContext());
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner resource) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, networkSecurityGroupName, resource);
-        return this.client.<NetworkSecurityGroupInner, NetworkSecurityGroupInner>getLroResult(response,
-            NetworkSecurityGroupInner.class, NetworkSecurityGroupInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner resource,
@@ -437,39 +390,19 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName,
         NetworkSecurityGroupInner resource) {
-        return beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, resource).getFinalResult();
+        return createOrUpdate(resourceGroupName, networkSecurityGroupName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or updates a network security group in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName,
         NetworkSecurityGroupInner resource, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, resource, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, resource, context));
     }
 
     /**
@@ -509,11 +442,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateTagsWithResponse(String resourceGroupName, String networkSecurityGroupName,
         NetworkSecurityGroupTagsUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateTagsSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, contentType, accept,
-            properties, Context.NONE);
+        return updateTagsWithResponse(resourceGroupName, networkSecurityGroupName, properties, Context.NONE);
     }
 
     /**
@@ -559,37 +488,14 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             this.client.getContext());
     }
 
-    /**
-     * Updates a network security group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginUpdateTags(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupTagsUpdate properties) {
-        Response<BinaryData> response = updateTagsWithResponse(resourceGroupName, networkSecurityGroupName, properties);
-        return this.client.<NetworkSecurityGroupInner, NetworkSecurityGroupInner>getLroResult(response,
-            NetworkSecurityGroupInner.class, NetworkSecurityGroupInner.class, Context.NONE);
+        return beginUpdateTags(resourceGroupName, networkSecurityGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a network security group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginUpdateTags(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupTagsUpdate properties,
@@ -618,39 +524,19 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates a network security group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner updateTags(String resourceGroupName, String networkSecurityGroupName,
         NetworkSecurityGroupTagsUpdate properties) {
-        return beginUpdateTags(resourceGroupName, networkSecurityGroupName, properties).getFinalResult();
+        return updateTags(resourceGroupName, networkSecurityGroupName, properties, Context.NONE);
     }
 
-    /**
-     * Updates a network security group tags.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return networkSecurityGroup resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkSecurityGroupInner updateTags(String resourceGroupName, String networkSecurityGroupName,
         NetworkSecurityGroupTagsUpdate properties, Context context) {
-        return beginUpdateTags(resourceGroupName, networkSecurityGroupName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdateTags(resourceGroupName, networkSecurityGroupName, properties, context));
     }
 
     /**
@@ -684,8 +570,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String networkSecurityGroupName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, networkSecurityGroupName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, networkSecurityGroupName, Context.NONE);
     }
 
     /**
@@ -724,33 +609,13 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             this.client.getContext());
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, networkSecurityGroupName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, networkSecurityGroupName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName,
         Context context) {
@@ -774,33 +639,16 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityGroupName) {
-        beginDelete(resourceGroupName, networkSecurityGroupName).getFinalResult();
+        delete(resourceGroupName, networkSecurityGroupName, Context.NONE);
     }
 
-    /**
-     * Deletes the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkSecurityGroupName Name of the network security group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkSecurityGroupName, Context context) {
-        beginDelete(resourceGroupName, networkSecurityGroupName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, networkSecurityGroupName, context));
     }
 
     /**
@@ -851,11 +699,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityGroupInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<NetworkSecurityGroupListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -878,31 +722,13 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all network security groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityGroupInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * Gets all network security groups in a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -949,11 +775,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityGroupInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<NetworkSecurityGroupListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -974,27 +796,13 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Gets all network security groups in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityGroupInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listAllNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * Gets all network security groups in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security groups in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityGroupInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listAllNextSinglePage(nextLink, context));
@@ -1032,11 +840,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityGroupInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkSecurityGroupListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1090,11 +894,7 @@ public final class NetworkSecurityGroupsClientImpl implements NetworkSecurityGro
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NetworkSecurityGroupInner> listAllNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NetworkSecurityGroupListResult> res
-            = service.listAllNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAllNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

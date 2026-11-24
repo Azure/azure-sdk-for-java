@@ -30,13 +30,8 @@ public final class AvsStorageContainerVolumesImpl implements AvsStorageContainer
 
     public AvsStorageContainerVolume update(String resourceGroupName, String storagePoolName,
         String storageContainerName, String volumeId, AvsStorageContainerVolumeUpdate properties) {
-        AvsStorageContainerVolumeInner inner = this.serviceClient()
-            .update(resourceGroupName, storagePoolName, storageContainerName, volumeId, properties);
-        if (inner != null) {
-            return new AvsStorageContainerVolumeImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.update(resourceGroupName, storagePoolName, storageContainerName, volumeId, properties,
+            Context.NONE);
     }
 
     public AvsStorageContainerVolume update(String resourceGroupName, String storagePoolName,
@@ -70,7 +65,7 @@ public final class AvsStorageContainerVolumesImpl implements AvsStorageContainer
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String storageContainerName, String volumeId) {
-        this.serviceClient().delete(resourceGroupName, storagePoolName, storageContainerName, volumeId);
+        this.delete(resourceGroupName, storagePoolName, storageContainerName, volumeId, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String storagePoolName, String storageContainerName, String volumeId,
@@ -80,9 +75,7 @@ public final class AvsStorageContainerVolumesImpl implements AvsStorageContainer
 
     public PagedIterable<AvsStorageContainerVolume> listByAvsStorageContainer(String resourceGroupName,
         String storagePoolName, String storageContainerName) {
-        PagedIterable<AvsStorageContainerVolumeInner> inner
-            = this.serviceClient().listByAvsStorageContainer(resourceGroupName, storagePoolName, storageContainerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvsStorageContainerVolumeImpl(inner1, this.manager()));
+        return this.listByAvsStorageContainer(resourceGroupName, storagePoolName, storageContainerName, Context.NONE);
     }
 
     public PagedIterable<AvsStorageContainerVolume> listByAvsStorageContainer(String resourceGroupName,

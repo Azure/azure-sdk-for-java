@@ -49,13 +49,7 @@ public final class RegistryEnvironmentVersionsImpl implements RegistryEnvironmen
 
     public EnvironmentVersion createOrUpdate(String resourceGroupName, String registryName, String environmentName,
         String version, EnvironmentVersionInner body) {
-        EnvironmentVersionInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, registryName, environmentName, version, body);
-        if (inner != null) {
-            return new EnvironmentVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, environmentName, version, body, Context.NONE);
     }
 
     public EnvironmentVersion createOrUpdate(String resourceGroupName, String registryName, String environmentName,
@@ -70,7 +64,7 @@ public final class RegistryEnvironmentVersionsImpl implements RegistryEnvironmen
     }
 
     public void delete(String resourceGroupName, String registryName, String environmentName, String version) {
-        this.serviceClient().delete(resourceGroupName, registryName, environmentName, version);
+        this.delete(resourceGroupName, registryName, environmentName, version, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String environmentName, String version,

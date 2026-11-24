@@ -81,17 +81,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
             @PathParam("historyDefinitionId") String historyDefinitionId, Context context);
     }
 
-    /**
-     * Create a scheduled or one-time Access Review History Definition.
-     * 
-     * @param scope The scope of the resource.
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param properties Access review history definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review History Definition along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessReviewHistoryDefinitionInner>> createWithResponseAsync(String scope,
         String historyDefinitionId, AccessReviewHistoryDefinitionProperties properties) {
@@ -159,17 +149,7 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
             properties, context);
     }
 
-    /**
-     * Create a scheduled or one-time Access Review History Definition.
-     * 
-     * @param scope The scope of the resource.
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param properties Access review history definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review History Definition on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessReviewHistoryDefinitionInner> createAsync(String scope, String historyDefinitionId,
         AccessReviewHistoryDefinitionProperties properties) {
@@ -177,51 +157,21 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create a scheduled or one-time Access Review History Definition.
-     * 
-     * @param scope The scope of the resource.
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param properties Access review history definition properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review History Definition along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessReviewHistoryDefinitionInner> createWithResponse(String scope, String historyDefinitionId,
         AccessReviewHistoryDefinitionProperties properties, Context context) {
         return createWithResponseAsync(scope, historyDefinitionId, properties, context).block();
     }
 
-    /**
-     * Create a scheduled or one-time Access Review History Definition.
-     * 
-     * @param scope The scope of the resource.
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param properties Access review history definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access Review History Definition.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessReviewHistoryDefinitionInner create(String scope, String historyDefinitionId,
         AccessReviewHistoryDefinitionProperties properties) {
         return createWithResponse(scope, historyDefinitionId, properties, Context.NONE).getValue();
     }
 
-    /**
-     * Delete an access review history definition.
-     * 
-     * @param scope The scope of the resource.
-     * @param historyDefinitionId The id of the access review history definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByIdWithResponseAsync(String scope, String historyDefinitionId) {
         if (this.client.getEndpoint() == null) {
@@ -271,46 +221,19 @@ public final class ScopeAccessReviewHistoryDefinitionOperationsClientImpl
         return service.deleteById(this.client.getEndpoint(), apiVersion, scope, historyDefinitionId, context);
     }
 
-    /**
-     * Delete an access review history definition.
-     * 
-     * @param scope The scope of the resource.
-     * @param historyDefinitionId The id of the access review history definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByIdAsync(String scope, String historyDefinitionId) {
         return deleteByIdWithResponseAsync(scope, historyDefinitionId).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete an access review history definition.
-     * 
-     * @param scope The scope of the resource.
-     * @param historyDefinitionId The id of the access review history definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByIdWithResponse(String scope, String historyDefinitionId, Context context) {
         return deleteByIdWithResponseAsync(scope, historyDefinitionId, context).block();
     }
 
-    /**
-     * Delete an access review history definition.
-     * 
-     * @param scope The scope of the resource.
-     * @param historyDefinitionId The id of the access review history definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteById(String scope, String historyDefinitionId) {
         deleteByIdWithResponse(scope, historyDefinitionId, Context.NONE);

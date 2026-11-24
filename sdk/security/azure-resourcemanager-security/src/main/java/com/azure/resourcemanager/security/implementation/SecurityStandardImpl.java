@@ -93,11 +93,7 @@ public final class SecurityStandardImpl
     }
 
     public SecurityStandard create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityStandards()
-            .createOrUpdateWithResponse(scope, standardId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public SecurityStandard create(Context context) {
@@ -119,11 +115,7 @@ public final class SecurityStandardImpl
     }
 
     public SecurityStandard apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityStandards()
-            .createOrUpdateWithResponse(scope, standardId, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public SecurityStandard apply(Context context) {
@@ -145,11 +137,7 @@ public final class SecurityStandardImpl
     }
 
     public SecurityStandard refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecurityStandards()
-            .getWithResponse(scope, standardId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public SecurityStandard refresh(Context context) {

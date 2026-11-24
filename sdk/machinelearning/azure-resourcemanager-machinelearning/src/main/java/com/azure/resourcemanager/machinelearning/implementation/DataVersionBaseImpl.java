@@ -64,12 +64,7 @@ public final class DataVersionBaseImpl implements DataVersionBase, DataVersionBa
     }
 
     public DataVersionBase create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataVersions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataVersionBase create(Context context) {
@@ -91,12 +86,7 @@ public final class DataVersionBaseImpl implements DataVersionBase, DataVersionBa
     }
 
     public DataVersionBase apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataVersions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataVersionBase apply(Context context) {
@@ -141,11 +131,7 @@ public final class DataVersionBaseImpl implements DataVersionBase, DataVersionBa
     }
 
     public DataVersionBase refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataVersions()
-            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataVersionBase refresh(Context context) {

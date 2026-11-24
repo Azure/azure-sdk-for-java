@@ -96,10 +96,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumes()
-            .create(resourceGroupName, elasticSanName, volumeGroupName, volumeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Volume create(Context context) {
@@ -121,10 +118,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumes()
-            .update(resourceGroupName, elasticSanName, volumeGroupName, volumeName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Volume apply(Context context) {
@@ -152,11 +146,7 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getVolumes()
-            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Volume refresh(Context context) {

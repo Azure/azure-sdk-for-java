@@ -82,11 +82,7 @@ public final class IdentityAssignmentImpl implements IdentityAssignment, Identit
     }
 
     public IdentityAssignment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIdentityAssignments()
-            .createOrReplace(resourceGroupName, clusterName, destinationName, assignmentName, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public IdentityAssignment create(Context context) {
@@ -104,11 +100,7 @@ public final class IdentityAssignmentImpl implements IdentityAssignment, Identit
     }
 
     public IdentityAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getIdentityAssignments()
-            .getWithResponse(resourceGroupName, clusterName, destinationName, assignmentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public IdentityAssignment refresh(Context context) {

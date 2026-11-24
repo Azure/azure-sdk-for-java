@@ -55,10 +55,7 @@ public final class WorkloadImpactImpl implements WorkloadImpact, WorkloadImpact.
     private String workloadImpactName;
 
     public WorkloadImpact create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadImpacts()
-            .create(workloadImpactName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkloadImpact create(Context context) {
@@ -75,11 +72,7 @@ public final class WorkloadImpactImpl implements WorkloadImpact, WorkloadImpact.
     }
 
     public WorkloadImpact refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkloadImpacts()
-            .getWithResponse(workloadImpactName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkloadImpact refresh(Context context) {

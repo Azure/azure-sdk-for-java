@@ -147,16 +147,7 @@ public final class ImpactCategoriesClientImpl implements ImpactCategoriesClient 
         return getWithResponseAsync(impactCategoryName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ImpactCategory.
-     * 
-     * @param impactCategoryName Name of the impact category.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ImpactCategory along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ImpactCategoryInner> getWithResponse(String impactCategoryName, Context context) {
         final String accept = "application/json";
@@ -164,15 +155,7 @@ public final class ImpactCategoriesClientImpl implements ImpactCategoriesClient 
             impactCategoryName, accept, context);
     }
 
-    /**
-     * Get a ImpactCategory.
-     * 
-     * @param impactCategoryName Name of the impact category.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ImpactCategory.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImpactCategoryInner get(String impactCategoryName) {
         return getWithResponse(impactCategoryName, Context.NONE).getValue();
@@ -244,12 +227,7 @@ public final class ImpactCategoriesClientImpl implements ImpactCategoriesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImpactCategoryInner> listSinglePage(String resourceType, String categoryName) {
-        final String accept = "application/json";
-        Response<ImpactCategoryListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                categoryName, resourceType, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceType, categoryName, Context.NONE);
     }
 
     /**
@@ -273,33 +251,14 @@ public final class ImpactCategoriesClientImpl implements ImpactCategoriesClient 
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ImpactCategory resources by subscription.
-     * 
-     * @param resourceType Filter by resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ImpactCategory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImpactCategoryInner> list(String resourceType) {
         final String categoryName = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceType, categoryName),
-            nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(resourceType, categoryName, Context.NONE);
     }
 
-    /**
-     * List ImpactCategory resources by subscription.
-     * 
-     * @param resourceType Filter by resource type.
-     * @param categoryName Filter by category name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ImpactCategory list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImpactCategoryInner> list(String resourceType, String categoryName, Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceType, categoryName, context),
@@ -338,11 +297,7 @@ public final class ImpactCategoriesClientImpl implements ImpactCategoriesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ImpactCategoryInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ImpactCategoryListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
