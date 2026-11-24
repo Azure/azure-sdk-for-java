@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fileshares.models.FileShareProperties;
+import com.azure.resourcemanager.fileshares.models.ManagedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
 
@@ -23,6 +24,11 @@ public final class FileShareInner extends Resource {
      * The resource-specific properties for this resource.
      */
     private FileShareProperties properties;
+
+    /*
+     * The managed service identities assigned to this resource.
+     */
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -67,6 +73,26 @@ public final class FileShareInner extends Resource {
      */
     public FileShareInner withProperties(FileShareProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the FileShareInner object itself.
+     */
+    public FileShareInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -136,6 +162,7 @@ public final class FileShareInner extends Resource {
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -168,6 +195,8 @@ public final class FileShareInner extends Resource {
                     deserializedFileShareInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedFileShareInner.properties = FileShareProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFileShareInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedFileShareInner.systemData = SystemData.fromJson(reader);
                 } else {

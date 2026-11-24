@@ -12,13 +12,13 @@ public final class FileShareProvisioningConstantsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareProvisioningConstants model = BinaryData.fromString(
-            "{\"baseIOPerSec\":1990259381,\"scalarIOPerSec\":33.20230783790736,\"baseThroughputMiBPerSec\":961118443,\"scalarThroughputMiBPerSec\":72.58622829423445,\"guardrailIOPerSecScalar\":22.407160322024012,\"guardrailThroughputScalar\":17.090889926292764}")
+            "{\"baseIOPerSec\":928435,\"scalarIOPerSec\":22.07190251300957,\"baseThroughputMiBPerSec\":1718564660,\"scalarThroughputMiBPerSec\":17.378484722859245,\"guardrailIOPerSecScalar\":36.28927386504993,\"guardrailThroughputScalar\":74.15893611983897}")
             .toObject(FileShareProvisioningConstants.class);
-        Assertions.assertEquals(1990259381, model.baseIOPerSec());
-        Assertions.assertEquals(33.20230783790736, model.scalarIOPerSec());
-        Assertions.assertEquals(961118443, model.baseThroughputMiBPerSec());
-        Assertions.assertEquals(72.58622829423445, model.scalarThroughputMiBPerSec());
-        Assertions.assertEquals(22.407160322024012, model.guardrailIOPerSecScalar());
-        Assertions.assertEquals(17.090889926292764, model.guardrailThroughputScalar());
+        Assertions.assertEquals(928435, model.baseIOPerSec());
+        Assertions.assertEquals(22.07190251300957, model.scalarIOPerSec());
+        Assertions.assertEquals(1718564660, model.baseThroughputMiBPerSec());
+        Assertions.assertEquals(17.378484722859245, model.scalarThroughputMiBPerSec());
+        Assertions.assertEquals(36.28927386504993, model.guardrailIOPerSecScalar());
+        Assertions.assertEquals(74.15893611983897, model.guardrailThroughputScalar());
     }
 }

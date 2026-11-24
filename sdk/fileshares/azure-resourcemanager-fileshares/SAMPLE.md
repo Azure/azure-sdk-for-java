@@ -15,8 +15,10 @@
 - [CreateOrUpdate](#fileshares_createorupdate)
 - [Delete](#fileshares_delete)
 - [GetByResourceGroup](#fileshares_getbyresourcegroup)
+- [GetRedundancyConversionStatus](#fileshares_getredundancyconversionstatus)
 - [List](#fileshares_list)
 - [ListByResourceGroup](#fileshares_listbyresourcegroup)
+- [StartRedundancyConversion](#fileshares_startredundancyconversion)
 - [Update](#fileshares_update)
 
 ## InformationalOperations
@@ -52,7 +54,7 @@ import java.util.Map;
  */
 public final class FileShareSnapshotsCreateOrUpdateFileShareSnapshotSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_CreateOrUpdate_MaximumSet.
@@ -91,7 +93,7 @@ public final class FileShareSnapshotsCreateOrUpdateFileShareSnapshotSamples {
  */
 public final class FileShareSnapshotsDeleteFileShareSnapshotSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_Delete_MaximumSet.
@@ -115,7 +117,7 @@ public final class FileShareSnapshotsDeleteFileShareSnapshotSamples {
  */
 public final class FileShareSnapshotsGetFileShareSnapshotSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_Get_MaximumSet.
@@ -138,7 +140,7 @@ public final class FileShareSnapshotsGetFileShareSnapshotSamples {
  */
 public final class FileShareSnapshotsListByFileShareSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_List_MinimumSet.
@@ -150,7 +152,7 @@ public final class FileShareSnapshotsListByFileShareSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_List_MaximumSet.
@@ -176,7 +178,7 @@ import java.util.Map;
  */
 public final class FileShareSnapshotsUpdateFileShareSnapshotSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShareSnapshot_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShareSnapshot_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShareSnapshot_Update_MaximumSet.
@@ -219,7 +221,7 @@ import com.azure.resourcemanager.fileshares.models.CheckNameAvailabilityRequest;
  */
 public final class FileSharesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_CheckNameAvailability_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_CheckNameAvailability_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_CheckNameAvailability_MaximumSet.
@@ -235,7 +237,7 @@ public final class FileSharesCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_CheckNameAvailability_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_CheckNameAvailability_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShares_CheckNameAvailability_MinimumSet.
@@ -254,15 +256,24 @@ public final class FileSharesCheckNameAvailabilitySamples {
 ### FileShares_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.fileshares.models.CustomerManagedKeyEncryption;
 import com.azure.resourcemanager.fileshares.models.EncryptionInTransitRequired;
+import com.azure.resourcemanager.fileshares.models.FileShareEncryption;
 import com.azure.resourcemanager.fileshares.models.FileShareProperties;
+import com.azure.resourcemanager.fileshares.models.InfrastructureEncryption;
+import com.azure.resourcemanager.fileshares.models.KeyEncryptionKeyIdentity;
+import com.azure.resourcemanager.fileshares.models.KeyEncryptionKeyIdentityType;
+import com.azure.resourcemanager.fileshares.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.fileshares.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.fileshares.models.MediaTier;
 import com.azure.resourcemanager.fileshares.models.NfsProtocolProperties;
 import com.azure.resourcemanager.fileshares.models.Protocol;
 import com.azure.resourcemanager.fileshares.models.PublicAccessProperties;
 import com.azure.resourcemanager.fileshares.models.PublicNetworkAccess;
 import com.azure.resourcemanager.fileshares.models.Redundancy;
+import com.azure.resourcemanager.fileshares.models.ScaleMode;
 import com.azure.resourcemanager.fileshares.models.ShareRootSquash;
+import com.azure.resourcemanager.fileshares.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -272,7 +283,7 @@ import java.util.Map;
  */
 public final class FileSharesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_CreateOrUpdate_MaximumSet.
@@ -290,6 +301,7 @@ public final class FileSharesCreateOrUpdateSamples {
                 .withMediaTier(MediaTier.SSD)
                 .withRedundancy(Redundancy.LOCAL)
                 .withProtocol(Protocol.NFS)
+                .withScaleMode(ScaleMode.SCALE)
                 .withProvisionedStorageGiB(8)
                 .withProvisionedIOPerSec(5)
                 .withProvisionedThroughputMiBPerSec(22)
@@ -297,7 +309,19 @@ public final class FileSharesCreateOrUpdateSamples {
                     .withEncryptionInTransitRequired(EncryptionInTransitRequired.ENABLED))
                 .withPublicAccessProperties(new PublicAccessProperties().withAllowedSubnets(Arrays.asList(
                     "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withEncryption(new FileShareEncryption().withInfrastructureEncryption(InfrastructureEncryption.ENABLED)
+                    .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryption()
+                        .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                            .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
+                            .withUserAssignedIdentityResourceId(
+                                "/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"))
+                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
+                    new UserAssignedIdentity())))
             .create();
     }
 
@@ -323,7 +347,7 @@ public final class FileSharesCreateOrUpdateSamples {
  */
 public final class FileSharesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_Delete_MaximumSet.
@@ -344,7 +368,7 @@ public final class FileSharesDeleteSamples {
  */
 public final class FileSharesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_Get_MaximumSet.
@@ -358,6 +382,43 @@ public final class FileSharesGetByResourceGroupSamples {
 }
 ```
 
+### FileShares_GetRedundancyConversionStatus
+
+```java
+/**
+ * Samples for FileShares GetRedundancyConversionStatus.
+ */
+public final class FileSharesGetRedundancyConversionStatusSamples {
+    /*
+     * x-ms-original-file: 2026-09-01/FileShares_GetRedundancyConversionStatus_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: FileShares_GetRedundancyConversionStatus_MaximumSet.
+     * 
+     * @param manager Entry point to FileSharesManager.
+     */
+    public static void fileSharesGetRedundancyConversionStatusMaximumSet(
+        com.azure.resourcemanager.fileshares.FileSharesManager manager) {
+        manager.fileShares()
+            .getRedundancyConversionStatusWithResponse("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-09-01/FileShares_GetRedundancyConversionStatus_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: FileShares_GetRedundancyConversionStatus_MinimumSet.
+     * 
+     * @param manager Entry point to FileSharesManager.
+     */
+    public static void fileSharesGetRedundancyConversionStatusMinimumSet(
+        com.azure.resourcemanager.fileshares.FileSharesManager manager) {
+        manager.fileShares()
+            .getRedundancyConversionStatusWithResponse("rgfileshares", "fileshare", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### FileShares_List
 
 ```java
@@ -366,7 +427,7 @@ public final class FileSharesGetByResourceGroupSamples {
  */
 public final class FileSharesListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShares_ListBySubscription_MinimumSet.
@@ -379,7 +440,7 @@ public final class FileSharesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_ListBySubscription_MaximumSet.
@@ -401,7 +462,7 @@ public final class FileSharesListSamples {
  */
 public final class FileSharesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_ListByParent_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_ListByParent_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShares_ListByParent_MinimumSet.
@@ -414,7 +475,7 @@ public final class FileSharesListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_ListByParent_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_ListByParent_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_ListByParent_MaximumSet.
@@ -428,16 +489,54 @@ public final class FileSharesListByResourceGroupSamples {
 }
 ```
 
+### FileShares_StartRedundancyConversion
+
+```java
+import com.azure.resourcemanager.fileshares.models.Redundancy;
+import com.azure.resourcemanager.fileshares.models.StartRedundancyConversionInput;
+import com.azure.resourcemanager.fileshares.models.StartRedundancyConversionRequest;
+
+/**
+ * Samples for FileShares StartRedundancyConversion.
+ */
+public final class FileSharesStartRedundancyConversionSamples {
+    /*
+     * x-ms-original-file: 2026-09-01/FileShares_StartRedundancyConversion_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: FileShares_StartRedundancyConversion_MaximumSet.
+     * 
+     * @param manager Entry point to FileSharesManager.
+     */
+    public static void
+        fileSharesStartRedundancyConversionMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
+        manager.fileShares()
+            .startRedundancyConversionWithResponse("rgfileshares", "fileshare",
+                new StartRedundancyConversionRequest()
+                    .withProperties(new StartRedundancyConversionInput().withTargetRedundancy(Redundancy.ZONE)),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### FileShares_Update
 
 ```java
+import com.azure.resourcemanager.fileshares.models.CustomerManagedKeyEncryption;
 import com.azure.resourcemanager.fileshares.models.EncryptionInTransitRequired;
 import com.azure.resourcemanager.fileshares.models.FileShare;
+import com.azure.resourcemanager.fileshares.models.FileShareEncryption;
 import com.azure.resourcemanager.fileshares.models.FileShareUpdateProperties;
+import com.azure.resourcemanager.fileshares.models.InfrastructureEncryption;
+import com.azure.resourcemanager.fileshares.models.KeyEncryptionKeyIdentity;
+import com.azure.resourcemanager.fileshares.models.KeyEncryptionKeyIdentityType;
+import com.azure.resourcemanager.fileshares.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.fileshares.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.fileshares.models.NfsProtocolProperties;
 import com.azure.resourcemanager.fileshares.models.PublicAccessProperties;
 import com.azure.resourcemanager.fileshares.models.PublicNetworkAccess;
 import com.azure.resourcemanager.fileshares.models.ShareRootSquash;
+import com.azure.resourcemanager.fileshares.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -447,7 +546,7 @@ import java.util.Map;
  */
 public final class FileSharesUpdateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShares_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShares_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShares_Update_MaximumSet.
@@ -460,6 +559,11 @@ public final class FileSharesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("key173", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
+                    new UserAssignedIdentity())))
             .withProperties(new FileShareUpdateProperties().withProvisionedStorageGiB(7)
                 .withProvisionedIOPerSec(1)
                 .withProvisionedThroughputMiBPerSec(29)
@@ -467,7 +571,14 @@ public final class FileSharesUpdateSamples {
                     .withEncryptionInTransitRequired(EncryptionInTransitRequired.ENABLED))
                 .withPublicAccessProperties(new PublicAccessProperties().withAllowedSubnets(Arrays.asList(
                     "/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3")))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withEncryption(new FileShareEncryption().withInfrastructureEncryption(InfrastructureEncryption.ENABLED)
+                    .withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryption()
+                        .withKeyEncryptionKeyIdentity(new KeyEncryptionKeyIdentity()
+                            .withIdentityType(KeyEncryptionKeyIdentityType.USER_ASSIGNED_IDENTITY)
+                            .withUserAssignedIdentityResourceId(
+                                "/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"))
+                        .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
             .apply();
     }
 
@@ -488,12 +599,18 @@ public final class FileSharesUpdateSamples {
 ### InformationalOperations_GetLimits
 
 ```java
+import com.azure.resourcemanager.fileshares.models.FileShareLimitsRequest;
+import com.azure.resourcemanager.fileshares.models.FileShareOfferInput;
+import com.azure.resourcemanager.fileshares.models.MediaTier;
+import com.azure.resourcemanager.fileshares.models.Protocol;
+import com.azure.resourcemanager.fileshares.models.ScaleMode;
+
 /**
  * Samples for InformationalOperations GetLimits.
  */
 public final class InformationalOperationsGetLimitsSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetLimits_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetLimits_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetLimits_MinimumSet.
@@ -501,11 +618,13 @@ public final class InformationalOperationsGetLimitsSamples {
      * @param manager Entry point to FileSharesManager.
      */
     public static void fileShareGetLimitsMinimumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
-        manager.informationalOperations().getLimitsWithResponse("westus", com.azure.core.util.Context.NONE);
+        manager.informationalOperations()
+            .getLimitsWithResponse("westus", new FileShareLimitsRequest().withProperties(new FileShareOfferInput()),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetLimits_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetLimits_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetLimits_MaximumSet.
@@ -513,7 +632,12 @@ public final class InformationalOperationsGetLimitsSamples {
      * @param manager Entry point to FileSharesManager.
      */
     public static void fileShareGetLimitsMaximumSet(com.azure.resourcemanager.fileshares.FileSharesManager manager) {
-        manager.informationalOperations().getLimitsWithResponse("westus", com.azure.core.util.Context.NONE);
+        manager.informationalOperations()
+            .getLimitsWithResponse("westus",
+                new FileShareLimitsRequest().withProperties(new FileShareOfferInput().withProtocol(Protocol.NFS)
+                    .withMediaTier(MediaTier.HDD)
+                    .withScaleMode(ScaleMode.SCALE)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -523,13 +647,16 @@ public final class InformationalOperationsGetLimitsSamples {
 ```java
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationInput;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationRequest;
+import com.azure.resourcemanager.fileshares.models.MediaTier;
+import com.azure.resourcemanager.fileshares.models.Protocol;
+import com.azure.resourcemanager.fileshares.models.ScaleMode;
 
 /**
  * Samples for InformationalOperations GetProvisioningRecommendation.
  */
 public final class InformationalOperationsGetProvisioningRecommendationSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetProvisioningRecommendation_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetProvisioningRecommendation_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetProvisioningRecommendation_MaximumSet.
@@ -541,12 +668,15 @@ public final class InformationalOperationsGetProvisioningRecommendationSamples {
         manager.informationalOperations()
             .getProvisioningRecommendationWithResponse("westus",
                 new FileShareProvisioningRecommendationRequest()
-                    .withProperties(new FileShareProvisioningRecommendationInput().withProvisionedStorageGiB(7)),
+                    .withProperties(new FileShareProvisioningRecommendationInput().withProvisionedStorageGiB(7)
+                        .withProtocol(Protocol.NFS)
+                        .withMediaTier(MediaTier.HDD)
+                        .withScaleMode(ScaleMode.SCALE)),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetProvisioningRecommendation_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetProvisioningRecommendation_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetProvisioningRecommendation_MinimumSet.
@@ -572,7 +702,7 @@ public final class InformationalOperationsGetProvisioningRecommendationSamples {
  */
 public final class InformationalOperationsGetUsageDataSamples {
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetUsageData_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetUsageData_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetUsageData_MaximumSet.
@@ -584,7 +714,7 @@ public final class InformationalOperationsGetUsageDataSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/FileShare_GetUsageData_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/FileShare_GetUsageData_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileShare_GetUsageData_MinimumSet.
@@ -605,7 +735,7 @@ public final class InformationalOperationsGetUsageDataSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet.
@@ -617,7 +747,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-06-01/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-01/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet.
@@ -642,7 +772,7 @@ import com.azure.resourcemanager.fileshares.models.PrivateLinkServiceConnectionS
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateEndpointConnections_Create.json
+     * x-ms-original-file: 2026-09-01/PrivateEndpointConnections_Create.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Create.
@@ -670,7 +800,7 @@ public final class PrivateEndpointConnectionsCreateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateEndpointConnections_Delete.json
+     * x-ms-original-file: 2026-09-01/PrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete.
@@ -693,7 +823,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateEndpointConnections_Get.json
+     * x-ms-original-file: 2026-09-01/PrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Get.
@@ -716,7 +846,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListByFileShareSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateEndpointConnections_ListByFileShare.json
+     * x-ms-original-file: 2026-09-01/PrivateEndpointConnections_ListByFileShare.json
      */
     /**
      * Sample code: PrivateEndpointConnections_ListByFileShare.
@@ -739,7 +869,7 @@ public final class PrivateEndpointConnectionsListByFileShareSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateLinkResources_Get.json
+     * x-ms-original-file: 2026-09-01/PrivateLinkResources_Get.json
      */
     /**
      * Sample code: Get PrivateLinkResource.
@@ -761,7 +891,7 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2026-06-01/PrivateLinkResources_ListByFileShare.json
+     * x-ms-original-file: 2026-09-01/PrivateLinkResources_ListByFileShare.json
      */
     /**
      * Sample code: List PrivateLinkResources.

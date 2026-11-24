@@ -14,18 +14,18 @@ public final class NfsProtocolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NfsProtocolProperties model
-            = BinaryData.fromString("{\"rootSquash\":\"NoRootSquash\",\"encryptionInTransitRequired\":\"Enabled\"}")
+            = BinaryData.fromString("{\"rootSquash\":\"RootSquash\",\"encryptionInTransitRequired\":\"Disabled\"}")
                 .toObject(NfsProtocolProperties.class);
-        Assertions.assertEquals(ShareRootSquash.NO_ROOT_SQUASH, model.rootSquash());
-        Assertions.assertEquals(EncryptionInTransitRequired.ENABLED, model.encryptionInTransitRequired());
+        Assertions.assertEquals(ShareRootSquash.ROOT_SQUASH, model.rootSquash());
+        Assertions.assertEquals(EncryptionInTransitRequired.DISABLED, model.encryptionInTransitRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NfsProtocolProperties model = new NfsProtocolProperties().withRootSquash(ShareRootSquash.NO_ROOT_SQUASH)
-            .withEncryptionInTransitRequired(EncryptionInTransitRequired.ENABLED);
+        NfsProtocolProperties model = new NfsProtocolProperties().withRootSquash(ShareRootSquash.ROOT_SQUASH)
+            .withEncryptionInTransitRequired(EncryptionInTransitRequired.DISABLED);
         model = BinaryData.fromObject(model).toObject(NfsProtocolProperties.class);
-        Assertions.assertEquals(ShareRootSquash.NO_ROOT_SQUASH, model.rootSquash());
-        Assertions.assertEquals(EncryptionInTransitRequired.ENABLED, model.encryptionInTransitRequired());
+        Assertions.assertEquals(ShareRootSquash.ROOT_SQUASH, model.rootSquash());
+        Assertions.assertEquals(EncryptionInTransitRequired.DISABLED, model.encryptionInTransitRequired());
     }
 }

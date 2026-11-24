@@ -6,21 +6,34 @@ package com.azure.resourcemanager.fileshares.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.fileshares.models.FileShareProvisioningRecommendationInput;
+import com.azure.resourcemanager.fileshares.models.MediaTier;
+import com.azure.resourcemanager.fileshares.models.Protocol;
+import com.azure.resourcemanager.fileshares.models.ScaleMode;
 import org.junit.jupiter.api.Assertions;
 
 public final class FileShareProvisioningRecommendationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileShareProvisioningRecommendationInput model = BinaryData.fromString("{\"provisionedStorageGiB\":1877680716}")
+        FileShareProvisioningRecommendationInput model = BinaryData.fromString(
+            "{\"provisionedStorageGiB\":643021552,\"protocol\":\"NFS\",\"mediaTier\":\"HDD\",\"scaleMode\":\"Compatibility\"}")
             .toObject(FileShareProvisioningRecommendationInput.class);
-        Assertions.assertEquals(1877680716, model.provisionedStorageGiB());
+        Assertions.assertEquals(643021552, model.provisionedStorageGiB());
+        Assertions.assertEquals(Protocol.NFS, model.protocol());
+        Assertions.assertEquals(MediaTier.HDD, model.mediaTier());
+        Assertions.assertEquals(ScaleMode.COMPATIBILITY, model.scaleMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FileShareProvisioningRecommendationInput model
-            = new FileShareProvisioningRecommendationInput().withProvisionedStorageGiB(1877680716);
+            = new FileShareProvisioningRecommendationInput().withProvisionedStorageGiB(643021552)
+                .withProtocol(Protocol.NFS)
+                .withMediaTier(MediaTier.HDD)
+                .withScaleMode(ScaleMode.COMPATIBILITY);
         model = BinaryData.fromObject(model).toObject(FileShareProvisioningRecommendationInput.class);
-        Assertions.assertEquals(1877680716, model.provisionedStorageGiB());
+        Assertions.assertEquals(643021552, model.provisionedStorageGiB());
+        Assertions.assertEquals(Protocol.NFS, model.protocol());
+        Assertions.assertEquals(MediaTier.HDD, model.mediaTier());
+        Assertions.assertEquals(ScaleMode.COMPATIBILITY, model.scaleMode());
     }
 }

@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class FileShareSnapshotUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileShareSnapshotUpdateProperties model
-            = BinaryData.fromString("{\"metadata\":{\"ochcbonqvpkvl\":\"mngnzscxaqw\"}}")
-                .toObject(FileShareSnapshotUpdateProperties.class);
-        Assertions.assertEquals("mngnzscxaqw", model.metadata().get("ochcbonqvpkvl"));
+        FileShareSnapshotUpdateProperties model = BinaryData.fromString(
+            "{\"metadata\":{\"y\":\"lzevgbmqjqab\",\"wnfnbacf\":\"mivkwlzuvcc\",\"bqqwxrj\":\"onlebxetqgtzxdpn\",\"mpmngnzscxaqwoo\":\"eallnwsubisnj\"}}")
+            .toObject(FileShareSnapshotUpdateProperties.class);
+        Assertions.assertEquals("lzevgbmqjqab", model.metadata().get("y"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FileShareSnapshotUpdateProperties model
-            = new FileShareSnapshotUpdateProperties().withMetadata(mapOf("ochcbonqvpkvl", "mngnzscxaqw"));
+            = new FileShareSnapshotUpdateProperties().withMetadata(mapOf("y", "lzevgbmqjqab", "wnfnbacf", "mivkwlzuvcc",
+                "bqqwxrj", "onlebxetqgtzxdpn", "mpmngnzscxaqwoo", "eallnwsubisnj"));
         model = BinaryData.fromObject(model).toObject(FileShareSnapshotUpdateProperties.class);
-        Assertions.assertEquals("mngnzscxaqw", model.metadata().get("ochcbonqvpkvl"));
+        Assertions.assertEquals("lzevgbmqjqab", model.metadata().get("y"));
     }
 
     // Use "Map.of" if available
