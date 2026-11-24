@@ -8,10 +8,6 @@
 - Added feature flag resource models for conditions, variants, allocation, and telemetry, plus selectors, conditional operations, paged listing, and revision history.
 - Feature flag clients list feature flag labels, while configuration clients continue to list key-value labels.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 - Updated to support `2026-05-01-preview`
