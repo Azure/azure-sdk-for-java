@@ -48,6 +48,10 @@ foreach ($file in Get-ChildItem -LiteralPath (Join-Path $root 'PackageInfo') -Fi
     $sources = @($package.AssociatedArtifacts | Where-Object {
         $_.Classifier -eq 'sources' -and $_.Type -eq 'jar'
     })
+    if ($sources.Count -eq 0) {
+        Write-Warning "No staged sources JAR for $($package.FullyQualifiedName); skipping API hash."
+        continue
+    }
     if ($sources.Count -ne 1) {
         throw "Expected one staged sources JAR for $($package.FullyQualifiedName)."
     }
@@ -63,7 +67,10 @@ foreach ($file in Get-ChildItem -LiteralPath (Join-Path $root 'PackageInfo') -Fi
         & $JavaExecutable -jar $tool --sources-jar $sources[0].File.FullName --package-relative-path $path `
             --output-directory $temporary
         if ($LASTEXITCODE -ne 0) {
-            throw "API hash generation failed for $($package.FullyQualifiedName) with exit code $LASTEXITCODE."
+            Write-Warning "API hash generation failed for $($package.FullyQualifiedName) with exit code $LASTEXITCODE; skipping API hash."
+            # PowerShell@2 also checks the last native exit code.
+            $global:LASTEXITCODE = 0
+            continue
         }
         $markdown = Join-Path $temporary 'api.md'
         $metadata = @(Get-Content -LiteralPath (Join-Path $temporary 'api.metadata.yml'))

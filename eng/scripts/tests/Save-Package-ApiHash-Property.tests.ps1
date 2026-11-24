@@ -30,7 +30,7 @@ BeforeAll {
     }
 }
 
-Describe 'Release artifact API hashes' {
+Describe 'Release artifact API hashes' -Tag 'UnitTest' {
     BeforeEach {
         $script:Staging = Join-Path $TestDrive ([guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Path (Join-Path $script:Staging 'PackageInfo') -Force | Out-Null
@@ -123,12 +123,43 @@ $global:LASTEXITCODE = 0
         Should -Invoke java -Times 0
     }
 
-    It 'rejects missing release sources and leaves PackageInfo unchanged' {
+    It 'warns and skips missing release sources without changing PackageInfo' {
         $file = New-PackageFixture 'azure-example'
         $before = Get-Content -LiteralPath $file -Raw
         Remove-Item -LiteralPath (Join-Path $script:Staging 'com.azure' 'azure-example' 'azure-example-1.0.0-sources.jar')
-        { & $script:HashScript -ArtifactStagingDirectory $script:Staging -ToolJar $tool } |
-            Should -Throw '*one staged sources JAR*'
+        & $script:HashScript -ArtifactStagingDirectory $script:Staging -ToolJar $tool `
+            -WarningVariable warnings -WarningAction SilentlyContinue
+        $warnings | Should -HaveCount 1
+        $warnings[0].Message | Should -Match 'No staged sources JAR.*skipping API hash'
+        Should -Invoke java -Times 0
+        Get-Content -LiteralPath $file -Raw | Should -Be $before
+    }
+
+    It 'continues hashing other packages when a sources JAR is missing' {
+        $missing = New-PackageFixture 'azure-missing'
+        $before = Get-Content -LiteralPath $missing -Raw
+        Remove-Item -LiteralPath (Join-Path $script:Staging 'com.azure' 'azure-missing' 'azure-missing-1.0.0-sources.jar')
+        $valid = New-PackageFixture 'azure-valid'
+
+        & $script:HashScript -ArtifactStagingDirectory $script:Staging -ToolJar $tool `
+            -WarningAction SilentlyContinue
+
+        Get-Content -LiteralPath $missing -Raw | Should -Be $before
+        (Get-Content -LiteralPath $valid -Raw | ConvertFrom-Json).ApiHash | Should -Match '^[0-9a-f]{64}$'
+        Should -Invoke java -Times 1
+    }
+
+    It 'warns and skips failed API generation without failing the calling task' {
+        $file = New-PackageFixture 'azure-example'
+        $before = Get-Content -LiteralPath $file -Raw
+        Mock java { $global:LASTEXITCODE = 1 }
+
+        & $script:HashScript -ArtifactStagingDirectory $script:Staging -ToolJar $tool `
+            -WarningVariable warnings -WarningAction SilentlyContinue
+
+        $warnings | Should -HaveCount 1
+        $warnings[0].Message | Should -Match 'generation failed.*exit code 1.*skipping API hash'
+        $global:LASTEXITCODE | Should -Be 0
         Get-Content -LiteralPath $file -Raw | Should -Be $before
     }
 

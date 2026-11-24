@@ -70,4 +70,4 @@ Verification also runs SDK Checkstyle, Spotless formatting, and Codesnippet chec
 
 Both modules are validated by `sdk/tools/ci.yml`, with release disabled. This repository's ARH integration builds the tool from source and does not publish it.
 
-SDK build pipelines also use this executable on staged sources JARs to save `ApiHash` in PackageInfo JSON. The hash uses the same Markdown bytes as ARH generation; package-info files travel with the signed artifacts. POM-only packages have no API hash.
+SDK build pipelines also use this executable on staged sources JARs to save `ApiHash` in PackageInfo JSON. The hash uses the same Markdown bytes as ARH generation; package-info files travel with the signed artifacts. POM-only packages have no API hash. Missing sources JARs or failed API generation produce a warning and skip hashing; existing Maven artifact validation remains unchanged.
