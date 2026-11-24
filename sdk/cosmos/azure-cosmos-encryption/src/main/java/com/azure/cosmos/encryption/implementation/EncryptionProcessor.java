@@ -392,14 +392,10 @@ public class EncryptionProcessor {
                 }
             }
         } else if (propertyValueHolder.isArray()) {
-            encryptArray(encryptionSettings, (ArrayNode) propertyValueHolder);
+            encryptArray(encryptionSettings, (ArrayNode) propertyValueHolder, propertyName);
         } else {
             encryptAndSerializeValue(encryptionSettings, (ObjectNode) objectNode, propertyValueHolder, propertyName);
         }
-    }
-
-    private static boolean isLegacyContainerArray(ArrayNode arrayNode) {
-        return arrayNode.size() > 0 && (arrayNode.get(0).isObject() || arrayNode.get(0).isArray());
     }
 
     private void encryptPatchArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
@@ -413,65 +409,126 @@ public class EncryptionProcessor {
 
     private void encryptMixedPatchArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
                                         String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
-        for (int i = 0; i < arrayNode.size(); i++) {
-            JsonNode nodeInArray = arrayNode.get(i);
+        ArrayNode encryptedArray = arrayNode.arrayNode();
+        for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
+            JsonNode nodeInArray = arrayIterator.next();
             if (nodeInArray.isObject() || nodeInArray.isArray()) {
-                arrayNode.set(i, encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
+                encryptedArray.add(encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
             } else if (!nodeInArray.isNull()) {
-                arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
-                    nodeInArray, StringUtils.EMPTY)));
+                encryptedArray.add(encryptAndSerializeValue(encryptionSettings, null, nodeInArray, StringUtils.EMPTY));
+            } else {
+                encryptedArray.add(nodeInArray);
             }
         }
+        arrayNode.removeAll();
+        arrayNode.addAll(encryptedArray);
     }
 
     private void encryptLegacyPatchArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
                                          String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
-        boolean containerArray = isLegacyContainerArray(arrayNode);
-        for (int i = 0; i < arrayNode.size(); i++) {
-            JsonNode nodeInArray = arrayNode.get(i);
-            if (!containerArray) {
-                arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
-                    nodeInArray, StringUtils.EMPTY)));
-            } else if (nodeInArray.isObject() || nodeInArray.isArray()) {
-                arrayNode.set(i, encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
+        if (arrayNode.size() == 0) {
+            return;
+        }
+        if (arrayNode.elements().next().isObject() || arrayNode.elements().next().isArray()) {
+            List<JsonNode> encryptedArray = new ArrayList<>();
+            for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
+                JsonNode nodeInArray = arrayIterator.next();
+                if (nodeInArray.isArray()) {
+                    encryptedArray.add(encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
+                } else {
+                    for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
+                        Map.Entry<String, JsonNode> child = it.next();
+                        if (child.getValue().isObject() || child.getValue().isArray()) {
+                            JsonNode encryptedValue = encryptAndSerializePatchProperty(encryptionSettings,
+                                child.getValue(), child.getKey());
+                            ((ObjectNode) nodeInArray).set(child.getKey(), encryptedValue);
+                        } else if (!child.getValue().isNull()) {
+                            encryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
+                                child.getKey());
+                        }
+                    }
+                    encryptedArray.add(nodeInArray);
+                }
+            }
+            arrayNode.removeAll();
+            for (JsonNode encryptedValue : encryptedArray) {
+                arrayNode.add(encryptedValue);
+            }
+        } else {
+            List<byte[]> encryptedArray = new ArrayList<>();
+            for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); ) {
+                encryptedArray.add(encryptAndSerializeValue(encryptionSettings, null, it.next(), StringUtils.EMPTY));
+            }
+            arrayNode.removeAll();
+            for (byte[] encryptedValue : encryptedArray) {
+                arrayNode.add(encryptedValue);
             }
         }
     }
 
-    private void encryptLegacyArray(EncryptionSettings encryptionSettings,
-                                    ArrayNode arrayNode) throws MicrosoftDataEncryptionException, JsonProcessingException {
-        boolean containerArray = isLegacyContainerArray(arrayNode);
-        for (int i = 0; i < arrayNode.size(); i++) {
-            JsonNode nodeInArray = arrayNode.get(i);
-            if (!containerArray) {
-                arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
-                    nodeInArray, StringUtils.EMPTY)));
-            } else if (nodeInArray.isObject() || nodeInArray.isArray()) {
-                encryptAndSerializeProperty(encryptionSettings, null, nodeInArray, StringUtils.EMPTY);
+    private void encryptLegacyArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
+                                    String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
+        Iterator<JsonNode> checkArrayIterator = arrayNode.elements();
+        boolean hasElements = checkArrayIterator.hasNext();
+        if (hasElements) {
+            JsonNode nextNode = checkArrayIterator.next();
+            hasElements &= nextNode.isObject() || nextNode.isArray();
+        }
+        if (hasElements) {
+            for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
+                JsonNode nodeInArray = arrayIterator.next();
+                if (nodeInArray.isArray()) {
+                    encryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray, StringUtils.EMPTY);
+                } else {
+                    for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
+                        Map.Entry<String, JsonNode> child = it.next();
+                        if (child.getValue().isObject() || child.getValue().isArray()) {
+                            encryptAndSerializeProperty(encryptionSettings, (ObjectNode) nodeInArray,
+                                child.getValue(), propertyName);
+                        } else if (!child.getValue().isNull()) {
+                            encryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
+                                child.getKey());
+                        }
+                    }
+                }
+            }
+        } else {
+            List<byte[]> encryptedArray = new ArrayList<>();
+            for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); ) {
+                encryptedArray.add(encryptAndSerializeValue(encryptionSettings, null, it.next(), StringUtils.EMPTY));
+            }
+            arrayNode.removeAll();
+            for (byte[] encryptedValue : encryptedArray) {
+                arrayNode.add(encryptedValue);
             }
         }
     }
 
-    private void encryptArray(EncryptionSettings encryptionSettings,
-                              ArrayNode arrayNode) throws MicrosoftDataEncryptionException, JsonProcessingException {
+    private void encryptArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
+                              String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
         if (this.mixedArrayEncryptionEnabled) {
             encryptMixedArray(encryptionSettings, arrayNode);
         } else {
-            encryptLegacyArray(encryptionSettings, arrayNode);
+            encryptLegacyArray(encryptionSettings, arrayNode, propertyName);
         }
     }
 
     private void encryptMixedArray(EncryptionSettings encryptionSettings,
                                    ArrayNode arrayNode) throws MicrosoftDataEncryptionException, JsonProcessingException {
-        for (int i = 0; i < arrayNode.size(); i++) {
-            JsonNode nodeInArray = arrayNode.get(i);
+        ArrayNode encryptedArray = arrayNode.arrayNode();
+        for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
+            JsonNode nodeInArray = arrayIterator.next();
             if (nodeInArray.isObject() || nodeInArray.isArray()) {
-                encryptAndSerializeProperty(encryptionSettings, null, nodeInArray, StringUtils.EMPTY);
+                encryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray, StringUtils.EMPTY);
+                encryptedArray.add(nodeInArray);
             } else if (!nodeInArray.isNull()) {
-                arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
-                    nodeInArray, StringUtils.EMPTY)));
+                encryptedArray.add(encryptAndSerializeValue(encryptionSettings, null, nodeInArray, StringUtils.EMPTY));
+            } else {
+                encryptedArray.add(nodeInArray);
             }
         }
+        arrayNode.removeAll();
+        arrayNode.addAll(encryptedArray);
     }
 
     public String encryptAndSerializeValue(EncryptionSettings encryptionSettings, String propertyValue, String propertyName) throws MicrosoftDataEncryptionException {
@@ -606,25 +663,60 @@ public class EncryptionProcessor {
 
     private void decryptMixedArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
                                    String propertyName) throws MicrosoftDataEncryptionException, IOException {
-        for (int i = 0; i < arrayNode.size(); i++) {
-            JsonNode nodeInArray = arrayNode.get(i);
+        List<JsonNode> decryptedArray = new ArrayList<>();
+        int index = 0;
+        for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); index++) {
+            JsonNode nodeInArray = arrayIterator.next();
             if (nodeInArray.isObject() || nodeInArray.isArray()) {
-                decryptAndSerializeProperty(encryptionSettings, null, nodeInArray, propertyName);
+                decryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray, propertyName);
+                decryptedArray.add(nodeInArray);
             } else if (!nodeInArray.isNull()) {
-                arrayNode.set(i, decryptArrayValue(encryptionSettings, nodeInArray, propertyName, i));
+                decryptedArray.add(decryptArrayValue(encryptionSettings, nodeInArray, propertyName, index));
+            } else {
+                decryptedArray.add(nodeInArray);
             }
+        }
+        arrayNode.removeAll();
+        for (JsonNode decryptedValue : decryptedArray) {
+            arrayNode.add(decryptedValue);
         }
     }
 
     private void decryptLegacyArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
                                     String propertyName) throws MicrosoftDataEncryptionException, IOException {
-        boolean containerArray = isLegacyContainerArray(arrayNode);
-        for (int i = 0; i < arrayNode.size(); i++) {
-            JsonNode nodeInArray = arrayNode.get(i);
-            if (!containerArray) {
-                arrayNode.set(i, decryptArrayValue(encryptionSettings, nodeInArray, propertyName, i));
-            } else if (nodeInArray.isObject() || nodeInArray.isArray()) {
-                decryptAndSerializeProperty(encryptionSettings, null, nodeInArray, propertyName);
+        Iterator<JsonNode> checkArrayIterator = arrayNode.elements();
+        boolean hasElements = checkArrayIterator.hasNext();
+        if (hasElements) {
+            JsonNode nextNode = checkArrayIterator.next();
+            hasElements &= nextNode.isObject() || nextNode.isArray();
+        }
+        if (hasElements) {
+            for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
+                JsonNode nodeInArray = arrayIterator.next();
+                if (nodeInArray.isArray()) {
+                    decryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray, StringUtils.EMPTY);
+                } else {
+                    for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
+                        Map.Entry<String, JsonNode> child = it.next();
+                        if (child.getValue().isObject() || child.getValue().isArray()) {
+                            decryptAndSerializeProperty(encryptionSettings, (ObjectNode) nodeInArray,
+                                child.getValue(), propertyName);
+                        } else if (!child.getValue().isNull()) {
+                            decryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
+                                child.getKey());
+                        }
+                    }
+                }
+            }
+        } else {
+            List<JsonNode> decryptedArray = new ArrayList<>();
+            int index = 0;
+            for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); index++) {
+                decryptedArray.add(decryptArrayValue(encryptionSettings, it.next(), propertyName, index));
+            }
+            arrayNode.removeAll();
+            for (JsonNode decryptedValue : decryptedArray) {
+                arrayNode.add(decryptedValue);
             }
         }
     }

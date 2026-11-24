@@ -367,6 +367,22 @@ public class EncryptionProcessorAndSettingsTest {
     }
 
     @Test(groups = {"unit"}, dataProvider = "mixedArrayModes", timeOut = TIMEOUT)
+    public void encryptEmptyItemAndPatchArrays(boolean mixedArraysEnabled) throws Exception {
+        EncryptionProcessor encryptionProcessor = createEncryptionProcessor(mixedArraysEnabled);
+        JsonNode encryptedPatch = encryptionProcessor.encryptPatchNode(
+            OBJECT_MAPPER.createArrayNode(), "/sensitiveString").block();
+        assertThat(encryptedPatch.toString()).isEqualTo("[]");
+
+        ObjectNode document = OBJECT_MAPPER.createObjectNode();
+        document.put("id", "emptyArrayItem");
+        document.set("sensitiveString", encryptedPatch);
+        byte[] encryptedBytes = encryptionProcessor.encrypt(document).block();
+        JsonNode decryptedDocument = encryptionProcessor.decrypt(encryptedBytes,
+            CosmosItemSerializer.DEFAULT_SERIALIZER).block().getRight();
+        assertThat(decryptedDocument.get("sensitiveString").toString()).isEqualTo("[]");
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "mixedArrayModes", timeOut = TIMEOUT)
     public void decryptArrayPreservesAuthenticationFailure(boolean mixedArraysEnabled) throws Exception {
         EncryptionProcessor encryptionProcessor = createEncryptionProcessor(mixedArraysEnabled);
         EncryptionSettings settings = Mockito.mock(EncryptionSettings.class);
