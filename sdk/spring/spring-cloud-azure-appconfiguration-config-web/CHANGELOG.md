@@ -1,16 +1,8 @@
 # Release History
 
-## 7.5.0-beta.1 (Unreleased)
+## 7.5.0 (2026-11-24)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixed request-triggered configuration refresh blocking servlet request threads and ensured asynchronous refresh failures are logged.
-
-### Other Changes
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#750-2026-11-24) for more details.
 
 ## 7.4.0 (2026-07-24)
 
