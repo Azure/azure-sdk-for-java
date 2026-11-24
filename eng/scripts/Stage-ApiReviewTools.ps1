@@ -8,13 +8,26 @@ Builds and stages the Java API review JAR and generator script into an ARH tools
 #>
 [CmdletBinding(SupportsShouldProcess)]
 param(
-    [Parameter(Mandatory)][string]$BinOutputDirectory
+    [Parameter(Mandatory)][string]$BinOutputDirectory,
+    [switch]$ExpandSparseCheckout
 )
 
 Set-StrictMode -Version 4
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
 $root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..' '..')).Path
+if ($ExpandSparseCheckout -and -not $WhatIfPreference) {
+    $sparseCheckout = & git -C $root config --bool core.sparseCheckout
+    if ($LASTEXITCODE -gt 1) {
+        throw 'Unable to determine whether the tooling checkout is sparse.'
+    }
+    if ($sparseCheckout -eq 'true') {
+        & git -C $root sparse-checkout add sdk/tools/api-review-maven-plugin sdk/tools/apiview-java-processor .vscode
+        if ($LASTEXITCODE -ne 0) {
+            throw 'Unable to include Java API review tooling in the sparse checkout.'
+        }
+    }
+}
 $plugin = Join-Path $root 'sdk' 'tools' 'api-review-maven-plugin'
 $pomPath = Join-Path $plugin 'pom.xml'
 $generator = Join-Path $root 'eng' 'scripts' 'Generate-ApiReviewArtifact.ps1'

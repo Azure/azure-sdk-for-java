@@ -66,6 +66,23 @@ Describe 'Java API review hub tooling' {
         Should -Invoke mvn -Times 0
     }
 
+    It 'includes tooling sources when staging from a sparse build checkout' {
+        Mock git { $global:LASTEXITCODE = 0; if ($args -contains 'config') { return 'true' } }
+        Mock mvn { $global:LASTEXITCODE = 0 }
+        & $stage -BinOutputDirectory (Join-Path $TestDrive 'sparse-bin') -ExpandSparseCheckout
+        Should -Invoke git -Times 1 -ParameterFilter {
+            $args -contains 'sparse-checkout' -and $args -contains 'sdk/tools/api-review-maven-plugin' -and
+            $args -contains 'sdk/tools/apiview-java-processor' -and $args -contains '.vscode'
+        }
+    }
+
+    It 'does not expand sparse checkout with WhatIf' {
+        Mock git { throw 'Unexpected sparse-checkout mutation.' }
+        & $stage -BinOutputDirectory (Join-Path $TestDrive 'sparse-whatif') -ExpandSparseCheckout -WhatIf
+        Should -Invoke git -Times 0
+        Should -Invoke mvn -Times 0
+    }
+
     It 'runs the staged generator against a source checkout without engineering files' {
         Mock mvn { $global:LASTEXITCODE = 0 }
         $bin = Join-Path $TestDrive 'staged'

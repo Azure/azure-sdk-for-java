@@ -264,6 +264,8 @@ jobs:
             -PackageInfoDir $(Build.ArtifactStagingDirectory)/PackageInfo
             -InformationAction Continue
 
+      - template: /eng/pipelines/templates/steps/save-package-api-hash.yml
+
       - task: Powershell@2
         inputs:
           filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
