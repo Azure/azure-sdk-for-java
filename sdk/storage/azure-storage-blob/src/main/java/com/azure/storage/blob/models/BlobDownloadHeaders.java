@@ -1074,4 +1074,90 @@ public final class BlobDownloadHeaders {
             : com.azure.storage.blob.implementation.models.DownloadHint.fromString(downloadHint.toString()));
         return this;
     }
+
+    /**
+     * Get the accessTier property: The tier of the blob. Get Blob returns it for a block blob in a Blob Storage or
+     * general purpose v2 account, and for a page blob in a Premium Storage account.
+     *
+     * @return the accessTier value.
+     */
+    public AccessTier getAccessTier() {
+        return AccessTier.fromString(internalHeaders.getXMsAccessTier());
+    }
+
+    /**
+     * Set the accessTier property: The tier of the blob. Get Blob returns it for a block blob in a Blob Storage or
+     * general purpose v2 account, and for a page blob in a Premium Storage account.
+     *
+     * @param accessTier the accessTier value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setAccessTier(AccessTier accessTier) {
+        internalHeaders.setXMsAccessTier(accessTier == null ? null : accessTier.toString());
+        return this;
+    }
+
+    /**
+     * Get the accessTierInferred property: Whether the access tier of the blob was inferred, rather than set
+     * explicitly on the blob.
+     *
+     * @return the accessTierInferred value.
+     */
+    public Boolean isAccessTierInferred() {
+        return internalHeaders.isXMsAccessTierInferred();
+    }
+
+    /**
+     * Set the accessTierInferred property: Whether the access tier of the blob was inferred, rather than set
+     * explicitly on the blob.
+     *
+     * @param accessTierInferred the accessTierInferred value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setAccessTierInferred(Boolean accessTierInferred) {
+        internalHeaders.setXMsAccessTierInferred(accessTierInferred);
+        return this;
+    }
+
+    /**
+     * Get the accessTierChangeTime property: The time the tier of the blob was last changed.
+     *
+     * @return the accessTierChangeTime value.
+     */
+    public OffsetDateTime getAccessTierChangeTime() {
+        return internalHeaders.getXMsAccessTierChangeTime();
+    }
+
+    /**
+     * Set the accessTierChangeTime property: The time the tier of the blob was last changed.
+     *
+     * @param accessTierChangeTime the accessTierChangeTime value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
+        internalHeaders.setXMsAccessTierChangeTime(accessTierChangeTime);
+        return this;
+    }
+
+    /**
+     * Get the smartAccessTier property: When the access tier of the blob is {@link AccessTier#SMART}, the concrete
+     * access tier the service has selected for it; otherwise {@code null}.
+     *
+     * @return the smartAccessTier value.
+     */
+    public AccessTier getSmartAccessTier() {
+        return AccessTier.fromString(internalHeaders.getXMsSmartAccessTier());
+    }
+
+    /**
+     * Set the smartAccessTier property: When the access tier of the blob is {@link AccessTier#SMART}, the concrete
+     * access tier the service has selected for it; otherwise {@code null}.
+     *
+     * @param smartAccessTier the smartAccessTier value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setSmartAccessTier(AccessTier smartAccessTier) {
+        internalHeaders.setXMsSmartAccessTier(smartAccessTier == null ? null : smartAccessTier.toString());
+        return this;
+    }
 }

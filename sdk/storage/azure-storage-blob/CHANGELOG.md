@@ -3,10 +3,14 @@
 ## 12.38.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `getAccessTier`, `isAccessTierInferred`, `getAccessTierChangeTime` and `getSmartAccessTier`, with their
+  setters, to `BlobDownloadHeaders`, which Get Blob returns as Get Blob Properties does.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `BlobProperties` built from a download, such as `BlobInputStream.getProperties()` from `openInputStream`,
+  reporting no access tier, inferred tier, smart tier or tier change time although Get Blob had returned them.
 - Fixed `createIfNotExists` on `BlobContainerClient` and `BlobContainerAsyncClient`, and
   `createBlobContainerIfNotExists` on `BlobServiceClient` and `BlobServiceAsyncClient`, reporting every 409 as a
   container that already exists. They now do so only for `ContainerAlreadyExists`, and throw for any other 409,
