@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -14,6 +13,7 @@ import com.azure.resourcemanager.network.models.Nat64Capability;
 import com.azure.resourcemanager.network.models.PLGatewayCapability;
 import com.azure.resourcemanager.network.models.PLGatewayFastpathCapability;
 import com.azure.resourcemanager.network.models.PLIPForwardersCapability;
+import com.azure.resourcemanager.network.models.ProxyResourceVirtualNetworkApplianceCapabilityProperties;
 import com.azure.resourcemanager.network.models.VirtualNetworkApplianceCapabilityKind;
 import com.azure.resourcemanager.network.models.VirtualNetworkApplianceCapabilityProperties;
 import java.io.IOException;
@@ -24,17 +24,12 @@ import java.io.IOException;
  * VirtualNetworkApplianceCapabilityProperties). One capability of a given kind may exist per appliance.
  */
 @Fluent
-public class VirtualNetworkApplianceCapabilityInner extends ProxyResource {
+public class VirtualNetworkApplianceCapabilityInner extends ProxyResourceVirtualNetworkApplianceCapabilityProperties {
     /*
      * The kind of capability (the top-level discriminator).
      */
     private VirtualNetworkApplianceCapabilityKind kind
         = VirtualNetworkApplianceCapabilityKind.fromString("VirtualNetworkApplianceCapability");
-
-    /*
-     * The resource-specific properties for this resource.
-     */
-    private VirtualNetworkApplianceCapabilityProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -72,44 +67,13 @@ public class VirtualNetworkApplianceCapabilityInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: The resource-specific properties for this resource.
-     * 
-     * @return the properties value.
-     */
-    public VirtualNetworkApplianceCapabilityProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: The resource-specific properties for this resource.
-     * 
-     * @param properties the properties value to set.
-     * @return the VirtualNetworkApplianceCapabilityInner object itself.
-     */
-    public VirtualNetworkApplianceCapabilityInner
-        withProperties(VirtualNetworkApplianceCapabilityProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
+    @Override
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @param systemData the systemData value to set.
-     * @return the VirtualNetworkApplianceCapabilityInner object itself.
-     */
-    VirtualNetworkApplianceCapabilityInner withSystemData(SystemData systemData) {
-        this.systemData = systemData;
-        return this;
     }
 
     /**
@@ -143,10 +107,21 @@ public class VirtualNetworkApplianceCapabilityInner extends ProxyResource {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public VirtualNetworkApplianceCapabilityInner
+        withProperties(VirtualNetworkApplianceCapabilityProperties properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (properties() != null) {
             properties().validate();
@@ -159,8 +134,8 @@ public class VirtualNetworkApplianceCapabilityInner extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", properties());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -218,14 +193,14 @@ public class VirtualNetworkApplianceCapabilityInner extends ProxyResource {
                     deserializedVirtualNetworkApplianceCapabilityInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedVirtualNetworkApplianceCapabilityInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkApplianceCapabilityInner
+                        .withProperties(VirtualNetworkApplianceCapabilityProperties.fromJson(reader));
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualNetworkApplianceCapabilityInner.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
                     deserializedVirtualNetworkApplianceCapabilityInner.kind
                         = VirtualNetworkApplianceCapabilityKind.fromString(reader.getString());
-                } else if ("properties".equals(fieldName)) {
-                    deserializedVirtualNetworkApplianceCapabilityInner.properties
-                        = VirtualNetworkApplianceCapabilityProperties.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedVirtualNetworkApplianceCapabilityInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

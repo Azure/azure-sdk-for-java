@@ -4,30 +4,6 @@
 
 - Package api-version 2026-05-01.
 
-### Breaking Changes
-
-#### `models.SubgroupProperties` was removed
-
-#### `models.InterconnectGroupPropertiesFormat` was removed
-
-#### `models.ProxyResourceVirtualNetworkApplianceCapabilityProperties` was removed
-
-#### `models.Nat64Capability` was modified
-
-* `withProperties(models.VirtualNetworkApplianceCapabilityProperties)` was removed
-
-#### `models.PLGatewayFastpathCapability` was modified
-
-* `withProperties(models.VirtualNetworkApplianceCapabilityProperties)` was removed
-
-#### `models.PLGatewayCapability` was modified
-
-* `withProperties(models.VirtualNetworkApplianceCapabilityProperties)` was removed
-
-#### `models.PLIPForwardersCapability` was modified
-
-* `withProperties(models.VirtualNetworkApplianceCapabilityProperties)` was removed
-
 ## 2.64.0 (2026-11-18)
 
 - Package api-version Microsoft.Network: 2026-05-01, Microsoft.Compute: 2018-10-01.

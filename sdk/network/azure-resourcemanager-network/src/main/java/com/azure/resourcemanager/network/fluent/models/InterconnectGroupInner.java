@@ -9,11 +9,8 @@ import com.azure.core.management.Resource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.CommonProvisioningState;
-import com.azure.resourcemanager.network.models.InterconnectGroupScope;
-import com.azure.resourcemanager.network.models.SubgroupProfile;
+import com.azure.resourcemanager.network.models.InterconnectGroupPropertiesFormat;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +21,7 @@ public final class InterconnectGroupInner extends Resource {
     /*
      * Properties of the interconnect group.
      */
-    private InterconnectGroupPropertiesFormat innerProperties;
+    private InterconnectGroupPropertiesFormat properties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -53,12 +50,23 @@ public final class InterconnectGroupInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Properties of the interconnect group.
+     * Get the properties property: Properties of the interconnect group.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private InterconnectGroupPropertiesFormat innerProperties() {
-        return this.innerProperties;
+    public InterconnectGroupPropertiesFormat properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties of the interconnect group.
+     * 
+     * @param properties the properties value to set.
+     * @return the InterconnectGroupInner object itself.
+     */
+    public InterconnectGroupInner withProperties(InterconnectGroupPropertiesFormat properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -129,86 +137,13 @@ public final class InterconnectGroupInner extends Resource {
     }
 
     /**
-     * Get the scope property: Scope of interconnect group resource.
-     * 
-     * @return the scope value.
-     */
-    public InterconnectGroupScope scope() {
-        return this.innerProperties() == null ? null : this.innerProperties().scope();
-    }
-
-    /**
-     * Set the scope property: Scope of interconnect group resource.
-     * 
-     * @param scope the scope value to set.
-     * @return the InterconnectGroupInner object itself.
-     */
-    public InterconnectGroupInner withScope(InterconnectGroupScope scope) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InterconnectGroupPropertiesFormat();
-        }
-        this.innerProperties().withScope(scope);
-        return this;
-    }
-
-    /**
-     * Get the subgroups property: A list of subgroups of the interconnect group.
-     * 
-     * @return the subgroups value.
-     */
-    public List<SubgroupInner> subgroups() {
-        return this.innerProperties() == null ? null : this.innerProperties().subgroups();
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the interconnect group resource.
-     * 
-     * @return the provisioningState value.
-     */
-    public CommonProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the interconnect group resource.
-     * 
-     * @return the resourceGuid value.
-     */
-    public String resourceGuid() {
-        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
-    }
-
-    /**
-     * Get the subgroupProfile property: The subgroup profile of the interconnect group resource.
-     * 
-     * @return the subgroupProfile value.
-     */
-    public SubgroupProfile subgroupProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().subgroupProfile();
-    }
-
-    /**
-     * Set the subgroupProfile property: The subgroup profile of the interconnect group resource.
-     * 
-     * @param subgroupProfile the subgroupProfile value to set.
-     * @return the InterconnectGroupInner object itself.
-     */
-    public InterconnectGroupInner withSubgroupProfile(SubgroupProfile subgroupProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InterconnectGroupPropertiesFormat();
-        }
-        this.innerProperties().withSubgroupProfile(subgroupProfile);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 
@@ -220,7 +155,7 @@ public final class InterconnectGroupInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
@@ -251,8 +186,7 @@ public final class InterconnectGroupInner extends Resource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedInterconnectGroupInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedInterconnectGroupInner.innerProperties
-                        = InterconnectGroupPropertiesFormat.fromJson(reader);
+                    deserializedInterconnectGroupInner.properties = InterconnectGroupPropertiesFormat.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedInterconnectGroupInner.etag = reader.getString();
                 } else if ("id".equals(fieldName)) {

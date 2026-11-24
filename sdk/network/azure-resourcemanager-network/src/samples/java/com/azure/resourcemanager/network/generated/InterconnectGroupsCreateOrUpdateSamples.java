@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.InterconnectGroupInner;
+import com.azure.resourcemanager.network.models.InterconnectGroupPropertiesFormat;
 import com.azure.resourcemanager.network.models.InterconnectGroupScope;
 import com.azure.resourcemanager.network.models.SubgroupProfile;
 import com.azure.resourcemanager.network.models.SubgroupProfileScope;
@@ -24,12 +25,11 @@ public final class InterconnectGroupsCreateOrUpdateSamples {
     public static void createInterconnectGroup(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getInterconnectGroups()
-            .createOrUpdateWithResponse("rg1", "test-ig",
-                new InterconnectGroupInner().withLocation("eastus")
-                    .withScope(InterconnectGroupScope.INFINI_BAND)
+            .createOrUpdateWithResponse("rg1", "test-ig", new InterconnectGroupInner().withLocation("eastus")
+                .withProperties(new InterconnectGroupPropertiesFormat().withScope(InterconnectGroupScope.INFINI_BAND)
                     .withSubgroupProfile(new SubgroupProfile().withVmSize("Standard_ND128isr_NDR_GB200_v6")
                         .withScope(SubgroupProfileScope.VERTICAL_CONNECT)
-                        .withSize(18)),
+                        .withSize(18))),
                 com.azure.core.util.Context.NONE);
     }
 }
