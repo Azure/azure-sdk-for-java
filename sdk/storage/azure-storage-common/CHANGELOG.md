@@ -1,6 +1,6 @@
 # Release History
 
-## 12.31.0-beta.2 (Unreleased)
+## 12.37.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,188 @@
 
 ### Other Changes
 
+## 12.37.0-beta.1 (2026-11-05)
+
+### Features Added
+- Added `AutoRefreshingCache`, a generic, thread-safe cache for a single expiring value with jittered proactive
+  background refresh and single-flight creation, for internal use by clients that need to cache a value obtained
+  from a service call that is valid for a limited time (for example, layout/routing information for locality-aware
+  downloads).
+- Added `DataLocalityPolicy`, an `HttpPipelinePolicy` that routes a request to an ideal endpoint set on the per-call
+  `Context` (see `DataLocalityPolicy.LAYOUT_ENDPOINT_KEY`), for internal use by data-locality-aware download paths.
+- Added support for service version 2027-03-07.
+
+## 12.36.2 (2026-11-03)
+
+### Bugs Fixed
+- Fixed a bug where uploads from `ByteBuffer`s that are split into blocks, appends, or ranges also uploaded the bytes
+  before a buffer's position, when that position was not 0 and the buffer was larger than the block size. This affected
+  both the sync and async clients.
+
+## 12.36.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+
+## 12.35.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where uploads from `ByteBuffer`s that are split into blocks, appends, or ranges also uploaded the bytes
+  before a buffer's position, when that position was not 0 and the buffer was larger than the block size. This affected
+  both the sync and async clients.
+
+
+## 12.35.0 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added the `ValidatableContent` interface, implemented by the various upload and download option types that support
+  transfer content validation. This allows `ContentValidationAlgorithm` to be configured and inspected agnostically
+  across many different upload and download operations.
+
+### Bugs Fixed
+- Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 12.34.2 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+
+## 12.34.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+
+## 12.35.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+
+### Bugs Fixed
+- Fixed an async retry hang that could occur when draining a retryable response body after the response was closed.
+
+## 12.34.0 (2026-06-11)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.33.0 (2026-05-14)
+
+### Features Added
+- Added support for service version 2026-04-06.
+
+## 12.32.3 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+
+## 12.34.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for service version 2026-06-06.
+
+## 12.33.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added support for service version 2026-04-06.
+
+## 12.32.2 (2026-02-05)
+
+### Other Changes
+
+#### Credential Validation
+- added `validateCredentialsNotAmbiguous()` to `CredentialValidator` class check for valid credential combinations and
+  throw errors for invalid credential combinations. This is for internal use only.
+
+### Other Changes
+
+#### Credential Validation
+- added `validateCredentialsNotAmbiguous()` to `CredentialValidator` class check for valid credential combinations and 
+throw errors for invalid credential combinations. This is for internal use only.
+
+## 12.32.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 12.32.0 (2026-01-15)
+
+### Features Added
+- Added support for service version 2026-02-06.
+
+### Bugs Fixed
+- Addressed a performance regression introduced in version 12.27.0+ of the Azure Storage SDK for Java, where token
+  retrieval became thread-local, causing a consistent 4 to 5-second delay across threads during initial authorization.
+
+## 12.32.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for service version 2026-02-06.
+
+### Bugs Fixed
+- Addressed a performance regression introduced in version 12.27.0+ of the Azure Storage SDK for Java, where token 
+retrieval became thread-local, causing a consistent 4 to 5-second delay across threads during initial authorization.
+
+## 12.31.0 (2025-10-21)
+
+### Features Added
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
+
+## 12.30.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 12.30.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
 ## 12.30.1 (2025-07-29)
 
 ### Other Changes
@@ -18,7 +200,6 @@
 
 - Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
 - Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.13`.
-
 
 ## 12.30.0 (2025-07-16)
 
@@ -34,7 +215,7 @@
 ## 12.31.0-beta.1 (2025-07-09)
 
 ### Features Added
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
 - Added support for service version 2025-11-05.
 
 ## 12.29.1 (2025-06-19)
@@ -152,7 +333,6 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
 
-
 ## 12.24.4 (2024-04-23)
 
 ### Other Changes
@@ -161,7 +341,6 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
-
 
 ## 12.25.0-beta.1 (2024-04-15)
 
@@ -180,7 +359,6 @@
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
-
 ## 12.24.2 (2024-02-22)
 
 ### Other Changes
@@ -189,7 +367,6 @@
 
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
-
 
 ## 12.24.1 (2023-12-04)
 
@@ -535,7 +712,6 @@ server timeout interval elapses before the service has finished processing the r
 - Updated azure-core dependency.
 
 ## 12.7.0-beta.1 (2020-06-08)
-
 
 ## 12.6.1 (2020-05-06)
 - Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.

@@ -14,7 +14,7 @@ public final class ConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectorInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"connectorId\":\"ae\",\"tenantId\":\"pfhyhl\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-04-18T06:05:11Z\"},\"id\":\"opjmcmatuokthfui\",\"name\":\"aodsfcpkv\",\"type\":\"odpuozmyzydag\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"connectorId\":\"qqwx\",\"tenantId\":\"jfeallnwsub\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-08-13T08:02:10Z\"},\"id\":\"ampmngnz\",\"name\":\"c\",\"type\":\"aqw\"}")
             .toObject(ConnectorInner.class);
         Assertions.assertEquals(Platform.AZURE_MONITOR, model.properties().connectorType());
     }

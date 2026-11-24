@@ -26,9 +26,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.connectedcache.fluent.CacheNodesOperationsClient;
 import com.azure.resourcemanager.connectedcache.fluent.ConnectedCacheManagementClient;
-import com.azure.resourcemanager.connectedcache.fluent.EnterpriseCustomerOperationsClient;
 import com.azure.resourcemanager.connectedcache.fluent.EnterpriseMccCacheNodesOperationsClient;
 import com.azure.resourcemanager.connectedcache.fluent.EnterpriseMccCustomersClient;
 import com.azure.resourcemanager.connectedcache.fluent.IspCacheNodesOperationsClient;
@@ -147,34 +145,6 @@ public final class ConnectedCacheManagementClientImpl implements ConnectedCacheM
     }
 
     /**
-     * The EnterpriseCustomerOperationsClient object to access its operations.
-     */
-    private final EnterpriseCustomerOperationsClient enterpriseCustomerOperations;
-
-    /**
-     * Gets the EnterpriseCustomerOperationsClient object to access its operations.
-     * 
-     * @return the EnterpriseCustomerOperationsClient object.
-     */
-    public EnterpriseCustomerOperationsClient getEnterpriseCustomerOperations() {
-        return this.enterpriseCustomerOperations;
-    }
-
-    /**
-     * The CacheNodesOperationsClient object to access its operations.
-     */
-    private final CacheNodesOperationsClient cacheNodesOperations;
-
-    /**
-     * Gets the CacheNodesOperationsClient object to access its operations.
-     * 
-     * @return the CacheNodesOperationsClient object.
-     */
-    public CacheNodesOperationsClient getCacheNodesOperations() {
-        return this.cacheNodesOperations;
-    }
-
-    /**
      * The IspCustomersClient object to access its operations.
      */
     private final IspCustomersClient ispCustomers;
@@ -247,10 +217,8 @@ public final class ConnectedCacheManagementClientImpl implements ConnectedCacheM
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2023-05-01-preview";
+        this.apiVersion = "2026-06-01";
         this.operations = new OperationsClientImpl(this);
-        this.enterpriseCustomerOperations = new EnterpriseCustomerOperationsClientImpl(this);
-        this.cacheNodesOperations = new CacheNodesOperationsClientImpl(this);
         this.ispCustomers = new IspCustomersClientImpl(this);
         this.ispCacheNodesOperations = new IspCacheNodesOperationsClientImpl(this);
         this.enterpriseMccCustomers = new EnterpriseMccCustomersClientImpl(this);
@@ -368,7 +336,7 @@ public final class ConnectedCacheManagementClientImpl implements ConnectedCacheM
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

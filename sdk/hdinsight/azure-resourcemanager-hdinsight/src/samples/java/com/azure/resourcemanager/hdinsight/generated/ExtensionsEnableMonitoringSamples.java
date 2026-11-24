@@ -12,7 +12,7 @@ import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringRequest;
 public final class ExtensionsEnableMonitoringSamples {
     /*
      * x-ms-original-file:
-     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2024-08-01-preview/examples/
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2025-01-15-preview/examples/
      * EnableLinuxClusterMonitoring.json
      */
     /**

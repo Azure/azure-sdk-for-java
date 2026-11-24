@@ -12,18 +12,18 @@ public final class FileSystemConfigurationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemConfigurationDetails model
-            = BinaryData.fromString("{\"mountPoint\":\"ygpfqb\",\"fileSystemSizeGb\":1732351428}")
+            = BinaryData.fromString("{\"mountPoint\":\"xmubyyntwlrbq\",\"fileSystemSizeGb\":1876719101}")
                 .toObject(FileSystemConfigurationDetails.class);
-        Assertions.assertEquals("ygpfqb", model.mountPoint());
-        Assertions.assertEquals(1732351428, model.fileSystemSizeGb());
+        Assertions.assertEquals("xmubyyntwlrbq", model.mountPoint());
+        Assertions.assertEquals(1876719101, model.fileSystemSizeGb());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FileSystemConfigurationDetails model
-            = new FileSystemConfigurationDetails().withMountPoint("ygpfqb").withFileSystemSizeGb(1732351428);
+            = new FileSystemConfigurationDetails().withMountPoint("xmubyyntwlrbq").withFileSystemSizeGb(1876719101);
         model = BinaryData.fromObject(model).toObject(FileSystemConfigurationDetails.class);
-        Assertions.assertEquals("ygpfqb", model.mountPoint());
-        Assertions.assertEquals(1732351428, model.fileSystemSizeGb());
+        Assertions.assertEquals("xmubyyntwlrbq", model.mountPoint());
+        Assertions.assertEquals(1876719101, model.fileSystemSizeGb());
     }
 }

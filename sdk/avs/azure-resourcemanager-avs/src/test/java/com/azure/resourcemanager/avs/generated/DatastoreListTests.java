@@ -13,15 +13,15 @@ public final class DatastoreListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatastoreList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Pending\",\"netAppVolume\":{\"id\":\"bq\"},\"diskPoolVolume\":{\"targetId\":\"vmkcx\",\"lunName\":\"zapvhelx\",\"mountOption\":\"ATTACH\",\"path\":\"yat\"},\"elasticSanVolume\":{\"targetId\":\"ckcb\"},\"pureStorageVolume\":{\"storagePoolId\":\"ejrjxgciqibrho\",\"sizeGb\":1882166065},\"status\":\"LostCommunication\"},\"id\":\"rhzo\",\"name\":\"m\",\"type\":\"bmrqyibahwfl\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"netAppVolume\":{\"id\":\"mhrkwofyyvoqacp\"},\"diskPoolVolume\":{\"targetId\":\"xpbtgiwbwo\",\"lunName\":\"nwashrtd\",\"mountOption\":\"ATTACH\",\"path\":\"qxwbpokulpiu\"},\"elasticSanVolume\":{\"targetId\":\"aasipqi\"},\"pureStorageVolume\":{\"storagePoolId\":\"byuqerpqlp\",\"sizeGb\":719268117},\"status\":\"LostCommunication\"},\"id\":\"uqgbdbutauvfbt\",\"name\":\"uwhhmhykojoxafn\",\"type\":\"dlpichkoymkcdyhb\"}],\"nextLink\":\"kpw\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"netAppVolume\":{\"id\":\"rhhbcs\"},\"diskPoolVolume\":{\"targetId\":\"ummajtjaod\",\"lunName\":\"obnbdxkqpxokaj\",\"mountOption\":\"MOUNT\",\"path\":\"imexgstxgcpodgma\"},\"elasticSanVolume\":{\"targetId\":\"r\"},\"pureStorageVolume\":{\"storagePoolId\":\"djwzrlov\",\"sizeGb\":1409516732},\"status\":\"Accessible\"},\"id\":\"ijcoejctb\",\"name\":\"aqsqsycbkbfk\",\"type\":\"ukdkexxppofmxa\"}],\"nextLink\":\"fjpgddtocjjxhvp\"}")
             .toObject(DatastoreList.class);
-        Assertions.assertEquals("bq", model.value().get(0).netAppVolume().id());
-        Assertions.assertEquals("vmkcx", model.value().get(0).diskPoolVolume().targetId());
-        Assertions.assertEquals("zapvhelx", model.value().get(0).diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.ATTACH, model.value().get(0).diskPoolVolume().mountOption());
-        Assertions.assertEquals("ckcb", model.value().get(0).elasticSanVolume().targetId());
-        Assertions.assertEquals("ejrjxgciqibrho", model.value().get(0).pureStorageVolume().storagePoolId());
-        Assertions.assertEquals(1882166065, model.value().get(0).pureStorageVolume().sizeGb());
-        Assertions.assertEquals("kpw", model.nextLink());
+        Assertions.assertEquals("rhhbcs", model.value().get(0).netAppVolume().id());
+        Assertions.assertEquals("ummajtjaod", model.value().get(0).diskPoolVolume().targetId());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.value().get(0).diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.MOUNT, model.value().get(0).diskPoolVolume().mountOption());
+        Assertions.assertEquals("r", model.value().get(0).elasticSanVolume().targetId());
+        Assertions.assertEquals("djwzrlov", model.value().get(0).pureStorageVolume().storagePoolId());
+        Assertions.assertEquals(1409516732, model.value().get(0).pureStorageVolume().sizeGb());
+        Assertions.assertEquals("fjpgddtocjjxhvp", model.nextLink());
     }
 }

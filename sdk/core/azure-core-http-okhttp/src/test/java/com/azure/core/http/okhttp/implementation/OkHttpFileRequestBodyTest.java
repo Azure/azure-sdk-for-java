@@ -265,5 +265,10 @@ public class OkHttpFileRequestBodyTest {
         public void write(Buffer buffer, long l) throws IOException {
 
         }
+
+        @Override
+        public Appendable utf8Appendable() {
+            return null;
+        }
     }
 }

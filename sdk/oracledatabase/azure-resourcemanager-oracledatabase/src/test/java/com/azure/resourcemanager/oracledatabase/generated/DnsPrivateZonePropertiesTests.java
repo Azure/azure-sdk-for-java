@@ -15,16 +15,16 @@ public final class DnsPrivateZonePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneProperties model = BinaryData.fromString(
-            "{\"ocid\":\"vjayvblmhvkzu\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"vvyhg\",\"serial\":954108232,\"version\":\"pbyrqufegxu\",\"viewId\":\"zfbn\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-08-15T03:14:49Z\",\"provisioningState\":\"Canceled\"}")
+            "{\"ocid\":\"novqfzge\",\"isProtected\":true,\"lifecycleState\":\"Deleted\",\"self\":\"ftul\",\"serial\":1720630047,\"version\":\"tduceamt\",\"viewId\":\"zuo\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-10-02T15:37:14Z\",\"provisioningState\":\"Canceled\"}")
             .toObject(DnsPrivateZoneProperties.class);
-        Assertions.assertEquals("vjayvblmhvkzu", model.ocid());
-        Assertions.assertFalse(model.isProtected());
-        Assertions.assertEquals(DnsPrivateZonesLifecycleState.ACTIVE, model.lifecycleState());
-        Assertions.assertEquals("vvyhg", model.self());
-        Assertions.assertEquals(954108232, model.serial());
-        Assertions.assertEquals("pbyrqufegxu", model.version());
-        Assertions.assertEquals("zfbn", model.viewId());
-        Assertions.assertEquals(ZoneType.PRIMARY, model.zoneType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T03:14:49Z"), model.timeCreated());
+        Assertions.assertEquals("novqfzge", model.ocid());
+        Assertions.assertTrue(model.isProtected());
+        Assertions.assertEquals(DnsPrivateZonesLifecycleState.DELETED, model.lifecycleState());
+        Assertions.assertEquals("ftul", model.self());
+        Assertions.assertEquals(1720630047, model.serial());
+        Assertions.assertEquals("tduceamt", model.version());
+        Assertions.assertEquals("zuo", model.viewId());
+        Assertions.assertEquals(ZoneType.SECONDARY, model.zoneType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-02T15:37:14Z"), model.timeCreated());
     }
 }

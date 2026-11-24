@@ -12,8 +12,8 @@ public final class ScriptPackagesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptPackagesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"doakgtdlmkkzevdl\",\"version\":\"wpusdsttwvogv\",\"company\":\"ejdcngqqmoakuf\",\"uri\":\"jzrwrdgrtw\"},\"id\":\"nuuzkopbm\",\"name\":\"nrfdw\",\"type\":\"yuhhziu\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"bhdmsmlmzqhof\",\"version\":\"maequiahxicslfa\",\"company\":\"z\",\"uri\":\"yylhalnswhccsp\"},\"id\":\"aivwitqscywu\",\"name\":\"gwol\",\"type\":\"h\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"mhairsbrgzdwmsw\",\"version\":\"pqwd\",\"company\":\"gicccnxqhuex\",\"uri\":\"ttlstvlzywemhz\"},\"id\":\"csdtclusiypbs\",\"name\":\"gytguslfead\",\"type\":\"ygqukyhejh\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"fpel\",\"version\":\"p\",\"company\":\"ksrpqv\",\"uri\":\"zraehtwd\"},\"id\":\"ftswibyrcdlbhsh\",\"name\":\"wpracstwitykhev\",\"type\":\"c\"}],\"nextLink\":\"dcpnmdyodnw\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"sowueluqhhahhx\",\"version\":\"hmzk\",\"company\":\"jgwwspughftq\",\"uri\":\"hqxujxukndxdi\"},\"id\":\"jguufzdm\",\"name\":\"yqtfihwh\",\"type\":\"otzi\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"pph\",\"version\":\"zqzudph\",\"company\":\"mvdk\",\"uri\":\"ynwcvtbv\"},\"id\":\"yhmtnvyqiat\",\"name\":\"zwpcnpwzcjaesg\",\"type\":\"v\"},{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"jguq\",\"version\":\"wygzlvdnkfxusem\",\"company\":\"zrmuhapfcqdps\",\"uri\":\"qvpsvuoymg\"},\"id\":\"elvezrypq\",\"name\":\"mfe\",\"type\":\"kerqwkyh\"}],\"nextLink\":\"bopgxedkowepbqp\"}")
             .toObject(ScriptPackagesList.class);
-        Assertions.assertEquals("dcpnmdyodnw", model.nextLink());
+        Assertions.assertEquals("bopgxedkowepbqp", model.nextLink());
     }
 }

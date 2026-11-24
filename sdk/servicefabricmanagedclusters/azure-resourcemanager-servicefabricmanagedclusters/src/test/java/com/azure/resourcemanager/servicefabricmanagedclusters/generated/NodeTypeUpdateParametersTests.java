@@ -15,24 +15,23 @@ public final class NodeTypeUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"wzdgirujbzbo\":\"cy\",\"pniyujviyl\":\"vzzbtdcq\"},\"sku\":{\"name\":\"hfssnrb\",\"tier\":\"efr\",\"capacity\":1375463592}}")
+            "{\"tags\":{\"bar\":\"luiqtqzfavyvnqq\"},\"sku\":{\"name\":\"ayjkqa\",\"tier\":\"gzslesjcbhernnti\",\"capacity\":167991676}}")
             .toObject(NodeTypeUpdateParameters.class);
-        Assertions.assertEquals("cy", model.tags().get("wzdgirujbzbo"));
-        Assertions.assertEquals("hfssnrb", model.sku().name());
-        Assertions.assertEquals("efr", model.sku().tier());
-        Assertions.assertEquals(1375463592, model.sku().capacity());
+        Assertions.assertEquals("luiqtqzfavyvnqq", model.tags().get("bar"));
+        Assertions.assertEquals("ayjkqa", model.sku().name());
+        Assertions.assertEquals("gzslesjcbhernnti", model.sku().tier());
+        Assertions.assertEquals(167991676, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeTypeUpdateParameters model
-            = new NodeTypeUpdateParameters().withTags(mapOf("wzdgirujbzbo", "cy", "pniyujviyl", "vzzbtdcq"))
-                .withSku(new NodeTypeSku().withName("hfssnrb").withTier("efr").withCapacity(1375463592));
+        NodeTypeUpdateParameters model = new NodeTypeUpdateParameters().withTags(mapOf("bar", "luiqtqzfavyvnqq"))
+            .withSku(new NodeTypeSku().withName("ayjkqa").withTier("gzslesjcbhernnti").withCapacity(167991676));
         model = BinaryData.fromObject(model).toObject(NodeTypeUpdateParameters.class);
-        Assertions.assertEquals("cy", model.tags().get("wzdgirujbzbo"));
-        Assertions.assertEquals("hfssnrb", model.sku().name());
-        Assertions.assertEquals("efr", model.sku().tier());
-        Assertions.assertEquals(1375463592, model.sku().capacity());
+        Assertions.assertEquals("luiqtqzfavyvnqq", model.tags().get("bar"));
+        Assertions.assertEquals("ayjkqa", model.sku().name());
+        Assertions.assertEquals("gzslesjcbhernnti", model.sku().tier());
+        Assertions.assertEquals(167991676, model.sku().capacity());
     }
 
     // Use "Map.of" if available

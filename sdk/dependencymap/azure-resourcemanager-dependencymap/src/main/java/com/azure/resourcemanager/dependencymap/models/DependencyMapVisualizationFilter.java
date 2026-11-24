@@ -73,20 +73,6 @@ public final class DependencyMapVisualizationFilter implements JsonSerializable<
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dateTime() != null) {
-            dateTime().validate();
-        }
-        if (processNameFilter() != null) {
-            processNameFilter().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

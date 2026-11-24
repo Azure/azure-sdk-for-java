@@ -17,9 +17,9 @@ public final class UserInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"xim\",\"role\":\"root\"}]},\"id\":\"ocfs\",\"name\":\"ksymd\",\"type\":\"ys\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"dcsi\",\"role\":\"root\"},{\"db\":\"nnaamdectehfiqsc\",\"role\":\"root\"},{\"db\":\"ypvhezrkg\",\"role\":\"root\"}]},\"id\":\"jrefovgmkqsle\",\"name\":\"yvxyqjp\",\"type\":\"cattpngjcrcczsq\"}")
             .toObject(UserInner.class);
-        Assertions.assertEquals("xim", model.properties().roles().get(0).db());
+        Assertions.assertEquals("dcsi", model.properties().roles().get(0).db());
         Assertions.assertEquals(UserRole.ROOT, model.properties().roles().get(0).role());
     }
 
@@ -27,9 +27,11 @@ public final class UserInnerTests {
     public void testSerialize() throws Exception {
         UserInner model
             = new UserInner().withProperties(new UserProperties().withIdentityProvider(new IdentityProvider())
-                .withRoles(Arrays.asList(new DatabaseRole().withDb("xim").withRole(UserRole.ROOT))));
+                .withRoles(Arrays.asList(new DatabaseRole().withDb("dcsi").withRole(UserRole.ROOT),
+                    new DatabaseRole().withDb("nnaamdectehfiqsc").withRole(UserRole.ROOT),
+                    new DatabaseRole().withDb("ypvhezrkg").withRole(UserRole.ROOT))));
         model = BinaryData.fromObject(model).toObject(UserInner.class);
-        Assertions.assertEquals("xim", model.properties().roles().get(0).db());
+        Assertions.assertEquals("dcsi", model.properties().roles().get(0).db());
         Assertions.assertEquals(UserRole.ROOT, model.properties().roles().get(0).role());
     }
 }

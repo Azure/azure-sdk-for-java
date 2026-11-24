@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -180,11 +181,27 @@ public final class RuntimeScriptActionDetailInner extends RuntimeScriptAction {
      */
     @Override
     public void validate() {
-        super.validate();
         if (executionSummary() != null) {
             executionSummary().forEach(e -> e.validate());
         }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model RuntimeScriptActionDetailInner"));
+        }
+        if (uri() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property uri in model RuntimeScriptActionDetailInner"));
+        }
+        if (roles() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property roles in model RuntimeScriptActionDetailInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RuntimeScriptActionDetailInner.class);
 
     /**
      * {@inheritDoc}

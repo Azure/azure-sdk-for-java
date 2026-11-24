@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -97,24 +96,6 @@ public final class PartnerOrganizationProperties implements JsonSerializable<Par
         this.singleSignOnProperties = singleSignOnProperties;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (organizationName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property organizationName in model PartnerOrganizationProperties"));
-        }
-        if (singleSignOnProperties() != null) {
-            singleSignOnProperties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PartnerOrganizationProperties.class);
 
     /**
      * {@inheritDoc}

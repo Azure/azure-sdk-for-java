@@ -5,14 +5,11 @@
 package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -41,19 +38,14 @@ public final class RelationshipProperties implements JsonSerializable<Relationsh
     private String childEntityName;
 
     /*
-     * Optional set of labels (key-value pairs)
+     * Optional set of tags (key-value pairs)
      */
-    private Map<String, String> labels;
+    private Map<String, String> tags;
 
     /*
      * Discovered by which discovery rule. If set, the relationship cannot be deleted manually.
      */
     private String discoveredBy;
-
-    /*
-     * Date when the relationship was (soft-)deleted
-     */
-    private OffsetDateTime deletionDate;
 
     /**
      * Creates an instance of RelationshipProperties class.
@@ -131,22 +123,22 @@ public final class RelationshipProperties implements JsonSerializable<Relationsh
     }
 
     /**
-     * Get the labels property: Optional set of labels (key-value pairs).
+     * Get the tags property: Optional set of tags (key-value pairs).
      * 
-     * @return the labels value.
+     * @return the tags value.
      */
-    public Map<String, String> labels() {
-        return this.labels;
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
-     * Set the labels property: Optional set of labels (key-value pairs).
+     * Set the tags property: Optional set of tags (key-value pairs).
      * 
-     * @param labels the labels value to set.
+     * @param tags the tags value to set.
      * @return the RelationshipProperties object itself.
      */
-    public RelationshipProperties withLabels(Map<String, String> labels) {
-        this.labels = labels;
+    public RelationshipProperties withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -161,35 +153,6 @@ public final class RelationshipProperties implements JsonSerializable<Relationsh
     }
 
     /**
-     * Get the deletionDate property: Date when the relationship was (soft-)deleted.
-     * 
-     * @return the deletionDate value.
-     */
-    public OffsetDateTime deletionDate() {
-        return this.deletionDate;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (parentEntityName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property parentEntityName in model RelationshipProperties"));
-        }
-        if (childEntityName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property childEntityName in model RelationshipProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(RelationshipProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -198,7 +161,7 @@ public final class RelationshipProperties implements JsonSerializable<Relationsh
         jsonWriter.writeStringField("parentEntityName", this.parentEntityName);
         jsonWriter.writeStringField("childEntityName", this.childEntityName);
         jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -227,14 +190,11 @@ public final class RelationshipProperties implements JsonSerializable<Relationsh
                         = HealthModelProvisioningState.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedRelationshipProperties.displayName = reader.getString();
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedRelationshipProperties.labels = labels;
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRelationshipProperties.tags = tags;
                 } else if ("discoveredBy".equals(fieldName)) {
                     deserializedRelationshipProperties.discoveredBy = reader.getString();
-                } else if ("deletionDate".equals(fieldName)) {
-                    deserializedRelationshipProperties.deletionDate = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

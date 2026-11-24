@@ -22,7 +22,7 @@ public final class CloudHsmClusterPrivateLinkResourcesListByCloudHsmClusterMockT
     @Test
     public void testListByCloudHsmCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"ybycnunvj\",\"requiredMembers\":[\"kfawnopqgikyz\"],\"requiredZoneNames\":[\"xdyuxzejnt\",\"sewgioilqukr\",\"dxtqmieoxo\",\"ggufhyaomtb\"]},\"id\":\"havgrvk\",\"name\":\"fo\",\"type\":\"jzhpjbibgjmfx\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"ehjku\",\"requiredMembers\":[\"afgaoqlt\",\"aeylinm\"],\"requiredZoneNames\":[\"xirpghriy\",\"oqeyhlqhykprl\",\"yznuciqd\"]},\"id\":\"ex\",\"name\":\"itdfuxtyasiib\",\"type\":\"iybnnustgnljhnmg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class CloudHsmClusterPrivateLinkResourcesListByCloudHsmClusterMockT
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response = manager.cloudHsmClusterPrivateLinkResources()
-            .listByCloudHsmCluster("pdso", "bshrnsvbuswd", com.azure.core.util.Context.NONE);
+            .listByCloudHsmCluster("eebtijvacvb", "qzbqqxlajrnwxa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xdyuxzejnt", response.iterator().next().properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("xirpghriy", response.iterator().next().properties().requiredZoneNames().get(0));
     }
 }

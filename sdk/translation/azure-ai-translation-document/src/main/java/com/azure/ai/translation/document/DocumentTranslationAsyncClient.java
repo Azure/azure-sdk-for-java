@@ -5,7 +5,9 @@ package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.implementation.DocumentTranslationClientImpl;
 import com.azure.ai.translation.document.implementation.models.SupportedFileFormats;
+import com.azure.ai.translation.document.models.BatchOptions;
 import com.azure.ai.translation.document.models.DocumentStatusResult;
+import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
 import com.azure.ai.translation.document.models.ListDocumentStatusesOptions;
@@ -95,6 +97,7 @@ public final class DocumentTranslationAsyncClient {
      *                  (Required){
      *                     targetUrl: String (Required)
      *                     category: String (Optional)
+     *                     deploymentName: String (Optional)
      *                     language: String (Required)
      *                     glossaries (Optional): [
      *                          (Optional){
@@ -110,6 +113,9 @@ public final class DocumentTranslationAsyncClient {
      *             storageType: String(Folder/File) (Optional)
      *         }
      *     ]
+     *     options (Optional): {
+     *         translateTextWithinImage: Boolean (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -260,6 +266,9 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -308,6 +317,11 @@ public final class DocumentTranslationAsyncClient {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -363,6 +377,9 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -422,6 +439,9 @@ public final class DocumentTranslationAsyncClient {
      *         notYetStarted: int (Required)
      *         cancelled: int (Required)
      *         totalCharacterCharged: long (Required)
+     *         totalImageScansSucceeded: Integer (Optional)
+     *         totalImageScansFailed: Integer (Optional)
+     *         totalImageCharged: Long (Optional)
      *     }
      * }
      * }
@@ -565,6 +585,11 @@ public final class DocumentTranslationAsyncClient {
      *     progress: double (Required)
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
+     *     totalImageScansSucceeded: Integer (Optional)
+     *     totalImageScansFailed: Integer (Optional)
+     *     imageCharged: Integer (Optional)
+     *     imageCharacterDetected: Integer (Optional)
+     *     deploymentName: String (Optional)
      * }
      * }
      * </pre>
@@ -581,59 +606,6 @@ public final class DocumentTranslationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDocumentStatuses(String translationId, RequestOptions requestOptions) {
         return this.serviceClient.listDocumentStatusesAsync(translationId, requestOptions);
-    }
-
-    /**
-     * Returns a list of supported document formats
-     *
-     * The list of supported formats supported by the Document Translation
-     * service.
-     * The list includes the common file extension, as well as the
-     * content-type if using the upload API.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>type</td><td>String</td><td>No</td><td>the type of format like document or glossary . Allowed values:
-     * "document", "glossary".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     value (Required): [
-     *          (Required){
-     *             format: String (Required)
-     *             fileExtensions (Required): [
-     *                 String (Required)
-     *             ]
-     *             contentTypes (Required): [
-     *                 String (Required)
-     *             ]
-     *             defaultVersion: String (Optional)
-     *             versions (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             type: String(document/glossary) (Optional)
-     *         }
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of supported file formats along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSupportedFormatsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getSupportedFormatsWithResponseAsync(requestOptions);
     }
 
     /**
@@ -674,6 +646,35 @@ public final class DocumentTranslationAsyncClient {
         // Generated convenience method for beginTranslationWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginTranslationWithModelAsync(BinaryData.fromObject(body), requestOptions);
+    }
+
+    /**
+     * Submit a document translation request to the Document Translation service, optionally translating text
+     * embedded within images in the documents.
+     *
+     * This is a convenience overload that enables image translation without constructing a {@link BatchOptions}.
+     * It builds a {@link TranslationBatch} from the provided inputs and, when {@code translateTextWithinImage} is
+     * non-null, sets it via {@link BatchOptions#setTranslateTextWithinImage(Boolean)}.
+     *
+     * @param inputs the input list of documents or folders containing documents to be translated.
+     * @param translateTextWithinImage whether to translate text embedded within images in the documents; may be
+     * {@code null} to use the service default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<TranslationStatusResult, TranslationStatusResult>
+        beginTranslation(List<DocumentTranslationInput> inputs, Boolean translateTextWithinImage) {
+        TranslationBatch body = new TranslationBatch(inputs);
+        if (translateTextWithinImage != null) {
+            body.setOptions(new BatchOptions().setTranslateTextWithinImage(translateTextWithinImage));
+        }
+        return beginTranslation(body);
     }
 
     /**
@@ -1091,10 +1092,7 @@ public final class DocumentTranslationAsyncClient {
     public Mono<List<FileFormat>> getSupportedFormats(FileFormatType type) {
         // Custom convenience method for getSupportedFormatsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        if (type != null) {
-            requestOptions.addQueryParam("type", type.toString(), false);
-        }
-        return getSupportedFormatsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return getSupportedFormatsWithResponse(type.toString(), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SupportedFileFormats.class).getValue());
     }
 
@@ -1105,19 +1103,42 @@ public final class DocumentTranslationAsyncClient {
      * service.
      * The list includes the common file extension, as well as the
      * content-type if using the upload API.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     value (Required): [
+     *          (Required){
+     *             format: String (Required)
+     *             fileExtensions (Required): [
+     *                 String (Required)
+     *             ]
+     *             contentTypes (Required): [
+     *                 String (Required)
+     *             ]
+     *             defaultVersion: String (Optional)
+     *             versions (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             type: String(Document/Glossary) (Optional)
+     *         }
+     *     ]
+     * }
+     * }
+     * </pre>
      *
+     * @param type the type of format like document or glossary . Allowed values: "Document", "Glossary".
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of supported file formats on successful completion of {@link Mono}.
+     * @return list of supported file formats along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FileFormat>> getSupportedFormats() {
-        // Custom convenience method for getSupportedFormatsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSupportedFormatsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SupportedFileFormats.class).getValue());
+    public Mono<Response<BinaryData>> getSupportedFormatsWithResponse(String type, RequestOptions requestOptions) {
+        return this.serviceClient.getSupportedFormatsWithResponseAsync(type, requestOptions);
     }
 }

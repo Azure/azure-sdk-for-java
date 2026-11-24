@@ -6,11 +6,11 @@ package com.azure.resourcemanager.subscription.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.subscription.SubscriptionManager;
-import com.azure.resourcemanager.subscription.models.PutAliasListResult;
+import com.azure.resourcemanager.subscription.models.SubscriptionAliasListResult;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -20,16 +20,17 @@ public final class AliasListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"subscriptionId\":\"jnpg\",\"provisioningState\":\"Failed\"},\"id\":\"tadehxnltyfsopp\",\"name\":\"suesnzw\",\"type\":\"ej\"},{\"properties\":{\"subscriptionId\":\"orxzdmohctbqvud\",\"provisioningState\":\"Accepted\"},\"id\":\"ndnvo\",\"name\":\"gujjugwdkcglh\",\"type\":\"lazjdyggdtjixhbk\"},{\"properties\":{\"subscriptionId\":\"qweykhmenev\",\"provisioningState\":\"Succeeded\"},\"id\":\"xfw\",\"name\":\"ybcibvyvdcsit\",\"type\":\"nnaamdectehfiqsc\"},{\"properties\":{\"subscriptionId\":\"pvhez\",\"provisioningState\":\"Succeeded\"},\"id\":\"q\",\"name\":\"c\",\"type\":\"refovgmkqsleyyvx\"}],\"nextLink\":\"jpkcattpng\"}";
+            = "{\"value\":[{\"properties\":{\"subscriptionId\":\"ku\",\"displayName\":\"oskg\",\"provisioningState\":\"Failed\",\"acceptOwnershipUrl\":\"uimjmvx\",\"acceptOwnershipState\":\"Pending\",\"billingScope\":\"ugidyjrr\",\"workload\":\"Production\",\"resellerId\":\"osvexcsonpclhoc\",\"subscriptionOwnerId\":\"slkevle\",\"managementGroupId\":\"zfbuhf\",\"createdTime\":\"faxkffeii\",\"tags\":{\"shxmzsbbzoggigrx\":\"vmezy\",\"ptkoenkoukn\":\"burvjxxjnspy\",\"ngkpocipazy\":\"udwtiukbl\",\"gukgjnpiucgygevq\":\"o\"}},\"id\":\"typmrbpizcdrqjsd\",\"name\":\"ydnfyhxdeoejz\",\"type\":\"cwif\"},{\"properties\":{\"subscriptionId\":\"tgzfbishcbkh\",\"displayName\":\"deyeamdphagalpbu\",\"provisioningState\":\"Failed\",\"acceptOwnershipUrl\":\"pwhonowkg\",\"acceptOwnershipState\":\"Pending\",\"billingScope\":\"nkixzbinj\",\"workload\":\"DevTest\",\"resellerId\":\"tmryw\",\"subscriptionOwnerId\":\"zoqftiyqzrnkcqvy\",\"managementGroupId\":\"whzlsicohoq\",\"createdTime\":\"wvl\",\"tags\":{\"konocu\":\"vwhheunmmqhgyx\",\"zf\":\"oklyaxuconuq\",\"vjektcxsenh\":\"beypewrmjmw\"}},\"id\":\"rsffrzpwvlqdqgbi\",\"name\":\"ylihkaetckt\",\"type\":\"fcivfsnkym\"},{\"properties\":{\"subscriptionId\":\"qhjfbebr\",\"displayName\":\"xerf\",\"provisioningState\":\"Accepted\",\"acceptOwnershipUrl\":\"ttxfvjr\",\"acceptOwnershipState\":\"Completed\",\"billingScope\":\"hxepcyvahfnlj\",\"workload\":\"Production\",\"resellerId\":\"j\",\"subscriptionOwnerId\":\"ujqgidok\",\"managementGroupId\":\"ljyoxgvcltb\",\"createdTime\":\"ncghkje\",\"tags\":{\"smx\":\"hbijhtxfvgxb\",\"pvecxgodeb\":\"eh\",\"pukgriwflzlfb\":\"qkkrb\"}},\"id\":\"puz\",\"name\":\"cispnqzahmgkbr\",\"type\":\"yydhibnuqqk\"},{\"properties\":{\"subscriptionId\":\"a\",\"displayName\":\"gvtqagnbuynh\",\"provisioningState\":\"Failed\",\"acceptOwnershipUrl\":\"mebf\",\"acceptOwnershipState\":\"Pending\",\"billingScope\":\"butr\",\"workload\":\"Production\",\"resellerId\":\"azzmhjrunmpxt\",\"subscriptionOwnerId\":\"bh\",\"managementGroupId\":\"nlankxmyskpb\",\"createdTime\":\"nbtkcxywnytnr\",\"tags\":{\"czfc\":\"lqidyby\",\"rqlfktsthsucocmn\":\"haaxdbabphl\",\"ckzywbiexzfeyue\":\"yazttbtwwrqpue\"}},\"id\":\"ibx\",\"name\":\"jwbhqwalmuz\",\"type\":\"oxaepd\"}],\"nextLink\":\"jancu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SubscriptionManager manager = SubscriptionManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PutAliasListResult response = manager.alias().listWithResponse(com.azure.core.util.Context.NONE).getValue();
+        SubscriptionAliasListResult response
+            = manager.alias().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
     }
 }

@@ -14,7 +14,7 @@ public final class ComputeIsolationPropertiesTests {
         ComputeIsolationProperties model
             = BinaryData.fromString("{\"enableComputeIsolation\":true,\"hostSku\":\"dhxujznbmpo\"}")
                 .toObject(ComputeIsolationProperties.class);
-        Assertions.assertEquals(true, model.enableComputeIsolation());
+        Assertions.assertTrue(model.enableComputeIsolation());
         Assertions.assertEquals("dhxujznbmpo", model.hostSku());
     }
 
@@ -23,7 +23,7 @@ public final class ComputeIsolationPropertiesTests {
         ComputeIsolationProperties model
             = new ComputeIsolationProperties().withEnableComputeIsolation(true).withHostSku("dhxujznbmpo");
         model = BinaryData.fromObject(model).toObject(ComputeIsolationProperties.class);
-        Assertions.assertEquals(true, model.enableComputeIsolation());
+        Assertions.assertTrue(model.enableComputeIsolation());
         Assertions.assertEquals("dhxujznbmpo", model.hostSku());
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Not Found Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosNotFoundException extends CosmosAccessException {
 
     /**

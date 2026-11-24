@@ -22,7 +22,7 @@ public final class OperatorApiPlansListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"operatorName\":\"ivyhzceuojgjrwju\",\"camaraApiName\":\"otwmcdyt\",\"supportedLocations\":[\"it\"],\"operatorRegions\":[\"jawgqwg\"],\"markets\":[\"isk\"],\"limits\":\"bkpyc\",\"marketplaceProperties\":{\"offerId\":\"wndnhj\",\"legacyOfferId\":\"uwhvylwzbtdhxujz\",\"publisherId\":\"mpowuwpr\",\"planId\":\"lve\",\"termId\":\"lupj\"},\"provisioningState\":\"Updating\"},\"id\":\"xobbcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}]}";
+            = "{\"value\":[{\"properties\":{\"operatorName\":\"hwit\",\"camaraApiName\":\"ypyynpcdpumnzg\",\"supportedLocations\":[\"nmabik\"],\"operatorRegions\":[\"rgjhxb\",\"dtlwwrlkd\",\"tncvokot\"],\"markets\":[\"d\"],\"limits\":\"gsyocogj\",\"marketplaceProperties\":{\"offerId\":\"tbnnha\",\"publisherId\":\"ocrkvcikh\",\"planId\":\"p\",\"planTermsAndConditionsLinks\":[\"qgxqquezikyw\"]},\"provisioningState\":\"Provisioning\"},\"id\":\"allatmelwuipic\",\"name\":\"jzkzi\",\"type\":\"gvvcnayrhyr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,21 +31,18 @@ public final class OperatorApiPlansListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<OperatorApiPlan> response = manager.operatorApiPlans()
-            .list("bwpucwwfvovbv", 1386132644, 2004605521, com.azure.core.util.Context.NONE);
+        PagedIterable<OperatorApiPlan> response
+            = manager.operatorApiPlans().list("q", 963712309, 937941437, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ivyhzceuojgjrwju", response.iterator().next().properties().operatorName());
-        Assertions.assertEquals("otwmcdyt", response.iterator().next().properties().camaraApiName());
-        Assertions.assertEquals("it", response.iterator().next().properties().supportedLocations().get(0));
-        Assertions.assertEquals("jawgqwg", response.iterator().next().properties().operatorRegions().get(0));
-        Assertions.assertEquals("isk", response.iterator().next().properties().markets().get(0));
-        Assertions.assertEquals("bkpyc", response.iterator().next().properties().limits());
-        Assertions.assertEquals("wndnhj", response.iterator().next().properties().marketplaceProperties().offerId());
-        Assertions.assertEquals("uwhvylwzbtdhxujz",
-            response.iterator().next().properties().marketplaceProperties().legacyOfferId());
-        Assertions.assertEquals("mpowuwpr",
+        Assertions.assertEquals("hwit", response.iterator().next().properties().operatorName());
+        Assertions.assertEquals("ypyynpcdpumnzg", response.iterator().next().properties().camaraApiName());
+        Assertions.assertEquals("nmabik", response.iterator().next().properties().supportedLocations().get(0));
+        Assertions.assertEquals("rgjhxb", response.iterator().next().properties().operatorRegions().get(0));
+        Assertions.assertEquals("d", response.iterator().next().properties().markets().get(0));
+        Assertions.assertEquals("gsyocogj", response.iterator().next().properties().limits());
+        Assertions.assertEquals("tbnnha", response.iterator().next().properties().marketplaceProperties().offerId());
+        Assertions.assertEquals("ocrkvcikh",
             response.iterator().next().properties().marketplaceProperties().publisherId());
-        Assertions.assertEquals("lve", response.iterator().next().properties().marketplaceProperties().planId());
-        Assertions.assertEquals("lupj", response.iterator().next().properties().marketplaceProperties().termId());
+        Assertions.assertEquals("p", response.iterator().next().properties().marketplaceProperties().planId());
     }
 }

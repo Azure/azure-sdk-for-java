@@ -1,14 +1,138 @@
 # Release History
 
-## 1.17.0-beta.1 (Unreleased)
+## 1.18.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added `maximumHttpVersion` to select HTTP/1.1 or HTTP/2 with HTTP/1.1 fallback while preserving existing defaults.
+- Added support for `HttpClientOptions.setMaximumHttpVersion` through the HTTP client provider.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.17.0 (2026-10-27)
+
+### Features Added
+- Added opt-in observation of the `Expect: 100-continue` handshake. When a caller places an `AtomicBoolean` in the
+  request `Context` under the key `azure-http-client-expect-continue-received`, the client sets it to `true` if the
+  service answers with an interim `100 Continue` response. This does not change how or when the request body is sent.
+
+### Bugs Fixed
+
+- Fixed asynchronous response downloads blocking Netty event-loop threads while waiting for destination writes.
+  Response bytes are copied to heap buffers so pending writes remain safe after Netty releases its network buffers.
+- Fixed timeout resolution to prefer explicit builder values, then builder-specific configuration, then global
+  configuration, and finally SDK defaults.
+- Preserved asynchronous file downloads when Netty uses scoped direct buffers on newer JDKs.
+- Declared the Netty transport dependency directly to prevent older transitive transports from being selected.
+- Fixed response and read timeouts not being enforced when the write timeout is disabled.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.60.0` to `1.61.0`.
+- Migrated Netty dependencies from `4.1.138.Final` to `4.2.19.Final`.
+- Upgraded Reactor Netty from `1.2.18` to `1.3.7` and Reactor from `3.7.19` to `3.8.7`.
+
+## 1.16.8 (2026-09-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.1` to `1.60.0`.
+- Upgraded Netty dependencies from `4.1.137.Final` to `4.1.138.Final`.
+- Upgraded Netty TcNative dependencies from `2.0.81.Final` to `2.0.84.Final`.
+
+## 1.16.7 (2026-08-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.59.0` to `1.59.1`.
+
+## 1.16.6 (2026-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.1` to `1.59.0`.
+- Upgraded Reactor from `3.7.18` to `3.7.19`.
+- Upgraded Netty dependencies from `4.1.135.Final` to `4.1.137.Final`.
+- Upgraded Netty TcNative dependencies from `2.0.78.Final` to `2.0.81.Final`.
+
+## 1.16.5 (2026-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.58.0` to `1.58.1`.
+- Upgraded Reactor from `3.7.17` to `3.7.18`.
+- Upgraded Reactor Netty from `1.2.16` to `1.2.18`.
+- Upgraded Netty dependencies from `4.1.132.Final` to `4.1.135.Final`.
+- Upgraded Netty TcNative dependencies from `2.0.75.Final` to `2.0.78.Final`.
+
+## 1.16.4 (2026-04-28)
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.1` to `1.58.0`.
+- Upgraded Reactor from `3.7.14` to `3.7.17`.
+- Upgraded Reactor Netty from `1.2.13` to `1.2.16`.
+- Upgraded Netty dependencies from `4.1.130.Final` to `4.1.132.Final`.
+
+## 1.16.3 (2026-01-15)
+
+### Bugs Fixed
+
+- Fixed a bug where `CONNECT` timeout wasn't used when connecting to a proxy. ([#47554](https://github.com/Azure/azure-sdk-for-java/pull/47554))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.0` to `1.57.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+- Upgraded Reactor Netty from `1.2.10` to `1.2.13`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+- Upgraded Netty dependencies from `4.1.127.Final` to `4.1.130.Final`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+
+## 1.16.2 (2025-10-06)
+
+### Bugs Fixed
+
+- Fixed a bug where `reactor.netty.http.client.HttpClient.resolver` would always be set to `DefaultAddressResolverGroup.INSTANCE`
+  when no `ProxyOptions` were provided, even when a custom `HttpClient` was used to initialize `NettyAsyncHttpClientBuilder`.
+  Now the resolver is only set to `DefaultAddressResolverGroup.INSTANCE` when a resolver wasn't set.
+- Changed how HTTP responses are closed to limit the chances of leaking `ByteBuf`s when the `Connection`'s `Channel` was
+  deregistered from an `EventLoop`, resulting in the network connection from being cleaned up properly.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to `1.57.0`.
+- Upgraded Reactor from `3.7.9` to `3.7.11`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+- Upgraded Reactor Netty from `1.2.9` to `1.2.10`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+- Upgraded Netty dependencies from `4.1.126.Final` to `4.1.127.Final`. ([#46894](https://github.com/Azure/azure-sdk-for-java/pull/46894))
+
+## 1.16.1 (2025-09-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.0` to `1.56.1`.
+- Upgraded Reactor from `3.7.8` to `3.7.9`. ([#46430](https://github.com/Azure/azure-sdk-for-java/pull/46430))
+- Upgraded Reactor Netty from `1.2.8` to `1.2.9`. ([#46430](https://github.com/Azure/azure-sdk-for-java/pull/46430))
+- Upgraded Netty dependencies from `4.1.123.Final` to `4.1.126.Final`. ([#46586](https://github.com/Azure/azure-sdk-for-java/pull/46586))
 
 ## 1.16.0 (2025-08-07)
 
@@ -723,4 +847,3 @@ This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-core-http-netty_1.0.0/sdk/core/azure-core-http-netty/README.md)
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-core-http-netty_1.0.0/sdk/core/azure-core-http-netty/src/samples/java/com/azure/core/http/netty)
-

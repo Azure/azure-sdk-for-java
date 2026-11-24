@@ -22,6 +22,11 @@ public final class ApplicationUpdateParameters implements JsonSerializable<Appli
      */
     private Map<String, String> tags;
 
+    /*
+     * Application update parameters properties.
+     */
+    private ApplicationUpdateParametersProperties properties;
+
     /**
      * Creates an instance of ApplicationUpdateParameters class.
      */
@@ -49,11 +54,23 @@ public final class ApplicationUpdateParameters implements JsonSerializable<Appli
     }
 
     /**
-     * Validates the instance.
+     * Get the properties property: Application update parameters properties.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the properties value.
      */
-    public void validate() {
+    public ApplicationUpdateParametersProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Application update parameters properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the ApplicationUpdateParameters object itself.
+     */
+    public ApplicationUpdateParameters withProperties(ApplicationUpdateParametersProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -63,6 +80,7 @@ public final class ApplicationUpdateParameters implements JsonSerializable<Appli
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +102,9 @@ public final class ApplicationUpdateParameters implements JsonSerializable<Appli
                 if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedApplicationUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationUpdateParameters.properties
+                        = ApplicationUpdateParametersProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

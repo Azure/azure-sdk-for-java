@@ -3,11 +3,10 @@
 
 package com.azure.search.perf;
 
+import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.perf.core.SearchPerfStressOptions;
 import com.azure.search.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Performs autocomplete operations.
@@ -33,19 +32,14 @@ public class AutocompleteTest extends ServiceTest<SearchPerfStressOptions> {
 
     @Override
     public void run() {
-        AtomicInteger count = new AtomicInteger();
-        searchClient.autocomplete("historic", SUGGESTER_NAME)
-            .iterator()
-            .forEachRemaining(ignored -> count.incrementAndGet());
-
-        assert count.get() > 0;
+        assert !searchClient.autocomplete(new AutocompleteOptions("historic", SUGGESTER_NAME)).getResults().isEmpty();
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return searchAsyncClient.autocomplete("historic", SUGGESTER_NAME)
-            .count()
-            .flatMap(
-                count -> count > 0 ? Mono.empty() : Mono.error(new RuntimeException("Expected autocomplete results.")));
+        return searchAsyncClient.autocomplete(new AutocompleteOptions("historic", SUGGESTER_NAME))
+            .flatMap(result -> result.getResults().isEmpty()
+                ? Mono.error(new RuntimeException("Expected autocomplete results."))
+                : Mono.empty());
     }
 }

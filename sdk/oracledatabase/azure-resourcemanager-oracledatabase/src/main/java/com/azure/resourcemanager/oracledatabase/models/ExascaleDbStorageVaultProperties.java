@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * ExascaleDbStorageVault resource model.
@@ -76,6 +76,26 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
      * HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
      */
     private String ociUrl;
+
+    /*
+     * Cloud Exadata infrastructure ID
+     */
+    private String exadataInfrastructureId;
+
+    /*
+     * The shapeAttribute of the Exadata VM cluster(s) associated with the Exadata Database Storage Vault.
+     */
+    private List<ShapeAttribute> attachedShapeAttributes;
+
+    /*
+     * Indicates if autoscale feature is enabled for the Storage Vault. The default value is: false.
+     */
+    private Boolean isAutoscaleEnabled;
+
+    /*
+     * Maximum limit storage size in gigabytes, that is applicable for the Database Storage Vault.
+     */
+    private Integer autoscaleLimitInGbs;
 
     /**
      * Creates an instance of ExascaleDbStorageVaultProperties class.
@@ -252,29 +272,78 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
     }
 
     /**
-     * Validates the instance.
+     * Get the exadataInfrastructureId property: Cloud Exadata infrastructure ID.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the exadataInfrastructureId value.
      */
-    public void validate() {
-        if (displayName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property displayName in model ExascaleDbStorageVaultProperties"));
-        }
-        if (highCapacityDatabaseStorageInput() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property highCapacityDatabaseStorageInput in model ExascaleDbStorageVaultProperties"));
-        } else {
-            highCapacityDatabaseStorageInput().validate();
-        }
-        if (highCapacityDatabaseStorage() != null) {
-            highCapacityDatabaseStorage().validate();
-        }
+    public String exadataInfrastructureId() {
+        return this.exadataInfrastructureId;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ExascaleDbStorageVaultProperties.class);
+    /**
+     * Set the exadataInfrastructureId property: Cloud Exadata infrastructure ID.
+     * 
+     * @param exadataInfrastructureId the exadataInfrastructureId value to set.
+     * @return the ExascaleDbStorageVaultProperties object itself.
+     */
+    public ExascaleDbStorageVaultProperties withExadataInfrastructureId(String exadataInfrastructureId) {
+        this.exadataInfrastructureId = exadataInfrastructureId;
+        return this;
+    }
+
+    /**
+     * Get the attachedShapeAttributes property: The shapeAttribute of the Exadata VM cluster(s) associated with the
+     * Exadata Database Storage Vault.
+     * 
+     * @return the attachedShapeAttributes value.
+     */
+    public List<ShapeAttribute> attachedShapeAttributes() {
+        return this.attachedShapeAttributes;
+    }
+
+    /**
+     * Get the isAutoscaleEnabled property: Indicates if autoscale feature is enabled for the Storage Vault. The default
+     * value is: false.
+     * 
+     * @return the isAutoscaleEnabled value.
+     */
+    public Boolean isAutoscaleEnabled() {
+        return this.isAutoscaleEnabled;
+    }
+
+    /**
+     * Set the isAutoscaleEnabled property: Indicates if autoscale feature is enabled for the Storage Vault. The default
+     * value is: false.
+     * 
+     * @param isAutoscaleEnabled the isAutoscaleEnabled value to set.
+     * @return the ExascaleDbStorageVaultProperties object itself.
+     */
+    public ExascaleDbStorageVaultProperties withIsAutoscaleEnabled(Boolean isAutoscaleEnabled) {
+        this.isAutoscaleEnabled = isAutoscaleEnabled;
+        return this;
+    }
+
+    /**
+     * Get the autoscaleLimitInGbs property: Maximum limit storage size in gigabytes, that is applicable for the
+     * Database Storage Vault.
+     * 
+     * @return the autoscaleLimitInGbs value.
+     */
+    public Integer autoscaleLimitInGbs() {
+        return this.autoscaleLimitInGbs;
+    }
+
+    /**
+     * Set the autoscaleLimitInGbs property: Maximum limit storage size in gigabytes, that is applicable for the
+     * Database Storage Vault.
+     * 
+     * @param autoscaleLimitInGbs the autoscaleLimitInGbs value to set.
+     * @return the ExascaleDbStorageVaultProperties object itself.
+     */
+    public ExascaleDbStorageVaultProperties withAutoscaleLimitInGbs(Integer autoscaleLimitInGbs) {
+        this.autoscaleLimitInGbs = autoscaleLimitInGbs;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -287,6 +356,9 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
         jsonWriter.writeNumberField("additionalFlashCacheInPercent", this.additionalFlashCacheInPercent);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("exadataInfrastructureId", this.exadataInfrastructureId);
+        jsonWriter.writeBooleanField("isAutoscaleEnabled", this.isAutoscaleEnabled);
+        jsonWriter.writeNumberField("autoscaleLimitInGbs", this.autoscaleLimitInGbs);
         return jsonWriter.writeEndObject();
     }
 
@@ -337,6 +409,18 @@ public final class ExascaleDbStorageVaultProperties implements JsonSerializable<
                     deserializedExascaleDbStorageVaultProperties.ocid = reader.getString();
                 } else if ("ociUrl".equals(fieldName)) {
                     deserializedExascaleDbStorageVaultProperties.ociUrl = reader.getString();
+                } else if ("exadataInfrastructureId".equals(fieldName)) {
+                    deserializedExascaleDbStorageVaultProperties.exadataInfrastructureId = reader.getString();
+                } else if ("attachedShapeAttributes".equals(fieldName)) {
+                    List<ShapeAttribute> attachedShapeAttributes
+                        = reader.readArray(reader1 -> ShapeAttribute.fromString(reader1.getString()));
+                    deserializedExascaleDbStorageVaultProperties.attachedShapeAttributes = attachedShapeAttributes;
+                } else if ("isAutoscaleEnabled".equals(fieldName)) {
+                    deserializedExascaleDbStorageVaultProperties.isAutoscaleEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoscaleLimitInGbs".equals(fieldName)) {
+                    deserializedExascaleDbStorageVaultProperties.autoscaleLimitInGbs
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

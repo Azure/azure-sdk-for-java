@@ -13,16 +13,16 @@ public final class AzureSubscriptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSubscriptions model
-            = BinaryData.fromString("{\"azureSubscriptionIds\":[\"cvokotllxdyhg\",\"y\",\"cogjltdtbn\",\"hadoocrk\"]}")
+            = BinaryData.fromString("{\"azureSubscriptionIds\":[\"cormr\",\"xqtvcofu\",\"f\",\"vkg\"]}")
                 .toObject(AzureSubscriptions.class);
-        Assertions.assertEquals("cvokotllxdyhg", model.azureSubscriptionIds().get(0));
+        Assertions.assertEquals("cormr", model.azureSubscriptionIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSubscriptions model = new AzureSubscriptions()
-            .withAzureSubscriptionIds(Arrays.asList("cvokotllxdyhg", "y", "cogjltdtbn", "hadoocrk"));
+        AzureSubscriptions model
+            = new AzureSubscriptions().withAzureSubscriptionIds(Arrays.asList("cormr", "xqtvcofu", "f", "vkg"));
         model = BinaryData.fromObject(model).toObject(AzureSubscriptions.class);
-        Assertions.assertEquals("cvokotllxdyhg", model.azureSubscriptionIds().get(0));
+        Assertions.assertEquals("cormr", model.azureSubscriptionIds().get(0));
     }
 }

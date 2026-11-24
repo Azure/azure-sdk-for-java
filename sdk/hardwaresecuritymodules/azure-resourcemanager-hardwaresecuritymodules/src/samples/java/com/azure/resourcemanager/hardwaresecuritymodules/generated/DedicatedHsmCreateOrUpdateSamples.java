@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class DedicatedHsmCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
      */
     /**
      * Sample code: Create a new or update an existing payment HSM with management profile.
@@ -32,7 +32,6 @@ public final class DedicatedHsmCreateOrUpdateSamples {
             .define("hsm1")
             .withRegion("westus")
             .withExistingResourceGroup("hsm-group")
-            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
@@ -41,12 +40,13 @@ public final class DedicatedHsmCreateOrUpdateSamples {
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.2"))))
                 .withStampId("stamp01"))
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/DedicatedHsm_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01-preview/DedicatedHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new or update an existing dedicated HSM.
@@ -59,18 +59,18 @@ public final class DedicatedHsmCreateOrUpdateSamples {
             .define("hsm1")
             .withRegion("westus")
             .withExistingResourceGroup("hsm-group")
-            .withSku(new Sku().withName(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790))
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
                 .withStampId("stamp01"))
+            .withSku(new Sku().withName(SkuName.SAFE_NET_LUNA_NETWORK_HSM_A790))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-03-31/PaymentHsm_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-01-preview/PaymentHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new or update an existing payment HSM.
@@ -83,12 +83,12 @@ public final class DedicatedHsmCreateOrUpdateSamples {
             .define("hsm1")
             .withRegion("westus")
             .withExistingResourceGroup("hsm-group")
-            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.Network/virtualNetworks/stamp01/subnets/stamp01"))
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("1.0.0.1"))))
                 .withStampId("stamp01"))
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
             .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
             .create();
     }

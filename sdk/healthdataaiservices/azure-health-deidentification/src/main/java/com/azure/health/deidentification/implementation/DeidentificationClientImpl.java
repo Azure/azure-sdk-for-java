@@ -275,7 +275,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/jobs/{name}")
         @ExpectedResponses({ 204 })
@@ -285,7 +285,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String jobName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/deid")
         @ExpectedResponses({ 200 })
@@ -360,7 +360,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -376,6 +376,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -403,6 +404,14 @@ public final class DeidentificationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -431,7 +440,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -447,6 +456,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -475,6 +485,14 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -502,7 +520,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -518,6 +536,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -552,7 +571,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -568,6 +587,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -625,7 +645,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -641,6 +661,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -675,7 +696,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -691,6 +712,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -747,7 +769,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -763,6 +785,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -797,7 +820,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -813,6 +836,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -876,7 +900,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -892,6 +916,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -926,7 +951,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -942,6 +967,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1005,7 +1031,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1021,6 +1047,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1055,7 +1082,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1071,6 +1098,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1133,7 +1161,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1149,6 +1177,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1183,7 +1212,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1199,6 +1228,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1269,7 +1299,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1285,6 +1315,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1349,7 +1380,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1365,6 +1396,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1447,7 +1479,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1463,6 +1495,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1525,7 +1558,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1541,6 +1574,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1892,7 +1926,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1908,6 +1942,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -1935,6 +1970,14 @@ public final class DeidentificationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1967,7 +2010,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1983,6 +2026,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -2011,6 +2055,14 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2030,6 +2082,13 @@ public final class DeidentificationClientImpl {
      * Delete a de-identification job.
      * 
      * Removes the record of the job from the service. Does not delete any documents.
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2041,15 +2100,21 @@ public final class DeidentificationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteJobWithResponseAsync(String jobName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.deleteJob(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), jobName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), jobName, requestOptions, context));
     }
 
     /**
      * Delete a de-identification job.
      * 
      * Removes the record of the job from the service. Does not delete any documents.
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2061,9 +2126,8 @@ public final class DeidentificationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteJobWithResponse(String jobName, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobName, accept,
-            requestOptions, Context.NONE);
+        return service.deleteJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), jobName, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2076,10 +2140,22 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     taggedEntities (Optional): {
+     *         encoding: String(Utf8/Utf16/CodePoint) (Required)
+     *         entities (Required): [
+     *              (Required){
+     *                 category: String(Unknown/Account/Age/BioID/City/CountryOrRegion/Date/Device/Doctor/Email/Fax/HealthPlan/Hospital/IDNum/IPAddress/License/LocationOther/MedicalRecord/Organization/Patient/Phone/Profession/SocialSecurity/State/Street/Url/Username/Vehicle/Zip) (Required)
+     *                 offset: int (Required)
+     *                 length: int (Required)
+     *                 text: String (Optional)
+     *             }
+     *         ]
+     *     }
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      * }
      * }
@@ -2109,6 +2185,14 @@ public final class DeidentificationClientImpl {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
      * 
      * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2137,10 +2221,22 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
+     *     taggedEntities (Optional): {
+     *         encoding: String(Utf8/Utf16/CodePoint) (Required)
+     *         entities (Required): [
+     *              (Required){
+     *                 category: String(Unknown/Account/Age/BioID/City/CountryOrRegion/Date/Device/Doctor/Email/Fax/HealthPlan/Hospital/IDNum/IPAddress/License/LocationOther/MedicalRecord/Organization/Patient/Phone/Profession/SocialSecurity/State/Street/Url/Username/Vehicle/Zip) (Required)
+     *                 offset: int (Required)
+     *                 length: int (Required)
+     *                 text: String (Optional)
+     *             }
+     *         ]
+     *     }
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      * }
      * }
@@ -2171,6 +2267,14 @@ public final class DeidentificationClientImpl {
      * }
      * </pre>
      * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>x-ms-client-request-id</td><td>String</td><td>An opaque, globally-unique, client-generated string
+     * identifier for the request.</td></tr>
+     * </table>
+     * 
      * @param body Request body for de-identification operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2197,7 +2301,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -2213,6 +2317,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -2270,7 +2375,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
+     *     operation: String(Redact/Surrogate/Tag/SurrogateOnly) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -2286,6 +2391,7 @@ public final class DeidentificationClientImpl {
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
+     *         inputLocale: String (Optional)
      *     }
      *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
@@ -2432,20 +2538,26 @@ public final class DeidentificationClientImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

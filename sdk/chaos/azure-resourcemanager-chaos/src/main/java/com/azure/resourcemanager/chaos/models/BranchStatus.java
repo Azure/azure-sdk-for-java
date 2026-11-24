@@ -80,17 +80,6 @@ public final class BranchStatus implements JsonSerializable<BranchStatus> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (actions() != null) {
-            actions().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

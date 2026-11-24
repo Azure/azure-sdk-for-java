@@ -20,6 +20,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosBatchOperationResult {
 
+    private static CosmosItemSerializer internalDefaultSerializer() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().getInternalDefaultSerializer();
+    }
+
     private final String eTag;
     private final double requestCharge;
     private final int statusCode;
@@ -91,7 +95,7 @@ public final class CosmosBatchOperationResult {
 
         if (this.getResourceObject() != null) {
             if (effectiveItemSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER
-                || effectiveItemSerializer == DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER) {
+                || effectiveItemSerializer == internalDefaultSerializer()) {
                 item = new JsonSerializable(this.getResourceObject()).toObject(type);
             } else {
                 item = Utils.parse(this.getResourceObject(), type, effectiveItemSerializer);

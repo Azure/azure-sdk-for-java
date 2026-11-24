@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -64,6 +63,23 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * Specifies the ID which uniquely identifies a Compute Fleet.
      */
     private String uniqueId;
+
+    /*
+     * Mode of the Fleet.
+     */
+    private FleetMode mode;
+
+    /*
+     * VirtualMachine prefix to be used for the virtual machines launched by Fleet. Can be used only with Launch mode.
+     */
+    private String vmNamePrefix;
+
+    /*
+     * Specifies capacity type for Fleet Regular and Spot priority profiles.
+     * capacityType is an immutable property. Once set during Fleet creation, it cannot be updated.
+     * Specifying different capacity type for Fleet Regular and Spot priority profiles is not allowed.
+     */
+    private CapacityType capacityType;
 
     /**
      * Creates an instance of FleetProperties class.
@@ -221,38 +237,70 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
     }
 
     /**
-     * Validates the instance.
+     * Get the mode property: Mode of the Fleet.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the mode value.
      */
-    public void validate() {
-        if (spotPriorityProfile() != null) {
-            spotPriorityProfile().validate();
-        }
-        if (regularPriorityProfile() != null) {
-            regularPriorityProfile().validate();
-        }
-        if (vmSizesProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property vmSizesProfile in model FleetProperties"));
-        } else {
-            vmSizesProfile().forEach(e -> e.validate());
-        }
-        if (vmAttributes() != null) {
-            vmAttributes().validate();
-        }
-        if (additionalLocationsProfile() != null) {
-            additionalLocationsProfile().validate();
-        }
-        if (computeProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property computeProfile in model FleetProperties"));
-        } else {
-            computeProfile().validate();
-        }
+    public FleetMode mode() {
+        return this.mode;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(FleetProperties.class);
+    /**
+     * Set the mode property: Mode of the Fleet.
+     * 
+     * @param mode the mode value to set.
+     * @return the FleetProperties object itself.
+     */
+    public FleetProperties withMode(FleetMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the vmNamePrefix property: VirtualMachine prefix to be used for the virtual machines launched by Fleet. Can
+     * be used only with Launch mode.
+     * 
+     * @return the vmNamePrefix value.
+     */
+    public String vmNamePrefix() {
+        return this.vmNamePrefix;
+    }
+
+    /**
+     * Set the vmNamePrefix property: VirtualMachine prefix to be used for the virtual machines launched by Fleet. Can
+     * be used only with Launch mode.
+     * 
+     * @param vmNamePrefix the vmNamePrefix value to set.
+     * @return the FleetProperties object itself.
+     */
+    public FleetProperties withVmNamePrefix(String vmNamePrefix) {
+        this.vmNamePrefix = vmNamePrefix;
+        return this;
+    }
+
+    /**
+     * Get the capacityType property: Specifies capacity type for Fleet Regular and Spot priority profiles.
+     * capacityType is an immutable property. Once set during Fleet creation, it cannot be updated.
+     * Specifying different capacity type for Fleet Regular and Spot priority profiles is not allowed.
+     * 
+     * @return the capacityType value.
+     */
+    public CapacityType capacityType() {
+        return this.capacityType;
+    }
+
+    /**
+     * Set the capacityType property: Specifies capacity type for Fleet Regular and Spot priority profiles.
+     * capacityType is an immutable property. Once set during Fleet creation, it cannot be updated.
+     * Specifying different capacity type for Fleet Regular and Spot priority profiles is not allowed.
+     * 
+     * @param capacityType the capacityType value to set.
+     * @return the FleetProperties object itself.
+     */
+    public FleetProperties withCapacityType(CapacityType capacityType) {
+        this.capacityType = capacityType;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -267,6 +315,9 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
         jsonWriter.writeJsonField("regularPriorityProfile", this.regularPriorityProfile);
         jsonWriter.writeJsonField("vmAttributes", this.vmAttributes);
         jsonWriter.writeJsonField("additionalLocationsProfile", this.additionalLocationsProfile);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("vmNamePrefix", this.vmNamePrefix);
+        jsonWriter.writeStringField("capacityType", this.capacityType == null ? null : this.capacityType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -307,6 +358,12 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("uniqueId".equals(fieldName)) {
                     deserializedFleetProperties.uniqueId = reader.getString();
+                } else if ("mode".equals(fieldName)) {
+                    deserializedFleetProperties.mode = FleetMode.fromString(reader.getString());
+                } else if ("vmNamePrefix".equals(fieldName)) {
+                    deserializedFleetProperties.vmNamePrefix = reader.getString();
+                } else if ("capacityType".equals(fieldName)) {
+                    deserializedFleetProperties.capacityType = CapacityType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -9,6 +9,7 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +17,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -220,5 +223,95 @@ public class AzureCliCredentialTest {
         // Expect validation exception when an invalid subscription name is used
         Assertions.assertThrows(IllegalArgumentException.class,
             () -> new AzureCliCredentialBuilder().subscription(invalidSubscription));
+    }
+
+    @Test
+    public void testClaimsChallengeThrowsCredentialUnavailableException() {
+        // Test with claims provided
+        String claims = "{\"access_token\":{\"essential\":true}}";
+        String encodedClaims = java.util.Base64.getEncoder().encodeToString(claims.getBytes(StandardCharsets.UTF_8));
+        TokenRequestContext requestWithClaims
+            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default").setClaims(claims);
+
+        AzureCliCredential credential = new AzureCliCredentialBuilder().build();
+
+        // Test async version
+        StepVerifier.create(credential.getToken(requestWithClaims))
+            .expectErrorMatches(throwable -> throwable instanceof CredentialUnavailableException
+                && throwable.getMessage().contains("Claims challenges are not supported")
+                && throwable.getMessage().contains("az login --claims-challenge")
+                && throwable.getMessage().contains(encodedClaims))
+            .verify();
+
+        // Test sync version
+        CredentialUnavailableException exception = Assertions.assertThrows(CredentialUnavailableException.class,
+            () -> credential.getTokenSync(requestWithClaims));
+
+        Assertions.assertTrue(exception.getMessage().contains("Claims challenges are not supported"));
+        Assertions.assertTrue(exception.getMessage().contains("az login --claims-challenge"));
+        Assertions.assertTrue(exception.getMessage().contains(encodedClaims));
+    }
+
+    @Test
+    public void testClaimsChallengeWithTenantAndScopes() {
+        TokenRequestContext requestWithClaims = new TokenRequestContext()
+            .addScopes("https://graph.microsoft.com/.default", "https://vault.azure.net/.default")
+            .setClaims("{\"access_token\":{\"essential\":true}}")
+            .setTenantId("tenant-id-123");
+
+        AzureCliCredential credential = new AzureCliCredentialBuilder().tenantId("tenant-id-123").build();
+
+        // Test that error message includes tenant and scopes
+        StepVerifier.create(credential.getToken(requestWithClaims))
+            .expectErrorMatches(throwable -> throwable instanceof CredentialUnavailableException
+                && throwable.getMessage().contains("--tenant tenant-id-123")
+                && throwable.getMessage().contains("--scope")
+                && throwable.getMessage().contains("https://graph.microsoft.com/.default"))
+            .verify();
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", "   ", "\t", "\n" })
+    public void testEmptyClaimsDoesNotThrowException(String claims) {
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default").setClaims(claims);
+
+        // Mock successful token acquisition for empty claims
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(TestUtils.getMockAccessToken("token", OffsetDateTime.now().plusHours(1)));
+            })) {
+
+            AzureCliCredential credential = new AzureCliCredentialBuilder().build();
+
+            // Should not throw exception for empty/whitespace claims
+            StepVerifier.create(credential.getToken(request))
+                .expectNextMatches(accessToken -> "token".equals(accessToken.getToken()))
+                .verifyComplete();
+            Assertions.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testNullClaimsDoesNotThrowException() {
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://graph.microsoft.com/.default").setClaims(null);
+
+        // Mock successful token acquisition for null claims
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(TestUtils.getMockAccessToken("token", OffsetDateTime.now().plusHours(1)));
+            })) {
+
+            AzureCliCredential credential = new AzureCliCredentialBuilder().build();
+
+            // Should not throw exception for null claims
+            StepVerifier.create(credential.getToken(request))
+                .expectNextMatches(accessToken -> "token".equals(accessToken.getToken()))
+                .verifyComplete();
+            Assertions.assertNotNull(identityClientMock);
+        }
     }
 }

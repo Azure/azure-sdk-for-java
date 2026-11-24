@@ -16,7 +16,7 @@ public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"ryhtnapczwlokjy\",\"tenantId\":\"kkvnipjox\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"wixjsprozvcp\":{\"principalId\":\"gejspodmailzyde\",\"clientId\":\"jwyahuxinpmqnja\"},\"uuvmkjozkrwfnd\":{\"principalId\":\"eg\",\"clientId\":\"wmfdatscmdvpjhul\"},\"akl\":{\"principalId\":\"djpslw\",\"clientId\":\"dpvwryoqpsoaccta\"}}}")
+            "{\"principalId\":\"leggzfbu\",\"tenantId\":\"mvfaxkffeiith\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"burvjxxjnspy\":{\"principalId\":\"yvshxmz\",\"clientId\":\"bzoggigrx\"}}}")
             .toObject(ResourceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
@@ -24,8 +24,7 @@ public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceIdentity model = new ResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("wixjsprozvcp", new UserAssignedIdentity(), "uuvmkjozkrwfnd",
-                new UserAssignedIdentity(), "akl", new UserAssignedIdentity()));
+            .withUserAssignedIdentities(mapOf("burvjxxjnspy", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

@@ -9,18 +9,11 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.AzureDeveloperCliCredentialBuilder;
-import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
 import com.azure.resourcemanager.providerhub.models.LocalizedOperationDefinition;
 import com.azure.resourcemanager.providerhub.models.LocalizedOperationDefinitionDisplay;
@@ -30,13 +23,10 @@ import com.azure.resourcemanager.providerhub.models.OperationsPutContentProperti
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class ProviderHubManagerTests extends TestProxyTestBase {
@@ -49,7 +39,7 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = getIdentityTestCredential(super.interceptorManager);
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
@@ -81,7 +71,7 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    @SuppressWarnings("rawtypes")
+    @Disabled("The test subscription is not allowlisted for synthetic provider namespaces.")
     public void testCreateOperation() {
         OperationsPutContent operationsContent = null;
         String spaceName = "Microsoft.Contoso" + randomPadding();
@@ -98,29 +88,17 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
                                     .withOperation("Gets/List employee resources")
                                     .withDescription("Read employees")))))));
             // @embedmeEnd
-            Assertions.assertTrue(providerHubManager.operations()
-                .listByProviderRegistration(spaceName)
+            OperationsPutContent registeredOperations
+                = providerHubManager.operations().listByProviderRegistration(spaceName);
+            Assertions.assertNotNull(registeredOperations.properties());
+            Assertions.assertNotNull(registeredOperations.properties().contents());
+            Assertions.assertTrue(registeredOperations.properties()
+                .contents()
                 .stream()
-                .anyMatch(operationsDefinition -> {
-                    if (Objects.nonNull(operationsDefinition.properties())) {
-                        LinkedHashMap properties = (LinkedHashMap) operationsDefinition.properties();
-                        if (Objects.nonNull(properties.get("contents"))) {
-                            List contents = (ArrayList) properties.get("contents");
-                            if (!contents.isEmpty()) {
-                                for (int i = 0; i < contents.size(); i++) {
-                                    LinkedHashMap content = (LinkedHashMap) contents.get(i);
-                                    LinkedHashMap display = (LinkedHashMap) content.get("display");
-                                    LinkedHashMap defaultProperty = (LinkedHashMap) display.get("default");
-                                    if (opeartionName.equals(content.get("name"))
-                                        && spaceName.equals(defaultProperty.get("provider"))) {
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    return false;
-                }));
+                .anyMatch(content -> opeartionName.equals(content.name())
+                    && content.display() != null
+                    && content.display().defaultProperty() != null
+                    && spaceName.equals(content.display().defaultProperty().provider())));
         } finally {
             if (operationsContent != null) {
                 providerHubManager.operations().delete(spaceName);
@@ -128,45 +106,13 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
         }
     }
 
-    private static String randomPadding() {
-        return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+    @Test
+    @LiveOnly
+    public void testListProviderRegistrations() {
+        providerHubManager.providerRegistrations().list().stream().findFirst();
     }
 
-    /**
-     * Gets a token credential for use in tests.
-     * @param interceptorManager the interceptor manager
-     * @return the TokenCredential
-     */
-    private static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
-        if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
-        }
-
-        Configuration config = Configuration.getGlobalConfiguration();
-
-        ChainedTokenCredentialBuilder builder
-            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
-                .addLast(new AzureCliCredentialBuilder().build())
-                .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
-        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
-        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
-
-        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-            && !CoreUtils.isNullOrEmpty(clientId)
-            && !CoreUtils.isNullOrEmpty(tenantId)
-            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
-
-            builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .serviceConnectionId(serviceConnectionId)
-                .build());
-        }
-
-        builder.addLast(new AzurePowerShellCredentialBuilder().build());
-        return builder.build();
+    private static String randomPadding() {
+        return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
     }
 }

@@ -307,7 +307,7 @@ public final class IoTFirmwareDefenseMgmtClientImpl implements IoTFirmwareDefens
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-04-01-preview";
+        this.apiVersion = "2025-08-02";
         this.operations = new OperationsClientImpl(this);
         this.firmwares = new FirmwaresClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
@@ -432,7 +432,7 @@ public final class IoTFirmwareDefenseMgmtClientImpl implements IoTFirmwareDefens
             super(null);
             this.statusCode = statusCode;
             this.httpHeaders = httpHeaders;
-            this.responseBody = responseBody == null ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+            this.responseBody = responseBody == null ? new byte[0] : responseBody.getBytes(StandardCharsets.UTF_8);
         }
 
         public int getStatusCode() {

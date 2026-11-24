@@ -43,6 +43,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class GlobalAddressResolver implements IAddressResolver {
+    private static ImplementationBridgeHelpers.CosmosContainerIdentityHelper.CosmosContainerIdentityAccessor containerIdentityAccessor() {
+        return ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor proactiveInitConfigAccessor() {
+        return ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.getCosmosContainerProactiveInitConfigAccessor();
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(GlobalAddressResolver.class);
 
     private final static int MaxBackupReadRegions = 3;
@@ -62,6 +70,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
+    private final Map<String, String> additionalHeaders;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -74,7 +83,8 @@ public class GlobalAddressResolver implements IAddressResolver {
         UserAgentContainer userAgentContainer,
         GatewayServiceConfigurationReader serviceConfigReader,
         ConnectionPolicy connectionPolicy,
-        ApiType apiType) {
+        ApiType apiType,
+        Map<String, String> additionalHeaders) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
@@ -86,6 +96,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.serviceConfigReader = serviceConfigReader;
         this.tcpConnectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
         this.connectionPolicy = connectionPolicy;
+        this.additionalHeaders = additionalHeaders;
 
         int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
@@ -113,9 +124,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                     .collectionCache
                     .resolveByNameAsync(
                         null,
-                        ImplementationBridgeHelpers
-                            .CosmosContainerIdentityHelper
-                            .getCosmosContainerIdentityAccessor()
+                        containerIdentityAccessor()
                             .getContainerLink(cosmosContainerIdentity),
                         null)
                     .flatMapMany(collection -> {
@@ -132,9 +141,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 null)
                             .flatMap(valueHolder -> {
 
-                                String containerLink = ImplementationBridgeHelpers
-                                    .CosmosContainerIdentityHelper
-                                    .getCosmosContainerIdentityAccessor()
+                                String containerLink = containerIdentityAccessor()
                                     .getContainerLink(cosmosContainerIdentity);
 
                                 if (valueHolder == null || valueHolder.v == null || valueHolder.v.isEmpty()) {
@@ -168,9 +175,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         AddressInformation addressInformation =
                                                             collectionToAddresses.right;
 
-                                                        Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerPropertiesMap = ImplementationBridgeHelpers
-                                                            .CosmosContainerProactiveInitConfigHelper
-                                                            .getCosmosContainerProactiveInitConfigAccessor()
+                                                        Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerPropertiesMap = proactiveInitConfigAccessor()
                                                             .getContainerPropertiesMap(proactiveContainerInitConfig);
 
                                                         ContainerDirectConnectionMetadata containerDirectConnectionMetadata = containerPropertiesMap
@@ -290,7 +295,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.endpointManager,
                 this.connectionPolicy,
                 this.proactiveOpenConnectionsProcessor,
-                this.gatewayServerErrorInjector);
+                this.gatewayServerErrorInjector,
+                this.additionalHeaders);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

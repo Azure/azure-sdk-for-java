@@ -18,6 +18,7 @@ import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMod
 /**
  * Converts a {@link StorageRetry} to a {@link RequestRetryOptions}.
  */
+@SuppressWarnings("deprecation")
 public final class AzureStorageRetryOptionsConverter implements Converter<StorageRetry, RequestRetryOptions> {
 
     public static final AzureStorageRetryOptionsConverter STORAGE_RETRY_CONVERTER = new AzureStorageRetryOptionsConverter();

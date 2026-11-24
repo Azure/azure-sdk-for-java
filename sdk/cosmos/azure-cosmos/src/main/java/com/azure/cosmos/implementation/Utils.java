@@ -4,6 +4,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosAdditionalHeaderName;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -44,7 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -441,6 +442,32 @@ public class Utils {
         }
     }
 
+    public static boolean isConsistencyLevelUpgrade(ConsistencyLevel backendConsistency,
+                                                    ConsistencyLevel desiredConsistency) {
+        if (backendConsistency == null || desiredConsistency == null) {
+            return false;
+        }
+
+        return getConsistencyLevelRank(desiredConsistency) > getConsistencyLevelRank(backendConsistency);
+    }
+
+    private static int getConsistencyLevelRank(ConsistencyLevel consistencyLevel) {
+        switch (consistencyLevel) {
+            case STRONG:
+                return 5;
+            case BOUNDED_STALENESS:
+                return 4;
+            case SESSION:
+                return 3;
+            case CONSISTENT_PREFIX:
+                return 2;
+            case EVENTUAL:
+                return 1;
+            default:
+                throw new IllegalArgumentException("consistencyLevel");
+        }
+    }
+
     public static String getUserAgent() {
         return getUserAgent(HttpConstants.Versions.SDK_NAME, HttpConstants.Versions.getSdkVersion());
     }
@@ -571,6 +598,33 @@ public class Utils {
         map.put(k1,  v1);
         map = Collections.unmodifiableMap(map);
         return map;
+    }
+
+    // Runtime classes produced by the immutable factory methods above. Captured once at
+    // class-init time so that callers can perform an O(1) reference-equality check to
+    // decide whether they need a defensive mutable copy, without resorting to
+    // exception-driven probing on the hot path.
+    private static final Class<?> UNMODIFIABLE_MAP_CLASS =
+        Collections.unmodifiableMap(new HashMap<>()).getClass();
+    private static final Class<?> EMPTY_MAP_CLASS = Collections.emptyMap().getClass();
+
+    /**
+     * Returns {@code true} if {@code map} is one of the immutable map shapes produced by
+     * the factory methods in this class ({@link #immutableMapOf(Object, Object)}) or by
+     * {@link Collections#emptyMap()}. The check is a single reference comparison and is
+     * safe to call from hot paths.
+     * <p>
+     * Note: this is intentionally narrow - it only recognizes the wrappers the Cosmos
+     * pipeline actually emits. It does not attempt to recognize every possible JDK or
+     * third-party immutable map (e.g. {@code Map.of(...)}, Guava {@code ImmutableMap}).
+     * Add new sentinels here if a new immutable producer is introduced.
+     */
+    public static boolean isImmutableMap(Map<?, ?> map) {
+        if (map == null) {
+            return false;
+        }
+        Class<?> clazz = map.getClass();
+        return clazz == UNMODIFIABLE_MAP_CLASS || clazz == EMPTY_MAP_CLASS;
     }
 
     public static <V> V firstOrDefault(List<V> list) {
@@ -742,27 +796,31 @@ public class Utils {
                 cosmosChangeFeedRequestRequestOptions, pagedFluxOptions);
     }
 
-    static String escapeNonAscii(String partitionKeyJson) {
+    public static String escapeNonAscii(String value) {
+        if (StringUtils.isEmpty(value)) {
+            return value;
+        }
+
         // if all are ascii original string will be returned, and avoids copying data.
         StringBuilder sb = null;
-        for (int i = 0; i < partitionKeyJson.length(); i++) {
-            int val = partitionKeyJson.charAt(i);
+        for (int i = 0; i < value.length(); i++) {
+            int val = value.charAt(i);
             if (val > 127) {
                 if (sb == null) {
-                    sb = new StringBuilder(partitionKeyJson.length());
-                    sb.append(partitionKeyJson, 0, i);
+                    sb = new StringBuilder(value.length());
+                    sb.append(value, 0, i);
                 }
                 sb.append("\\u").append(String.format("%04X", val));
             } else {
                 if (sb != null) {
-                    sb.append(partitionKeyJson.charAt(i));
+                    sb.append(value.charAt(i));
                 }
             }
         }
 
         if (sb == null) {
             // all are ascii character
-            return partitionKeyJson;
+            return value;
         } else {
             return sb.toString();
         }
@@ -812,6 +870,78 @@ public class Utils {
             return duration1;
         } else {
             return duration1.compareTo(duration2) < 0 ? duration1 : duration2;
+        }
+    }
+
+    public static CosmosException createCosmosException(int statusCode, int substatusCode, Exception nestedException, Map<String, String> responseHeaders) {
+
+        // TODO: Review adding resource address
+        CosmosException exceptionToThrow = BridgeInternal.createCosmosException(
+            nestedException.getMessage(),
+            nestedException,
+            responseHeaders,
+            statusCode,
+            Strings.Emtpy);
+
+        BridgeInternal.setSubStatusCode(exceptionToThrow, substatusCode);
+
+        return exceptionToThrow;
+    }
+
+
+    /**
+     * Converts internal request headers into typed additional headers exposed in public APIs.
+     *
+     * @param requestHeaders internal request headers map
+     * @return unmodifiable map of known additional headers, or {@code null} when none are set
+     */
+    public static Map<CosmosAdditionalHeaderName, String> toAdditionalHeaders(Map<String, String> requestHeaders) {
+        if (requestHeaders == null || requestHeaders.isEmpty()) {
+            return null;
+        }
+
+        Map<CosmosAdditionalHeaderName, String> additionalHeaders = new HashMap<>();
+        String workloadIdHeaderName = CosmosAdditionalHeaderName.WORKLOAD_ID.getHeaderName();
+        if (requestHeaders.containsKey(workloadIdHeaderName)) {
+            additionalHeaders.put(CosmosAdditionalHeaderName.WORKLOAD_ID, requestHeaders.get(workloadIdHeaderName));
+        }
+
+        if (additionalHeaders.isEmpty()) {
+            return null;
+        }
+
+        return Collections.unmodifiableMap(additionalHeaders);
+    }
+
+    /**
+     * Validates all entries in an additional-headers map.
+     * Currently validates that {@link CosmosAdditionalHeaderName#WORKLOAD_ID} values are non-empty valid integers.
+     *
+     * @param additionalHeaders the map to validate (may be null — no-op in that case)
+     * @throws IllegalArgumentException if any header value fails validation (including null or empty workload-id values)
+     */
+    public static void validateAdditionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
+        if (additionalHeaders == null) {
+            return;
+        }
+        for (Map.Entry<CosmosAdditionalHeaderName, String> entry : additionalHeaders.entrySet()) {
+            CosmosAdditionalHeaderName key = entry.getKey();
+            String value = entry.getValue();
+
+            if (CosmosAdditionalHeaderName.WORKLOAD_ID.equals(key)) {
+                if (StringUtils.isEmpty(value)) {
+                    throw new IllegalArgumentException(
+                        "Invalid value for header '" + key.getHeaderName() + "'. The value must not be null or empty.");
+                }
+
+                try {
+                    Integer.parseInt(value);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(
+                        "Invalid value '" + value + "' for header '" + key.getHeaderName()
+                            + "'. The value must be a valid integer.", e);
+                }
+            }
         }
     }
 }

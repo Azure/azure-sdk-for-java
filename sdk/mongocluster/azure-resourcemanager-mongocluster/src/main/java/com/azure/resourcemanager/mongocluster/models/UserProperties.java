@@ -88,20 +88,6 @@ public final class UserProperties implements JsonSerializable<UserProperties> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (identityProvider() != null) {
-            identityProvider().validate();
-        }
-        if (roles() != null) {
-            roles().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

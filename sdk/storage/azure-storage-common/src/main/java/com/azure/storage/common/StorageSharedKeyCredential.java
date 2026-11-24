@@ -34,12 +34,6 @@ import static com.azure.storage.common.Utility.urlDecode;
 public final class StorageSharedKeyCredential {
     private static final ClientLogger LOGGER = new ClientLogger(StorageSharedKeyCredential.class);
 
-    // Previous design used a constant for the ROOT_COLLATOR. This runs into performance issues as the ROOT Collator
-    // can have the comparison method synchronized. In highly threaded environments this can result in threads waiting
-    // to enter the synchronized block.
-    private static final ThreadLocal<Collator> THREAD_LOCAL_COLLATOR
-        = ThreadLocal.withInitial(() -> Collator.getInstance(Locale.ROOT));
-
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
     // Pieces of the connection string that are needed.
@@ -189,7 +183,7 @@ public final class StorageSharedKeyCredential {
         String dateHeader
             = (headers.getValue(X_MS_DATE) != null) ? "" : getStandardHeaderValue(headers, HttpHeaderName.DATE);
 
-        Collator collator = THREAD_LOCAL_COLLATOR.get();
+        Collator collator = Collator.getInstance(Locale.ROOT);
         String stringToSign
             = String.join("\n", httpMethod, getStandardHeaderValue(headers, HttpHeaderName.CONTENT_ENCODING),
                 getStandardHeaderValue(headers, HttpHeaderName.CONTENT_LANGUAGE), contentLength,

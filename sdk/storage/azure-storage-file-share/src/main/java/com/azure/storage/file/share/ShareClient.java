@@ -22,6 +22,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.ShareStats;
@@ -44,6 +45,7 @@ import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
@@ -180,6 +182,27 @@ public class ShareClient {
     }
 
     /**
+     * Creates a directory client that addresses a directory by its file ID.
+     *
+     * <p>Call {@link ShareDirectoryClient#getProperties()} on the returned client to retrieve properties without
+     * knowing the directory path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties
+     * response. Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * ShareDirectoryProperties properties = shareClient.getDirectoryClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
+     * @param fileId The file ID of the directory.
+     * @return A client for interacting with the directory by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareDirectoryClient getDirectoryClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        return new ShareDirectoryClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    /**
      * Constructs a {@link ShareFileClient} that interacts with the specified file.
      *
      * <p>If the file doesn't exist in the share {@link ShareFileClient#create(long)} ) create} in the client will
@@ -193,6 +216,30 @@ public class ShareClient {
             new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName, serviceVersion,
                 sasToken),
             azureFileStorageClient, shareName, filePath, snapshot, accountName, serviceVersion, sasToken);
+    }
+
+    /**
+     * Creates a file client that addresses a file by its file ID.
+     *
+     * <p>Call {@link ShareFileClient#getProperties()} on the returned client to retrieve properties without knowing
+     * the file path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties response.
+     * The returned client supports property retrieval and {@link ShareFileClient#getFileLinks()} (SMB only).
+     * Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * ShareFileProperties properties = shareClient.getFileClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
+     * @param fileId The file ID of the file.
+     * @return A client for interacting with the file by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareFileClient getFileClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        ShareFileAsyncClient asyncClient = new ShareFileAsyncClient(azureFileStorageClient, shareName, "", fileId,
+            snapshot, accountName, serviceVersion, sasToken);
+        return new ShareFileClient(asyncClient, azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
     }
 
     /**
@@ -367,7 +414,8 @@ public class ShareClient {
                 finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
                 finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalOptions.isPaidBurstingEnabled(),
                 finalOptions.getPaidBurstingMaxBandwidthMibps(), finalOptions.getPaidBurstingMaxIops(),
-                finalOptions.getProvisionedMaxIops(), finalOptions.getProvisionedMaxBandwidthMibps(), finalContext);
+                finalOptions.getProvisionedMaxIops(), finalOptions.getProvisionedMaxBandwidthMibps(), null,
+                finalOptions.isChangeFeedEnabled(), finalOptions.getChangeFeedRetentionInDays(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -390,6 +438,9 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @return {@link ShareInfo} that contains information about the created resource.
+     * @throws ShareStorageException If the share could not be created for any other reason than that it already exists,
+     * for example when a share with the same name is still being deleted (status code 409, error code
+     * ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareInfo createIfNotExists() {
@@ -425,6 +476,9 @@ public class ShareClient {
      * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
      * {@link ShareInfo} containing information about the share. If {@link Response}'s status code is 201, a new
      * share was successfully created. If status code is 409, a share already existed at this location.
+     * @throws ShareStorageException If the share could not be created for any other reason than that it already exists,
+     * for example when a share with the same name is still being deleted (status code 409, error code
+     * ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> createIfNotExistsWithResponse(ShareCreateOptions options, Duration timeout,
@@ -432,7 +486,7 @@ public class ShareClient {
         try {
             return createWithResponse(options, timeout, context);
         } catch (ShareStorageException e) {
-            if (e.getStatusCode() == 409 && e.getErrorCode().equals(ShareErrorCode.SHARE_ALREADY_EXISTS)) {
+            if (ModelHelper.isConflictWithErrorCode(e, ShareErrorCode.SHARE_ALREADY_EXISTS)) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {
@@ -897,7 +951,8 @@ public class ShareClient {
                 requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), finalContext);
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null,
+                options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(), finalContext);
 
         return ModelHelper.mapToShareInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1039,7 +1094,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
-     * @return The stored access policies specified on the queue.
+     * @return The stored access policies specified on the share.
      * @throws ShareStorageException If the share doesn't exist
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1069,7 +1124,7 @@ public class ShareClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
      * @param options {@link ShareGetAccessPolicyOptions}
-     * @return The stored access policies specified on the queue.
+     * @return The stored access policies specified on the share.
      * @throws ShareStorageException If the share doesn't exist
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1114,7 +1169,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
-     * @param permissions Access policies to set on the queue
+     * @param permissions Access policies to set on the share.
      * @return The {@link ShareInfo information of the share}
      * @throws ShareStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the share will have more than five policies.
@@ -1148,7 +1203,7 @@ public class ShareClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
-     * @param permissions Access policies to set on the queue
+     * @param permissions Access policies to set on the share.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1402,6 +1457,9 @@ public class ShareClient {
      *
      * @param directoryName Name of the directory
      * @return The {@link ShareDirectoryClient} used to interact with the directory created.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareDirectoryClient createDirectoryIfNotExists(String directoryName) {
@@ -1446,6 +1504,9 @@ public class ShareClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareDirectoryClient}
      * used to interact with the directory created. If {@link Response}'s status code is 201, a new directory was
      * successfully created. If status code is 409, a directory with the same name already existed at this location.
+     * @throws ShareStorageException If the directory could not be created for any other reason than that it already
+     * exists, for example when a file with the same name already exists at this location (status code 409, error code
+     * ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> createDirectoryIfNotExistsWithResponse(String directoryName,
@@ -2191,7 +2252,7 @@ public class ShareClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2218,7 +2279,7 @@ public class ShareClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2247,7 +2308,7 @@ public class ShareClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2262,5 +2323,37 @@ public class ShareClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(shareServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }

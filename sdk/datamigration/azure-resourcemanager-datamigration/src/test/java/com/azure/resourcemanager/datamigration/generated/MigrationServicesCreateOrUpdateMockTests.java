@@ -23,7 +23,7 @@ public final class MigrationServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"qlamwmgewayxfl\"},\"location\":\"cpjs\",\"tags\":{\"cucsqsnxfbxu\":\"em\",\"su\":\"eapdrbzyv\",\"hmhjd\":\"dulpodkaxpfobk\",\"eluqr\":\"lt\"},\"id\":\"jadhfztl\",\"name\":\"aysrkgzky\",\"type\":\"udbkuwpzq\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"ayubtgmbxiqahrag\"},\"location\":\"mibplnupo\",\"tags\":{\"ovyzt\":\"efqm\",\"ceeg\":\"lnomfpb\",\"ukkrehyh\":\"yieztkutnjil\"},\"id\":\"mjodu\",\"name\":\"fvulxfaryr\",\"type\":\"jlgdez\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class MigrationServicesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MigrationService response = manager.migrationServices()
-            .define("wmnfeubtzjyrkwfu")
-            .withRegion("urhzzf")
-            .withExistingResourceGroup("uegn")
-            .withTags(mapOf("svwlujop", "eoq", "fmwc", "nibittoztjdqumq", "rbelfnzz", "ddtgctxegtvgwy"))
+            .define("qandmy")
+            .withRegion("ovsfb")
+            .withExistingResourceGroup("tgelgwewikfy")
+            .withTags(mapOf("axmfmvsmcwoxfa", "zo", "roiauesugmo", "dtnqifbsa", "elrgttwfldsiuo", "pcjycb"))
             .create();
 
-        Assertions.assertEquals("cpjs", response.location());
-        Assertions.assertEquals("em", response.tags().get("cucsqsnxfbxu"));
+        Assertions.assertEquals("mibplnupo", response.location());
+        Assertions.assertEquals("efqm", response.tags().get("ovyzt"));
     }
 
     // Use "Map.of" if available

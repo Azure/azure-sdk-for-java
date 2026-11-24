@@ -12,20 +12,20 @@ public final class BackendChainTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackendChain model
-            = BinaryData.fromString("{\"partitions\":1237692135,\"redundancyFactor\":1363658384,\"workers\":902064602}")
+            = BinaryData.fromString("{\"partitions\":346788597,\"redundancyFactor\":1915264389,\"workers\":893627335}")
                 .toObject(BackendChain.class);
-        Assertions.assertEquals(1237692135, model.partitions());
-        Assertions.assertEquals(1363658384, model.redundancyFactor());
-        Assertions.assertEquals(902064602, model.workers());
+        Assertions.assertEquals(346788597, model.partitions());
+        Assertions.assertEquals(1915264389, model.redundancyFactor());
+        Assertions.assertEquals(893627335, model.workers());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackendChain model
-            = new BackendChain().withPartitions(1237692135).withRedundancyFactor(1363658384).withWorkers(902064602);
+            = new BackendChain().withPartitions(346788597).withRedundancyFactor(1915264389).withWorkers(893627335);
         model = BinaryData.fromObject(model).toObject(BackendChain.class);
-        Assertions.assertEquals(1237692135, model.partitions());
-        Assertions.assertEquals(1363658384, model.redundancyFactor());
-        Assertions.assertEquals(902064602, model.workers());
+        Assertions.assertEquals(346788597, model.partitions());
+        Assertions.assertEquals(1915264389, model.redundancyFactor());
+        Assertions.assertEquals(893627335, model.workers());
     }
 }

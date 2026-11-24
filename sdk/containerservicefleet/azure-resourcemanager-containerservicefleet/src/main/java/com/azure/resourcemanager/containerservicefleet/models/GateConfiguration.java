@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,6 +25,11 @@ public final class GateConfiguration implements JsonSerializable<GateConfigurati
      * The type of the Gate determines how it is completed.
      */
     private GateType type;
+
+    /*
+     * Scheduled start configuration for gates of type ScheduledStart.
+     */
+    private ScheduledStartConfiguration scheduledStartConfiguration;
 
     /**
      * Creates an instance of GateConfiguration class.
@@ -74,18 +78,24 @@ public final class GateConfiguration implements JsonSerializable<GateConfigurati
     }
 
     /**
-     * Validates the instance.
+     * Get the scheduledStartConfiguration property: Scheduled start configuration for gates of type ScheduledStart.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the scheduledStartConfiguration value.
      */
-    public void validate() {
-        if (type() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property type in model GateConfiguration"));
-        }
+    public ScheduledStartConfiguration scheduledStartConfiguration() {
+        return this.scheduledStartConfiguration;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(GateConfiguration.class);
+    /**
+     * Set the scheduledStartConfiguration property: Scheduled start configuration for gates of type ScheduledStart.
+     * 
+     * @param scheduledStartConfiguration the scheduledStartConfiguration value to set.
+     * @return the GateConfiguration object itself.
+     */
+    public GateConfiguration withScheduledStartConfiguration(ScheduledStartConfiguration scheduledStartConfiguration) {
+        this.scheduledStartConfiguration = scheduledStartConfiguration;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -95,6 +105,7 @@ public final class GateConfiguration implements JsonSerializable<GateConfigurati
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("scheduledStartConfiguration", this.scheduledStartConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -118,6 +129,9 @@ public final class GateConfiguration implements JsonSerializable<GateConfigurati
                     deserializedGateConfiguration.type = GateType.fromString(reader.getString());
                 } else if ("displayName".equals(fieldName)) {
                     deserializedGateConfiguration.displayName = reader.getString();
+                } else if ("scheduledStartConfiguration".equals(fieldName)) {
+                    deserializedGateConfiguration.scheduledStartConfiguration
+                        = ScheduledStartConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

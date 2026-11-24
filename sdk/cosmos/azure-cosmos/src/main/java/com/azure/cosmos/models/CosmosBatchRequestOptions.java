@@ -4,11 +4,14 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +25,8 @@ import java.util.Set;
  * Encapsulates options that can be specified for a {@link CosmosBatch}.
  */
 public final class CosmosBatchRequestOptions {
+    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
+
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private Map<String, String> customOptions;
@@ -30,7 +35,10 @@ public final class CosmosBatchRequestOptions {
 
     private CosmosItemSerializer customSerializer;
     private Set<String> keywordIdentifiers;
-    private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
+    private String throughputControlGroupName;
+    private CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy;
+    private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private boolean disableRetryForThrottledBatchRequest = false;
 
     /**
      * Creates an instance of the CosmosBatchRequestOptions class
@@ -45,10 +53,13 @@ public final class CosmosBatchRequestOptions {
         this.customOptions = toBeCloned.customOptions;
         this.thresholds = toBeCloned.thresholds;
         this.customSerializer = toBeCloned.customSerializer;
+        this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
 
         if (toBeCloned.excludeRegions != null) {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
         }
+
+        this.disableRetryForThrottledBatchRequest = toBeCloned.disableRetryForThrottledBatchRequest;
     }
 
     /**
@@ -113,6 +124,15 @@ public final class CosmosBatchRequestOptions {
         return this.thresholds;
     }
 
+    boolean shouldDisableRetryForThrottledBatchRequest() {
+        return disableRetryForThrottledBatchRequest;
+    }
+
+    CosmosBatchRequestOptions setDisableRetryForThrottledBatchRequest(boolean disableRetryForThrottledBatchRequest) {
+        this.disableRetryForThrottledBatchRequest = disableRetryForThrottledBatchRequest;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setConsistencyLevel(getConsistencyLevel());
@@ -127,16 +147,56 @@ public final class CosmosBatchRequestOptions {
         }
         requestOptions.setExcludedRegions(excludeRegions);
         requestOptions.setKeywordIdentifiers(keywordIdentifiers);
+        requestOptions.setThroughputControlGroupName(this.throughputControlGroupName);
+        requestOptions.setCosmosEndToEndLatencyPolicyConfig(this.e2ePolicy);
+        requestOptions.setOperationContextAndListenerTuple(this.operationContextAndListenerTuple);
 
         return requestOptions;
     }
 
     /**
-     * Sets the custom batch request option value by key
+     * Sets additional headers to be included with this specific request.
+     * <p>
+     * The {@link CosmosAdditionalHeaderName} class defines exactly which headers are supported.
+     * This allows per-request header customization, such as setting a workload ID
+     * that overrides the client-level default set via
+     * {@link com.azure.cosmos.CosmosClientBuilder#additionalHeaders(java.util.Map)}.
+     * <p>
+     * If the same header is also set at the client level, the request-level value
+     * takes precedence.
+     * <p>
+     * <b>Note:</b> This method uses additive (merge) semantics — headers from multiple
+     * calls are merged into the existing set. Passing {@code null} or an empty map does
+     * <i>not</i> clear previously set headers. To reset headers, create a new options instance.
      *
-     * @param name  a string representing the custom option's name
-     * @param value a string representing the custom option's value
+     * @param additionalHeaders map of {@link CosmosAdditionalHeaderName} to value
+     * @return the CosmosBatchRequestOptions.
+     * @throws IllegalArgumentException if the workload-id value is not a valid integer
+     */
+    public CosmosBatchRequestOptions setAdditionalHeaders(Map<CosmosAdditionalHeaderName, String> additionalHeaders) {
+        Utils.validateAdditionalHeaders(additionalHeaders);
+        if (additionalHeaders != null) {
+            for (Map.Entry<CosmosAdditionalHeaderName, String> entry : additionalHeaders.entrySet()) {
+                this.setHeader(entry.getKey().getHeaderName(), entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Gets the additional headers configured on this request options instance.
      *
+     * @return unmodifiable map of additional headers, or {@code null} if none are set
+     */
+    public Map<CosmosAdditionalHeaderName, String> getAdditionalHeaders() {
+        return Utils.toAdditionalHeaders(this.getHeaders());
+    }
+
+    /**
+     * Sets a header to be included with this specific request.
+     *
+     * @param name  the header name
+     * @param value the header value
      * @return the CosmosBatchRequestOptions.
      */
     CosmosBatchRequestOptions setHeader(String name, String value) {
@@ -228,6 +288,21 @@ public final class CosmosBatchRequestOptions {
         return keywordIdentifiers;
     }
 
+    CosmosBatchRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
+        return this;
+    }
+
+    CosmosBatchRequestOptions setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy) {
+        this.e2ePolicy = e2ePolicy;
+        return this;
+    }
+
+    CosmosBatchRequestOptions setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        this.operationContextAndListenerTuple = operationContextAndListenerTuple;
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -245,9 +320,9 @@ public final class CosmosBatchRequestOptions {
                 }
 
                 @Override
-                public CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions,
+                public CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosBatchRequestOptions,
                                                            String name, String value) {
-                    return cosmosItemRequestOptions.setHeader(name, value);
+                    return cosmosBatchRequestOptions.setHeader(name, value);
                 }
 
                 @Override
@@ -259,6 +334,40 @@ public final class CosmosBatchRequestOptions {
                 public CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned) {
                     return new CosmosBatchRequestOptions(toBeCloned);
                 }
+
+              @Override
+              public CosmosBatchRequestOptions setThroughputControlGroupName(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                String throughputControlGroupName) {
+                return cosmosBatchRequestOptions.setThroughputControlGroupName(throughputControlGroupName);
+              }
+
+              @Override
+              public CosmosBatchRequestOptions setEndToEndOperationLatencyPolicyConfig(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy) {
+                return cosmosBatchRequestOptions.setEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+              }
+
+              @Override
+              public CosmosBatchRequestOptions setOperationContextAndListenerTuple(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                OperationContextAndListenerTuple operationContextAndListenerTuple) {
+                return cosmosBatchRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
+              }
+
+                @Override
+                public CosmosBatchRequestOptions setDisableRetryForThrottledBatchRequest(
+                    CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                    boolean disableRetryForThrottledBatchRequest) {
+                    return cosmosBatchRequestOptions.setDisableRetryForThrottledBatchRequest(disableRetryForThrottledBatchRequest);
+                }
+
+                @Override
+                public boolean shouldDisableRetryForThrottledBatchRequest(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
+                    return cosmosBatchRequestOptions.shouldDisableRetryForThrottledBatchRequest();
+                }
+
 
             }
         );

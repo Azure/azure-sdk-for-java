@@ -13,12 +13,12 @@ public final class RetentionPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionPolicyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1939362977,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":917498996,\"orchestrationState\":\"Terminated\"}]},\"id\":\"aoyfhrtxilnerkuj\",\"name\":\"s\",\"type\":\"l\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1398747720,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":1479576759,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":1113809263,\"orchestrationState\":\"Failed\"}]},\"id\":\"prbnwbxgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"}],\"nextLink\":\"rwzwbng\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":2001921074,\"orchestrationState\":\"Canceled\"}]},\"id\":\"e\",\"name\":\"iipfpubj\",\"type\":\"bwwift\"}],\"nextLink\":\"qkvpuvksgplsakn\"}")
             .toObject(RetentionPolicyListResult.class);
-        Assertions.assertEquals(1939362977,
+        Assertions.assertEquals(2001921074,
             model.value().get(0).properties().retentionPolicies().get(0).retentionPeriodInDays());
         Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
             model.value().get(0).properties().retentionPolicies().get(0).orchestrationState());
-        Assertions.assertEquals("rwzwbng", model.nextLink());
+        Assertions.assertEquals("qkvpuvksgplsakn", model.nextLink());
     }
 }

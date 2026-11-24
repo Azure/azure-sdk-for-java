@@ -9,14 +9,14 @@ package com.azure.resourcemanager.mongocluster.generated;
  */
 public final class PrivateLinksListByMongoClusterSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PrivateLinkResourceList.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PrivateLinkResourceList.json
      */
     /**
-     * Sample code: Lists the private link resources available on a Mongo Cluster resource.
+     * Sample code: Lists the private link resources available on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void listsThePrivateLinkResourcesAvailableOnAMongoClusterResource(
+    public static void listsThePrivateLinkResourcesAvailableOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateLinks().listByMongoCluster("TestGroup", "myMongoCluster", com.azure.core.util.Context.NONE);
     }

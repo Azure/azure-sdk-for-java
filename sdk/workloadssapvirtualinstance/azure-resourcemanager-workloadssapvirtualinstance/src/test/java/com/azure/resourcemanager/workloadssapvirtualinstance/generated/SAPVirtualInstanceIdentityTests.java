@@ -16,7 +16,7 @@ public final class SAPVirtualInstanceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SAPVirtualInstanceIdentity model = BinaryData.fromString(
-            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qcgw\":{\"clientId\":\"lvqhjkbegibtnmx\",\"principalId\":\"bwwaloa\"},\"mtsavjcbpwxqp\":{\"clientId\":\"zjuzgwyz\",\"principalId\":\"txon\"},\"iwwroyqbexrmc\":{\"clientId\":\"knftguvriuh\",\"principalId\":\"wmdyvxqtay\"},\"hpvgqz\":{\"clientId\":\"bycnojvkn\",\"principalId\":\"fqsgzvahapjy\"}}}")
+            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qcgw\":{\"principalId\":\"lvqhjkbegibtnmx\",\"clientId\":\"bwwaloa\"},\"mtsavjcbpwxqp\":{\"principalId\":\"zjuzgwyz\",\"clientId\":\"txon\"},\"iwwroyqbexrmc\":{\"principalId\":\"knftguvriuh\",\"clientId\":\"wmdyvxqtay\"},\"hpvgqz\":{\"principalId\":\"bycnojvkn\",\"clientId\":\"fqsgzvahapjy\"}}}")
             .toObject(SAPVirtualInstanceIdentity.class);
         Assertions.assertEquals(SAPVirtualInstanceIdentityType.USER_ASSIGNED, model.type());
     }

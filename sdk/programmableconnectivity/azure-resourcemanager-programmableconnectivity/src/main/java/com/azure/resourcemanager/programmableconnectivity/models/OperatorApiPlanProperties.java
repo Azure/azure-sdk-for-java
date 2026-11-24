@@ -137,17 +137,6 @@ public final class OperatorApiPlanProperties implements JsonSerializable<Operato
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (marketplaceProperties() != null) {
-            marketplaceProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

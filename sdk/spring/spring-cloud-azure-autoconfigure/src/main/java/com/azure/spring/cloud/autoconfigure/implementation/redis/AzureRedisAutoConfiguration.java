@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.data.redis.autoconfigure.DataRedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +41,7 @@ public class AzureRedisAutoConfiguration {
 
     @Primary
     @Bean
-    RedisProperties redisProperties(AzureRedisProperties azureRedisProperties,
+    DataRedisProperties redisProperties(AzureRedisProperties azureRedisProperties,
                                     AzureResourceManager azureResourceManager) throws InvocationTargetException,
         IllegalAccessException {
         String cacheName = azureRedisProperties.getName();
@@ -50,7 +50,7 @@ public class AzureRedisAutoConfiguration {
         RedisCache redisCache = azureResourceManager.redisCaches()
                                                     .getByResourceGroup(resourceGroup, cacheName);
 
-        RedisProperties redisProperties = new RedisProperties();
+        DataRedisProperties redisProperties = new DataRedisProperties();
 
         boolean useSsl = !redisCache.nonSslPort();
         int port = useSsl ? redisCache.sslPort() : redisCache.port();
@@ -58,7 +58,7 @@ public class AzureRedisAutoConfiguration {
         boolean isCluster = redisCache.shardCount() > 0;
 
         if (isCluster) {
-            RedisProperties.Cluster cluster = new RedisProperties.Cluster();
+            DataRedisProperties.Cluster cluster = new DataRedisProperties.Cluster();
             cluster.setNodes(Arrays.asList(redisCache.hostname() + ":" + port));
             redisProperties.setCluster(cluster);
         } else {
@@ -67,10 +67,10 @@ public class AzureRedisAutoConfiguration {
         }
 
         redisProperties.setPassword(redisCache.keys().primaryKey());
-        Method setSsl = ReflectionUtils.findMethod(RedisProperties.class, "setSsl", boolean.class);
+        Method setSsl = ReflectionUtils.findMethod(DataRedisProperties.class, "setSsl", boolean.class);
         if (setSsl == null) {
-            Object ssl = ReflectionUtils.findMethod(RedisProperties.class, "getSsl").invoke(redisProperties);
-            Class<?>[] innerClasses = RedisProperties.class.getDeclaredClasses();
+            Object ssl = ReflectionUtils.findMethod(DataRedisProperties.class, "getSsl").invoke(redisProperties);
+            Class<?>[] innerClasses = DataRedisProperties.class.getDeclaredClasses();
             Class<?> targetInnerClass = null;
             for (Class<?> innerClass : innerClasses) {
                 if (innerClass.getSimpleName().equals("Ssl")) {

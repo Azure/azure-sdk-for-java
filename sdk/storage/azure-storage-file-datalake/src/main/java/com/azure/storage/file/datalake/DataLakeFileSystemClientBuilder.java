@@ -28,6 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
@@ -98,6 +99,23 @@ public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<Dat
         logOptions = getDefaultHttpLogOptions();
         blobContainerClientBuilder = new BlobContainerClientBuilder();
         blobContainerClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
+    }
+
+    /**
+     * Sets the {@link SessionContext} used for session-based authentication of eligible GET blob requests made by the
+     * underlying Blob clients used by this Data Lake client. Applies when the builder constructs a pipeline with a
+     * {@link TokenCredential}; requests that are not eligible continue to use bearer token authentication.
+     * Sessions are disabled by default and are not used by the DFS pipeline.
+     * <p>
+     * Session-enabled clients built with the same context instance share a session cache. See {@link SessionContext}
+     * for configuration, cache-sharing requirements, and the effect of changing settings after a client is built.
+     *
+     * @param sessionContext The session context for the HTTP pipeline, or {@code null} to reset to a new default context.
+     * @return the updated DataLakeFileSystemClientBuilder object.
+     */
+    public DataLakeFileSystemClientBuilder sessionContext(SessionContext sessionContext) {
+        blobContainerClientBuilder.sessionContext(sessionContext);
+        return this;
     }
 
     private DataLakeServiceVersion getServiceVersion() {
@@ -216,6 +234,10 @@ public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<Dat
     public DataLakeFileSystemClientBuilder credential(StorageSharedKeyCredential credential) {
         blobContainerClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.tokenCredential != null || this.azureSasCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "StorageSharedKeyCredential");
+        }
         this.tokenCredential = null;
         this.azureSasCredential = null;
         return this;
@@ -247,8 +269,11 @@ public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<Dat
     public DataLakeFileSystemClientBuilder credential(TokenCredential credential) {
         blobContainerClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "TokenCredential");
+        }
         this.storageSharedKeyCredential = null;
-        this.azureSasCredential = null;
         return this;
     }
 
@@ -264,8 +289,11 @@ public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<Dat
         blobContainerClientBuilder.sasToken(sasToken);
         this.azureSasCredential
             = new AzureSasCredential(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
+
+        if (this.storageSharedKeyCredential != null) {
+            BuilderHelper.logCredentialChange(LOGGER, "sasToken");
+        }
         this.storageSharedKeyCredential = null;
-        this.tokenCredential = null;
         return this;
     }
 

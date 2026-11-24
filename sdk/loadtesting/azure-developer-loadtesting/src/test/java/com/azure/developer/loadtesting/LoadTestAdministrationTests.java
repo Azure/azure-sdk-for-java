@@ -5,20 +5,28 @@ package com.azure.developer.loadtesting;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.developer.loadtesting.models.FileType;
+import com.azure.developer.loadtesting.models.DailyRecurrence;
 import com.azure.developer.loadtesting.models.FileValidationStatus;
-import com.azure.developer.loadtesting.models.FunctionFlexConsumptionResourceConfiguration;
-import com.azure.developer.loadtesting.models.FunctionFlexConsumptionTargetResourceConfigurations;
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
+import com.azure.developer.loadtesting.models.LoadTestingFileType;
+import com.azure.developer.loadtesting.models.NotificationRule;
+import com.azure.developer.loadtesting.models.PassFailTestResult;
+import com.azure.developer.loadtesting.models.ScheduleTestsTrigger;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestFileInfo;
-import com.azure.developer.loadtesting.models.TestProfile;
+import com.azure.developer.loadtesting.models.TestRunEndedEventCondition;
+import com.azure.developer.loadtesting.models.TestRunEndedNotificationEventFilter;
+import com.azure.developer.loadtesting.models.TestRunStatus;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
+import com.azure.developer.loadtesting.models.TestsNotificationEventFilter;
+import com.azure.developer.loadtesting.models.TestsNotificationRule;
+import com.azure.developer.loadtesting.models.Trigger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import org.junit.jupiter.api.MethodOrderer;
@@ -29,6 +37,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,7 +77,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadTestFileAdditionalFiles() {
         BinaryData file = getFileBodyFromResource(uploadCsvFileName);
         RequestOptions requestOptions
-            = new RequestOptions().addQueryParam("fileType", FileType.ADDITIONAL_ARTIFACTS.toString());
+            = new RequestOptions().addQueryParam("fileType", LoadTestingFileType.ADDITIONAL_ARTIFACTS.toString());
         PollResponse<BinaryData> response
             = getLoadTestAdministrationClient().beginUploadTestFile(newTestId, uploadCsvFileName, file, requestOptions)
                 .poll();
@@ -80,7 +90,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void beginUploadTestFileTestScript() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions
-            = new RequestOptions().addQueryParam("fileType", FileType.TEST_SCRIPT.toString());
+            = new RequestOptions().addQueryParam("fileType", LoadTestingFileType.TEST_SCRIPT.toString());
         SyncPoller<BinaryData, BinaryData> poller = getLoadTestAdministrationClient().beginUploadTestFile(newTestId,
             uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackSyncPollerPollInterval(poller);
@@ -122,29 +132,6 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         assertNotNull(response);
     }
 
-    @Test
-    @Order(6)
-    public void createOrUpdateTestProfile() {
-
-        Map<String, FunctionFlexConsumptionResourceConfiguration> configurations = new HashMap<>();
-        configurations.put("config1",
-            new FunctionFlexConsumptionResourceConfiguration().setInstanceMemoryMB(2048).setHttpConcurrency(100L));
-        configurations.put("config2",
-            new FunctionFlexConsumptionResourceConfiguration().setInstanceMemoryMB(4096).setHttpConcurrency(100L));
-
-        LoadTestAdministrationClient adminClient = getLoadTestAdministrationClient();
-        TestProfile testProfile = new TestProfile().setTestId(newTestId)
-            .setDisplayName("Java SDK Sample Test Profile")
-            .setDescription("Sample Test Profile")
-            .setTargetResourceId(targetResourceId)
-            .setTargetResourceConfigurations(
-                new FunctionFlexConsumptionTargetResourceConfigurations().setConfigurations(configurations));
-
-        TestProfile response = adminClient.createOrUpdateTestProfile(newTestProfileId, testProfile);
-        assertNotNull(response);
-        assertEquals(newTestProfileId, response.getTestProfileId());
-    }
-
     // Gets
 
     @Test
@@ -152,13 +139,14 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     public void getTestFile() {
         TestFileInfo response = getLoadTestAdministrationClient().getTestFile(newTestId, uploadJmxFileName);
 
-        assertEquals(FileType.TEST_SCRIPT.toString(), response.getFileType().toString());
+        assertEquals(LoadTestingFileType.TEST_SCRIPT.toString(), response.getFileType().toString());
         assertEquals(uploadJmxFileName, response.getFileName());
 
         TestFileInfo additionalFileResponse
             = getLoadTestAdministrationClient().getTestFile(newTestId, uploadCsvFileName);
 
-        assertEquals(FileType.ADDITIONAL_ARTIFACTS.toString(), additionalFileResponse.getFileType().toString());
+        assertEquals(LoadTestingFileType.ADDITIONAL_ARTIFACTS.toString(),
+            additionalFileResponse.getFileType().toString());
         assertEquals(uploadCsvFileName, additionalFileResponse.getFileName());
     }
 
@@ -169,15 +157,6 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
 
         assertNotNull(response);
         assertEquals(newTestId, response.getTestId());
-    }
-
-    @Test
-    @Order(9)
-    public void getTestProfile() {
-        TestProfile response = getLoadTestAdministrationClient().getTestProfile(newTestProfileId);
-
-        assertNotNull(response);
-        assertEquals(newTestProfileId, response.getTestProfileId());
     }
 
     @Test
@@ -213,6 +192,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         assertTrue(uploadFilesFound);
     }
 
+    @LiveOnly
     @Test
     @Order(13)
     public void listTests() {
@@ -225,21 +205,163 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
         assertTrue(found);
     }
 
+    // Trigger CRUD tests
+
     @Test
     @Order(14)
-    public void listTestProfiles() {
-        PagedIterable<TestProfile> response = getLoadTestAdministrationClient().listTestProfiles();
-        boolean found = response.stream().anyMatch((testProfile) -> {
-            return testProfile.getTestProfileId().equals(newTestProfileId);
-        });
+    public void createOrUpdateTrigger() {
+        ScheduleTestsTrigger trigger = new ScheduleTestsTrigger().setDisplayName("sample-trigger")
+            .setDescription("Sample trigger for testing")
+            .setTestIds(Arrays.asList(newTestId))
+            .setStartDateTime(OffsetDateTime.now().plusDays(2))
+            .setRecurrence(new DailyRecurrence().setInterval(1));
 
+        Trigger response = getLoadTestAdministrationClient().createOrUpdateTrigger(triggerId, trigger);
+
+        assertNotNull(response);
+        assertNotNull(response.getTriggerId());
+        assertEquals(triggerId, response.getTriggerId());
+        assertEquals("sample-trigger", response.getDisplayName());
+    }
+
+    @Test
+    @Order(15)
+    public void getTrigger() {
+        Trigger response = getLoadTestAdministrationClient().getTrigger(triggerId);
+
+        assertNotNull(response);
+        assertEquals(triggerId, response.getTriggerId());
+        assertEquals("sample-trigger", response.getDisplayName());
+    }
+
+    @Test
+    @Order(16)
+    public void listTriggers() {
+        PagedIterable<Trigger> response = getLoadTestAdministrationClient().listTriggers(null, null, null, null);
+
+        boolean found = response.stream().anyMatch(trigger -> triggerId.equals(trigger.getTriggerId()));
         assertTrue(found);
+    }
+
+    @Test
+    @Order(17)
+    public void deleteTrigger() {
+        assertDoesNotThrow(() -> {
+            getLoadTestAdministrationClient().deleteTrigger(triggerId);
+        });
+    }
+
+    // Notification Rule CRUD tests
+
+    @Test
+    @Order(18)
+    public void createOrUpdateNotificationRule() {
+        // Build the event filter condition
+        TestRunEndedEventCondition condition = new TestRunEndedEventCondition()
+            .setTestRunStatuses(Arrays.asList(TestRunStatus.DONE, TestRunStatus.FAILED))
+            .setTestRunResults(Arrays.asList(PassFailTestResult.PASSED, PassFailTestResult.FAILED));
+
+        // Build the event filter
+        TestRunEndedNotificationEventFilter eventFilter
+            = new TestRunEndedNotificationEventFilter().setCondition(condition);
+
+        // Build the event filters map
+        Map<String, TestsNotificationEventFilter> eventFilters = new HashMap<>();
+        eventFilters.put("testRunEnded", eventFilter);
+
+        // Build the notification rule using the strongly-typed TestsNotificationRule subclass.
+        TestsNotificationRule rule = new TestsNotificationRule().setDisplayName("Test Notification Rule")
+            .setTestIds(Arrays.asList(newTestId))
+            .setActionGroupIds(Arrays.asList(actionGroupId))
+            .setEventFilters(eventFilters);
+
+        NotificationRule response
+            = getLoadTestAdministrationClient().createOrUpdateNotificationRule(notificationRuleId, rule);
+
+        assertNotNull(response);
+        assertNotNull(response.getNotificationRuleId());
+        assertEquals(notificationRuleId, response.getNotificationRuleId());
+        assertEquals("Test Notification Rule", response.getDisplayName());
+    }
+
+    @Test
+    @Order(19)
+    public void getNotificationRule() {
+        NotificationRule response = getLoadTestAdministrationClient().getNotificationRule(notificationRuleId);
+
+        assertNotNull(response);
+        assertEquals(notificationRuleId, response.getNotificationRuleId());
+        assertEquals("Test Notification Rule", response.getDisplayName());
+    }
+
+    @Test
+    @Order(20)
+    public void listNotificationRules() {
+        PagedIterable<NotificationRule> response
+            = getLoadTestAdministrationClient().listNotificationRules(null, null, null, null);
+
+        boolean found = response.stream().anyMatch(rule -> notificationRuleId.equals(rule.getNotificationRuleId()));
+        assertTrue(found);
+    }
+
+    @Test
+    @Order(21)
+    public void deleteNotificationRule() {
+        assertDoesNotThrow(() -> {
+            getLoadTestAdministrationClient().deleteNotificationRule(notificationRuleId);
+        });
+    }
+
+    @Test
+    @Order(22)
+    public void beginGenerateTestPlanRecommendations() {
+        RequestOptions requestOptions = new RequestOptions();
+        SyncPoller<BinaryData, BinaryData> poller
+            = getLoadTestAdministrationClient().beginGenerateTestPlanRecommendations(recordingTestId, requestOptions);
+        poller = setPlaybackSyncPollerPollInterval(poller);
+
+        PollResponse<BinaryData> response = poller.waitForCompletion();
+
+        assertNotNull(response);
+        assertTrue(response.getStatus().isComplete());
+    }
+
+    @Test
+    @Order(23)
+    public void beginCloneTest() {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData cloneRequest = BinaryData.fromString(String.format("{\"newTestId\":\"%s\"}", cloneTestId));
+        SyncPoller<BinaryData, BinaryData> poller
+            = getLoadTestAdministrationClient().beginCloneTest(newTestId, cloneRequest, requestOptions);
+        poller = setPlaybackSyncPollerPollInterval(poller);
+
+        PollResponse<BinaryData> response = poller.waitForCompletion();
+
+        assertNotNull(response);
+        assertTrue(response.getStatus().isComplete());
+    }
+
+    @Test
+    @Order(24)
+    public void getClonedTest() {
+        LoadTest response = getLoadTestAdministrationClient().getTest(cloneTestId);
+
+        assertNotNull(response);
+        assertEquals(cloneTestId, response.getTestId());
+    }
+
+    @Test
+    @Order(25)
+    public void deleteClonedTest() {
+        assertDoesNotThrow(() -> {
+            getLoadTestAdministrationClient().deleteTestWithResponse(cloneTestId, null);
+        });
     }
 
     // Deletes
 
     @Test
-    @Order(15)
+    @Order(26)
     public void deleteTestFile() {
         assertDoesNotThrow(() -> {
             getLoadTestAdministrationClient().deleteTestFileWithResponse(newTestId, uploadCsvFileName, null);
@@ -250,15 +372,7 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
     }
 
     @Test
-    @Order(16)
-    public void deleteTestProfile() {
-        assertDoesNotThrow(() -> {
-            getLoadTestAdministrationClient().deleteTestProfileWithResponse(newTestProfileId, null);
-        });
-    }
-
-    @Test
-    @Order(17)
+    @Order(27)
     public void deleteTest() {
         assertDoesNotThrow(() -> {
             getLoadTestAdministrationClient().deleteTestWithResponse(newTestId, null);

@@ -35,7 +35,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.27.0-beta.11</version>
+  <version>1.27.0-beta.20</version>
 </dependency>
 ```
 
@@ -120,6 +120,16 @@ and `AZURE_CLIENT_SECRET` in your environment variables.
 The test proxy has to be available in order for tests to work; this is done automatically when the test is extended from
 `TestProxyTestBase`.
 The `com.azure.core.test.TestProxyTestBase#setupTestProxy()` method is responsible for starting test proxy.
+
+When tests run locally and no test proxy is already running, the test proxy is installed automatically in
+`${user.home}/.azure-sdk-for-java/test-proxy` rather than the shared temporary directory. A test proxy that's already
+running, such as one started manually, is used as-is. On POSIX file systems, the home directory must be owned by the
+current user and not writable by other users, and the cache directories must be owned by and accessible only to the
+current user. On Windows and other non-POSIX file systems, the cache relies on the access control of the user's profile
+directory. Installation and upgrades require access to `api.github.com` for the release's published SHA-256 digest and
+to GitHub's release download hosts. Downloads are verified before extraction, and the cached executable's checksum is
+checked before it starts. An integrity or ownership failure stops startup; it does not fall back to an unverified
+executable. Old shared temporary installations are neither used nor removed.
 
 ```java
 public class MyTest extends TestProxyTestBase {
@@ -352,5 +362,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [test_proxy_sanitizer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxySanitizer.java
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
-
-

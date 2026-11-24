@@ -23,7 +23,7 @@ public final class WorkloadNetworksListPortMirroringMockTests {
     @Test
     public void testListPortMirroring() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"blmljh\",\"direction\":\"INGRESS\",\"source\":\"zotqyryuzcb\",\"destination\":\"qvx\",\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":3922863812545357312},\"id\":\"onsupeujlz\",\"name\":\"nh\",\"type\":\"vsqltnzoibgsxg\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"zyqu\",\"direction\":\"INGRESS\",\"source\":\"xut\",\"destination\":\"brruyuuatv\",\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":1345768717971531476},\"id\":\"mxlbn\",\"name\":\"tpc\",\"type\":\"ahprzrvxhmtfhocn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class WorkloadNetworksListPortMirroringMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<WorkloadNetworkPortMirroring> response = manager.workloadNetworks()
-            .listPortMirroring("mxyasflvgsgzw", "wakoihkn", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkPortMirroring> response
+            = manager.workloadNetworks().listPortMirroring("fmhklbnld", "vcb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("blmljh", response.iterator().next().displayName());
+        Assertions.assertEquals("zyqu", response.iterator().next().displayName());
         Assertions.assertEquals(PortMirroringDirectionEnum.INGRESS, response.iterator().next().direction());
-        Assertions.assertEquals("zotqyryuzcb", response.iterator().next().source());
-        Assertions.assertEquals("qvx", response.iterator().next().destination());
-        Assertions.assertEquals(3922863812545357312L, response.iterator().next().revision());
+        Assertions.assertEquals("xut", response.iterator().next().source());
+        Assertions.assertEquals("brruyuuatv", response.iterator().next().destination());
+        Assertions.assertEquals(1345768717971531476L, response.iterator().next().revision());
     }
 }

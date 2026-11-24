@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The encryption configuration for the mongo cluster.
+ * The encryption configuration for the DocumentDB cluster.
  */
 @Fluent
 public final class EncryptionProperties implements JsonSerializable<EncryptionProperties> {
@@ -46,17 +46,6 @@ public final class EncryptionProperties implements JsonSerializable<EncryptionPr
         withCustomerManagedKeyEncryption(CustomerManagedKeyEncryptionProperties customerManagedKeyEncryption) {
         this.customerManagedKeyEncryption = customerManagedKeyEncryption;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (customerManagedKeyEncryption() != null) {
-            customerManagedKeyEncryption().validate();
-        }
     }
 
     /**

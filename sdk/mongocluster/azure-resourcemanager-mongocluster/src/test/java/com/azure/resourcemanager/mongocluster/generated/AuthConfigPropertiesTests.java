@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthConfigPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthConfigProperties model = BinaryData.fromString("{\"allowedModes\":[\"MicrosoftEntraID\",\"NativeAuth\"]}")
-            .toObject(AuthConfigProperties.class);
-        Assertions.assertEquals(AuthenticationMode.MICROSOFT_ENTRA_ID, model.allowedModes().get(0));
+        AuthConfigProperties model
+            = BinaryData.fromString("{\"allowedModes\":[\"NativeAuth\"]}").toObject(AuthConfigProperties.class);
+        Assertions.assertEquals(AuthenticationMode.NATIVE_AUTH, model.allowedModes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthConfigProperties model = new AuthConfigProperties()
-            .withAllowedModes(Arrays.asList(AuthenticationMode.MICROSOFT_ENTRA_ID, AuthenticationMode.NATIVE_AUTH));
+        AuthConfigProperties model
+            = new AuthConfigProperties().withAllowedModes(Arrays.asList(AuthenticationMode.NATIVE_AUTH));
         model = BinaryData.fromObject(model).toObject(AuthConfigProperties.class);
-        Assertions.assertEquals(AuthenticationMode.MICROSOFT_ENTRA_ID, model.allowedModes().get(0));
+        Assertions.assertEquals(AuthenticationMode.NATIVE_AUTH, model.allowedModes().get(0));
     }
 }

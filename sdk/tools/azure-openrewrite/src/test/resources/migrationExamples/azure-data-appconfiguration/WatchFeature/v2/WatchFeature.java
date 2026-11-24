@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
-
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.data.appconfiguration.ConfigurationClient;
+import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +22,8 @@ public class WatchFeature {
 
         // Instantiate a client that will be used to call the service.
         ConfigurationClient client = new ConfigurationClientBuilder()
-                                         .connectionString(connectionString)
-                                         .buildClient();
+            .connectionString(connectionString)
+            .buildClient();
 
         // Prepare a list of watching settings and update one same setting value to the service.
         String prodDBConnectionKey = "prodDBConnection";
@@ -74,24 +74,24 @@ public class WatchFeature {
      * @return a list of updated settings that doesn't match previous ETag value.
      */
     private static List<ConfigurationSetting> refresh(ConfigurationClient client,
-        List<ConfigurationSetting> watchSettings) {
+                                                      List<ConfigurationSetting> watchSettings) {
         return watchSettings
-                   .stream()
-                   .filter(setting -> {
-                       ConfigurationSetting retrievedSetting = client.getConfigurationSetting(setting.getKey(),
-                           setting.getLabel());
-                       String latestETag = retrievedSetting.getETag();
-                       String watchingETag = setting.getETag();
-                       if (!latestETag.equals(watchingETag)) {
-                           System.out.printf(
-                               "Some keys in watching key store matching the key [%s] and label [%s] is updated, "
-                                   + "preview ETag value [%s] not equals to current value [%s].%n",
-                               retrievedSetting.getKey(), retrievedSetting.getLabel(), watchingETag, latestETag);
-                           setting.setETag(latestETag).setValue(retrievedSetting.getValue());
-                           return true;
-                       }
-                       return false;
-                   })
-                   .collect(Collectors.toList());
+            .stream()
+            .filter(setting -> {
+                ConfigurationSetting retrievedSetting = client.getConfigurationSetting(setting.getKey(),
+                    setting.getLabel());
+                String latestETag = retrievedSetting.getETag();
+                String watchingETag = setting.getETag();
+                if (!latestETag.equals(watchingETag)) {
+                    System.out.printf(
+                        "Some keys in watching key store matching the key [%s] and label [%s] is updated, "
+                            + "preview ETag value [%s] not equals to current value [%s].%n",
+                        retrievedSetting.getKey(), retrievedSetting.getLabel(), watchingETag, latestETag);
+                    setting.setETag(latestETag).setValue(retrievedSetting.getValue());
+                    return true;
+                }
+                return false;
+            })
+            .collect(Collectors.toList());
     }
 }

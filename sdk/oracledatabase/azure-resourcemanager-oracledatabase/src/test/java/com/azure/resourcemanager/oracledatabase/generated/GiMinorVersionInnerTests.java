@@ -12,9 +12,9 @@ public final class GiMinorVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GiMinorVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"ytguslf\",\"gridImageOcid\":\"dcygqukyhejhz\"},\"id\":\"xgfpelolppv\",\"name\":\"srp\",\"type\":\"vu\"}")
+            "{\"properties\":{\"version\":\"oi\",\"gridImageOcid\":\"rnjwmw\"},\"id\":\"nbsazejjoqkag\",\"name\":\"hsxttaugzxnf\",\"type\":\"azpxdtnkdmkqjjl\"}")
             .toObject(GiMinorVersionInner.class);
-        Assertions.assertEquals("ytguslf", model.properties().version());
-        Assertions.assertEquals("dcygqukyhejhz", model.properties().gridImageOcid());
+        Assertions.assertEquals("oi", model.properties().version());
+        Assertions.assertEquals("rnjwmw", model.properties().gridImageOcid());
     }
 }

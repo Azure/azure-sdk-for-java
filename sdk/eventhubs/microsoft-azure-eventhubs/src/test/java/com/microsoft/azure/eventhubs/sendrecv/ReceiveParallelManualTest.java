@@ -13,8 +13,8 @@ import com.microsoft.azure.eventhubs.impl.IteratorUtil;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -28,7 +28,7 @@ public class ReceiveParallelManualTest extends ApiTestBase {
 
     private static EventHubClient[] ehClient;
 
-    @BeforeClass
+    @BeforeAll
     public static void initializeEventHub() throws Exception {
         FileHandler fhc = new FileHandler("c:\\proton-sb-sendbatch-1100.log", false);
         Logger lc1 = Logger.getLogger("servicebus.trace");
@@ -44,7 +44,7 @@ public class ReceiveParallelManualTest extends ApiTestBase {
         ehClient[3] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     }
 
-    @AfterClass()
+    @AfterAll
     public static void cleanup() throws EventHubException {
         for (int i = 0; i < 4; i++) {
             if (ehClient[i] != null) {
@@ -56,7 +56,7 @@ public class ReceiveParallelManualTest extends ApiTestBase {
     // Run this test manually and introduce network failures to test
     // send/receive code is resilient to n/w failures
     // and continues to run once the n/w is back online
-    // @Test()
+    // @Test
     public void testReceiverStartOfStreamFilters() throws Exception {
         new Thread(new PRunnable("0")).start();
         new Thread(new PRunnable("1")).start();

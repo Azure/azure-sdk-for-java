@@ -6,7 +6,7 @@ package com.azure.spring.messaging.storage.queue.implementation.support.converte
 import com.azure.core.util.BinaryData;
 import com.azure.spring.messaging.implementation.converter.AbstractJacksonAzureMessageConverter;
 import com.azure.storage.queue.models.QueueMessageItem;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 

@@ -83,6 +83,42 @@ public interface CveResource {
     String cveName();
 
     /**
+     * Gets the component property: Legacy property for what is now componentName.
+     * 
+     * @return the component value.
+     */
+    CveComponent component();
+
+    /**
+     * Gets the cvssScore property: Legacy property for the effective CVE score.
+     * 
+     * @return the cvssScore value.
+     */
+    String cvssScore();
+
+    /**
+     * Gets the cvssV2Score property: Legacy property for the CVE CVSS version 2 score, if one existed.
+     * 
+     * @return the cvssV2Score value.
+     */
+    String cvssV2Score();
+
+    /**
+     * Gets the cvssV3Score property: Legacy property for the CVE CVSS version 3 score, if one existed.
+     * 
+     * @return the cvssV3Score value.
+     */
+    String cvssV3Score();
+
+    /**
+     * Gets the cvssVersion property: Legacy property for the what CVSS version score was stored in the cvssScore
+     * property.
+     * 
+     * @return the cvssVersion value.
+     */
+    String cvssVersion();
+
+    /**
      * Gets the effectiveCvssScore property: The most recent CVSS score of the CVE.
      * 
      * @return the effectiveCvssScore value.

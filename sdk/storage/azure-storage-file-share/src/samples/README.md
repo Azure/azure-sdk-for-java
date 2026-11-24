@@ -34,7 +34,7 @@ Following are examples for some common use-cases.
 More details about troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
-Start using Storage Queue Java SDK in your solutions. Our SDK details could be found at [SDK README][SDK_README]. 
+Start using Storage Share Java SDK in your solutions. Our SDK details could be found at [SDK README][SDK_README]. 
 
 ###  Additional Documentation
 For more extensive documentation on Azure Storage files, see the [REST API documentation][storage_file_rest].
@@ -55,7 +55,6 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [error_codes]: https://learn.microsoft.com/rest/api/storageservices/blob-service-error-codes
 [file_key_concept]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-share/README.md#key-concepts
 [samples]: java/samples/
-[SDK_README_GETTING_STARTDED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-share/README.md#getting-started
 [SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-share/README.md#troubleshooting
 
 

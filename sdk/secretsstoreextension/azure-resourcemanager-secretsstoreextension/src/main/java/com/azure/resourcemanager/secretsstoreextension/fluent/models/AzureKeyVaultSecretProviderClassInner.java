@@ -26,7 +26,7 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
     private AzureKeyVaultSecretProviderClassProperties properties;
 
     /*
-     * The extendedLocation property.
+     * The extended location of the resource.
      */
     private ExtendedLocation extendedLocation;
 
@@ -77,7 +77,7 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
     }
 
     /**
-     * Get the extendedLocation property: The extendedLocation property.
+     * Get the extendedLocation property: The extended location of the resource.
      * 
      * @return the extendedLocation value.
      */
@@ -86,7 +86,7 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: The extendedLocation property.
+     * Set the extendedLocation property: The extended location of the resource.
      * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the AzureKeyVaultSecretProviderClassInner object itself.
@@ -151,20 +151,6 @@ public final class AzureKeyVaultSecretProviderClassInner extends Resource {
     public AzureKeyVaultSecretProviderClassInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
-        }
     }
 
     /**

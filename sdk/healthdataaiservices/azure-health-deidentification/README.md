@@ -54,7 +54,7 @@ Given an input text, the de-identification service can perform three main operat
 - `Tag` returns the category and location within the text of detected PHI entities.
 - `Redact` returns output text where detected PHI entities are replaced with placeholder text. For example `John` replaced with `[name]`.
 - `Surrogate` returns output text where detected PHI entities are replaced with realistic replacement values. For example, `My name is John Smith` could become `My name is Tom Jones`.
-
+- `SurrogateOnly` returns output text where user-defined PHI entities are replaced with realistic replacement values.
 ### String Encoding
 When using the `Tag` operation, the service will return the locations of PHI entities in the input text. These locations will be represented as offsets and lengths, each of which is a [StringIndex][string_index] containing
 three properties corresponding to three different text encodings. **Java applications should call `getUtf16()`.**

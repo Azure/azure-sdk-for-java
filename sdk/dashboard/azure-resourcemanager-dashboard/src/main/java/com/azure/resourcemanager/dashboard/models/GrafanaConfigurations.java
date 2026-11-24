@@ -151,29 +151,6 @@ public final class GrafanaConfigurations implements JsonSerializable<GrafanaConf
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (smtp() != null) {
-            smtp().validate();
-        }
-        if (snapshots() != null) {
-            snapshots().validate();
-        }
-        if (users() != null) {
-            users().validate();
-        }
-        if (security() != null) {
-            security().validate();
-        }
-        if (unifiedAlertingScreenshots() != null) {
-            unifiedAlertingScreenshots().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

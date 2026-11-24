@@ -20,7 +20,7 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
     @Test
     public void testExecutionDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"type\":\"fzxiavrmb\",\"id\":\"nokixrjqcirgz\",\"name\":\"rlazszrnw\",\"properties\":{\"status\":\"ndfpwpj\",\"startedAt\":\"2021-03-31T10:48:17Z\",\"stoppedAt\":\"2021-11-17T11:10:35Z\",\"failureReason\":\"h\",\"lastActionAt\":\"2021-05-08T01:38:39Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"szfjvfbgofelja\",\"stepId\":\"qmqhldvriii\",\"status\":\"nalghfkvtvsexso\",\"branches\":[{}]},{\"stepName\":\"uqhhahhxvrh\",\"stepId\":\"kwpjgwwspughftqs\",\"status\":\"qxujxukndxd\",\"branches\":[{},{},{},{}]}]}}}";
+            = "{\"type\":\"kondcb\",\"id\":\"imuvqejosovyrrl\",\"name\":\"esi\",\"properties\":{\"status\":\"tljqobbpih\",\"startedAt\":\"2021-06-04T21:54:47Z\",\"stoppedAt\":\"2021-11-03T13:16:28Z\",\"provisioningState\":\"Succeeded\",\"failureReason\":\"rqbrjbbmpxdlvyk\",\"lastActionAt\":\"2021-04-26T14:49:09Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"eqwjksgh\",\"stepId\":\"gzhxog\",\"status\":\"gsv\",\"branches\":[{},{}]},{\"stepName\":\"xibdafhrkmdyo\",\"stepId\":\"xfbvfb\",\"status\":\"y\",\"branches\":[{},{},{},{}]},{\"stepName\":\"wpg\",\"stepId\":\"eimawzovgkkumui\",\"status\":\"cjc\",\"branches\":[{}]},{\"stepName\":\"wsnsqowx\",\"stepId\":\"omlik\",\"status\":\"wvczcswkacve\",\"branches\":[{}]}]}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class ExperimentsExecutionDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExperimentExecutionDetails response = manager.experiments()
-            .executionDetailsWithResponse("hneuyowqkd", "ytisibir", "gpikpzimejza", com.azure.core.util.Context.NONE)
+            .executionDetailsWithResponse("dgycxnmskwhqjjy", "lurlpshhkvp", "dwqslsrhmpqvw",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

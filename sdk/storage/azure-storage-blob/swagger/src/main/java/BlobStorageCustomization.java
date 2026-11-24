@@ -22,8 +22,10 @@ import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -34,6 +36,8 @@ public class BlobStorageCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         // Implementation models customizations
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
+
+        renameInternalBlobLayout(customization);
 
         // Models customizations
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
@@ -120,7 +124,12 @@ public class BlobStorageCustomization extends Customization {
             clazz.getFieldByName("INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED").ifPresent(field ->
                 field.addMarkerAnnotation("Deprecated").getJavadoc().ifPresent(javadoc -> field.setJavadocComment(
                     javadoc.addBlockTag("deprecated",
-                        "Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}"))));
+                        "Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED}"))));
+
+            clazz.getFieldByName("INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED").ifPresent(field ->
+                field.addMarkerAnnotation("Deprecated").getJavadoc().ifPresent(javadoc -> field.setJavadocComment(
+                    javadoc.addBlockTag("deprecated",
+                        "Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED}"))));
         }));
 
         //QueryFormat
@@ -157,6 +166,34 @@ public class BlobStorageCustomization extends Customization {
                     method.setJavadocComment(baseJavadoc);
                 });
             }));
+    }
+
+    private static void renameInternalBlobLayout(LibraryCustomization customization) {
+        String oldName = "BlobLayout";
+        String newName = "BlobLayoutInternal";
+        for (Map.Entry<String, String> entry
+            : new ArrayList<>(customization.getRawEditor().getContents().entrySet())) {
+            String fileName = entry.getKey();
+            if (!fileName.endsWith(".java") || !fileName.contains("com/azure/storage/blob/implementation/")) {
+                continue;
+            }
+
+            String content = entry.getValue();
+            if (!content.contains(oldName)) {
+                continue;
+            }
+
+            content = content.replaceAll("\\b" + oldName + "\\b", newName)
+                .replace("\"" + newName + "\"", "\"" + oldName + "\"");
+            if (fileName.endsWith("implementation/models/BlobLayout.java")) {
+                String newFileName = fileName.substring(0, fileName.length() - "BlobLayout.java".length())
+                    + newName + ".java";
+                customization.getRawEditor().removeFile(fileName);
+                customization.getRawEditor().addFile(newFileName, content);
+            } else {
+                customization.getRawEditor().replaceFile(fileName, content);
+            }
+        }
     }
 
     private static void modifyReturnExpression(MethodDeclaration method, Function<String, String> modifier) {

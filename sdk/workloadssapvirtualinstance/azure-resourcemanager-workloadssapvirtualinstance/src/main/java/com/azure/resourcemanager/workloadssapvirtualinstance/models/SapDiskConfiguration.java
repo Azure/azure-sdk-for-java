@@ -52,20 +52,6 @@ public final class SapDiskConfiguration implements JsonSerializable<SapDiskConfi
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (recommendedConfiguration() != null) {
-            recommendedConfiguration().validate();
-        }
-        if (supportedConfigurations() != null) {
-            supportedConfigurations().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

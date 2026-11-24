@@ -50,17 +50,6 @@ public final class RouteTableProperties implements JsonSerializable<RouteTablePr
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (routes() != null) {
-            routes().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

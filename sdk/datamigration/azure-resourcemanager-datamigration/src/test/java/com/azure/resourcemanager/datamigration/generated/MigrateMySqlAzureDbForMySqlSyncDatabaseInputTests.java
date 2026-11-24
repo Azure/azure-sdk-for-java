@@ -14,33 +14,32 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateMySqlAzureDbForMySqlSyncDatabaseInput model = BinaryData.fromString(
-            "{\"name\":\"rvxcush\",\"targetDatabaseName\":\"haivm\",\"migrationSetting\":{\"nsmjbl\":\"sflvgsgzwywakoih\",\"ryuzcbmqqv\":\"ljhlnymzotq\"},\"sourceSetting\":{\"ujlzqnhcvsqltn\":\"wfgtayxonsup\"},\"targetSetting\":{\"xwdofdb\":\"bgsxgnxfyqonmpq\"},\"tableMap\":{\"imht\":\"xeiiq\",\"pofvwb\":\"wwinhehf\",\"vqihebwtswbzuwf\":\"blembnkbwvqvxkd\",\"felisdjub\":\"duragegizvc\"}}")
+            "{\"name\":\"qonmpqoxwdof\",\"targetDatabaseName\":\"xiqxeiiqbimh\",\"migrationSetting\":{\"vwbcblembnkbwv\":\"winhehfqpo\",\"uwfmduragegizvc\":\"vxkdivqihebwtswb\"},\"sourceSetting\":{\"gkxkbsazgakg\":\"lisdjubggbq\",\"apvu\":\"cyrcmjdmspo\"},\"targetSetting\":{\"mstk\":\"lniofrzgbzje\",\"nktwfansnvpdibmi\":\"nlvxbcuii\"},\"tableMap\":{\"yls\":\"tbzbkiwbuqnyophz\"}}")
             .toObject(MigrateMySqlAzureDbForMySqlSyncDatabaseInput.class);
-        Assertions.assertEquals("rvxcush", model.name());
-        Assertions.assertEquals("haivm", model.targetDatabaseName());
-        Assertions.assertEquals("sflvgsgzwywakoih", model.migrationSetting().get("nsmjbl"));
-        Assertions.assertEquals("wfgtayxonsup", model.sourceSetting().get("ujlzqnhcvsqltn"));
-        Assertions.assertEquals("bgsxgnxfyqonmpq", model.targetSetting().get("xwdofdb"));
-        Assertions.assertEquals("xeiiq", model.tableMap().get("imht"));
+        Assertions.assertEquals("qonmpqoxwdof", model.name());
+        Assertions.assertEquals("xiqxeiiqbimh", model.targetDatabaseName());
+        Assertions.assertEquals("winhehfqpo", model.migrationSetting().get("vwbcblembnkbwv"));
+        Assertions.assertEquals("lisdjubggbq", model.sourceSetting().get("gkxkbsazgakg"));
+        Assertions.assertEquals("lniofrzgbzje", model.targetSetting().get("mstk"));
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.tableMap().get("yls"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrateMySqlAzureDbForMySqlSyncDatabaseInput model
-            = new MigrateMySqlAzureDbForMySqlSyncDatabaseInput().withName("rvxcush")
-                .withTargetDatabaseName("haivm")
-                .withMigrationSetting(mapOf("nsmjbl", "sflvgsgzwywakoih", "ryuzcbmqqv", "ljhlnymzotq"))
-                .withSourceSetting(mapOf("ujlzqnhcvsqltn", "wfgtayxonsup"))
-                .withTargetSetting(mapOf("xwdofdb", "bgsxgnxfyqonmpq"))
-                .withTableMap(mapOf("imht", "xeiiq", "pofvwb", "wwinhehf", "vqihebwtswbzuwf", "blembnkbwvqvxkd",
-                    "felisdjub", "duragegizvc"));
+            = new MigrateMySqlAzureDbForMySqlSyncDatabaseInput().withName("qonmpqoxwdof")
+                .withTargetDatabaseName("xiqxeiiqbimh")
+                .withMigrationSetting(mapOf("vwbcblembnkbwv", "winhehfqpo", "uwfmduragegizvc", "vxkdivqihebwtswb"))
+                .withSourceSetting(mapOf("gkxkbsazgakg", "lisdjubggbq", "apvu", "cyrcmjdmspo"))
+                .withTargetSetting(mapOf("mstk", "lniofrzgbzje", "nktwfansnvpdibmi", "nlvxbcuii"))
+                .withTableMap(mapOf("yls", "tbzbkiwbuqnyophz"));
         model = BinaryData.fromObject(model).toObject(MigrateMySqlAzureDbForMySqlSyncDatabaseInput.class);
-        Assertions.assertEquals("rvxcush", model.name());
-        Assertions.assertEquals("haivm", model.targetDatabaseName());
-        Assertions.assertEquals("sflvgsgzwywakoih", model.migrationSetting().get("nsmjbl"));
-        Assertions.assertEquals("wfgtayxonsup", model.sourceSetting().get("ujlzqnhcvsqltn"));
-        Assertions.assertEquals("bgsxgnxfyqonmpq", model.targetSetting().get("xwdofdb"));
-        Assertions.assertEquals("xeiiq", model.tableMap().get("imht"));
+        Assertions.assertEquals("qonmpqoxwdof", model.name());
+        Assertions.assertEquals("xiqxeiiqbimh", model.targetDatabaseName());
+        Assertions.assertEquals("winhehfqpo", model.migrationSetting().get("vwbcblembnkbwv"));
+        Assertions.assertEquals("lisdjubggbq", model.sourceSetting().get("gkxkbsazgakg"));
+        Assertions.assertEquals("lniofrzgbzje", model.targetSetting().get("mstk"));
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.tableMap().get("yls"));
     }
 
     // Use "Map.of" if available

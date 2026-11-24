@@ -8,9 +8,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SecureKeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.implementation.models.JsonWebKeyEncryptionAlgorithm;
 import com.azure.security.keyvault.keys.implementation.models.JsonWebKeySignatureAlgorithm;
+import com.azure.security.keyvault.keys.implementation.models.JsonWebKeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.implementation.models.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -152,7 +154,13 @@ public final class CryptographyUtils {
 
     public static boolean isThrowableRetryable(Throwable e) {
         if (e instanceof HttpResponseException) {
-            int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
+            HttpResponseException httpResponseException = (HttpResponseException) e;
+
+            if (httpResponseException.getResponse() == null) {
+                return false;
+            }
+
+            int statusCode = httpResponseException.getResponse().getStatusCode();
 
             // Not a retriable error code.
             return statusCode != 501
@@ -227,5 +235,9 @@ public final class CryptographyUtils {
 
     static JsonWebKeyEncryptionAlgorithm mapWrapAlgorithm(KeyWrapAlgorithm algorithm) {
         return JsonWebKeyEncryptionAlgorithm.fromString(Objects.toString(algorithm, null));
+    }
+
+    static JsonWebKeyWrapAlgorithm mapSecureWrapAlgorithm(SecureKeyWrapAlgorithm algorithm) {
+        return JsonWebKeyWrapAlgorithm.fromString(Objects.toString(algorithm, null));
     }
 }

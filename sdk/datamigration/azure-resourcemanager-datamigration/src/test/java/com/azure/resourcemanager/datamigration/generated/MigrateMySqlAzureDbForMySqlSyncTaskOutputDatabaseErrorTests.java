@@ -14,18 +14,18 @@ public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError model = BinaryData.fromString(
-            "{\"resultType\":\"DatabaseLevelErrorOutput\",\"errorMessage\":\"wvruunzzj\",\"events\":[{\"timestampString\":\"fkimrtix\",\"eventTypeString\":\"ffqyinlj\",\"eventText\":\"pqwhixmonst\"},{\"timestampString\":\"i\",\"eventTypeString\":\"gvelfc\",\"eventText\":\"uccbirdsvuw\"},{\"timestampString\":\"b\",\"eventTypeString\":\"gstmninwjizciln\",\"eventText\":\"gshejjtbxqmulux\"},{\"timestampString\":\"qzvnersbycucr\",\"eventTypeString\":\"amikzebrqbsm\",\"eventText\":\"ziqgfuh\"}],\"id\":\"zruswh\"}")
+            "{\"resultType\":\"DatabaseLevelErrorOutput\",\"errorMessage\":\"cucrwnamikze\",\"events\":[{\"timestampString\":\"smswziqgfuh\",\"eventTypeString\":\"zruswh\",\"eventText\":\"czznvfbycjsxj\"},{\"timestampString\":\"i\",\"eventTypeString\":\"vumwmxqh\",\"eventText\":\"vnoamldseha\"}],\"id\":\"djh\"}")
             .toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.class);
-        Assertions.assertEquals("wvruunzzj", model.errorMessage());
+        Assertions.assertEquals("cucrwnamikze", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError model
-            = new MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError().withErrorMessage("wvruunzzj")
-                .withEvents(Arrays.asList(new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent(),
-                    new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent()));
+            = new MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError().withErrorMessage("cucrwnamikze")
+                .withEvents(
+                    Arrays.asList(new SyncMigrationDatabaseErrorEvent(), new SyncMigrationDatabaseErrorEvent()));
         model = BinaryData.fromObject(model).toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutputDatabaseError.class);
-        Assertions.assertEquals("wvruunzzj", model.errorMessage());
+        Assertions.assertEquals("cucrwnamikze", model.errorMessage());
     }
 }

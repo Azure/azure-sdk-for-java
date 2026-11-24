@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.purestorageblock.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -223,21 +222,6 @@ public final class ReservationBillingStatusInner implements JsonSerializable<Res
     public long totalPerformanceOverage() {
         return this.totalPerformanceOverage;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (timestamp() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property timestamp in model ReservationBillingStatusInner"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ReservationBillingStatusInner.class);
 
     /**
      * {@inheritDoc}

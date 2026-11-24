@@ -47,6 +47,12 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     private final Map<String, BinaryData> properties;
 
     /*
+     * The retention policy for the chat.
+     */
+    @Generated
+    private AcsChatThreadRetentionPolicy retentionPolicy;
+
+    /*
      * The version of the thread
      */
     @Generated
@@ -121,6 +127,16 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     }
 
     /**
+     * Get the retentionPolicy property: The retention policy for the chat.
+     *
+     * @return the retentionPolicy value.
+     */
+    @Generated
+    public AcsChatThreadRetentionPolicy getRetentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
      * Get the version property: The version of the thread.
      *
      * @return the version value.
@@ -158,9 +174,14 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
         jsonWriter.writeJsonField("editedByCommunicationIdentifier", this.editedByCommunicationIdentifier);
         jsonWriter.writeStringField("editTime",
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
-        jsonWriter.writeMapField("properties", this.properties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -185,6 +206,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
             OffsetDateTime editTime = null;
             Map<String, BinaryData> properties = null;
             Map<String, String> metadata = null;
+            AcsChatThreadRetentionPolicy retentionPolicy = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -209,6 +231,8 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("retentionPolicy".equals(fieldName)) {
+                    retentionPolicy = AcsChatThreadRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -219,6 +243,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
             deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.transactionId = transactionId;
             deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.version = version;
             deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.metadata = metadata;
+            deserializedAcsChatThreadPropertiesUpdatedPerUserEventData.retentionPolicy = retentionPolicy;
             return deserializedAcsChatThreadPropertiesUpdatedPerUserEventData;
         });
     }

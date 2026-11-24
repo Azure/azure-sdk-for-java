@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -69,6 +68,11 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
      * Operation level errors if they exist
      */
     private ResourceOperationError resourceOperationError;
+
+    /*
+     * Fallback operation details if a fallback was performed
+     */
+    private FallbackOperationInfo fallbackOperationInfo;
 
     /*
      * Time the operation was complete if errors are null
@@ -177,6 +181,15 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
+     * Get the fallbackOperationInfo property: Fallback operation details if a fallback was performed.
+     * 
+     * @return the fallbackOperationInfo value.
+     */
+    public FallbackOperationInfo fallbackOperationInfo() {
+        return this.fallbackOperationInfo;
+    }
+
+    /**
      * Get the completedAt property: Time the operation was complete if errors are null.
      * 
      * @return the completedAt value.
@@ -195,27 +208,6 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operationId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property operationId in model ResourceOperationDetails"));
-        }
-        if (resourceOperationError() != null) {
-            resourceOperationError().validate();
-        }
-        if (retryPolicy() != null) {
-            retryPolicy().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceOperationDetails.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -232,6 +224,7 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
         jsonWriter.writeStringField("timezone", this.timezone);
         jsonWriter.writeStringField("timeZone", this.timeZone);
         jsonWriter.writeJsonField("resourceOperationError", this.resourceOperationError);
+        jsonWriter.writeJsonField("fallbackOperationInfo", this.fallbackOperationInfo);
         jsonWriter.writeStringField("completedAt",
             this.completedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.completedAt));
         jsonWriter.writeJsonField("retryPolicy", this.retryPolicy);
@@ -276,6 +269,8 @@ public final class ResourceOperationDetails implements JsonSerializable<Resource
                 } else if ("resourceOperationError".equals(fieldName)) {
                     deserializedResourceOperationDetails.resourceOperationError
                         = ResourceOperationError.fromJson(reader);
+                } else if ("fallbackOperationInfo".equals(fieldName)) {
+                    deserializedResourceOperationDetails.fallbackOperationInfo = FallbackOperationInfo.fromJson(reader);
                 } else if ("completedAt".equals(fieldName)) {
                     deserializedResourceOperationDetails.completedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

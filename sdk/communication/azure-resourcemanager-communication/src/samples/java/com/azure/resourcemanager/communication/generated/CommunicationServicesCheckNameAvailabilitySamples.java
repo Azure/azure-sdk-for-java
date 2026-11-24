@@ -12,7 +12,7 @@ import com.azure.resourcemanager.communication.models.NameAvailabilityParameters
 public final class CommunicationServicesCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/checkNameAvailabilityAvailable.json
      */
     /**
@@ -29,7 +29,7 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/checkNameAvailabilityUnavailable.json
      */
     /**

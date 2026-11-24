@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -69,7 +69,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 endpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
-                false
+                true
             ),
             restTemplateBuilder
         );
@@ -97,7 +97,7 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 endpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
-                false,
+                true,
                 jwkSetCache
             ),
             restTemplateBuilder

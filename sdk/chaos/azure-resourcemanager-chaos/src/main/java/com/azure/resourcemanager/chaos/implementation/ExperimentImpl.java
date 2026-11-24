@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.chaos.fluent.models.ExperimentInner;
 import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
 import com.azure.resourcemanager.chaos.models.ChaosTargetSelector;
+import com.azure.resourcemanager.chaos.models.CustomerDataStorageProperties;
 import com.azure.resourcemanager.chaos.models.Experiment;
 import com.azure.resourcemanager.chaos.models.ExperimentUpdate;
 import com.azure.resourcemanager.chaos.models.ProvisioningState;
@@ -76,6 +77,10 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public CustomerDataStorageProperties customerDataStorage() {
+        return this.innerModel().customerDataStorage();
     }
 
     public Region region() {
@@ -151,8 +156,12 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
     ExperimentImpl(ExperimentInner innerObject, com.azure.resourcemanager.chaos.ChaosManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.experimentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "experiments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "resourceGroupName");
+        this.experimentName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}",
+            "experimentName");
     }
 
     public Experiment refresh() {
@@ -225,6 +234,11 @@ public final class ExperimentImpl implements Experiment, Experiment.Definition, 
             this.updateProperties.withIdentity(identity);
             return this;
         }
+    }
+
+    public ExperimentImpl withCustomerDataStorage(CustomerDataStorageProperties customerDataStorage) {
+        this.innerModel().withCustomerDataStorage(customerDataStorage);
+        return this;
     }
 
     private boolean isInCreateMode() {

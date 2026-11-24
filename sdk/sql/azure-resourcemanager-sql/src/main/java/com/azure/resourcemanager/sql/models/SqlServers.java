@@ -1,0 +1,174 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.resourcemanager.sql.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+/** Entry point to SQL Server management API. */
+@Fluent
+public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.Blank>, SupportsListing<SqlServer>,
+    SupportsListingByResourceGroup<SqlServer>, SupportsGettingByResourceGroup<SqlServer>,
+    SupportsGettingById<SqlServer>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<SqlServer>, SupportsBatchDeletion, HasManager<SqlServerManager> {
+
+    /**
+     * Gets the API entry point of the SQL Server Firewall Rules.
+     *
+     * @return the SQL Server Firewall Rules API entry point
+     */
+    SqlFirewallRuleOperations firewallRules();
+
+    /**
+     * Gets the API entry point of the SQL Server VirtualNetwork Rules.
+     *
+     * @return the SQL Server VirtualNetwork Rules API entry point
+     */
+    SqlVirtualNetworkRuleOperations virtualNetworkRules();
+
+    /**
+     * Gets the API entry point of the SQL Server DNS aliases.
+     *
+     * @return the SQL Server DNS aliases API entry point
+     */
+    SqlServerDnsAliasOperations dnsAliases();
+
+    /**
+     * Gets the API entry point of the SQL Failover Group.
+     *
+     * @return the SQL Failover Group API entry point
+     */
+    SqlFailoverGroupOperations failoverGroups();
+
+    /**
+     * Gets the entry point of the SQL Server Key.
+     *
+     * @return the SQL Server Key entry point
+     */
+    SqlServerKeyOperations serverKeys();
+
+    /**
+     * Gets the entry point of the SQL Encryption Protector.
+     *
+     * @return the SQL Encryption Protector entry point
+     */
+    SqlEncryptionProtectorOperations encryptionProtectors();
+
+    /**
+     * Gets entry point to manage SQL Server Security Alert Policy.
+     *
+     * @return entry point to manage SQL Server Security Alert Policy
+     */
+    SqlServerSecurityAlertPolicyOperations serverSecurityAlertPolicies();
+
+    /**
+     * Gets the entry point of the SQL Sync Group.
+     *
+     * @return the SQL Sync Group entry point
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. For distributed applications, use
+     * {@link SqlDatabase.DefinitionStages.WithSourceDatabaseId#withSourceDatabase(String)} to create a database copy.
+     * For globally distributed applications, additionally use
+     * {@link SqlDatabase.DefinitionStages.WithCreateMode#withMode(CreateMode)} with
+     * {@link CreateMode#ONLINE_SECONDARY} for active geo-replication. Refer to the
+     * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">official
+     * retirement migration guidance</a> for more alternatives.
+     */
+    @Deprecated
+    SqlSyncGroupOperations syncGroups();
+
+    /**
+     * Gets the entry point of the SQL Sync Member.
+     *
+     * @return the SQL Sync Member entry point
+     * @deprecated Azure SQL Data Sync is scheduled for retirement and requires SQL authentication; it doesn't support
+     * Microsoft Entra ID or managed identities. For distributed applications, use
+     * {@link SqlDatabase.DefinitionStages.WithSourceDatabaseId#withSourceDatabase(String)} to create a database copy.
+     * For globally distributed applications, additionally use
+     * {@link SqlDatabase.DefinitionStages.WithCreateMode#withMode(CreateMode)} with
+     * {@link CreateMode#ONLINE_SECONDARY} for active geo-replication. Refer to the
+     * <a href="https://learn.microsoft.com/azure/azure-sql/database/sql-data-sync-retirement-migration">official
+     * retirement migration guidance</a> for more alternatives.
+     */
+    @Deprecated
+    SqlSyncMemberOperations syncMembers();
+
+    /**
+     * Gets the API entry point of the SQL Server Elastic Pools.
+     *
+     * @return the SQL Server Elastic Pools API entry point
+     */
+    SqlElasticPoolOperations elasticPools();
+
+    /**
+     * Gets the API entry point of the SQL Server Database.
+     *
+     * @return the SQL Server Database API entry point
+     */
+    SqlDatabaseOperations databases();
+
+    /**
+     * Checks if the specified container registry name is valid and available.
+     *
+     * @param name the container registry name to check
+     * @return whether the name is available and other info if not
+     */
+    CheckNameAvailabilityResult checkNameAvailability(String name);
+
+    /**
+     * Checks if container registry name is valid and is not in use asynchronously.
+     *
+     * @param name the container registry name to check
+     * @return a representation of the future computation of this call, returning whether the name is available or other
+     *     info if not
+     */
+    Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
+
+    /**
+     * Gets the Azure SQL server capabilities for a given Azure region.
+     *
+     * @param region the location to get the Azure SQL server capabilities for
+     * @return the server capabilities object
+     */
+    RegionCapabilities getCapabilitiesByRegion(Region region);
+
+    /**
+     * Gets the Azure SQL server capabilities for a given Azure region asynchronously.
+     *
+     * @param region the location to get the Azure SQL server capabilities for
+     * @return a representation of the future computation of this call, returning the server capabilities object
+     */
+    Mono<RegionCapabilities> getCapabilitiesByRegionAsync(Region region);
+
+    /**
+     * Lists the Azure SQL server usages for a given Azure region.
+     *
+     * @param region the location to get the Azure SQL server usages for
+     * @return the SQL usage object
+     */
+    List<SqlSubscriptionUsageMetric> listUsageByRegion(Region region);
+
+    /**
+     * Lists the Azure SQL server usages for a given Azure region asynchronously.
+     *
+     * @param region the location to get the Azure SQL server usages for
+     * @return a representation of the future computation of this call, returning the server usages object
+     */
+    PagedFlux<SqlSubscriptionUsageMetric> listUsageByRegionAsync(Region region);
+}

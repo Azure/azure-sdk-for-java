@@ -52,17 +52,6 @@ public final class EndpointDependency implements JsonSerializable<EndpointDepend
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (endpointDetails() != null) {
-            endpointDetails().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

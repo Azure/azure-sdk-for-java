@@ -23,7 +23,7 @@ public final class SqlMigrationServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"ieztkutnjillu\"},\"systemData\":{\"createdBy\":\"ehyh\",\"createdByType\":\"Key\",\"createdAt\":\"2021-01-16T22:34:06Z\",\"lastModifiedBy\":\"ifvulxf\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-07-11T09:28:07Z\"},\"location\":\"jlgdez\",\"tags\":{\"i\":\"wahoyiyaxqvjw\",\"ddnvovbooqbmdq\":\"tcz\"},\"id\":\"xyglaetscflw\",\"name\":\"jdtlriefooyycux\",\"type\":\"tzcqipsd\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"integrationRuntimeState\":\"udcaytujrax\"},\"location\":\"pryj\",\"tags\":{\"msvvylj\":\"nsewouxl\",\"hqqylmpc\":\"rkepos\"},\"id\":\"wjwdsdlzmkxer\",\"name\":\"xx\",\"type\":\"teehk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class SqlMigrationServicesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SqlMigrationService response = manager.sqlMigrationServices()
-            .define("umov")
-            .withRegion("ikcedpk")
-            .withExistingResourceGroup("qoq")
-            .withTags(mapOf("vyczyayubt", "wmmtmqrxrzq"))
+            .define("edoyqxlunkft")
+            .withRegion("hrvmzrqrazadi")
+            .withExistingResourceGroup("zkdolrndwdbvxvza")
+            .withTags(mapOf("aihxjtgzgtaiywbq", "llaslkskhjqjpv", "mhljqlxspm", "roigbsfsgsaenwld", "ryldsxeb", "jc"))
             .create();
 
-        Assertions.assertEquals("jlgdez", response.location());
-        Assertions.assertEquals("wahoyiyaxqvjw", response.tags().get("i"));
+        Assertions.assertEquals("pryj", response.location());
+        Assertions.assertEquals("nsewouxl", response.tags().get("msvvylj"));
     }
 
     // Use "Map.of" if available

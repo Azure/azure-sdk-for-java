@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.purestorageblock.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -50,23 +49,6 @@ public final class Alert implements JsonSerializable<Alert> {
     public String message() {
         return this.message;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (level() == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property level in model Alert"));
-        }
-        if (message() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property message in model Alert"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Alert.class);
 
     /**
      * {@inheritDoc}

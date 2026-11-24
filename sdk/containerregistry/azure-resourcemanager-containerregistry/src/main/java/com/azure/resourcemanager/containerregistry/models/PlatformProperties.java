@@ -1,0 +1,156 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.resourcemanager.containerregistry.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+
+/**
+ * The platform properties against which the run has to happen.
+ */
+@Fluent
+public final class PlatformProperties implements JsonSerializable<PlatformProperties> {
+    /*
+     * The operating system type required for the run.
+     */
+    private OS os;
+
+    /*
+     * The OS architecture.
+     */
+    private Architecture architecture;
+
+    /*
+     * Variant of the CPU.
+     */
+    private Variant variant;
+
+    /**
+     * Creates an instance of PlatformProperties class.
+     */
+    public PlatformProperties() {
+    }
+
+    /**
+     * Get the os property: The operating system type required for the run.
+     * 
+     * @return the os value.
+     */
+    public OS os() {
+        return this.os;
+    }
+
+    /**
+     * Set the os property: The operating system type required for the run.
+     * 
+     * @param os the os value to set.
+     * @return the PlatformProperties object itself.
+     */
+    public PlatformProperties withOs(OS os) {
+        this.os = os;
+        return this;
+    }
+
+    /**
+     * Get the architecture property: The OS architecture.
+     * 
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: The OS architecture.
+     * 
+     * @param architecture the architecture value to set.
+     * @return the PlatformProperties object itself.
+     */
+    public PlatformProperties withArchitecture(Architecture architecture) {
+        this.architecture = architecture;
+        return this;
+    }
+
+    /**
+     * Get the variant property: Variant of the CPU.
+     * 
+     * @return the variant value.
+     */
+    public Variant variant() {
+        return this.variant;
+    }
+
+    /**
+     * Set the variant property: Variant of the CPU.
+     * 
+     * @param variant the variant value to set.
+     * @return the PlatformProperties object itself.
+     */
+    public PlatformProperties withVariant(Variant variant) {
+        this.variant = variant;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (os() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property os in model PlatformProperties"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PlatformProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("os", this.os == null ? null : this.os.toString());
+        jsonWriter.writeStringField("architecture", this.architecture == null ? null : this.architecture.toString());
+        jsonWriter.writeStringField("variant", this.variant == null ? null : this.variant.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlatformProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlatformProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PlatformProperties.
+     */
+    public static PlatformProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlatformProperties deserializedPlatformProperties = new PlatformProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("os".equals(fieldName)) {
+                    deserializedPlatformProperties.os = OS.fromString(reader.getString());
+                } else if ("architecture".equals(fieldName)) {
+                    deserializedPlatformProperties.architecture = Architecture.fromString(reader.getString());
+                } else if ("variant".equals(fieldName)) {
+                    deserializedPlatformProperties.variant = Variant.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlatformProperties;
+        });
+    }
+}

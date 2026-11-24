@@ -175,7 +175,8 @@ public final class MonitorQueryLogsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> executeWithResourceId(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @PathParam("resourceId") String resourceId,
+            @HostParam("apiVersion") String apiVersion,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
@@ -186,7 +187,8 @@ public final class MonitorQueryLogsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> executeWithResourceIdSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @PathParam("resourceId") String resourceId,
+            @HostParam("apiVersion") String apiVersion,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 

@@ -3,21 +3,34 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.*;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import com.azure.core.exception.HttpResponseException;
+
+import com.azure.core.test.SyncAsyncExtension;
+import com.azure.core.test.annotation.SyncAsyncTest;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+
+import reactor.core.publisher.Mono;
 
 public class BatchErrorTests extends BatchClientTestBase {
 
-    @Test
+    @SyncAsyncTest
     public void testResizeErrorCases() {
         try {
+            BatchPoolResizeParameters emptyResizeParams = new BatchPoolResizeParameters();
 
-            BatchPoolResizeContent resizeContent = new BatchPoolResizeContent();
-            batchClient.resizePool("fakepool", resizeContent);
-        } catch (HttpResponseException err) {
+            setPlaybackSyncPollerPollInterval(SyncAsyncExtension
+                .execute(() -> batchClient.beginResizePool("fakepool-sync", emptyResizeParams), () -> Mono.fromCallable(
+                    () -> batchAsyncClient.beginResizePool("fakepool-async", emptyResizeParams).getSyncPoller())));
 
-            BatchError error = BatchError.fromException(err);
+        } catch (BatchErrorException err) {
+            BatchError error = err.getValue();
             Assertions.assertNotNull(error);
             Assertions.assertEquals("MissingRequiredProperty", error.getCode());
             Assertions.assertTrue(
@@ -27,16 +40,51 @@ public class BatchErrorTests extends BatchClientTestBase {
         }
 
         try {
-
-            batchClient.resizePool("fakepool",
-                new BatchPoolResizeContent().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
-        } catch (HttpResponseException err) {
-
-            BatchError error = BatchError.fromException(err);
+            BatchPoolResizeParameters resizeParams
+                = new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1);
+            setPlaybackSyncPollerPollInterval(SyncAsyncExtension
+                .execute(() -> batchClient.beginResizePool("fakepool-sync", resizeParams), () -> Mono.fromCallable(
+                    () -> batchAsyncClient.beginResizePool("fakepool-async", resizeParams).getSyncPoller())));
+        } catch (BatchErrorException err) {
+            BatchError error = err.getValue();
             Assertions.assertNotNull(error);
             Assertions.assertEquals("PoolNotFound", error.getCode());
             Assertions.assertTrue(error.getMessage().getValue().contains("The specified pool does not exist."));
             Assertions.assertNull(error.getValues());
+        }
+    }
+
+    @Test
+    public void testDeserializationOfBatchErrorWithMultipleValues() {
+        String errorJson = "{" + "\"code\": \"InvalidQueryParameterValue\","
+            + "\"message\": {\"lang\": \"en-us\", \"value\": \"Value for one of the query parameters specified in the request URI is invalid\"},"
+            + "\"values\": [" + "  {\"key\": \"QueryParameterName\", \"value\": \"state\"},"
+            + "  {\"key\": \"QueryParameterValue\", \"value\": \"deleted\"},"
+            + "  {\"key\": \"Reason\", \"value\": \"invalid state\"}" + "]" + "}";
+
+        try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(errorJson))) {
+            BatchError error = BatchError.fromJson(jsonReader);
+
+            Assertions.assertNotNull(error);
+            Assertions.assertEquals("InvalidQueryParameterValue", error.getCode());
+            Assertions.assertNotNull(error.getMessage());
+            Assertions.assertEquals("Value for one of the query parameters specified in the request URI is invalid",
+                error.getMessage().getValue());
+
+            List<BatchErrorDetail> values = error.getValues();
+            Assertions.assertNotNull(values);
+            Assertions.assertEquals(3, values.size());
+
+            Assertions.assertEquals("QueryParameterName", values.get(0).getKey());
+            Assertions.assertEquals("state", values.get(0).getValue());
+
+            Assertions.assertEquals("QueryParameterValue", values.get(1).getKey());
+            Assertions.assertEquals("deleted", values.get(1).getValue());
+
+            Assertions.assertEquals("Reason", values.get(2).getKey());
+            Assertions.assertEquals("invalid state", values.get(2).getValue());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to deserialize BatchError", e);
         }
     }
 }

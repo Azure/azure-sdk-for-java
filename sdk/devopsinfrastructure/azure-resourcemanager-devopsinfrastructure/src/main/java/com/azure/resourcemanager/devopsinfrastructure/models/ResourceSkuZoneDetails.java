@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -52,27 +51,6 @@ public final class ResourceSkuZoneDetails implements JsonSerializable<ResourceSk
     public List<ResourceSkuCapabilities> capabilities() {
         return this.capabilities;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model ResourceSkuZoneDetails"));
-        }
-        if (capabilities() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property capabilities in model ResourceSkuZoneDetails"));
-        } else {
-            capabilities().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceSkuZoneDetails.class);
 
     /**
      * {@inheritDoc}

@@ -17,7 +17,7 @@ public final class OrganizationResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrganizationResourceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"oosflnr\":\"wzjeiach\",\"vypyqrimzinpv\":\"sfqpteehz\",\"rsoodqxhcrmnoh\":\"wjdk\"},\"identity\":{\"principalId\":\"kwh\",\"tenantId\":\"oifiyipjxsqwpgr\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"shurzafbljjgpbto\":{\"clientId\":\"rcjxvsnbyxqabn\",\"principalId\":\"cpc\"},\"kudjkrlkhb\":{\"clientId\":\"jmkljavbqidtqajz\",\"principalId\":\"l\"},\"scpai\":{\"clientId\":\"fepgzgq\",\"principalId\":\"zloc\"},\"onpimexgstxg\":{\"clientId\":\"hhbcsglummajtjao\",\"principalId\":\"obnbdxkqpxokaj\"}}}}")
+            "{\"tags\":{\"oosflnr\":\"wzjeiach\",\"vypyqrimzinpv\":\"sfqpteehz\",\"rsoodqxhcrmnoh\":\"wjdk\"},\"identity\":{\"principalId\":\"kwh\",\"tenantId\":\"oifiyipjxsqwpgr\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"shurzafbljjgpbto\":{\"principalId\":\"rcjxvsnbyxqabn\",\"clientId\":\"cpc\"},\"kudjkrlkhb\":{\"principalId\":\"jmkljavbqidtqajz\",\"clientId\":\"l\"},\"scpai\":{\"principalId\":\"fepgzgq\",\"clientId\":\"zloc\"},\"onpimexgstxg\":{\"principalId\":\"hhbcsglummajtjao\",\"clientId\":\"obnbdxkqpxokaj\"}}}}")
             .toObject(OrganizationResourceUpdate.class);
         Assertions.assertEquals("wzjeiach", model.tags().get("oosflnr"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());

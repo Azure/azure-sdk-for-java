@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ServiceResourceInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartReplicaRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceResource;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceResourceProperties;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceUpdateParameters;
@@ -138,10 +139,18 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         com.azure.resourcemanager.servicefabricmanagedclusters.ServiceFabricManagedClustersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedClusters");
-        this.applicationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
-        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "services");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "resourceGroupName");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "clusterName");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "applicationName");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}",
+            "serviceName");
     }
 
     public ServiceResource refresh() {
@@ -158,6 +167,16 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
             .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, context)
             .getValue();
         return this;
+    }
+
+    public void restartReplica(RestartReplicaRequest parameters) {
+        serviceManager.services()
+            .restartReplica(resourceGroupName, clusterName, applicationName, serviceName, parameters);
+    }
+
+    public void restartReplica(RestartReplicaRequest parameters, Context context) {
+        serviceManager.services()
+            .restartReplica(resourceGroupName, clusterName, applicationName, serviceName, parameters, context);
     }
 
     public ServiceResourceImpl withRegion(Region location) {

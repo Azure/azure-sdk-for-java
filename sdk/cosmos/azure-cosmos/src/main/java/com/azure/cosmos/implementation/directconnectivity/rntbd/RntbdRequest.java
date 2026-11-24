@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
 
@@ -77,7 +76,7 @@ public final class RntbdRequest {
         final int observedLength = in.readerIndex() - start;
 
         if (observedLength != expectedLength) {
-            final String reason = Strings.lenientFormat("expectedLength=%s, observedLength=%s", expectedLength, observedLength);
+            final String reason = String.format("expectedLength=%s, observedLength=%s", expectedLength, observedLength);
             throw new IllegalStateException(reason);
         }
 
@@ -131,5 +130,18 @@ public final class RntbdRequest {
         final RntbdRequestHeaders headers = new RntbdRequestHeaders(args, frame);
 
         return new RntbdRequest(frame, headers, serviceRequest.getContentAsByteArray());
+    }
+
+    /**
+     * Creates a wire request with a session token override without modifying the service request.
+     *
+     * @param args the request arguments
+     * @param sessionTokenOverride the wire session token, or null to omit it
+     * @return the wire request
+     */
+    public static RntbdRequest from(final RntbdRequestArgs args, final String sessionTokenOverride) {
+        RntbdRequest request = from(args);
+        request.headers.overrideSessionToken(sessionTokenOverride);
+        return request;
     }
 }

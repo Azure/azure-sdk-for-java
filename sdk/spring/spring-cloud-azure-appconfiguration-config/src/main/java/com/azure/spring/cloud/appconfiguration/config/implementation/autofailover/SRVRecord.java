@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.autofailover;
 
-public class SRVRecord {
+class SRVRecord implements Comparable<SRVRecord> {
 
     private final int priority;
 
@@ -12,12 +12,12 @@ public class SRVRecord {
 
     private final String target;
     
-    private static final String PROTOCAL = "https://";
+    private static final String PROTOCOL = "https://";
 
-    public SRVRecord(String[] record) {
-        this.priority = Integer.valueOf(record[0]);
-        this.weight = Integer.valueOf(record[1]);
-        this.port = Integer.valueOf(record[2]);
+    SRVRecord(String[] record) {
+        this.priority = Integer.parseInt(record[0]);
+        this.weight = Integer.parseInt(record[1]);
+        this.port = Integer.parseInt(record[2]);
         this.target = record[3].substring(0, record[3].length() - 1);
     }
 
@@ -38,24 +38,15 @@ public class SRVRecord {
     }
 
     public String getEndpoint() {
-        return PROTOCAL + target;
+        return PROTOCOL + target;
     }
 
+    @Override
     public int compareTo(SRVRecord record) {
-        if (priority > record.getPriority()) {
-            return 1;
+        if (priority != record.getPriority()) {
+            return Integer.compare(priority, record.getPriority());
         }
-        if (record.getPriority() > priority) {
-            return -1;
-        }
-
-        if (weight > record.getWeight()) {
-            return 1;
-        }
-        if (record.getWeight() > weight) {
-            return -1;
-        }
-
-        return 0;
+        // Higher weight should be preferred (sorted first)
+        return Integer.compare(record.getWeight(), weight);
     }
 }

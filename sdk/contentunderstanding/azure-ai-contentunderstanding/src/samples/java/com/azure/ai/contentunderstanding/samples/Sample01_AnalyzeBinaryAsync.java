@@ -1,0 +1,345 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.AnalyzeBinaryOptions;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentPage;
+import com.azure.ai.contentunderstanding.models.DocumentTable;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.ProcessingLocation;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.concurrent.TimeoutException;
+
+/**
+ * Sample demonstrating how to analyze binary documents using Content Understanding service.
+ * This sample shows:
+ * 1. Loading a binary file (PDF)
+ * 2. Analyzing the document
+ * 3. Extracting markdown content
+ * 4. Accessing document properties (pages, tables, etc.)
+ * 5. Converting results to LLM-ready text using toLlmInput
+ * 6. Using ContentRange to analyze specific pages
+ *
+ * <p>This sample uses the default long-running operation path. See Sample19 and Sample20 for inline analysis within
+ * the documented inline limits.</p>
+ *
+ * <p>The sample uses a PDF, but {@code prebuilt-documentSearch} also supports formats such as Word, Excel,
+ * PowerPoint, and images. Use it for documents and images containing text; use {@code prebuilt-imageSearch} for
+ * standalone image descriptions, and see Sample02 for audio and video analyzers. See the
+ * <a href="https://aka.ms/cu-doc-limits">service limits</a> for current formats and limits.</p>
+ *
+ * <p>The returned Markdown is a structured representation optimized for retrieval-augmented generation (RAG). It
+ * can include layout, tables, figures, formulas, hyperlinks, and page metadata; the exact elements depend on the
+ * analyzer configuration.</p>
+ */
+public class Sample01_AnalyzeBinaryAsync {
+
+    public static void main(String[] args) throws IOException {
+        // BEGIN: com.azure.ai.contentunderstanding.sample01Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample01Async.buildClient
+
+        // Load the sample file
+        String filePath = "src/samples/resources/sample_invoice.pdf";
+        Path path = Paths.get(filePath);
+        byte[] fileBytes = Files.readAllBytes(path);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryAsyncAsync
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = client.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
+
+        Mono<Void> analysisOperation = operation.last()
+            .flatMap(pollResponse -> pollResponse.getFinalResult().thenReturn(pollResponse.getValue()))
+            .doOnNext(operationStatus -> {
+                AnalysisResult result = operationStatus.getResult();
+                UsageDetails usage = operationStatus.getUsage();
+                System.out.println("Polling completed successfully");
+                System.out.println("Analysis operation completed");
+                System.out.println("Analysis result contains "
+                    + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
+                if (usage != null) {
+                    System.out.println("Document pages (standard): " + usage.getDocumentPagesStandard());
+                    System.out.println("Contextualization tokens: " + usage.getContextualizationTokens());
+                }
+
+                // BEGIN:ContentUnderstandingExtractMarkdownAsync
+                // A PDF file has only one content element even if it contains multiple pages
+                AnalysisContent content = null;
+                if (result.getContents() == null || result.getContents().isEmpty()) {
+                    System.out.println("(No content returned from analysis)");
+                } else {
+                    content = result.getContents().get(0);
+                    if (content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+                        System.out.println(content.getMarkdown());
+                    } else {
+                        System.out.println("(No markdown content available)");
+                    }
+                }
+                // END:ContentUnderstandingExtractMarkdownAsync
+
+                if (content != null && content.getMarkdown() != null && !content.getMarkdown().isEmpty()) {
+                    System.out.println("Markdown content extracted successfully ("
+                        + content.getMarkdown().length() + " characters)");
+                }
+
+                // BEGIN:ContentUnderstandingAccessDocumentPropertiesAsync
+                // Check if this is document content to access document-specific properties
+                if (content instanceof DocumentContent) {
+                    DocumentContent documentContent = (DocumentContent) content;
+                    System.out.println("Document type: "
+                        + (documentContent.getMimeType() != null ? documentContent.getMimeType() : "(unknown)"));
+                    System.out.println("Start page: " + documentContent.getStartPageNumber());
+                    System.out.println("End page: " + documentContent.getEndPageNumber());
+                    System.out.println("Total pages: "
+                        + (documentContent.getEndPageNumber() - documentContent.getStartPageNumber() + 1));
+
+                    // Check for pages
+                    if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
+                        System.out.println("Number of pages: " + documentContent.getPages().size());
+                        for (DocumentPage page : documentContent.getPages()) {
+                            String unit
+                                = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
+                            System.out.println("  Page " + page.getPageNumber() + ": " + page.getWidth() + " x "
+                                + page.getHeight() + " " + unit);
+                        }
+                    }
+
+                    // Check for tables
+                    if (documentContent.getTables() != null && !documentContent.getTables().isEmpty()) {
+                        System.out.println("Number of tables: " + documentContent.getTables().size());
+                        int tableCounter = 1;
+                        for (DocumentTable table : documentContent.getTables()) {
+                            System.out.println("  Table " + tableCounter + ": " + table.getRowCount() + " rows x "
+                                + table.getColumnCount() + " columns");
+                            tableCounter++;
+                        }
+                    }
+                } else {
+                    System.out.println("Content is AnalysisContent (not document-specific), skipping document properties");
+                }
+                // END:ContentUnderstandingAccessDocumentPropertiesAsync
+
+                // BEGIN:ContentUnderstandingConvertToLlmInputAsync
+                String llmText = LlmInputHelper.toLlmInput(result);
+                System.out.println("\n============================================================");
+                System.out.println("LLM-READY OUTPUT");
+                System.out.println("============================================================");
+                System.out.println(llmText);
+                // END:ContentUnderstandingConvertToLlmInputAsync
+
+                System.out.println("\nBinary document analysis completed successfully");
+            })
+            .then();
+        // END:ContentUnderstandingAnalyzeBinaryAsyncAsync
+
+        // Wait for terminal completion so service failures reach the caller. A timeout cancels the subscription.
+        waitForCompletion(analysisOperation, Duration.ofMinutes(2),
+            "Timed out waiting for async operations to complete.");
+
+        // Demonstrate ContentRange usage with a multi-page document
+        System.out.println("\n--- ContentRange Examples ---");
+        analyzeBinaryWithContentRange(client);
+    }
+
+    /**
+     * Sample demonstrating how to use ContentRange to analyze specific pages of a binary document asynchronously.
+     * ContentRange allows you to specify which pages to analyze instead of the entire document.
+     */
+    public static void analyzeBinaryWithContentRange(ContentUnderstandingAsyncClient client)
+        throws IOException {
+        // Load a multi-page document (10 pages)
+        String multiPageFilePath = "src/samples/resources/mixed_financial_invoices.pdf";
+        Path multiPagePath = Paths.get(multiPageFilePath);
+        byte[] multiPageBytes = Files.readAllBytes(multiPagePath);
+        BinaryData multiPageData = BinaryData.fromBytes(multiPageBytes);
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithOptionsAsync
+        // Use AnalyzeBinaryOptions when several request settings need to be configured together.
+        AnalyzeBinaryOptions options = new AnalyzeBinaryOptions().setContentRange(ContentRange.pagesFrom(3))
+            .setProcessingLocation(ProcessingLocation.GEOGRAPHY);
+        Mono<AnalysisResult> optionsMono
+            = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData, options)
+                .last()
+                .flatMap(pollResponse -> pollResponse.getStatus().isComplete()
+                    ? pollResponse.getFinalResult()
+                    : Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus())))
+                .doOnNext(result -> {
+                    DocumentContent optionsDoc = (DocumentContent) result.getContents().get(0);
+                    System.out.println("AnalyzeBinaryOptions: returned " + optionsDoc.getPages().size() + " pages");
+                });
+        // END:ContentUnderstandingAnalyzeBinaryWithOptionsAsync
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithContentRangeAsync
+        // Analyze a single page using ContentRange.page()
+        Mono<AnalysisResult> pageMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.page(2)))
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent pageDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Page(2): returned " + pageDoc.getPages().size() + " page"
+                    + " (page " + pageDoc.getStartPageNumber() + ")");
+            });
+
+        // Analyze a page range using ContentRange.pages()
+        Mono<AnalysisResult> pagesMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.pages(1, 3)))
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent pagesDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Pages(1,3): returned " + pagesDoc.getPages().size() + " pages"
+                    + " (pages " + pagesDoc.getStartPageNumber() + "-" + pagesDoc.getEndPageNumber() + ")");
+            });
+
+        // Combine multiple ranges using ContentRange.combine()
+        Mono<AnalysisResult> combineMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.combine(
+                    ContentRange.page(1),
+                    ContentRange.pages(3, 4))))
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent combineDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Combine(Page(1), Pages(3,4)): returned " + combineDoc.getPages().size() + " pages"
+                    + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
+            });
+
+        // Analyze only pages 3 to end using ContentRange.pagesFrom()
+        Mono<AnalysisResult> pagesFromMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.pagesFrom(3)))
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent rangeDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("PagesFrom(3): returned " + rangeDoc.getPages().size() + " pages"
+                    + " (pages " + rangeDoc.getStartPageNumber() + "-" + rangeDoc.getEndPageNumber() + ")");
+            });
+
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+        Mono<AnalysisResult> bigCombineMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                new AnalyzeBinaryOptions().setContentRange(ContentRange.combine(
+                    ContentRange.pages(1, 3),
+                    ContentRange.page(5),
+                    ContentRange.pagesFrom(9))))
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent bigCombineDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Combine(Pages(1,3), Page(5), PagesFrom(9)): returned "
+                    + bigCombineDoc.getPages().size() + " pages");
+            });
+
+        // Pass a dynamically constructed range string directly. This is equivalent to the typed combine above.
+        Mono<AnalysisResult> rawRangeMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                new AnalyzeBinaryOptions().setContentRange(new ContentRange("1-3,5,9-")))
+            .last()
+            .flatMap(pollResponse -> pollResponse.getFinalResult())
+            .doOnNext(result -> {
+                DocumentContent rawRangeDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Raw ContentRange(\"1-3,5,9-\"): returned " + rawRangeDoc.getPages().size()
+                    + " pages (equivalent to the typed combine above)");
+            });
+
+        // Chain all operations sequentially using then()
+        Mono<Void> rangeOperation = optionsMono
+            .then(pageMono)
+            .then(pagesMono)
+            .then(combineMono)
+            .then(pagesFromMono)
+            .then(bigCombineMono)
+            .then(rawRangeMono)
+            .then()
+            .doOnSuccess(ignored -> System.out.println("ContentRange async analysis completed successfully"));
+        // END:ContentUnderstandingAnalyzeBinaryWithContentRangeAsync
+
+        waitForCompletion(rangeOperation, Duration.ofMinutes(5),
+            "Timed out waiting for ContentRange async operations.");
+    }
+
+    static void waitForCompletion(Mono<Void> operation, Duration timeout, String timeoutMessage) {
+        try {
+            operation.block(timeout);
+        } catch (IllegalStateException exception) {
+            if (exception.getCause() instanceof TimeoutException) {
+                throw new IllegalStateException(timeoutMessage, exception.getCause());
+            }
+            throw exception;
+        }
+    }
+}

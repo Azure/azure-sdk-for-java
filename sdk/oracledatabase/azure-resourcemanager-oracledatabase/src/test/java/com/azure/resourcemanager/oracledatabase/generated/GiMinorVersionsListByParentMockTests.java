@@ -12,6 +12,7 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.oracledatabase.OracleDatabaseManager;
 import com.azure.resourcemanager.oracledatabase.models.GiMinorVersion;
+import com.azure.resourcemanager.oracledatabase.models.GiMinorVersionSortOrder;
 import com.azure.resourcemanager.oracledatabase.models.ShapeFamily;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,7 +24,7 @@ public final class GiMinorVersionsListByParentMockTests {
     @Test
     public void testListByParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"version\":\"swbzuwfmdurage\",\"gridImageOcid\":\"zvcjfelisdjubggb\"},\"id\":\"gkxkbsazgakg\",\"name\":\"cyrcmjdmspo\",\"type\":\"apvu\"}]}";
+            = "{\"value\":[{\"properties\":{\"version\":\"bvqvwzkjopwbeo\",\"gridImageOcid\":\"lkwzdqybxceakxcp\"},\"id\":\"oqfyiaseqch\",\"name\":\"rttzrazisgykiu\",\"type\":\"mvanbwzo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +34,10 @@ public final class GiMinorVersionsListByParentMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GiMinorVersion> response = manager.giMinorVersions()
-            .listByParent("bcblemb", "kbwvqvxkdiv", ShapeFamily.EXADATA, "heb", com.azure.core.util.Context.NONE);
+            .listByParent("pyqy", "bxubmdna", ShapeFamily.EXADATA, "bqwremjela", "acigel", true,
+                GiMinorVersionSortOrder.DESC, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("swbzuwfmdurage", response.iterator().next().properties().version());
-        Assertions.assertEquals("zvcjfelisdjubggb", response.iterator().next().properties().gridImageOcid());
+        Assertions.assertEquals("bvqvwzkjopwbeo", response.iterator().next().properties().version());
+        Assertions.assertEquals("lkwzdqybxceakxcp", response.iterator().next().properties().gridImageOcid());
     }
 }

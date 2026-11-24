@@ -341,32 +341,6 @@ public final class ProjectProperties implements JsonSerializable<ProjectProperti
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (attributes() != null) {
-            attributes().forEach(e -> e.validate());
-        }
-        if (defaultEndpointSettings() != null) {
-            defaultEndpointSettings().validate();
-        }
-        if (branch() != null) {
-            branch().validate();
-        }
-        if (roles() != null) {
-            roles().forEach(e -> e.validate());
-        }
-        if (databases() != null) {
-            databases().forEach(e -> e.validate());
-        }
-        if (endpoints() != null) {
-            endpoints().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -108,7 +108,8 @@ public class AddressResolverTest {
         this.routingMapCollection1BeforeSplit =
             InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
                 rangesBeforeSplit1,
-                collection1.getResourceId());
+                collection1.getResourceId(),
+                "1");
 
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesAfterSplit1 =
             new ArrayList<>();
@@ -127,7 +128,7 @@ public class AddressResolverTest {
 
         addPartitionKeyRangeFunc.apply(rangesAfterSplit1);
 
-        this.routingMapCollection1AfterSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesAfterSplit1, collection1.getResourceId());
+        this.routingMapCollection1AfterSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesAfterSplit1, collection1.getResourceId(), "2");
 
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesBeforeSplit2 =
             new ArrayList<>();
@@ -141,7 +142,7 @@ public class AddressResolverTest {
         addPartitionKeyRangeFunc.apply(rangesBeforeSplit2);
 
 
-        this.routingMapCollection2BeforeSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesBeforeSplit2, collection2.getResourceId());
+        this.routingMapCollection2BeforeSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesBeforeSplit2, collection2.getResourceId(), "2");
 
         List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesAfterSplit2 =
             new ArrayList<>();
@@ -162,7 +163,7 @@ public class AddressResolverTest {
         addPartitionKeyRangeFunc.apply(rangesAfterSplit2);
 
 
-        this.routingMapCollection2AfterSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesAfterSplit2, collection2.getResourceId());
+        this.routingMapCollection2AfterSplit = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesAfterSplit2, collection2.getResourceId(), "2");
     }
 
     private void TestCacheRefreshWhileRouteByPartitionKey(

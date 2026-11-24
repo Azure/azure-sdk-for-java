@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.secretsstoreextension.generated;
 
 import com.azure.resourcemanager.secretsstoreextension.models.KubernetesSecretObjectMapping;
-import com.azure.resourcemanager.secretsstoreextension.models.KubernetesSecretType;
 import com.azure.resourcemanager.secretsstoreextension.models.SecretSync;
 import com.azure.resourcemanager.secretsstoreextension.models.SecretSyncUpdateProperties;
 import java.util.Arrays;
@@ -17,7 +16,7 @@ import java.util.Map;
  */
 public final class SecretSyncsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-21-preview/SecretSyncs_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-09-25-preview/SecretSyncs_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: SecretSyncs_Update.
@@ -35,7 +34,6 @@ public final class SecretSyncsUpdateSamples {
             .withProperties(new SecretSyncUpdateProperties().withSecretProviderClassName("fakeTokenPlaceholder")
                 .withServiceAccountName(
                     "fcldqfdfpktndlntuoxicsftelhefevovmlycflfwzckvamiqjnjugandqaqqeccsbzztfmmeunvhsafgerbcsdbnmsyqivygornebbkusuvphwghgouxvcbvmbydqjzoxextnyowsnyymadniwdrrxtogeveldpejixmsrzzfqkquaxdpzwvecevqwasxgxxchrfa")
-                .withKubernetesSecretType(KubernetesSecretType.OPAQUE)
                 .withForceSynchronization("arbitrarystring")
                 .withObjectSecretMapping(Arrays.asList(new KubernetesSecretObjectMapping().withSourcePath(
                     "ssrzmbvdiomkvzrdsyilwlfzicfydnbjwjsnohrppkukjddrunfslkrnexunuckmghixdssposvndpiqchpqrkjuqbapoisvqdvgstvdonsmlpsmticfvuhqlofpaxfdg")

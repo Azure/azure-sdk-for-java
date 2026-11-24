@@ -13,10 +13,10 @@ public final class UserListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"sovmyokacspkwl\",\"role\":\"root\"},{\"db\":\"dobpxjmflbvvn\",\"role\":\"root\"},{\"db\":\"rkcciwwzjuqk\",\"role\":\"root\"}]},\"id\":\"ajiwkuo\",\"name\":\"oskg\",\"type\":\"sauuimj\"},{\"properties\":{\"provisioningState\":\"Dropping\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"ugidyjrr\",\"role\":\"root\"},{\"db\":\"y\",\"role\":\"root\"},{\"db\":\"svexcsonpclhoco\",\"role\":\"root\"}]},\"id\":\"kevle\",\"name\":\"gz\",\"type\":\"buhfmvfaxkffeiit\"}],\"nextLink\":\"vmezy\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"pmopjmc\",\"role\":\"root\"},{\"db\":\"tuo\",\"role\":\"root\"}]},\"id\":\"fu\",\"name\":\"uaodsfcpk\",\"type\":\"xodpuozmyzydagfu\"},{\"properties\":{\"provisioningState\":\"InProgress\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"uokktwhrdxwz\",\"role\":\"root\"}]},\"id\":\"sm\",\"name\":\"surex\",\"type\":\"moryocfsfksym\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"iuxhqyudxorr\",\"role\":\"root\"}]},\"id\":\"poczvyifqrvkdvjs\",\"name\":\"lrmv\",\"type\":\"d\"},{\"properties\":{\"provisioningState\":\"Updating\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"pulexxbczw\",\"role\":\"root\"}]},\"id\":\"wiqzbqjvsovmyo\",\"name\":\"acspkwl\",\"type\":\"zdobpxjmflbvvnch\"}],\"nextLink\":\"cciw\"}")
             .toObject(UserListResult.class);
-        Assertions.assertEquals("sovmyokacspkwl", model.value().get(0).properties().roles().get(0).db());
+        Assertions.assertEquals("pmopjmc", model.value().get(0).properties().roles().get(0).db());
         Assertions.assertEquals(UserRole.ROOT, model.value().get(0).properties().roles().get(0).role());
-        Assertions.assertEquals("vmezy", model.nextLink());
+        Assertions.assertEquals("cciw", model.nextLink());
     }
 }

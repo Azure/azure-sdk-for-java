@@ -1,0 +1,744 @@
+# Release History
+
+## 2.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.10.0 (2026-11-12)
+
+### Features Added
+
+- Promoted voice-agent realtime WebSocket clients, session clients, persisted conversation clients, and core telephony
+  clients to GA. Build the clients directly through `AgentsClientBuilder`; use `allowPreview(true)` when
+  accessing capabilities that still require `Foundry-Features: VoiceAgents=V1Preview`.
+- Added preview native GPT Live voice-agent definitions, WebSocket clients, and persisted conversation clients through
+  `AgentsClientBuilder.beta().buildBetaVoiceAgentsLiveWebSocketClient()` and
+  `buildBetaVoiceAgentsLiveWebSocketAsyncClient()`, with corresponding conversation-client factories.
+  Live sessions support typed OpenAI `ClientEvent` sends and `ServerEvent` receives, raw JSON APIs, and Responses
+  delegation through OpenAI `ResponsesDelegationConfig`. Live WebSocket clients automatically send the required
+  preview header.
+- Added GPT Live samples for multi-turn text, interactive text and audio, microphone/speaker streaming, Responses
+  function tools, and persisted conversation history and audio. Persistence is opt-in through `FOUNDRY_GPT_LIVE_STORE`.
+- Added preview voice-agent post-call delivery to Event Grid and routines, and inline subagents with handoff policies
+  and runtime events.
+- Added voice-agent system tools for DTMF, SMS, input collection, language detection, and transfer routing.
+- Added preview SIP telephony bindings and telephony campaigns with recipient validation, scheduling, and long-running
+  create, cancel, and delete operations on `BetaVoiceAgentsTelephonyClient` and its asynchronous counterpart.
+- Added typed `RealtimeResponseInputItem` and `RealtimeResponseInputContent` factories for heterogeneous realtime
+  response inputs and user-message content.
+- Added skill optimization through `SkillOptimizationConfiguration`, skill references, validation and execution
+  results, and resolved candidate context. Trace-based optimization supports Application Insights connections,
+  fixed time windows, explicit trace IDs, and evaluator generation.
+- Added optimization candidate files, errors, and execution summaries, and `downloadOptimizationJobFile` on
+  `AgentsClient` and `AgentsAsyncClient`. Added skipped job and candidate statuses; optimization polling treats
+  skipped jobs as unsuccessful terminal results.
+- Added MCP toolbox request-header bindings.
+- Added request-level model-routing mode and model-pool selection, adaptive session affinity, and preview
+  required-parameter routing controls.
+
+### Breaking Changes
+
+- Removed `BetaAgentsClient` and `BetaAgentsAsyncClient`. Use `createAgentFromPrompt` and
+  `createAgentFromPromptWithResponse` on `AgentsClient` and `AgentsAsyncClient`.
+- Replaced `BetaVoiceAgentWebSocketClient`, `BetaVoiceAgentWebSocketAsyncClient`, and their session clients with
+  `VoiceAgentsWebSocketClient`, `VoiceAgentsWebSocketAsyncClient`, and the corresponding `VoiceAgentsWebSocketSession*`
+  types. Build realtime clients directly with `AgentsClientBuilder.buildVoiceAgentsWebSocketClient()` or
+  `buildVoiceAgentsWebSocketAsyncClient()` instead of `beta()`. The asynchronous session exposes `closeAsync()`
+  instead of the previous blocking `close()`.
+- Replaced `BetaVoiceAgentsConversationsClient` and its asynchronous counterpart with `VoiceAgentsConversationsClient`
+  and `VoiceAgentsConversationsAsyncClient`, built directly through `AgentsClientBuilder`.
+- Moved binding, call, call-job, and transfer operations from `BetaVoiceAgentsTelephonyClient` and its asynchronous
+  counterpart to `VoiceAgentsTelephonyClient` and `VoiceAgentsTelephonyAsyncClient`, built directly through
+  `AgentsClientBuilder`. The beta telephony clients now expose campaign operations.
+- Renamed `VoiceAgentWebSocketConnectionOptions.getTransport()` and `setTransport(...)` to
+  `getTransportType()` and `setTransportType(...)`.
+- Replaced the numeric/string token-limit accessors on voice and realtime models with `getMaxOutputTokens()` and
+  `setMaxOutputTokens(VoiceAgentMaxOutputTokens)`, where writable. Use `VoiceAgentMaxOutputTokens.of(count)` for a
+  numeric limit or `VoiceAgentMaxOutputTokens.MAXIMUM` for `"inf"`.
+- Replaced the per-variant tool-choice accessors on voice and realtime models with
+  `getToolChoice()` and `setToolChoice(VoiceAgentToolChoice)`, where writable. Use `VoiceAgentToolChoice.ofMode`,
+  `ofFunction`, or `ofMcp` to create a choice. `PromptAgentDefinition` is unchanged.
+- Changed `VoiceAgentResponseCreateOptions` input from `List<RealtimeConversationItem>` to
+  `List<RealtimeResponseInputItem>`.
+- Replaced local realtime transcription language and usage, session configuration, audio-format, turn-detection,
+  and MCP tool/error models with OpenAI Java types. Notable changes include `SessionUpdateEvent.Session`,
+  `RealtimeAudioFormats`, `RealtimeMcpListTools.Tool`, `RealtimeMcpToolCall.Error`, and the transcription event's
+  `getUsage()` union. Foundry-specific session and turn-detection models remain available.
+- Renamed session-created and session-updated event accessors from `getSessionAsVoiceAgentSessionResponseConfiguration()`
+  to `getSessionResponseConfiguration()` and removed their public constructors.
+- Renamed transcription getters from `getLogprobs()` to `getLogProbs()`, conversation-item `object` accessors to
+  `objectType`, and voice audio/recording `getBlobUri()` accessors to `getBlobUrl()`.
+- Removed unit suffixes from duration-typed voice and telephony accessors. Audio item `getStartOffsetMs()` is now
+  `getOffset()`. Transcription segment start/end values and server VAD prefix padding now use `Duration`.
+- Renamed `MemoryStoreDefaultOptions.getDefaultTtlSeconds()` and `setDefaultTtlSeconds(Duration)` to
+  `getDefaultTtl()` and `setDefaultTtl(Duration)`, and `RoutingTraceEntry.getLatencyMs()` to `getLatency()`.
+  Wire values remain in seconds and milliseconds, respectively.
+- Changed voice tool, greeting, interim-response, engine, error, and audio-timestamp type properties from strings to
+  typed enums. Recording channel roles now use `VoiceAudioRole`.
+- Changed `VoiceAgentSubagentConfiguration` to a polymorphic base. Use `VoiceAgentDelegateSubagentConfiguration` for
+  delegate subagents or the preview `VoiceAgentInlineSubagentConfiguration` for inline subagents.
+- Replaced telephony binding creation-input models with writable concrete binding models and
+  `CreateTelephonyCallJobInput` with `TelephonyCallJobCreate`. Call sources and call/transfer destinations now use
+  `TelephonyAddress` variants, and fixed-interval retries use `TelephonyFixedIntervalRetryPolicy`. Removed
+  `TelephonyCallJob.getObjectType()` and binding-status accessors/filtering; added allowed calling numbers to binding
+  updates.
+- Replaced `SessionAffinityRequestMode` and `SessionAffinityMode` with `SessionAffinityRequestStrategy` and
+  `SessionAffinityStrategy`. `SessionAffinityDetails.getMode()` is now `getStrategy()`; request `mode` accessors use
+  `SessionAffinityRequestStrategy`. Removed `SessionAffinitySource.CONVERSATION` and `PREVIOUS_RESPONSE_ID` and added
+  `DERIVED_FINGERPRINT`. The documented default affinity strategy is now adaptive rather than sticky.
+- Hosted-agent A2A passthrough requires `Foundry-Features: A2AAgents=V1Preview` when creating or modifying a definition
+  declaring the `a2a` protocol. `allowPreview(true)` adds the opt-in; `HostedAgentDefinition.getProtocolVersions()` and
+  `setProtocolVersions(...)` are now marked preview.
+
+### Bugs Fixed
+
+- Preserved exact numeric values when round-tripping agent structured input defaults and schemas, telephony
+  structured inputs, and response structured inputs through `BinaryData`.
+- Fixed OpenAI model JSON conversion to use an explicit Jackson serializer, preserving explicit nulls without
+  depending on the application's Azure JSON serializer provider.
+- Removed query values from WebSocket proxy-failure diagnostics to avoid logging structured inputs.
+
+### Other Changes
+
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
+- Updated `openai-java` from `4.69.0` to `4.99.0`.
+
+## 2.9.0 (2026-10-30)
+
+### Features Added
+
+- Added hosted-agent memory snapshot opt-in through `HostedAgentDefinition.setMemorySnapshotEnabled(...)` and
+  `isMemorySnapshotEnabled()`. Sessions for a snapshot-enabled agent version start from a snapshot of its initialized
+  process instead of starting the process from its image.
+- Added preview voice-agent soundscapes through `VoiceAgentDefinition.setSoundscape(...)`,
+  `VoiceAgentSoundscapeConfiguration`, and related track and built-in sound models. Soundscapes support background
+  ambience, delayed working audio while tools are pending, and opening, transfer, and closing cues. Rendering is
+  currently limited to telephony calls; persisted conversation recordings do not include the soundscape mix.
+- Added preview input-transcript profanity filtering through `VoiceAgentInputTranscription.setProfanityFilter(...)`
+  and `VoiceAgentProfanityFilterMode`, with `MASKED`, `REMOVED`, and `UNFILTERED` modes. Filtering is supported with
+  managed Azure Speech, including Custom Speech, and must be configured before the session starts.
+- Added `VoiceAgentInputTranscriptionModel.AZURE_SPEECH_STREAMING` for preview streaming Azure Speech transcription
+  in cascaded text-model conversations. It requires a nonempty language setting and supports Custom Speech,
+  phrase hints, and profanity filtering; it is not supported with realtime speech-to-speech models.
+- Added preview `VoiceAgentNoiseReductionType.AZURE_DEEP_NOISE_SUPPRESSION_HEADSET` and
+  `AZURE_PERSONAL_NOISE_SUPPRESSION` modes for local voice activity detection. These modes enhance detection audio
+  without changing the audio used for recognition.
+- Added preview `AgentEndpointProtocol.VOICE_CONVERSATION_ENGINE` for the hosted-agent text conversation protocol
+  used by Voice Live Bridge. Audio transport remains outside this protocol.
+
+### Breaking Changes
+
+- Updated the preview hosted voice conversation-engine contract: hosted agents referenced by
+  `VoiceHostedAgentConversationEngine` must declare `voice_conversation_engine` version `1.0.0`.
+  Declaring `invocations_ws` is optional and no longer substitutes for the dedicated voice conversation-engine protocol.
+
+### Bugs Fixed
+
+- Fixed cursor-based list operations that stopped after the first page, including memory-store, memory-item,
+  toolbox, and voice-agent listings. Paging now follows the service's `last_id` cursor and supports resuming from
+  a continuation token.
+- Fixed cursor-based paging to stop when the service returns `has_more: false`, even if the response still includes
+  a `last_id`, avoiding unnecessary requests after the final page.
+
+### Other Changes
+
+- Deprecated `BrowserAutomationPreviewTool`, `BrowserAutomationPreviewToolboxTool`, and the corresponding
+  `BROWSER_AUTOMATION_PREVIEW` tool-type values. Use `BrowserAutomationTool`, `BrowserAutomationToolboxTool`,
+  and the `BROWSER_AUTOMATION` values instead. See [Browser Automation documentation](https://aka.ms/bat/docs).
+- Regenerated the client from the updated Foundry TypeSpec specification.
+- Updated `azure-core` from `1.60.0` to `1.61.0` and `azure-core-http-netty` from `1.16.8` to `1.17.0`.
+- Updated Reactor Netty from `1.2.18` to `1.3.7` and Netty from `4.1.138.Final` to `4.2.19.Final`,
+  including the Netty codec module changes required by the newer runtime.
+
+## 2.8.0 (2026-10-19)
+
+### Features Added
+
+- Added experimental OpenTelemetry GenAI tracing and metrics for agent-version creation and Azure response operations,
+  including synchronous, asynchronous, streaming, and raw-response methods. Instrumentation emits `create_agent`,
+  `chat`, and `invoke_agent` spans, plus `gen_ai.client.operation.duration` and `gen_ai.client.token.usage` metrics.
+  Set `AZURE_EXPERIMENTAL_ENABLE_GENAI_TRACING=true` to enable it and configure tracing and metrics per client through
+  `AgentsClientBuilder.clientOptions(...)` using `TracingOptions` and `MetricsOptions`. Message content capture is
+  disabled by default; enable it with `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true`.
+  `AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED` remains supported as a fallback when the newer setting is unset.
+- Added tracing samples for custom OpenTelemetry configuration, console export, and Azure Monitor export.
+- Added preview Microsoft Copilot harness and built-in toolset support for prompt agents through
+  `MicrosoftCopilotHarness`, `MicrosoftCopilotToolsetPreview`, and related configuration types.
+  `AgentsClientBuilder.allowPreview(true)` and beta agent clients include the `MicrosoftCopilot=V1Preview` feature
+  opt-in. The legacy GitHub Copilot types remain available for compatibility.
+
+### Breaking Changes
+
+- Flattened the preview voice response models. Removed `VoiceResponseBase` and `VoiceAgentRealtimeResponseBase`;
+  use `VoiceResponse` and `VoiceAgentRealtimeResponse` directly. Response properties and typed token-limit accessors
+  are now declared on those concrete models.
+- Renamed `VoiceResponseBaseObject` to `VoiceResponseObjectType` and replaced `getObject()` with `getObjectType()`
+  on `VoiceResponse` and `VoiceAgentRealtimeResponse`. The JSON property remains `object`.
+- Renamed the preview Teams Phone binding models from `CreateTeamsPhoneExtensionTelephonyBindingInput`,
+  `TeamsPhoneExtensionTelephonyBinding`, and `TeamsPhoneExtensionTelephonyBindingListItem` to
+  `CreateTeamsPhoneExtensibilityTelephonyBindingInput`, `TeamsPhoneExtensibilityTelephonyBinding`, and
+  `TeamsPhoneExtensibilityTelephonyBindingListItem`, respectively.
+- Renamed `TelephonyProvider.TEAMS_PHONE_EXTENSION` and
+  `TelephonyCallLifecycleEventSource.TEAMS_PHONE_EXTENSION` to `TEAMS_PHONE_EXTENSIBILITY`.
+  Their serialized value changed from `teams_phone_extension` to `teams_phone_extensibility`.
+
+### Bugs Fixed
+
+- Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
+  including when resuming from a continuation token, instead of ignoring it.
+
+### Other Changes
+
+- Regenerated from the updated Foundry TypeSpec specification.
+- Updated `SessionConfiguration` documentation to reflect the service-supported maximum idle timeout of 14,400 seconds
+  (four hours); the default remains 900 seconds.
+
+## 2.7.0 (2026-10-06)
+
+### Features Added
+
+- Browser automation graduated to general availability. Added `BrowserAutomationTool` and
+  `BrowserAutomationToolboxTool` with the `browser_automation` discriminator, plus
+  `ToolboxToolType.BROWSER_AUTOMATION`. The existing `BrowserAutomationPreviewTool` and
+  `BrowserAutomationPreviewToolboxTool` remain available.
+- Added `estimateOptimizationJob`, `listOptimizationCandidates`, `getOptimizationCandidate`, and
+  `promoteOptimizationCandidate` to `AgentsClient` and `AgentsAsyncClient`, with corresponding protocol methods.
+  Estimates expose call-count and cost bands by stage; candidate listing supports pagination and optional mutation
+  expansion through `AgentOptimizationCandidateExpand`.
+- Added typed agent-optimization configuration for baseline instructions, models, skills, and OpenAI function tools;
+  model search spaces; evaluator initialization parameters; training and validation evaluation sets; and concurrent
+  agent-run limits. `AgentOptimizationConfiguration` supports agent optimization, while
+  `PromptOptimizationConfiguration` supports prompt optimization with steering-prompt context.
+- Added target-completion and user-conversation-simulation evaluation sets with inline or registered-dataset sources.
+  `UserConversationSimulationConfiguration` supports turn limits, conversation repetitions, audio effects, and user
+  interruption behavior. `EvaluationModelConfiguration` supports text and voice model selection and
+  `ModelSamplingParameters`, including a `Long` completion-token limit.
+- Added `FunctionTool.setAsync(...)` and `CustomToolParameter.setAsync(...)` to configure asynchronous tool execution.
+- Added `ImageGenToolModel` values for `gpt-image-2`, `gpt-image-2.5-sunburst`, and `gpt-image-2.5-flare`, including
+  their dated model versions.
+- Added `ApiError.getMisalignment()` to expose structured misalignment details using the OpenAI
+  `ErrorObject.Misalignment` model.
+- Added `VoiceAgentWebSocketConnectionOptions.setTransport(...)` and `getTransport()` to select
+  `VoiceAgentTransport.WEBSOCKET` (the default) or `VoiceAgentTransport.WEBRTC`. WebRTC mode uses the WebSocket for
+  signaling; the SDK does not implement a WebRTC peer connection or media transport.
+
+### Breaking Changes
+
+- Moved agent-optimization job operations from `BetaAgentsClient` / `BetaAgentsAsyncClient` to
+  `AgentsClient` / `AgentsAsyncClient`. Optimization no longer requires the `AgentsOptimization=V2Preview` header.
+  `BetaAgentsClient` and `BetaAgentsAsyncClient` retain preview agent-generation operations.
+- Replaced the no-argument `AgentOptimizationJob` constructor and `getInputs()` / `setInputs(...)` with
+  `AgentOptimizationJob(AgentOptimizationModelConfiguration, AgentOptimizationConfigurationBase)` and top-level
+  configuration properties. Use `setTargetConfiguration(...)` with
+  `AgentOptimizationFoundryAgentTargetConfiguration` to identify a registered Foundry agent.
+- Replaced the old optimization input hierarchy: `AgentOptimizationJobInputs`, `AgentOptimizationOptions`,
+  `OptimizedAgentIdentifier`, `AgentOptimizationDatasetInput`, `AgentOptimizationDatasetInputType`,
+  `AgentOptimizationInlineDatasetInput`, `AgentOptimizationReferenceDatasetInput`, `AgentOptimizationDatasetItem`,
+  `AgentOptimizationDatasetCriterion`, and `EvaluationLevel` were removed. Use the new optimization configuration,
+  evaluation-set, data-source, and test-case models instead.
+- Optimization job listing now returns `AgentOptimizationJob` instead of `AgentOptimizationJobListItem`.
+  `AgentOptimizationJobProgress` and `AgentOptimizationJob.getProgress()` were removed; use `getRunDuration()` and
+  the job result's candidate summary. `AgentOptimizationJobResult.getBaseline()`, `getBest()`, and `getCandidates()`
+  were replaced by `getCandidateSummary()`, with separate token-usage, latency, and termination-reason accessors.
+  Retrieve candidates through `listOptimizationCandidates(...)`.
+- `AgentOptimizationCandidate` now exposes typed output and nested evaluation details instead of top-level mutations,
+  scores, token averages, and evaluation IDs. Use `getOutput()` and `getEvaluation()`. `PromotionInfo` was replaced by
+  `AgentOptimizationCandidatePromotionInfo`, which exposes the promoted agent through an `AgentReference`.
+- `RealtimeSessionUpdateEvent` now has a single constructor accepting `RealtimeSessionConfigurationBase` and a public
+  `getSession()` accessor. The constructors accepting `RealtimeSessionConfiguration` or
+  `RealtimeTranscriptionSessionConfiguration` and their corresponding `getSessionAs...()` accessors were removed.
+  Pass either concrete session subtype to the new constructor and inspect the subtype returned by `getSession()`.
+- Changed the constructors of `MemoryItem` and `MemoryStoreDefinition` from public to protected. Construct their
+  concrete subtypes instead; deserialization of unknown discriminator values remains supported.
+- Removed the unused public `VoiceAgentFunctionToolType` enum.
+
+### Bugs Fixed
+
+- Fixed OpenAI clients built from `AgentsClientBuilder` to acquire bearer tokens through the Azure HTTP pipeline.
+  Asynchronous clients now use asynchronous token acquisition instead of calling `TokenCredential.getTokenSync(...)`;
+  synchronous clients continue to use synchronous token acquisition.
+
+### Other Changes
+
+- Added agent-endpoint configuration samples and optimization samples covering estimates, candidate inspection and
+  promotion, job management, cancellation, and advanced synchronous and asynchronous polling.
+- Updated conversation, tool, and hosted-agent samples, including agent-endpoint routing, asynchronous response
+  handling, session-log streaming, file-search uploads, and OpenAPI project-connection authentication.
+- Regenerated the client from the updated TypeSpec specification.
+
+#### Dependency Updates
+
+- Updated `openai-java` from `4.45.0` to `4.69.0`.
+- Upgraded Netty dependencies from `4.1.137.Final` to `4.1.138.Final`.
+
+## 2.6.0 (2026-09-22)
+
+### Features Added
+
+- Added preview voice-agent lifecycle support through `VoiceAgentDefinition`, `AgentKind.VOICE`, and
+  `AgentEndpointProtocol.VOICE`. With `AgentsClientBuilder.allowPreview(true)`, voice agents can be created and versioned
+  with `AgentsClient` and `AgentsAsyncClient`, with configuration for speech models, instructions, structured inputs,
+  audio and transcription, turn detection, greetings and interim responses, function/MCP/toolbox/system tools,
+  subagents, persistence, avatars, and animation.
+- Added `createAgentFromPrompt` and `createAgentFromPromptWithResponse` to `BetaAgentsClient` and
+  `BetaAgentsAsyncClient` for generating and creating agents from kind-specific high-level inputs.
+- Added preview `BetaVoiceAgentsWebSocketClient`, `BetaVoiceAgentsWebSocketAsyncClient`,
+  `BetaVoiceAgentsWebSocketSessionClient`, and `BetaVoiceAgentsWebSocketSessionAsyncClient` for authenticated realtime
+  `wss://` sessions. The clients support typed and raw events, text and audio input, response cancellation,
+  client-executed function results, persisted conversations, agent-version overrides, and the related realtime session,
+  conversation-item, response, transcription, MCP, audio, avatar, and RTC event models.
+- Added `VoiceAgentWebSocketConnectionOptions` for session IDs, structured inputs, persistence, version selection,
+  handshake and close timeouts, receive-buffer and message-size limits (32 MiB by default), overflow policies, and
+  opt-in recovery from malformed events. Sessions also support raw JSON sends, complete unknown-event payloads,
+  UTF-8 binary JSON, per-event synchronous receive timeouts, and custom close codes and reasons.
+- Added type-safe constructors and accessors for union-valued voice and realtime properties, including session
+  configurations, tool choices, token limits, tracing, truncation, voices, MCP options, and transcription usage.
+- Added preview `BetaVoiceAgentsConversationsClient` and `BetaVoiceAgentsConversationsAsyncClient` for listing,
+  retrieving, and deleting persisted voice-agent conversations; reading responses and conversation items; and retrieving
+  or downloading input, generated, and full-conversation audio.
+- Added preview `BetaVoiceAgentsTelephonyClient` and `BetaVoiceAgentsTelephonyAsyncClient` for Teams Phone Extension and
+  Twilio bindings, call listing and inspection, call transfer and termination, transfer-target management, and scheduled
+  outbound call jobs with retry and cancellation support. All voice beta clients are built through
+  `AgentsClientBuilder.beta()` and automatically add the `VoiceAgents=V1Preview` feature opt-in.
+- Added preview GitHub Copilot harness and built-in toolset support for prompt agents through
+  `PromptAgentDefinition.setHarness(...)`, `GitHubCopilotHarness`, `GitHubCopilotToolsetPreview`, and related types.
+  Prompt agents can also reference versioned Foundry skills through `PromptAgentDefinition.setSkills(...)` and
+  `SkillReference`.
+- Added preview Model Router session affinity. `AzureCreateResponseOptions.setRoutingConfig(...)` configures affinity
+  mode and session ID, while `ModelRouterDetails.getSessionAffinity()` exposes the effective mode, source, and routing
+  decision.
+- Added invocation-protocol content moderation through `RaiConfig.setInvocationsModeration(...)`, with JSON/text input
+  and output selectors plus SSE event selectors for streaming responses.
+- Added `invokeLatestToolboxMcp` and `invokeLatestToolboxMcpWithResponse` to `ToolboxesClient` and
+  `ToolboxesAsyncClient`. `ToolboxDetails` now exposes its last-updated time and latest-version details through
+  `getUpdatedAt()` and `getVersions()`.
+- Added `AgentDetails.getConfigurationState()` to expose an agent's administrative enablement state and
+  `AgentSessionResource.getStoppedAt()` to expose when a hosted-agent session last stopped or became idle.
+- Added `ToolType.GITHUB_COPILOT_TOOLSET_PREVIEW` and `ToolType.BROWSER_AUTOMATION` discriminator values, along with
+  typed MCP list-tools models for voice-agent realtime sessions.
+- Added `VersionSelector.setVersionSelectionRule(...)` as a convenience for configuring one version-selection rule.
+- Added public `StreamingResponseUtils` in `com.azure.ai.agents.util` for converting OpenAI streaming responses to Azure
+  SDK `IterableStream` and Reactor `Flux` types.
+- Added voice-agent samples covering lifecycle and version management, guided generation, audio and tool configuration,
+  persisted conversations and audio, synchronous and asynchronous live text, asynchronous Java Sound audio with
+  barge-in, and client-executed function tools.
+
+### Bugs Fixed
+
+- Fixed serialization of openai-java `Reasoning` values in `PromptAgentDefinition` so retrieved definitions can be
+  reused to create new agent versions without emitting unsupported request properties.
+- Fixed polling for agent-optimization jobs that return the `cancelled` status spelling.
+
+### Other Changes
+
+- Updated existing response, streaming, and tool samples to configure agent endpoints and route requests through
+  `buildAgentScopedOpenAIClient(...)` or `buildAgentScopedOpenAIAsyncClient(...)`.
+- Added Reactor Netty, Netty, OkHttp, and Okio runtime dependencies for voice-agent WebSocket transport support.
+- Regenerated the client from the updated TypeSpec specification.
+
+## 2.5.0 (2026-09-09)
+
+### Features Added
+
+- Added Microsoft 365 agent publishing. `AgentsClient` / `AgentsAsyncClient` gained `publishAgentToMicrosoft365`,
+  `getMicrosoft365AppPackage`, and `getMicrosoft365PublishDefaults` (plus `WithResponse` methods), backed by new
+  `PublishAgentToMicrosoft365Options`, `GetMicrosoft365AppPackageOptions`, `Microsoft365PublishResult`,
+  `Microsoft365PublishDefaults`, `Microsoft365PublishScope`, and `Microsoft365PermissionScopes` models.
+  `AgentEndpointConfig.getPublishApprovalStatus()` exposes the Microsoft 365 store review status through the new
+  `PublishApprovalStatus` enum.
+- Added the `CreateAgentVersionOptions` model for configuring agent-version metadata, description, blueprint reference,
+  digital-worker type, and draft status.
+- Added preview support for Microsoft 365 digital workers (formerly "autopilot") through `DigitalWorkerType`,
+  `AgentDetails.getDigitalWorkerType()`, `CreateAgentVersionInput.setDigitalWorkerType(...)`, and the
+  `publishAsAutopilot` option on the Microsoft 365 publish and app-package options.
+- Added activity-protocol access boundaries through `ActivityProtocolAccessBoundary`,
+  `ActivityProtocolConfiguration.getAccessBoundaries()`, and the Microsoft 365 publish and app-package options. These
+  boundaries scope developer, manager, allowlisted-user, and tenant access to one-on-one and group conversations.
+- Added preview Model Router details through `AzureCreateResponseDetails.getModelSelectionDetails()` and the new
+  `ModelSelectionDetails`, `ModelRouterDetails`, `ModelRouterMode`, `RoutingTraceEntry`, `ModelRouterAttempt`,
+  `ModelRouterAttemptResult`, and `ModelRouterAttemptError` models.
+- Added `WebIqPreviewTool` and `WebIqPreviewToolboxTool` for connecting an agent to a WebIQ MCP server.
+- Added `ShellToolboxTool` for running shell commands in an automatically provisioned or existing container, with
+  environment and network configuration provided by `ToolboxShellEnvironment`,
+  `ToolboxShellContainerAutoEnvironment`, `ToolboxShellContainerReferenceEnvironment`, and
+  `ToolboxShellNetworkPolicy`.
+- Added `WebSearchTool.setExternalWebAccess(...)` and `WebSearchToolboxTool.setExternalWebAccess(...)` to control
+  whether web search can fetch live external content.
+- Added hosted-agent session defaults through `SessionConfiguration` and
+  `HostedAgentDefinition.setSessionConfiguration(...)`, including configuration of the session idle timeout.
+
+### Breaking Changes
+
+- Updated preview agent-optimization APIs:
+  - Renamed `AgentOptimizationEvaluatorRef` to `AgentOptimizationEvaluatorReference`; the
+    `AgentOptimizationJobInputs` constructor and `getEvaluators()` now use the renamed type.
+  - Renamed `AgentOptimizationDatasetItem.getDesiredNumTurns()` / `setDesiredNumTurns(...)` to
+    `getDesiredNumberTurns()` / `setDesiredNumberTurns(...)`.
+  - Replaced `AgentOptimizationJobProgress.getElapsedSeconds()`, which returned `double`, with `getElapsed()`, which
+    returns `java.time.Duration`.
+
+### Other Changes
+
+- Updated the OpenAI TypeSpec model dependency to 1.26.0.
+- Added sync and async conversation samples demonstrating the `x-ms-user-identity` header with the OpenAI ConversationService.
+- Added sync and async samples for draft agent versions, reminder toolbox tools, hosted-agent enable/disable,
+  advanced memory-store workflows, and agent optimization.
+- Added a sample demonstrating a prompt agent invoking `ShellToolboxTool` through a toolbox's versioned MCP endpoint.
+- Fixed basic agent and conversation samples by removing an obsolete preview service-version override, using a valid
+  hyphenated agent name consistently, and serializing conversation metadata timestamps as strings.
+- Improved the Fabric IQ sync and async samples with configurable agent names, readable response and annotation
+  output, and reliable asynchronous cleanup.
+
+## 2.4.0 (2026-08-19)
+
+### Features Added
+
+- Agent-to-agent (A2A) tool graduated to general availability. Added `A2ATool` and `A2AToolboxTool` with `A2AProtocolVersion` (values include `V1_0`), plus `ToolType.A2A` and `ToolboxToolType.A2A` discriminator values. The preview `A2APreviewTool` / `A2APreviewToolboxTool` (`a2a_preview`) are retained alongside for backward compatibility.
+- Added `AgentDetails.getStateSource()` and the new `AgentStateSource` enum (`AGENT_INSTANCE_IDENTITY`, `AGENT_BLUEPRINT`) to expose where an agent's operational state is derived from (agent instance identity or agent blueprint).
+- Added `ContainerConfiguration.setRegistryConnectionId(...)` / `getRegistryConnectionId()` for supplying the Foundry project connection that holds the credentials for a private container registry hosting the hosted-agent image. `ContainerConfiguration` is now `@Fluent` instead of `@Immutable`.
+- Added `AgentOptimizationJob.setInputs(...)` and `AgentOptimizationJob.getWarnings()` to configure inputs directly and to read non-fatal warnings emitted during preview optimization.
+- Added `AgentDefinitionOptInKeys.VOICE_AGENTS_V1_PREVIEW` (`VoiceAgents=V1Preview`) opt-in flag.
+
+### Breaking Changes
+
+- Preview agent-optimization models were renamed to include the `Agent` prefix, and `BetaAgentsClient` / `BetaAgentsAsyncClient` methods (`getOptimizationJob`, `listOptimizationJobs`, `cancelOptimizationJob`, `beginCreateOptimizationJob`, and their async counterparts) now use the renamed types. Notable renames:
+  - `OptimizationJob` → `AgentOptimizationJob`
+  - `OptimizationJobInputs` → `AgentOptimizationJobInputs`
+  - `OptimizationJobListItem` → `AgentOptimizationJobListItem`
+  - `OptimizationJobProgress` → `AgentOptimizationJobProgress`
+  - `OptimizationJobResult` → `AgentOptimizationJobResult`
+  - `OptimizationOptions` → `AgentOptimizationOptions`
+  - `OptimizationCandidate` → `AgentOptimizationCandidate`
+  - `OptimizationDatasetInput` / `OptimizationInlineDatasetInput` / `OptimizationReferenceDatasetInput` / `OptimizationDatasetItem` / `OptimizationDatasetCriterion` / `OptimizationDatasetInputType` → their `AgentOptimization*` counterparts
+  - `OptimizationEvaluatorRef` → `AgentOptimizationEvaluatorRef`
+  - `OptimizationAgentIdentifier` → `OptimizedAgentIdentifier`
+
+### Other Changes
+
+- `WorkflowAgentDefinition` documentation was updated to note that Microsoft Foundry is retiring workflows on December 1, 2026, with a link to the workflow migration guide.
+- Regenerated client from the updated TypeSpec specification.
+
+## 2.3.0 (2026-08-06)
+
+### Features Added
+
+- Added `AzureUserSecurityContext` and `AzureCreateResponseOptions.setUserSecurityContext(...)` for supplying application and end-user context to Microsoft Defender for Cloud when creating an Azure response. See [Protecting AI applications](https://aka.ms/TP4AI/Documentation/EndUserContext) for details.
+- Added `AgentIdentityStatus` (values `ACTIVE` and `DISABLED`) and `AgentIdentity.getStatus()` to expose the status of an agent's instance identity or blueprint identity.
+- Added an `allowedCallers` property to many tool models, backed by the new `CallableToolAllowedCaller` enum (`DIRECT`, `PROGRAMMATIC`), so callers can restrict how a tool may be invoked. Supported types include `ApplyPatchToolParameter`, `CodeInterpreterTool`, `CodeInterpreterToolboxTool`, `CustomToolParameter`, `FunctionShellToolParameter`, `FunctionTool`, `McpTool`, and `McpToolboxTool`.
+- Added programmatic tool calling support: new `ProgrammaticToolCallingParameter` tool and `ToolType.PROGRAMMATIC_TOOL_CALLING` value.
+- Toolbox Search graduated to general availability. Added `ToolSearchToolboxTool` and `ToolboxToolType.TOOLBOX_SEARCH` for the GA tool; the preview `ToolboxSearchPreviewToolboxTool` (`toolbox_search_preview`) is retained alongside for backward compatibility.
+- Added `McpTool.setTunnelId(...)` / `getTunnelId()` and the same on `McpToolboxTool` to route MCP calls through a Secure MCP Tunnel as an alternative to `serverUrl` or `connectorId`.
+- Added `FunctionTool.setOutputSchema(...)` / `getOutputSchema()` for declaring the JSON schema of a function tool's return payload.
+- Added `OptimizationOptions.setMaxStalls(...)` / `getMaxStalls()` for configuring early-stop behavior of preview agent-optimization jobs.
+- Added `ResponseUsageInputTokensDetails.getCacheWriteTokens()` to expose the number of tokens written to the prompt cache in a response.
+
+### Breaking Changes
+
+- `BetaAgentsClient.createOptimizationJob(OptimizationJob)` and `createOptimizationJob(OptimizationJob, String)` were replaced by long-running operations `beginCreateOptimizationJob(OptimizationJob)` and `beginCreateOptimizationJob(OptimizationJob, String)`, which return `SyncPoller<OptimizationJob, OptimizationJobResult>` instead of `OptimizationJob`. The corresponding `BetaAgentsAsyncClient` methods now return `PollerFlux<OptimizationJob, OptimizationJobResult>`. The protocol method was likewise replaced by `beginCreateOptimizationJob(BinaryData, RequestOptions)` returning `SyncPoller<BinaryData, BinaryData>` / `PollerFlux<BinaryData, BinaryData>`.
+- `ResponseUsageInputTokensDetails` now also carries a `cacheWriteTokens` field. Deserialized instances continue to work, but any code depending on the previous single-field structure should be updated to read the new value.
+
+### Other Changes
+
+- Refined preview annotations. `AgentDefinition` and `CreateAgentVersionInput` are no longer marked `@Beta` at the class level; instead the preview-only fields (for example, `CreateAgentVersionInput.getDefinition()` and `CreateAgentVersionInput.isDraft()`) are individually annotated. Additional preview tool classes such as `A2APreviewTool`, `BingCustomSearchPreviewTool`, `BrowserAutomationPreviewTool`, `FabricIqPreviewTool`, `MemorySearchPreviewTool`, `MicrosoftFabricPreviewTool`, `SharepointPreviewTool`, `WorkIqPreviewTool`, and their toolbox counterparts are now marked `@Beta` so preview surface area is explicit in generated API docs.
+- Reworked internal LRO polling-strategy customizations so that both `BetaMemoryStoresClient` and `BetaAgentsClient` long-running operations inherit the per-client `Foundry-Features` value from the builder pipeline instead of a hardcoded polling-only header. This lets each Beta sub-client's poll GETs carry the same preview opt-ins as its initial request.
+- Regenerated client from the updated TypeSpec specification.
+- Updated version of `openai` client library to `4.45.0`.
+
+## 2.2.0 (2026-07-01)
+
+### Features Added
+
+- Added convenience methods on `AgentsClient` and `AgentsAsyncClient` to read and write hosted-agent files directly from and to disk using a `String` file path. `downloadAgentCode`, `downloadAgentCodeWithResponse`, and `downloadSessionFileWithResponse` write the downloaded content to the supplied path and accept an optional `overwrite` flag; when the flag is omitted the operation fails if a file already exists at the destination. `uploadSessionFileWithResponse` and the new `CodeFileDetails(String)` constructor read the upload content from a `String` file path.
+- Added a flattened convenience overload `createAgentVersionFromCode(String, HostedAgentDefinition, CodeFileDetails, String, Map)` on `AgentsClient` and `AgentsAsyncClient`. It accepts the hosted-agent definition, code zip, description, and metadata directly instead of a nested `CreateAgentVersionFromCodeContent`, and computes the required `x-ms-code-zip-sha256` value from the code automatically.
+- Added `deleteMemory(String, String)` to `BetaMemoryStoresClient` and `BetaMemoryStoresAsyncClient` for deleting an individual memory item from a memory store.
+- Added `ToolboxesClient` and `ToolboxesAsyncClient` have been moved from `beta` to GA.
+- Added a toolbox-specific tool model hierarchy for toolbox versions, including `ToolboxTool`, `ToolboxToolType`, and related `*ToolboxTool` classes such as `CodeInterpreterToolboxTool`, `OpenApiToolboxTool`, and `ToolboxSearchPreviewToolboxTool`.
+- Added support for additional agent tool types, including `NamespaceTool`, `ToolSearchTool`, and `ReminderPreviewTool`.
+- Updated preview agent optimization support to the V2 preview contract on `BetaAgentsClient` and `BetaAgentsAsyncClient`.
+
+### Breaking Changes
+
+- Memory store preview clients now use beta-prefixed names built through `AgentsClientBuilder.beta()`: `MemoryStoresClient` / `MemoryStoresAsyncClient` renamed to `BetaMemoryStoresClient` / `BetaMemoryStoresAsyncClient`.
+- `BetaToolboxesClient` / `BetaToolboxesAsyncClient` renamed to `ToolboxesClient` / `ToolboxesAsyncClient` and are now built directly with `AgentsClientBuilder.buildToolboxesClient()` / `buildToolboxesAsyncClient()`. The beta-builder methods for toolboxes were removed.
+- Toolbox version APIs now use `ToolboxTool` models instead of agent `Tool` models; for example, `ToolboxSearchPreviewTool` was replaced by `ToolboxSearchPreviewToolboxTool`.
+- Agent optimization APIs were updated to the V2 preview contract and moved to `BetaAgentsClient` / `BetaAgentsAsyncClient`. `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW` renamed to `AGENTS_OPTIMIZATION_V2_PREVIEW`, and candidate-specific APIs and models such as `CandidateDeployConfig`, `CandidateFileInfo`, `CandidateMetadata`, `CandidateResults`, `PromoteCandidateInput`, and `PromoteCandidateResult` were removed or folded into the updated optimization job models.
+- Hosted-agent session and code-package APIs were simplified by removing `AgentDefinitionOptInKeys` parameters. `AgentSessionFilesClient` / `AgentSessionFilesAsyncClient` were removed; use the session-file methods on `AgentsClient` / `AgentsAsyncClient` instead.
+- Tool and protocol models were aligned with the latest service contract. Notable renames include `NamespaceToolParam` → `NamespaceTool`, `ToolSearchToolParam` → `ToolSearchTool`, `AgentIdentifier` → `OptimizationAgentIdentifier`, and `DatasetRef` → `OptimizationEvaluatorRef`; `AgentProtocol` and `IsolationKeySource` were removed.
+
+### Bugs Fixed
+
+- Fixed the agent-scoped OpenAI client returned by `AgentsClientBuilder.buildAgentScopedOpenAIClient` and `buildAgentScopedOpenAIAsyncClient` so requests to a hosted-agent endpoint target the correct URL. Previously the request path was duplicated (`.../protocols/openai/openai/responses`) and used an unsupported default `api-version`, causing `400` errors when invoking the OpenAI Responses API or streaming session logs through an agent endpoint. The client now uses the unified Azure URL path mode and sends `api-version=v1`.
+- Fixed OpenAI and Responses clients built from `AgentsClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
+
+### Other Changes
+
+- Added samples demonstrating external agent CRUD (`ExternalAgentSample` / `ExternalAgentAsyncSample`) and memory store item CRUD (`MemoryStoreItemsSample` / `MemoryStoreItemsAsyncSample`).
+- Marked preview clients, models, and methods with `@Beta` annotations so preview surface area is explicit in generated API docs.
+
+## 2.1.0 (2026-06-01)
+
+### Features Added
+
+- Added protocol-style methods on `ResponsesClient` and `ResponsesAsyncClient` that accept a raw JSON request body (`BinaryData`) and a `com.openai.core.RequestOptions`, and return the openai-java raw HTTP response. These mirror the existing `createAzureResponse` and `createStreamingAzureResponse` typed surface: `createResponseWithResponse` (returns `HttpResponseFor<Response>`) and `createResponseStreamWithResponse` (returns `HttpResponseFor<StreamResponse<ResponseStreamEvent>>`). They delegate to the underlying openai-java `ResponseService.withRawResponse()` surface and continue to flow through the Azure HTTP pipeline.
+- Added preview support for external agents via `ExternalAgentDefinition`, `AgentKind.EXTERNAL`, and `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW`.
+- Added preview code-based hosted agent operations on `AgentsClient` and `AgentsAsyncClient`, including `createAgentVersionFromCode`, `updateAgentFromCode`, and `downloadAgentCode`, plus related code package models such as `CreateAgentVersionFromCodeContent`, `CodeFileDetails`, and `CodeDependencyResolution`. `CodeConfiguration` now exposes the service-computed code package hash via `getContentSha256()`.
+- Added preview agent optimization job and candidate management operations on `AgentsClient` and `AgentsAsyncClient`, including creating, listing, retrieving, canceling, and deleting optimization jobs, listing and inspecting candidates, downloading candidate files, and promoting candidates.
+- Added `stopSession` and `stopSessionWithResponse` to stop hosted-agent sessions.
+- Added `force` query parameter support for hosted-agent `deleteAgentWithResponse` and `deleteAgentVersionWithResponse` requests through `RequestOptions`, allowing active sessions to be cascade-deleted.
+- Added individual memory item operations to `MemoryStoresClient` and `MemoryStoresAsyncClient`: `createMemory`, `updateMemory`, `listMemories`, `getMemory`, and `deleteMemory`, with new `ListMemoriesOptions`, `DeleteMemoryResponse`, and `MemoryItemKind.PROCEDURAL` support.
+- Added new preview tools `FabricIqPreviewTool` and `ToolboxSearchPreviewTool`, plus related tool call/output models for Azure tools.
+- Added optional per-tool configuration via `ToolConfig` and `toolConfigs` accessors on supported tool classes.
+- Added `getComparisonFilter()` and `getCompoundFilter()` convenience getters on `FileSearchTool` for retrieving OpenAI filter types.
+- Added new feature-flag values, including `AgentDefinitionOptInKeys.CODE_AGENTS_V1_PREVIEW`, `AgentDefinitionOptInKeys.EXTERNAL_AGENTS_V1_PREVIEW`, and `FoundryFeaturesOptInKeys.AGENTS_OPTIMIZATION_V1_PREVIEW`.
+- Added hosted-agent, Fabric IQ, Toolbox Search, and async toolbox samples.
+
+### Breaking Changes
+
+- `AgentEndpoint` renamed to `AgentEndpointConfig`.
+- Session file listing methods on `AgentSessionFilesClient` and `AgentSessionFilesAsyncClient` were renamed from `getSessionFiles` to `listSessionFiles` and now return paged `SessionDirectoryEntry` results. `SessionDirectoryListResponse` was removed.
+- Hosted-agent session methods no longer take a required `isolationKey` argument. Use overloads that accept the optional `userIsolationKey` value, or set the `x-ms-user-isolation-key` header through `RequestOptions`.
+- `AgentDefinitionOptInKeys.CONTAINER_AGENTS_V1_PREVIEW` was removed. Use the applicable hosted-agent, code-agent, agent-endpoint, workflow-agent, or external-agent opt-in key instead.
+- `HostedAgentDefinition` no longer exposes top-level `image` or `containerProtocolVersions` accessors. Use `ContainerConfiguration` for container images and `protocolVersions` for ingress protocol configuration.
+- `CodeConfiguration` constructor now requires `CodeDependencyResolution` in addition to runtime and entry point.
+- `WorkIqPreviewTool` now takes the Work IQ project connection ID directly. `WorkIQPreviewToolParameters` was removed.
+
+### Other Changes
+
+- Enabled `ResponsesTests` and `ResponsesAsyncTests` (previously `@Disabled`) with create/retrieve/delete/input-items and background-cancel coverage for the typed (`ResponseService` / `ResponseServiceAsync`) surface, plus coverage for the new protocol-method surface. Recordings published to `Azure/azure-sdk-assets` and referenced from `assets.json`.
+- Re-enabled `SessionLogSyncTest` and `SessionLogAsyncTest`; both tests are recordable via `@RecordWithoutRequestBody` and run live against the configured Foundry project.
+- Regenerated client from the updated TypeSpec specification.
+
+## 2.1.0-beta.1 (2026-05-12)
+
+### Features Added
+
+- Added new `ToolboxesClient` and `ToolboxesAsyncClient` sub-clients (preview, opt-in via `FoundryFeaturesOptInKeys.TOOLBOXES_V1_PREVIEW`) for managing toolboxes and toolbox versions, with operations including `createToolboxVersion`, `getToolbox`, `getToolboxVersion`, `listToolboxes`, `listToolboxVersions`, `updateToolbox`, `deleteToolbox`, and `deleteToolboxVersion`. New `buildToolboxesClient()` and `buildToolboxesAsyncClient()` methods on `AgentsClientBuilder`.
+- Added new `AgentSessionFilesClient` and `AgentSessionFilesAsyncClient` sub-clients for working with files in an agent session, with `uploadSessionFile`, `downloadSessionFile`, `getSessionFiles`, and `deleteSessionFile`. New `buildAgentSessionFilesClient()` and `buildAgentSessionFilesAsyncClient()` methods on `AgentsClientBuilder`.
+- Added `buildAgentScopedOpenAIClient(String agentName)` and `buildAgentScopedOpenAIAsyncClient(String agentName)` to `AgentsClientBuilder` for constructing OpenAI clients targeting a specific agent's endpoint (base URL `{endpoint}/agents/{agentName}/endpoint/protocols/openai`). The default `buildOpenAIClient()` / `buildOpenAIAsyncClient()` continue to target `{endpoint}/openai/v1`.
+- Added agent-session operations to `AgentsClient` and `AgentsAsyncClient`: `createSession`, `getSession`, `deleteSession`, `listSessions`, and `getSessionLogStreamWithResponse`. Added typed session log streaming convenience methods: `AgentsClient.getSessionLogStream(...)`, and `AgentsAsyncClient.getSessionLogStream(...)`, returning `SessionLogEvent`. New related models: `AgentSessionResource`, `AgentSessionStatus`, `SessionDirectoryEntry`, `SessionDirectoryListResponse`, `SessionFileWriteResult`, `SessionLogEvent`, `SessionLogEventType`, `IsolationKeySource` (with `Kind`), `EntraIsolationKeySource`, and `HeaderIsolationKeySource`.
+- Added `updateAgentDetails(String, UpdateAgentDetailsPatchRequest, ...)` and `updateAgentDetailsWithResponse` on `AgentsClient`/`AgentsAsyncClient` for patching agent details, plus new `UpdateAgentDetailsPatchRequest` model.
+- Added new agent-endpoint and identity model types for hosted agents: `AgentEndpoint`, `AgentEndpointProtocol`, `AgentEndpointAuthorizationScheme` (with `Type`), `EntraAuthorizationScheme`, `BotServiceAuthorizationScheme`, `BotServiceRbacAuthorizationScheme`, `AgentIdentity`, `AgentBlueprintReference` (with `Type`), `ManagedAgentIdentityBlueprintReference`, `AgentCard`, and `AgentCardSkill`. `AgentDetails` now exposes `getAgentEndpoint`, `getInstanceIdentity`, `getBlueprint`, `getBlueprintReference`, and `getAgentCard`. `AgentVersionDetails` now exposes `getInstanceIdentity`, `getBlueprint`, `getBlueprintReference`, and `getAgentGuid`.
+- Added agent-versioning model types: `VersionIndicator` (with `Type`), `VersionRefIndicator`, `VersionSelector` (with `Type`), `VersionSelectionRule`, `FixedRatioVersionSelectionRule`, and `CreateAgentVersionInput`.
+- `HostedAgentDefinition` now supports both container-based and code-based deployments: added `ContainerConfiguration` and `CodeConfiguration` model types, with new `getContainerConfiguration`/`setContainerConfiguration`, `getCodeConfiguration`/`setCodeConfiguration`, `getProtocolVersions`/`setProtocolVersions`, and `setContainerProtocolVersions` accessors. Container vs. code configuration is mutually exclusive (validated server-side).
+- Added new preview tool `WorkIqPreviewTool` (and parameters `WorkIQPreviewToolParameters`) with discriminator value `work_iq_preview`. Added `ToolType.WORK_IQ_PREVIEW`.
+- Added optional `name` and `description` properties (with getters and setters) to `CodeInterpreterTool`, `CaptureStructuredOutputsTool`, `FileSearchTool`, `ImageGenTool`, `WebSearchTool`, and `WorkIqPreviewTool` for user-defined tool labels.
+- Added new feature-flag values to `FoundryFeaturesOptInKeys`: `TOOLBOXES_V1_PREVIEW` (`Toolboxes=V1Preview`) and `SKILLS_V1_PREVIEW` (`Skills=V1Preview`).
+- Added new feature-flag values to `AgentDefinitionOptInKeys`: `CONTAINER_AGENTS_V1_PREVIEW` (`ContainerAgents=V1Preview`) and `AGENT_ENDPOINT_V1_PREVIEW` (`AgentEndpoints=V1Preview`).
+- Added new toolbox samples under `com.azure.ai.agents.toolboxes`: `CreateToolboxVersion`, `GetToolbox`, `GetToolboxVersion`, `ListToolboxes`, `ListToolboxVersions`, `UpdateToolbox`, `DeleteToolbox`, and `DeleteToolboxVersion`.
+
+### Breaking Changes
+
+- `HostedAgentDefinition`'s canonical (`@Generated`) constructor changed from `HostedAgentDefinition(List<ProtocolVersionRecord> containerProtocolVersions, String cpu, String memory)` to `HostedAgentDefinition(String cpu, String memory)`; `containerProtocolVersions` is now a mutable property set via `setContainerProtocolVersions(...)`. The previous 3-argument constructor is retained for source compatibility but is no longer the recommended entry point.
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+- Added README examples for synchronous and asynchronous hosted agent session log streaming.
+
+## 2.0.1 (2026-04-16)
+
+### Bugs Fixed
+
+- Fixed streaming APIs to properly stream response data instead of eagerly buffering the entire response body in memory, and moved async completions off I/O threads to prevent blocking.
+
+## 2.0.0 (2026-03-27)
+
+### Features Added
+
+- Added `beginUpdateMemories(String name, String scope)` required-params-only overload to `MemoryStoresClient` and `MemoryStoresAsyncClient`, for updating a memory store without specifying optional conversation items, previous update ID, or delay.
+
+### Breaking Changes
+
+- The following types changed from standard Java `enum` to `ExpandableStringEnum`-based classes, allowing unknown values to be handled without throwing exceptions. The `values()` method now returns a `Collection` instead of an array, and instances should be compared using `.equals()` rather than `==`:
+  - `ComputerEnvironment`
+  - `ContainerMemoryLimit`
+  - `GrammarSyntax`
+  - `ImageGenActionEnum`
+  - `ImageGenToolBackground`
+  - `ImageGenToolModeration`
+  - `ImageGenToolOutputFormat`
+  - `ImageGenToolQuality`
+  - `ImageGenToolSize`
+  - `InputFidelity`
+  - `McpToolConnectorId`
+  - `MemoryStoreUpdateStatus`
+  - `RankerVersionType`
+  - `SearchContextSize`
+  - `WebSearchToolSearchContextSize`
+- Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
+- Renamed `MCPToolConnectorId` enum to `McpToolConnectorId` for consistent casing. The `McpTool` methods `getConnectorType()` and `setConnectorType()` now use `McpToolConnectorId` instead of `MCPToolConnectorId`.
+- `getContainerAsAutoCodeInterpreterToolParam()` on `CodeInterpreterTool` renamed to `getContainerAsAutoCodeInterpreterToolParameter()`, and `setContainer(AutoCodeInterpreterToolParam)` now accepts `AutoCodeInterpreterToolParameter` instead.
+- Renamed remaining `*Param` model classes to `*Parameter` for naming consistency:
+  - `AutoCodeInterpreterToolParam` → `AutoCodeInterpreterToolParameter`
+  - `ContainerAutoParam` → `ContainerAutoParameter`
+  - `ContainerNetworkPolicyParam` → `ContainerNetworkPolicyParameter`
+  - `ContainerNetworkPolicyAllowlistParam` → `ContainerNetworkPolicyAllowlistParameter`
+  - `ContainerNetworkPolicyDisabledParam` → `ContainerNetworkPolicyDisabledParameter`
+  - `ContainerNetworkPolicyDomainSecretParam` → `ContainerNetworkPolicyDomainSecretParameter`
+  - `CustomTextFormatParam` → `CustomTextFormatParameter`
+  - `FunctionShellToolParamEnvironmentContainerReferenceParam` → `FunctionShellToolParameterEnvironmentContainerReferenceParameter`
+  - `FunctionShellToolParamEnvironmentLocalEnvironmentParam` → `FunctionShellToolParameterEnvironmentLocalEnvironmentParameter`
+  - `InlineSkillParam` → `InlineSkillParameter`
+  - `InlineSkillSourceParam` → `InlineSkillSourceParameter`
+  - `LocalSkillParam` → `LocalSkillParameter`
+  - `SkillReferenceParam` → `SkillReferenceParameter`
+- `deleteAgentWithResponse` on `AgentsClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteAgentVersionWithResponse` on `AgentsClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteMemoryStoreWithResponse` on `MemoryStoresClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteScopeWithResponse` on `MemoryStoresClient` now returns `Response<Void>` instead of `Response<BinaryData>`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Response<Void>>` instead of `Mono<Response<BinaryData>>`.
+- `deleteMemoryStore(String)` on `MemoryStoresClient` now returns `void` instead of `DeleteMemoryStoreResult`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteMemoryStoreResult>`.
+- `deleteScope(String, String)` on `MemoryStoresClient` now returns `void` instead of `MemoryStoreDeleteScopeResponse`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<MemoryStoreDeleteScopeResponse>`.
+- `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
+- `ResponsesUtils` class has been removed. Use `ResponsesClient.getAzureFields(Response)` instead of `ResponsesUtils.getAzureFields(Response)` to extract Azure-specific fields from a response.
+
+### Other Changes
+
+- Regenerated client from updated TypeSpec specification.
+
+## 2.0.0-beta.3 (2026-03-19)
+
+### Features Added
+
+- Added `readSpecFromFile(Path)` static convenience method to `OpenApiFunctionDefinition` for loading OpenAPI specification JSON files as the `Map<String, BinaryData>` required by the constructor, eliminating the need for manual `JsonReader`/`BinaryData` wiring.
+- Added new `OpenApiSync`/`OpenApiAsync` samples demonstrating end-to-end OpenAPI tool integration: loading a spec file, creating an agent with an `OpenApiTool`, and invoking an external API via conversation.
+- Added new tool samples for parity with the Python SDK: `AzureFunctionSync`/`AzureFunctionAsync`, `BingCustomSearchSync`/`BingCustomSearchAsync`, `MemorySearchSync`/`MemorySearchAsync`, `McpWithConnectionSync`/`McpWithConnectionAsync`, and `OpenApiWithConnectionSync`/`OpenApiWithConnectionAsync`.
+- Added type-safe accessors on `CodeInterpreterTool` for the `container` property: `setContainer(String)`, `setContainer(AutoCodeInterpreterToolParam)`, `getContainerAsString()`, and `getContainerAsAutoCodeInterpreterToolParam()`.
+- Added type-safe accessors on `McpTool` for the `allowedTools` property: `setAllowedTools(List<String>)`, `setAllowedTools(McpToolFilter)`, `getAllowedToolsAsStringList()`, and `getAllowedToolsAsMcpToolFilter()`.
+- Added type-safe accessors on `McpTool` for the `requireApproval` property: `setRequireApproval(String)`, `setRequireApproval(McpToolRequireApproval)`, `getRequireApprovalAsString()`, and `getRequireApprovalAsMcpToolRequireApproval()`.
+- Added `setComparisonFilter(ComparisonFilter)` and `setCompoundFilter(CompoundFilter)` convenience methods on `FileSearchTool`, accepting the openai-java filter types directly.
+- Added `listAgentConversations` operation to `AgentsClient` and `AgentsAsyncClient` to list conversations attached to a specific agent filtering by `agentName` and `agentId`.
+- Added streaming response methods to `ResponsesClient` and `ResponsesAsyncClient`:
+  - `createStreamingWithAgent` and `createStreamingWithAgentConversation` on `ResponsesClient` return `IterableStream<ResponseStreamEvent>` for synchronous streaming.
+  - `createStreamingWithAgent` and `createStreamingWithAgentConversation` on `ResponsesAsyncClient` return `Flux<ResponseStreamEvent>` for asynchronous streaming.
+- Added `StreamingUtils` implementation helper that bridges OpenAI `StreamResponse` to `IterableStream` and `AsyncStreamResponse` to `Flux`.
+- Added streaming samples: `SimpleStreamingSync`/`SimpleStreamingAsync`, `FunctionCallStreamingSync`/`FunctionCallStreamingAsync`, and `CodeInterpreterStreamingSync`/`CodeInterpreterStreamingAsync`.
+- Added structured input convenience methods to `ResponsesClient` and `ResponsesAsyncClient` for creating responses with agent-defined template parameters:
+  - `createWithAgentStructuredInput` accepts a `Map<String, Object>` of runtime values that are substituted into the agent's prompt template.
+  - `createStreamingWithAgentStructuredInput` provides the streaming equivalent, returning `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
+- Added `CreateResponseWithStructuredInput` sample demonstrating how to define structured inputs on an agent and pass runtime values when creating a response.
+
+### Breaking Changes
+
+- Removed deprecated convenience methods from `ResponsesClient` and `ResponsesAsyncClient`: `createWithAgent`, `createWithAgentConversation`, `createStreamingWithAgent`, `createStreamingWithAgentConversation`, `createWithAgentStructuredInput`, and `createStreamingWithAgentStructuredInput`. Use `createAzureResponse` and `createStreamingAzureResponse` with `AzureCreateResponseOptions` instead.
+- `deleteAgent(String)` on `AgentsClient` now returns `void` instead of `DeleteAgentResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentResponse>`.
+- `deleteAgentVersion(String, String)` on `AgentsClient` now returns `void` instead of `DeleteAgentVersionResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentVersionResponse>`.
+- `DeleteAgentResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
+- `DeleteAgentVersionResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
+- The `updateDelay` parameter on `MemoryStoresClient.beginUpdateMemories` was renamed to `updateDelayInSeconds`.
+- `AgentDefinitionOptInKeys` and `FoundryFeaturesOptInKeys` changed from `ExpandableStringEnum`-based classes to standard Java `enum` types. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.
+- The `timezone` property in `ApproximateLocation` and `WebSearchApproximateLocation` changed from `String` to `java.util.TimeZone`.
+- The `container` property on `CodeInterpreterTool` no longer exposes `BinaryData` getter/setter publicly. Use the new typed accessors instead (e.g., `setContainer("container-id")` or `setContainer(new AutoCodeInterpreterToolParam())`).
+- The `allowedTools` and `requireApproval` properties on `McpTool` no longer expose `BinaryData` getter/setter publicly. Use the new typed accessors instead (e.g., `setRequireApproval("always")` or `setAllowedTools(List.of("tool_a", "tool_b"))`).
+- The `filters` property on `FileSearchTool` no longer exposes `BinaryData` getter/setter publicly.
+- The `reasoning` property on `PromptAgentDefinition` now uses `com.openai.models.Reasoning` from the openai-java library instead of the previously generated `Reasoning` class. Use `Reasoning.builder().effort(ReasoningEffort.HIGH).build()` to construct values.
+- Removed `ComparisonFilter`, `ComparisonFilterType`, `CompoundFilter`, `CompoundFilterType`, `Reasoning`, `ReasoningEffort`, `ReasoningSummary`, and `ReasoningGenerateSummary` from `com.azure.ai.agents.models`. Use the equivalent types from `com.openai.models` instead (e.g., `com.openai.models.ComparisonFilter`, `com.openai.models.Reasoning`).
+
+### Other Changes
+
+- Updated all samples and tests to use the new `createAzureResponse` and `createStreamingAzureResponse` API.
+- Added `ToolsTests` and `ToolsAsyncTests` with recorded end-to-end test coverage for OpenAPI, Code Interpreter, Function Call, Web Search, MCP, and File Search tools.
+- Added `StreamingTests` and `StreamingAsyncTests` with recorded test coverage for streaming responses (simple prompt, function calling, and Code Interpreter scenarios).
+- Added structured input test coverage to `AgentsTests`, `AgentsAsyncTests`, `StreamingTests`, and `StreamingAsyncTests`.
+
+## 2.0.0-beta.2 (2026-03-04)
+
+### Features Added
+
+- Added `buildOpenAIClient()` and `buildOpenAIAsyncClient()` methods to `AgentsClientBuilder` for simplified creation of OpenAI clients with default Azure setup
+- Added new agent tool samples: `CodeInterpreterAgent`, `FileSearchAgent`, `FunctionCallAgent`, `McpAgent`, and `WebSearchAgent` (sync and async variants)
+- Added `action` property to `ImageGenTool` with new `ImageGenActionEnum` (values: `GENERATE`, `EDIT`, `AUTO`).
+- Added `GPT_IMAGE_1_5` to `ImageGenToolModel`.
+- Added container skill types: `ContainerSkill`, `ContainerSkillType`, `ContainerAutoParam`, `ContainerNetworkPolicyParam`, and related network policy types (`ContainerNetworkPolicyAllowlistParam`, `ContainerNetworkPolicyDisabledParam`, `ContainerNetworkPolicyDomainSecretParam`, `ContainerNetworkPolicyParamType`).
+- Added environment configuration for `FunctionShellToolParameter` and `InputItemFunctionShellCallItemParam` via new `FunctionShellToolParamEnvironment`, `FunctionShellCallItemParamEnvironment`, and related container/local environment parameter types. `InputItemFunctionShellCallItemParam`, `FunctionShellCallItemParamEnvironment`, and related types moved to `implementation/models` (internal).
+- Added `MessageContent` and `MessageContentType` model types; subsequently moved to `implementation/models` (internal).
+- Added skill parameter types: `InlineSkillParam`, `InlineSkillSourceParam`, `LocalSkillParam`, `SkillReferenceParam`.
+
+### Breaking Changes
+
+- Removed `ContainerAppAgentDefinition` class and `AgentKind.CONTAINER_APP` enum value. The `container_app` agent kind is no longer supported.
+- Removed `CONTAINER_AGENTS_V1_PREVIEW` from `AgentDefinitionOptInKeys` and `FoundryFeaturesOptInKeys`. The `ContainerAgents=V1Preview` feature flag is no longer valid.
+- Renamed computer action classes to use `Param` suffix and moved to `implementation/models` (internal):
+  - `Drag` → `DragParam`
+  - `DragPoint` → `CoordParam`
+  - `Move` → `MoveParam`
+  - `Screenshot` → `ScreenshotParam`
+  - `Scroll` → `ScrollParam`
+  - `Type` → `TypeParam`
+  - `Wait` → `WaitParam`
+- `CodeInterpreterContainerAuto` renamed to `AutoCodeInterpreterToolParam`.
+- `Summary` renamed to `SummaryTextContent` and moved to `implementation/models` (internal).
+- Moved ~100 model classes from `com.azure.ai.agents.models` to `com.azure.ai.agents.implementation.models`, removing them from the public API surface. This includes `InputItem` and all subtypes, `Annotation`, output content types, and related types.
+- Removed public methods from `MemoryStoresClient`/`MemoryStoresAsyncClient`: `searchMemoriesWithResponse` and `beginUpdateMemories` (protocol methods accepting `BinaryData`), `searchMemories(name, scope)` (minimal convenience overload), and `searchMemories`/`beginUpdateMemories` overloads accepting `List<ResponseInputItem>`.
+- Renamed model classes for naming consistency:
+  - `AgentObjectVersions` renamed to `AgentDetailsVersions`
+  - `OpenAIError` renamed to `ApiError`
+  - `AzureFunctionDefinitionFunction` renamed to `AzureFunctionDefinitionDetails`
+- Renamed tool classes from `*Param` suffix to `*Parameter`:
+  - `ApplyPatchToolParam` renamed to `ApplyPatchToolParameter`
+  - `CustomGrammarFormatParam` renamed to `CustomGrammarFormatParameter`
+  - `CustomToolParam` renamed to `CustomToolParameter`
+  - `FunctionShellToolParam` renamed to `FunctionShellToolParameter`
+  - `LocalShellToolParam` renamed to `LocalShellToolParameter`
+- `OpenApiFunctionDefinition`: `getDefaultParams()` and `setDefaultParams()` renamed to `getDefaultParameters()` and `setDefaultParameters()`
+
+### Bugs Fixed
+
+- Fixed Memory Stores long-running operations (e.g. `beginUpdateMemories`) failing because the required `Foundry-Features` header was not included in poll requests, and custom LRO terminal states (`"completed"`, `"superseded"`) were not mapped to standard `LongRunningOperationStatus` values, causing pollers to hang indefinitely.
+- Fixed request parameter name from `"agent"` to `"agent_reference"` in `ResponsesClient` and `ResponsesAsyncClient` methods `createWithAgent` and `createWithAgentConversation`
+
+### Other Changes
+
+- Enabled and stabilised `MemoryStoresTests` and `MemoryStoresAsyncTests` (previously `@Disabled`), with timeout guards to prevent hanging.
+
+## 2.0.0-beta.1 (2026-02-25)
+
+### Features Added
+
+- New `MemorySearchAgent` sample was added demonstrating memory search functionality
+- Tests for `MemoryStoresClient` and `MemoryStoresAsyncClient`
+- Various documentation updates
+- Using unified `HttpClient` setup for Azure specifics and `openai` client library wrapping methods
+- Added new `ComputerUse` samples demonstrating Computer Use tool integration (sync and async)
+- Added new tool models: `ApplyPatchToolParam`, `CustomToolParam`, `FunctionShellToolParam`, `McpTool`, `WebSearchTool`, and related types
+- Added `HybridSearchOptions` for file search configuration
+- Added new input item types for tool call outputs (e.g., `InputItemFunctionCallOutputItemParam`, `InputItemComputerCallOutputItemParam`, `InputItemApplyPatchToolCallItemParam`)
+- Added status enums for output items (e.g., `OutputItemCodeInterpreterToolCallStatus`, `OutputItemFunctionToolCallStatus`, `OutputItemWebSearchToolCallStatus`)
+
+### Breaking Changes
+
+- `MemoryStoreObject` was renamed to `MemoryStoreDetails`
+- Service version changed from date-based versions (`V2025_05_01`, `V2025_05_15_PREVIEW`, `V2025_11_15_PREVIEW`) to `V1`
+- `ListAgentsRequestOrder` was renamed to `PageOrder`
+- Widespread model renaming to align with the latest API spec. Key patterns include:
+  - Tool classes renamed to use `Tool` or `PreviewTool` suffix (e.g., `AzureAISearchAgentTool` → `AzureAISearchTool`, `BingGroundingAgentTool` → `BingGroundingTool`, `SharepointAgentTool` → `SharepointPreviewTool`, `MemorySearchTool` → `MemorySearchPreviewTool`)
+  - Computer action classes simplified (e.g., `ComputerActionClick` → `ClickParam`, `ComputerActionScroll` → `Scroll`, `ComputerActionScreenshot` → `Screenshot`, `ComputerActionKeyPress` → `KeyPressAction`)
+  - Item content classes renamed (e.g., `ItemContentInputText` → `InputContentInputTextContent`, `ItemContentOutputText` → `OutputMessageContentOutputTextContent`, `ItemContentRefusal` → `OutputMessageContentRefusalContent`)
+  - Tool call item param classes renamed to `InputItem*` pattern (e.g., `FunctionToolCallItemParam` → `InputItemFunctionToolCall`, `ComputerToolCallItemParam` → `InputItemComputerToolCall`)
+  - Annotation classes renamed (e.g., `AnnotationFileCitation` → `FileCitationBody`, `AnnotationUrlCitation` → `UrlCitationBody`, `AnnotationFilePath` → `FilePath`)
+  - `Error` renamed to `OpenAIError`
+  - `DeleteMemoryStoreResponse` renamed to `DeleteMemoryStoreResult`
+  - `ImageGenToolSize` enum values renamed (e.g., `SIZE_1024X1024` → `RESOLUTION_1024_X_1024`)
+- Several models were removed: `AgentId`, `ImageBasedHostedAgentDefinition`, `MCPTool`, `MCPToolAllowedTools`, `MCPToolRequireApprovalAlways`, `MCPToolRequireApprovalNever`, `ResponsesMessageItemParam` and its role-specific subclasses
+- `ItemReferenceItemParam` and `ResponsesMessageRole` moved to internal implementation package
+
+### Bugs Fixed
+
+- Fixed base URL construction in `AgentsClientBuilder` to append `/openai/v1` directly, removing dependency on `AzureOpenAIServiceVersion` and `AzureUrlPathMode` for URL path resolution
+
+### Other Changes
+
+- Updated version of `openai` client library to `4.14.0`
+- Regenerated client from the latest AI Foundry API spec
+- `openai-java-client-okhttp` and `openai-java-core` modules are now `transitive` dependencies in `module-info.java`
+
+## 1.0.0-beta.1 (2025-11-12)
+
+### Features Added
+
+- New Azure Agents client library for Java. This package contains Microsoft Azure Agents client library.

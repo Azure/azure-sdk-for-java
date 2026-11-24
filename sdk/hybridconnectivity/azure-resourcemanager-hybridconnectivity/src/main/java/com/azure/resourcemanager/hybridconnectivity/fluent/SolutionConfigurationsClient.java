@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.SolutionConfigurationInner;
+import com.azure.resourcemanager.hybridconnectivity.models.SolutionConfigurationUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in SolutionConfigurationsClient.
@@ -91,7 +92,7 @@ public interface SolutionConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SolutionConfigurationInner> updateWithResponse(String resourceUri, String solutionConfiguration,
-        SolutionConfigurationInner properties, Context context);
+        SolutionConfigurationUpdate properties, Context context);
 
     /**
      * Update a SolutionConfiguration.
@@ -106,7 +107,7 @@ public interface SolutionConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SolutionConfigurationInner update(String resourceUri, String solutionConfiguration,
-        SolutionConfigurationInner properties);
+        SolutionConfigurationUpdate properties);
 
     /**
      * Delete a SolutionConfiguration.
@@ -167,7 +168,7 @@ public interface SolutionConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginSyncNow(String resourceUri,
@@ -182,7 +183,7 @@ public interface SolutionConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginSyncNow(String resourceUri,
@@ -196,7 +197,7 @@ public interface SolutionConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner syncNow(String resourceUri, String solutionConfiguration);
@@ -210,7 +211,7 @@ public interface SolutionConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner syncNow(String resourceUri, String solutionConfiguration, Context context);

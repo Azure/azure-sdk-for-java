@@ -7,6 +7,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -44,10 +45,13 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
+import com.azure.storage.blob.SessionContext.SessionMode;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
@@ -68,6 +72,7 @@ import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.http.WireTapHttpClient;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
@@ -76,6 +81,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -110,7 +116,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -279,8 +287,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 .verifyError(exception);
         } catch (IllegalArgumentException e) {
             //StepVerifier cant handle the error in the creation of BlobParallelUploadOptions
-            assertEquals(e.getMessage(),
-                "The value of the parameter 'length' should be between 0 and 9223372036854775807.");
+            assertEquals("The value of the parameter 'length' should be between 0 and 9223372036854775807.",
+                e.getMessage());
         }
     }
 
@@ -1347,7 +1355,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    public void setHTTPHeadersMin() throws NoSuchAlgorithmException {
+    public void setHTTPHeadersMin() {
         Mono<BlobProperties> response = bc.getProperties().flatMap(properties -> {
             BlobHttpHeaders headers;
             try {
@@ -1619,6 +1627,75 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     private static Stream<Arguments> setTagsACSupplier() {
         return Stream.of(Arguments.of((String) null), Arguments.of("\"foo\" = 'bar'"));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void setGetTagOptionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> t = new HashMap<>();
+
+        t.put("foo", "bar");
+
+        Mono<Response<Map<String, String>>> response = Mono
+            .zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls)
+            .flatMap(conditions -> {
+                BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac))
+                    .then(bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac)));
+            });
+
+        StepVerifier.create(response).assertNext(r -> {
+            assertResponseStatusCode(r, 200);
+            assertEquals(t, r.getValue());
+        }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void setTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+
+        //The x-ms-if-tags-request header is not supported
+        t.put("notfoo", "notbar");
+
+        Mono<Response<Void>> response = setupBlobMatchCondition(bc, noneMatch).flatMap(condition -> {
+            BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+                .setIfMatch(match)
+                .setIfNoneMatch(convertNull(condition))
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setTagsConditions(tags);
+            return bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac));
+        });
+
+        StepVerifier.create(response).verifyError(BlobStorageException.class);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void getTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        //The x-ms-if-tags-request header is not supported
+        Mono<Response<Map<String, String>>> response = setupBlobMatchCondition(bc, noneMatch).flatMap(condition -> {
+            BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+                .setIfMatch(match)
+                .setIfNoneMatch(convertNull(condition))
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setTagsConditions(tags);
+            return bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac));
+        });
+
+        StepVerifier.create(response).verifyError(BlobStorageException.class);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-07-07")
@@ -2195,6 +2272,48 @@ public class BlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(response).verifyError(BlobStorageException.class);
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void deleteAccessTierRequestConditions(boolean isAccessTierModifiedSince) {
+        OffsetDateTime changeTime = testResourceNamer.now();
+        BlobRequestConditions brc = new BlobRequestConditions();
+        if (isAccessTierModifiedSince) {
+            // requires modification since yesterday (which there should be modification in this time window)
+            brc.setAccessTierIfModifiedSince(changeTime.plusDays(-1));
+        } else {
+            // requires no modification after 5 minutes from now (which there should be no modification then)
+            brc.setAccessTierIfUnmodifiedSince(changeTime.plusMinutes(5));
+        }
+
+        Mono<Response<Void>> response = bc.setAccessTier(AccessTier.COOL).then(bc.deleteWithResponse(null, brc));
+
+        StepVerifier.create(response).assertNext(r -> assertEquals(202, r.getStatusCode())).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void deleteAccessTierRequestConditionsFail(boolean isAccessTierModifiedSince) {
+        OffsetDateTime changeTime = testResourceNamer.now();
+        BlobRequestConditions brc = new BlobRequestConditions();
+        if (isAccessTierModifiedSince) {
+            // requires modification after 5 minutes from now (which there should be no modification then)
+            brc.setAccessTierIfModifiedSince(changeTime.plusMinutes(5));
+        } else {
+            // requires no modification since yesterday (which there should be modification in this time window)
+            brc.setAccessTierIfUnmodifiedSince(changeTime.plusDays(-1));
+        }
+
+        Mono<Response<Void>> response = bc.setAccessTier(AccessTier.COOL).then(bc.deleteWithResponse(null, brc));
+
+        StepVerifier.create(response).verifyErrorSatisfies(e -> {
+            BlobStorageException ex = assertInstanceOf(BlobStorageException.class, e);
+            assertEquals(412, ex.getStatusCode());
+            assertEquals("AccessTierChangeTimeConditionNotMet", ex.getErrorCode().toString());
+        });
+    }
+
     @Test
     public void blobDeleteError() {
         bc = ccAsync.getBlobAsyncClient(generateBlobName());
@@ -2346,7 +2465,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
             PageBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
             return bc.create(512).then(bc.setAccessTier(tier)).then(bc.getProperties()).flatMapMany(r -> {
                 assertEquals(tier, r.getAccessTier());
-                return cc.listBlobs();
+                return cc.listBlobs(new ListBlobsOptions()
+                    .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML));
             });
         });
 
@@ -2464,6 +2584,22 @@ public class BlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(response)
             .assertNext(r -> assertEquals(AccessTier.COLD, r.getProperties().getAccessTier()))
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    @Disabled("Smart tier tests released with STG102 are temporarily disabled.")
+    public void uploadStreamAccessTierSmart() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName());
+        BlobParallelUploadOptions options
+            = new BlobParallelUploadOptions(DATA.getDefaultFlux()).setTier(AccessTier.SMART);
+        Mono<Response<BlobProperties>> response
+            = bc.uploadWithResponse(options).then(bc.getPropertiesWithResponse(null));
+
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(AccessTier.SMART, r.getValue().getAccessTier());
+            assertNotNull(r.getValue().getSmartAccessTier());
+        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
@@ -2751,7 +2887,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         specializedBlobClientBuilder.containerName(ccAsync.getBlobContainerName()).blobName(originalBlobName);
 
         BlockBlobAsyncClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobAsyncClient();
-        assertEquals(blockBlobClient.getBlobName(), originalBlobName);
+        assertEquals(originalBlobName, blockBlobClient.getBlobName());
 
         // see if the blob name will be properly encoded in the url
         String encodedName = Utility.urlEncode(originalBlobName);
@@ -2765,7 +2901,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         blobClientBuilder.containerName(ccAsync.getBlobContainerName()).blobName(originalBlobName);
 
         BlobAsyncClient blobClient = blobClientBuilder.buildAsyncClient();
-        assertEquals(blobClient.getBlobName(), originalBlobName);
+        assertEquals(originalBlobName, blobClient.getBlobName());
 
         // see if the blob name will be properly encoded in the url
         String encodedName = Utility.urlEncode(originalBlobName);
@@ -2840,6 +2976,116 @@ public class BlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void sharedSessionContextUsesSameLiveTokenAcrossIndependentClients() {
+        String blobName = generateBlobName();
+        String content = "shared-session-context";
+        ccAsync.getBlobAsyncClient(blobName).upload(BinaryData.fromString(content), true).block();
+
+        AtomicInteger sessionDownloads = new AtomicInteger();
+        AtomicReference<String> sharedSessionToken = new AtomicReference<>();
+        AtomicBoolean sessionTokenMismatch = new AtomicBoolean();
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), request -> {
+            String path = request.getUrl().getPath();
+            if (request.getHttpMethod() == HttpMethod.GET && path != null && path.endsWith("/" + blobName)) {
+                String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+                if (authorization != null && authorization.startsWith("Session ")) {
+                    sessionDownloads.incrementAndGet();
+                    int signatureDelimiter = authorization.lastIndexOf(':');
+                    if (signatureDelimiter <= "Session ".length()) {
+                        sessionTokenMismatch.set(true);
+                        return;
+                    }
+                    String sessionToken = authorization.substring("Session ".length(), signatureDelimiter);
+                    String firstToken = sharedSessionToken.get();
+                    if (firstToken == null) {
+                        if (!sharedSessionToken.compareAndSet(null, sessionToken)
+                            && !sessionToken.equals(sharedSessionToken.get())) {
+                            sessionTokenMismatch.set(true);
+                        }
+                    } else if (!sessionToken.equals(firstToken)) {
+                        sessionTokenMismatch.set(true);
+                    }
+                }
+            }
+        });
+        SessionContext sharedContext
+            = new SessionContext().setSessionMode(SessionMode.ENABLED).setAccountName(ccAsync.getAccountName());
+
+        BlobAsyncClient first = getOAuthServiceAsyncClient(sharedContext, inspect)
+            .getBlobContainerAsyncClient(ccAsync.getBlobContainerName())
+            .getBlobAsyncClient(blobName);
+        BlobAsyncClient second = getOAuthServiceAsyncClient(sharedContext, inspect)
+            .getBlobContainerAsyncClient(ccAsync.getBlobContainerName())
+            .getBlobAsyncClient(blobName);
+
+        StepVerifier.create(first.downloadContent())
+            .assertNext(download -> assertEquals(content, download.toString()))
+            .verifyComplete();
+        assertEquals(1, sessionDownloads.get(), "The first client should use session authentication.");
+        StepVerifier.create(second.downloadContent())
+            .assertNext(download -> assertEquals(content, download.toString()))
+            .verifyComplete();
+        assertEquals(2, sessionDownloads.get(), "The second client should also use session authentication.");
+        assertNotNull(sharedSessionToken.get(), "A live session token must have been captured.");
+        assertFalse(sessionTokenMismatch.get(), "The independent clients used different live session tokens.");
+    }
+
+    @Test
+    @LiveOnly
+    @ResourceLock("BlobSessionAuth")
+    public void downloadBlobToFileInChunksOverSessionAuth() throws IOException {
+        String blobName = generateBlobName();
+        byte[] data = getRandomByteArray(4 * Constants.KB + 17);
+        int downloadBlockSize = Constants.KB;
+
+        BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient(blobName);
+        blobClient.upload(BinaryData.fromBytes(data), true).block();
+
+        Map<String, List<String>> downloadAuthSchemesByRange = Collections.synchronizedMap(new HashMap<>());
+        WireTapHttpClient inspect = new WireTapHttpClient(getHttpClient(), req -> {
+            String auth = req.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String path = req.getUrl().getPath();
+            String query = req.getUrl().getQuery();
+            if (auth != null
+                && req.getHttpMethod() == HttpMethod.GET
+                && path != null
+                && path.endsWith("/" + blobName)
+                && (query == null || !query.contains("comp="))) {
+                String range = req.getHeaders().getValue(HttpHeaderName.fromString("x-ms-range"));
+                if (range == null) {
+                    range = req.getHeaders().getValue(HttpHeaderName.fromString("Range"));
+                }
+                String rangeKey = range == null ? "<no range>" : range;
+                synchronized (downloadAuthSchemesByRange) {
+                    downloadAuthSchemesByRange.computeIfAbsent(rangeKey, ignored -> new ArrayList<>())
+                        .add(auth.startsWith("Session ") ? "Session" : "Bearer");
+                }
+            }
+        });
+
+        BlobAsyncClient sessionBlob
+            = getOAuthServiceAsyncClient(new SessionContext().setSessionMode(SessionMode.ENABLED), inspect)
+                .getBlobContainerAsyncClient(ccAsync.getBlobContainerName())
+                .getBlobAsyncClient(blobName);
+
+        File outFile = new File(prefix + "-session-download.tmp");
+        createdFiles.add(outFile);
+        Files.deleteIfExists(outFile.toPath());
+
+        StepVerifier.create(sessionBlob.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setBlockSizeLong((long) downloadBlockSize).setMaxConcurrency(2), null, null,
+            false)).expectNextCount(1).verifyComplete();
+
+        Assertions.assertArrayEquals(data, Files.readAllBytes(outFile.toPath()));
+        assertTrue(downloadAuthSchemesByRange.size() > 1,
+            "Expected multiple chunked download ranges; saw " + downloadAuthSchemesByRange);
+        assertTrue(downloadAuthSchemesByRange.values().stream().allMatch(schemes -> schemes.contains("Session")),
+            "Expected every chunked blob download range to attempt Session auth; saw " + downloadAuthSchemesByRange);
+    }
+
+    @Test
     public void audienceFromString() {
         String url = String.format("https://%s.blob.core.windows.net/", ccAsync.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
@@ -2880,6 +3126,22 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         //cleanup
         deleteFileShareWithoutDependency(shareName);
+    }
+
+    @Test
+    public void blobNameEncodingOnGetBlobUrl() {
+        BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient("my blob");
+        String expectedEncodedBlobName = "my%20blob";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedBlobName));
+    }
+
+    @Test
+    void containerNameEncodingOnGetBlobUrl() {
+        BlobContainerAsyncClient containerClient
+            = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient("my container");
+        BlobAsyncClient blobClient = containerClient.getBlobAsyncClient(generateBlobName());
+        String expectedEncodedContainerName = "my%20container";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
     }
 
 }

@@ -21,6 +21,18 @@
 
 - [List](#operations_list)
 
+## PrivateEndpointConnectionsInterface
+
+- [Delete](#privateendpointconnectionsinterface_delete)
+- [Get](#privateendpointconnectionsinterface_get)
+- [ListByTrafficController](#privateendpointconnectionsinterface_listbytrafficcontroller)
+- [Update](#privateendpointconnectionsinterface_update)
+
+## PrivateLinkResourcesInterface
+
+- [Get](#privatelinkresourcesinterface_get)
+- [ListByTrafficController](#privatelinkresourcesinterface_listbytrafficcontroller)
+
 ## SecurityPoliciesInterface
 
 - [CreateOrUpdate](#securitypoliciesinterface_createorupdate)
@@ -49,7 +61,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
  */
 public final class AssociationsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/AssociationPut.json
+     * x-ms-original-file: 2026-03-01/AssociationPut.json
      */
     /**
      * Sample code: Put Association.
@@ -77,7 +89,7 @@ public final class AssociationsInterfaceCreateOrUpdateSamples {
  */
 public final class AssociationsInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/AssociationDelete.json
+     * x-ms-original-file: 2026-03-01/AssociationDelete.json
      */
     /**
      * Sample code: Delete Association.
@@ -98,7 +110,7 @@ public final class AssociationsInterfaceDeleteSamples {
  */
 public final class AssociationsInterfaceGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/AssociationGet.json
+     * x-ms-original-file: 2026-03-01/AssociationGet.json
      */
     /**
      * Sample code: Get Association.
@@ -119,7 +131,7 @@ public final class AssociationsInterfaceGetSamples {
  */
 public final class AssociationsInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/AssociationsGet.json
+     * x-ms-original-file: 2026-03-01/AssociationsGet.json
      */
     /**
      * Sample code: Get Associations.
@@ -138,14 +150,13 @@ public final class AssociationsInterfaceListByTrafficControllerSamples {
 import com.azure.resourcemanager.servicenetworking.models.Association;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 
 /**
  * Samples for AssociationsInterface Update.
  */
 public final class AssociationsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/AssociationPatch.json
+     * x-ms-original-file: 2026-03-01/AssociationPatch.json
      */
     /**
      * Sample code: Update Association.
@@ -157,9 +168,9 @@ public final class AssociationsInterfaceUpdateSamples {
             .getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
+            .withAssociationType(AssociationType.SUBNETS)
+            .withSubnet(new AssociationSubnetUpdate().withId(
+                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"))
             .apply();
     }
 }
@@ -168,14 +179,16 @@ public final class AssociationsInterfaceUpdateSamples {
 ### FrontendsInterface_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.servicenetworking.models.FrontendAssociation;
 import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
+import com.azure.resourcemanager.servicenetworking.models.PublicNetworkAccess;
 
 /**
  * Samples for FrontendsInterface CreateOrUpdate.
  */
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/FrontendPut.json
+     * x-ms-original-file: 2026-03-01/FrontendPut.json
      */
     /**
      * Sample code: Put Frontend.
@@ -187,7 +200,27 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
             .define("fe1")
             .withRegion("NorthCentralUS")
             .withExistingTrafficController("rg1", "tc1")
-            .withProperties(new FrontendProperties())
+            .withProperties(new FrontendProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/PrivateFrontendPut.json
+     */
+    /**
+     * Sample code: Put Private Frontend.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        putPrivateFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.frontendsInterfaces()
+            .define("pfe1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
+            .withProperties(new FrontendProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                .withAssociation(new FrontendAssociation().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/tc1/associations/as1")))
             .create();
     }
 }
@@ -201,7 +234,7 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
  */
 public final class FrontendsInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/FrontendDelete.json
+     * x-ms-original-file: 2026-03-01/FrontendDelete.json
      */
     /**
      * Sample code: Delete Frontend.
@@ -222,7 +255,7 @@ public final class FrontendsInterfaceDeleteSamples {
  */
 public final class FrontendsInterfaceGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/FrontendGet.json
+     * x-ms-original-file: 2026-03-01/FrontendGet.json
      */
     /**
      * Sample code: Get Frontend.
@@ -231,6 +264,19 @@ public final class FrontendsInterfaceGetSamples {
      */
     public static void getFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager.frontendsInterfaces().getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-03-01/PrivateFrontendGet.json
+     */
+    /**
+     * Sample code: Get Private Frontend.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        getPrivateFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.frontendsInterfaces().getWithResponse("rg1", "tc1", "pfe1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -243,7 +289,7 @@ public final class FrontendsInterfaceGetSamples {
  */
 public final class FrontendsInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/FrontendsGet.json
+     * x-ms-original-file: 2026-03-01/FrontendsGet.json
      */
     /**
      * Sample code: Get Frontends.
@@ -266,7 +312,7 @@ import com.azure.resourcemanager.servicenetworking.models.Frontend;
  */
 public final class FrontendsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/FrontendPatch.json
+     * x-ms-original-file: 2026-03-01/FrontendPatch.json
      */
     /**
      * Sample code: Update Frontend.
@@ -290,7 +336,7 @@ public final class FrontendsInterfaceUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/OperationsList.json
+     * x-ms-original-file: 2026-03-01/OperationsList.json
      */
     /**
      * Sample code: Get Operations List.
@@ -299,6 +345,152 @@ public final class OperationsListSamples {
      */
     public static void getOperationsList(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnectionsInterface_Delete
+
+```java
+/**
+ * Samples for PrivateEndpointConnectionsInterface Delete.
+ */
+public final class PrivateEndpointConnectionsInterfaceDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-03-01/PrivateEndpointConnectionDelete.json
+     */
+    /**
+     * Sample code: Delete Private Endpoint Connection.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        deletePrivateEndpointConnection(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.privateEndpointConnectionsInterfaces().delete("rg1", "tc1", "pec1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnectionsInterface_Get
+
+```java
+/**
+ * Samples for PrivateEndpointConnectionsInterface Get.
+ */
+public final class PrivateEndpointConnectionsInterfaceGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-01/PrivateEndpointConnectionGet.json
+     */
+    /**
+     * Sample code: Get Private Endpoint Connection.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        getPrivateEndpointConnection(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.privateEndpointConnectionsInterfaces()
+            .getWithResponse("rg1", "tc1", "pec1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnectionsInterface_ListByTrafficController
+
+```java
+/**
+ * Samples for PrivateEndpointConnectionsInterface ListByTrafficController.
+ */
+public final class PrivateEndpointConnectionsInterfaceListByTrafficControllerSamples {
+    /*
+     * x-ms-original-file: 2026-03-01/PrivateEndpointConnectionsGet.json
+     */
+    /**
+     * Sample code: Get Private Endpoint Connections.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        getPrivateEndpointConnections(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.privateEndpointConnectionsInterfaces()
+            .listByTrafficController("rg1", "tc1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnectionsInterface_Update
+
+```java
+import com.azure.resourcemanager.servicenetworking.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.servicenetworking.models.PrivateEndpointConnectionProperties;
+import com.azure.resourcemanager.servicenetworking.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.servicenetworking.models.PrivateLinkServiceConnectionStatus;
+
+/**
+ * Samples for PrivateEndpointConnectionsInterface Update.
+ */
+public final class PrivateEndpointConnectionsInterfaceUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-03-01/PrivateEndpointConnectionPut.json
+     */
+    /**
+     * Sample code: Update Private Endpoint Connection.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        updatePrivateEndpointConnection(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.privateEndpointConnectionsInterfaces()
+            .update("rg1", "tc1", "pec1",
+                new PrivateEndpointConnectionInner()
+                    .withProperties(new PrivateEndpointConnectionProperties().withPrivateLinkServiceConnectionState(
+                        new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                            .withDescription("Approved by admin"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResourcesInterface_Get
+
+```java
+/**
+ * Samples for PrivateLinkResourcesInterface Get.
+ */
+public final class PrivateLinkResourcesInterfaceGetSamples {
+    /*
+     * x-ms-original-file: 2026-03-01/PrivateLinkResourceGet.json
+     */
+    /**
+     * Sample code: Get Private Link Resource.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        getPrivateLinkResource(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.privateLinkResourcesInterfaces().getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResourcesInterface_ListByTrafficController
+
+```java
+/**
+ * Samples for PrivateLinkResourcesInterface ListByTrafficController.
+ */
+public final class PrivateLinkResourcesInterfaceListByTrafficControllerSamples {
+    /*
+     * x-ms-original-file: 2026-03-01/PrivateLinkResourcesGet.json
+     */
+    /**
+     * Sample code: Get Private Link Resources.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        getPrivateLinkResources(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.privateLinkResourcesInterfaces()
+            .listByTrafficController("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -316,7 +508,7 @@ import java.util.Arrays;
  */
 public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/IpAccessRulesSecurityPolicyPut.json
+     * x-ms-original-file: 2026-03-01/IpAccessRulesSecurityPolicyPut.json
      */
     /**
      * Sample code: Put IpAccessRules SecurityPolicy.
@@ -335,7 +527,7 @@ public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-01-preview/WafSecurityPolicyPut.json
+     * x-ms-original-file: 2026-03-01/WafSecurityPolicyPut.json
      */
     /**
      * Sample code: Put WAF SecurityPolicy.
@@ -349,7 +541,7 @@ public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
             .withRegion("NorthCentralUS")
             .withExistingTrafficController("rg1", "tc1")
             .withProperties(new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId(
-                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
+                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
             .create();
     }
 }
@@ -363,7 +555,7 @@ public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
  */
 public final class SecurityPoliciesInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/SecurityPolicyDelete.json
+     * x-ms-original-file: 2026-03-01/SecurityPolicyDelete.json
      */
     /**
      * Sample code: Delete SecurityPolicy.
@@ -385,7 +577,7 @@ public final class SecurityPoliciesInterfaceDeleteSamples {
  */
 public final class SecurityPoliciesInterfaceGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/SecurityPolicyGet.json
+     * x-ms-original-file: 2026-03-01/SecurityPolicyGet.json
      */
     /**
      * Sample code: Get SecurityPolicy.
@@ -406,7 +598,7 @@ public final class SecurityPoliciesInterfaceGetSamples {
  */
 public final class SecurityPoliciesInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/SecurityPoliciesGetList.json
+     * x-ms-original-file: 2026-03-01/SecurityPoliciesGetList.json
      */
     /**
      * Sample code: Get SecurityPolicies.
@@ -434,7 +626,7 @@ import java.util.Arrays;
  */
 public final class SecurityPoliciesInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/IpAccessRulesSecurityPolicyPatch.json
+     * x-ms-original-file: 2026-03-01/IpAccessRulesSecurityPolicyPatch.json
      */
     /**
      * Sample code: Update IpAccessRules SecurityPolicy.
@@ -453,7 +645,7 @@ public final class SecurityPoliciesInterfaceUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-03-01-preview/WafSecurityPolicyPatch.json
+     * x-ms-original-file: 2026-03-01/WafSecurityPolicyPatch.json
      */
     /**
      * Sample code: Update WAF SecurityPolicy.
@@ -467,7 +659,7 @@ public final class SecurityPoliciesInterfaceUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(new SecurityPolicyUpdateProperties().withWafPolicy(new WafPolicy().withId(
-                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
+                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Network/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
             .apply();
     }
 }
@@ -484,7 +676,7 @@ import java.util.Map;
  */
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllerPut.json
+     * x-ms-original-file: 2026-03-01/TrafficControllerPut.json
      */
     /**
      * Sample code: Put Traffic Controller.
@@ -523,7 +715,7 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
  */
 public final class TrafficControllerInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllerDelete.json
+     * x-ms-original-file: 2026-03-01/TrafficControllerDelete.json
      */
     /**
      * Sample code: Delete Traffic Controller.
@@ -545,7 +737,7 @@ public final class TrafficControllerInterfaceDeleteSamples {
  */
 public final class TrafficControllerInterfaceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllerGet.json
+     * x-ms-original-file: 2026-03-01/TrafficControllerGet.json
      */
     /**
      * Sample code: Get Traffic Controller.
@@ -568,7 +760,7 @@ public final class TrafficControllerInterfaceGetByResourceGroupSamples {
  */
 public final class TrafficControllerInterfaceListSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllersGetList.json
+     * x-ms-original-file: 2026-03-01/TrafficControllersGetList.json
      */
     /**
      * Sample code: Get Traffic Controllers List.
@@ -590,7 +782,7 @@ public final class TrafficControllerInterfaceListSamples {
  */
 public final class TrafficControllerInterfaceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllersGet.json
+     * x-ms-original-file: 2026-03-01/TrafficControllersGet.json
      */
     /**
      * Sample code: Get Traffic Controllers.
@@ -616,7 +808,7 @@ import java.util.Map;
  */
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01-preview/TrafficControllerPatch.json
+     * x-ms-original-file: 2026-03-01/TrafficControllerPatch.json
      */
     /**
      * Sample code: Patch Traffic Controller.

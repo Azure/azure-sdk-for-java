@@ -22,7 +22,7 @@ public final class ExascaleDbStorageVaultsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"additionalFlashCacheInPercent\":1359553105,\"description\":\"hsycxhxzgaz\",\"displayName\":\"taboidvmf\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1970077416},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":926086414,\"totalSizeInGbs\":1895248762},\"timeZone\":\"sepdfgk\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Available\",\"lifecycleDetails\":\"ngb\",\"vmClusterCount\":151823445,\"ocid\":\"ahokqtobkauxofsh\",\"ociUrl\":\"hwpnulaiywzejywh\"},\"zones\":[\"koj\",\"llndnpd\",\"rpqaf\"],\"location\":\"ug\",\"tags\":{\"ypococtfjgtixr\":\"fhyete\"},\"id\":\"vzuyturmlmu\",\"name\":\"wolba\",\"type\":\"iropionszon\"}]}";
+            = "{\"value\":[{\"properties\":{\"additionalFlashCacheInPercent\":456584072,\"description\":\"pq\",\"displayName\":\"smjtgrqgdg\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":2101629033},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1763327979,\"totalSizeInGbs\":1364978166},\"timeZone\":\"csmknhwt\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"rvvmqfloygb\",\"vmClusterCount\":1086162181,\"ocid\":\"mgxdgdhpabgd\",\"ociUrl\":\"jddvjsaqw\",\"exadataInfrastructureId\":\"mmwllc\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\",\"SMART_STORAGE\",\"BLOCK_STORAGE\"],\"isAutoscaleEnabled\":false,\"autoscaleLimitInGbs\":555638758},\"zones\":[\"excgjokjljnhvl\",\"jbekpeeksnbksdq\",\"jvyklxeslkhhust\"],\"location\":\"oqmavnwqjwgo\",\"tags\":{\"jbzten\":\"ejjjkxybwfdb\",\"us\":\"vkzykjtjknsxf\"},\"id\":\"cdp\",\"name\":\"upnqrmgjfb\",\"type\":\"kuwxeoiojfizfavk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,19 @@ public final class ExascaleDbStorageVaultsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ExascaleDbStorageVault> response
-            = manager.exascaleDbStorageVaults().listByResourceGroup("ewmozqvbu", com.azure.core.util.Context.NONE);
+            = manager.exascaleDbStorageVaults().listByResourceGroup("vvruxwi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ug", response.iterator().next().location());
-        Assertions.assertEquals("fhyete", response.iterator().next().tags().get("ypococtfjgtixr"));
-        Assertions.assertEquals(1359553105, response.iterator().next().properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("hsycxhxzgaz", response.iterator().next().properties().description());
-        Assertions.assertEquals("taboidvmf", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(1970077416,
+        Assertions.assertEquals("oqmavnwqjwgo", response.iterator().next().location());
+        Assertions.assertEquals("ejjjkxybwfdb", response.iterator().next().tags().get("jbzten"));
+        Assertions.assertEquals(456584072, response.iterator().next().properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("pq", response.iterator().next().properties().description());
+        Assertions.assertEquals("smjtgrqgdg", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(2101629033,
             response.iterator().next().properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("sepdfgk", response.iterator().next().properties().timeZone());
-        Assertions.assertEquals("koj", response.iterator().next().zones().get(0));
+        Assertions.assertEquals("csmknhwt", response.iterator().next().properties().timeZone());
+        Assertions.assertEquals("mmwllc", response.iterator().next().properties().exadataInfrastructureId());
+        Assertions.assertFalse(response.iterator().next().properties().isAutoscaleEnabled());
+        Assertions.assertEquals(555638758, response.iterator().next().properties().autoscaleLimitInGbs());
+        Assertions.assertEquals("excgjokjljnhvl", response.iterator().next().zones().get(0));
     }
 }

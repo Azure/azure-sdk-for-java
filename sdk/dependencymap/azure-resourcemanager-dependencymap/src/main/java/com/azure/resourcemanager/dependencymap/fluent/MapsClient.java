@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.dependencymap.fluent.models.ExportDependenciesOperationResultInner;
 import com.azure.resourcemanager.dependencymap.fluent.models.MapsResourceInner;
 import com.azure.resourcemanager.dependencymap.models.ExportDependenciesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsForProcessOnFocusedMachineRequest;
@@ -461,10 +462,44 @@ public interface MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of model representing the result of the export dependencies
+     * asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExportDependencies(String resourceGroupName, String mapName,
+    SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
+        beginExportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body);
+
+    /**
+     * Export dependencies.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of model representing the result of the export dependencies
+     * asynchronous operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ExportDependenciesOperationResultInner>, ExportDependenciesOperationResultInner>
+        beginExportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body,
+            Context context);
+
+    /**
+     * Export dependencies.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mapName Maps resource name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return model representing the result of the export dependencies asynchronous operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,
         ExportDependenciesRequest body);
 
     /**
@@ -477,36 +512,9 @@ public interface MapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return model representing the result of the export dependencies asynchronous operation.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExportDependencies(String resourceGroupName, String mapName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExportDependenciesOperationResultInner exportDependencies(String resourceGroupName, String mapName,
         ExportDependenciesRequest body, Context context);
-
-    /**
-     * Export dependencies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body);
-
-    /**
-     * Export dependencies.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mapName Maps resource name.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void exportDependencies(String resourceGroupName, String mapName, ExportDependenciesRequest body, Context context);
 }

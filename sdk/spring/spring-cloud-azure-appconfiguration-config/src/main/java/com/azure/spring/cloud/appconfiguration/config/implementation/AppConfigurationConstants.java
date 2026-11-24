@@ -13,16 +13,6 @@ public class AppConfigurationConstants {
     public static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
 
     /**
-     * App Configurations Key Vault Reference Content Type
-     */
-    public static final String KEY_VAULT_CONTENT_TYPE = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
-
-    /**
-     * Feature Management Key Prefix
-     */
-    public static final String FEATURE_MANAGEMENT_KEY = "feature-management.";
-
-    /**
      * Feature Flag Prefix
      */
     public static final String FEATURE_FLAG_PREFIX = ".appconfig.featureflag/";
@@ -46,17 +36,17 @@ public class AppConfigurationConstants {
      * Constant for tracing if Key Vault is configured for use.
      */
     public static final String KEY_VAULT_CONFIGURED_TRACING = "UsesKeyVault";
-
+    
     /**
-     * Constant for tracing for Replica Count
+     * Constant for tracing if Push Refresh is enabled for the store. 
      */
-    public static final String REPLICA_COUNT = "ReplicaCount";
+    public static final String PUSH_REFRESH = "PushRefresh";
 
     /**
      * Http Header User Agent
      */
     public static final String USER_AGENT_TYPE = "User-Agent";
-
+    
     /**
      * Http Header Correlation Context
      */
@@ -71,31 +61,41 @@ public class AppConfigurationConstants {
 
     public static final String TELEMETRY = "telemetry";
 
-    public static final String USERS = "users";
-
-    public static final String USERS_CAPS = "Users";
-
-    public static final String AUDIENCE = "Audience";
-
-    public static final String GROUPS = "groups";
-
-    public static final String GROUPS_CAPS = "Groups";
-
-    public static final String TARGETING_FILTER = "targetingFilter";
-
-    public static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
-
-    public static final String DEFAULT_ROLLOUT_PERCENTAGE_CAPS = "DefaultRolloutPercentage";
-
     public static final String DEFAULT_REQUIREMENT_TYPE = "Any";
 
     public static final String REQUIREMENT_TYPE_SERVICE = "requirement_type";
 
-    public static final String REQUIREMENT_TYPE = "requirement-type";
-
-    public static final String FEATURE_FLAG_ID = "FeatureFlagId";
-
     public static final String FEATURE_FLAG_REFERENCE = "FeatureFlagReference";
 
     public static final String E_TAG = "ETag";
+
+    /**
+     * AI mime profile identifier in content type.
+     */
+    public static final String APP_CONFIG_AI_MIME_PROFILE = "azconfig.io/mime-profiles/ai";
+
+    /**
+     * AI Chat Completion mime profile identifier in content type.
+     */
+    public static final String APP_CONFIG_AICC_MIME_PROFILE = "azconfig.io/mime-profiles/ai-chat-completion";
+
+    /**
+     * Constant for tracing load balancing usage.
+     */
+    public static final String LOAD_BALANCING_FEATURE = "LB";
+
+    /**
+     * Constant for tracing AI configuration usage.
+     */
+    public static final String AI_CONFIGURATION_FEATURE = "AI";
+
+    /**
+     * Constant for tracing AI Chat Completion configuration usage.
+     */
+    public static final String AI_CHAT_COMPLETION_FEATURE = "AICC";
+
+    /**
+     * Constant for tracing snapshot reference usage.
+     */
+    public static final String SNAPSHOT_REFERENCE_TAG = "SnapshotRef";
 }

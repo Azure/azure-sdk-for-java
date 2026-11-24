@@ -21,7 +21,7 @@ public final class SolutionConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"solutionType\":\"wae\",\"solutionSettings\":{\"\":{\"woyuhhziuief\":\"kopbminrf\",\"smlmzqhoftrm\":\"zbhd\"}},\"status\":\"New\",\"statusDetails\":\"iahxicsl\",\"lastSyncTime\":\"2021-03-06T05:00:38Z\"},\"id\":\"z\",\"name\":\"iyylhalnswhccsp\",\"type\":\"kaivwit\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"solutionType\":\"owepbqpcrfkb\",\"solutionSettings\":{\"dw\":\"njv\",\"nkhtjsyingw\":\"lpqekf\",\"gikdgsz\":\"qatmtdhtmdvy\",\"birryuzhl\":\"w\"},\"status\":\"Completed\",\"statusDetails\":\"qrvqq\",\"lastSyncTime\":\"2021-10-29T20:59:14Z\"},\"id\":\"inrvgoupmfi\",\"name\":\"bfggjioolvr\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,10 +30,11 @@ public final class SolutionConfigurationsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        SolutionConfiguration response = manager.solutionConfigurations()
-            .getWithResponse("akufgmjz", "wr", com.azure.core.util.Context.NONE)
-            .getValue();
+        SolutionConfiguration response
+            = manager.solutionConfigurations().getWithResponse("ob", "pg", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("wae", response.properties().solutionType());
+        Assertions.assertEquals("owepbqpcrfkb", response.properties().solutionType());
+        Assertions.assertEquals("qatmtdhtmdvy",
+            response.properties().solutionSettings().additionalProperties().get("gikdgsz"));
     }
 }

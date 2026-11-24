@@ -5,8 +5,8 @@ package com.azure.spring.cloud.integration.tests.keyvault.secret;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.integration.tests.util.TestCredentialUtils;
-import org.springframework.boot.BootstrapRegistry;
-import org.springframework.boot.BootstrapRegistryInitializer;
+import org.springframework.boot.bootstrap.BootstrapRegistry;
+import org.springframework.boot.bootstrap.BootstrapRegistryInitializer;
 
 class TestBootstrapRegistryInitializer implements BootstrapRegistryInitializer {
 

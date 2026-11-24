@@ -22,7 +22,7 @@ public final class AvsScriptExecutionFinishedEventData extends AvsScriptExecutio
      * Named outputs of completed execution, if any.
      */
     @Generated
-    private final Map<String, String> namedOutputs;
+    private Map<String, String> namedOutputs;
 
     /*
      * Stdout outputs from the execution, if any.
@@ -35,12 +35,10 @@ public final class AvsScriptExecutionFinishedEventData extends AvsScriptExecutio
      *
      * @param operationId the operationId value to set.
      * @param cmdletId the cmdletId value to set.
-     * @param namedOutputs the namedOutputs value to set.
      */
     @Generated
-    private AvsScriptExecutionFinishedEventData(String operationId, String cmdletId, Map<String, String> namedOutputs) {
+    private AvsScriptExecutionFinishedEventData(String operationId, String cmdletId) {
         super(operationId, cmdletId);
-        this.namedOutputs = namedOutputs;
     }
 
     /**
@@ -73,7 +71,6 @@ public final class AvsScriptExecutionFinishedEventData extends AvsScriptExecutio
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeStringField("cmdletId", getCmdletId());
-        jsonWriter.writeMapField("namedOutputs", this.namedOutputs, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -109,8 +106,9 @@ public final class AvsScriptExecutionFinishedEventData extends AvsScriptExecutio
                 }
             }
             AvsScriptExecutionFinishedEventData deserializedAvsScriptExecutionFinishedEventData
-                = new AvsScriptExecutionFinishedEventData(operationId, cmdletId, namedOutputs);
+                = new AvsScriptExecutionFinishedEventData(operationId, cmdletId);
             deserializedAvsScriptExecutionFinishedEventData.output = output;
+            deserializedAvsScriptExecutionFinishedEventData.namedOutputs = namedOutputs;
             return deserializedAvsScriptExecutionFinishedEventData;
         });
     }

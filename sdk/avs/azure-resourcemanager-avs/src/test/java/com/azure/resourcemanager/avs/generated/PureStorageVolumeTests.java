@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PureStorageVolumeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PureStorageVolume model = BinaryData.fromString("{\"storagePoolId\":\"dmtnc\",\"sizeGb\":333571047}")
+        PureStorageVolume model = BinaryData.fromString("{\"storagePoolId\":\"gqywgndrv\",\"sizeGb\":1069077696}")
             .toObject(PureStorageVolume.class);
-        Assertions.assertEquals("dmtnc", model.storagePoolId());
-        Assertions.assertEquals(333571047, model.sizeGb());
+        Assertions.assertEquals("gqywgndrv", model.storagePoolId());
+        Assertions.assertEquals(1069077696, model.sizeGb());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PureStorageVolume model = new PureStorageVolume().withStoragePoolId("dmtnc").withSizeGb(333571047);
+        PureStorageVolume model = new PureStorageVolume().withStoragePoolId("gqywgndrv").withSizeGb(1069077696);
         model = BinaryData.fromObject(model).toObject(PureStorageVolume.class);
-        Assertions.assertEquals("dmtnc", model.storagePoolId());
-        Assertions.assertEquals(333571047, model.sizeGb());
+        Assertions.assertEquals("gqywgndrv", model.storagePoolId());
+        Assertions.assertEquals(1069077696, model.sizeGb());
     }
 }

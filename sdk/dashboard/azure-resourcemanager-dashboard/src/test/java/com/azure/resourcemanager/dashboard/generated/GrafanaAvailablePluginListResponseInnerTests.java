@@ -12,8 +12,8 @@ public final class GrafanaAvailablePluginListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GrafanaAvailablePluginListResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"pluginId\":\"zydagfuaxbezyiuo\",\"name\":\"twhrdxwzywqsm\"},{\"pluginId\":\"ureximoryocfs\",\"name\":\"s\"},{\"pluginId\":\"ddystkiiuxhqy\",\"name\":\"xorrqnb\"},{\"pluginId\":\"czvyifq\",\"name\":\"kdvjsll\"}],\"nextLink\":\"vvdfwatkpnpul\"}")
+            "{\"value\":[{\"pluginId\":\"qsc\",\"name\":\"ypvhezrkg\",\"type\":\"c\",\"author\":\"efovgmk\"}],\"nextLink\":\"leyyvx\"}")
             .toObject(GrafanaAvailablePluginListResponseInner.class);
-        Assertions.assertEquals("vvdfwatkpnpul", model.nextLink());
+        Assertions.assertEquals("leyyvx", model.nextLink());
     }
 }

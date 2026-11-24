@@ -27,6 +27,11 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
      */
     private Map<String, String> tags;
 
+    /*
+     * The managed service identities assigned to this resource.
+     */
+    private ManagedServiceIdentity identity;
+
     /**
      * Creates an instance of SchedulerUpdate class.
      */
@@ -74,14 +79,23 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
     }
 
     /**
-     * Validates the instance.
+     * Get the identity property: The managed service identities assigned to this resource.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the identity value.
      */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the SchedulerUpdate object itself.
+     */
+    public SchedulerUpdate withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -92,6 +106,7 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -115,6 +130,8 @@ public final class SchedulerUpdate implements JsonSerializable<SchedulerUpdate> 
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSchedulerUpdate.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSchedulerUpdate.identity = ManagedServiceIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

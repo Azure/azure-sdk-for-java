@@ -1,6 +1,27 @@
 # Code snippets and samples
 
 
+## AkriConnector
+
+- [CreateOrUpdate](#akriconnector_createorupdate)
+- [Delete](#akriconnector_delete)
+- [Get](#akriconnector_get)
+- [ListByTemplate](#akriconnector_listbytemplate)
+
+## AkriConnectorTemplate
+
+- [CreateOrUpdate](#akriconnectortemplate_createorupdate)
+- [Delete](#akriconnectortemplate_delete)
+- [Get](#akriconnectortemplate_get)
+- [ListByInstanceResource](#akriconnectortemplate_listbyinstanceresource)
+
+## AkriService
+
+- [CreateOrUpdate](#akriservice_createorupdate)
+- [Delete](#akriservice_delete)
+- [Get](#akriservice_get)
+- [ListByInstanceResource](#akriservice_listbyinstanceresource)
+
 ## Broker
 
 - [CreateOrUpdate](#broker_createorupdate)
@@ -43,6 +64,13 @@
 - [Get](#dataflowendpoint_get)
 - [ListByResourceGroup](#dataflowendpoint_listbyresourcegroup)
 
+## DataflowGraph
+
+- [CreateOrUpdate](#dataflowgraph_createorupdate)
+- [Delete](#dataflowgraph_delete)
+- [Get](#dataflowgraph_get)
+- [ListByDataflowProfile](#dataflowgraph_listbydataflowprofile)
+
 ## DataflowProfile
 
 - [CreateOrUpdate](#dataflowprofile_createorupdate)
@@ -62,6 +90,390 @@
 ## Operations
 
 - [List](#operations_list)
+
+## RegistryEndpoint
+
+- [CreateOrUpdate](#registryendpoint_createorupdate)
+- [Delete](#registryendpoint_delete)
+- [Get](#registryendpoint_get)
+- [ListByInstanceResource](#registryendpoint_listbyinstanceresource)
+### AkriConnector_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorProperties;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
+
+/**
+ * Samples for AkriConnector CreateOrUpdate.
+ */
+public final class AkriConnectorCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnector_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriConnector_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        akriConnectorCreateOrUpdateMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectors()
+            .define("resource-name123")
+            .withExistingAkriConnectorTemplate("rgiotoperations", "resource-name123", "resource-name123")
+            .withProperties(new AkriConnectorProperties())
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.ExtendedLocation/customLocations/resource-name123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .create();
+    }
+}
+```
+
+### AkriConnector_Delete
+
+```java
+/**
+ * Samples for AkriConnector Delete.
+ */
+public final class AkriConnectorDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnector_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriConnector_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        akriConnectorDeleteMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectors()
+            .delete("rgiotoperations", "resource-name123", "resource-name123", "resource-name123",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriConnector_Get
+
+```java
+/**
+ * Samples for AkriConnector Get.
+ */
+public final class AkriConnectorGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnector_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriConnector_Get_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        akriConnectorGetMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectors()
+            .getWithResponse("rgiotoperations", "resource-name123", "resource-name123", "resource-name123",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriConnector_ListByTemplate
+
+```java
+/**
+ * Samples for AkriConnector ListByTemplate.
+ */
+public final class AkriConnectorListByTemplateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnector_ListByTemplate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriConnector_ListByTemplate_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        akriConnectorListByTemplateMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectors()
+            .listByTemplate("rgiotoperations", "resource-name123", "resource-name123",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriConnectorTemplate_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateAioMetadata;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDeviceInboundEndpointType;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateDiagnostics;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateExecAction;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateManagedConfiguration;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateProperties;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateReadinessProbe;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateRuntimeImageConfiguration;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplateRuntimeImageConfigurationSettings;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsContainerRegistry;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsContainerRegistrySettings;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsDiagnosticsLogs;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsMqttConnectionConfiguration;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsMqttProtocolType;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsServiceAccountAuthentication;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsServiceAccountTokenSettings;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorsTag;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
+import com.azure.resourcemanager.iotoperations.models.OperationalMode;
+import com.azure.resourcemanager.iotoperations.models.TlsProperties;
+import java.util.Arrays;
+
+/**
+ * Samples for AkriConnectorTemplate CreateOrUpdate.
+ */
+public final class AkriConnectorTemplateCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriConnectorTemplate_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriConnectorTemplateCreateOrUpdateMaximumSet(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectorTemplates()
+            .define("resource-name123")
+            .withExistingInstance("rgiotoperations", "resource-name123")
+            .withProperties(new AkriConnectorTemplateProperties()
+                .withAioMetadata(
+                    new AkriConnectorTemplateAioMetadata().withAioMinVersion("1.2.0").withAioMaxVersion("1.4.0"))
+                .withRuntimeConfiguration(new AkriConnectorTemplateManagedConfiguration()
+                    .withManagedConfigurationSettings(new AkriConnectorTemplateRuntimeImageConfiguration()
+                        .withImageConfigurationSettings(new AkriConnectorTemplateRuntimeImageConfigurationSettings()
+                            .withImageName("akri-connectors/rest")
+                            .withReadinessProbe(new AkriConnectorTemplateReadinessProbe()
+                                .withExec(new AkriConnectorTemplateExecAction()
+                                    .withCommand(Arrays.asList("cat", "/tmp/ready")))
+                                .withFailureThreshold(3)
+                                .withInitialDelaySeconds(5)
+                                .withPeriodSeconds(10)
+                                .withSuccessThreshold(1)
+                                .withTimeoutSeconds(2))
+                            .withRegistrySettings(new AkriConnectorsContainerRegistry().withContainerRegistrySettings(
+                                new AkriConnectorsContainerRegistrySettings().withRegistry("akribuilds.azurecr.io")))
+                            .withTagDigestSettings(new AkriConnectorsTag().withTag("0.5.0-20250825.4")))))
+                .withDiagnostics(new AkriConnectorTemplateDiagnostics()
+                    .withLogs(new AkriConnectorsDiagnosticsLogs().withLevel("info")))
+                .withDeviceInboundEndpointTypes(Arrays
+                    .asList(new AkriConnectorTemplateDeviceInboundEndpointType().withEndpointType("Microsoft.Rest")
+                        .withVersion("0.0.1")))
+                .withMqttConnectionConfiguration(new AkriConnectorsMqttConnectionConfiguration()
+                    .withAuthentication(
+                        new AkriConnectorsServiceAccountAuthentication().withServiceAccountTokenSettings(
+                            new AkriConnectorsServiceAccountTokenSettings().withAudience("MQ-SAT")))
+                    .withHost("aio-broker:18883")
+                    .withProtocol(AkriConnectorsMqttProtocolType.MQTT)
+                    .withKeepAliveSeconds(10)
+                    .withMaxInflightMessages(10)
+                    .withSessionExpirySeconds(60)
+                    .withTls(new TlsProperties().withMode(OperationalMode.ENABLED)
+                        .withTrustedCaCertificateConfigMapRef("azure-iot-operations-aio-ca-trust-bundle"))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .create();
+    }
+}
+```
+
+### AkriConnectorTemplate_Delete
+
+```java
+/**
+ * Samples for AkriConnectorTemplate Delete.
+ */
+public final class AkriConnectorTemplateDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriConnectorTemplate_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        akriConnectorTemplateDeleteMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectorTemplates()
+            .delete("rgiotoperations", "resource-name123", "resource-name123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriConnectorTemplate_Get
+
+```java
+/**
+ * Samples for AkriConnectorTemplate Get.
+ */
+public final class AkriConnectorTemplateGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriConnectorTemplate_Get_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        akriConnectorTemplateGetMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectorTemplates()
+            .getWithResponse("rgiotoperations", "resource-name123", "resource-name123",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_Get_Managed_Rest.json
+     */
+    /**
+     * Sample code: AkriConnectorTemplate_Get_Managed_Rest.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        akriConnectorTemplateGetManagedRest(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectorTemplates()
+            .getWithResponse("rgiotoperations", "resource-name123", "resource-name123",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriConnectorTemplate_ListByInstanceResource
+
+```java
+/**
+ * Samples for AkriConnectorTemplate ListByInstanceResource.
+ */
+public final class AkriConnectorTemplateListByInstanceResourceSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriConnectorTemplate_ListByInstanceResource_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriConnectorTemplate_ListByInstanceResource_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriConnectorTemplateListByInstanceResourceMaximumSet(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriConnectorTemplates()
+            .listByInstanceResource("rgiotoperations", "resource-name123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriService_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.iotoperations.models.AkriServiceProperties;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
+
+/**
+ * Samples for AkriService CreateOrUpdate.
+ */
+public final class AkriServiceCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriService_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriService_CreateOrUpdate_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriServiceCreateOrUpdateMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriServices()
+            .define("resource-name123")
+            .withExistingInstance("rgiotoperations", "resource-name123")
+            .withProperties(new AkriServiceProperties())
+            .withExtendedLocation(new ExtendedLocation().withName("cseunvoinpjfvuyoewmzlr")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .create();
+    }
+}
+```
+
+### AkriService_Delete
+
+```java
+/**
+ * Samples for AkriService Delete.
+ */
+public final class AkriServiceDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriService_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriService_Delete_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriServiceDeleteMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriServices()
+            .delete("rgiotoperations", "resource-name123", "resource-name123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriService_Get
+
+```java
+/**
+ * Samples for AkriService Get.
+ */
+public final class AkriServiceGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriService_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriService_Get_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriServiceGetMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriServices()
+            .getWithResponse("rgiotoperations", "resource-name123", "resource-name123",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AkriService_ListByInstanceResource
+
+```java
+/**
+ * Samples for AkriService ListByInstanceResource.
+ */
+public final class AkriServiceListByInstanceResourceSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/AkriService_ListByInstanceResource_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: AkriService_ListByInstanceResource_MaximumSet - generated by [MaximumSet] rule.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void akriServiceListByInstanceResourceMaximumSetGeneratedByMaximumSetRule(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.akriServices()
+            .listByInstanceResource("rgiotoperations", "resource-name123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Broker_CreateOrUpdate
 
 ```java
@@ -80,6 +492,7 @@ import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
 import com.azure.resourcemanager.iotoperations.models.Frontend;
 import com.azure.resourcemanager.iotoperations.models.GenerateResourceLimits;
+import com.azure.resourcemanager.iotoperations.models.HighPriorityMessagesBackpressureHandling;
 import com.azure.resourcemanager.iotoperations.models.KubernetesReference;
 import com.azure.resourcemanager.iotoperations.models.LocalKubernetesReference;
 import com.azure.resourcemanager.iotoperations.models.Metrics;
@@ -105,7 +518,7 @@ import java.util.Map;
  */
 public final class BrokerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Minimal.
@@ -117,14 +530,15 @@ public final class BrokerCreateOrUpdateSamples {
         manager.brokers()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerProperties().withMemoryProfile(BrokerMemoryProfile.TINY))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Complex.
@@ -136,8 +550,6 @@ public final class BrokerCreateOrUpdateSamples {
         manager.brokers()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerProperties()
                 .withCardinality(new Cardinality()
                     .withBackendChain(new BackendChain().withPartitions(2).withRedundancyFactor(2).withWorkers(2))
@@ -145,11 +557,14 @@ public final class BrokerCreateOrUpdateSamples {
                 .withDiskBackedMessageBuffer(new DiskBackedMessageBuffer().withMaxSize("50M"))
                 .withGenerateResourceLimits(new GenerateResourceLimits().withCpu(OperationalMode.ENABLED))
                 .withMemoryProfile(BrokerMemoryProfile.MEDIUM))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate.
@@ -160,8 +575,6 @@ public final class BrokerCreateOrUpdateSamples {
         manager.brokers()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new BrokerProperties()
                     .withAdvanced(new AdvancedSettings()
@@ -233,12 +646,16 @@ public final class BrokerCreateOrUpdateSamples {
                                         .withValues(Arrays.asList("slmpajlywqvuyknipgztsonqyybt"))))
                                 .withMatchLabels(mapOf("key6673", "fakeTokenPlaceholder")))))
                     .withGenerateResourceLimits(new GenerateResourceLimits().withCpu(OperationalMode.ENABLED))
+                    .withHighPriorityMessagesBackpressureHandling(HighPriorityMessagesBackpressureHandling.ACCEPT)
                     .withMemoryProfile(BrokerMemoryProfile.TINY))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Simple.
@@ -250,14 +667,15 @@ public final class BrokerCreateOrUpdateSamples {
         manager.brokers()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerProperties()
                 .withCardinality(new Cardinality()
                     .withBackendChain(new BackendChain().withPartitions(2).withRedundancyFactor(2).withWorkers(2))
                     .withFrontend(new Frontend().withReplicas(2).withWorkers(2)))
                 .withGenerateResourceLimits(new GenerateResourceLimits().withCpu(OperationalMode.ENABLED))
                 .withMemoryProfile(BrokerMemoryProfile.LOW))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
@@ -283,7 +701,7 @@ public final class BrokerCreateOrUpdateSamples {
  */
 public final class BrokerDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Broker_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_Delete.
@@ -305,7 +723,7 @@ public final class BrokerDeleteSamples {
  */
 public final class BrokerGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Broker_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_Get.
@@ -328,7 +746,7 @@ public final class BrokerGetSamples {
  */
 public final class BrokerListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_ListByResourceGroup.
@@ -364,7 +782,7 @@ import java.util.Map;
  */
 public final class BrokerAuthenticationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate.
@@ -376,8 +794,6 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
         manager.brokerAuthentications()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new BrokerAuthenticationProperties()
                     .withAuthenticationMethods(
@@ -397,11 +813,14 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
                                             .withAttributes(mapOf("key186", "fakeTokenPlaceholder"))
                                             .withSubject("jpgwctfeixitptfgfnqhua")))
                                     .withTrustedClientCaCert("vlctsqddl")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthentication_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthentication_CreateOrUpdate_Complex.
@@ -413,8 +832,6 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
         manager.brokerAuthentications()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerAuthenticationProperties().withAuthenticationMethods(Arrays.asList(
                 new BrokerAuthenticatorMethods().withMethod(BrokerAuthenticationMethod.SERVICE_ACCOUNT_TOKEN)
                     .withServiceAccountTokenSettings(
@@ -431,6 +848,9 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
                         new BrokerAuthenticatorMethodX509Attributes().withAttributes(mapOf("building", "17"))
                             .withSubject("CN = smart-fan")))
                         .withTrustedClientCaCert("my-ca")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
@@ -456,7 +876,7 @@ public final class BrokerAuthenticationCreateOrUpdateSamples {
  */
 public final class BrokerAuthenticationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthentication_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_Delete.
@@ -480,7 +900,7 @@ public final class BrokerAuthenticationDeleteSamples {
  */
 public final class BrokerAuthenticationGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthentication_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_Get.
@@ -503,7 +923,7 @@ public final class BrokerAuthenticationGetSamples {
  */
 public final class BrokerAuthenticationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthentication_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthentication_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthentication_ListByResourceGroup.
@@ -543,7 +963,7 @@ import java.util.Map;
  */
 public final class BrokerAuthorizationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate.
@@ -555,8 +975,6 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
         manager.brokerAuthorizations()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerAuthorizationProperties()
                 .withAuthorizationPolicies(new AuthorizationConfig().withCache(OperationalMode.ENABLED)
                     .withRules(Arrays.asList(new AuthorizationRule()
@@ -572,11 +990,14 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
                             Arrays.asList(new StateStoreResourceRule().withKeyType(StateStoreResourceKeyTypes.PATTERN)
                                 .withKeys(Arrays.asList("tkounsqtwvzyaklxjqoerpu"))
                                 .withMethod(StateStoreResourceDefinitionMethods.READ)))))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate_Simple.
@@ -588,8 +1009,6 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
         manager.brokerAuthorizations()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerAuthorizationProperties()
                 .withAuthorizationPolicies(new AuthorizationConfig().withCache(OperationalMode.ENABLED)
                     .withRules(Arrays.asList(new AuthorizationRule()
@@ -604,11 +1023,14 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
                             Arrays.asList(new StateStoreResourceRule().withKeyType(StateStoreResourceKeyTypes.PATTERN)
                                 .withKeys(Arrays.asList("*"))
                                 .withMethod(StateStoreResourceDefinitionMethods.READ_WRITE)))))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerAuthorization_CreateOrUpdate_Complex.
@@ -620,8 +1042,6 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
         manager.brokerAuthorizations()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerAuthorizationProperties()
                 .withAuthorizationPolicies(new AuthorizationConfig().withCache(OperationalMode.ENABLED)
                     .withRules(Arrays.asList(new AuthorizationRule()
@@ -644,6 +1064,9 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
                             new StateStoreResourceRule().withKeyType(StateStoreResourceKeyTypes.BINARY)
                                 .withKeys(Arrays.asList("MTE2IDEwMSAxMTUgMTE2"))
                                 .withMethod(StateStoreResourceDefinitionMethods.READ_WRITE)))))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
@@ -669,7 +1092,7 @@ public final class BrokerAuthorizationCreateOrUpdateSamples {
  */
 public final class BrokerAuthorizationDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_Delete.
@@ -692,7 +1115,7 @@ public final class BrokerAuthorizationDeleteSamples {
  */
 public final class BrokerAuthorizationGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_Get.
@@ -715,7 +1138,7 @@ public final class BrokerAuthorizationGetSamples {
  */
 public final class BrokerAuthorizationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerAuthorization_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerAuthorization_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerAuthorization_ListByResourceGroup.
@@ -757,7 +1180,7 @@ import java.util.Arrays;
  */
 public final class BrokerListenerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate.
@@ -769,8 +1192,6 @@ public final class BrokerListenerCreateOrUpdateSamples {
         manager.brokerListeners()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerListenerProperties().withServiceName("tpfiszlapdpxktx")
                 .withPorts(Arrays.asList(new ListenerPort().withAuthenticationRef("tjvdroaqqy")
                     .withAuthorizationRef("fakeTokenPlaceholder")
@@ -790,11 +1211,14 @@ public final class BrokerListenerCreateOrUpdateSamples {
                                 .withIp(Arrays.asList("zbgugfzcgsmegevzktsnibyuyp"))))
                         .withManual(new X509ManualCertificate().withSecretRef("fakeTokenPlaceholder")))))
                 .withServiceType(ServiceType.CLUSTER_IP))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Simple.
@@ -806,14 +1230,15 @@ public final class BrokerListenerCreateOrUpdateSamples {
         manager.brokerListeners()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerListenerProperties().withPorts(Arrays.asList(new ListenerPort().withPort(1883))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/BrokerListener_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: BrokerListener_CreateOrUpdate_Complex.
@@ -825,8 +1250,6 @@ public final class BrokerListenerCreateOrUpdateSamples {
         manager.brokerListeners()
             .define("resource-name123")
             .withExistingBroker("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerListenerProperties()
                 .withPorts(Arrays.asList(
                     new ListenerPort().withAuthenticationRef("example-authentication")
@@ -846,6 +1269,9 @@ public final class BrokerListenerCreateOrUpdateSamples {
                         .withTls(new TlsCertMethod().withMode(TlsCertMethodMode.MANUAL)
                             .withManual(new X509ManualCertificate().withSecretRef("fakeTokenPlaceholder")))))
                 .withServiceType(ServiceType.LOAD_BALANCER))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 }
@@ -859,7 +1285,7 @@ public final class BrokerListenerCreateOrUpdateSamples {
  */
 public final class BrokerListenerDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerListener_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_Delete.
@@ -882,7 +1308,7 @@ public final class BrokerListenerDeleteSamples {
  */
 public final class BrokerListenerGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerListener_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_Get.
@@ -905,7 +1331,7 @@ public final class BrokerListenerGetSamples {
  */
 public final class BrokerListenerListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/BrokerListener_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/BrokerListener_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: BrokerListener_ListByResourceGroup.
@@ -947,7 +1373,7 @@ import java.util.Arrays;
  */
 public final class DataflowCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_FilterToTopic.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_FilterToTopic.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_FilterToTopic.
@@ -959,8 +1385,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("mqtt-filter-to-topic")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
                     .withOperations(
@@ -987,11 +1411,14 @@ public final class DataflowCreateOrUpdateSamples {
                                 .withDestinationSettings(new DataflowDestinationOperationSettings()
                                     .withEndpointRef("aio-builtin-broker-endpoint")
                                     .withDataDestination("data/filtered/thermostat")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate.
@@ -1002,10 +1429,9 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("resource-name123")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
+                    .withRequestDiskPersistence(OperationalMode.DISABLED)
                     .withOperations(Arrays.asList(new DataflowOperation().withOperationType(OperationType.SOURCE)
                         .withName("knnafvkwoeakm")
                         .withSourceSettings(new DataflowSourceOperationSettings()
@@ -1037,11 +1463,14 @@ public final class DataflowCreateOrUpdateSamples {
                         .withDestinationSettings(
                             new DataflowDestinationOperationSettings().withEndpointRef("kybkchnzimerguekuvqlqiqdvvrt")
                                 .withDataDestination("cbrh")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexContextualization.
@@ -1053,8 +1482,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("aio-to-adx-contexualized")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
                     .withOperations(Arrays.asList(
@@ -1081,11 +1508,14 @@ public final class DataflowCreateOrUpdateSamples {
                             .withDestinationSettings(
                                 new DataflowDestinationOperationSettings().withEndpointRef("adx-endpoint")
                                     .withDataDestination("mytable")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_ComplexEventHub.
@@ -1097,8 +1527,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("aio-to-event-hub-transformed")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
                     .withOperations(
@@ -1145,11 +1573,14 @@ public final class DataflowCreateOrUpdateSamples {
                                     .withDestinationSettings(
                                         new DataflowDestinationOperationSettings().withEndpointRef("event-hub-endpoint")
                                             .withDataDestination("myuniqueeventhub")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_SimpleFabric.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_SimpleFabric.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleFabric.
@@ -1161,8 +1592,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("aio-to-fabric")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowProperties().withMode(OperationalMode.ENABLED)
                     .withOperations(
@@ -1182,11 +1611,14 @@ public final class DataflowCreateOrUpdateSamples {
                                     .withDestinationSettings(
                                         new DataflowDestinationOperationSettings().withEndpointRef("fabric-endpoint")
                                             .withDataDestination("telemetryTable")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
+     * x-ms-original-file: 2026-07-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
      */
     /**
      * Sample code: Dataflow_CreateOrUpdate_SimpleEventGrid.
@@ -1198,8 +1630,6 @@ public final class DataflowCreateOrUpdateSamples {
         manager.dataflows()
             .define("aio-to-event-grid")
             .withExistingDataflowProfile("rgiotoperations", "resource-name123", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowProperties().withMode(OperationalMode.ENABLED)
                 .withOperations(Arrays.asList(
                     new DataflowOperation().withOperationType(OperationType.SOURCE)
@@ -1212,6 +1642,9 @@ public final class DataflowCreateOrUpdateSamples {
                         .withDestinationSettings(
                             new DataflowDestinationOperationSettings().withEndpointRef("event-grid-endpoint")
                                 .withDataDestination("factory/telemetry")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 }
@@ -1225,7 +1658,7 @@ public final class DataflowCreateOrUpdateSamples {
  */
 public final class DataflowDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Dataflow_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_Delete.
@@ -1248,7 +1681,7 @@ public final class DataflowDeleteSamples {
  */
 public final class DataflowGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Dataflow_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_Get.
@@ -1271,7 +1704,7 @@ public final class DataflowGetSamples {
  */
 public final class DataflowListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Dataflow_ListByProfileResource_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Dataflow_ListByProfileResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: Dataflow_ListByProfileResource.
@@ -1335,7 +1768,7 @@ import com.azure.resourcemanager.iotoperations.models.TlsProperties;
  */
 public final class DataflowEndpointCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_EventGrid.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_EventGrid.
@@ -1347,8 +1780,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("event-grid-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowEndpointProperties().withEndpointType(EndpointType.MQTT)
                 .withMqttSettings(new DataflowEndpointMqtt()
                     .withAuthentication(new DataflowEndpointMqttAuthentication()
@@ -1357,11 +1788,14 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                             new DataflowEndpointAuthenticationSystemAssignedManagedIdentity()))
                     .withHost("example.westeurope-1.ts.eventgrid.azure.net:8883")
                     .withTls(new TlsProperties().withMode(OperationalMode.ENABLED))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_ADLSv2.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_ADLSv2.
@@ -1373,8 +1807,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("adlsv2-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowEndpointProperties().withEndpointType(EndpointType.DATA_LAKE_STORAGE)
                 .withDataLakeStorageSettings(
                     new DataflowEndpointDataLakeStorage()
@@ -1384,11 +1816,14 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                                 .withAccessTokenSettings(new DataflowEndpointAuthenticationAccessToken()
                                     .withSecretRef("fakeTokenPlaceholder")))
                         .withHost("example.blob.core.windows.net")))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_EventHub.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_EventHub.
@@ -1400,8 +1835,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("event-hub-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowEndpointProperties().withEndpointType(EndpointType.KAFKA)
                 .withKafkaSettings(new DataflowEndpointKafka()
                     .withAuthentication(new DataflowEndpointKafkaAuthentication()
@@ -1411,11 +1844,14 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                     .withConsumerGroupId("aiodataflows")
                     .withHost("example.servicebus.windows.net:9093")
                     .withTls(new TlsProperties().withMode(OperationalMode.ENABLED))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate.
@@ -1427,8 +1863,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowEndpointProperties().withEndpointType(EndpointType.DATA_EXPLORER)
                     .withDataExplorerSettings(
@@ -1536,11 +1970,14 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                         .withTls(new TlsProperties().withMode(OperationalMode.ENABLED)
                             .withTrustedCaCertificateConfigMapRef("tectjjvukvelsreihwadh"))
                         .withCloudEventAttributes(CloudEventAttributeType.fromString("PassThrough"))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_ADX.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_ADX.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_ADX.
@@ -1552,8 +1989,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("adx-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowEndpointProperties().withEndpointType(EndpointType.DATA_EXPLORER)
                 .withDataExplorerSettings(new DataflowEndpointDataExplorer()
                     .withAuthentication(new DataflowEndpointDataExplorerAuthentication()
@@ -1563,11 +1998,14 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                     .withDatabase("example-database")
                     .withHost("example.westeurope.kusto.windows.net")
                     .withBatching(new BatchingConfiguration().withLatencySeconds(9312).withMaxMessages(9028))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_Fabric.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_Fabric.
@@ -1579,8 +2017,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("fabric-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowEndpointProperties().withEndpointType(EndpointType.FABRIC_ONE_LAKE)
                 .withFabricOneLakeSettings(new DataflowEndpointFabricOneLake()
                     .withAuthentication(new DataflowEndpointFabricOneLakeAuthentication()
@@ -1591,11 +2027,14 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                         .withWorkspaceName("example-workspace"))
                     .withOneLakePathType(DataflowEndpointFabricPathType.TABLES)
                     .withHost("onelake.dfs.fabric.microsoft.com")))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_LocalStorage.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_LocalStorage.
@@ -1607,16 +2046,17 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("local-storage-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowEndpointProperties().withEndpointType(EndpointType.LOCAL_STORAGE)
                 .withLocalStorageSettings(
                     new DataflowEndpointLocalStorage().withPersistentVolumeClaimRef("example-pvc")))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_AIO.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_AIO.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_AIO.
@@ -1628,8 +2068,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("aio-builtin-broker-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new DataflowEndpointProperties().withEndpointType(EndpointType.MQTT)
                     .withMqttSettings(new DataflowEndpointMqtt()
@@ -1640,11 +2078,14 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                         .withHost("aio-broker:18883")
                         .withTls(new TlsProperties().withMode(OperationalMode.ENABLED)
                             .withTrustedCaCertificateConfigMapRef("aio-ca-trust-bundle-test-only"))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_MQTT.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_MQTT.
@@ -1656,8 +2097,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("generic-mqtt-broker-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowEndpointProperties().withEndpointType(EndpointType.MQTT)
                 .withMqttSettings(new DataflowEndpointMqtt()
                     .withAuthentication(
@@ -1673,11 +2112,14 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                     .withQos(1)
                     .withSessionExpirySeconds(3600)
                     .withTls(new TlsProperties().withMode(OperationalMode.DISABLED))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_CreateOrUpdate_Kafka.json
      */
     /**
      * Sample code: DataflowEndpoint_CreateOrUpdate_Kafka.
@@ -1689,8 +2131,6 @@ public final class DataflowEndpointCreateOrUpdateSamples {
         manager.dataflowEndpoints()
             .define("generic-kafka-endpoint")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowEndpointProperties().withEndpointType(EndpointType.KAFKA)
                 .withKafkaSettings(new DataflowEndpointKafka()
                     .withAuthentication(new DataflowEndpointKafkaAuthentication().withMethod(KafkaAuthMethod.SASL)
@@ -1710,6 +2150,9 @@ public final class DataflowEndpointCreateOrUpdateSamples {
                     .withTls(new TlsProperties().withMode(OperationalMode.ENABLED)
                         .withTrustedCaCertificateConfigMapRef("ca-certificates"))
                     .withCloudEventAttributes(CloudEventAttributeType.PROPAGATE)))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 }
@@ -1723,7 +2166,7 @@ public final class DataflowEndpointCreateOrUpdateSamples {
  */
 public final class DataflowEndpointDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_Delete.
@@ -1745,7 +2188,7 @@ public final class DataflowEndpointDeleteSamples {
  */
 public final class DataflowEndpointGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_Get.
@@ -1768,7 +2211,7 @@ public final class DataflowEndpointGetSamples {
  */
 public final class DataflowEndpointListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/DataflowEndpoint_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowEndpoint_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_ListByResourceGroup.
@@ -1779,6 +2222,173 @@ public final class DataflowEndpointListByResourceGroupSamples {
         dataflowEndpointListByResourceGroup(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
         manager.dataflowEndpoints()
             .listByResourceGroup("rgiotoperations", "resource-name123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DataflowGraph_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphConnectionInput;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphConnectionOutput;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphConnectionSchemaSerializationFormat;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphConnectionSchemaSettings;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNode;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNodeSettings;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphGraphNode;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphGraphNodeConfiguration;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphNodeConnection;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphNodeGraphSettings;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphProperties;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphSourceNode;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphSourceSettings;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
+import com.azure.resourcemanager.iotoperations.models.OperationalMode;
+import java.util.Arrays;
+
+/**
+ * Samples for DataflowGraph CreateOrUpdate.
+ */
+public final class DataflowGraphCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/DataflowGraph_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DataflowGraph_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        dataflowGraphCreateOrUpdateMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.dataflowGraphs()
+            .define("resource-123")
+            .withExistingDataflowProfile("rgiotoperations", "resource-123", "resource-123")
+            .withProperties(
+                new DataflowGraphProperties().withMode(OperationalMode.ENABLED)
+                    .withRequestDiskPersistence(OperationalMode.ENABLED)
+                    .withNodes(
+                        Arrays.asList(new DataflowGraphSourceNode().withName("temperature")
+                            .withSourceSettings(new DataflowGraphSourceSettings().withEndpointRef("default")
+                                .withDataSources(Arrays.asList("telemetry/temperature"))),
+                            new DataflowGraphGraphNode().withName("my-graph")
+                                .withGraphSettings(new DataflowGraphNodeGraphSettings().withRegistryEndpointRef(
+                                    "my-registry-endpoint")
+                                    .withArtifact("my-wasm-module:1.4.3")
+                                    .withConfiguration(Arrays.asList(
+                                        new DataflowGraphGraphNodeConfiguration().withKey("fakeTokenPlaceholder")
+                                            .withValue("value1"),
+                                        new DataflowGraphGraphNodeConfiguration().withKey("fakeTokenPlaceholder")
+                                            .withValue("value2")))),
+                            new DataflowGraphDestinationNode().withName("alert")
+                                .withDestinationSettings(
+                                    new DataflowGraphDestinationNodeSettings().withEndpointRef("default")
+                                        .withDataDestination("telemetry/temperature/alert")),
+                            new DataflowGraphDestinationNode().withName("fabric")
+                                .withDestinationSettings(
+                                    new DataflowGraphDestinationNodeSettings().withEndpointRef("fabric")
+                                        .withDataDestination("my-table"))))
+                    .withNodeConnections(
+                        Arrays
+                            .asList(
+                                new DataflowGraphNodeConnection()
+                                    .withFrom(
+                                        new DataflowGraphConnectionInput().withName("temperature")
+                                            .withSchema(new DataflowGraphConnectionSchemaSettings()
+                                                .withSerializationFormat(
+                                                    DataflowGraphConnectionSchemaSerializationFormat.AVRO)
+                                                .withSchemaRef("aio-sr://namespace/temperature:1")))
+                                    .withTo(new DataflowGraphConnectionOutput().withName("my-graph")),
+                                new DataflowGraphNodeConnection()
+                                    .withFrom(
+                                        new DataflowGraphConnectionInput().withName("my-graph.alert-output")
+                                            .withSchema(new DataflowGraphConnectionSchemaSettings()
+                                                .withSerializationFormat(
+                                                    DataflowGraphConnectionSchemaSerializationFormat.AVRO)
+                                                .withSchemaRef("aio-sr://namespace/alert:1")))
+                                    .withTo(new DataflowGraphConnectionOutput().withName("fabric")),
+                                new DataflowGraphNodeConnection()
+                                    .withFrom(new DataflowGraphConnectionInput().withName("my-graph.normal-output")
+                                        .withSchema(new DataflowGraphConnectionSchemaSettings()
+                                            .withSerializationFormat(
+                                                DataflowGraphConnectionSchemaSerializationFormat.AVRO)
+                                            .withSchemaRef("aio-sr://namespace/alert:1")))
+                                    .withTo(new DataflowGraphConnectionOutput().withName("fabric")))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .create();
+    }
+}
+```
+
+### DataflowGraph_Delete
+
+```java
+/**
+ * Samples for DataflowGraph Delete.
+ */
+public final class DataflowGraphDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/DataflowGraph_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DataflowGraph_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        dataflowGraphDeleteMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.dataflowGraphs()
+            .delete("rgiotoperations", "resource-123", "resource-123", "resource-123",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DataflowGraph_Get
+
+```java
+/**
+ * Samples for DataflowGraph Get.
+ */
+public final class DataflowGraphGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/DataflowGraph_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DataflowGraph_Get_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        dataflowGraphGetMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.dataflowGraphs()
+            .getWithResponse("rgiotoperations", "resource-123", "resource-123", "resource-123",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DataflowGraph_ListByDataflowProfile
+
+```java
+/**
+ * Samples for DataflowGraph ListByDataflowProfile.
+ */
+public final class DataflowGraphListByDataflowProfileSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/DataflowGraph_ListByDataflowProfile_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DataflowGraph_ListByDataflowProfile_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void dataflowGraphListByDataflowProfileMaximumSet(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.dataflowGraphs()
+            .listByDataflowProfile("rgiotoperations", "resource-123", "resource-123", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1798,7 +2408,7 @@ import com.azure.resourcemanager.iotoperations.models.ProfileDiagnostics;
  */
 public final class DataflowProfileCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate.
@@ -1810,17 +2420,18 @@ public final class DataflowProfileCreateOrUpdateSamples {
         manager.dataflowProfiles()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowProfileProperties().withDiagnostics(
                 new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("rnmwokumdmebpmfxxxzvvjfdywotav"))
                     .withMetrics(new Metrics().withPrometheusPort(7581)))
                 .withInstanceCount(14))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate_Minimal.
@@ -1832,14 +2443,15 @@ public final class DataflowProfileCreateOrUpdateSamples {
         manager.dataflowProfiles()
             .define("aio-dataflowprofile")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowProfileProperties().withInstanceCount(1))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/DataflowProfile_CreateOrUpdate_Multi.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_CreateOrUpdate_Multi.json
      */
     /**
      * Sample code: DataflowProfile_CreateOrUpdate_Multi.
@@ -1851,9 +2463,10 @@ public final class DataflowProfileCreateOrUpdateSamples {
         manager.dataflowProfiles()
             .define("aio-dataflowprofile")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new DataflowProfileProperties().withInstanceCount(3))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 }
@@ -1867,7 +2480,7 @@ public final class DataflowProfileCreateOrUpdateSamples {
  */
 public final class DataflowProfileDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/DataflowProfile_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_Delete.
@@ -1889,7 +2502,7 @@ public final class DataflowProfileDeleteSamples {
  */
 public final class DataflowProfileGetSamples {
     /*
-     * x-ms-original-file: 2025-04-01/DataflowProfile_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_Get.
@@ -1912,7 +2525,7 @@ public final class DataflowProfileGetSamples {
  */
 public final class DataflowProfileListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowProfile_ListByResourceGroup.
@@ -1944,7 +2557,7 @@ import java.util.Map;
  */
 public final class InstanceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_CreateOrUpdate.
@@ -1954,10 +2567,11 @@ public final class InstanceCreateOrUpdateSamples {
     public static void instanceCreateOrUpdate(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
         manager.instances()
             .define("aio-instance")
-            .withRegion("xvewadyhycrjpu")
+            .withRegion("eastus2")
             .withExistingResourceGroup("rgiotoperations")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withTags(mapOf())
             .withProperties(new InstanceProperties().withDescription("kpqtgocs")
                 .withSchemaRegistryRef(new SchemaRegistryRef().withResourceId(
@@ -1989,7 +2603,7 @@ public final class InstanceCreateOrUpdateSamples {
  */
 public final class InstanceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Instance_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Delete.
@@ -2010,7 +2624,7 @@ public final class InstanceDeleteSamples {
  */
 public final class InstanceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Instance_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Get.
@@ -2032,7 +2646,7 @@ public final class InstanceGetByResourceGroupSamples {
  */
 public final class InstanceListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Instance_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_ListBySubscription.
@@ -2054,7 +2668,7 @@ public final class InstanceListSamples {
  */
 public final class InstanceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_ListByResourceGroup.
@@ -2082,7 +2696,7 @@ import java.util.Map;
  */
 public final class InstanceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Instance_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Instance_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Update.
@@ -2122,7 +2736,7 @@ public final class InstanceUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List.
@@ -2131,6 +2745,118 @@ public final class OperationsListSamples {
      */
     public static void operationsList(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RegistryEndpoint_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
+import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
+import com.azure.resourcemanager.iotoperations.models.RegistryEndpointAnonymousAuthentication;
+import com.azure.resourcemanager.iotoperations.models.RegistryEndpointAnonymousSettings;
+import com.azure.resourcemanager.iotoperations.models.RegistryEndpointProperties;
+import com.azure.resourcemanager.iotoperations.models.RegistryEndpointTrustedSigningKeyConfigMap;
+import com.azure.resourcemanager.iotoperations.models.RegistryEndpointTrustedSigningKeySecret;
+import java.util.Arrays;
+
+/**
+ * Samples for RegistryEndpoint CreateOrUpdate.
+ */
+public final class RegistryEndpointCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: RegistryEndpoint_CreateOrUpdate_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        registryEndpointCreateOrUpdateMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.registryEndpoints()
+            .define("resource-123")
+            .withExistingInstance("rgiotoperations", "resource-123")
+            .withProperties(new RegistryEndpointProperties().withHost("contoso.azurecr.io")
+                .withAuthentication(new RegistryEndpointAnonymousAuthentication()
+                    .withAnonymousSettings(new RegistryEndpointAnonymousSettings()))
+                .withCodeSigningCas(
+                    Arrays.asList(new RegistryEndpointTrustedSigningKeySecret().withSecretRef("fakeTokenPlaceholder"),
+                        new RegistryEndpointTrustedSigningKeyConfigMap().withConfigMapRef("my-configmap"))))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
+            .create();
+    }
+}
+```
+
+### RegistryEndpoint_Delete
+
+```java
+/**
+ * Samples for RegistryEndpoint Delete.
+ */
+public final class RegistryEndpointDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: RegistryEndpoint_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        registryEndpointDeleteMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.registryEndpoints()
+            .delete("rgiotoperations", "resource-123", "resource-123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RegistryEndpoint_Get
+
+```java
+/**
+ * Samples for RegistryEndpoint Get.
+ */
+public final class RegistryEndpointGetSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: RegistryEndpoint_Get_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void
+        registryEndpointGetMaximumSet(com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.registryEndpoints()
+            .getWithResponse("rgiotoperations", "resource-123", "resource-123", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### RegistryEndpoint_ListByInstanceResource
+
+```java
+/**
+ * Samples for RegistryEndpoint ListByInstanceResource.
+ */
+public final class RegistryEndpointListByInstanceResourceSamples {
+    /*
+     * x-ms-original-file: 2026-07-01/RegistryEndpoint_ListByInstanceResource_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: RegistryEndpoint_ListByInstanceResource_MaximumSet.
+     * 
+     * @param manager Entry point to IoTOperationsManager.
+     */
+    public static void registryEndpointListByInstanceResourceMaximumSet(
+        com.azure.resourcemanager.iotoperations.IoTOperationsManager manager) {
+        manager.registryEndpoints()
+            .listByInstanceResource("rgiotoperations", "resource-123", com.azure.core.util.Context.NONE);
     }
 }
 ```

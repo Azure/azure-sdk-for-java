@@ -151,7 +151,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * A locality hint that can be used by the Batch service to select a Compute Node on which to start the new Task.
      */
     @Generated
-    private AffinityInfo affinityInfo;
+    private BatchAffinityDetails affinityInfo;
 
     /*
      * The execution constraints that apply to this Task.
@@ -178,13 +178,13 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * Information about the execution of the Task.
      */
     @Generated
-    private BatchTaskExecutionInfo executionInfo;
+    private BatchTaskExecutionDetails executionInfo;
 
     /*
      * Information about the Compute Node on which the Task ran.
      */
     @Generated
-    private BatchNodeInfo nodeInfo;
+    private BatchNodeDetails nodeInfo;
 
     /*
      * An object that indicates that the Task is a multi-instance Task, and contains information about how to run the
@@ -192,12 +192,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      */
     @Generated
     private MultiInstanceSettings multiInstanceSettings;
-
-    /*
-     * Resource usage statistics for the Task.
-     */
-    @Generated
-    private BatchTaskStatistics stats;
 
     /*
      * The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have
@@ -216,17 +210,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      */
     @Generated
     private List<BatchApplicationPackageReference> applicationPackageReferences;
-
-    /*
-     * The settings for an authentication token that the Task can use to perform Batch service operations. If this
-     * property is set, the Batch service provides the Task with an authentication token which can be used to
-     * authenticate Batch service operations without requiring an Account access key. The token is provided via the
-     * AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token
-     * depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job,
-     * or check the status of the Job or of other Tasks under the Job.
-     */
-    @Generated
-    private AuthenticationTokenSettings authenticationTokenSettings;
 
     /**
      * Creates an instance of BatchTask class.
@@ -429,7 +412,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the affinityInfo value.
      */
     @Generated
-    public AffinityInfo getAffinityInfo() {
+    public BatchAffinityDetails getAffinityInfo() {
         return this.affinityInfo;
     }
 
@@ -484,7 +467,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the executionInfo value.
      */
     @Generated
-    public BatchTaskExecutionInfo getExecutionInfo() {
+    public BatchTaskExecutionDetails getExecutionInfo() {
         return this.executionInfo;
     }
 
@@ -494,7 +477,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @return the nodeInfo value.
      */
     @Generated
-    public BatchNodeInfo getNodeInfo() {
+    public BatchNodeDetails getNodeInfo() {
         return this.nodeInfo;
     }
 
@@ -507,16 +490,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     @Generated
     public MultiInstanceSettings getMultiInstanceSettings() {
         return this.multiInstanceSettings;
-    }
-
-    /**
-     * Get the stats property: Resource usage statistics for the Task.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchTaskStatistics getStats() {
-        return this.stats;
     }
 
     /**
@@ -546,21 +519,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     }
 
     /**
-     * Get the authenticationTokenSettings property: The settings for an authentication token that the Task can use to
-     * perform Batch service operations. If this property is set, the Batch service provides the Task with an
-     * authentication token which can be used to authenticate Batch service operations without requiring an Account
-     * access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that
-     * the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in
-     * order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
-     *
-     * @return the authenticationTokenSettings value.
-     */
-    @Generated
-    public AuthenticationTokenSettings getAuthenticationTokenSettings() {
-        return this.authenticationTokenSettings;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -577,6 +535,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
      * @param jsonReader The JsonReader being read.
      * @return An instance of BatchTask if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchTask.
      */
     @Generated
@@ -588,8 +547,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     deserializedBatchTask.id = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    deserializedBatchTask.displayName = reader.getString();
                 } else if ("url".equals(fieldName)) {
                     deserializedBatchTask.url = reader.getString();
                 } else if ("eTag".equals(fieldName)) {
@@ -600,20 +557,22 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("creationTime".equals(fieldName)) {
                     deserializedBatchTask.creationTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("exitConditions".equals(fieldName)) {
-                    deserializedBatchTask.exitConditions = ExitConditions.fromJson(reader);
                 } else if ("state".equals(fieldName)) {
                     deserializedBatchTask.state = BatchTaskState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
                     deserializedBatchTask.stateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("commandLine".equals(fieldName)) {
+                    deserializedBatchTask.commandLine = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedBatchTask.displayName = reader.getString();
+                } else if ("exitConditions".equals(fieldName)) {
+                    deserializedBatchTask.exitConditions = ExitConditions.fromJson(reader);
                 } else if ("previousState".equals(fieldName)) {
                     deserializedBatchTask.previousState = BatchTaskState.fromString(reader.getString());
                 } else if ("previousStateTransitionTime".equals(fieldName)) {
                     deserializedBatchTask.previousStateTransitionTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
-                } else if ("commandLine".equals(fieldName)) {
-                    deserializedBatchTask.commandLine = reader.getString();
                 } else if ("containerSettings".equals(fieldName)) {
                     deserializedBatchTask.containerSettings = BatchTaskContainerSettings.fromJson(reader);
                 } else if ("resourceFiles".equals(fieldName)) {
@@ -627,7 +586,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                         = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                     deserializedBatchTask.environmentSettings = environmentSettings;
                 } else if ("affinityInfo".equals(fieldName)) {
-                    deserializedBatchTask.affinityInfo = AffinityInfo.fromJson(reader);
+                    deserializedBatchTask.affinityInfo = BatchAffinityDetails.fromJson(reader);
                 } else if ("constraints".equals(fieldName)) {
                     deserializedBatchTask.constraints = BatchTaskConstraints.fromJson(reader);
                 } else if ("requiredSlots".equals(fieldName)) {
@@ -635,26 +594,40 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("userIdentity".equals(fieldName)) {
                     deserializedBatchTask.userIdentity = UserIdentity.fromJson(reader);
                 } else if ("executionInfo".equals(fieldName)) {
-                    deserializedBatchTask.executionInfo = BatchTaskExecutionInfo.fromJson(reader);
+                    deserializedBatchTask.executionInfo = BatchTaskExecutionDetails.fromJson(reader);
                 } else if ("nodeInfo".equals(fieldName)) {
-                    deserializedBatchTask.nodeInfo = BatchNodeInfo.fromJson(reader);
+                    deserializedBatchTask.nodeInfo = BatchNodeDetails.fromJson(reader);
                 } else if ("multiInstanceSettings".equals(fieldName)) {
                     deserializedBatchTask.multiInstanceSettings = MultiInstanceSettings.fromJson(reader);
                 } else if ("stats".equals(fieldName)) {
-                    deserializedBatchTask.stats = BatchTaskStatistics.fromJson(reader);
+                    deserializedBatchTask.taskStatistics = BatchTaskStatistics.fromJson(reader);
                 } else if ("dependsOn".equals(fieldName)) {
                     deserializedBatchTask.dependsOn = BatchTaskDependencies.fromJson(reader);
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     List<BatchApplicationPackageReference> applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
                     deserializedBatchTask.applicationPackageReferences = applicationPackageReferences;
-                } else if ("authenticationTokenSettings".equals(fieldName)) {
-                    deserializedBatchTask.authenticationTokenSettings = AuthenticationTokenSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedBatchTask;
         });
+    }
+
+    /*
+     * Resource usage statistics for the Task.
+     */
+    @Generated
+    private BatchTaskStatistics taskStatistics;
+
+    /**
+     * Get the taskStatistics property: Resource usage statistics for the Task.
+     *
+     * @return the taskStatistics value.
+     */
+    @Generated
+    public BatchTaskStatistics getTaskStatistics() {
+        return this.taskStatistics;
     }
 }

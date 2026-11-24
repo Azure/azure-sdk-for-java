@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computefleet.fluent.models.FleetInner;
+import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.computefleet.models.FleetUpdate;
 
@@ -292,4 +293,35 @@ public interface FleetsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualMachineScaleSetInner> listVirtualMachineScaleSets(String resourceGroupName, String name,
         Context context);
+
+    /**
+     * List VirtualMachine resources of a Launch mode Fleet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Fleet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a virtual machine list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineInner> listVirtualMachines(String resourceGroupName, String name);
+
+    /**
+     * List VirtualMachine resources of a Launch mode Fleet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param name The name of the Fleet.
+     * @param filter Filter expression to filter the virtual machines.
+     * @param skiptoken Skip token for pagination. Uses the token from a previous response to fetch the next page of
+     * results.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a virtual machine list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineInner> listVirtualMachines(String resourceGroupName, String name, String filter,
+        String skiptoken, Context context);
 }

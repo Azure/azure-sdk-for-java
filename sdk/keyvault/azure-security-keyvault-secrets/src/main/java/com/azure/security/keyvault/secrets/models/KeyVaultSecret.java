@@ -135,6 +135,8 @@ public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
                     keyVaultSecret.properties.managed = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kid".equals(fieldName)) {
                     keyVaultSecret.properties.keyId = reader.getString();
+                } else if ("previousVersion".equals(fieldName)) {
+                    keyVaultSecret.properties.previousVersion = reader.getString();
                 } else if ("contentType".equals(fieldName)) {
                     keyVaultSecret.properties.contentType = reader.getString();
                 } else if ("tags".equals(fieldName)) {

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.containerservicefleet.models.GateProvisioningSt
 import com.azure.resourcemanager.containerservicefleet.models.GateState;
 import com.azure.resourcemanager.containerservicefleet.models.GateTarget;
 import com.azure.resourcemanager.containerservicefleet.models.GateType;
+import com.azure.resourcemanager.containerservicefleet.models.ScheduledStartProperties;
 import java.io.IOException;
 
 /**
@@ -148,6 +149,15 @@ public final class GateInner extends ProxyResource {
     }
 
     /**
+     * Get the scheduledStartProperties property: Details for ScheduledStart gate.
+     * 
+     * @return the scheduledStartProperties value.
+     */
+    public ScheduledStartProperties scheduledStartProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().scheduledStartProperties();
+    }
+
+    /**
      * Get the target property: The target that the Gate is controlling, e.g. an Update Run.
      * 
      * @return the target value.
@@ -163,17 +173,6 @@ public final class GateInner extends ProxyResource {
      */
     public GateState state() {
         return this.innerProperties() == null ? null : this.innerProperties().state();
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 
     /**

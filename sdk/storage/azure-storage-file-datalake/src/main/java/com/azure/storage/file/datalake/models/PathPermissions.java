@@ -120,7 +120,7 @@ public class PathPermissions {
      * Converts a symbolic representation of the permissions into a {@code PathPermissions} object.
      * <p>
      * e.g. rwxr-x-wT
-     * Each set of three characters correspondes to owner, owning group, and other respectively. 'r', 'w', and 'x'
+     * Each set of three characters corresponds to owner, owning group, and other respectively. 'r', 'w', and 'x'
      * respectively refer to read, write, and execute. A '-' indicates the permission is not given. The sticky bit, if
      * set, takes the place of the last execute bit; a 't' takes the place of 'x' and a 'T' takes the place of '-'.
      *

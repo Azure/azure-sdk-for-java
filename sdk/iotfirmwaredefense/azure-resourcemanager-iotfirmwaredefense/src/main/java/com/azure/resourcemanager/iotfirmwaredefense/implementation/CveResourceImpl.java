@@ -6,6 +6,7 @@ package com.azure.resourcemanager.iotfirmwaredefense.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CveResourceInner;
+import com.azure.resourcemanager.iotfirmwaredefense.models.CveComponent;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveLink;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CveResource;
 import com.azure.resourcemanager.iotfirmwaredefense.models.CvssScore;
@@ -62,6 +63,26 @@ public final class CveResourceImpl implements CveResource {
 
     public String cveName() {
         return this.innerModel().cveName();
+    }
+
+    public CveComponent component() {
+        return this.innerModel().component();
+    }
+
+    public String cvssScore() {
+        return this.innerModel().cvssScore();
+    }
+
+    public String cvssV2Score() {
+        return this.innerModel().cvssV2Score();
+    }
+
+    public String cvssV3Score() {
+        return this.innerModel().cvssV3Score();
+    }
+
+    public String cvssVersion() {
+        return this.innerModel().cvssVersion();
     }
 
     public Double effectiveCvssScore() {

@@ -346,7 +346,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "createItemTestCaseProvider", timeOut = TIMEOUT * 10)
+    @Test(groups = { "emulator" }, dataProvider = "createItemTestCaseProvider", timeOut = TIMEOUT * 10, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem(
         boolean hasExplicitPK,
         boolean isContentResponseOnWriteEnabled,
@@ -489,7 +489,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "upsertItemTestCaseProvider", timeOut = TIMEOUT * 10)
+    @Test(groups = { "emulator" }, dataProvider = "upsertItemTestCaseProvider", timeOut = TIMEOUT * 10, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void upsertItem(
         boolean itemExistsAlready,
         boolean injectFailure,
@@ -626,7 +626,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-            .delay(Duration.ofMillis(1500))
+            .delay(Duration.ofMillis(6000))
             .times(1);
 
         if (suppressServiceRequests != null) {

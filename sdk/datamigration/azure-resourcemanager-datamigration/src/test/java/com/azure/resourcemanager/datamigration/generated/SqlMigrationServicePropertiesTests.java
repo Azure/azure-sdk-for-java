@@ -11,7 +11,7 @@ public final class SqlMigrationServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlMigrationServiceProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"ikh\",\"integrationRuntimeState\":\"fjhdg\"}")
+            = BinaryData.fromString("{\"provisioningState\":\"ofwq\",\"integrationRuntimeState\":\"qal\"}")
                 .toObject(SqlMigrationServiceProperties.class);
     }
 

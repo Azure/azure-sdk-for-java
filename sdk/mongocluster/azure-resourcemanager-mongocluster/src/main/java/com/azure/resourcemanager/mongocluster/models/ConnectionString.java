@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Connection string for the mongo cluster.
+ * Connection string for the DocumentDB cluster.
  */
 @Immutable
 public final class ConnectionString implements JsonSerializable<ConnectionString> {
@@ -62,14 +62,6 @@ public final class ConnectionString implements JsonSerializable<ConnectionString
      */
     public String name() {
         return this.name;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

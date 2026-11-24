@@ -7,11 +7,11 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.implementation.converter.AbstractJacksonAzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.Assert;
+import tools.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

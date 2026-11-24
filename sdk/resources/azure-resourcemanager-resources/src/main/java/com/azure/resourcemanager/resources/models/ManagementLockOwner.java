@@ -1,0 +1,93 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// Generated code
+
+package com.azure.resourcemanager.resources.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+
+/**
+ * Lock owner properties.
+ */
+@Fluent
+public final class ManagementLockOwner implements JsonSerializable<ManagementLockOwner> {
+    /*
+     * The application ID of the lock owner.
+     */
+    private String applicationId;
+
+    /**
+     * Creates an instance of ManagementLockOwner class.
+     */
+    public ManagementLockOwner() {
+    }
+
+    /**
+     * Get the applicationId property: The application ID of the lock owner.
+     * 
+     * @return the applicationId value.
+     */
+    public String applicationId() {
+        return this.applicationId;
+    }
+
+    /**
+     * Set the applicationId property: The application ID of the lock owner.
+     * 
+     * @param applicationId the applicationId value to set.
+     * @return the ManagementLockOwner object itself.
+     */
+    public ManagementLockOwner withApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementLockOwner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementLockOwner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementLockOwner.
+     */
+    public static ManagementLockOwner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementLockOwner deserializedManagementLockOwner = new ManagementLockOwner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationId".equals(fieldName)) {
+                    deserializedManagementLockOwner.applicationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementLockOwner;
+        });
+    }
+}

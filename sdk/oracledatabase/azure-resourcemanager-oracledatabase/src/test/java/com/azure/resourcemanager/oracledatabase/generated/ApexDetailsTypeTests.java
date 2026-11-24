@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApexDetailsTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApexDetailsType model = BinaryData.fromString("{\"apexVersion\":\"ydxtqm\",\"ordsVersion\":\"ox\"}")
+        ApexDetailsType model = BinaryData.fromString("{\"apexVersion\":\"ubdyhgk\",\"ordsVersion\":\"in\"}")
             .toObject(ApexDetailsType.class);
-        Assertions.assertEquals("ydxtqm", model.apexVersion());
-        Assertions.assertEquals("ox", model.ordsVersion());
+        Assertions.assertEquals("ubdyhgk", model.apexVersion());
+        Assertions.assertEquals("in", model.ordsVersion());
     }
 }

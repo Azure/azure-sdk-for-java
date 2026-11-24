@@ -8,9 +8,12 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorInner;
+import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.OperationStatusResult;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnector;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorProperties;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorPropertiesUpdate;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 import java.util.Collections;
 import java.util.Map;
 
@@ -49,6 +52,10 @@ public final class PublicCloudConnectorImpl
         return this.innerModel().properties();
     }
 
+    public HostType kind() {
+        return this.innerModel().kind();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -77,6 +84,8 @@ public final class PublicCloudConnectorImpl
 
     private String publicCloudConnector;
 
+    private PublicCloudConnectorUpdate updateProperties;
+
     public PublicCloudConnectorImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -104,13 +113,14 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnectorImpl update() {
+        this.updateProperties = new PublicCloudConnectorUpdate();
         return this;
     }
 
     public PublicCloudConnector apply() {
         this.innerObject = serviceManager.serviceClient()
             .getPublicCloudConnectors()
-            .updateWithResponse(resourceGroupName, publicCloudConnector, this.innerModel(), Context.NONE)
+            .updateWithResponse(resourceGroupName, publicCloudConnector, updateProperties, Context.NONE)
             .getValue();
         return this;
     }
@@ -118,7 +128,7 @@ public final class PublicCloudConnectorImpl
     public PublicCloudConnector apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getPublicCloudConnectors()
-            .updateWithResponse(resourceGroupName, publicCloudConnector, this.innerModel(), context)
+            .updateWithResponse(resourceGroupName, publicCloudConnector, updateProperties, context)
             .getValue();
         return this;
     }
@@ -127,9 +137,12 @@ public final class PublicCloudConnectorImpl
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.publicCloudConnector
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "publicCloudConnectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}",
+            "resourceGroupName");
+        this.publicCloudConnector = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}",
+            "publicCloudConnector");
     }
 
     public PublicCloudConnector refresh() {
@@ -167,12 +180,26 @@ public final class PublicCloudConnectorImpl
     }
 
     public PublicCloudConnectorImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public PublicCloudConnectorImpl withProperties(PublicCloudConnectorProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public PublicCloudConnectorImpl withProperties(PublicCloudConnectorPropertiesUpdate properties) {
+        this.updateProperties.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

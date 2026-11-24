@@ -101,17 +101,6 @@ public final class IPConfigurationProperties implements JsonSerializable<IPConfi
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (subnet() != null) {
-            subnet().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

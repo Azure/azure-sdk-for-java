@@ -6,19 +6,24 @@ package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.durabletask.implementation.models.SchedulerListResult;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.durabletask.models.PublicNetworkAccess;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import org.junit.jupiter.api.Assertions;
 
 public final class SchedulerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"endpoint\":\"heotusiv\",\"ipAllowlist\":[\"v\",\"ciqihnhung\",\"wjzrnfygxgisp\"],\"sku\":{\"name\":\"mvtzfkufub\",\"capacity\":698311711,\"redundancyState\":\"Zone\"}},\"location\":\"eofjaeqjh\",\"tags\":{\"mjqulngsn\":\"asvm\"},\"id\":\"nbybkzgcwrwcl\",\"name\":\"xwrljdouskcqvkoc\",\"type\":\"cjdkwtnhxbnjbi\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"endpoint\":\"lssai\",\"ipAllowlist\":[\"p\",\"wnzlljfmppeeb\",\"mgxsab\"],\"sku\":{\"name\":\"yqduujit\",\"capacity\":1447556622,\"redundancyState\":\"Zone\"}},\"location\":\"evndh\",\"tags\":{\"dkvwrwjfe\":\"pdappds\",\"je\":\"snhu\",\"hocdgeab\":\"tmrldhugjzzdatq\"},\"id\":\"gphuticndvka\",\"name\":\"zwyiftyhxhur\",\"type\":\"k\"}],\"nextLink\":\"yxolniwp\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"endpoint\":\"jzwf\",\"ipAllowlist\":[\"q\",\"jidsuyonobglaoc\",\"xtccmg\"],\"sku\":{\"name\":\"Consumption\",\"capacity\":435564330,\"redundancyState\":\"None\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"vwfudwpzntxhd\",\"name\":\"hl\",\"type\":\"qj\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"kfrlhrxsbky\",\"name\":\"pycanuzbpz\",\"type\":\"afkuwb\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"wbme\",\"name\":\"hseyvju\",\"type\":\"rts\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"pkdeemaofmxagkvt\",\"name\":\"elmqk\",\"type\":\"hahvljuahaq\"}]},\"identity\":{\"principalId\":\"dhmdua\",\"tenantId\":\"exq\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"isgwbnbbeldawkz\":{\"principalId\":\"mwsrcrgvxpvgo\",\"clientId\":\"lf\"}}},\"location\":\"liourqhak\",\"tags\":{\"w\":\"ashsfwxos\",\"cjooxdjebwpucwwf\":\"xcug\",\"hzceuojgjrwjue\":\"ovbvmeueciv\"},\"id\":\"otwmcdyt\",\"name\":\"x\",\"type\":\"it\"},{\"properties\":{\"provisioningState\":\"Provisioning\",\"endpoint\":\"wgqwgxhn\",\"ipAllowlist\":[\"kxfbkpycgklwndn\",\"jdauwhvy\"],\"sku\":{\"name\":\"Dedicated\",\"capacity\":725778535,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"bm\",\"name\":\"ow\",\"type\":\"wpr\"}]},\"identity\":{\"principalId\":\"veual\",\"tenantId\":\"j\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"tjrip\":{\"principalId\":\"obbc\",\"clientId\":\"s\"},\"zvlvqhjkbegib\":{\"principalId\":\"bpbewtghfgb\",\"clientId\":\"gw\"},\"tzjuzgwyzmhtxo\":{\"principalId\":\"mxiebw\",\"clientId\":\"loayqcgw\"}}},\"location\":\"mtsavjcbpwxqp\",\"tags\":{\"mdyvxqtayriw\":\"nftguvriuhpr\",\"qbex\":\"ro\",\"nmefqsgzvahapj\":\"mcqibycnojv\"},\"id\":\"zhpvgqzcjrvxd\",\"name\":\"zlmwlxkvugfhz\",\"type\":\"vawjvzunlu\"}],\"nextLink\":\"nnprn\"}")
             .toObject(SchedulerListResult.class);
-        Assertions.assertEquals("eofjaeqjh", model.value().get(0).location());
-        Assertions.assertEquals("asvm", model.value().get(0).tags().get("mjqulngsn"));
-        Assertions.assertEquals("v", model.value().get(0).properties().ipAllowlist().get(0));
-        Assertions.assertEquals("mvtzfkufub", model.value().get(0).properties().sku().name());
-        Assertions.assertEquals(698311711, model.value().get(0).properties().sku().capacity());
-        Assertions.assertEquals("yxolniwp", model.nextLink());
+        Assertions.assertEquals("liourqhak", model.value().get(0).location());
+        Assertions.assertEquals("ashsfwxos", model.value().get(0).tags().get("w"));
+        Assertions.assertEquals("q", model.value().get(0).properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.value().get(0).properties().sku().name());
+        Assertions.assertEquals(435564330, model.value().get(0).properties().sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.value().get(0).properties().publicNetworkAccess());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("nnprn", model.nextLink());
     }
 }

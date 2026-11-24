@@ -3,12 +3,15 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.storage.blob.BlobClient;
@@ -21,6 +24,10 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -352,6 +359,27 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
                 assertFalse(destChildClient.exists());
             }
         }
+    }
+
+    @Test
+    public void copySourceWithSas() throws IOException {
+        AzureSasCredential cred = new AzureSasCredential(primaryBlobServiceClient
+            .generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusDays(2),
+                AccountSasPermission.parse("rwcdl"), new AccountSasService().setBlobAccess(true),
+                new AccountSasResourceType().setContainer(true).setObject(true))));
+
+        config.put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL, cred);
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName() + "," + generateContainerName());
+
+        AzureFileSystem fs
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
+        basicSetupForCopyTest(fs);
+
+        fs.provider().createDirectory(sourcePath);
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES);
+
+        assertTrue(destinationClient.exists());
+        checkBlobIsDir(destinationClient);
     }
 
     @ParameterizedTest
@@ -1113,14 +1141,122 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         assertDoesNotThrow(() -> fs.provider().checkAccess(path));
     }
 
-    @ParameterizedTest
-    @EnumSource(value = AccessMode.class, names = { "READ", "WRITE", "EXECUTE" })
-    public void checkAccessAccessDenied(AccessMode mode) throws IOException {
+    @Test
+    public void checkAccessRead() throws IOException {
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());
         fs.provider().newOutputStream(path).close();
 
-        assertThrows(AccessDeniedException.class, () -> fs.provider().checkAccess(path, mode));
+        assertDoesNotThrow(() -> fs.provider().checkAccess(path, AccessMode.READ));
+    }
+
+    @Test
+    public void checkAccessReadNoFile() {
+        AzureFileSystem fs = createFS(config);
+        Path path = fs.getPath(generateBlobName());
+
+        assertThrows(NoSuchFileException.class, () -> fs.provider().checkAccess(path, AccessMode.READ));
+    }
+
+    @Test
+    public void checkAccessDirectoryRead() throws IOException {
+        AzureFileSystem fs = createFS(config);
+        Path path = fs.getPath(generateBlobName());
+        fs.provider().createDirectory(path);
+
+        assertDoesNotThrow(() -> fs.provider().checkAccess(path, AccessMode.READ));
+        assertTrue(Files.isReadable(path));
+    }
+
+    @Test
+    public void checkAccessDirectoryReadDenied() throws IOException {
+        AzureFileSystem fs = createFS(config);
+        String dirName = generateBlobName();
+        String virtualDirName = generateBlobName();
+        String fileName = generateBlobName();
+        fs.provider().createDirectory(fs.getPath(dirName));
+        ((AzurePath) fs.getPath(virtualDirName, generateBlobName())).toBlobClient().upload(DATA.getDefaultBinaryData());
+        fs.provider().newOutputStream(fs.getPath(fileName)).close();
+
+        // Read without list permission allows getting properties but not listing directory contents.
+        Map<String, Object> sasConfig = initializeConfigMap();
+        sasConfig.put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+            new AzureSasCredential(primaryBlobServiceClient
+                .generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusDays(2),
+                    AccountSasPermission.parse("r"), new AccountSasService().setBlobAccess(true),
+                    new AccountSasResourceType().setContainer(true).setObject(true)))));
+        sasConfig.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, rootNameToContainerName(getDefaultDir(fs)));
+        sasConfig.put(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK, true);
+        AzureFileSystem sasFs
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), sasConfig);
+        Path dir = sasFs.getPath(dirName);
+        Path virtualDir = sasFs.getPath(virtualDirName);
+        Path file = sasFs.getPath(fileName);
+
+        assertDoesNotThrow(() -> sasFs.provider().checkAccess(file, AccessMode.READ));
+        assertDoesNotThrow(() -> sasFs.provider().checkAccess(dir));
+        IOException e = assertThrows(IOException.class, () -> sasFs.provider().checkAccess(dir, AccessMode.READ));
+        assertFalse(e instanceof NoSuchFileException);
+        assertFalse(Files.isReadable(dir));
+        assertFalse(Files.isReadable(virtualDir));
+    }
+
+    @Test
+    public void checkAccessRootRead() {
+        AzureFileSystem fs = createFS(config);
+        Path path = fs.getPath(getDefaultDir(fs));
+
+        assertDoesNotThrow(() -> fs.provider().checkAccess(path, AccessMode.READ));
+        assertTrue(Files.isReadable(path));
+    }
+
+    @Test
+    public void checkAccessRootReadDenied() throws IOException {
+        String containerName = generateContainerName();
+        primaryBlobServiceClient.createBlobContainer(containerName);
+        config
+            .put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL,
+                new AzureSasCredential(primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
+                    testResourceNamer.now().plusDays(2), AccountSasPermission.parse("d"),
+                    new AccountSasService().setBlobAccess(true), new AccountSasResourceType().setContainer(true)))));
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, containerName);
+        config.put(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK, true);
+        AzureFileSystem fs
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
+        Path path = fs.getPath(getDefaultDir(fs));
+
+        IOException e = assertThrows(IOException.class, () -> fs.provider().checkAccess(path, AccessMode.READ));
+        assertFalse(e instanceof NoSuchFileException);
+        assertFalse(Files.isReadable(path));
+    }
+
+    @Test
+    public void checkAccessRootReadNoContainer() throws IOException {
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName());
+        config.put(AzureFileSystem.AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK, true);
+        AzureFileSystem fs
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
+        Path path = fs.getPath(getDefaultDir(fs));
+
+        assertThrows(NoSuchFileException.class, () -> fs.provider().checkAccess(path, AccessMode.READ));
+    }
+
+    @ParameterizedTest
+    @MethodSource("checkAccessAccessDeniedSupplier")
+    public void checkAccessAccessDenied(AccessMode[] modes) throws IOException {
+        AzureFileSystem fs = createFS(config);
+        Path path = fs.getPath(generateBlobName());
+        fs.provider().newOutputStream(path).close();
+
+        assertThrows(AccessDeniedException.class, () -> fs.provider().checkAccess(path, modes));
+    }
+
+    private static Stream<Arguments> checkAccessAccessDeniedSupplier() {
+        return Stream.of(Arguments.of((Object) new AccessMode[] { AccessMode.WRITE }),
+            Arguments.of((Object) new AccessMode[] { AccessMode.EXECUTE }),
+            Arguments.of((Object) new AccessMode[] { AccessMode.READ, AccessMode.WRITE }),
+            Arguments.of((Object) new AccessMode[] { AccessMode.READ, AccessMode.EXECUTE }));
     }
 
     @Test
@@ -1381,6 +1517,9 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     @ParameterizedTest
     @MethodSource("setAttributesTierSupplier")
     public void setAttributesTier(AccessTier tier) throws IOException {
+        // Tier behavior is independent of listing format; retain this test's XML recordings.
+        config = initializeConfigMap(
+            new AddHeadersPolicy(new HttpHeaders().set(HttpHeaderName.ACCEPT, "application/xml")));
         AzureFileSystem fs = createFS(config);
         Path path = fs.getPath(generateBlobName());
         OutputStream os = fs.provider().newOutputStream(path);

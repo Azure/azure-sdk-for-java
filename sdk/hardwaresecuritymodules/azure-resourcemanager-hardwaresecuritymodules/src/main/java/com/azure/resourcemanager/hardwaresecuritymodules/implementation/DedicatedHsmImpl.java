@@ -46,6 +46,10 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         }
     }
 
+    public DedicatedHsmProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public Sku sku() {
         return this.innerModel().sku();
     }
@@ -57,10 +61,6 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public DedicatedHsmProperties properties() {
-        return this.innerModel().properties();
     }
 
     public SystemData systemData() {
@@ -142,8 +142,12 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dedicatedHSMs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}",
+            "resourceGroupName");
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}",
+            "name");
     }
 
     public DedicatedHsm refresh() {
@@ -172,13 +176,13 @@ public final class DedicatedHsmImpl implements DedicatedHsm, DedicatedHsm.Defini
         return this;
     }
 
-    public DedicatedHsmImpl withSku(Sku sku) {
-        this.innerModel().withSku(sku);
+    public DedicatedHsmImpl withProperties(DedicatedHsmProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public DedicatedHsmImpl withProperties(DedicatedHsmProperties properties) {
-        this.innerModel().withProperties(properties);
+    public DedicatedHsmImpl withSku(Sku sku) {
+        this.innerModel().withSku(sku);
         return this;
     }
 

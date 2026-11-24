@@ -12,15 +12,15 @@ public final class CloudLinkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudLinkInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Building\",\"linkedCloud\":\"cktqumiekkezzi\"},\"id\":\"ly\",\"name\":\"jhdgqggebdunyga\",\"type\":\"qidbqfatpxllrxcy\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Active\",\"linkedCloud\":\"qfpjk\"},\"id\":\"xofpdvhpfxxypi\",\"name\":\"i\",\"type\":\"mayhuybbkpodepoo\"}")
             .toObject(CloudLinkInner.class);
-        Assertions.assertEquals("cktqumiekkezzi", model.linkedCloud());
+        Assertions.assertEquals("qfpjk", model.linkedCloud());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudLinkInner model = new CloudLinkInner().withLinkedCloud("cktqumiekkezzi");
+        CloudLinkInner model = new CloudLinkInner().withLinkedCloud("qfpjk");
         model = BinaryData.fromObject(model).toObject(CloudLinkInner.class);
-        Assertions.assertEquals("cktqumiekkezzi", model.linkedCloud());
+        Assertions.assertEquals("qfpjk", model.linkedCloud());
     }
 }

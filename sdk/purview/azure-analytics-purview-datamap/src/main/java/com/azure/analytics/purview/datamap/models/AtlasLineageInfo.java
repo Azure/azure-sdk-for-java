@@ -180,8 +180,14 @@ public final class AtlasLineageInfo implements JsonSerializable<AtlasLineageInfo
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("baseEntityGuid", this.baseEntityGuid);
         jsonWriter.writeMapField("guidEntityMap", this.guidEntityMap, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("widthCounts", this.widthCounts, (writer, element) -> writer.writeMap(element,
-            (writer1, element1) -> writer1.writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
+        jsonWriter.writeMapField("widthCounts", this.widthCounts,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
         jsonWriter.writeNumberField("lineageDepth", this.lineageDepth);
         jsonWriter.writeNumberField("lineageWidth", this.lineageWidth);
         jsonWriter.writeNumberField("childrenCount", this.childrenCount);

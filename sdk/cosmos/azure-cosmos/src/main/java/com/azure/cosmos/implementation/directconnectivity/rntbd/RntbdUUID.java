@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.guava27.Strings;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.CorruptedFrameException;
@@ -40,7 +39,7 @@ public final class RntbdUUID {
         checkNotNull(in, "in");
 
         if (in.readableBytes() < 2 * Long.BYTES) {
-            final String reason = Strings.lenientFormat("invalid frame length: %s", in.readableBytes());
+            final String reason = String.format("invalid frame length: %s", in.readableBytes());
             throw new CorruptedFrameException(reason);
         }
 

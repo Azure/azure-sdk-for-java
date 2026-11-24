@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
       - sdk/keyvault/ci.yml
-      - sdk/keyvault/azure-resourcemanager-keyvault/
       - sdk/keyvault/azure-security-keyvault-administration/
       - sdk/keyvault/azure-security-keyvault-certificates/
       - sdk/keyvault/azure-security-keyvault-jca/
@@ -19,7 +18,6 @@ trigger:
       - sdk/keyvault/azure-security-test-keyvault-jca/
     exclude:
       - sdk/keyvault/pom.xml
-      - sdk/keyvault/azure-resourcemanager-keyvault/pom.xml
       - sdk/keyvault/azure-security-keyvault-administration/pom.xml
       - sdk/keyvault/azure-security-keyvault-certificates/pom.xml
       - sdk/keyvault/azure-security-keyvault-jca/pom.xml
@@ -38,7 +36,6 @@ pr:
   paths:
     include:
       - sdk/keyvault/ci.yml
-      - sdk/keyvault/azure-resourcemanager-keyvault/
       - sdk/keyvault/azure-security-keyvault-administration/
       - sdk/keyvault/azure-security-keyvault-certificates/
       - sdk/keyvault/azure-security-keyvault-jca/
@@ -48,7 +45,6 @@ pr:
       - sdk/keyvault/azure-security-test-keyvault-jca/
     exclude:
       - sdk/keyvault/pom.xml
-      - sdk/keyvault/azure-resourcemanager-keyvault/pom.xml
       - sdk/keyvault/azure-security-keyvault-administration/pom.xml
       - sdk/keyvault/azure-security-keyvault-certificates/pom.xml
       - sdk/keyvault/azure-security-keyvault-jca/pom.xml
@@ -58,10 +54,6 @@ pr:
       - sdk/keyvault/azure-security-test-keyvault-jca/pom.xml
 
 parameters:
-- name: release_azureresourcemanagerkeyvault
-  displayName: 'azure-resourcemanager-keyvault'
-  type: boolean
-  default: false
 - name: release_azuresecuritykeyvaultadministration
   displayName: 'azure-security-keyvault-administration'
   type: boolean
@@ -90,10 +82,6 @@ extends:
     ServiceDirectory: keyvault
     AdditionalLintingOptions: '-DcreateSourcesJar=false'
     Artifacts:
-      - name: azure-resourcemanager-keyvault
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerkeyvault
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerkeyvault }}
       - name: azure-security-keyvault-administration
         groupId: com.azure
         safeName: azuresecuritykeyvaultadministration

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.programmableconnectivity.fluent.OperatorApiPlansClient;
 import com.azure.resourcemanager.programmableconnectivity.fluent.models.OperatorApiPlanInner;
 import com.azure.resourcemanager.programmableconnectivity.implementation.models.OperatorApiPlanListResult;
@@ -127,18 +126,6 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperatorApiPlanInner>> getWithResponseAsync(String operatorApiPlanName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (operatorApiPlanName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter operatorApiPlanName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -172,20 +159,6 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperatorApiPlanInner> getWithResponse(String operatorApiPlanName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (operatorApiPlanName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter operatorApiPlanName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             operatorApiPlanName, accept, context);
@@ -219,14 +192,6 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperatorApiPlanInner>> listSinglePageAsync(String filter, Integer top, Integer skip) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -282,16 +247,6 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiPlanInner> listSinglePage(String filter, Integer top, Integer skip) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OperatorApiPlanListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), filter, top, skip, accept, Context.NONE);
@@ -314,16 +269,6 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiPlanInner> listSinglePage(String filter, Integer top, Integer skip,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OperatorApiPlanListResult> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), filter, top, skip, accept, context);
@@ -377,13 +322,6 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperatorApiPlanInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -404,15 +342,6 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiPlanInner> listBySubscriptionNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OperatorApiPlanListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -432,21 +361,10 @@ public final class OperatorApiPlansClientImpl implements OperatorApiPlansClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiPlanInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<OperatorApiPlanListResult> res
             = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OperatorApiPlansClientImpl.class);
 }

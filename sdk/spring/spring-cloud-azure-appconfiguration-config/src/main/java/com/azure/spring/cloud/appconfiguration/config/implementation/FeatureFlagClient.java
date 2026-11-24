@@ -6,7 +6,6 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
@@ -14,41 +13,58 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TELEMETRY;
 
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
-import org.bouncycastle.jcajce.provider.digest.SHA256;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Allocation;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.nimbusds.jose.util.Base64URL;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Variant;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.FeatureFlagTracing;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Loads sets of feature flags, and de-duplicates the results with previously loaded feature flags. Newer Feature Flags
  * take priority.
  */
 @Component
-public class FeatureFlagClient {
+class FeatureFlagClient {
 
-    protected final Map<String, Feature> properties = new LinkedHashMap<>();
+    private static final Logger LOGGER = LoggerFactory
+        .getLogger(FeatureFlagClient.class);
+
+    private final Map<String, Feature> properties = new LinkedHashMap<>();
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    
+    private final FeatureFlagTracing tracing = new FeatureFlagTracing();
 
     /**
      * <p>
@@ -62,9 +78,9 @@ public class FeatureFlagClient {
      * </p>
      *
      */
-    public List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
-        String[] labelFilter, boolean isRefresh) {
-        List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
+    List<WatchedConfigurationSettings> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
+        String[] labelFilter, List<String> tagsFilter, Context context) {
+        List<WatchedConfigurationSettings> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
@@ -72,31 +88,44 @@ public class FeatureFlagClient {
             keyFilter = FEATURE_FLAG_PREFIX + customKeyFilter;
         }
 
-        List<String> labels = Arrays.asList(labelFilter);
+        List<String> labels = new ArrayList<>(Arrays.asList(labelFilter));
         Collections.reverse(labels);
+
+        Context featureFlagContext = context.addData("FeatureFlagTracing", tracing);
 
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
 
-            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, isRefresh);
-            loadedFeatureFlags.addAll(proccessFeatureFlags(features, keyFilter));
+            if (tagsFilter != null && !tagsFilter.isEmpty()) {
+                settingSelector.setTagsFilter(tagsFilter);
+            }
+
+            WatchedConfigurationSettings features = replicaClient.listSettingsByPage(settingSelector, featureFlagContext);
+            loadedFeatureFlags.add(processFeatureFlags(features, replicaClient.getOriginClient()));
         }
         return loadedFeatureFlags;
     }
 
-    public List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
-        List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
-        loadedFeatureFlags.add(features);
+    WatchedConfigurationSettings processFeatureFlags(WatchedConfigurationSettings features, String endpoint) {
+        processFeatureFlags(features.getConfigurationSettings(), endpoint);
+        return features;
+    }
 
+    void processFeatureFlags(List<ConfigurationSetting> features, String endpoint) {
         // Reading In Features
-        for (ConfigurationSetting setting : features.getFeatureFlags()) {
+        for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
-                properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
+                updateTelemetry(featureFlag);
+                Feature feature = createFeature(featureFlag, endpoint);
+                if (feature != null) {
+                    properties.put(featureFlag.getKey(), feature);
+                } else {
+                    LOGGER.warn("Skipping invalid feature flag: {}", featureFlag.getKey());
+                }
             }
         }
-        return loadedFeatureFlags;
     }
 
     /**
@@ -107,62 +136,207 @@ public class FeatureFlagClient {
      */
     protected static Feature createFeature(FeatureFlagConfigurationSetting item, String originEndpoint) {
         String requirementType = DEFAULT_REQUIREMENT_TYPE;
-        FeatureTelemetry featureTelemetry = new FeatureTelemetry();
+        FeatureTelemetry featureTelemetry = null;
+        Feature feature = null;
         try {
             JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
             JsonNode conditions = node.get(CONDITIONS);
             if (conditions != null && conditions.get(REQUIREMENT_TYPE_SERVICE) != null) {
-                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asText();
+                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asString();
             }
             JsonNode telemetryNode = node.get(TELEMETRY);
-            if (telemetryNode != null) {
-                ObjectMapper objectMapper = JsonMapper.builder()
-                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-                featureTelemetry = objectMapper.convertValue(telemetryNode, FeatureTelemetry.class);
+            if (telemetryNode != null && !telemetryNode.isEmpty()) {
+                featureTelemetry = CASE_INSENSITIVE_MAPPER.convertValue(telemetryNode, FeatureTelemetry.class);
             }
-        } catch (JsonProcessingException e) {
 
-        }
+            feature = new Feature(item, requirementType, featureTelemetry);
 
-        Feature feature = new Feature(item, requirementType, featureTelemetry);
+            // Parse variants if present
+            JsonNode variantsNode = node.get("variants");
+            if (variantsNode != null && variantsNode.isArray()) {
+                List<Variant> variants = new ArrayList<>();
+                for (JsonNode variantNode : variantsNode) {
+                    Variant variant = CASE_INSENSITIVE_MAPPER.convertValue(variantNode, Variant.class);
+                    variants.add(variant);
+                }
+                feature.setVariants(variants);
+            }
 
-        if (feature.getTelemetry() != null) {
-            final FeatureTelemetry telemetry = feature.getTelemetry();
-            if (telemetry.isEnabled()) {
-                final Map<String, String> originMetadata = telemetry.getMetadata();
-                originMetadata.put(FEATURE_FLAG_ID, calculateFeatureFlagId(item.getKey(), item.getLabel()));
-                originMetadata.put(E_TAG, item.getETag());
-                if (originEndpoint != null && !originEndpoint.isEmpty()) {
-                    final String labelPart = item.getLabel().isEmpty() ? ""
-                        : String.format("?label=%s", item.getLabel());
-                    originMetadata.put(FEATURE_FLAG_REFERENCE,
-                        String.format("%s/kv/%s%s", originEndpoint, item.getKey(), labelPart));
+            // Parse allocation if present
+            JsonNode allocationNode = node.get("allocation");
+            if (allocationNode != null && !allocationNode.isNull()) {
+                Allocation allocation = CASE_INSENSITIVE_MAPPER.convertValue(allocationNode, Allocation.class);
+                feature.setAllocation(allocation);
+            }
+
+            if (feature.getTelemetry() != null) {
+                final FeatureTelemetry telemetry = feature.getTelemetry();
+                if (telemetry.isEnabled()) {
+                    final Map<String, String> originMetadata = telemetry.getMetadata();
+                    originMetadata.put(E_TAG, item.getETag());
+                    if (originEndpoint != null && !originEndpoint.isEmpty()) {
+                        final String labelPart = !StringUtils.hasText(item.getLabel()) ? ""
+                            : String.format("?label=%s", item.getLabel());
+                        originMetadata.put(FEATURE_FLAG_REFERENCE,
+                            String.format("%s/kv/%s%s", originEndpoint, item.getKey(), labelPart));
+                    }
+                    originMetadata.put("AllocationId", generateAllocationId(node));
                 }
             }
+        } catch (JacksonException e) {
+            LOGGER.error("Error parsing feature flag value for key: {}", item.getKey(), e);
         }
         return feature;
     }
 
     /**
-     * @param key the key of feature flag
-     * @param label the label of feature flag. If label is whitespace, treat as null
-     * @return base64_url(SHA256(utf8_bytes("${key}\n${label}"))).replace('+', '-').replace('/', '_').trimEnd('=')
-     * trimEnd() means trims everything after the first occurrence of the '='
+     * @return the properties
      */
-    private static String calculateFeatureFlagId(String key, String label) {
-        final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
-        final SHA256.Digest digest = new SHA256.Digest();
-        final String beforeTrim = Base64URL.encode(digest.digest(data.getBytes(StandardCharsets.UTF_8)))
-            .toString().replace('+', '-').replace('/', '_');
-        final int index = beforeTrim.indexOf('=');
-        return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());
+    public List<Feature> getFeatureFlags() {
+        return properties.values().stream().toList();
+    }
+    
+    public void resetTelemetry() {
+        tracing.resetFeatureFilterTelemetry();
+    }
+    
+    /**
+     * Looks at each filter used in a Feature Flag to check what types it is using.
+     * 
+     * @param featureFlag FeatureFlagConfigurationSetting
+     * @param tracing The TracingInfo for this store.
+     */
+    private void updateTelemetry(FeatureFlagConfigurationSetting featureFlag) {
+        for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
+            tracing.updateFeatureFilterTelemetry(filter.getName());
+        }
+
+        // Track telemetry and seed usage from the feature flag value
+        try {
+            JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(featureFlag.getValue());
+
+            // Check for telemetry enabled
+            JsonNode telemetryNode = node.get(TELEMETRY);
+            if (telemetryNode != null && !telemetryNode.isEmpty()) {
+                JsonNode enabledNode = telemetryNode.get("enabled");
+                if (enabledNode != null && enabledNode.asBoolean()) {
+                    tracing.setUsesTelemetry();
+                }
+            }
+
+            // Check for allocation seed
+            JsonNode allocationNode = node.get("allocation");
+            if (allocationNode != null && allocationNode.has("seed")) {
+                tracing.setUsesSeed();
+            }
+
+            // Track max variants
+            JsonNode variantsNode = node.get("variants");
+            if (variantsNode != null && variantsNode.isArray()) {
+                tracing.updateMaxVariants(variantsNode.size());
+            }
+        } catch (JacksonException e) {
+            LOGGER.warn("Error parsing feature flag telemetry for key: {}", featureFlag.getKey(), e);
+        }
     }
 
     /**
-     * @return the properties
+     * Generates a unique allocation ID for the feature flag based on its configuration.
+     *
+     * @param featureFlagValue The feature flag value as a map.
+     * @return A unique allocation ID or null if the allocation is not valid.
      */
-    public Map<String, Feature> getProperties() {
-        return properties;
-    }
+    static String generateAllocationId(JsonNode featureFlagValue) {
+        StringBuilder allocationId = new StringBuilder();
+        List<String> allocatedVariants = new ArrayList<>();
 
+        // Retrieve allocation object
+        JsonNode allocation = featureFlagValue.get("allocation");
+        if (allocation == null) {
+            return null;
+        }
+
+        // Seed
+        allocationId.append("seed=").append(allocation.has("seed") ? allocation.get("seed").asString() : "");
+
+        // DefaultWhenEnabled
+        if (allocation.has("default_when_enabled")) {
+            allocatedVariants.add(allocation.get("default_when_enabled").asString());
+        }
+        allocationId.append("\ndefault_when_enabled=").append(allocation.has("default_when_enabled") ? allocation.get("default_when_enabled").asString() : "");
+
+        // Percentile
+        allocationId.append("\npercentiles=");
+        JsonNode percentile = allocation.get("percentile");
+        List<JsonNode> percentileAllocations = new ArrayList<>();
+        if (percentile != null && percentile.isArray()) {
+            percentile.forEach(p -> {
+                if (!Objects.equals(p.get("from").asString(), p.get("to").asString())) {
+                    percentileAllocations.add(p);
+                }
+            });
+            percentileAllocations.sort(Comparator.comparing(p -> p.get("from").asInt()));
+        }
+
+        for (JsonNode percentileAllocation : percentileAllocations) {
+            if (percentileAllocation.has("variant")) {
+                allocatedVariants.add(percentileAllocation.get("variant").asString());
+            }
+        }
+
+        allocationId.append(percentileAllocations.stream()
+            .map(pa -> pa.get("from") + ","
+                + Base64.getEncoder().encodeToString(pa.get("variant").asString().getBytes(StandardCharsets.UTF_8)) + ","
+                + pa.get("to"))
+            .collect(Collectors.joining(";")));
+
+        if (allocatedVariants.isEmpty() && (allocation.get("seed") == null)) {
+            return null;
+        }
+
+        // Variants
+        allocationId.append("\nvariants=");
+        List<Map<String, Object>> variantsValue = new ArrayList<>();
+        JsonNode variantsNode = featureFlagValue.get("variants");
+        if (variantsNode != null && variantsNode.isArray()) {
+            variantsNode.forEach(variantNode -> {
+                if (variantNode.isObject()) {
+                    Map<String, Object> variantMap = new LinkedHashMap<>();
+                    variantNode.properties().iterator().forEachRemaining(entry -> variantMap.put(entry.getKey(), entry.getValue()));
+                    variantsValue.add(variantMap);
+                }
+            });
+        }
+        if (!variantsValue.isEmpty()) {
+            List<Map<String, Object>> sortedVariants = variantsValue.stream()
+                .filter(v -> allocatedVariants.contains((String) v.get("name")))
+                .sorted(Comparator.comparing(v -> (String) v.get("name")))
+                .collect(Collectors.toList());
+
+            for (Map<String, Object> variant : sortedVariants) {
+                allocationId.append(Base64.getEncoder().encodeToString(((String) variant.get("name")).getBytes(StandardCharsets.UTF_8))).append(",");
+                Object configValue = variant.get("configuration_value");
+                if (configValue instanceof Map) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> configMap = (Map<String, Object>) configValue;
+                    allocationId.append(new TreeMap<>(configMap).toString());
+                }
+                allocationId.append(";");
+            }
+            if (!sortedVariants.isEmpty()) {
+                allocationId.setLength(allocationId.length() - 1); // Remove trailing semicolon
+            }
+        }
+
+        // Create a SHA-256 hash of the allocationId
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(allocationId.toString().getBytes(StandardCharsets.UTF_8));
+
+            // Encode the first 15 bytes in Base64 URL-safe format
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(Arrays.copyOf(hashBytes, 15));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 algorithm not available", e);
+        }
+    }
 }

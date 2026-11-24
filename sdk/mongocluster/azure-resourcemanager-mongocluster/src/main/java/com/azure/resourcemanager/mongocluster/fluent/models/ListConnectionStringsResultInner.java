@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The connection strings for the given mongo cluster.
+ * The connection strings for the given DocumentDB cluster.
  */
 @Immutable
 public final class ListConnectionStringsResultInner implements JsonSerializable<ListConnectionStringsResultInner> {
     /*
-     * An array that contains the connection strings for a mongo cluster.
+     * An array that contains the connection strings for a DocumentDB cluster.
      */
     private List<ConnectionString> connectionStrings;
 
@@ -30,23 +30,12 @@ public final class ListConnectionStringsResultInner implements JsonSerializable<
     }
 
     /**
-     * Get the connectionStrings property: An array that contains the connection strings for a mongo cluster.
+     * Get the connectionStrings property: An array that contains the connection strings for a DocumentDB cluster.
      * 
      * @return the connectionStrings value.
      */
     public List<ConnectionString> connectionStrings() {
         return this.connectionStrings;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (connectionStrings() != null) {
-            connectionStrings().forEach(e -> e.validate());
-        }
     }
 
     /**

@@ -169,25 +169,4 @@ public class ReadmeSamples {
         System.out.println("Operation Id: " + response.getValue().getId());
         // END: readme-sample-sendEmailWithInlineAttachment
     }
-
-    public void beginSendFromExistingOperationId() {
-        EmailClient emailClient = createEmailClientWithConnectionString();
-
-        // BEGIN: readme-sample-beginSendFromExistingOperationId
-        EmailMessage message = new EmailMessage()
-            .setSenderAddress("<sender-email-address>")
-            .setToRecipients("<recipient-email-address>")
-            .setSubject("test subject")
-            .setBodyPlainText("test message");
-
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
-        PollResponse<EmailSendResult> response = poller.waitForCompletion();
-        String operationId = response.getValue().getId();
-
-        SyncPoller<EmailSendResult, EmailSendResult> poller2 = emailClient.beginSend(operationId);
-        PollResponse<EmailSendResult> response2 = poller2.waitForCompletion();
-
-        System.out.println("Status: " + response2.getValue().getStatus());
-        // END: readme-sample-beginSendFromExistingOperationId
-    }
 }

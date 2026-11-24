@@ -12,9 +12,9 @@ public final class CloudLinkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudLinkList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Deleting\",\"linkedCloud\":\"wxrt\"},\"id\":\"dxepxgyq\",\"name\":\"gvr\",\"type\":\"mnpkukghimdblxg\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Deleting\",\"linkedCloud\":\"fjxwmsz\"},\"id\":\"foqreyfkzik\",\"name\":\"jawneaiv\",\"type\":\"wczelpci\"},{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Active\",\"linkedCloud\":\"enwabfatk\"},\"id\":\"dxbjhwuaanozj\",\"name\":\"sphyoulpjrvxa\",\"type\":\"l\"}],\"nextLink\":\"imjwosyt\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Building\",\"linkedCloud\":\"dpvwryoqpsoaccta\"},\"id\":\"kljla\",\"name\":\"bcryffdfd\",\"type\":\"sy\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Deleting\",\"linkedCloud\":\"akhmsbzjhcrz\"},\"id\":\"dphlxaolt\",\"name\":\"qtrgqjbpfzfsinzg\",\"type\":\"f\"}],\"nextLink\":\"rwzoxxjtfelluwf\"}")
             .toObject(CloudLinkList.class);
-        Assertions.assertEquals("wxrt", model.value().get(0).linkedCloud());
-        Assertions.assertEquals("imjwosyt", model.nextLink());
+        Assertions.assertEquals("dpvwryoqpsoaccta", model.value().get(0).linkedCloud());
+        Assertions.assertEquals("rwzoxxjtfelluwf", model.nextLink());
     }
 }

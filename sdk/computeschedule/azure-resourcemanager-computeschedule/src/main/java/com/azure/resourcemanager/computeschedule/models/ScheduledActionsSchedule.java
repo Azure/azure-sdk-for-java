@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -204,44 +203,6 @@ public final class ScheduledActionsSchedule implements JsonSerializable<Schedule
         this.deadlineType = deadlineType;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (scheduledTime() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property scheduledTime in model ScheduledActionsSchedule"));
-        }
-        if (timeZone() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property timeZone in model ScheduledActionsSchedule"));
-        }
-        if (requestedWeekDays() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property requestedWeekDays in model ScheduledActionsSchedule"));
-        }
-        if (requestedMonths() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property requestedMonths in model ScheduledActionsSchedule"));
-        }
-        if (requestedDaysOfTheMonth() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property requestedDaysOfTheMonth in model ScheduledActionsSchedule"));
-        }
-        if (executionParameters() != null) {
-            executionParameters().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ScheduledActionsSchedule.class);
 
     /**
      * {@inheritDoc}

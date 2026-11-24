@@ -12,7 +12,7 @@
     },
     "ArmTemplateParameters": [ "@{endpointType='storage'}", "@{endpointType='cosmos'}" ],
     "AZURE_TEST_HTTP_CLIENTS": "netty",
-    "JavaTestVersion": [ "1.8", "1.21" ]
+    "JavaTestVersion": [ "1.8", "1.25" ]
   },
   "include": [
     {
@@ -25,7 +25,7 @@
     },
     {
       "AZURE_TEST_HTTP_CLIENTS": "okhttp",
-      "JavaTestVersion": "1.21",
+      "JavaTestVersion": "1.25",
       "Agent": {
         "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
       },
@@ -33,7 +33,7 @@
     },
     {
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "JavaTestVersion": "1.21",
+      "JavaTestVersion": "1.25",
       "Agent": {
         "ubuntu-2204": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },

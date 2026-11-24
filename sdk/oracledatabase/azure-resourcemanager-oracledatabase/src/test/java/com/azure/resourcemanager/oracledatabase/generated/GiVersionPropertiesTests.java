@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions;
 public final class GiVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GiVersionProperties model = BinaryData.fromString("{\"version\":\"wr\"}").toObject(GiVersionProperties.class);
-        Assertions.assertEquals("wr", model.version());
+        GiVersionProperties model = BinaryData.fromString("{\"version\":\"svuo\"}").toObject(GiVersionProperties.class);
+        Assertions.assertEquals("svuo", model.version());
     }
 }

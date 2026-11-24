@@ -11,11 +11,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 public final class QueryFeedOperationState extends FeedOperationState {
 
-    private static final ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
-        .CosmosQueryRequestOptionsAccessor qryOptAccessor = ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private final CosmosQueryRequestOptions options;
     private final RequestOptions requestOptions;
@@ -39,21 +37,21 @@ public final class QueryFeedOperationState extends FeedOperationState {
             resourceType,
             checkNotNull(operationType, "Argument 'operationType' must not be null."),
             operationId,
-            clientAccessor.getEffectiveConsistencyLevel(
+            clientAccessor().getEffectiveConsistencyLevel(
                 cosmosAsyncClient,
                 operationType,
                 queryRequestOptions.getConsistencyLevel()),
-            clientAccessor.getEffectiveDiagnosticsThresholds(
+            clientAccessor().getEffectiveDiagnosticsThresholds(
                 cosmosAsyncClient,
-                qryOptAccessor.getImpl(
+                queryOptionsAccessor().getImpl(
                     checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null.")
                 ).getDiagnosticsThresholds()),
             fluxOptions,
             getEffectiveMaxItemCount(fluxOptions, queryRequestOptions),
-            qryOptAccessor.getImpl(checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null."))
+            queryOptionsAccessor().getImpl(checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null."))
         );
 
-        String requestOptionsContinuation = qryOptAccessor.getRequestContinuation(queryRequestOptions);
+        String requestOptionsContinuation = queryOptionsAccessor().getRequestContinuation(queryRequestOptions);
         if (requestOptionsContinuation != null &&
             (fluxOptions == null || fluxOptions.getRequestContinuation() == null)) {
 
@@ -64,7 +62,7 @@ public final class QueryFeedOperationState extends FeedOperationState {
             }
         }
 
-        Integer maxItemCountFromRequestOptions = qryOptAccessor.getMaxItemCount(queryRequestOptions);
+        Integer maxItemCountFromRequestOptions = queryOptionsAccessor().getMaxItemCount(queryRequestOptions);
         if (maxItemCountFromRequestOptions != null &&
             (fluxOptions == null || fluxOptions.getMaxItemCount() == null)) {
 
@@ -75,11 +73,11 @@ public final class QueryFeedOperationState extends FeedOperationState {
             }
         }
 
-        this.options = qryOptAccessor.clone(queryRequestOptions);
+        this.options = queryOptionsAccessor().clone(queryRequestOptions);
         // apply the maxItemCount/continuation to the cloned request options
         this.setMaxItemCountCore(this.getMaxItemCount());
         this.setRequestContinuationCore(this.getRequestContinuation());
-        this.requestOptions = qryOptAccessor.toRequestOptions(this.options);
+        this.requestOptions = queryOptionsAccessor().toRequestOptions(this.options);
     }
 
     public RequestOptions toRequestOptions() {
@@ -135,6 +133,6 @@ public final class QueryFeedOperationState extends FeedOperationState {
             return null;
         }
 
-        return qryOptAccessor.getMaxItemCount(queryOptions);
+        return queryOptionsAccessor().getMaxItemCount(queryOptions);
     }
 }

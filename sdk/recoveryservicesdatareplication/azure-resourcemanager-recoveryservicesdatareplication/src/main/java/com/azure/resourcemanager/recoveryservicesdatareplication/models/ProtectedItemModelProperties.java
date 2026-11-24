@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -464,48 +463,6 @@ public final class ProtectedItemModelProperties implements JsonSerializable<Prot
         this.customProperties = customProperties;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (policyName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property policyName in model ProtectedItemModelProperties"));
-        }
-        if (replicationExtensionName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property replicationExtensionName in model ProtectedItemModelProperties"));
-        }
-        if (currentJob() != null) {
-            currentJob().validate();
-        }
-        if (lastFailedEnableProtectionJob() != null) {
-            lastFailedEnableProtectionJob().validate();
-        }
-        if (lastFailedPlannedFailoverJob() != null) {
-            lastFailedPlannedFailoverJob().validate();
-        }
-        if (lastTestFailoverJob() != null) {
-            lastTestFailoverJob().validate();
-        }
-        if (healthErrors() != null) {
-            healthErrors().forEach(e -> e.validate());
-        }
-        if (customProperties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property customProperties in model ProtectedItemModelProperties"));
-        } else {
-            customProperties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ProtectedItemModelProperties.class);
 
     /**
      * {@inheritDoc}

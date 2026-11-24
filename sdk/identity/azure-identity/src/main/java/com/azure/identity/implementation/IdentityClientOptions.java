@@ -20,6 +20,7 @@ import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
+import com.microsoft.aad.msal4j.ITokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
@@ -39,6 +40,7 @@ public final class IdentityClientOptions implements Cloneable {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 6;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
     public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
+    private static final String AZURE_TOKEN_CREDENTIALS = "AZURE_TOKEN_CREDENTIALS";
 
     private String authorityHost;
     private BrowserCustomizationOptions browserCustomizationOptions;
@@ -55,6 +57,7 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean includeX5c;
     private AuthenticationRecord authenticationRecord;
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
+    private ITokenCacheAccessAspect tokenCacheAccessAspect;
     private RegionalAuthority regionalAuthority;
     private UserAssertion userAssertion;
     private boolean multiTenantAuthDisabled;
@@ -69,6 +72,7 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perCallPolicies;
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
+    private String dacEnvConfiguredCredential;
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
@@ -360,6 +364,15 @@ public final class IdentityClientOptions implements Cloneable {
      */
     public TokenCachePersistenceOptions getTokenCacheOptions() {
         return this.tokenCachePersistenceOptions;
+    }
+
+    IdentityClientOptions setTokenCacheAccessAspect(ITokenCacheAccessAspect tokenCacheAccessAspect) {
+        this.tokenCacheAccessAspect = tokenCacheAccessAspect;
+        return this;
+    }
+
+    ITokenCacheAccessAspect getTokenCacheAccessAspect() {
+        return tokenCacheAccessAspect;
     }
 
     /**
@@ -691,6 +704,7 @@ public final class IdentityClientOptions implements Cloneable {
             = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         imdsAuthorityHost
             = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST, IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        dacEnvConfiguredCredential = configuration.get(AZURE_TOKEN_CREDENTIALS);
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         multiTenantAuthDisabled = configuration.get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
@@ -823,6 +837,13 @@ public final class IdentityClientOptions implements Cloneable {
         return this.subscription;
     }
 
+    /**
+     * @return the DAC Environment credential that was configured
+     */
+    public String getDACEnvConfiguredCredential() {
+        return dacEnvConfiguredCredential;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone
             = new IdentityClientOptions().setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -832,6 +853,7 @@ public final class IdentityClientOptions implements Cloneable {
                 .setExecutorService(this.executorService)
                 .setIdentityLogOptionsImpl(this.identityLogOptionsImpl)
                 .setTokenCacheOptions(this.tokenCachePersistenceOptions)
+                .setTokenCacheAccessAspect(this.tokenCacheAccessAspect)
                 .setRetryTimeout(this.retryTimeout)
                 .setRegionalAuthority(this.regionalAuthority)
                 .setHttpPipeline(this.httpPipeline)

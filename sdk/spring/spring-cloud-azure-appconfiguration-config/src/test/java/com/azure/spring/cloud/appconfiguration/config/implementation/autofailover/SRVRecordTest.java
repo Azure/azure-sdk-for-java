@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation.autofailover;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
 
 public class SRVRecordTest {
@@ -30,8 +29,8 @@ public class SRVRecordTest {
         
         String[] p1w2Record = {"1", "2", "1", "p1."};
         SRVRecord p1w2 = new SRVRecord(p1w2Record);
-        assertEquals(-1, p1.compareTo(p1w2));
-        assertEquals(1, p1w2.compareTo(p1));
+        assertEquals(1, p1.compareTo(p1w2));
+        assertEquals(-1, p1w2.compareTo(p1));
         
         assertEquals(0, p1.compareTo(p1));
     }

@@ -16,32 +16,35 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput model = BinaryData.fromString(
-            "{\"name\":\"amhsycxhxzgazt\",\"id\":\"boi\",\"targetDatabaseName\":\"mfqhppubowse\",\"migrationSetting\":{\"mtdherngb\":\"datag\",\"uahokq\":\"datac\",\"phwpnulaiywzej\":\"dataobkauxofsh\"},\"sourceSetting\":{\"ndnpdwrpqafgfug\":\"slwkojpl\"},\"targetSetting\":{\"ypococtfjgtixr\":\"fhyete\"},\"selectedTables\":[{\"name\":\"yturmlmuo\"}]}")
+            "{\"name\":\"lbyvictctbrxkjzw\",\"id\":\"xff\",\"targetDatabaseName\":\"hkwfbkgozxwop\",\"migrationSetting\":{\"clnapxbiygnugjkn\":\"datadpizq\"},\"sourceSetting\":{\"oiquvrehmrnjhvs\":\"fcttuxuuyilfl\",\"w\":\"jztczytqj\"},\"targetSetting\":{\"rpddouifamo\":\"unfprnjletlxs\",\"iwhxqszdtmaajq\":\"aziynknlqwzdv\",\"rjvmtygjbmzyosp\":\"huxy\",\"hckfkyjpmspbps\":\"p\"},\"selectedTables\":[{\"name\":\"pyogtieyuj\"},{\"name\":\"czkcnyxrxmunjd\"},{\"name\":\"glnkvxlxpagl\"},{\"name\":\"vbgkcvkhpzv\"}]}")
             .toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.class);
-        Assertions.assertEquals("amhsycxhxzgazt", model.name());
-        Assertions.assertEquals("mfqhppubowse", model.targetDatabaseName());
-        Assertions.assertEquals("slwkojpl", model.sourceSetting().get("ndnpdwrpqafgfug"));
-        Assertions.assertEquals("fhyete", model.targetSetting().get("ypococtfjgtixr"));
-        Assertions.assertEquals("yturmlmuo", model.selectedTables().get(0).name());
+        Assertions.assertEquals("lbyvictctbrxkjzw", model.name());
+        Assertions.assertEquals("hkwfbkgozxwop", model.targetDatabaseName());
+        Assertions.assertEquals("fcttuxuuyilfl", model.sourceSetting().get("oiquvrehmrnjhvs"));
+        Assertions.assertEquals("unfprnjletlxs", model.targetSetting().get("rpddouifamo"));
+        Assertions.assertEquals("pyogtieyuj", model.selectedTables().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput model
-            = new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput().withName("amhsycxhxzgazt")
-                .withTargetDatabaseName("mfqhppubowse")
-                .withMigrationSetting(
-                    mapOf("mtdherngb", "datag", "uahokq", "datac", "phwpnulaiywzej", "dataobkauxofsh"))
-                .withSourceSetting(mapOf("ndnpdwrpqafgfug", "slwkojpl"))
-                .withTargetSetting(mapOf("ypococtfjgtixr", "fhyete"))
-                .withSelectedTables(Arrays
-                    .asList(new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput().withName("yturmlmuo")));
+            = new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput().withName("lbyvictctbrxkjzw")
+                .withTargetDatabaseName("hkwfbkgozxwop")
+                .withMigrationSetting(mapOf("clnapxbiygnugjkn", "datadpizq"))
+                .withSourceSetting(mapOf("oiquvrehmrnjhvs", "fcttuxuuyilfl", "w", "jztczytqj"))
+                .withTargetSetting(mapOf("rpddouifamo", "unfprnjletlxs", "iwhxqszdtmaajq", "aziynknlqwzdv",
+                    "rjvmtygjbmzyosp", "huxy", "hckfkyjpmspbps", "p"))
+                .withSelectedTables(Arrays.asList(
+                    new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput().withName("pyogtieyuj"),
+                    new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput().withName("czkcnyxrxmunjd"),
+                    new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput().withName("glnkvxlxpagl"),
+                    new MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseTableInput().withName("vbgkcvkhpzv")));
         model = BinaryData.fromObject(model).toObject(MigratePostgreSqlAzureDbForPostgreSqlSyncDatabaseInput.class);
-        Assertions.assertEquals("amhsycxhxzgazt", model.name());
-        Assertions.assertEquals("mfqhppubowse", model.targetDatabaseName());
-        Assertions.assertEquals("slwkojpl", model.sourceSetting().get("ndnpdwrpqafgfug"));
-        Assertions.assertEquals("fhyete", model.targetSetting().get("ypococtfjgtixr"));
-        Assertions.assertEquals("yturmlmuo", model.selectedTables().get(0).name());
+        Assertions.assertEquals("lbyvictctbrxkjzw", model.name());
+        Assertions.assertEquals("hkwfbkgozxwop", model.targetDatabaseName());
+        Assertions.assertEquals("fcttuxuuyilfl", model.sourceSetting().get("oiquvrehmrnjhvs"));
+        Assertions.assertEquals("unfprnjletlxs", model.targetSetting().get("rpddouifamo"));
+        Assertions.assertEquals("pyogtieyuj", model.selectedTables().get(0).name());
     }
 
     // Use "Map.of" if available

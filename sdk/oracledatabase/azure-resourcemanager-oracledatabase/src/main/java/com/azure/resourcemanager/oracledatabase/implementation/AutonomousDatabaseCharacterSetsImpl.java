@@ -31,12 +31,8 @@ public final class AutonomousDatabaseCharacterSetsImpl implements AutonomousData
         Context context) {
         Response<AutonomousDatabaseCharacterSetInner> inner
             = this.serviceClient().getWithResponse(location, adbscharsetname, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AutonomousDatabaseCharacterSetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AutonomousDatabaseCharacterSetImpl(inner.getValue(), this.manager()));
     }
 
     public AutonomousDatabaseCharacterSet get(String location, String adbscharsetname) {

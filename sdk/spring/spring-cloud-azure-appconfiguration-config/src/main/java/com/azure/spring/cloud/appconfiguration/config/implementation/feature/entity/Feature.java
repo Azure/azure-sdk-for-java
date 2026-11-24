@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity;
 
+import java.util.List;
+
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,6 +26,12 @@ public final class Feature {
     @JsonProperty("conditions")
     private Conditions conditions;
 
+    @JsonProperty("variants")
+    private List<Variant> variants;
+
+    @JsonProperty("allocation")
+    private Allocation allocation;
+
     @JsonProperty("telemetry")
     private FeatureTelemetry telemetry;
 
@@ -36,8 +44,9 @@ public final class Feature {
     /**
      * Feature Flag object.
      *
-     * @param key Name of the Feature Flag
-     * @param featureItem Configurations of the Feature Flag.
+     * @param featureFlag Feature Flag configuration setting.
+     * @param requirementType Requirement type for the feature flag conditions.
+     * @param telemetry Telemetry configuration for the feature flag.
      */
     public Feature(FeatureFlagConfigurationSetting featureFlag, String requirementType, FeatureTelemetry telemetry) {
         this.id = featureFlag.getFeatureId();
@@ -103,6 +112,34 @@ public final class Feature {
      */
     public void setConditions(Conditions conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * @return the variants
+     */
+    public List<Variant> getVariants() {
+        return variants;
+    }
+
+    /**
+     * @param variants the variants to set
+     */
+    public void setVariants(List<Variant> variants) {
+        this.variants = variants;
+    }
+
+    /**
+     * @return the allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
+
+    /**
+     * @param allocation the allocation to set
+     */
+    public void setAllocation(Allocation allocation) {
+        this.allocation = allocation;
     }
 
     /**

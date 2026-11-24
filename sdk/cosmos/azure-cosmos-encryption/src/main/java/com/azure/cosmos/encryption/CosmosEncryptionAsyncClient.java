@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientEncryptionKey;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.implementation.Constants;
@@ -67,6 +68,7 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
         this.containerPropertiesCacheByContainerId = new AsyncCache<>();
         this.keyEncryptionKeyResolverName = keyEncryptionKeyResolverName;
         this.encryptionKeyStoreProviderImpl = new EncryptionKeyStoreProviderImpl(keyEncryptionKeyResolver, keyEncryptionKeyResolverName);
+        this.appendEncryptionUserAgentSuffix();
     }
 
     /**
@@ -189,6 +191,16 @@ public final class CosmosEncryptionAsyncClient implements Closeable {
      */
     public CosmosAsyncClient getCosmosAsyncClient() {
         return cosmosAsyncClient;
+    }
+
+    private void appendEncryptionUserAgentSuffix() {
+        try {
+            CosmosBridgeInternal
+                .getAsyncDocumentClient(this.cosmosAsyncClient)
+                .appendUserAgentSuffix(Constants.USER_AGENT_SUFFIX);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to append encryption SDK user agent suffix", e);
+        }
     }
 
     /**

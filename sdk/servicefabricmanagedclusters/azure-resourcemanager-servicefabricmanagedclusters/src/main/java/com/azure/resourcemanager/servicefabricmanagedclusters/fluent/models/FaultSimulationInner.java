@@ -98,17 +98,6 @@ public final class FaultSimulationInner implements JsonSerializable<FaultSimulat
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (details() != null) {
-            details().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -12,22 +12,22 @@ public final class PartitionInstanceCountScaleMechanismTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartitionInstanceCountScaleMechanism model = BinaryData.fromString(
-            "{\"kind\":\"ScalePartitionInstanceCount\",\"minInstanceCount\":194224762,\"maxInstanceCount\":803457218,\"scaleIncrement\":1162707208}")
+            "{\"kind\":\"ScalePartitionInstanceCount\",\"minInstanceCount\":1072723853,\"maxInstanceCount\":2063268376,\"scaleIncrement\":720725723}")
             .toObject(PartitionInstanceCountScaleMechanism.class);
-        Assertions.assertEquals(194224762, model.minInstanceCount());
-        Assertions.assertEquals(803457218, model.maxInstanceCount());
-        Assertions.assertEquals(1162707208, model.scaleIncrement());
+        Assertions.assertEquals(1072723853, model.minInstanceCount());
+        Assertions.assertEquals(2063268376, model.maxInstanceCount());
+        Assertions.assertEquals(720725723, model.scaleIncrement());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartitionInstanceCountScaleMechanism model
-            = new PartitionInstanceCountScaleMechanism().withMinInstanceCount(194224762)
-                .withMaxInstanceCount(803457218)
-                .withScaleIncrement(1162707208);
+            = new PartitionInstanceCountScaleMechanism().withMinInstanceCount(1072723853)
+                .withMaxInstanceCount(2063268376)
+                .withScaleIncrement(720725723);
         model = BinaryData.fromObject(model).toObject(PartitionInstanceCountScaleMechanism.class);
-        Assertions.assertEquals(194224762, model.minInstanceCount());
-        Assertions.assertEquals(803457218, model.maxInstanceCount());
-        Assertions.assertEquals(1162707208, model.scaleIncrement());
+        Assertions.assertEquals(1072723853, model.minInstanceCount());
+        Assertions.assertEquals(2063268376, model.maxInstanceCount());
+        Assertions.assertEquals(720725723, model.scaleIncrement());
     }
 }

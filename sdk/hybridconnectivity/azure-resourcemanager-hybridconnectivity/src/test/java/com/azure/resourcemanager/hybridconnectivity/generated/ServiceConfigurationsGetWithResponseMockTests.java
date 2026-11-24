@@ -22,7 +22,7 @@ public final class ServiceConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"xyjrxsagafcnih\",\"port\":3130876298104392093,\"provisioningState\":\"Failed\"},\"id\":\"dgfbcvkcvqvpke\",\"name\":\"dcvd\",\"type\":\"hvoodsotbobzd\"}";
+            = "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"zrpzb\",\"port\":5891022200470284221,\"provisioningState\":\"Failed\"},\"id\":\"qioxi\",\"name\":\"suiizynkedyat\",\"type\":\"wyhqmibzyhwits\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class ServiceConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ServiceConfigurationResource response = manager.serviceConfigurations()
-            .getWithResponse("ewkfvhqcrai", "vpnpp", "uflrwd", com.azure.core.util.Context.NONE)
+            .getWithResponse("n", "jphuopxodlqi", "ntorzihleosjswsr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(ServiceName.SSH, response.serviceName());
-        Assertions.assertEquals("xyjrxsagafcnih", response.resourceId());
-        Assertions.assertEquals(3130876298104392093L, response.port());
+        Assertions.assertEquals(ServiceName.WAC, response.serviceName());
+        Assertions.assertEquals("zrpzb", response.resourceId());
+        Assertions.assertEquals(5891022200470284221L, response.port());
     }
 }

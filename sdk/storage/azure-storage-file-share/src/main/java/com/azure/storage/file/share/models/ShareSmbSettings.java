@@ -24,6 +24,12 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
     @Generated
     private SmbMultichannel multichannel;
 
+    /*
+     * Enable or disable encryption in transit.
+     */
+    @Generated
+    private ShareSmbSettingsEncryptionInTransit encryptionInTransit;
+
     /**
      * Creates an instance of ShareSmbSettings class.
      */
@@ -53,6 +59,28 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
         return this;
     }
 
+    /**
+     * Get the encryptionInTransit property: Enable or disable encryption in transit.
+     * 
+     * @return the encryptionInTransit value.
+     */
+    @Generated
+    public ShareSmbSettingsEncryptionInTransit getEncryptionInTransit() {
+        return this.encryptionInTransit;
+    }
+
+    /**
+     * Set the encryptionInTransit property: Enable or disable encryption in transit.
+     * 
+     * @param encryptionInTransit the encryptionInTransit value to set.
+     * @return the ShareSmbSettings object itself.
+     */
+    @Generated
+    public ShareSmbSettings setEncryptionInTransit(ShareSmbSettingsEncryptionInTransit encryptionInTransit) {
+        this.encryptionInTransit = encryptionInTransit;
+        return this;
+    }
+
     @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -65,6 +93,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
         rootElementName = rootElementName == null || rootElementName.isEmpty() ? "SMB" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.multichannel, "Multichannel");
+        xmlWriter.writeXml(this.encryptionInTransit, "EncryptionInTransit");
         return xmlWriter.writeEndElement();
     }
 
@@ -101,6 +130,9 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
 
                 if ("Multichannel".equals(elementName.getLocalPart())) {
                     deserializedShareSmbSettings.multichannel = SmbMultichannel.fromXml(reader, "Multichannel");
+                } else if ("EncryptionInTransit".equals(elementName.getLocalPart())) {
+                    deserializedShareSmbSettings.encryptionInTransit
+                        = ShareSmbSettingsEncryptionInTransit.fromXml(reader, "EncryptionInTransit");
                 } else {
                     reader.skipElement();
                 }

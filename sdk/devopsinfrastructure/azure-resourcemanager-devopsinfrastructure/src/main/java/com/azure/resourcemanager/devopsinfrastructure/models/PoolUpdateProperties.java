@@ -173,23 +173,6 @@ public final class PoolUpdateProperties implements JsonSerializable<PoolUpdatePr
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (organizationProfile() != null) {
-            organizationProfile().validate();
-        }
-        if (agentProfile() != null) {
-            agentProfile().validate();
-        }
-        if (fabricProfile() != null) {
-            fabricProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

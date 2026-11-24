@@ -14,33 +14,33 @@ public final class ClientConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientConfig model = BinaryData.fromString(
-            "{\"maxSessionExpirySeconds\":621346946,\"maxMessageExpirySeconds\":194127225,\"maxPacketSizeBytes\":363488888,\"subscriberQueueLimit\":{\"length\":7762769610748668832,\"strategy\":\"None\"},\"maxReceiveMaximum\":1463310275,\"maxKeepAliveSeconds\":669612849}")
+            "{\"maxSessionExpirySeconds\":563001635,\"maxMessageExpirySeconds\":191194169,\"maxPacketSizeBytes\":629729450,\"subscriberQueueLimit\":{\"length\":6101131158833824091,\"strategy\":\"None\"},\"maxReceiveMaximum\":222855388,\"maxKeepAliveSeconds\":559319579}")
             .toObject(ClientConfig.class);
-        Assertions.assertEquals(621346946, model.maxSessionExpirySeconds());
-        Assertions.assertEquals(194127225, model.maxMessageExpirySeconds());
-        Assertions.assertEquals(363488888, model.maxPacketSizeBytes());
-        Assertions.assertEquals(7762769610748668832L, model.subscriberQueueLimit().length());
+        Assertions.assertEquals(563001635, model.maxSessionExpirySeconds());
+        Assertions.assertEquals(191194169, model.maxMessageExpirySeconds());
+        Assertions.assertEquals(629729450, model.maxPacketSizeBytes());
+        Assertions.assertEquals(6101131158833824091L, model.subscriberQueueLimit().length());
         Assertions.assertEquals(SubscriberMessageDropStrategy.NONE, model.subscriberQueueLimit().strategy());
-        Assertions.assertEquals(1463310275, model.maxReceiveMaximum());
-        Assertions.assertEquals(669612849, model.maxKeepAliveSeconds());
+        Assertions.assertEquals(222855388, model.maxReceiveMaximum());
+        Assertions.assertEquals(559319579, model.maxKeepAliveSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientConfig model = new ClientConfig().withMaxSessionExpirySeconds(621346946)
-            .withMaxMessageExpirySeconds(194127225)
-            .withMaxPacketSizeBytes(363488888)
-            .withSubscriberQueueLimit(new SubscriberQueueLimit().withLength(7762769610748668832L)
+        ClientConfig model = new ClientConfig().withMaxSessionExpirySeconds(563001635)
+            .withMaxMessageExpirySeconds(191194169)
+            .withMaxPacketSizeBytes(629729450)
+            .withSubscriberQueueLimit(new SubscriberQueueLimit().withLength(6101131158833824091L)
                 .withStrategy(SubscriberMessageDropStrategy.NONE))
-            .withMaxReceiveMaximum(1463310275)
-            .withMaxKeepAliveSeconds(669612849);
+            .withMaxReceiveMaximum(222855388)
+            .withMaxKeepAliveSeconds(559319579);
         model = BinaryData.fromObject(model).toObject(ClientConfig.class);
-        Assertions.assertEquals(621346946, model.maxSessionExpirySeconds());
-        Assertions.assertEquals(194127225, model.maxMessageExpirySeconds());
-        Assertions.assertEquals(363488888, model.maxPacketSizeBytes());
-        Assertions.assertEquals(7762769610748668832L, model.subscriberQueueLimit().length());
+        Assertions.assertEquals(563001635, model.maxSessionExpirySeconds());
+        Assertions.assertEquals(191194169, model.maxMessageExpirySeconds());
+        Assertions.assertEquals(629729450, model.maxPacketSizeBytes());
+        Assertions.assertEquals(6101131158833824091L, model.subscriberQueueLimit().length());
         Assertions.assertEquals(SubscriberMessageDropStrategy.NONE, model.subscriberQueueLimit().strategy());
-        Assertions.assertEquals(1463310275, model.maxReceiveMaximum());
-        Assertions.assertEquals(669612849, model.maxKeepAliveSeconds());
+        Assertions.assertEquals(222855388, model.maxReceiveMaximum());
+        Assertions.assertEquals(559319579, model.maxKeepAliveSeconds());
     }
 }

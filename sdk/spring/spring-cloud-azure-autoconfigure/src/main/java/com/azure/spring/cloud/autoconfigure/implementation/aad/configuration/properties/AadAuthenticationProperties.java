@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AuthorizationClientProperties;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -90,25 +90,22 @@ public class AadAuthenticationProperties implements InitializingBean {
     private final Map<String, Object> authenticateAdditionalParameters = new HashMap<>();
 
     /**
-     * Connection Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
+     * Connection Timeout (duration) for the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_CONNECT_TIMEOUT} milliseconds.
      */
-    @Deprecated
-    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
+    private Duration jwtConnectTimeout = Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout (duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
+     * Read Timeout (duration) for the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_READ_TIMEOUT} milliseconds.
      */
-    @Deprecated
-    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+    private Duration jwtReadTimeout = Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
-     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `51200`.
-     * @deprecated If you want to configure this, please provide a 'RestOperations' bean.
+     * Size limit in Bytes of the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_SIZE_LIMIT} bytes.
      */
-    @Deprecated
-    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
+    private int jwtSizeLimit = JWKSourceBuilder.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * The lifespan (duration) of the cached JWK set before it expires.
@@ -187,16 +184,21 @@ public class AadAuthenticationProperties implements InitializingBean {
 
         /**
          * The group names can be used to construct 'GrantedAuthority'.
+         * Note: Group display names in Microsoft Entra ID are mutable and are not guaranteed to be
+         * unique within a tenant. For reliable group identification, it is strongly recommended to use
+         * {@link #allowedGroupIds} (group Object IDs) instead, which are immutable and unique.
          */
         private List<String> allowedGroupNames = new ArrayList<>();
 
         /**
          * The group IDs can be used to construct 'GrantedAuthority'.
+         * Group Object IDs are immutable and unique within a tenant, making them the preferred way to identify groups.
          */
         private Set<String> allowedGroupIds = new HashSet<>();
 
         /**
-         * Whether to use transitive way to get members. If "true", use "v1.0/me/transitiveMemberOf" to get members. Otherwise, use "v1.0/me/memberOf".
+         * Whether to use transitive way to get members. If true, use "v1.0/me/transitiveMemberOf" to get members.
+         * Otherwise, use "v1.0/me/memberOf".
          */
         private boolean useTransitiveMembers = false;
 
@@ -366,6 +368,14 @@ public class AadAuthenticationProperties implements InitializingBean {
                 + "contains 'all', no other group ids can be configured. "
                 + "But actually spring.cloud.azure.active-directory.user-group.allowed-group-ids="
                 + allowedGroupIds);
+        }
+
+        // Log a warning when allowed-group-names is configured, recommending allowed-group-ids instead
+        if (!userGroup.getAllowedGroupNames().isEmpty()) {
+            LOGGER.warn("The property 'spring.cloud.azure.active-directory.user-group.allowed-group-names' is "
+                + "configured. Group display names in Microsoft Entra ID are mutable and not guaranteed to be unique. "
+                + "For reliable group identification, consider using 'spring.cloud.azure.active-directory.user-group."
+                + "allowed-group-ids' (group Object IDs) instead.");
         }
 
         validateTenantId();

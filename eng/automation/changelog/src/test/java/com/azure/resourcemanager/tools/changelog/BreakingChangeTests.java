@@ -33,6 +33,36 @@ public class BreakingChangeTests {
 
         Assertions.assertEquals(3, breakingChange.getItems().size());
         Assertions.assertEquals("Required stage 3 was removed in class `MyClass`.", breakingChange.getItems().iterator().next());
+
+        String fieldLevelContent = "`SWAGGER_LINK_JSON` was removed";
+        breakingChange.addFieldLevelChange(fieldLevelContent);
+
+        Assertions.assertEquals(4, breakingChange.getItems().size());
+        // stage first, then field, then method
+        java.util.Iterator<String> it = breakingChange.getItems().iterator();
+        Assertions.assertEquals("Required stage 3 was removed in class `MyClass`.", it.next());
+        Assertions.assertEquals("Field `SWAGGER_LINK_JSON` was removed in class `MyClass`.", it.next());
+    }
+
+    @Test
+    public void testClassTypeChangeDetails() {
+        BreakingChange breakingChange = BreakingChange.onJavaClass("MyClass");
+        breakingChange.addClassTypeChange("a class", "an interface");
+        breakingChange.addClassTypeChange("a class", "an interface");
+        breakingChange.addMethodLevelChange("`sku()` was removed");
+        breakingChange.addFieldLevelChange("`VALUE` was removed");
+        breakingChange.addStageLevelChange("Required stage 3 was removed");
+
+        Assertions.assertEquals("#### `MyClass` was modified\n\n"
+            + "* Changed from a class to an interface.\n"
+            + "* Required stage 3 was removed\n"
+            + "* `VALUE` was removed\n"
+            + "* `sku()` was removed\n\n", breakingChange.getForChangelog());
+        Assertions.assertEquals(java.util.Arrays.asList(
+            "Type `MyClass` changed from a class to an interface.",
+            "Required stage 3 was removed in class `MyClass`.",
+            "Field `VALUE` was removed in class `MyClass`.",
+            "Method `sku()` was removed in class `MyClass`."), breakingChange.getItems());
     }
 
     @Test
@@ -50,5 +80,22 @@ public class BreakingChangeTests {
         Assertions.assertTrue(breakingChanges.toList().contains("Required stage 3 was added in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$DefinitionStages`."));
         Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.quota.models.QuotaProperties)` was removed in stage 2 in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$DefinitionStages`."));
         Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.quota.models.QuotaProperties)` was removed in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$Definition`."));
+    }
+
+    @Test
+    public void testEnumFieldChange() {
+        URL oldJar = BreakingChangeTests.class.getResource("/old-enum.jar");
+        URL newJar = BreakingChangeTests.class.getResource("/new-enum.jar");
+        System.setProperty("OLD_JAR", oldJar.getFile());
+        System.setProperty("NEW_JAR", newJar.getFile());
+        JSONObject jsonObject = Main.getChangelog();
+
+        JSONArray breakingChanges = (JSONArray) jsonObject.get("breakingChanges");
+        Assertions.assertFalse(breakingChanges.isEmpty());
+        // Old fields SWAGGER_LINK_JSON, WADL_LINK_JSON, WSDL_LINK_XML, OPENAPI_LINK were removed
+        Assertions.assertTrue(breakingChanges.toList().contains("Field `SWAGGER_LINK_JSON` was removed in class `com.azure.test.ExportResultFormat`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Field `WADL_LINK_JSON` was removed in class `com.azure.test.ExportResultFormat`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Field `WSDL_LINK_XML` was removed in class `com.azure.test.ExportResultFormat`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Field `OPENAPI_LINK` was removed in class `com.azure.test.ExportResultFormat`."));
     }
 }

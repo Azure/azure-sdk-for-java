@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -64,31 +63,6 @@ public final class ResourceDetailsObjectProperties implements JsonSerializable<R
     public String imageVersion() {
         return this.imageVersion;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (status() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property status in model ResourceDetailsObjectProperties"));
-        }
-        if (image() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property image in model ResourceDetailsObjectProperties"));
-        }
-        if (imageVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property imageVersion in model ResourceDetailsObjectProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceDetailsObjectProperties.class);
 
     /**
      * {@inheritDoc}

@@ -2,9 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
@@ -19,29 +30,29 @@ import com.azure.spring.data.cosmos.repository.repository.ReactiveCourseReposito
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.assertj.core.api.Assertions;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCourseRepositoryIT {
 
@@ -68,7 +79,7 @@ public class ReactiveCourseRepositoryIT {
     private static final Course COURSE_4 = new Course(COURSE_ID_4, COURSE_NAME_4, DEPARTMENT_NAME_1);
     private static final Course COURSE_5 = new Course(COURSE_ID_5, COURSE_NAME_5, DEPARTMENT_NAME_1);
 
-    @ClassRule
+
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
@@ -79,6 +90,9 @@ public class ReactiveCourseRepositoryIT {
 
     @Autowired
     private CosmosConfig cosmosConfig;
+
+    @Autowired
+    private CosmosFactory cosmosFactory;
 
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
@@ -99,7 +113,7 @@ public class ReactiveCourseRepositoryIT {
 
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Course.class);
         entityInformation = collectionManager.getEntityInformation(Course.class);
@@ -112,6 +126,63 @@ public class ReactiveCourseRepositoryIT {
     public void testFindById() {
         final Mono<Course> idMono = repository.findById(COURSE_ID_4);
         StepVerifier.create(idMono).expectNext(COURSE_4).expectComplete().verify();
+    }
+
+    @Test
+    public void saveAllPropagatesBulkTransportFailure() {
+        FaultInjectionRule connectionCloseRule = new FaultInjectionRuleBuilder("connectionClose-" + UUID.randomUUID())
+            .condition(new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.BATCH_ITEM)
+                .build())
+            .result(FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
+                .interval(Duration.ofMillis(200))
+                .build())
+            .duration(Duration.ofSeconds(10))
+            .build();
+        FaultInjectionRule responseDelayRule = new FaultInjectionRuleBuilder("responseDelay-" + UUID.randomUUID())
+            .condition(new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.BATCH_ITEM)
+                .build())
+            .result(FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                .delay(Duration.ofSeconds(1))
+                .build())
+            .duration(Duration.ofSeconds(10))
+            .build();
+        CosmosAsyncContainer container = cosmosFactory.getCosmosAsyncClient()
+            .getDatabase(cosmosFactory.getDatabaseName())
+            .getContainer(template.getContainerNameOverride(entityInformation.getContainerName()));
+
+        try {
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                container, Arrays.asList(connectionCloseRule, responseDelayRule)).block();
+
+            Course course = new Course("fault-" + UUID.randomUUID(), COURSE_NAME_1, DEPARTMENT_NAME_1);
+            StepVerifier.create(repository.saveAll(Collections.singleton(course)).collectList())
+                .expectErrorSatisfies(error -> {
+                    assertThat(error).isInstanceOf(CosmosAccessException.class);
+                    CosmosException cosmosException = ((CosmosAccessException) error).getCosmosException();
+                    assertThat(cosmosException).isNotNull();
+                    assertThat(cosmosException.getDiagnostics()).isNotNull();
+                    assertThat(containsCosmosStatus(cosmosException, 410)).isTrue();
+                })
+                .verify();
+        } finally {
+            connectionCloseRule.disable();
+            responseDelayRule.disable();
+        }
+    }
+
+    private static boolean containsCosmosStatus(Throwable error, int statusCode) {
+        Throwable current = error;
+        while (current != null) {
+            if (current instanceof CosmosException && ((CosmosException) current).getStatusCode() == statusCode) {
+                return true;
+            }
+            current = current.getCause();
+        }
+        return false;
     }
 
     @Test
@@ -322,7 +393,7 @@ public class ReactiveCourseRepositoryIT {
         courseResultSet.add(COURSE_1);
         courseResultSet.add(COURSE_2);
         StepVerifier.create(findResult).expectNextCount(2).thenConsumeWhile(value -> {
-            Assertions.assertThat(courseResultSet.contains(value)).isTrue();
+            assertThat(courseResultSet.contains(value)).isTrue();
             return true;
         }).verifyComplete();
     }
@@ -338,9 +409,9 @@ public class ReactiveCourseRepositoryIT {
     public void testFindByNameJsonNode() {
         final Flux<JsonNode> findResult = repository.annotatedFindByName(COURSE_NAME_1);
         StepVerifier.create(findResult).consumeNextWith(result -> {
-            Assert.assertEquals(result.findValue("courseId").asText(), COURSE_1.getCourseId());
-            Assert.assertEquals(result.findValue("name").asText(), COURSE_1.getName());
-            Assert.assertEquals(result.findValue("department").asText(), COURSE_1.getDepartment());
+            assertEquals(result.findValue("courseId").asText(), COURSE_1.getCourseId());
+            assertEquals(result.findValue("name").asText(), COURSE_1.getName());
+            assertEquals(result.findValue("department").asText(), COURSE_1.getDepartment());
         }).verifyComplete();
     }
 

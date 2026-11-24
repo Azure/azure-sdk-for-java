@@ -22,7 +22,7 @@ public final class CvesListByFirmwareMockTests {
     @Test
     public void testListByFirmware() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"cveId\":\"uoegrpkhjwniyqs\",\"componentId\":\"i\",\"componentName\":\"dggkzzlvmbmpa\",\"componentVersion\":\"odfvuefywsbp\",\"severity\":\"mwyhr\",\"cveName\":\"uyfta\",\"effectiveCvssScore\":23.020596125205383,\"effectiveCvssVersion\":369562825,\"cvssScores\":[{\"version\":1777343462,\"score\":92.24526716915393},{\"version\":1349275484,\"score\":79.8884985584721},{\"version\":661760953,\"score\":17.10961083054878}],\"links\":[{\"href\":\"ondjmq\",\"label\":\"vypomgkopkwho\"},{\"href\":\"pajqgxysm\",\"label\":\"mbqfqvmk\"}],\"description\":\"oz\",\"provisioningState\":\"Pending\"},\"id\":\"elxprglyatddck\",\"name\":\"bcuejrjxgci\",\"type\":\"ibrhosxsdqr\"}]}";
+            = "{\"value\":[{\"properties\":{\"cveId\":\"ntorzihleosjswsr\",\"componentId\":\"lyzrpzbchckqqzqi\",\"componentName\":\"iysui\",\"componentVersion\":\"ynkedyatrwyhqmib\",\"severity\":\"hwit\",\"cveName\":\"ypyynpcdpumnzg\",\"component\":{\"componentId\":\"nmabik\",\"name\":\"orgjhxbldt\",\"version\":\"wrlkdmtn\"},\"cvssScore\":\"ok\",\"cvssV2Score\":\"llxdyhgs\",\"cvssV3Score\":\"cogjltdtbn\",\"cvssVersion\":\"adoocrkvc\",\"effectiveCvssScore\":60.81064694065468,\"effectiveCvssVersion\":44638091,\"cvssScores\":[{\"version\":924007604,\"score\":4.904957361431183}],\"links\":[{\"href\":\"zikywgg\",\"label\":\"allatmelwuipic\"}],\"description\":\"zkzivgvvcnay\",\"provisioningState\":\"Failed\"},\"id\":\"nxxmueedndrdv\",\"name\":\"tkwqqtchealm\",\"type\":\"mtdaa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,25 @@ public final class CvesListByFirmwareMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CveResource> response
-            = manager.cves().listByFirmware("opcjwvnhd", "d", "mgxcxrslpm", com.azure.core.util.Context.NONE);
+            = manager.cves().listByFirmware("qkvpuvksgplsakn", "n", "synljphuopxodl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uoegrpkhjwniyqs", response.iterator().next().cveId());
-        Assertions.assertEquals("i", response.iterator().next().componentId());
-        Assertions.assertEquals("dggkzzlvmbmpa", response.iterator().next().componentName());
-        Assertions.assertEquals("odfvuefywsbp", response.iterator().next().componentVersion());
-        Assertions.assertEquals("mwyhr", response.iterator().next().severity());
-        Assertions.assertEquals("uyfta", response.iterator().next().cveName());
-        Assertions.assertEquals(23.020596125205383D, response.iterator().next().effectiveCvssScore());
-        Assertions.assertEquals(369562825, response.iterator().next().effectiveCvssVersion());
-        Assertions.assertEquals(1777343462, response.iterator().next().cvssScores().get(0).version());
-        Assertions.assertEquals(92.24526716915393D, response.iterator().next().cvssScores().get(0).score());
-        Assertions.assertEquals("oz", response.iterator().next().description());
+        Assertions.assertEquals("ntorzihleosjswsr", response.iterator().next().cveId());
+        Assertions.assertEquals("lyzrpzbchckqqzqi", response.iterator().next().componentId());
+        Assertions.assertEquals("iysui", response.iterator().next().componentName());
+        Assertions.assertEquals("ynkedyatrwyhqmib", response.iterator().next().componentVersion());
+        Assertions.assertEquals("hwit", response.iterator().next().severity());
+        Assertions.assertEquals("ypyynpcdpumnzg", response.iterator().next().cveName());
+        Assertions.assertEquals("nmabik", response.iterator().next().component().componentId());
+        Assertions.assertEquals("orgjhxbldt", response.iterator().next().component().name());
+        Assertions.assertEquals("wrlkdmtn", response.iterator().next().component().version());
+        Assertions.assertEquals("ok", response.iterator().next().cvssScore());
+        Assertions.assertEquals("llxdyhgs", response.iterator().next().cvssV2Score());
+        Assertions.assertEquals("cogjltdtbn", response.iterator().next().cvssV3Score());
+        Assertions.assertEquals("adoocrkvc", response.iterator().next().cvssVersion());
+        Assertions.assertEquals(60.81064694065468D, response.iterator().next().effectiveCvssScore());
+        Assertions.assertEquals(44638091, response.iterator().next().effectiveCvssVersion());
+        Assertions.assertEquals(924007604, response.iterator().next().cvssScores().get(0).version());
+        Assertions.assertEquals(4.904957361431183D, response.iterator().next().cvssScores().get(0).score());
+        Assertions.assertEquals("zkzivgvvcnay", response.iterator().next().description());
     }
 }

@@ -10,7 +10,6 @@ import com.azure.resourcemanager.avs.models.ClusterZone;
 public final class ClusterZoneTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterZone model = BinaryData.fromString("{\"hosts\":[\"mond\",\"mquxvypo\"],\"zone\":\"kopkwhojvpajqgx\"}")
-            .toObject(ClusterZone.class);
+        ClusterZone model = BinaryData.fromString("{\"hosts\":[\"e\"],\"zone\":\"locx\"}").toObject(ClusterZone.class);
     }
 }

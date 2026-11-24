@@ -142,17 +142,6 @@ public final class BinaryHardeningResult implements JsonSerializable<BinaryHarde
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (securityHardeningFeatures() != null) {
-            securityHardeningFeatures().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

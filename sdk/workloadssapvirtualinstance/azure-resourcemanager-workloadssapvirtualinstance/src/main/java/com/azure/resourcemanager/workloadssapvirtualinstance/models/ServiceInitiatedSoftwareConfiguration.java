@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -187,45 +186,6 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
         this.highAvailabilitySoftwareConfiguration = highAvailabilitySoftwareConfiguration;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (bomUrl() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property bomUrl in model ServiceInitiatedSoftwareConfiguration"));
-        }
-        if (softwareVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property softwareVersion in model ServiceInitiatedSoftwareConfiguration"));
-        }
-        if (sapBitsStorageAccountId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sapBitsStorageAccountId in model ServiceInitiatedSoftwareConfiguration"));
-        }
-        if (sapFqdn() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sapFqdn in model ServiceInitiatedSoftwareConfiguration"));
-        }
-        if (sshPrivateKey() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sshPrivateKey in model ServiceInitiatedSoftwareConfiguration"));
-        }
-        if (highAvailabilitySoftwareConfiguration() != null) {
-            highAvailabilitySoftwareConfiguration().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceInitiatedSoftwareConfiguration.class);
 
     /**
      * {@inheritDoc}

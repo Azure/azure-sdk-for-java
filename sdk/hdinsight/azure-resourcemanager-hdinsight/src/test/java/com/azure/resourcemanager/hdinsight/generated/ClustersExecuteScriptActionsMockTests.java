@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.ExecuteScriptActionParameters;
@@ -28,23 +28,19 @@ public final class ClustersExecuteScriptActionsMockTests {
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.clusters()
-            .executeScriptActions("hsrrryejylmbkz", "dnigrfihot",
+            .executeScriptActions("yrneizjcpeo", "khnmgbrou",
                 new ExecuteScriptActionParameters().withScriptActions(Arrays.asList(
-                    new RuntimeScriptAction().withName("lpxuzzjgnrefq")
-                        .withUri("hqo")
-                        .withParameters("ihiqakydiw")
-                        .withRoles(Arrays.asList("rkwpzdqtvhcspod", "qaxsipietgbebjf", "lbmoichd")),
-                    new RuntimeScriptAction().withName("iqsowsaaelc")
-                        .withUri("ttcjuhplrvkmjc")
-                        .withParameters("jvlgfggcvkyyliz")
-                        .withRoles(Arrays.asList("bjpsfxsfuztlvtm")),
-                    new RuntimeScriptAction().withName("koveof")
-                        .withUri("zrvjfnmjmvlwyzgi")
-                        .withParameters("kujrllfojui")
-                        .withRoles(Arrays.asList("puuyjucejik"))))
+                    new RuntimeScriptAction().withName("bhfhpfpazjzoy")
+                        .withUri("jxhpdulontacn")
+                        .withParameters("w")
+                        .withRoles(Arrays.asList("htuevrhrljy", "ogwxhnsduugwb", "reur")),
+                    new RuntimeScriptAction().withName("htkln")
+                        .withUri("nafvvkyfedev")
+                        .withParameters("oslc")
+                        .withRoles(Arrays.asList("y", "okkhminq", "ymc"))))
                     .withPersistOnSuccess(true),
                 com.azure.core.util.Context.NONE);
 

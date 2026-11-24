@@ -16,21 +16,18 @@ public final class UserPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"hqyudxorrqnbpoc\",\"role\":\"root\"},{\"db\":\"yifqrvkdvjsllrmv\",\"role\":\"root\"},{\"db\":\"f\",\"role\":\"root\"},{\"db\":\"t\",\"role\":\"root\"}]}")
+            "{\"provisioningState\":\"InProgress\",\"identityProvider\":{\"type\":\"IdentityProvider\"},\"roles\":[{\"db\":\"ajvnysounqe\",\"role\":\"root\"}]}")
             .toObject(UserProperties.class);
-        Assertions.assertEquals("hqyudxorrqnbpoc", model.roles().get(0).db());
+        Assertions.assertEquals("ajvnysounqe", model.roles().get(0).db());
         Assertions.assertEquals(UserRole.ROOT, model.roles().get(0).role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserProperties model = new UserProperties().withIdentityProvider(new IdentityProvider())
-            .withRoles(Arrays.asList(new DatabaseRole().withDb("hqyudxorrqnbpoc").withRole(UserRole.ROOT),
-                new DatabaseRole().withDb("yifqrvkdvjsllrmv").withRole(UserRole.ROOT),
-                new DatabaseRole().withDb("f").withRole(UserRole.ROOT),
-                new DatabaseRole().withDb("t").withRole(UserRole.ROOT)));
+            .withRoles(Arrays.asList(new DatabaseRole().withDb("ajvnysounqe").withRole(UserRole.ROOT)));
         model = BinaryData.fromObject(model).toObject(UserProperties.class);
-        Assertions.assertEquals("hqyudxorrqnbpoc", model.roles().get(0).db());
+        Assertions.assertEquals("ajvnysounqe", model.roles().get(0).db());
         Assertions.assertEquals(UserRole.ROOT, model.roles().get(0).role());
     }
 }

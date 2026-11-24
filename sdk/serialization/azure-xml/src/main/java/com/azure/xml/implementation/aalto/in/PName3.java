@@ -10,7 +10,7 @@ package com.azure.xml.implementation.aalto.in;
  * and to a lesser degree performance. Both are achieved for short
  * Strings by avoiding another level of indirection (via quad arrays)
  */
-public final class PName3 extends ByteBasedPName {
+public final class PName3 extends PName {
     final int mQuad1;
     final int mQuad2;
     final int mQuad3;

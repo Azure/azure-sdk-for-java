@@ -1,0 +1,91 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Sample demonstrating how to delete an analyzer.
+ * This sample shows:
+ * 1. Creating a temporary analyzer
+ * 2. Verifying the analyzer exists
+ * 3. Deleting the analyzer
+ * 4. Verifying the analyzer no longer exists
+ *
+ * <p>Deleting an analyzer is permanent and only custom analyzers can be deleted.</p>
+ */
+public class Sample09_DeleteAnalyzer {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample09.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample09.buildClient
+
+        // BEGIN:ContentUnderstandingDeleteAnalyzer
+        // First, create a temporary analyzer to delete
+        String analyzerId = "analyzer_to_delete_" + System.currentTimeMillis();
+        System.out.println("Creating temporary analyzer '" + analyzerId + "'...");
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Simple analyzer for deletion example")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
+            .setModels(models);
+
+        client.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
+        System.out.println("Temporary analyzer created: " + analyzerId);
+
+        // Verify the analyzer exists
+        ContentAnalyzer retrievedAnalyzer = client.getAnalyzer(analyzerId);
+        System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
+
+        // Delete the analyzer
+        client.deleteAnalyzer(analyzerId);
+        System.out.println("Analyzer deleted successfully: " + analyzerId);
+
+        // Verify the analyzer no longer exists
+        try {
+            client.getAnalyzer(analyzerId);
+            throw new IllegalStateException("Deleted analyzer '" + analyzerId + "' is still retrievable.");
+        } catch (HttpResponseException exception) {
+            int statusCode = exception.getResponse().getStatusCode();
+            if (statusCode != 404 && statusCode != 400) {
+                throw exception;
+            }
+            System.out.println("Confirmed: Analyzer no longer exists (status " + statusCode + ")");
+        }
+
+        for (ContentAnalyzer listedAnalyzer : client.listAnalyzers()) {
+            if (analyzerId.equals(listedAnalyzer.getAnalyzerId())) {
+                throw new IllegalStateException("Deleted analyzer '" + analyzerId + "' still appears in the list.");
+            }
+        }
+        System.out.println("Confirmed: Analyzer no longer appears in the analyzer list");
+        // END:ContentUnderstandingDeleteAnalyzer
+    }
+}

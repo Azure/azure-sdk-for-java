@@ -44,7 +44,8 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to PlaywrightManager.
- * Playwright service provides access to Playwright workspace resource and it's operations.
+ * Playwright Service Management API provides access to Playwright workspace resources and their operations through
+ * Azure Resource Manager.
  */
 public final class PlaywrightManager {
     private Operations operations;

@@ -32,13 +32,11 @@ import java.util.function.Supplier;
  */
 public class Paginator {
 
-    private final static Logger logger = LoggerFactory.getLogger(Paginator.class);
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
-        .CosmosQueryRequestOptionsAccessor qryOptAccessor = ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsHelper
-        .getCosmosQueryRequestOptionsAccessor();
+    private final static Logger logger = LoggerFactory.getLogger(Paginator.class);
 
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
@@ -56,8 +54,8 @@ public class Paginator {
             top,
             maxPageSize,
             getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize),
-            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
-            qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+            queryOptionsAccessor().getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
+            queryOptionsAccessor().getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
             globalEndpointManager,
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
     }
@@ -146,6 +144,34 @@ public class Paginator {
                 1,
                 preFetchCount);
         });
+    }
+
+    public static <T> Flux<FeedResponse<T>> getPaginatedNonDocumentReadFeedResultAsObservable(
+        RxDocumentClientImpl client,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
+        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
+        int maxPageSize,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+        boolean isChangeFeed) {
+
+        int preFetchCount = getPreFetchCount(cosmosQueryRequestOptions, -1, maxPageSize);
+
+        return getPaginatedQueryResultAsObservable(
+            () -> new ServerSideOnlyContinuationNonDocumentFetcherImpl<>(
+                client,
+                createRequestFunc,
+                executeFunc,
+                ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
+                isChangeFeed,
+                -1,
+                maxPageSize,
+                queryOptionsAccessor().getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
+                queryOptionsAccessor().getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+                globalEndpointManager,
+                globalPartitionEndpointManagerForPerPartitionCircuitBreaker),
+            preFetchCount);
     }
 
     private static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(

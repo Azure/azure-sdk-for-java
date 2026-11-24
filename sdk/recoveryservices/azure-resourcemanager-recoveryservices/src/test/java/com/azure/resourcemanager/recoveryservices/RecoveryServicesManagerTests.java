@@ -13,11 +13,13 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.recoveryservices.models.CrossSubscriptionRestoreSettings;
 import com.azure.resourcemanager.recoveryservices.models.CrossSubscriptionRestoreState;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityConfiguration;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilitySettings;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilityState;
+import com.azure.resourcemanager.recoveryservices.models.ImmutabilityType;
 import com.azure.resourcemanager.recoveryservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.recoveryservices.models.RestoreSettings;
 import com.azure.resourcemanager.recoveryservices.models.SecuritySettings;
@@ -42,7 +44,7 @@ public class RecoveryServicesManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
@@ -79,19 +81,25 @@ public class RecoveryServicesManagerTests extends TestProxyTestBase {
         try {
             String vaultName = "vault" + randomPadding();
             // @embedmeStart
-            vault = recoveryServicesManager.vaults()
-                .define(vaultName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(resourceGroupName)
-                .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
-                .withProperties(new VaultProperties()
-                    .withSecuritySettings(new SecuritySettings()
-                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                    .withRestoreSettings(new RestoreSettings()
-                        .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
-                            .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
-                .create();
+            vault
+                = recoveryServicesManager.vaults()
+                    .define(vaultName)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
+                    .withProperties(
+                        new VaultProperties()
+                            .withSecuritySettings(
+                                new SecuritySettings()
+                                    .withImmutabilitySettings(
+                                        new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)
+                                            .withConfiguration(new ImmutabilityConfiguration()
+                                                .withType(ImmutabilityType.AS_PER_POLICY))))
+                            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                            .withRestoreSettings(new RestoreSettings()
+                                .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                                    .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
+                    .create();
             // @embedmeEnd
             vault.refresh();
             Assertions.assertEquals(vault.name(), vaultName);

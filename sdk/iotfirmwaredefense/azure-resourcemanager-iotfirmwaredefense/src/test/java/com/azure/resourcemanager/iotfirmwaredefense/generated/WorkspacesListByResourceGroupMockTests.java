@@ -23,7 +23,7 @@ public final class WorkspacesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Pending\"},\"sku\":{\"name\":\"eli\",\"tier\":\"Free\",\"size\":\"ztfolhbnxk\",\"family\":\"laulppg\",\"capacity\":1987785731},\"location\":\"napnyiropuhpigv\",\"tags\":{\"txmedj\":\"lgqg\",\"lynqwwncwzzh\":\"c\",\"ellwptfdy\":\"gktrmgucnapkte\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\"},\"id\":\"lzdahzxctobgbkdm\",\"name\":\"izpost\",\"type\":\"grcfb\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"igynduhavhqlk\",\"tier\":\"Free\",\"size\":\"aqolbgycduiertg\",\"family\":\"y\",\"capacity\":1297199271},\"location\":\"l\",\"tags\":{\"dnbbglzps\":\"lqlfm\",\"adbzmnvdfznud\":\"iydmcwyhzdxs\",\"xzb\":\"od\"},\"id\":\"cblylpstdbhhxsr\",\"name\":\"dzu\",\"type\":\"erscdntne\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class WorkspacesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Workspace> response
-            = manager.workspaces().listByResourceGroup("yaqcslyjpkiidz", com.azure.core.util.Context.NONE);
+            = manager.workspaces().listByResourceGroup("sl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("napnyiropuhpigv", response.iterator().next().location());
-        Assertions.assertEquals("lgqg", response.iterator().next().tags().get("txmedj"));
-        Assertions.assertEquals("eli", response.iterator().next().sku().name());
+        Assertions.assertEquals("l", response.iterator().next().location());
+        Assertions.assertEquals("lqlfm", response.iterator().next().tags().get("dnbbglzps"));
+        Assertions.assertEquals("igynduhavhqlk", response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals("ztfolhbnxk", response.iterator().next().sku().size());
-        Assertions.assertEquals("laulppg", response.iterator().next().sku().family());
-        Assertions.assertEquals(1987785731, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("aqolbgycduiertg", response.iterator().next().sku().size());
+        Assertions.assertEquals("y", response.iterator().next().sku().family());
+        Assertions.assertEquals(1297199271, response.iterator().next().sku().capacity());
     }
 }

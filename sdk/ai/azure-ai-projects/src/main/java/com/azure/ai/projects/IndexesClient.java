@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.IndexesImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -39,6 +39,8 @@ public final class IndexesClient {
     }
 
     /**
+     * List versions
+     *
      * List all versions of the given Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -72,6 +74,8 @@ public final class IndexesClient {
     }
 
     /**
+     * List latest versions
+     *
      * List the latest version of each Index.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -104,7 +108,9 @@ public final class IndexesClient {
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get a version
+     *
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -129,7 +135,9 @@ public final class IndexesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the specific version of the Index along with {@link Response}.
+     * @return a version
+     *
+     * Get the specific version of the Index along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -139,7 +147,10 @@ public final class IndexesClient {
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete a version
+     *
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -157,6 +168,8 @@ public final class IndexesClient {
     }
 
     /**
+     * Create or update a version
+     *
      * Create a new or update an existing Index with the given version id.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -210,6 +223,8 @@ public final class IndexesClient {
     }
 
     /**
+     * List versions
+     *
      * List all versions of the given Index.
      *
      * @param name The name of the resource.
@@ -223,14 +238,16 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listIndexVersions(String name) {
+    public PagedIterable<AIProjectIndex> listIndexVersions(String name) {
         // Generated convenience method for listIndexVersions
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listIndexVersions(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AIProjectIndex.class));
     }
 
     /**
+     * List latest versions
+     *
      * List the latest version of each Index.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -242,15 +259,17 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listLatestIndexVersions() {
+    public PagedIterable<AIProjectIndex> listLatestIndexVersions() {
         // Generated convenience method for listLatestIndexVersions
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listLatestIndexVersions(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AIProjectIndex.class));
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get a version
+     *
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The specific version id of the Index to retrieve.
@@ -260,18 +279,23 @@ public final class IndexesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the Index.
+     * @return a version
+     *
+     * Get the specific version of the Index.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index getIndexVersion(String name, String version) {
+    public AIProjectIndex getIndexVersion(String name, String version) {
         // Generated convenience method for getIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexVersionWithResponse(name, version, requestOptions).getValue().toObject(Index.class);
+        return getIndexVersionWithResponse(name, version, requestOptions).getValue().toObject(AIProjectIndex.class);
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete a version
+     *
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -291,6 +315,8 @@ public final class IndexesClient {
     }
 
     /**
+     * Create or update a version
+     *
      * Create a new or update an existing Index with the given version id.
      *
      * @param name The name of the resource.
@@ -306,15 +332,15 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index createOrUpdateIndexVersion(String name, String version, Index index) {
+    public AIProjectIndex createOrUpdateIndexVersion(String name, String version, AIProjectIndex index) {
         // Generated convenience method for createOrUpdateIndexVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, true);
         BinaryData indexInBinaryData = BinaryData.fromObject(index);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         indexInBinaryData.getLength();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, false);
         return createOrUpdateIndexVersionWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
-            .toObject(Index.class);
+            .toObject(AIProjectIndex.class);
     }
 }

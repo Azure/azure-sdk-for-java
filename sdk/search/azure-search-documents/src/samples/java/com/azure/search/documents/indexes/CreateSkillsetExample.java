@@ -6,16 +6,23 @@ package com.azure.search.documents.indexes;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.AIServicesAccountKey;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkill;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingProperties;
+import com.azure.search.documents.indexes.models.ContentUnderstandingSkillChunkingUnit;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.WebApiHttpHeaders;
 import com.azure.search.documents.indexes.models.WebApiSkill;
+import com.azure.search.documents.models.ContentUnderstandingSkillChunkingMethod;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class CreateSkillsetExample {
 
@@ -34,9 +41,64 @@ public class CreateSkillsetExample {
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
 
+        if (args.length > 0 && "content-understanding".equals(args[0])) {
+            createContentUnderstandingSkillset(searchIndexerClient);
+            return;
+        }
+
         createOcrSkillset(searchIndexerClient);
         createCustomSkillset(searchIndexerClient);
         cleanupSkillset(searchIndexerClient);
+    }
+
+    private static void createContentUnderstandingSkillset(SearchIndexerClient client) {
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(
+            "content-understanding-" + UUID.randomUUID().toString().replace("-", ""),
+            contentUnderstandingSkill(requiredSetting("SEARCH_CONTENT_MODEL_NAME"),
+                requiredSetting("SEARCH_CONTENT_MODEL_DEPLOYMENT"), ContentUnderstandingSkillChunkingMethod.SEMANTIC))
+                    .setCognitiveServicesAccount(new AIServicesAccountKey(requiredSetting("SEARCH_AI_SERVICES_API_KEY"),
+                        requiredSetting("SEARCH_AI_SERVICES_ENDPOINT")));
+        client.createSkillset(skillset);
+        try {
+            System.out.println(client.getSkillset(skillset.getName()).getSkills());
+        } finally {
+            client.deleteSkillset(skillset.getName());
+        }
+    }
+
+    /**
+     * Builds a content-understanding skill using token-based semantic chunks or fixed-size character chunks.
+     * Run the sample with {@code content-understanding} and set {@code SEARCH_CONTENT_MODEL_NAME},
+     * {@code SEARCH_CONTENT_MODEL_DEPLOYMENT}, {@code SEARCH_AI_SERVICES_ENDPOINT}, and
+     * {@code SEARCH_AI_SERVICES_API_KEY}, in addition to the Search endpoint and key.
+     * The AI Services resource must support Content Understanding. An indexer using this skill must expose
+     * {@code /document/file_data} through {@code allowSkillsetToReadFileData}.
+     *
+     * @param modelName The supported model name.
+     * @param deployment The provisioned model deployment.
+     * @param method The chunking method.
+     * @return The configured content-understanding skill.
+     */
+    public static ContentUnderstandingSkill contentUnderstandingSkill(String modelName, String deployment,
+        ContentUnderstandingSkillChunkingMethod method) {
+        boolean semantic = ContentUnderstandingSkillChunkingMethod.SEMANTIC.equals(method);
+        return new ContentUnderstandingSkill(
+            Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
+            Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
+                .setModelName(modelName)
+                .setModelDeployment(deployment)
+                .setChunkingProperties(new ContentUnderstandingSkillChunkingProperties().setMethod(method)
+                    .setUnit(semantic ? ContentUnderstandingSkillChunkingUnit.TOKENS
+                        : ContentUnderstandingSkillChunkingUnit.CHARACTERS)
+                    .setMaximumLength(semantic ? 500 : 2000));
+    }
+
+    private static String requiredSetting(String name) {
+        String value = Configuration.getGlobalConfiguration().get(name);
+        if (value == null || value.isEmpty()) {
+            throw new IllegalStateException("Set " + name + " before running the Content Understanding sample.");
+        }
+        return value;
     }
 
     private static void createOcrSkillset(SearchIndexerClient searchIndexerClient) {
@@ -67,15 +129,13 @@ public class CreateSkillsetExample {
         SearchIndexerSkillset skillset = new SearchIndexerSkillset(OCR_SKILLSET_NAME, skills)
             .setDescription("Extracts text (plain and structured) from image.");
 
-        System.out.println(String.format("Creating OCR skillset '%s'", skillset.getName()));
+        System.out.printf("Creating OCR skillset '%s'%n", skillset.getName());
 
         SearchIndexerSkillset createdSkillset = searchIndexerClient.createSkillset(skillset);
 
         System.out.println("Created OCR skillset");
-        System.out.println(String.format("Name: %s", createdSkillset.getName()));
-        System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
-
-        System.out.println("\n");
+        System.out.printf("Name: %s%n", createdSkillset.getName());
+        System.out.printf("ETag: %s%n%n", createdSkillset.getETag());
     }
 
     private static void createCustomSkillset(SearchIndexerClient searchIndexerClient) {
@@ -83,32 +143,27 @@ public class CreateSkillsetExample {
         headers.put("Ocp-Apim-Subscription-Key", "foobar");
 
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
-            new InputFieldMappingEntry("text")
-                .setSource("/document/mytext")
-        );
+            new InputFieldMappingEntry("text").setSource("/document/mytext"));
 
         List<OutputFieldMappingEntry> outputs = Collections.singletonList(
-            new OutputFieldMappingEntry("textItems")
-                .setTargetName("myTextItems")
-        );
+            new OutputFieldMappingEntry("textItems").setTargetName("myTextItems"));
 
         SearchIndexerSkill webApiSkill = new WebApiSkill(inputs, outputs, "https://example.com")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
-            .setHttpHeaders(headers)
+            .setHttpHeaders(new WebApiHttpHeaders().setAdditionalProperties(headers))
             .setName("webapi-skill")
             .setDescription("A WebApiSkill that can be used to call a custom web api function");
 
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset(CUSTOM_SKILLSET_NAME,
-            Collections.singletonList(webApiSkill))
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(CUSTOM_SKILLSET_NAME, webApiSkill)
             .setDescription("Skillset for testing custom skillsets");
 
-        System.out.println(String.format("Creating custom skillset '%s'", skillset.getName()));
+        System.out.printf("Creating custom skillset '%s'%n", skillset.getName());
 
         SearchIndexerSkillset createdSkillset = searchIndexerClient.createSkillset(skillset);
 
         System.out.println("Created custom skillset");
-        System.out.println(String.format("Name: %s", createdSkillset.getName()));
-        System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
+        System.out.printf("Name: %s%n", createdSkillset.getName());
+        System.out.printf("ETag: %s%n", createdSkillset.getETag());
     }
 
     private static void cleanupSkillset(SearchIndexerClient searchIndexerClient) {

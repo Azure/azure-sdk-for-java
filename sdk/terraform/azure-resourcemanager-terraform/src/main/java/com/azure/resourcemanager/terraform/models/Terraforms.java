@@ -17,8 +17,9 @@ public interface Terraforms {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void exportTerraform(BaseExportModel body);
+    TerraformOperationStatus exportTerraform(BaseExportModel body);
 
     /**
      * Exports the Terraform configuration of the specified resource(s).
@@ -28,6 +29,7 @@ public interface Terraforms {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
-    void exportTerraform(BaseExportModel body, Context context);
+    TerraformOperationStatus exportTerraform(BaseExportModel body, Context context);
 }

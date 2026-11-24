@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -110,42 +109,6 @@ public final class ResourceCarbonEmissionTopItemsSummaryData extends CarbonEmiss
     public String resourceId() {
         return this.resourceId;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (itemName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property itemName in model ResourceCarbonEmissionTopItemsSummaryData"));
-        }
-        if (categoryType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property categoryType in model ResourceCarbonEmissionTopItemsSummaryData"));
-        }
-        if (subscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subscriptionId in model ResourceCarbonEmissionTopItemsSummaryData"));
-        }
-        if (resourceGroup() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceGroup in model ResourceCarbonEmissionTopItemsSummaryData"));
-        }
-        if (resourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceId in model ResourceCarbonEmissionTopItemsSummaryData"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceCarbonEmissionTopItemsSummaryData.class);
 
     /**
      * {@inheritDoc}

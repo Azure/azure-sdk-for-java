@@ -113,15 +113,6 @@ public final class AddRemoveIncrementalNamedPartitionScalingMechanism extends Sc
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

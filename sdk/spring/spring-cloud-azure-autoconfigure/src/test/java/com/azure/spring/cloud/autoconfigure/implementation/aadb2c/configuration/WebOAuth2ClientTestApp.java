@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration;
 
+import org.springframework.boot.security.oauth2.client.autoconfigure.OAuth2ClientAutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-@SuppressWarnings({"removal", "deprecation"})
 @EnableWebSecurity
-@Import(org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration.class)
+@Import(OAuth2ClientAutoConfiguration.class)
 public class WebOAuth2ClientTestApp {
 
 }

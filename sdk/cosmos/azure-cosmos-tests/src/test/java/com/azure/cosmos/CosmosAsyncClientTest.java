@@ -4,22 +4,28 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 
 import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Listeners({TestNGLogListener.class, CosmosNettyLeakDetectorFactory.class})
 public abstract class CosmosAsyncClientTest implements ITest {
 
     public static final String ROUTING_GATEWAY_EMULATOR_PORT = ":8081";
     public static final String COMPUTE_GATEWAY_EMULATOR_PORT = ":9999";
+
+    protected static Logger logger = LoggerFactory.getLogger(CosmosAsyncClientTest.class.getSimpleName());
+    protected static final int SUITE_SETUP_TIMEOUT = 120000;
     private final CosmosClientBuilder clientBuilder;
     private String testName;
 
@@ -102,7 +108,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
 
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method, Object[] row) {
-        String testClassAndMethodName = Strings.lenientFormat("%s::%s",
+        String testClassAndMethodName = String.format("%s::%s",
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
@@ -116,7 +122,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
                 "%s[%s with %s consistency]" :
                 "%s[%s with %s consistency ContentOnWriteDisabled]";
 
-            this.testName = Strings.lenientFormat(template,
+            this.testName = String.format(template,
                     testClassAndMethodName,
                     connectionMode,
                     clientBuilder.getConsistencyLevel());

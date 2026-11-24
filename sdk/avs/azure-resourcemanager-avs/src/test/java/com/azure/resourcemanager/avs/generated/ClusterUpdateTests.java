@@ -15,34 +15,31 @@ public final class ClusterUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterUpdate model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"sjnkal\",\"tier\":\"Standard\",\"size\":\"iswac\",\"family\":\"gdkz\",\"capacity\":1157139188},\"properties\":{\"clusterSize\":2137392775,\"hosts\":[\"crailvpn\",\"pfuflrw\",\"mh\",\"lxyjr\"]}}")
+            "{\"sku\":{\"name\":\"hmuouqfprwzwbn\",\"tier\":\"Premium\",\"size\":\"nwui\",\"family\":\"a\",\"capacity\":8203543},\"properties\":{\"clusterSize\":1785230840,\"hosts\":[\"kyfi\",\"rfidfvzwdz\"]}}")
             .toObject(ClusterUpdate.class);
-        Assertions.assertEquals("sjnkal", model.sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals("iswac", model.sku().size());
-        Assertions.assertEquals("gdkz", model.sku().family());
-        Assertions.assertEquals(1157139188, model.sku().capacity());
-        Assertions.assertEquals(2137392775, model.clusterSize());
-        Assertions.assertEquals("crailvpn", model.hosts().get(0));
+        Assertions.assertEquals("hmuouqfprwzwbn", model.sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals("nwui", model.sku().size());
+        Assertions.assertEquals("a", model.sku().family());
+        Assertions.assertEquals(8203543, model.sku().capacity());
+        Assertions.assertEquals(1785230840, model.clusterSize());
+        Assertions.assertEquals("kyfi", model.hosts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterUpdate model = new ClusterUpdate()
-            .withSku(new Sku().withName("sjnkal")
-                .withTier(SkuTier.STANDARD)
-                .withSize("iswac")
-                .withFamily("gdkz")
-                .withCapacity(1157139188))
-            .withClusterSize(2137392775)
-            .withHosts(Arrays.asList("crailvpn", "pfuflrw", "mh", "lxyjr"));
+        ClusterUpdate model = new ClusterUpdate().withSku(new Sku().withName("hmuouqfprwzwbn")
+            .withTier(SkuTier.PREMIUM)
+            .withSize("nwui")
+            .withFamily("a")
+            .withCapacity(8203543)).withClusterSize(1785230840).withHosts(Arrays.asList("kyfi", "rfidfvzwdz"));
         model = BinaryData.fromObject(model).toObject(ClusterUpdate.class);
-        Assertions.assertEquals("sjnkal", model.sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals("iswac", model.sku().size());
-        Assertions.assertEquals("gdkz", model.sku().family());
-        Assertions.assertEquals(1157139188, model.sku().capacity());
-        Assertions.assertEquals(2137392775, model.clusterSize());
-        Assertions.assertEquals("crailvpn", model.hosts().get(0));
+        Assertions.assertEquals("hmuouqfprwzwbn", model.sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals("nwui", model.sku().size());
+        Assertions.assertEquals("a", model.sku().family());
+        Assertions.assertEquals(8203543, model.sku().capacity());
+        Assertions.assertEquals(1785230840, model.clusterSize());
+        Assertions.assertEquals("kyfi", model.hosts().get(0));
     }
 }

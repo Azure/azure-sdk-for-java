@@ -21,7 +21,7 @@ public final class SummariesListByFirmwareMockTests {
     @Test
     public void testListByFirmware() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Failed\"},\"id\":\"huopxodlqiynto\",\"name\":\"zihleosjswsr\",\"type\":\"slyzrpzbchckqq\"}]}";
+            = "{\"value\":[{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Analyzing\"},\"id\":\"wdmjsjqbjhhyx\",\"name\":\"rw\",\"type\":\"yc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class SummariesListByFirmwareMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SummaryResource> response
-            = manager.summaries().listByFirmware("bwwift", "hqkvpuvksgplsak", "ynfs", com.azure.core.util.Context.NONE);
+            = manager.summaries().listByFirmware("qfatpxllrxcyjm", "a", "su", com.azure.core.util.Context.NONE);
 
     }
 }

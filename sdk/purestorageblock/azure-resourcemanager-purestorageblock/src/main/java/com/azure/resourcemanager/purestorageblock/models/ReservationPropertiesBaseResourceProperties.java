@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.purestorageblock.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -103,30 +102,6 @@ public final class ReservationPropertiesBaseResourceProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (marketplace() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property marketplace in model ReservationPropertiesBaseResourceProperties"));
-        } else {
-            marketplace().validate();
-        }
-        if (user() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property user in model ReservationPropertiesBaseResourceProperties"));
-        } else {
-            user().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ReservationPropertiesBaseResourceProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -157,10 +132,10 @@ public final class ReservationPropertiesBaseResourceProperties
                 if ("marketplace".equals(fieldName)) {
                     deserializedReservationPropertiesBaseResourceProperties.marketplace
                         = MarketplaceDetails.fromJson(reader);
-                } else if ("user".equals(fieldName)) {
-                    deserializedReservationPropertiesBaseResourceProperties.user = UserDetails.fromJson(reader);
                 } else if ("reservationInternalId".equals(fieldName)) {
                     deserializedReservationPropertiesBaseResourceProperties.reservationInternalId = reader.getString();
+                } else if ("user".equals(fieldName)) {
+                    deserializedReservationPropertiesBaseResourceProperties.user = UserDetails.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedReservationPropertiesBaseResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

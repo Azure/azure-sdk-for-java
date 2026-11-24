@@ -5,6 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.FixedDelayOptions;
@@ -38,7 +39,7 @@ public class SearchClientBuilderTests {
     private static final MockTokenCredential SEARCH_CREDENTIAL = new MockTokenCredential();
     private static final String SEARCH_ENDPOINT = "https://test.search.windows.net";
     private static final String INDEX_NAME = "myindex";
-    private static final SearchServiceVersion API_VERSION = SearchServiceVersion.V2020_06_30;
+    private static final SearchServiceVersion API_VERSION = SearchServiceVersion.getLatest();
 
     @Test
     public void buildSyncClientTest() {
@@ -112,18 +113,8 @@ public class SearchClientBuilderTests {
     }
 
     @Test
-    public void emptyEndpointThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().endpoint(""));
-    }
-
-    @Test
     public void nullIndexNameThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().indexName(null));
-    }
-
-    @Test
-    public void emptyIndexNameThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder().indexName(""));
+        assertThrows(NullPointerException.class, () -> new SearchClientBuilder().indexName(null).buildClient());
     }
 
     @Test
@@ -192,7 +183,7 @@ public class SearchClientBuilderTests {
                 new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
-                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();

@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.durabletask.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.durabletask.models.PublicNetworkAccess;
 import com.azure.resourcemanager.durabletask.models.SchedulerPropertiesUpdate;
+import com.azure.resourcemanager.durabletask.models.SchedulerSkuName;
 import com.azure.resourcemanager.durabletask.models.SchedulerSkuUpdate;
 import com.azure.resourcemanager.durabletask.models.SchedulerUpdate;
+import com.azure.resourcemanager.durabletask.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,27 +22,33 @@ public final class SchedulerUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Provisioning\",\"endpoint\":\"scmdvpjhulsuu\",\"ipAllowlist\":[\"jozkrwfndiod\",\"pslwejdpvw\",\"yoqpsoaccta\"],\"sku\":{\"name\":\"ljlahbcryf\",\"capacity\":1389039399,\"redundancyState\":\"None\"}},\"tags\":{\"hcrzevd\":\"gexpaojakhmsbz\",\"qjbpfzfsin\":\"hlxaolthqtr\",\"wzo\":\"gvfcj\",\"np\":\"xjtfelluwfzit\"}}")
+            "{\"properties\":{\"provisioningState\":\"Provisioning\",\"endpoint\":\"gmgsxnkjzkde\",\"ipAllowlist\":[\"vlopwiyighx\",\"kdwzbaiuebbaumny\",\"upedeojnabckhs\",\"txp\"],\"sku\":{\"name\":\"Consumption\",\"capacity\":74737899,\"redundancyState\":\"Zone\"},\"publicNetworkAccess\":\"Enabled\"},\"tags\":{\"jdhtldwkyzxu\":\"pskrdqmh\",\"svlxotogtwrup\":\"tkncwsc\"},\"identity\":{\"principalId\":\"vnm\",\"tenantId\":\"ykvceoveil\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nv\":{\"principalId\":\"yfjfcnjbkcn\",\"clientId\":\"hbttkphyw\"}}}}")
             .toObject(SchedulerUpdate.class);
-        Assertions.assertEquals("jozkrwfndiod", model.properties().ipAllowlist().get(0));
-        Assertions.assertEquals("ljlahbcryf", model.properties().sku().name());
-        Assertions.assertEquals(1389039399, model.properties().sku().capacity());
-        Assertions.assertEquals("gexpaojakhmsbz", model.tags().get("hcrzevd"));
+        Assertions.assertEquals("vlopwiyighx", model.properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.properties().sku().name());
+        Assertions.assertEquals(74737899, model.properties().sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("pskrdqmh", model.tags().get("jdhtldwkyzxu"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchedulerUpdate model = new SchedulerUpdate()
             .withProperties(new SchedulerPropertiesUpdate()
-                .withIpAllowlist(Arrays.asList("jozkrwfndiod", "pslwejdpvw", "yoqpsoaccta"))
-                .withSku(new SchedulerSkuUpdate().withName("ljlahbcryf").withCapacity(1389039399)))
-            .withTags(
-                mapOf("hcrzevd", "gexpaojakhmsbz", "qjbpfzfsin", "hlxaolthqtr", "wzo", "gvfcj", "np", "xjtfelluwfzit"));
+                .withIpAllowlist(Arrays.asList("vlopwiyighx", "kdwzbaiuebbaumny", "upedeojnabckhs", "txp"))
+                .withSku(new SchedulerSkuUpdate().withName(SchedulerSkuName.CONSUMPTION).withCapacity(74737899))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+            .withTags(mapOf("jdhtldwkyzxu", "pskrdqmh", "svlxotogtwrup", "tkncwsc"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("nv", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(SchedulerUpdate.class);
-        Assertions.assertEquals("jozkrwfndiod", model.properties().ipAllowlist().get(0));
-        Assertions.assertEquals("ljlahbcryf", model.properties().sku().name());
-        Assertions.assertEquals(1389039399, model.properties().sku().capacity());
-        Assertions.assertEquals("gexpaojakhmsbz", model.tags().get("hcrzevd"));
+        Assertions.assertEquals("vlopwiyighx", model.properties().ipAllowlist().get(0));
+        Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.properties().sku().name());
+        Assertions.assertEquals(74737899, model.properties().sku().capacity());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("pskrdqmh", model.tags().get("jdhtldwkyzxu"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available

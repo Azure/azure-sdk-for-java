@@ -72,4 +72,10 @@ public final class CredentialType extends ExpandableStringEnum<CredentialType> {
     public static Collection<CredentialType> values() {
         return values(CredentialType.class);
     }
+
+    /**
+     * Agentic identity credential.
+     */
+    @Generated
+    public static final CredentialType AGENTIC_IDENTITY_PREVIEW = fromString("AgenticIdentityToken_Preview");
 }

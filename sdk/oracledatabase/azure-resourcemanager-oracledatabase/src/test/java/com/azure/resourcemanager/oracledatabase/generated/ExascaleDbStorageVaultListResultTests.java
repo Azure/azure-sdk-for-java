@@ -12,17 +12,20 @@ public final class ExascaleDbStorageVaultListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExascaleDbStorageVaultListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"additionalFlashCacheInPercent\":891711284,\"description\":\"rpmpdnqqskaw\",\"displayName\":\"oqvm\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1075343777},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":538705263,\"totalSizeInGbs\":863722507},\"timeZone\":\"qlkzme\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Failed\",\"lifecycleDetails\":\"kxlzyqdrfeg\",\"vmClusterCount\":128848080,\"ocid\":\"zxwhcansymoyqhlw\",\"ociUrl\":\"divb\"},\"zones\":[\"gomfajuwasq\",\"daeyygux\",\"kjsqzhzbezkgi\"],\"location\":\"idxas\",\"tags\":{\"gat\":\"dyvvjskgfmocwahp\",\"kzyb\":\"eaahhvjhhn\",\"yxkyxvx\":\"jjidjk\"},\"id\":\"vblbjednljlageua\",\"name\":\"lxunsmjbnkppxy\",\"type\":\"enlsvxeizzgwkln\"}],\"nextLink\":\"mffeycxcktpi\"}")
+            "{\"value\":[{\"properties\":{\"additionalFlashCacheInPercent\":1550392867,\"description\":\"pghriypoqeyhl\",\"displayName\":\"h\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":370083816},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1758426290,\"totalSizeInGbs\":2099801683},\"timeZone\":\"nuciqdsmexiit\",\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Failed\",\"lifecycleDetails\":\"asiibmiybnnust\",\"vmClusterCount\":1300683178,\"ocid\":\"hnmgixhcm\",\"ociUrl\":\"mqfoudorh\",\"exadataInfrastructureId\":\"yyprotwyp\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\"],\"isAutoscaleEnabled\":false,\"autoscaleLimitInGbs\":1099905966},\"zones\":[\"mjkavlgorbmft\",\"mdtzfjltfvnzc\",\"jtotpvopvpbd\",\"zq\"],\"location\":\"q\",\"tags\":{\"mkyi\":\"dsvqwt\",\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"id\":\"dxbzlmcmuap\",\"name\":\"vhdbevwqqxey\",\"type\":\"ko\"}],\"nextLink\":\"zinkfkbgbzbowxeq\"}")
             .toObject(ExascaleDbStorageVaultListResult.class);
-        Assertions.assertEquals("idxas", model.value().get(0).location());
-        Assertions.assertEquals("dyvvjskgfmocwahp", model.value().get(0).tags().get("gat"));
-        Assertions.assertEquals(891711284, model.value().get(0).properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("rpmpdnqqskaw", model.value().get(0).properties().description());
-        Assertions.assertEquals("oqvm", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(1075343777,
+        Assertions.assertEquals("q", model.value().get(0).location());
+        Assertions.assertEquals("dsvqwt", model.value().get(0).tags().get("mkyi"));
+        Assertions.assertEquals(1550392867, model.value().get(0).properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("pghriypoqeyhl", model.value().get(0).properties().description());
+        Assertions.assertEquals("h", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(370083816,
             model.value().get(0).properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("qlkzme", model.value().get(0).properties().timeZone());
-        Assertions.assertEquals("gomfajuwasq", model.value().get(0).zones().get(0));
-        Assertions.assertEquals("mffeycxcktpi", model.nextLink());
+        Assertions.assertEquals("nuciqdsmexiit", model.value().get(0).properties().timeZone());
+        Assertions.assertEquals("yyprotwyp", model.value().get(0).properties().exadataInfrastructureId());
+        Assertions.assertFalse(model.value().get(0).properties().isAutoscaleEnabled());
+        Assertions.assertEquals(1099905966, model.value().get(0).properties().autoscaleLimitInGbs());
+        Assertions.assertEquals("mjkavlgorbmft", model.value().get(0).zones().get(0));
+        Assertions.assertEquals("zinkfkbgbzbowxeq", model.nextLink());
     }
 }

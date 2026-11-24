@@ -24,6 +24,7 @@ import java.util.stream.Stream;
  *
  * @since 4.0.0
  */
+@SuppressWarnings("deprecation")
 public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOperation> {
 
     /**

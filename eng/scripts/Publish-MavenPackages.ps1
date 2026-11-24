@@ -45,7 +45,7 @@ Write-Information "Getting filtered package details."
 $packageDetails = Get-FilteredMavenPackageDetails -ArtifactDirectory $ArtifactDirectory -GroupIDFilter $GroupIDFilter -ArtifactIDFilter $ArtifactIDFilter
 
 Write-Host "Found $($packageDetails.Length) packages to publish:"
-$packageDetails | % { Write-Host $_.FullyQualifiedName }
+$packageDetails | ForEach-Object { Write-Host $_.FullyQualifiedName }
 
 if ($packageDetails.Length -eq 0) {
   throw "Aborting, no packages to publish."
@@ -71,6 +71,10 @@ foreach ($packageDetail in $packageDetails) {
 
   if ($packageDetail.AssociatedArtifacts.Length -ne 1) {
     $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
+    # If no JAR/AAR found, use POM as the main file artifact for POM-only packages
+    if (-not $fileAssociatedArtifact) {
+      $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
+    }
   } else {
     $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts[0]
   }
@@ -108,7 +112,7 @@ foreach ($packageDetail in $packageDetails) {
     }
   }
 
-  if ($additionalAssociatedArtifacts -ne $null) {
+  if ($additionalAssociatedArtifacts.Count -gt 0) {
     $commaDelimitedFileNames = ""
     $additionalAssociatedArtifacts | ForEach-Object { $commaDelimitedFileNames += ",$($_.File.FullName)" }
     $filesOption = "-Dfiles=$($commaDelimitedFileNames.Substring(1))"
@@ -151,7 +155,7 @@ foreach ($packageDetail in $packageDetails) {
   # in /eng/versions/external_dependencies.txt. This will prevent an issue with new scripts that remove unused
   # dependencies (which this usage wouldn't be considered one) and from an errant update to the version breaking this
   # release. Effectively, the usage is unique enough here to be handled separately from our normal dependency management.
-  $gpgSignAndDeployWithVer = "org.apache.maven.plugins:maven-gpg-plugin:3.2.7:sign-and-deploy-file"
+  $gpgSignAndDeployWithVer = "org.apache.maven.plugins:maven-gpg-plugin:3.2.8:sign-and-deploy-file"
 
   if ($requiresLocalGpg) {
     $localRepositoryDirectory = Get-RandomRepositoryDirectory
@@ -162,8 +166,8 @@ foreach ($packageDetail in $packageDetails) {
     Write-Information "URL Option is: $urlOption"
 
     Write-Information "Signing and deploying package to $localRepositoryDirectoryUri"
-    Write-Information "mvn $gpgSignAndDeployWithVer `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-    mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+    Write-Information "mvn $gpgSignAndDeployWithVer `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"$urlOption`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"--global-settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+    mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--global-settings=$PSScriptRoot\..\maven.publish.settings.xml"
     if ($LASTEXITCODE) { exit $LASTEXITCODE }
   }
 
@@ -174,8 +178,8 @@ foreach ($packageDetail in $packageDetails) {
   }
 
   Write-Information "GPG Signing and deploying package in one step to devops feed: $packageReposityUrl"
-  Write-Information "mvn $gpgSignAndDeployWithVer `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$packageReposityUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.password=[redacted]`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
-  mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$packageReposityUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
+  Write-Information "mvn $gpgSignAndDeployWithVer `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$packageReposityUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.password=[redacted]`" `"--global-settings=$PSScriptRoot\..\maven.publish.settings.xml`""
+  mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$packageReposityUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--global-settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
   if ($LASTEXITCODE -eq 0) {
     Write-Information "Package $($packageDetail.FullyQualifiedName) deployed"

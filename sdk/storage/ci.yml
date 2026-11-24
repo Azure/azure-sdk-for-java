@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
       - sdk/storage/ci.yml
-      - sdk/storage/azure-resourcemanager-storage/
       - sdk/storage/azure-storage-blob/
       - sdk/storage/azure-storage-blob-batch/
       - sdk/storage/azure-storage-blob-changefeed/
@@ -23,7 +22,6 @@ trigger:
       - sdk/storage/azure-storage-queue/
     exclude:
       - sdk/storage/pom.xml
-      - sdk/storage/azure-resourcemanager-storage/pom.xml
       - sdk/storage/azure-storage-blob/pom.xml
       - sdk/storage/azure-storage-blob-batch/pom.xml
       - sdk/storage/azure-storage-blob-changefeed/pom.xml
@@ -46,7 +44,6 @@ pr:
   paths:
     include:
       - sdk/storage/ci.yml
-      - sdk/storage/azure-resourcemanager-storage/
       - sdk/storage/azure-storage-blob/
       - sdk/storage/azure-storage-blob-batch/
       - sdk/storage/azure-storage-blob-changefeed/
@@ -60,7 +57,6 @@ pr:
       - sdk/storage/azure-storage-queue/
     exclude:
       - sdk/storage/pom.xml
-      - sdk/storage/azure-resourcemanager-storage/pom.xml
       - sdk/storage/azure-storage-blob/pom.xml
       - sdk/storage/azure-storage-blob-batch/pom.xml
       - sdk/storage/azure-storage-blob-changefeed/pom.xml
@@ -74,10 +70,6 @@ pr:
       - sdk/storage/azure-storage-queue/pom.xml
 
 parameters:
-- name: release_azureresourcemanagerstorage
-  displayName: 'azure-resourcemanager-storage'
-  type: boolean
-  default: false
 - name: release_azurestoragecommon
   displayName: 'azure-storage-common'
   type: boolean
@@ -130,10 +122,6 @@ extends:
       PublicFeedUrl: 'https://pkgs.dev.azure.com/azure-sdk/public/_packaging/storage-staging/maven/v1'
     ServiceDirectory: storage
     Artifacts:
-      - name: azure-resourcemanager-storage
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerstorage
-        releaseInBatch: ${{ parameters.release_azureresourcemanagerstorage }}
       - name: azure-storage-common
         groupId: com.azure
         safeName: azurestoragecommon

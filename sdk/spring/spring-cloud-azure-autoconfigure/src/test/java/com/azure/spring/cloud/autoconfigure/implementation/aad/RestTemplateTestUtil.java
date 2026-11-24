@@ -26,6 +26,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -98,8 +99,9 @@ public final class RestTemplateTestUtil {
     }
 
     private static void assertRestTemplateWellConfiguredInOAuth2AccessTokenResponseClient(OAuth2AccessTokenResponseClient<?> client) {
-        RestTemplate restTemplate = (RestTemplate) getField(client.getClass(), "restOperations", client);
-        assertEquals(FACTORY, restTemplate.getRequestFactory());
+        RestClient restClient = (RestClient) getField(client.getClass(), "restClient", client);
+        Object clientRequestFactory = getField(restClient.getClass(), "clientRequestFactory", restClient);
+        assertEquals(FACTORY, clientRequestFactory);
     }
 
     @SuppressWarnings({"unchecked", "deprecation"})

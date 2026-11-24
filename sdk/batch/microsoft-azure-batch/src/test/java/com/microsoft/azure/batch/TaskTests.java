@@ -9,7 +9,11 @@ import com.microsoft.azure.batch.protocol.models.*;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.junit.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.*;
@@ -19,7 +23,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
     static String livePoolId;
     private static String liveIaasPoolId;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() throws Exception {
         livePoolId = getStringIdWithUserNamePrefix("-testpool");
         liveIaasPoolId = getStringIdWithUserNamePrefix("-testIaaSpool");
@@ -28,7 +32,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
                 createClient(AuthMode.AAD);
                 livePool = createIfNotExistIaaSPool(livePoolId);
                 createIfNotExistIaaSPool(liveIaasPoolId);
-                Assert.assertNotNull(livePool);
+                Assertions.assertNotNull(livePool);
             }
         } catch (BatchErrorException e) {
             cleanup();
@@ -36,7 +40,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void cleanup() throws Exception {
         try {
             // batchClient.poolOperations().deletePool(livePool.id());
@@ -96,23 +100,23 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
             // GET
             CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
-            Assert.assertNotNull(task);
-            Assert.assertEquals(taskId, task.id());
+            Assertions.assertNotNull(task);
+            Assertions.assertEquals(taskId, task.id());
 
             // Verify default retention time
-            Assert.assertEquals(Period.days(7), task.constraints().retentionTime());
+            Assertions.assertEquals(Period.days(7), task.constraints().retentionTime());
 
             // UPDATE
             TaskConstraints contraint = new TaskConstraints();
             contraint.withMaxTaskRetryCount(5);
             batchClient.taskOperations().updateTask(jobId, taskId, contraint);
             task = batchClient.taskOperations().getTask(jobId, taskId);
-            Assert.assertEquals((Integer) 5, task.constraints().maxTaskRetryCount());
+            Assertions.assertEquals((Integer) 5, task.constraints().maxTaskRetryCount());
 
             // LIST
             List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
-            Assert.assertNotNull(tasks);
-            Assert.assertTrue(tasks.size() > 0);
+            Assertions.assertNotNull(tasks);
+            Assertions.assertTrue(tasks.size() > 0);
 
             boolean found = false;
             for (CloudTask t : tasks) {
@@ -122,7 +126,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
                 }
             }
 
-            Assert.assertTrue(found);
+            Assertions.assertTrue(found);
 
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 // Get the task command output file
@@ -131,7 +135,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 batchClient.fileOperations().getFileFromTask(jobId, task.id(), STANDARD_CONSOLE_OUTPUT_FILENAME, stream);
                 String fileContent = stream.toString("UTF-8");
-                Assert.assertEquals("This is an example", fileContent);
+                Assertions.assertEquals("This is an example", fileContent);
 
                 String outputSas = "";
 
@@ -142,16 +146,16 @@ public class TaskTests  extends BatchIntegrationTestBase {
                 }
                 // UPLOAD LOG
                 UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.computeNodeOperations().uploadBatchServiceLogs(liveIaasPoolId, task.nodeInfo().nodeId(), outputSas, DateTime.now().minusMinutes(-10));
-                Assert.assertNotNull(uploadBatchServiceLogsResult);
-                Assert.assertTrue(uploadBatchServiceLogsResult.numberOfFilesUploaded() > 0);
-                Assert.assertTrue(uploadBatchServiceLogsResult.virtualDirectoryName().toLowerCase().contains(liveIaasPoolId.toLowerCase()));
+                Assertions.assertNotNull(uploadBatchServiceLogsResult);
+                Assertions.assertTrue(uploadBatchServiceLogsResult.numberOfFilesUploaded() > 0);
+                Assertions.assertTrue(uploadBatchServiceLogsResult.virtualDirectoryName().toLowerCase().contains(liveIaasPoolId.toLowerCase()));
             }
 
             // DELETE
             batchClient.taskOperations().deleteTask(jobId, taskId);
             try {
                 batchClient.taskOperations().getTask(jobId, taskId);
-                Assert.assertTrue("Shouldn't be here, the job should be deleted", true);
+                Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             } catch (BatchErrorException err) {
                 if (!err.body().code().equals(BatchErrorCodeStrings.TaskNotFound)) {
                     throw err;
@@ -190,10 +194,10 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
             // GET
             CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
-            Assert.assertNotNull(task);
-            Assert.assertEquals(taskId, task.id());
-            Assert.assertEquals("test-user", task.userIdentity().userName());
-            Assert.assertEquals("msmpi", task.applicationPackageReferences().get(0).applicationId());
+            Assertions.assertNotNull(task);
+            Assertions.assertEquals(taskId, task.id());
+            Assertions.assertEquals("test-user", task.userIdentity().userName());
+            Assertions.assertEquals("msmpi", task.applicationPackageReferences().get(0).applicationId());
 
         } finally {
             try {
@@ -254,14 +258,14 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
-                Assert.assertNotNull(task);
-                Assert.assertEquals(TaskExecutionResult.SUCCESS, task.executionInfo().result());
-                Assert.assertNull(task.executionInfo().failureInfo());
+                Assertions.assertNotNull(task);
+                Assertions.assertEquals(TaskExecutionResult.SUCCESS, task.executionInfo().result());
+                Assertions.assertNull(task.executionInfo().failureInfo());
 
                 if(isRecordMode()) {
                     // Get the task command output file
                     String result = getContentFromContainer(container, "taskLogs/output.txt");
-                    Assert.assertEquals("hello\n", result);
+                    Assertions.assertEquals("hello\n", result);
                 }
             }
 
@@ -274,18 +278,18 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 CloudTask task = batchClient.taskOperations().getTask(jobId, badTaskId);
-                Assert.assertNotNull(task);
-                Assert.assertEquals(TaskExecutionResult.FAILURE, task.executionInfo().result());
-                Assert.assertNotNull(task.executionInfo().failureInfo());
-                Assert.assertEquals(ErrorCategory.USER_ERROR, task.executionInfo().failureInfo().category());
-                Assert.assertEquals("FailureExitCode", task.executionInfo().failureInfo().code());
+                Assertions.assertNotNull(task);
+                Assertions.assertEquals(TaskExecutionResult.FAILURE, task.executionInfo().result());
+                Assertions.assertNotNull(task.executionInfo().failureInfo());
+                Assertions.assertEquals(ErrorCategory.USER_ERROR, task.executionInfo().failureInfo().category());
+                Assertions.assertEquals("FailureExitCode", task.executionInfo().failureInfo().code());
 
                 //The Storage operations run only in Record mode.
                 // Playback mode is configured to test Batch operations only.
                 if(isRecordMode()) {
                     // Get the task command output file
                     String result = getContentFromContainer(container, "taskLogs/err.txt");
-                    Assert.assertEquals("bash: bad: command not found\n", result);
+                    Assertions.assertEquals("bash: bad: command not found\n", result);
                 }
             }
 
@@ -327,8 +331,8 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
             // LIST
             List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
-            Assert.assertNotNull(tasks);
-            Assert.assertTrue(tasks.size() == TASK_COUNT);
+            Assertions.assertNotNull(tasks);
+            Assertions.assertTrue(tasks.size() == TASK_COUNT);
         } finally {
             try {
                 batchClient.jobOperations().deleteJob(jobId);
@@ -367,7 +371,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             Collection<BatchClientBehavior> behaviors = new HashSet<>();
             behaviors.add(option);
             testBatchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
-            Assert.assertTrue("Should not here", true);
+            Assertions.assertTrue(true, "Should not here");
         } catch (RuntimeException ex) {
             System.out.printf("Expect exception %s", ex.toString());
         }
@@ -389,11 +393,11 @@ public class TaskTests  extends BatchIntegrationTestBase {
                 alternativeBatchClient.jobOperations().getTaskCountsResult(jobId);
             TaskCounts counts = countResult.taskCounts();
             int all = counts.active() + counts.completed() + counts.running();
-            Assert.assertEquals(0, all);
+            Assertions.assertEquals(0, all);
 
             TaskSlotCounts slotCounts = countResult.taskSlotCounts();
             int allSlots = slotCounts.active() + slotCounts.completed() + slotCounts.running();
-            Assert.assertEquals(0, allSlots);
+            Assertions.assertEquals(0, allSlots);
 
             // CREATE
             List<TaskAddParameter> tasksToAdd = new ArrayList<>();
@@ -416,12 +420,12 @@ public class TaskTests  extends BatchIntegrationTestBase {
                 alternativeBatchClient.jobOperations().getTaskCountsResult(jobId);
             counts = countResult.taskCounts();
             all = counts.active() + counts.completed() + counts.running();
-            Assert.assertEquals(TASK_COUNT, all);
+            Assertions.assertEquals(TASK_COUNT, all);
 
             slotCounts = countResult.taskSlotCounts();
             allSlots = slotCounts.active() + slotCounts.completed() + slotCounts.running();
             // One slot per task
-            Assert.assertEquals(TASK_COUNT, allSlots);
+            Assertions.assertEquals(TASK_COUNT, allSlots);
         } finally {
             try {
                 batchClient.jobOperations().deleteJob(jobId);
@@ -456,7 +460,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
                 // Accepted Error
                 for (int i = 0; i < err.body().values().size(); i++) {
                     if (err.body().values().get(i).key().equals("Reason")) {
-                        Assert.assertEquals("The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.", err.body().values().get(i).value());
+                        Assertions.assertEquals("The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.", err.body().values().get(i).value());
                         return;
                     }
                 }
@@ -478,7 +482,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
     public void failIfPoisonTaskTooLarge() throws Exception {
         //This test will temporarily only run in Live/Record mode. It runs fine in Playback mode too on Mac and Windows machines.
         // Linux machines are causing issues. This issue is under investigation.
-        Assume.assumeTrue("This Test only runs in Live/Record mode", getTestMode().equalsIgnoreCase(RECORD_MODE));
+        Assumptions.assumeTrue(getTestMode().equalsIgnoreCase(RECORD_MODE), "This Test only runs in Live/Record mode");
 
         String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge");
         String taskId = "mytask";
@@ -507,7 +511,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
-            Assert.fail("Expected RequestBodyTooLarge error");
+            Assertions.fail("Expected RequestBodyTooLarge error");
         }
         catch (BatchErrorException err) {
             try {
@@ -515,7 +519,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
-            Assert.assertEquals(err.body().code(), BatchErrorCodeStrings.RequestBodyTooLarge);
+            Assertions.assertEquals(err.body().code(), BatchErrorCodeStrings.RequestBodyTooLarge);
         }
         catch (Exception err) {
             try {
@@ -523,7 +527,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
-            Assert.fail("Expected RequestBodyTooLarge error");
+            Assertions.fail("Expected RequestBodyTooLarge error");
         }
     }
 
@@ -532,7 +536,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         //This test does not run in Playback mode. It only runs in Record/Live mode.
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
         // Hence Playback of this test is disabled.
-        Assume.assumeTrue("This Test only runs in Live/Record mode", getTestMode().equalsIgnoreCase(RECORD_MODE));
+        Assumptions.assumeTrue(getTestMode().equalsIgnoreCase(RECORD_MODE), "This Test only runs in Live/Record mode");
 
         //Normal Batch Client without interceptor is used for this test, as it is not supposed to be recorded.
         if(!isRecordMode()){
@@ -582,7 +586,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
-            Assert.fail("Expected Success");
+            Assertions.fail("Expected Success");
         }
     }
 

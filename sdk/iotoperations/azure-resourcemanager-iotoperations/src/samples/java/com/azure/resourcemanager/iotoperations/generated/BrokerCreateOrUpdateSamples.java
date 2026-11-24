@@ -19,6 +19,7 @@ import com.azure.resourcemanager.iotoperations.models.ExtendedLocation;
 import com.azure.resourcemanager.iotoperations.models.ExtendedLocationType;
 import com.azure.resourcemanager.iotoperations.models.Frontend;
 import com.azure.resourcemanager.iotoperations.models.GenerateResourceLimits;
+import com.azure.resourcemanager.iotoperations.models.HighPriorityMessagesBackpressureHandling;
 import com.azure.resourcemanager.iotoperations.models.KubernetesReference;
 import com.azure.resourcemanager.iotoperations.models.LocalKubernetesReference;
 import com.azure.resourcemanager.iotoperations.models.Metrics;
@@ -44,7 +45,7 @@ import java.util.Map;
  */
 public final class BrokerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Minimal.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Minimal.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Minimal.
@@ -56,14 +57,15 @@ public final class BrokerCreateOrUpdateSamples {
         manager.brokers()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerProperties().withMemoryProfile(BrokerMemoryProfile.TINY))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Complex.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Complex.
@@ -75,8 +77,6 @@ public final class BrokerCreateOrUpdateSamples {
         manager.brokers()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerProperties()
                 .withCardinality(new Cardinality()
                     .withBackendChain(new BackendChain().withPartitions(2).withRedundancyFactor(2).withWorkers(2))
@@ -84,11 +84,14 @@ public final class BrokerCreateOrUpdateSamples {
                 .withDiskBackedMessageBuffer(new DiskBackedMessageBuffer().withMaxSize("50M"))
                 .withGenerateResourceLimits(new GenerateResourceLimits().withCpu(OperationalMode.ENABLED))
                 .withMemoryProfile(BrokerMemoryProfile.MEDIUM))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate.
@@ -99,8 +102,6 @@ public final class BrokerCreateOrUpdateSamples {
         manager.brokers()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(
                 new BrokerProperties()
                     .withAdvanced(new AdvancedSettings()
@@ -172,12 +173,16 @@ public final class BrokerCreateOrUpdateSamples {
                                         .withValues(Arrays.asList("slmpajlywqvuyknipgztsonqyybt"))))
                                 .withMatchLabels(mapOf("key6673", "fakeTokenPlaceholder")))))
                     .withGenerateResourceLimits(new GenerateResourceLimits().withCpu(OperationalMode.ENABLED))
+                    .withHighPriorityMessagesBackpressureHandling(HighPriorityMessagesBackpressureHandling.ACCEPT)
                     .withMemoryProfile(BrokerMemoryProfile.TINY))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2025-04-01/Broker_CreateOrUpdate_Simple.json
+     * x-ms-original-file: 2026-07-01/Broker_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Broker_CreateOrUpdate_Simple.
@@ -189,14 +194,15 @@ public final class BrokerCreateOrUpdateSamples {
         manager.brokers()
             .define("resource-name123")
             .withExistingInstance("rgiotoperations", "resource-name123")
-            .withExtendedLocation(
-                new ExtendedLocation().withName("qmbrfwcpwwhggszhrdjv").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .withProperties(new BrokerProperties()
                 .withCardinality(new Cardinality()
                     .withBackendChain(new BackendChain().withPartitions(2).withRedundancyFactor(2).withWorkers(2))
                     .withFrontend(new Frontend().withReplicas(2).withWorkers(2)))
                 .withGenerateResourceLimits(new GenerateResourceLimits().withCpu(OperationalMode.ENABLED))
                 .withMemoryProfile(BrokerMemoryProfile.LOW))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123")
+                .withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
     }
 

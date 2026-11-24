@@ -152,6 +152,14 @@ Learn more about [OpenTelemetry SDK logging][logging_otel_sdk].
 You can disable the [live metrics][live_metrics] by setting the `APPLICATIONINSIGHTS_LIVE_METRICS_ENABLED` environment variable to false, the `applicationinsights.live.metrics.enabled` Java system property to false,
 or programmatically with a properties supplier: `sdkBuilder.addPropertiesSupplier(() -> Collections.singletonMap("applicationinsights.live.metrics.enabled", "false"))`.
 
+### Customer-facing SDKStats
+
+Customer-facing SDKStats emit `Item_Success_Count`, `Item_Dropped_Count`, and `Item_Retry_Count`
+custom metrics to the configured Application Insights resource by default. Set
+`APPLICATIONINSIGHTS_SDKSTATS_DISABLED` to `true` to disable them. Metrics are exported every 900
+seconds by default; set `APPLICATIONINSIGHTS_SDKSTATS_EXPORT_INTERVAL` to a positive number of
+seconds to change the interval.
+
 ## Next steps
 Learn more about [OpenTelemetry][opentelemetry_io]
 
@@ -181,7 +189,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [custom_subdomain]: https://learn.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/blob/main/docs/logging.md
 [log4j]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/blob/9a7344eeb44525dfc83df3a1bd59460b8a7d93c6/opentelemetry-api/exporter/TrackTrace/Log4j2/src/main/resources/log4j2.xml#L16
 [logback]: https://github.com/Azure-Samples/ApplicationInsights-Java-Samples/blob/9a7344eeb44525dfc83df3a1bd59460b8a7d93c6/opentelemetry-api/exporter/TrackTrace/Logback/src/main/resources/logback.xml#L22
 [logging_otel_sdk]: https://opentelemetry.io/docs/languages/java/sdk/#internal-logging
@@ -206,4 +214,3 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-

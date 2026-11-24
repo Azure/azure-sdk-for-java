@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -207,46 +206,6 @@ public final class RollingUpgradeMonitoringPolicy implements JsonSerializable<Ro
         this.upgradeDomainTimeout = upgradeDomainTimeout;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (failureAction() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property failureAction in model RollingUpgradeMonitoringPolicy"));
-        }
-        if (healthCheckWaitDuration() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property healthCheckWaitDuration in model RollingUpgradeMonitoringPolicy"));
-        }
-        if (healthCheckStableDuration() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property healthCheckStableDuration in model RollingUpgradeMonitoringPolicy"));
-        }
-        if (healthCheckRetryTimeout() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property healthCheckRetryTimeout in model RollingUpgradeMonitoringPolicy"));
-        }
-        if (upgradeTimeout() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property upgradeTimeout in model RollingUpgradeMonitoringPolicy"));
-        }
-        if (upgradeDomainTimeout() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property upgradeDomainTimeout in model RollingUpgradeMonitoringPolicy"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(RollingUpgradeMonitoringPolicy.class);
 
     /**
      * {@inheritDoc}

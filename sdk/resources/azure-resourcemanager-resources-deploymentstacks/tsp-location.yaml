@@ -1,0 +1,4 @@
+directory: specification/resources/resource-manager/Microsoft.Resources/deploymentStacks
+commit: da3e3a42110d96609505c4bcb5b4d768341203a8
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

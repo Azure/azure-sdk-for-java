@@ -13,12 +13,12 @@ public final class AutonomousDatabaseStandbySummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseStandbySummary model = BinaryData.fromString(
-            "{\"lagTimeInSeconds\":1245185583,\"lifecycleState\":\"BackupInProgress\",\"lifecycleDetails\":\"svbuswdvzyy\",\"timeDataGuardRoleChanged\":\"cnunvjsr\",\"timeDisasterRecoveryRoleChanged\":\"f\"}")
+            "{\"lagTimeInSeconds\":624648984,\"lifecycleState\":\"Recreating\",\"lifecycleDetails\":\"pi\",\"timeDataGuardRoleChanged\":\"qolj\",\"timeDisasterRecoveryRoleChanged\":\"cgxxlxs\"}")
             .toObject(AutonomousDatabaseStandbySummary.class);
-        Assertions.assertEquals(1245185583, model.lagTimeInSeconds());
-        Assertions.assertEquals(AutonomousDatabaseLifecycleState.BACKUP_IN_PROGRESS, model.lifecycleState());
-        Assertions.assertEquals("svbuswdvzyy", model.lifecycleDetails());
-        Assertions.assertEquals("cnunvjsr", model.timeDataGuardRoleChanged());
-        Assertions.assertEquals("f", model.timeDisasterRecoveryRoleChanged());
+        Assertions.assertEquals(624648984, model.lagTimeInSeconds());
+        Assertions.assertEquals(AutonomousDatabaseLifecycleState.RECREATING, model.lifecycleState());
+        Assertions.assertEquals("pi", model.lifecycleDetails());
+        Assertions.assertEquals("qolj", model.timeDataGuardRoleChanged());
+        Assertions.assertEquals("cgxxlxs", model.timeDisasterRecoveryRoleChanged());
     }
 }

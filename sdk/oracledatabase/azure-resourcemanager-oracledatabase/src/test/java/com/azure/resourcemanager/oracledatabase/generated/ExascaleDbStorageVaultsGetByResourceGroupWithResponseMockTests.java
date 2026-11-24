@@ -21,7 +21,7 @@ public final class ExascaleDbStorageVaultsGetByResourceGroupWithResponseMockTest
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"additionalFlashCacheInPercent\":456926110,\"description\":\"cfotangcfhnykzcu\",\"displayName\":\"swvxwlmzqwmv\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1608101442},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1833785766,\"totalSizeInGbs\":321240578},\"timeZone\":\"uqudtcvclxyn\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Available\",\"lifecycleDetails\":\"abuiy\",\"vmClusterCount\":214346592,\"ocid\":\"zphdugneiknp\",\"ociUrl\":\"xgjiuqh\"},\"zones\":[\"ozipqwjedmurrxx\",\"ewpktvqy\"],\"location\":\"mqpzoyhlfbcgw\",\"tags\":{\"jipnwj\":\"oxoebqi\",\"zpofoiyjwpfilk\":\"ujqlafcbahh\",\"ogphuartvtiu\":\"kkholvdndvia\"},\"id\":\"yefchnm\",\"name\":\"ahmnxhkxjqirw\",\"type\":\"weooxffifhxwrs\"}";
+            = "{\"properties\":{\"additionalFlashCacheInPercent\":597504676,\"description\":\"tehqpuvjmvq\",\"displayName\":\"tdwckygr\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":467665748},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":790671339,\"totalSizeInGbs\":1138069123},\"timeZone\":\"djus\",\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Available\",\"lifecycleDetails\":\"ynkceysfaqegpl\",\"vmClusterCount\":624014126,\"ocid\":\"hwddkvbxgkq\",\"ociUrl\":\"ybwptda\",\"exadataInfrastructureId\":\"rvv\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\",\"SMART_STORAGE\",\"SMART_STORAGE\",\"SMART_STORAGE\"],\"isAutoscaleEnabled\":true,\"autoscaleLimitInGbs\":1309536765},\"zones\":[\"azerohzrsq\"],\"location\":\"sxkdnwqapfgsdpc\",\"tags\":{\"kva\":\"smzhhkuuipldqqct\",\"qyv\":\"blhtjq\",\"a\":\"eh\"},\"id\":\"mxhzzysevus\",\"name\":\"ivzrrryveimipsk\",\"type\":\"yzatvfuzkaft\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,16 +31,19 @@ public final class ExascaleDbStorageVaultsGetByResourceGroupWithResponseMockTest
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExascaleDbStorageVault response = manager.exascaleDbStorageVaults()
-            .getByResourceGroupWithResponse("jsvthnwpzteko", "mribiat", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("gzcbyf", "x", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mqpzoyhlfbcgw", response.location());
-        Assertions.assertEquals("oxoebqi", response.tags().get("jipnwj"));
-        Assertions.assertEquals(456926110, response.properties().additionalFlashCacheInPercent());
-        Assertions.assertEquals("cfotangcfhnykzcu", response.properties().description());
-        Assertions.assertEquals("swvxwlmzqwmv", response.properties().displayName());
-        Assertions.assertEquals(1608101442, response.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("uqudtcvclxyn", response.properties().timeZone());
-        Assertions.assertEquals("ozipqwjedmurrxx", response.zones().get(0));
+        Assertions.assertEquals("sxkdnwqapfgsdpc", response.location());
+        Assertions.assertEquals("smzhhkuuipldqqct", response.tags().get("kva"));
+        Assertions.assertEquals(597504676, response.properties().additionalFlashCacheInPercent());
+        Assertions.assertEquals("tehqpuvjmvq", response.properties().description());
+        Assertions.assertEquals("tdwckygr", response.properties().displayName());
+        Assertions.assertEquals(467665748, response.properties().highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("djus", response.properties().timeZone());
+        Assertions.assertEquals("rvv", response.properties().exadataInfrastructureId());
+        Assertions.assertTrue(response.properties().isAutoscaleEnabled());
+        Assertions.assertEquals(1309536765, response.properties().autoscaleLimitInGbs());
+        Assertions.assertEquals("azerohzrsq", response.zones().get(0));
     }
 }

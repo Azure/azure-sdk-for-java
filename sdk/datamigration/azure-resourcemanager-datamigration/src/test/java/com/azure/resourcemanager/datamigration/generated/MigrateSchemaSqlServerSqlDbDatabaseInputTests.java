@@ -14,31 +14,31 @@ public final class MigrateSchemaSqlServerSqlDbDatabaseInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSchemaSqlServerSqlDbDatabaseInput model = BinaryData.fromString(
-            "{\"name\":\"zrxcczurt\",\"id\":\"ipqxbkwvzgnzv\",\"targetDatabaseName\":\"bzdixzmq\",\"schemaSetting\":{\"schemaOption\":\"ExtractFromSource\",\"fileId\":\"wopqhewjptmcgs\",\"fileName\":\"stzelndlatut\"}}")
+            "{\"name\":\"vechndbnwiehole\",\"id\":\"wiuub\",\"targetDatabaseName\":\"fqsfa\",\"schemaSetting\":{\"schemaOption\":\"UseStorageFile\",\"fileId\":\"e\",\"fileName\":\"q\"}}")
             .toObject(MigrateSchemaSqlServerSqlDbDatabaseInput.class);
-        Assertions.assertEquals("zrxcczurt", model.name());
-        Assertions.assertEquals("ipqxbkwvzgnzv", model.id());
-        Assertions.assertEquals("bzdixzmq", model.targetDatabaseName());
-        Assertions.assertEquals(SchemaMigrationOption.EXTRACT_FROM_SOURCE, model.schemaSetting().schemaOption());
-        Assertions.assertEquals("wopqhewjptmcgs", model.schemaSetting().fileId());
-        Assertions.assertEquals("stzelndlatut", model.schemaSetting().fileName());
+        Assertions.assertEquals("vechndbnwiehole", model.name());
+        Assertions.assertEquals("wiuub", model.id());
+        Assertions.assertEquals("fqsfa", model.targetDatabaseName());
+        Assertions.assertEquals(SchemaMigrationOption.USE_STORAGE_FILE, model.schemaSetting().schemaOption());
+        Assertions.assertEquals("e", model.schemaSetting().fileId());
+        Assertions.assertEquals("q", model.schemaSetting().fileName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateSchemaSqlServerSqlDbDatabaseInput model = new MigrateSchemaSqlServerSqlDbDatabaseInput()
-            .withName("zrxcczurt")
-            .withId("ipqxbkwvzgnzv")
-            .withTargetDatabaseName("bzdixzmq")
-            .withSchemaSetting(new SchemaMigrationSetting().withSchemaOption(SchemaMigrationOption.EXTRACT_FROM_SOURCE)
-                .withFileId("wopqhewjptmcgs")
-                .withFileName("stzelndlatut"));
+        MigrateSchemaSqlServerSqlDbDatabaseInput model
+            = new MigrateSchemaSqlServerSqlDbDatabaseInput().withName("vechndbnwiehole")
+                .withId("wiuub")
+                .withTargetDatabaseName("fqsfa")
+                .withSchemaSetting(new SchemaMigrationSetting().withSchemaOption(SchemaMigrationOption.USE_STORAGE_FILE)
+                    .withFileId("e")
+                    .withFileName("q"));
         model = BinaryData.fromObject(model).toObject(MigrateSchemaSqlServerSqlDbDatabaseInput.class);
-        Assertions.assertEquals("zrxcczurt", model.name());
-        Assertions.assertEquals("ipqxbkwvzgnzv", model.id());
-        Assertions.assertEquals("bzdixzmq", model.targetDatabaseName());
-        Assertions.assertEquals(SchemaMigrationOption.EXTRACT_FROM_SOURCE, model.schemaSetting().schemaOption());
-        Assertions.assertEquals("wopqhewjptmcgs", model.schemaSetting().fileId());
-        Assertions.assertEquals("stzelndlatut", model.schemaSetting().fileName());
+        Assertions.assertEquals("vechndbnwiehole", model.name());
+        Assertions.assertEquals("wiuub", model.id());
+        Assertions.assertEquals("fqsfa", model.targetDatabaseName());
+        Assertions.assertEquals(SchemaMigrationOption.USE_STORAGE_FILE, model.schemaSetting().schemaOption());
+        Assertions.assertEquals("e", model.schemaSetting().fileId());
+        Assertions.assertEquals("q", model.schemaSetting().fileName());
     }
 }

@@ -827,7 +827,31 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision) {
         try {
-            return client.listAvailableLocalitiesAsync(countryCode, null, null, administrativeDivision, acceptLanguage);
+            return client.listAvailableLocalitiesAsync(countryCode, null, null, administrativeDivision, acceptLanguage,
+                null);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available localities. I.e. cities, towns.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param administrativeDivision An optional parameter. The name or short name
+     *                               of the state/province within which to list the
+     *                               localities.
+     * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict the
+     *                        localities to the phone number type.
+     * @return A {@link PagedFlux} of {@link PhoneNumberLocality} instances
+     *         representing available localities with phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberLocality> listAvailableLocalities(String countryCode, String administrativeDivision,
+        PhoneNumberType phoneNumberType) {
+        try {
+            return client.listAvailableLocalitiesAsync(countryCode, null, null, administrativeDivision, acceptLanguage,
+                phoneNumberType);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
@@ -874,6 +898,29 @@ public final class PhoneNumbersAsyncClient {
         try {
             return client.listAreaCodesAsync(countryCode, PhoneNumberType.GEOGRAPHIC, null, null, assignmentType,
                 locality, administrativeDivision, acceptLanguage);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
+    }
+
+    /**
+     * Gets the list of the available Mobile area codes for a given country and
+     * locality.
+     *
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone
+     *                               number assignment type.
+     * @param locality The name of the locality (e.g. city or town
+     *                               name) in which to fetch area codes.
+     * @return A {@link PagedFlux} of {@link PhoneNumberAreaCode} instances
+     *         representing purchased telephone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumberAreaCode> listAvailableMobileAreaCodes(String countryCode,
+        PhoneNumberAssignmentType assignmentType, String locality) {
+        try {
+            return client.listAreaCodesAsync(countryCode, PhoneNumberType.MOBILE, null, null, assignmentType, locality,
+                null, acceptLanguage);
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }

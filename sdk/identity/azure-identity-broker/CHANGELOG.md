@@ -10,6 +10,80 @@
 
 ### Other Changes
 
+## 1.1.25 (2026-10-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.18.7` to version `1.19.0`.
+
+## 1.1.24 (2026-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.18.6` to version `1.18.7`.
+- Upgraded `msal4j` from `1.23.1` to version `1.26.0`.
+
+## 1.1.23 (2026-08-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.18.5` to version `1.18.6`.
+
+## 1.1.22 (2026-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.18.4` to version `1.18.5`.
+
+## 1.1.21 (2026-06-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.18.3` to version `1.18.4`.
+
+## 1.1.20 (2026-04-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.18.2` to version `1.18.3`.
+
+## 1.1.19 (2026-01-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.18.1` to version `1.18.2`.
+
+## 1.1.18 (2025-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.18.0` to version `1.18.1`.
+
+## 1.1.17 (2025-09-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.16.3` to version `1.18.0`.
+- Updated `msal4j` from `1.22.0` to version `1.23.1`.
+
 ## 1.1.16 (2025-07-21)
 
 ### Other Changes

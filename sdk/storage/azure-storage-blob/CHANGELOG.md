@@ -1,14 +1,331 @@
 # Release History
 
-## 12.32.0-beta.2 (Unreleased)
+## 12.38.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `createIfNotExists` on `BlobContainerClient` and `BlobContainerAsyncClient`, and
+  `createBlobContainerIfNotExists` on `BlobServiceClient` and `BlobServiceAsyncClient`, reporting every 409 as a
+  container that already exists. They now do so only for `ContainerAlreadyExists`, and throw for any other 409,
+  such as `ContainerBeingDeleted`. (#51281)
+- Fixed `createIfNotExists` and `createIfNotExistsWithResponse` on `AppendBlobClient`, `AppendBlobAsyncClient`,
+  `PageBlobClient`, and `PageBlobAsyncClient` suppressing every 409 response. They now suppress only
+  `BlobAlreadyExists`, and throw `BlobStorageException` for other conflicts, such as `InvalidBlobType` when a 
+  blob of a different type already exists. 
 
 ### Other Changes
+
+## 12.38.0-beta.1 (2026-11-05)
+
+### Features Added
+- Added `expectContinueBehavior` to the blob client builders, which configures when the HTTP header
+  `Expect: 100-continue` is applied to requests that carry a body. The header is not applied unless configured, and
+  requires an HTTP client that withholds the request body until the service responds.
+
+- Added opt-in session-based authentication for eligible Blob GET requests when using a `TokenCredential`. Configure
+  it with `SessionContext.setSessionMode(SessionMode.ENABLED)`; the default `AUTO` mode currently resolves to `SessionMode.DISABLED`.
+- Added support for service version 2027-03-07.
+
+### Breaking Changes
+
+- Changed the default response serialization format for `listBlobs` and `listBlobsByHierarchy` from XML to Apache Arrow
+  for both synchronous and asynchronous clients, with support for XML fallback responses from the service. To explicitly
+  request XML, use `new ListBlobsOptions().setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML)`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.36.2` to version `12.37.0-beta.1`.
+- Upgraded `azure-storage-internal-avro` from `12.22.2` to version `12.23.0-beta.1`.
+
+## 12.37.2 (2026-11-03)
+
+### Bugs Fixed
+- Fixed a bug where `BlobClient` and `BlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were staged in blocks also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the block size.
+
+## 12.37.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.8` to version `1.17.0`.
+- Upgraded `azure-storage-internal-avro` from `12.21.0` to version `12.22.1`.
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.36.1`.
+- Upgraded `azure-core` from `1.60.0` to version `1.61.0`.
+
+## 12.36.1 (2026-11-02)
+
+### Bugs Fixed
+- Fixed a bug where `BlobClient` and `BlobAsyncClient` uploads from a `Flux<ByteBuffer>` or from
+  `BinaryData.fromByteBuffer` that were staged in blocks also uploaded the bytes before a buffer's position, when that
+  position was not 0 and the buffer was larger than the block size.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.21.0` to version `12.21.1`.
+- Upgraded `azure-storage-common` from `12.35.0` to version `12.35.1`.
+
+## 12.36.0 (2026-10-07)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added support for retrieving `AccessTier` headers to `BlobDownloadHeaders`.
+- Added `getContentCrc64()` to `BlockBlobItem`, `AppendBlobItem`, and `PageBlobItem` to expose CRC64 checksums returned by the service, alongside MD5 where applicable.
+- Added support for Apache Arrow response format for `ListBlobs` flat and `ListBlobs` hierarchical options.
+- Added support for content validation with structured message and CRC64 via `ContentValidationAlgorithm`. Supported for
+  `GetBlob`, `PutBlob`, `PutBlock`, `PutPage`, and `AppendBlock` operations.
+
+### Bugs Fixed
+- Fixed account name parsing for DFS endpoints when the account name contains "blob".
+- Fixed SDK-generated ETag consistency locks for retries, chunked downloads, input streams, and seekable reads to send
+  RFC 9110-conformant `If-Match` values.
+- Fixed chunked download ETag consistency conditions to preserve the caller's `If-Unmodified-Since` value instead of copying `If-Modified-Since`.
+- Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
+  in an HTTP 416 response) after the entire blob had already been returned in the initial range download. When the
+  channel is opened with ETag consistency control (the default), the read behavior now short-circuits to end-of-file
+  once the known resource length is reached, avoiding the extra round trip.
+- Fixed an issue where a transport-level failure while streaming the body of the trailing HTTP 416 response from
+  `BlobClientBase.openSeekableByteChannelRead` (for example "Connection reset by peer") could propagate out of the
+  channel even though all of the blob's content had already been delivered to the caller. The read behavior now
+  logs a warning and signals end-of-file when such an error occurs at or past the known end of the resource.
+
+### Other Changes
+- Deprecated `AppendBlobAsyncClient.appendBlockWithResponse(Flux, long, byte[], AppendBlobRequestConditions)` and
+  `AppendBlobClient.appendBlockWithResponse(InputStream, long, byte[], AppendBlobRequestConditions, Duration, Context)`
+  in favor of the new `appendBlockWithResponse` overloads that accept an `AppendBlobAppendBlockOptions` options bag.
+- Deprecated `PageBlobAsyncClient.uploadPagesWithResponse(PageRange, Flux, byte[], PageBlobRequestConditions)` and
+  `PageBlobClient.uploadPagesWithResponse(PageRange, InputStream, byte[], PageBlobRequestConditions, Duration, Context)`
+  in favor of the new `uploadPagesWithResponse` overloads that accept a `PageBlobUploadPagesOptions` options bag.
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.20.1` to version `12.21.0`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+- Upgraded `azure-storage-common` from `12.34.1` to version `12.35.0`.
+
+- Updated the documentation of `BlobContainerClient`/`BlobContainerAsyncClient` `delete`, `deleteWithResponse`,
+  `deleteIfExists`, and `deleteIfExistsWithResponse`, and `BlobServiceClient`/`BlobServiceAsyncClient`
+  `deleteBlobContainer`, `deleteBlobContainerWithResponse`, `deleteBlobContainerIfExists`, and
+  `deleteBlobContainerIfExistsWithResponse` to note that operations on blobs within a deleted container, including reads
+  and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+
+## 12.35.2 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.34.1` to version `12.34.2`.
+- Upgraded `azure-core` from `1.59.0` to version `1.60.0`.
+- Upgraded `azure-storage-internal-avro` from `12.20.1` to version `12.20.2`.
+- Upgraded `azure-core-http-netty` from `1.16.6` to version `1.16.8`.
+
+## 12.35.1 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.20.0` to version `12.20.1`.
+- Upgraded `azure-core` from `1.58.1` to version `1.59.0`.
+- Upgraded `azure-core-http-netty` from `1.16.5` to version `1.16.6`.
+- Upgraded `azure-storage-common` from `12.34.0` to version `12.34.1`.
+
+## 12.36.0-beta.1 (2026-07-28)
+
+### Features Added
+- Added support for service version 2026-10-06.
+- Added support for retrieving `AccessTier` headers to `BlobDownloadHeaders`.
+- Added support for `PutBlob` operations returning both the existing MD5 content hash and the new CRC64 checksum.
+- Added support for Apache Arrow response format for `ListBlobs` flat and `ListBlobs` hierarchical options.
+- Added support for content validation with structured message and CRC64 via `ContentValidationAlgorithm`. Supported for
+`GetBlob`, `PutBlob`, `PutBlock`, `PutPage`, and `AppendBlock` operations.
+
+### Bugs Fixed
+- Fixed an issue where `BlobClientBase.openSeekableByteChannelRead` issued an unnecessary HTTP request (resulting
+  in an HTTP 416 response) after the entire blob had already been returned in the initial range download. When the
+  channel is opened with ETag consistency control (the default), the read behavior now short-circuits to end-of-file
+  once the known resource length is reached, avoiding the extra round trip.
+- Fixed an issue where a transport-level failure while streaming the body of the trailing HTTP 416 response from
+  `BlobClientBase.openSeekableByteChannelRead` (for example "Connection reset by peer") could propagate out of the
+  channel even though all of the blob's content had already been delivered to the caller. The read behavior now
+  logs a warning and signals end-of-file when such an error occurs at or past the known end of the resource.
+
+### Other Changes
+- Deprecated `AppendBlobAsyncClient.appendBlockWithResponse(Flux, long, byte[], AppendBlobRequestConditions)` and
+  `AppendBlobClient.appendBlockWithResponse(InputStream, long, byte[], AppendBlobRequestConditions, Duration, Context)`
+  in favor of the new `appendBlockWithResponse` overloads that accept an `AppendBlobAppendBlockOptions` options bag.
+- Deprecated `PageBlobAsyncClient.uploadPagesWithResponse(PageRange, Flux, byte[], PageBlobRequestConditions)` and
+  `PageBlobClient.uploadPagesWithResponse(PageRange, InputStream, byte[], PageBlobRequestConditions, Duration, Context)`
+  in favor of the new `uploadPagesWithResponse` overloads that accept a `PageBlobUploadPagesOptions` options bag.
+
+## 12.35.0 (2026-06-11)
+
+### Features Added
+- Added support for Blob Smart Tier.
+- Added support for virtual directory-scoped SAS.
+- Added support for service version 2026-06-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.33.0` to version `12.34.0`.
+- Upgraded `azure-storage-internal-avro` from `12.19.0` to version `12.20.0`.
+- Upgraded `azure-core` from `1.58.0` to version `1.58.1`.
+- Upgraded `azure-core-http-netty` from `1.16.4` to version `1.16.5`.
+
+## 12.34.0 (2026-05-14)
+
+### Features Added
+- Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
+`BlockBlobClient.stageBlockFromUrl()`, `BlockBlobClient.uploadFromUrl()`, and `PageBlobClient.uploadPagesFromUrl()` APIs. 
+- Added support for `AccessTierIfModifiedSince` and `AccessTierIfUnmodifiedSince` to conditionally perform `BlobClient.delete` operations.
+- Added support for missing SKU names `STANDARD_GZRS`, `STANDARD_RAGZRS` and `PREMIUM_ZRS` when using `getAccountInfo()` API.
+- Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.18.3` to version `12.19.0`.
+- Upgraded `azure-storage-common` from `12.32.3` to version `12.33.0`.
+
+## 12.33.4 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-internal-avro` from `12.18.2` to version `12.18.3`.
+- Upgraded `azure-core` from `1.57.1` to version `1.58.0`.
+- Upgraded `azure-core-http-netty` from `1.16.3` to version `1.16.4`.
+- Upgraded `azure-storage-common` from `12.32.2` to version `12.32.3`.
+
+## 12.33.3 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.18.1` to version `12.18.2`.
+
+
+## 12.35.0-beta.1 (2026-03-25)
+
+### Features Added
+- Added support for Blob Smart Tier.
+- Added support for virtual directory-scoped SAS. 
+- Added support for service version 2026-06-06.
+
+## 12.34.0-beta.1 (2026-02-19)
+
+### Features Added
+- Added support for specifying a source customer-provided encryption key when using `AppendBlobClient.appendBlockFromUrl()`,
+`BlockBlobClient.stageBlockFromUrl()`, `BlockBlobClient.uploadFromUrl()`, and `PageBlobClient.uploadPagesFromUrl()` APIs. 
+- Added support for `AccessTierIfModifiedSince` and `AccessTierIfUnmodifiedSince` to conditionally perform `BlobClient.delete` operations.
+- Added support for missing SKU names `STANDARD_GZRS`, `STANDARD_RAGZRS` and `PREMIUM_ZRS` when using `getAccountInfo()` API.
+- Added support for error code `INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED`. This replaces `INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED` which has been deprecated.
+- Added support for Dynamic User Delegation SAS.
+- Added cross-tenant support for principal bound delegation SAS.
+- Added support for service version 2026-04-06.
+
+## 12.33.2 (2026-02-05)
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+### Other Changes
+
+#### Dependency Updates
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+## 12.33.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.18.0` to version `12.18.1`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-storage-common` from `12.32.0` to version `12.32.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 12.33.0 (2026-01-15)
+- Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs.
+- Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+- Added support for container names with special characters when using OneLake.
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
+- Upgraded `azure-storage`-internal-avro` from `12.17.0` to version `12.18.0`.
+
+## 12.33.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs. 
+- Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+- Added support for container names with special characters when using OneLake.
+
+## 12.32.0 (2025-10-21)
+
+### Features Added
+- AppendBlobClient.AppendBlobFromUri(), .AppendBlockFromUriAsync(), BlobBaseClient.StartCopyFromUri(), .StartCopyFromUriAsync(), SyncCopyFromUri(), .SyncCopyFromUriAsync(), BlockBlobClient.StageBlockFromUri(), .StageBlockFromUriAsync(), PageBlobClient.UploadPagesFromUri(), and .UploadPagesFromUri() will now return CopySourceStatusCode, CopySourceErrorCode, and CopySourceErrorMessage as part of error responses.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.2`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
+- Upgraded `azure-storage-internal-avro` from `12.16.0` to version `12.17.0`.
+- Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0`.
+
+## 12.31.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-internal-avro` from `12.16.2` to version `12.17.0-beta.2`.
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-storage-common` from `12.30.2` to version `12.31.0-beta.2`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 12.31.2 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+- Upgraded `azure-storage-internal-avro` from `12.16.1` to version `12.16.2`.
+- Upgraded `azure-storage-common` from `12.30.1` to version `12.31.0-beta.2`.
 
 ## 12.31.1 (2025-07-29)
 
@@ -20,7 +337,6 @@
 - Upgraded `azure-core` from `1.55.3` to version `1.55.5`.
 - Upgraded `azure-storage-internal-avro` from `12.16.0` to version `12.17.0-beta.2`.
 - Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0-beta.2`.
-
 
 ## 12.31.0 (2025-07-16)
 
@@ -41,7 +357,7 @@
 
 ### Features Added
 - AppendBlobClient.AppendBlobFromUri(), .AppendBlockFromUriAsync(), BlobBaseClient.StartCopyFromUri(), .StartCopyFromUriAsync(), SyncCopyFromUri(), .SyncCopyFromUriAsync(), BlockBlobClient.StageBlockFromUri(), .StageBlockFromUriAsync(), PageBlobClient.UploadPagesFromUri(), and .UploadPagesFromUri() will now return CopySourceStatusCode, CopySourceErrorCode, and CopySourceErrorMessage as part of error responses.
-- Added more useful error message when the SDK encounters an x-ms-version mis-match issue.
+- Added more useful error message when the SDK encounters an x-ms-version mismatch issue.
 - Added support for service version 2025-11-05.
 
 ## 12.30.1 (2025-06-19)
@@ -193,7 +509,6 @@
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-storage-internal-avro` from `12.11.0-beta.2` to version `12.11.0`.
 
-
 ## 12.25.4 (2024-04-23)
 
 ### Other Changes
@@ -205,7 +520,6 @@
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-storage-internal-avro` from `12.10.3` to version `12.11.0-beta.2`.
 
-
 ## 12.26.0-beta.1 (2024-04-15)
 
 ### Features Added
@@ -214,10 +528,10 @@
 ### Breaking Changes
 - When creating a `BlobClient` via `BlobContainerClient.getBlobClient(String blobName)` or 
 `BlobServiceClient.getBlobClient(String blobName)`, the blob name will be stored exactly as passed in and will not be 
-URL-encoded. For example, if blob name is "test%25test" and is created by calling 
-`BlobContainerClient.getBlobClient("test%25test")` or `BlobClient.getBlobName("test%25test")`, 
-`BlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
-“https://account.blob.core.windows.net/container/test%25%25test”.
+URL-encoded. For example, if blob name is "directory/blob.txt" and is created by calling 
+`BlobContainerClient.getBlobClient("directory/blob.txt")`, 
+`BlobClient.getBlobName()` will return "directory/blob.txt" and the blob's url will result in 
+“https://account.blob.core.windows.net/container/directory%2Fblob.txt". 
 
 ## 12.25.3 (2024-03-20)
 
@@ -230,7 +544,6 @@ URL-encoded. For example, if blob name is "test%25test" and is created by callin
 - Upgraded `azure-storage-common` from `12.24.2` to version `12.24.3`.
 - Upgraded `azure-storage-internal-avro` from `12.10.2` to version `12.10.3`.
 
-
 ## 12.25.2 (2024-02-22)
 
 ### Other Changes
@@ -241,7 +554,6 @@ URL-encoded. For example, if blob name is "test%25test" and is created by callin
 - Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
 - Upgraded `azure-storage-internal-avro` from `12.10.1` to version `12.10.2`.
-
 
 ## 12.25.1 (2023-12-04)
 

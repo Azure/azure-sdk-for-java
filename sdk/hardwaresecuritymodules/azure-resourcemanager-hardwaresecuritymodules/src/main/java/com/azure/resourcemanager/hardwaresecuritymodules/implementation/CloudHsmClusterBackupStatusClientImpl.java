@@ -20,7 +20,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterBackupStatusClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.BackupResultInner;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterBackupStatusGetResponse;
@@ -83,7 +82,8 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
      * Gets the backup operation status of the specified Cloud HSM Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The cloudHsmClusterName parameter.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
      * @param jobId Identifier for the backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -93,25 +93,6 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudHsmClusterBackupStatusGetResponse> getWithResponseAsync(String resourceGroupName,
         String cloudHsmClusterName, String jobId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (jobId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -123,7 +104,8 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
      * Gets the backup operation status of the specified Cloud HSM Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The cloudHsmClusterName parameter.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
      * @param jobId Identifier for the backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -140,7 +122,8 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
      * Gets the backup operation status of the specified Cloud HSM Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The cloudHsmClusterName parameter.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
      * @param jobId Identifier for the backup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,27 +134,6 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudHsmClusterBackupStatusGetResponse getWithResponse(String resourceGroupName, String cloudHsmClusterName,
         String jobId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudHsmClusterName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
-        }
-        if (jobId == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, cloudHsmClusterName, jobId, accept, context);
@@ -181,7 +143,8 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
      * Gets the backup operation status of the specified Cloud HSM Cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cloudHsmClusterName The cloudHsmClusterName parameter.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
      * @param jobId Identifier for the backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -192,6 +155,4 @@ public final class CloudHsmClusterBackupStatusClientImpl implements CloudHsmClus
     public BackupResultInner get(String resourceGroupName, String cloudHsmClusterName, String jobId) {
         return getWithResponse(resourceGroupName, cloudHsmClusterName, jobId, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CloudHsmClusterBackupStatusClientImpl.class);
 }

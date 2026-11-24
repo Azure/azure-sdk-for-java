@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.chaos.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -40,6 +41,11 @@ public final class CapabilityProperties implements JsonSerializable<CapabilityPr
      * String of the URN for this Capability Type.
      */
     private String urn;
+
+    /*
+     * Resource provisioning state. Not currently in use because resource is created synchronously.
+     */
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of CapabilityProperties class.
@@ -93,11 +99,13 @@ public final class CapabilityProperties implements JsonSerializable<CapabilityPr
     }
 
     /**
-     * Validates the instance.
+     * Get the provisioningState property: Resource provisioning state. Not currently in use because resource is created
+     * synchronously.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the provisioningState value.
      */
-    public void validate() {
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -134,6 +142,9 @@ public final class CapabilityProperties implements JsonSerializable<CapabilityPr
                     deserializedCapabilityProperties.parametersSchema = reader.getString();
                 } else if ("urn".equals(fieldName)) {
                     deserializedCapabilityProperties.urn = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCapabilityProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

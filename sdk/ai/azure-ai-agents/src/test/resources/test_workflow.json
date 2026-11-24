@@ -1,0 +1,68 @@
+{
+  "kind": "OnActivity",
+  "id": "activity1",
+  "actions": [
+    {
+      "kind": "SetVariable",
+      "id": "set_variable_input_task",
+      "variable": "Workflow.InputTask",
+      "value": "=System.LastMessage"
+    },
+    {
+      "kind": "InvokeAzureAgent",
+      "id": "student_agent",
+      "description": "The student node",
+      "agent": {
+        "name": "StudentAgent"
+      },
+      "input": {
+        "messages": "=Workflow.InputTask"
+      }
+    },
+    {
+      "kind": "ResetVariable",
+      "id": "reset_variable_inputtask",
+      "variable": "Workflow.InputTask"
+    },
+    {
+      "kind": "InvokeAzureAgent",
+      "id": "teacher_agent",
+      "description": "The teacher node",
+      "agent": {
+        "name": "TeacherAgent"
+      },
+      "output": {
+        "messages": "Workflow.TeacherReply"
+      }
+    },
+    {
+      "kind": "SetVariable",
+      "id": "set_variable_turncount",
+      "variable": "Workflow.TurnCount",
+      "value": "=Workflow.TurnCount + 1"
+    },
+    {
+      "kind": "ConditionGroup",
+      "id": "completion_check",
+      "conditions": [
+        {
+          "condition": "=!IsBlank(Find(\"[COMPLETE]\", Upper(Workflow.TeacherReply.Text))) || Workflow.TurnCount >= 10",
+          "id": "check_done",
+          "actions": [
+            {
+              "kind": "EndWorkflow",
+              "id": "end_workflow"
+            }
+          ]
+        }
+      ],
+      "elseActions": [
+        {
+          "kind": "GotoAction",
+          "id": "goto_action_1",
+          "actionId": "student_agent"
+        }
+      ]
+    }
+  ]
+}

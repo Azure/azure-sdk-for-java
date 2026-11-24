@@ -38,17 +38,6 @@ public final class AssetEndpointProfileStatus implements JsonSerializable<AssetE
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (errors() != null) {
-            errors().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

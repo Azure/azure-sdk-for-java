@@ -20,7 +20,7 @@ public final class SqlMigrationServicesListMonitoringDataWithResponseMockTests {
     @Test
     public void testListMonitoringDataWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"mnrqstjcmetwml\",\"nodes\":[{\"additionalProperties\":{\"hgjnaq\":\"datapvv\",\"vcdsvm\":\"dataqipslz\",\"kdtfo\":\"databit\"},\"nodeName\":\"fiybxqich\",\"availableMemoryInMB\":260276405,\"cpuUtilization\":1475304415,\"concurrentJobsLimit\":88878227,\"concurrentJobsRunning\":2019590204,\"maxConcurrentJobs\":2098412904,\"sentBytes\":60.81948882509376,\"receivedBytes\":7.011253579337295},{\"additionalProperties\":{\"htre\":\"datazulrqt\",\"ryfmxmdu\":\"datapzl\",\"giln\":\"datazf\"},\"nodeName\":\"dccgndjgdpriggqq\",\"availableMemoryInMB\":1749113504,\"cpuUtilization\":303696107,\"concurrentJobsLimit\":370186911,\"concurrentJobsRunning\":164279924,\"maxConcurrentJobs\":797374219,\"sentBytes\":51.24575061535565,\"receivedBytes\":60.674506685245724}]}";
+            = "{\"name\":\"mebgszplu\",\"nodes\":[{\"additionalProperties\":{\"kyejidbdq\":\"datadzzmssgpgv\",\"wsnmrkkyjt\":\"datasqunycwztlv\",\"auxuvavcpfpdofu\":\"dataepwpwfk\"},\"nodeName\":\"clbtxl\",\"availableMemoryInMB\":1905174501,\"cpuUtilization\":454396213,\"concurrentJobsLimit\":2000712450,\"concurrentJobsRunning\":1466861493,\"maxConcurrentJobs\":818718730,\"sentBytes\":41.640663948225665,\"receivedBytes\":84.65147793850902},{\"additionalProperties\":{\"uxjxhfxf\":\"datab\",\"wgzzxljb\":\"datawpdkktpmbmxbmb\"},\"nodeName\":\"xsdpla\",\"availableMemoryInMB\":3133648,\"cpuUtilization\":700847507,\"concurrentJobsLimit\":824490983,\"concurrentJobsRunning\":1091789824,\"maxConcurrentJobs\":397656526,\"sentBytes\":80.00554556140439,\"receivedBytes\":75.37977065983443},{\"additionalProperties\":{\"vwglgwzpv\":\"datavq\"},\"nodeName\":\"kglhpsesrf\",\"availableMemoryInMB\":642972437,\"cpuUtilization\":1538093056,\"concurrentJobsLimit\":2111400224,\"concurrentJobsRunning\":1307458482,\"maxConcurrentJobs\":2008019421,\"sentBytes\":25.67358657305,\"receivedBytes\":18.80104308738284}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SqlMigrationServicesListMonitoringDataWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationRuntimeMonitoringData response = manager.sqlMigrationServices()
-            .listMonitoringDataWithResponse("cbgvsbt", "ertoxadhxuvj", com.azure.core.util.Context.NONE)
+            .listMonitoringDataWithResponse("cvucgytoxu", "httnzqs", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

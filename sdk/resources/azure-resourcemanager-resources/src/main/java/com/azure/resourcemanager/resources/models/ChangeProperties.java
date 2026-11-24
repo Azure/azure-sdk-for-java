@@ -1,0 +1,181 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// Generated code
+
+package com.azure.resourcemanager.resources.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
+
+/**
+ * The properties of a change.
+ */
+@Fluent
+public final class ChangeProperties implements JsonSerializable<ChangeProperties> {
+    /*
+     * The fully qualified ID of the target resource that was changed
+     */
+    private String targetResourceId;
+
+    /*
+     * The namespace and type of the resource
+     */
+    private String targetResourceType;
+
+    /*
+     * The type of change that was captured in the resource
+     */
+    private ResourceChangeType changeType;
+
+    /*
+     * Details about the change resource
+     */
+    private ChangeAttributes changeAttributes;
+
+    /*
+     * A dictionary with changed property name as a key and the change details as the value
+     */
+    private Map<String, ChangeBase> changes;
+
+    /**
+     * Creates an instance of ChangeProperties class.
+     */
+    public ChangeProperties() {
+    }
+
+    /**
+     * Get the targetResourceId property: The fully qualified ID of the target resource that was changed.
+     * 
+     * @return the targetResourceId value.
+     */
+    public String targetResourceId() {
+        return this.targetResourceId;
+    }
+
+    /**
+     * Get the targetResourceType property: The namespace and type of the resource.
+     * 
+     * @return the targetResourceType value.
+     */
+    public String targetResourceType() {
+        return this.targetResourceType;
+    }
+
+    /**
+     * Get the changeType property: The type of change that was captured in the resource.
+     * 
+     * @return the changeType value.
+     */
+    public ResourceChangeType changeType() {
+        return this.changeType;
+    }
+
+    /**
+     * Get the changeAttributes property: Details about the change resource.
+     * 
+     * @return the changeAttributes value.
+     */
+    public ChangeAttributes changeAttributes() {
+        return this.changeAttributes;
+    }
+
+    /**
+     * Set the changeAttributes property: Details about the change resource.
+     * 
+     * @param changeAttributes the changeAttributes value to set.
+     * @return the ChangeProperties object itself.
+     */
+    public ChangeProperties withChangeAttributes(ChangeAttributes changeAttributes) {
+        this.changeAttributes = changeAttributes;
+        return this;
+    }
+
+    /**
+     * Get the changes property: A dictionary with changed property name as a key and the change details as the value.
+     * 
+     * @return the changes value.
+     */
+    public Map<String, ChangeBase> changes() {
+        return this.changes;
+    }
+
+    /**
+     * Set the changes property: A dictionary with changed property name as a key and the change details as the value.
+     * 
+     * @param changes the changes value to set.
+     * @return the ChangeProperties object itself.
+     */
+    public ChangeProperties withChanges(Map<String, ChangeBase> changes) {
+        this.changes = changes;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (changeAttributes() != null) {
+            changeAttributes().validate();
+        }
+        if (changes() != null) {
+            changes().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("changeAttributes", this.changeAttributes);
+        jsonWriter.writeMapField("changes", this.changes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChangeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChangeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChangeProperties.
+     */
+    public static ChangeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChangeProperties deserializedChangeProperties = new ChangeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceId".equals(fieldName)) {
+                    deserializedChangeProperties.targetResourceId = reader.getString();
+                } else if ("targetResourceType".equals(fieldName)) {
+                    deserializedChangeProperties.targetResourceType = reader.getString();
+                } else if ("changeType".equals(fieldName)) {
+                    deserializedChangeProperties.changeType = ResourceChangeType.fromString(reader.getString());
+                } else if ("changeAttributes".equals(fieldName)) {
+                    deserializedChangeProperties.changeAttributes = ChangeAttributes.fromJson(reader);
+                } else if ("changes".equals(fieldName)) {
+                    Map<String, ChangeBase> changes = reader.readMap(reader1 -> ChangeBase.fromJson(reader1));
+                    deserializedChangeProperties.changes = changes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChangeProperties;
+        });
+    }
+}

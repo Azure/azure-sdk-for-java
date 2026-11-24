@@ -71,8 +71,8 @@ public interface DataflowEndpointResource {
     /**
      * The entirety of the DataflowEndpointResource definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
-        DefinitionStages.WithExtendedLocation, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /**
@@ -96,27 +96,14 @@ public interface DataflowEndpointResource {
              * @param instanceName Name of instance.
              * @return the next definition stage.
              */
-            WithExtendedLocation withExistingInstance(String resourceGroupName, String instanceName);
-        }
-
-        /**
-         * The stage of the DataflowEndpointResource definition allowing to specify extendedLocation.
-         */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: Edge location of the resource..
-             * 
-             * @param extendedLocation Edge location of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
+            WithCreate withExistingInstance(String resourceGroupName, String instanceName);
         }
 
         /**
          * The stage of the DataflowEndpointResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithExtendedLocation {
             /**
              * Executes the create request.
              * 
@@ -144,6 +131,19 @@ public interface DataflowEndpointResource {
              * @return the next definition stage.
              */
             WithCreate withProperties(DataflowEndpointProperties properties);
+        }
+
+        /**
+         * The stage of the DataflowEndpointResource definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: Edge location of the resource..
+             * 
+             * @param extendedLocation Edge location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
     }
 

@@ -13,7 +13,7 @@ public final class PrivateCloudIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateCloudIdentity model = BinaryData
-            .fromString("{\"principalId\":\"zcjrvxdjzlmwlx\",\"tenantId\":\"ug\",\"type\":\"SystemAssigned\"}")
+            .fromString("{\"principalId\":\"iysui\",\"tenantId\":\"ynkedyatrwyhqmib\",\"type\":\"SystemAssigned\"}")
             .toObject(PrivateCloudIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

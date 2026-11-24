@@ -22,7 +22,7 @@ public final class ImpactCategoriesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"categoryId\":\"zkd\",\"parentCategoryId\":\"lpvlopw\",\"description\":\"ighxpk\",\"requiredImpactProperties\":[{\"name\":\"baiuebbaumny\",\"allowedValues\":[\"edeojnabc\"]}]},\"id\":\"smtxpsieb\",\"name\":\"fhvpesaps\",\"type\":\"rdqmhjjdhtldwkyz\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"categoryId\":\"vf\",\"parentCategoryId\":\"kymuctqhjfbebr\",\"description\":\"xerf\",\"requiredImpactProperties\":[{\"name\":\"tttxfvjrb\",\"allowedValues\":[\"hxepcyvahfnlj\",\"yq\",\"j\"]},{\"name\":\"uujqgidokgjljyo\",\"allowedValues\":[\"cltbgsncghkjesz\",\"hbijhtxfvgxb\",\"smx\"]},{\"name\":\"eh\",\"allowedValues\":[\"ec\",\"godebfqkkrbmpu\",\"gr\",\"wflzlfbxzpuzy\"]},{\"name\":\"ispnqzahmgkbrp\",\"allowedValues\":[\"hibnuqqkpika\",\"rgvtqag\"]}]},\"id\":\"uynhijg\",\"name\":\"mebf\",\"type\":\"iarbutrcvpna\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class ImpactCategoriesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ImpactCategory> response
-            = manager.impactCategories().list("yuguosvmkfssx", "ukkfplgmgs", com.azure.core.util.Context.NONE);
+            = manager.impactCategories().list("frzpwvlqdqgb", "qylihkaetckt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zkd", response.iterator().next().properties().categoryId());
-        Assertions.assertEquals("lpvlopw", response.iterator().next().properties().parentCategoryId());
-        Assertions.assertEquals("ighxpk", response.iterator().next().properties().description());
-        Assertions.assertEquals("baiuebbaumny",
+        Assertions.assertEquals("vf", response.iterator().next().properties().categoryId());
+        Assertions.assertEquals("kymuctqhjfbebr", response.iterator().next().properties().parentCategoryId());
+        Assertions.assertEquals("xerf", response.iterator().next().properties().description());
+        Assertions.assertEquals("tttxfvjrb",
             response.iterator().next().properties().requiredImpactProperties().get(0).name());
-        Assertions.assertEquals("edeojnabc",
+        Assertions.assertEquals("hxepcyvahfnlj",
             response.iterator().next().properties().requiredImpactProperties().get(0).allowedValues().get(0));
     }
 }

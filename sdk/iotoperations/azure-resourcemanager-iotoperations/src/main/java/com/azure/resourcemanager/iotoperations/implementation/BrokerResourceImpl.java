@@ -106,9 +106,15 @@ public final class BrokerResourceImpl implements BrokerResource, BrokerResource.
         com.azure.resourcemanager.iotoperations.IoTOperationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.instanceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "instances");
-        this.brokerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "brokers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "resourceGroupName");
+        this.instanceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "instanceName");
+        this.brokerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}",
+            "brokerName");
     }
 
     public BrokerResource refresh() {
@@ -127,13 +133,13 @@ public final class BrokerResourceImpl implements BrokerResource, BrokerResource.
         return this;
     }
 
-    public BrokerResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
+    public BrokerResourceImpl withProperties(BrokerProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public BrokerResourceImpl withProperties(BrokerProperties properties) {
-        this.innerModel().withProperties(properties);
+    public BrokerResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
         return this;
     }
 }

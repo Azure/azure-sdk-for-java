@@ -22,7 +22,7 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"kyhejhzisxgf\",\"groups\":[{\"name\":\"olppvksrpqvujz\"}],\"afterStageWaitInSeconds\":126730684,\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]},{\"name\":\"ftswibyrcdlbhsh\",\"groups\":[{\"name\":\"racstwity\"}],\"afterStageWaitInSeconds\":56359046,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"odn\",\"groups\":[{\"name\":\"ltjcvnhltiugcxna\"},{\"name\":\"vwxqibyqunyo\"},{\"name\":\"xwlmdjr\"}],\"afterStageWaitInSeconds\":425671915,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"izsjqlhkrr\",\"id\":\"deibqip\",\"name\":\"kghv\",\"type\":\"ndzwmkrefa\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"baqehgpdoh\",\"groups\":[{\"name\":\"atucoigebxncn\"},{\"name\":\"fepbnwgfmxjgc\"},{\"name\":\"bjb\"},{\"name\":\"dlfgtdysnaq\"}],\"memberSelector\":{\"byLabel\":\"lqbctqhamzjrw\"},\"afterStageWaitInSeconds\":1989079400,\"maxAllowedFailures\":\"eqyj\",\"maxConcurrency\":\"zi\",\"beforeGates\":[{\"type\":\"ScheduledStart\"},{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"}]},{\"name\":\"wcegyamlbn\",\"groups\":[{\"name\":\"ac\"}],\"memberSelector\":{\"byLabel\":\"vpilg\"},\"afterStageWaitInSeconds\":471177437,\"maxAllowedFailures\":\"jagmdi\",\"maxConcurrency\":\"ueio\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"ScheduledStart\"},{\"type\":\"ScheduledStart\"}],\"afterGates\":[{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"pdelqa\",\"groups\":[{\"name\":\"m\"},{\"name\":\"toebnf\"},{\"name\":\"o\"},{\"name\":\"vcjkgd\"}],\"memberSelector\":{\"byLabel\":\"azftxejwabmdujtm\"},\"afterStageWaitInSeconds\":271162273,\"maxAllowedFailures\":\"excmjurbuhhl\",\"maxConcurrency\":\"ql\",\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"ScheduledStart\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"ffdjktsysidfvclg\",\"id\":\"n\",\"name\":\"uijtkbu\",\"type\":\"qogsfikayian\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,17 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FleetUpdateStrategy response = manager.fleetUpdateStrategies()
-            .getWithResponse("ttlstvlzywemhz", "ncsdtclusiyp", "sfgytguslfead", com.azure.core.util.Context.NONE)
+            .getWithResponse("fuughtuqfec", "xeygtuhxuic", "uewmrswnjlxuzrhw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kyhejhzisxgf", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("olppvksrpqvujz", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(126730684, response.strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals(GateType.APPROVAL, response.strategy().stages().get(0).beforeGates().get(0).type());
+        Assertions.assertEquals("baqehgpdoh", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("atucoigebxncn", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals("lqbctqhamzjrw", response.strategy().stages().get(0).memberSelector().byLabel());
+        Assertions.assertEquals(1989079400, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("eqyj", response.strategy().stages().get(0).maxAllowedFailures());
+        Assertions.assertEquals("zi", response.strategy().stages().get(0).maxConcurrency());
+        Assertions.assertEquals(GateType.SCHEDULED_START,
+            response.strategy().stages().get(0).beforeGates().get(0).type());
         Assertions.assertEquals(GateType.APPROVAL, response.strategy().stages().get(0).afterGates().get(0).type());
     }
 }

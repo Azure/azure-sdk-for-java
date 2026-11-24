@@ -4,7 +4,6 @@
 package com.azure.ai.openai.assistants;
 
 import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
-
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.implementation.OpenAIUtils;
@@ -2293,11 +2292,11 @@ public final class AssistantsAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> uploadFileWithResponseInternal(BinaryData request, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'uploadFile' is
         // 'multipart/form-data'
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.uploadFileWithResponseAsync(request, requestOptions);
+        return this.serviceClient.uploadFileWithResponseInternalAsync(request, requestOptions);
     }
 
     /**
@@ -2661,7 +2660,7 @@ public final class AssistantsAsyncClient {
             .serializeTextField("filename", requestObj.getFilename())
             .end()
             .getRequestBody();
-        return uploadFileWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        return uploadFileWithResponseInternal(request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
     }
 
@@ -2690,7 +2689,7 @@ public final class AssistantsAsyncClient {
             .serializeTextField("filename", requestObj.getFilename())
             .end()
             .getRequestBody();
-        return uploadFileWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        return uploadFileWithResponseInternal(request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
     }
 

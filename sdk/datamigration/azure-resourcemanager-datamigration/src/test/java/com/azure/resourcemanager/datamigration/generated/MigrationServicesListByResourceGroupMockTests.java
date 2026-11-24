@@ -22,7 +22,7 @@ public final class MigrationServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"integrationRuntimeState\":\"kfrrynj\"},\"location\":\"mhlym\",\"tags\":{\"lrlzaudgjt\":\"kxrkemjpeq\",\"akkuc\":\"bc\"},\"id\":\"dwnhczbutoucgjti\",\"name\":\"jwayhi\",\"type\":\"qqwwvgwks\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"integrationRuntimeState\":\"jcm\"},\"location\":\"wmlgicvnpv\",\"tags\":{\"mvcdsvmwbitek\":\"gjnaqyqipsl\",\"vfiybxqichgyb\":\"tfo\"},\"id\":\"zdqekivycpzcvd\",\"name\":\"zulrqt\",\"type\":\"htre\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class MigrationServicesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MigrationService> response
-            = manager.migrationServices().listByResourceGroup("rwnhkgqggoxsst", com.azure.core.util.Context.NONE);
+            = manager.migrationServices().listByResourceGroup("hxuvjhxm", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mhlym", response.iterator().next().location());
-        Assertions.assertEquals("kxrkemjpeq", response.iterator().next().tags().get("lrlzaudgjt"));
+        Assertions.assertEquals("wmlgicvnpv", response.iterator().next().location());
+        Assertions.assertEquals("gjnaqyqipsl", response.iterator().next().tags().get("mvcdsvmwbitek"));
     }
 }

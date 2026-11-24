@@ -241,17 +241,6 @@ public final class FirmwareProperties implements JsonSerializable<FirmwareProper
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (statusMessages() != null) {
-            statusMessages().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

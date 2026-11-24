@@ -23,7 +23,7 @@ public final class RetentionPoliciesListBySchedulerMockTests {
     @Test
     public void testListByScheduler() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"retentionPolicies\":[{\"retentionPeriodInDays\":2127806039,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":1232407744,\"orchestrationState\":\"Completed\"},{\"retentionPeriodInDays\":1859867828,\"orchestrationState\":\"Canceled\"}]},\"id\":\"g\",\"name\":\"lpbuxwgipwhonowk\",\"type\":\"shwankixzbinje\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1232794646,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":359778244,\"orchestrationState\":\"Failed\"},{\"retentionPeriodInDays\":2103360732,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":810708616,\"orchestrationState\":\"Failed\"}]},\"id\":\"j\",\"name\":\"xccybvpa\",\"type\":\"akkud\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class RetentionPoliciesListBySchedulerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<RetentionPolicy> response = manager.retentionPolicies()
-            .listByScheduler("yhxdeoejzicwi", "sjttgzfbish", com.azure.core.util.Context.NONE);
+        PagedIterable<RetentionPolicy> response
+            = manager.retentionPolicies().listByScheduler("t", "gkxnyedabg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(2127806039,
+        Assertions.assertEquals(1232794646,
             response.iterator().next().properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
+        Assertions.assertEquals(PurgeableOrchestrationState.TERMINATED,
             response.iterator().next().properties().retentionPolicies().get(0).orchestrationState());
     }
 }

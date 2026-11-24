@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.secretsstoreextension.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -85,26 +84,6 @@ public final class KubernetesSecretObjectMapping implements JsonSerializable<Kub
         this.targetKey = targetKey;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (sourcePath() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourcePath in model KubernetesSecretObjectMapping"));
-        }
-        if (targetKey() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property targetKey in model KubernetesSecretObjectMapping"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(KubernetesSecretObjectMapping.class);
 
     /**
      * {@inheritDoc}

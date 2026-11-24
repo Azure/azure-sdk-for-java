@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+
 import org.springframework.util.StringUtils;
 
 import com.azure.core.http.HttpHeaderName;
@@ -27,10 +29,10 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     /**
      * Format of User Agent
      */
-    public static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
+    private static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
-    final TracingInfo tracingInfo;
+    private final TracingInfo tracingInfo;
 
     /**
      * App Configuration Http Pipeline Policy
@@ -43,11 +45,13 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         Boolean watchRequests = (Boolean) context.getData("refresh").orElse(false);
+        Boolean pushRefresh = (Boolean) context.getData(PUSH_REFRESH).orElse(false);
+        FeatureFlagTracing ffTracing = (FeatureFlagTracing) context.getData("FeatureFlagTracing").orElse(null);
         HttpHeaders headers = context.getHttpRequest().getHeaders();
         String sdkUserAgent = headers.get(HttpHeaderName.USER_AGENT).getValue();
         headers.set(HttpHeaderName.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
         headers.set(HttpHeaderName.fromString(AppConfigurationConstants.CORRELATION_CONTEXT),
-            tracingInfo.getValue(watchRequests));
+            tracingInfo.getValue(watchRequests, pushRefresh, ffTracing));
 
         return next.process();
     }

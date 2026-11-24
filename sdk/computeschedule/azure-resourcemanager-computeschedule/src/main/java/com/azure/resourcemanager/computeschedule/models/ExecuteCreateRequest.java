@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computeschedule.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -97,30 +96,6 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
         this.correlationid = correlationid;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (resourceConfigParameters() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceConfigParameters in model ExecuteCreateRequest"));
-        } else {
-            resourceConfigParameters().validate();
-        }
-        if (executionParameters() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property executionParameters in model ExecuteCreateRequest"));
-        } else {
-            executionParameters().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ExecuteCreateRequest.class);
 
     /**
      * {@inheritDoc}

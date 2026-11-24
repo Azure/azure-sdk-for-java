@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.playwright.fluent.PlaywrightWorkspaceQuotasClient;
 import com.azure.resourcemanager.playwright.fluent.models.PlaywrightWorkspaceQuotaInner;
 import com.azure.resourcemanager.playwright.implementation.models.PlaywrightWorkspaceQuotaListResult;
@@ -124,7 +123,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -132,31 +131,12 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name along with {@link Response} on successful completion of
+     * @return a Playwright workspace quota resource by name along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PlaywrightWorkspaceQuotaInner>> getWithResponseAsync(String resourceGroupName,
         String playwrightWorkspaceName, QuotaName quotaName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (playwrightWorkspaceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter playwrightWorkspaceName is required and cannot be null."));
-        }
-        if (quotaName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter quotaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, playwrightWorkspaceName, quotaName, accept, context))
@@ -164,7 +144,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -172,7 +152,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name on successful completion of {@link Mono}.
+     * @return a Playwright workspace quota resource by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PlaywrightWorkspaceQuotaInner> getAsync(String resourceGroupName, String playwrightWorkspaceName,
@@ -182,7 +162,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -191,40 +171,18 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name along with {@link Response}.
+     * @return a Playwright workspace quota resource by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlaywrightWorkspaceQuotaInner> getWithResponse(String resourceGroupName,
         String playwrightWorkspaceName, QuotaName quotaName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (playwrightWorkspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter playwrightWorkspaceName is required and cannot be null."));
-        }
-        if (quotaName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter quotaName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, playwrightWorkspaceName, quotaName, accept, context);
     }
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -232,7 +190,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name.
+     * @return a Playwright workspace quota resource by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlaywrightWorkspaceQuotaInner get(String resourceGroupName, String playwrightWorkspaceName,
@@ -241,7 +199,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -254,22 +212,6 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlaywrightWorkspaceQuotaInner>>
         listByPlaywrightWorkspaceSinglePageAsync(String resourceGroupName, String playwrightWorkspaceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (playwrightWorkspaceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter playwrightWorkspaceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -281,7 +223,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -299,7 +241,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -311,24 +253,6 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceQuotaInner> listByPlaywrightWorkspaceSinglePage(String resourceGroupName,
         String playwrightWorkspaceName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (playwrightWorkspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter playwrightWorkspaceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PlaywrightWorkspaceQuotaListResult> res
             = service.listByPlaywrightWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -338,7 +262,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -351,24 +275,6 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceQuotaInner> listByPlaywrightWorkspaceSinglePage(String resourceGroupName,
         String playwrightWorkspaceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (playwrightWorkspaceName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter playwrightWorkspaceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PlaywrightWorkspaceQuotaListResult> res
             = service.listByPlaywrightWorkspaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -378,7 +284,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -397,7 +303,7 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     }
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -429,13 +335,6 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlaywrightWorkspaceQuotaInner>>
         listByPlaywrightWorkspaceNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -456,15 +355,6 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceQuotaInner> listByPlaywrightWorkspaceNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PlaywrightWorkspaceQuotaListResult> res
             = service.listByPlaywrightWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -485,21 +375,10 @@ public final class PlaywrightWorkspaceQuotasClientImpl implements PlaywrightWork
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlaywrightWorkspaceQuotaInner> listByPlaywrightWorkspaceNextSinglePage(String nextLink,
         Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<PlaywrightWorkspaceQuotaListResult> res
             = service.listByPlaywrightWorkspaceNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PlaywrightWorkspaceQuotasClientImpl.class);
 }

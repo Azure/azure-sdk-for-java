@@ -13,18 +13,18 @@ public final class WorkloadNetworkDhcpInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpInner model = BinaryData.fromString(
-            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"arhmofcqhsmy\",\"segments\":[\"dtmlxhekuksjt\",\"ukcdmparcryuanzw\",\"xzdxtayrlhmwh\"],\"provisioningState\":\"Updating\",\"revision\":8654696713359533876},\"id\":\"mt\",\"name\":\"kknryrtihf\",\"type\":\"tijbpzvgnwzsymgl\"}")
+            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"kudzpxgwj\",\"segments\":[\"agst\"],\"provisioningState\":\"Canceled\",\"revision\":7553431900772779958},\"id\":\"yrkdbdgiogsjkmn\",\"name\":\"qjnobaiyhddviac\",\"type\":\"gfnmntfpmvmemfnc\"}")
             .toObject(WorkloadNetworkDhcpInner.class);
-        Assertions.assertEquals("arhmofcqhsmy", model.properties().displayName());
-        Assertions.assertEquals(8654696713359533876L, model.properties().revision());
+        Assertions.assertEquals("kudzpxgwj", model.properties().displayName());
+        Assertions.assertEquals(7553431900772779958L, model.properties().revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkDhcpInner model = new WorkloadNetworkDhcpInner().withProperties(
-            new WorkloadNetworkDhcpEntity().withDisplayName("arhmofcqhsmy").withRevision(8654696713359533876L));
+            new WorkloadNetworkDhcpEntity().withDisplayName("kudzpxgwj").withRevision(7553431900772779958L));
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpInner.class);
-        Assertions.assertEquals("arhmofcqhsmy", model.properties().displayName());
-        Assertions.assertEquals(8654696713359533876L, model.properties().revision());
+        Assertions.assertEquals("kudzpxgwj", model.properties().displayName());
+        Assertions.assertEquals(7553431900772779958L, model.properties().revision());
     }
 }

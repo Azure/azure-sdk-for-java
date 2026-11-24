@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cloudhealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -141,8 +139,8 @@ public final class LogAnalyticsQuerySignalDefinitionProperties extends SignalDef
      * {@inheritDoc}
      */
     @Override
-    public LogAnalyticsQuerySignalDefinitionProperties withLabels(Map<String, String> labels) {
-        super.withLabels(labels);
+    public LogAnalyticsQuerySignalDefinitionProperties withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
@@ -165,29 +163,6 @@ public final class LogAnalyticsQuerySignalDefinitionProperties extends SignalDef
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (queryText() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property queryText in model LogAnalyticsQuerySignalDefinitionProperties"));
-        }
-        if (evaluationRules() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property evaluationRules in model LogAnalyticsQuerySignalDefinitionProperties"));
-        } else {
-            evaluationRules().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(LogAnalyticsQuerySignalDefinitionProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -196,7 +171,7 @@ public final class LogAnalyticsQuerySignalDefinitionProperties extends SignalDef
         jsonWriter.writeJsonField("evaluationRules", evaluationRules());
         jsonWriter.writeStringField("displayName", displayName());
         jsonWriter.writeStringField("refreshInterval", refreshInterval() == null ? null : refreshInterval().toString());
-        jsonWriter.writeMapField("labels", labels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("dataUnit", dataUnit());
         jsonWriter.writeStringField("queryText", this.queryText);
         jsonWriter.writeStringField("signalKind", this.signalKind == null ? null : this.signalKind.toString());
@@ -233,14 +208,11 @@ public final class LogAnalyticsQuerySignalDefinitionProperties extends SignalDef
                 } else if ("refreshInterval".equals(fieldName)) {
                     deserializedLogAnalyticsQuerySignalDefinitionProperties
                         .withRefreshInterval(RefreshInterval.fromString(reader.getString()));
-                } else if ("labels".equals(fieldName)) {
-                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
-                    deserializedLogAnalyticsQuerySignalDefinitionProperties.withLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLogAnalyticsQuerySignalDefinitionProperties.withTags(tags);
                 } else if ("dataUnit".equals(fieldName)) {
                     deserializedLogAnalyticsQuerySignalDefinitionProperties.withDataUnit(reader.getString());
-                } else if ("deletionDate".equals(fieldName)) {
-                    deserializedLogAnalyticsQuerySignalDefinitionProperties.withDeletionDate(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("queryText".equals(fieldName)) {
                     deserializedLogAnalyticsQuerySignalDefinitionProperties.queryText = reader.getString();
                 } else if ("signalKind".equals(fieldName)) {

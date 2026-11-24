@@ -1,0 +1,263 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.DocumentAnnotation;
+import com.azure.ai.contentunderstanding.models.DocumentChartFigure;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentFormula;
+import com.azure.ai.contentunderstanding.models.DocumentHyperlink;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * Async sample demonstrating how to analyze documents with advanced configs using prebuilt-documentSearch.
+ * This sample shows:
+ * 1. Using prebuilt-documentSearch analyzer which has formulas, layout, and OCR enabled
+ * 2. Extracting charts from documents
+ * 3. Extracting hyperlinks from documents
+ * 4. Extracting formulas from document pages
+ * 5. Extracting annotations from documents
+ */
+public class Sample10_AnalyzeConfigsAsyncTest extends ContentUnderstandingClientTestBase {
+
+    @Test
+    public void testAnalyzeConfigsAsync() throws IOException {
+
+        // BEGIN:ContentUnderstandingAnalyzeWithConfigsAsync
+        // Load local sample file
+        Path filePath = Paths.get("src/samples/resources/sample_document_features.pdf");
+        byte[] fileBytes = Files.readAllBytes(filePath);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
+
+        System.out.println("Analyzing " + filePath + " with prebuilt-documentSearch...");
+        System.out.println("Note: prebuilt-documentSearch has formulas, layout, and OCR enabled by default.");
+
+        // Analyze with prebuilt-documentSearch which has formulas, layout, and OCR enabled
+        // These configs enable extraction of charts, annotations, hyperlinks, and formulas
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
+        setPlaybackPollerFluxPollInterval(operation);
+
+        // Use reactive pattern: chain operations using flatMap
+        // In a real application, you would use subscribe() instead of block()
+        AnalysisResult result = operation.last()
+            .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                "Document analysis"))
+            .block(); // block() is used here for testing; in production, use subscribe()
+        // END:ContentUnderstandingAnalyzeWithConfigsAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeWithConfigsAsync
+        assertTrue(Files.exists(filePath), "Sample file should exist at " + filePath);
+        assertTrue(fileBytes.length > 0, "Sample file should not be empty");
+        assertNotNull(binaryData, "Binary data should not be null");
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result should contain contents");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        assertEquals(1, result.getContents().size(), "PDF file should have exactly one content element");
+        System.out.println("Analysis operation properties verified");
+        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+
+        // Verify document content type
+        DocumentContent firstDocContent = result.getContents().get(0) instanceof DocumentContent
+            ? (DocumentContent) result.getContents().get(0)
+            : null;
+        assertNotNull(firstDocContent, "Content should be DocumentContent");
+        assertTrue(firstDocContent.getStartPageNumber() >= 1, "Start page should be >= 1");
+        assertTrue(firstDocContent.getEndPageNumber() >= firstDocContent.getStartPageNumber(),
+            "End page should be >= start page");
+        int totalPages = firstDocContent.getEndPageNumber() - firstDocContent.getStartPageNumber() + 1;
+        System.out.println("Document has " + totalPages + " page(s) from " + firstDocContent.getStartPageNumber()
+            + " to " + firstDocContent.getEndPageNumber());
+
+        if (firstDocContent.getFigures() != null) {
+            for (com.azure.ai.contentunderstanding.models.DocumentFigure figure : firstDocContent.getFigures()) {
+                if (figure instanceof DocumentChartFigure) {
+                    DocumentChartFigure chart = (DocumentChartFigure) figure;
+                    assertNotNull(chart.getId(), "Chart ID should not be null");
+                    assertFalse(chart.getId().trim().isEmpty(), "Chart ID should not be empty");
+                }
+            }
+        }
+
+        assertNotNull(firstDocContent.getHyperlinks(), "Hyperlinks should not be null");
+        assertFalse(firstDocContent.getHyperlinks().isEmpty(), "Sample document should contain hyperlinks");
+        for (DocumentHyperlink hyperlink : firstDocContent.getHyperlinks()) {
+            assertNotNull(hyperlink, "Hyperlink should not be null");
+            assertTrue(
+                (hyperlink.getUrl() != null && !hyperlink.getUrl().trim().isEmpty())
+                    || (hyperlink.getContent() != null && !hyperlink.getContent().trim().isEmpty()),
+                "Each hyperlink should have a URL or content");
+        }
+
+        assertNotNull(firstDocContent.getPages(), "Pages should not be null");
+        assertFalse(firstDocContent.getPages().isEmpty(), "Sample document should contain pages");
+        int assertedFormulaCount = 0;
+        for (com.azure.ai.contentunderstanding.models.DocumentPage page : firstDocContent.getPages()) {
+            if (page.getFormulas() != null) {
+                assertedFormulaCount += page.getFormulas().size();
+                for (DocumentFormula formula : page.getFormulas()) {
+                    assertNotNull(formula, "Formula should not be null");
+                    assertNotNull(formula.getKind(), "Formula kind should not be null");
+                    if (formula.getConfidence() != null) {
+                        assertTrue(formula.getConfidence() >= 0 && formula.getConfidence() <= 1,
+                            "Formula confidence should be between 0 and 1");
+                    }
+                }
+            }
+        }
+        assertTrue(assertedFormulaCount > 0, "Sample document should contain formulas");
+
+        assertNotNull(firstDocContent.getAnnotations(), "Annotations should not be null");
+        assertFalse(firstDocContent.getAnnotations().isEmpty(), "Sample document should contain annotations");
+        for (DocumentAnnotation annotation : firstDocContent.getAnnotations()) {
+            assertNotNull(annotation, "Annotation should not be null");
+            assertNotNull(annotation.getId(), "Annotation ID should not be null");
+            assertFalse(annotation.getId().trim().isEmpty(), "Annotation ID should not be empty");
+            assertNotNull(annotation.getKind(), "Annotation kind should not be null");
+            if (annotation.getComments() != null) {
+                for (com.azure.ai.contentunderstanding.models.DocumentAnnotationComment comment : annotation
+                    .getComments()) {
+                    assertNotNull(comment, "Annotation comment should not be null");
+                    assertNotNull(comment.getMessage(), "Annotation comment message should not be null");
+                    assertFalse(comment.getMessage().trim().isEmpty(),
+                        "Annotation comment message should not be empty");
+                }
+            }
+        }
+        System.out.println("Document features analysis with configs completed successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeWithConfigsAsync
+
+        // BEGIN:ContentUnderstandingExtractChartsAsync
+        // Extract charts from document content
+        if (result.getContents().get(0) instanceof DocumentContent) {
+            DocumentContent documentContent = (DocumentContent) result.getContents().get(0);
+
+            if (documentContent.getFigures() != null && !documentContent.getFigures().isEmpty()) {
+                List<DocumentChartFigure> chartFigures = documentContent.getFigures()
+                    .stream()
+                    .filter(f -> f instanceof DocumentChartFigure)
+                    .map(f -> (DocumentChartFigure) f)
+                    .collect(Collectors.toList());
+
+                System.out.println("Found " + chartFigures.size() + " chart(s)");
+                for (DocumentChartFigure chart : chartFigures) {
+                    System.out.println("  Chart ID: " + chart.getId());
+                    if (chart.getDescription() != null && !chart.getDescription().isEmpty()) {
+                        System.out.println("    Description: " + chart.getDescription());
+                    }
+                    if (chart.getCaption() != null
+                        && chart.getCaption().getContent() != null
+                        && !chart.getCaption().getContent().isEmpty()) {
+                        System.out.println("    Caption: " + chart.getCaption().getContent());
+                    }
+                }
+            }
+        }
+        // END:ContentUnderstandingExtractChartsAsync
+
+        // BEGIN:ContentUnderstandingExtractHyperlinksAsync
+        // Extract hyperlinks from document content
+        if (result.getContents().get(0) instanceof DocumentContent) {
+            DocumentContent docContent = (DocumentContent) result.getContents().get(0);
+
+            if (docContent.getHyperlinks() != null && !docContent.getHyperlinks().isEmpty()) {
+                System.out.println("\nFound " + docContent.getHyperlinks().size() + " hyperlink(s)");
+                for (DocumentHyperlink hyperlink : docContent.getHyperlinks()) {
+                    System.out
+                        .println("  URL: " + (hyperlink.getUrl() != null ? hyperlink.getUrl() : "(not available)"));
+                    System.out.println("    Content: "
+                        + (hyperlink.getContent() != null ? hyperlink.getContent() : "(not available)"));
+                }
+            }
+        }
+        // END:ContentUnderstandingExtractHyperlinksAsync
+
+        // BEGIN:ContentUnderstandingExtractFormulasAsync
+        // Extract formulas from document pages
+        if (result.getContents().get(0) instanceof DocumentContent) {
+            DocumentContent content = (DocumentContent) result.getContents().get(0);
+
+            if (content.getPages() != null) {
+                int formulaCount = 0;
+                for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
+                    if (page.getFormulas() != null) {
+                        formulaCount += page.getFormulas().size();
+                    }
+                }
+
+                if (formulaCount > 0) {
+                    System.out.println("\nFound " + formulaCount + " formula(s)");
+                    for (com.azure.ai.contentunderstanding.models.DocumentPage page : content.getPages()) {
+                        if (page.getFormulas() != null) {
+                            for (DocumentFormula formula : page.getFormulas()) {
+                                System.out.println("  Formula Kind: " + formula.getKind());
+                                System.out.println("    LaTeX: "
+                                    + (formula.getValue() != null ? formula.getValue() : "(not available)"));
+                                if (formula.getConfidence() != null) {
+                                    System.out.println(String.format("    Confidence: %.2f", formula.getConfidence()));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // END:ContentUnderstandingExtractFormulasAsync
+
+        // BEGIN:ContentUnderstandingExtractAnnotationsAsync
+        // Extract annotations from document content
+        if (result.getContents().get(0) instanceof DocumentContent) {
+            DocumentContent document = (DocumentContent) result.getContents().get(0);
+
+            if (document.getAnnotations() != null && !document.getAnnotations().isEmpty()) {
+                System.out.println("\nFound " + document.getAnnotations().size() + " annotation(s)");
+                for (DocumentAnnotation annotation : document.getAnnotations()) {
+                    System.out.println("  Annotation ID: " + annotation.getId());
+                    System.out.println("    Kind: " + annotation.getKind());
+                    if (annotation.getAuthor() != null && !annotation.getAuthor().isEmpty()) {
+                        System.out.println("    Author: " + annotation.getAuthor());
+                    }
+                    if (annotation.getComments() != null && !annotation.getComments().isEmpty()) {
+                        System.out.println("    Comments: " + annotation.getComments().size());
+                        for (com.azure.ai.contentunderstanding.models.DocumentAnnotationComment comment : annotation
+                            .getComments()) {
+                            System.out.println("      - " + comment.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        // END:ContentUnderstandingExtractAnnotationsAsync
+
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+}

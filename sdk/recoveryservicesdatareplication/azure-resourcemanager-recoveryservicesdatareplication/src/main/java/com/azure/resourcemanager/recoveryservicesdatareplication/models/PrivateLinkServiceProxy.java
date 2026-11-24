@@ -127,23 +127,6 @@ public final class PrivateLinkServiceProxy implements JsonSerializable<PrivateLi
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (remotePrivateLinkServiceConnectionState() != null) {
-            remotePrivateLinkServiceConnectionState().validate();
-        }
-        if (remotePrivateEndpointConnection() != null) {
-            remotePrivateEndpointConnection().validate();
-        }
-        if (groupConnectivityInformation() != null) {
-            groupConnectivityInformation().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

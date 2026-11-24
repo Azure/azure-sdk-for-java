@@ -21,7 +21,7 @@ public final class CapabilitiesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"publisher\":\"ogczhonnxkrlg\",\"targetType\":\"hmossxkkgth\",\"description\":\"gh\",\"parametersSchema\":\"bdhqxvcxgf\",\"urn\":\"dsofbshrns\"},\"id\":\"uswdv\",\"name\":\"yybyc\",\"type\":\"unvjsrtkfawnopq\"}";
+            = "{\"properties\":{\"publisher\":\"crmnzhrgmqgjs\",\"targetType\":\"pqcbfrmbodthsq\",\"description\":\"vriibakclacjfr\",\"parametersSchema\":\"ousxauzlwvsgmw\",\"urn\":\"qf\",\"provisioningState\":\"Canceled\"},\"id\":\"uxmmkjsvthnwp\",\"name\":\"tekovmri\",\"type\":\"iattgplu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class CapabilitiesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Capability response = manager.capabilities()
-            .createOrUpdateWithResponse("nfdn", "wjchrdg", "ihxumwctondzj", "uu", "fdlwg", "ytsbwtovv",
+            .createOrUpdateWithResponse("vxlx", "aglqivbgkcvkh", "zvuqdflvon", "yp", "pubcpzgpxtivhjk", "idibgqjxgpn",
                 new CapabilityInner(), com.azure.core.util.Context.NONE)
             .getValue();
 

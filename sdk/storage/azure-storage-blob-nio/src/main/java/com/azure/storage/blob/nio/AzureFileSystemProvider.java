@@ -6,10 +6,12 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -339,7 +341,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzurePath.ensureFileSystemOpen(resource.getPath());
 
         // Ensure the path points to a file.
-        if (!resource.checkDirStatus().equals(DirectoryStatus.NOT_A_DIRECTORY)) {
+        if (!resource.getDirectoryStatus().equals(DirectoryStatus.NOT_A_DIRECTORY)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new IOException("Path either does not exist or points to a directory."
                     + "Path must point to a file. Path: " + path.toString()));
@@ -419,7 +421,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         AzureResource resource = new AzureResource(path);
         AzurePath.ensureFileSystemOpen(resource.getPath());
-        DirectoryStatus status = resource.checkDirStatus();
+        DirectoryStatus status = resource.getDirectoryStatus();
 
         // Cannot write to a directory.
         if (DirectoryStatus.isDirectory(status)) {
@@ -496,7 +498,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         /*
         Ensure the path is a directory. Note that roots are always directories. The case of an invalid root will be
         caught in instantiating the stream below.
-        
         Possible optimization later is to save the result of the list call to use as the first list call inside the
         stream rather than a list call for checking the status and a list call for listing.
          */
@@ -579,7 +580,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzurePath.ensureFileSystemOpen(azureResource.getPath());
 
         // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
-        if (azureResource.checkParentDirectoryExists()) {
+        if (azureResource.parentDirectoryExists()) {
             try {
                 azureResource.setFileAttributes(Arrays.asList(fileAttributes))
                     .putDirectoryBlob(new BlobRequestConditions().setIfNoneMatch("*"));
@@ -621,7 +622,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzurePath.ensureFileSystemOpen(azureResource.getPath());
 
         // Check directory status--possibly throw DirectoryNotEmpty or NoSuchFile.
-        DirectoryStatus dirStatus = azureResource.checkDirStatus();
+        DirectoryStatus dirStatus = azureResource.getDirectoryStatus();
         if (dirStatus.equals(DirectoryStatus.DOES_NOT_EXIST)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new NoSuchFileException(path.toString()));
         }
@@ -711,7 +712,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         AzurePath.ensureFileSystemOpen(destinationRes.getPath());
 
         // Check destination is not a directory with children.
-        DirectoryStatus destinationStatus = destinationRes.checkDirStatus();
+        DirectoryStatus destinationStatus = destinationRes.getDirectoryStatus();
         if (destinationStatus.equals(DirectoryStatus.NOT_EMPTY)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new DirectoryNotEmptyException(destination.toString()));
@@ -733,20 +734,24 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         /*
         More path validation
-        
         Check that the parent for the destination exists. We only need to perform this check if there is nothing
         currently at the destination, for if the destination exists, its parent at least weakly exists and we
         can skip a service call.
          */
-        if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) && !destinationRes.checkParentDirectoryExists()) {
+        if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) && !destinationRes.parentDirectoryExists()) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new IOException("Parent directory of destination location does not exist. The destination path is "
                     + "therefore invalid. Destination: " + destinationRes.getPath()));
         }
 
+        // Apply sas token if present
+        AzureFileSystem fileSystem = (AzureFileSystem) source.getFileSystem();
+        String sasToken
+            = fileSystem.getSasCredential() != null ? "?" + fileSystem.getSasCredential().getSignature() : "";
+        String sourceUrl = sourceRes.getBlobClient().getBlobUrl() + sasToken;
+
         /*
         Try to copy the resource at the source path.
-        
         There is an optimization here where we try to do the copy first and only check for a virtual directory if
         there's a 404. In the cases of files and concrete directories, this only requires one request. For virtual
         directories, however, this requires three requests: failed copy, check status, create directory. Depending on
@@ -754,14 +759,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         first and then do a copy or createDir, which would always be two requests for all resource types.
          */
         try {
-            SyncPoller<BlobCopyInfo, Void> pollResponse = destinationRes.getBlobClient()
-                .beginCopy(sourceRes.getBlobClient().getBlobUrl(), null, null, null, null, requestConditions, null);
+            SyncPoller<BlobCopyInfo, Void> pollResponse
+                = destinationRes.getBlobClient().beginCopy(sourceUrl, null, null, null, null, requestConditions, null);
             pollResponse.waitForCompletion(Duration.ofSeconds(COPY_TIMEOUT_SECONDS));
         } catch (BlobStorageException e) {
             // If the source was not found, it could be because it's a virtual directory. Check the status.
             // If a non-dir resource existed, it would have been copied above. This check is therefore sufficient.
             if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)
-                && !sourceRes.checkDirStatus().equals(DirectoryStatus.DOES_NOT_EXIST)) {
+                && !sourceRes.getDirectoryStatus().equals(DirectoryStatus.DOES_NOT_EXIST)) {
                 /*
                 We already checked that the parent exists and validated the paths above, so we can put the blob
                 directly.
@@ -775,10 +780,10 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
     }
 
-    // Used for checking the status of the root directory. To be implemented later when needed.
-    /*int checkRootDirStatus(BlobContainerClient rootClient) {
-    
-    }*/
+    /*
+    Used for checking the status of the root directory. To be implemented later when needed.
+    int checkRootDirStatus(BlobContainerClient rootClient) { }
+     */
 
     /**
      * Unsupported.
@@ -835,9 +840,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Checks the existence, and optionally the accessibility, of a file.
      * <p>
-     * This method may only be used to check the existence of a file. It is not possible to determine the permissions
-     * granted to a given client, so if any mode argument is specified, an {@link UnsupportedOperationException} will be
-     * thrown.
+     * This method may be used to check the existence of a file and, optionally, whether it can be read. How
+     * {@link AccessMode#READ} is verified depends on the type of the path:
+     * <ul>
+     * <li>For files, existence is checked by reading the blob's properties, so a successful check implies that
+     * {@link AccessMode#READ} access is granted.</li>
+     * <li>For directories, including root directories, {@link AccessMode#READ} is verified by listing the
+     * directory's contents, which requires list permission.</li>
+     * </ul>
+     * It is not possible to determine write or execute permissions granted to a given client without side effects, so
+     * if {@link AccessMode#WRITE} or {@link AccessMode#EXECUTE} is specified, an {@link AccessDeniedException} will
+     * be thrown.
      *
      * @param path the path to the file to check
      * @param accessModes The access modes to check; may have zero elements
@@ -849,32 +862,71 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public void checkAccess(Path path, AccessMode... accessModes) throws IOException {
-        if (accessModes != null && accessModes.length != 0) {
-            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new AccessDeniedException("The access cannot be determined."));
+        if (accessModes != null) {
+            for (AccessMode accessMode : accessModes) {
+                if (accessMode != AccessMode.READ) {
+                    throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
+                        new AccessDeniedException("The access cannot be determined."));
+                }
+            }
         }
         AzurePath.ensureFileSystemOpen(path);
 
         /*
         Some static utility methods in the jdk require checking access on a root. ReadAttributes is not supported on
         roots as they are containers. Furthermore, we always assume that roots exist as they are verified at creation
-        and cannot be deleted by the file system. Thus, we prefer a short circuit for roots.
+        and cannot be deleted by the file system. Thus, we prefer a short circuit for existence-only checks on roots.
+        READ is verified by listing the container since the container check at creation may have been skipped.
          */
         if (path instanceof AzurePath && ((AzurePath) path).isRoot()) {
+            if (accessModes != null && accessModes.length != 0) {
+                String containerName = path.toString().substring(0, path.toString().length() - 1);
+                AzureFileSystem fileSystem = (AzureFileSystem) path.getFileSystem();
+                AzureFileStore fileStore = (AzureFileStore) fileSystem.getFileStore(containerName);
+                checkListAccess(fileStore.getContainerClient(), null, path);
+            }
             return;
         }
 
         // Read attributes already wraps BlobStorageException in an IOException.
+        AzureBlobFileAttributes attributes;
         try {
-            readAttributes(path, BasicFileAttributes.class);
+            attributes = readAttributes(path, AzureBlobFileAttributes.class);
         } catch (IOException e) {
             Throwable cause = e.getCause();
             if (cause instanceof BlobStorageException
                 && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) cause).getErrorCode())) {
-                throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new NoSuchFileException(path.toString()));
+                throw new NoSuchFileException(path.toString());
             } else {
                 throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, e);
             }
+        }
+
+        /*
+        Reading a directory requires listing its contents. Virtual directories were already listed while reading
+        attributes, but concrete directories are marker blobs whose properties can be read without list permission.
+         */
+        if (accessModes != null
+            && accessModes.length != 0
+            && attributes.isDirectory()
+            && !attributes.isVirtualDirectory()) {
+            AzureResource resource = new AzureResource(path);
+            checkListAccess(resource.getContainerClient(),
+                resource.getBlobClient().getBlobName() + AzureFileSystem.PATH_SEPARATOR, path);
+        }
+    }
+
+    private static void checkListAccess(BlobContainerClient containerClient, String prefix, Path path)
+        throws IOException {
+        try {
+            containerClient.listBlobs(new ListBlobsOptions().setPrefix(prefix).setMaxResultsPerPage(1), null)
+                .iterator()
+                .hasNext();
+        } catch (BlobStorageException e) {
+            if (BlobErrorCode.CONTAINER_NOT_FOUND.equals(e.getErrorCode())) {
+                throw new NoSuchFileException(path.toString());
+            }
+            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IOException("Path: " + path, e));
         }
     }
 

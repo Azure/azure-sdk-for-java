@@ -11,7 +11,7 @@ public final class SummaryResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SummaryResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"pvlopwiyighxpkd\",\"name\":\"zb\",\"type\":\"iuebbaumny\"}")
+            "{\"properties\":{\"summaryType\":\"SummaryResourceProperties\",\"provisioningState\":\"Failed\"},\"id\":\"ujznb\",\"name\":\"pow\",\"type\":\"wpr\"}")
             .toObject(SummaryResourceInner.class);
     }
 }

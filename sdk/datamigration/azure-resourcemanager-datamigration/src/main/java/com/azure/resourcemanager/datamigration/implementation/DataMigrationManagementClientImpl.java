@@ -367,7 +367,7 @@ public final class DataMigrationManagementClientImpl implements DataMigrationMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2025-03-15-preview";
+        this.apiVersion = "2025-06-30";
         this.databaseMigrationsMongoToCosmosDbRUMongoes
             = new DatabaseMigrationsMongoToCosmosDbRUMongoesClientImpl(this);
         this.databaseMigrationsMongoToCosmosDbvCoreMongoes

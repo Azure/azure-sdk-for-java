@@ -99,8 +99,8 @@ blobClient.upload(BinaryData.fromString("data"));
 // data factory
 Factory dataFactory = manager.factories()
     .define(DATA_FACTORY)
-    .withRegion(REGION)
     .withExistingResourceGroup(resourceGroup)
+    .withRegion(REGION)
     .create();
 
 // linked service

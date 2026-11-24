@@ -4,14 +4,19 @@
 package com.azure.cosmos.implementation.http;
 
 
+import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
+import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -26,15 +31,41 @@ public class ReactorNettyHttpClientTest {
 
     private static final Logger logger = LoggerFactory.getLogger(ReactorNettyHttpClientTest.class);
     private HttpClient reactorNettyHttpClient;
+    private volatile AutoCloseable disableNettyLeakDetectionScope;
 
     @BeforeClass(groups = "unit")
     public void before_ReactorNettyHttpClientTest() {
         this.reactorNettyHttpClient = HttpClient.createFixed(new HttpClientConfig(new Configs()));
+        this.disableNettyLeakDetectionScope = CosmosNettyLeakDetectorFactory.createDisableLeakDetectionScope();
     }
 
-    @AfterClass(groups = "unit")
-    public void after_ReactorNettyHttpClientTest() {
+    @AfterClass(groups = "unit", alwaysRun = true)
+    public void after_ReactorNettyHttpClientTest() throws Exception {
+
         LifeCycleUtils.closeQuietly(reactorNettyHttpClient);
+        if (this.disableNettyLeakDetectionScope != null) {
+            this.disableNettyLeakDetectionScope.close();
+        }
+    }
+
+    @Test(groups = "unit")
+    public void httpClientAllocatorRespectsConfiguration() {
+        ByteBufAllocator expectedAllocator = System.getProperty("io.netty.allocator.type") == null
+            ? PooledByteBufAllocator.DEFAULT : ByteBufAllocator.DEFAULT;
+        reactor.netty.http.client.HttpClient httpClient =
+            ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
+        assertThat(httpClient.configuration().options().get(ChannelOption.ALLOCATOR))
+            .isSameAs(expectedAllocator);
+
+        HttpClient unpooledConnectionClient = HttpClient.create(new HttpClientConfig(new Configs()));
+        try {
+            httpClient =
+                ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, unpooledConnectionClient, "httpClient");
+            assertThat(httpClient.configuration().options().get(ChannelOption.ALLOCATOR))
+                .isSameAs(expectedAllocator);
+        } finally {
+            LifeCycleUtils.closeQuietly(unpooledConnectionClient);
+        }
     }
 
     @Test(groups = "unit")
@@ -62,7 +93,7 @@ public class ReactorNettyHttpClientTest {
     public void httpClientWithValidateHeaders() {
         reactor.netty.http.client.HttpClient httpClient =
             ReflectionUtils.get(reactor.netty.http.client.HttpClient.class, this.reactorNettyHttpClient, "httpClient");
-        assertThat(httpClient.configuration().decoder().validateHeaders()).isTrue();
+        assertThat(httpClient.configuration().decoder().validateHeaders()).isFalse();
     }
 
     @Test(groups = "unit")

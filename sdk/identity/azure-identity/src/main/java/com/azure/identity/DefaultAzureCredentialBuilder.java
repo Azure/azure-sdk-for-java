@@ -60,6 +60,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     private String managedIdentityResourceId;
     private List<String> additionallyAllowedTenants
         = IdentityUtil.getAdditionalTenantsFromEnvironment(Configuration.getGlobalConfiguration().clone());
+    private AzureIdentityEnvVars[] requiredEnvVars;
 
     /**
      * Creates an instance of a DefaultAzureCredentialBuilder.
@@ -118,10 +119,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Specifies the client ID of user assigned or system assigned identity, when this credential is running
+     * Specifies the client ID of a user-assigned managed identity, when this credential is running
      * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
-     * will be used. If neither is set, the default value is null and will only work with system assigned
-     * managed identities and not user assigned managed identities.
+     * will be used as the client ID. If neither managedIdentityClientId nor managedIdentityResourceId is set and
+     * AZURE_CLIENT_ID is unset, the system-assigned managed identity is used.
      *
      * Only one of managedIdentityClientId and managedIdentityResourceId can be specified.
      *
@@ -148,10 +149,10 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Specifies the resource ID of user assigned or system assigned identity, when this credential is running
-     * in an environment with managed identities. If unset, the value in the AZURE_CLIENT_ID environment variable
-     * will be used. If neither is set, the default value is null and will only work with system assigned
-     * managed identities and not user assigned managed identities.
+     * Specifies the resource ID of a user-assigned managed identity, when this credential is running
+     * in an environment with managed identities. If managedIdentityClientId is unset, the value in the
+     * AZURE_CLIENT_ID environment variable will be used as the client ID. If neither managedIdentityClientId nor
+     * managedIdentityResourceId is set and AZURE_CLIENT_ID is unset, the system-assigned managed identity is used.
      *
      * Only one of managedIdentityResourceId and managedIdentityClientId can be specified.
      *
@@ -239,6 +240,29 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
+     * Specifies environment variables that must be present when building the credential.
+     * If any of the specified environment variables are missing, {@link #build()} will throw an 
+     * {@link IllegalStateException}.
+     *
+     * @param envVars the environment variables that must be present
+     * @return An updated instance of this builder with the required environment variables set as specified.
+     */
+    public DefaultAzureCredentialBuilder requireEnvVars(AzureIdentityEnvVars... envVars) {
+        Objects.requireNonNull(envVars, "envVars cannot be null");
+
+        // Check for null elements in the array
+        for (int i = 0; i < envVars.length; i++) {
+            if (envVars[i] == null) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Environment variable at index " + i + " cannot be null"));
+            }
+        }
+
+        this.requiredEnvVars = envVars.clone();
+        return this;
+    }
+
+    /**
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
@@ -250,6 +274,34 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
+        }
+
+        // Check required environment variables
+        if (requiredEnvVars != null && requiredEnvVars.length > 0) {
+            Configuration configuration = identityClientOptions.getConfiguration() == null
+                ? Configuration.getGlobalConfiguration().clone()
+                : identityClientOptions.getConfiguration();
+
+            List<String> missingVars = new ArrayList<>();
+            for (AzureIdentityEnvVars envVar : requiredEnvVars) {
+                if (CoreUtils.isNullOrEmpty(configuration.get(envVar.toString()))) {
+                    missingVars.add(envVar.toString());
+                }
+            }
+
+            if (!missingVars.isEmpty()) {
+                String errorMessage;
+                if (missingVars.size() == 1) {
+                    errorMessage = "Required environment variable is missing: " + missingVars.get(0)
+                        + ". Ensure this environment variable is set before creating the DefaultAzureCredential.";
+                } else {
+                    errorMessage = "Required environment variables are missing: " + String.join(", ", missingVars)
+                        + ". Ensure these environment variables are set before creating the DefaultAzureCredential.";
+                }
+
+                throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage
+                    + " See https://aka.ms/azsdk/java/identity/defaultazurecredential/troubleshoot for more information."));
+            }
         }
 
         if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {

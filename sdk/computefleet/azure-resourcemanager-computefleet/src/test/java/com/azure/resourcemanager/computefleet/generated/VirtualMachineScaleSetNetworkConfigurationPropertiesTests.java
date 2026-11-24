@@ -31,15 +31,15 @@ public final class VirtualMachineScaleSetNetworkConfigurationPropertiesTests {
         VirtualMachineScaleSetNetworkConfigurationProperties model = BinaryData.fromString(
             "{\"primary\":false,\"enableAcceleratedNetworking\":false,\"disableTcpStateTracking\":false,\"enableFpga\":false,\"networkSecurityGroup\":{\"id\":\"fbuhfmvfaxkffe\"},\"dnsSettings\":{\"dnsServers\":[\"lvmezyvshxmzsbbz\"]},\"ipConfigurations\":[{\"name\":\"gigr\",\"properties\":{\"subnet\":{\"id\":\"rvjx\"},\"primary\":true,\"publicIPAddressConfiguration\":{\"name\":\"pydptko\",\"properties\":{\"idleTimeoutInMinutes\":368872056,\"dnsSettings\":{\"domainNameLabel\":\"knvudwtiukb\"},\"ipTags\":[{},{},{}],\"publicIPPrefix\":{},\"publicIPAddressVersion\":\"IPv6\",\"deleteOption\":\"Detach\"},\"sku\":{\"name\":\"Standard\",\"tier\":\"Global\"}},\"privateIPAddressVersion\":\"IPv4\",\"applicationGatewayBackendAddressPools\":[{\"id\":\"kgjn\"},{\"id\":\"ucgygevqz\"},{\"id\":\"yp\"},{\"id\":\"bpizcdrqjsdpydn\"}],\"applicationSecurityGroups\":[{\"id\":\"de\"},{\"id\":\"jzicwifsjt\"}],\"loadBalancerBackendAddressPools\":[{\"id\":\"bishcbkhajdeyea\"},{\"id\":\"p\"},{\"id\":\"g\"}],\"loadBalancerInboundNatPools\":[{\"id\":\"uxwgipwho\"},{\"id\":\"wkgshwa\"},{\"id\":\"ixzbinjeputtmryw\"}]}}],\"enableIPForwarding\":true,\"deleteOption\":\"Delete\",\"auxiliaryMode\":\"AcceleratedConnections\",\"auxiliarySku\":\"A8\"}")
             .toObject(VirtualMachineScaleSetNetworkConfigurationProperties.class);
-        Assertions.assertEquals(false, model.primary());
-        Assertions.assertEquals(false, model.enableAcceleratedNetworking());
-        Assertions.assertEquals(false, model.disableTcpStateTracking());
-        Assertions.assertEquals(false, model.enableFpga());
+        Assertions.assertFalse(model.primary());
+        Assertions.assertFalse(model.enableAcceleratedNetworking());
+        Assertions.assertFalse(model.disableTcpStateTracking());
+        Assertions.assertFalse(model.enableFpga());
         Assertions.assertEquals("fbuhfmvfaxkffe", model.networkSecurityGroup().id());
         Assertions.assertEquals("lvmezyvshxmzsbbz", model.dnsSettings().dnsServers().get(0));
         Assertions.assertEquals("gigr", model.ipConfigurations().get(0).name());
         Assertions.assertEquals("rvjx", model.ipConfigurations().get(0).properties().subnet().id());
-        Assertions.assertEquals(true, model.ipConfigurations().get(0).properties().primary());
+        Assertions.assertTrue(model.ipConfigurations().get(0).properties().primary());
         Assertions.assertEquals("pydptko",
             model.ipConfigurations().get(0).properties().publicIPAddressConfiguration().name());
         Assertions.assertEquals(368872056,
@@ -79,7 +79,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationPropertiesTests {
             model.ipConfigurations().get(0).properties().loadBalancerBackendAddressPools().get(0).id());
         Assertions.assertEquals("uxwgipwho",
             model.ipConfigurations().get(0).properties().loadBalancerInboundNatPools().get(0).id());
-        Assertions.assertEquals(true, model.enableIPForwarding());
+        Assertions.assertTrue(model.enableIPForwarding());
         Assertions.assertEquals(DeleteOptions.DELETE, model.deleteOption());
         Assertions.assertEquals(NetworkInterfaceAuxiliaryMode.ACCELERATED_CONNECTIONS, model.auxiliaryMode());
         Assertions.assertEquals(NetworkInterfaceAuxiliarySku.A8, model.auxiliarySku());
@@ -129,15 +129,15 @@ public final class VirtualMachineScaleSetNetworkConfigurationPropertiesTests {
                 .withAuxiliaryMode(NetworkInterfaceAuxiliaryMode.ACCELERATED_CONNECTIONS)
                 .withAuxiliarySku(NetworkInterfaceAuxiliarySku.A8);
         model = BinaryData.fromObject(model).toObject(VirtualMachineScaleSetNetworkConfigurationProperties.class);
-        Assertions.assertEquals(false, model.primary());
-        Assertions.assertEquals(false, model.enableAcceleratedNetworking());
-        Assertions.assertEquals(false, model.disableTcpStateTracking());
-        Assertions.assertEquals(false, model.enableFpga());
+        Assertions.assertFalse(model.primary());
+        Assertions.assertFalse(model.enableAcceleratedNetworking());
+        Assertions.assertFalse(model.disableTcpStateTracking());
+        Assertions.assertFalse(model.enableFpga());
         Assertions.assertEquals("fbuhfmvfaxkffe", model.networkSecurityGroup().id());
         Assertions.assertEquals("lvmezyvshxmzsbbz", model.dnsSettings().dnsServers().get(0));
         Assertions.assertEquals("gigr", model.ipConfigurations().get(0).name());
         Assertions.assertEquals("rvjx", model.ipConfigurations().get(0).properties().subnet().id());
-        Assertions.assertEquals(true, model.ipConfigurations().get(0).properties().primary());
+        Assertions.assertTrue(model.ipConfigurations().get(0).properties().primary());
         Assertions.assertEquals("pydptko",
             model.ipConfigurations().get(0).properties().publicIPAddressConfiguration().name());
         Assertions.assertEquals(368872056,
@@ -177,7 +177,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationPropertiesTests {
             model.ipConfigurations().get(0).properties().loadBalancerBackendAddressPools().get(0).id());
         Assertions.assertEquals("uxwgipwho",
             model.ipConfigurations().get(0).properties().loadBalancerInboundNatPools().get(0).id());
-        Assertions.assertEquals(true, model.enableIPForwarding());
+        Assertions.assertTrue(model.enableIPForwarding());
         Assertions.assertEquals(DeleteOptions.DELETE, model.deleteOption());
         Assertions.assertEquals(NetworkInterfaceAuxiliaryMode.ACCELERATED_CONNECTIONS, model.auxiliaryMode());
         Assertions.assertEquals(NetworkInterfaceAuxiliarySku.A8, model.auxiliarySku());

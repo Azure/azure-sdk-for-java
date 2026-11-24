@@ -9,7 +9,7 @@ package com.azure.resourcemanager.trustedsigning.generated;
  */
 public final class CertificateProfilesListByCodeSigningAccountSamples {
     /*
-     * x-ms-original-file: 2024-09-30-preview/CertificateProfiles_ListByCodeSigningAccount.json
+     * x-ms-original-file: 2025-10-13/CertificateProfiles_ListByCodeSigningAccount.json
      */
     /**
      * Sample code: List certificate profiles under a trusted signing account.

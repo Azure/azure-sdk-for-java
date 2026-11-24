@@ -16,6 +16,7 @@ import reactor.util.function.Tuple2;
 /**
  * Resource manager for Service Bus queue.
  */
+@SuppressWarnings("deprecation")
 public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<String, String>, ServiceBusQueueProperties> {
 
 

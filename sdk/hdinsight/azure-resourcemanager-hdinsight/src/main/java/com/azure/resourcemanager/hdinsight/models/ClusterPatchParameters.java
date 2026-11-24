@@ -23,7 +23,8 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
     private Map<String, String> tags;
 
     /*
-     * The identity of the cluster, if configured.
+     * The identity of the cluster, if configured. Setting this property will override the existing identity
+     * configuration of the cluster.
      */
     private ClusterIdentity identity;
 
@@ -54,7 +55,8 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
     }
 
     /**
-     * Get the identity property: The identity of the cluster, if configured.
+     * Get the identity property: The identity of the cluster, if configured. Setting this property will override the
+     * existing identity configuration of the cluster.
      * 
      * @return the identity value.
      */
@@ -63,7 +65,8 @@ public final class ClusterPatchParameters implements JsonSerializable<ClusterPat
     }
 
     /**
-     * Set the identity property: The identity of the cluster, if configured.
+     * Set the identity property: The identity of the cluster, if configured. Setting this property will override the
+     * existing identity configuration of the cluster.
      * 
      * @param identity the identity value to set.
      * @return the ClusterPatchParameters object itself.

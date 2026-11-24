@@ -13,18 +13,18 @@ public final class PureStoragePolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PureStoragePolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"storagePolicyDefinition\":\"oycqucwy\",\"storagePoolId\":\"ahnomdrkywu\",\"provisioningState\":\"Canceled\"},\"id\":\"fuurutlwexx\",\"name\":\"lalniex\",\"type\":\"srzpgepqtybbww\"}")
+            "{\"properties\":{\"storagePolicyDefinition\":\"uem\",\"storagePoolId\":\"sbzkf\",\"provisioningState\":\"Canceled\"},\"id\":\"v\",\"name\":\"nqicvinvkjjxdxrb\",\"type\":\"ukzclewyhmlwpaz\"}")
             .toObject(PureStoragePolicyInner.class);
-        Assertions.assertEquals("oycqucwy", model.properties().storagePolicyDefinition());
-        Assertions.assertEquals("ahnomdrkywu", model.properties().storagePoolId());
+        Assertions.assertEquals("uem", model.properties().storagePolicyDefinition());
+        Assertions.assertEquals("sbzkf", model.properties().storagePoolId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PureStoragePolicyInner model = new PureStoragePolicyInner().withProperties(
-            new PureStoragePolicyProperties().withStoragePolicyDefinition("oycqucwy").withStoragePoolId("ahnomdrkywu"));
+            new PureStoragePolicyProperties().withStoragePolicyDefinition("uem").withStoragePoolId("sbzkf"));
         model = BinaryData.fromObject(model).toObject(PureStoragePolicyInner.class);
-        Assertions.assertEquals("oycqucwy", model.properties().storagePolicyDefinition());
-        Assertions.assertEquals("ahnomdrkywu", model.properties().storagePoolId());
+        Assertions.assertEquals("uem", model.properties().storagePolicyDefinition());
+        Assertions.assertEquals("sbzkf", model.properties().storagePoolId());
     }
 }

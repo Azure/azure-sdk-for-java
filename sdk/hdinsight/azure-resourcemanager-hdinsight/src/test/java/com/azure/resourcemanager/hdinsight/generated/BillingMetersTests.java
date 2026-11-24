@@ -11,21 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BillingMetersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BillingMeters model
-            = BinaryData.fromString("{\"meterParameter\":\"fqntcyp\",\"meter\":\"jv\",\"unit\":\"imwkslircizj\"}")
-                .toObject(BillingMeters.class);
-        Assertions.assertEquals("fqntcyp", model.meterParameter());
-        Assertions.assertEquals("jv", model.meter());
-        Assertions.assertEquals("imwkslircizj", model.unit());
+        BillingMeters model = BinaryData
+            .fromString("{\"meterParameter\":\"ljagrqmqhl\",\"meter\":\"riiiojnalghfkv\",\"unit\":\"sexso\"}")
+            .toObject(BillingMeters.class);
+        Assertions.assertEquals("ljagrqmqhl", model.meterParameter());
+        Assertions.assertEquals("riiiojnalghfkv", model.meter());
+        Assertions.assertEquals("sexso", model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BillingMeters model
-            = new BillingMeters().withMeterParameter("fqntcyp").withMeter("jv").withUnit("imwkslircizj");
+            = new BillingMeters().withMeterParameter("ljagrqmqhl").withMeter("riiiojnalghfkv").withUnit("sexso");
         model = BinaryData.fromObject(model).toObject(BillingMeters.class);
-        Assertions.assertEquals("fqntcyp", model.meterParameter());
-        Assertions.assertEquals("jv", model.meter());
-        Assertions.assertEquals("imwkslircizj", model.unit());
+        Assertions.assertEquals("ljagrqmqhl", model.meterParameter());
+        Assertions.assertEquals("riiiojnalghfkv", model.meter());
+        Assertions.assertEquals("sexso", model.unit());
     }
 }

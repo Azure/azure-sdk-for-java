@@ -19,7 +19,9 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.SessionContext;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
@@ -27,6 +29,8 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.LeaseStateType;
@@ -38,19 +42,25 @@ import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.util.retry.Retry;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -115,6 +125,13 @@ public class DataLakeTestBase extends TestProxyTestBase {
     private static final HttpHeaderName CACHE_CONTROL = HttpHeaderName.fromString("Cache-Control");
     private static final HttpHeaderName ACCEPT_RANGES = HttpHeaderName.fromString("Accept-Ranges");
 
+    // After a file system is deleted, the service refuses a create or undelete of the same name with 409
+    // ContainerBeingDeleted for at least 30 seconds (30 to 60 measured, depending on the account's container soft delete
+    // setting). Live tests wait out the minimum, then retry slowly, so each test sends only a few requests.
+    private static final Duration FILE_SYSTEM_DELETE_MIN_WAIT = Duration.ofSeconds(30);
+    private static final Duration FILE_SYSTEM_DELETE_RETRY_INTERVAL = Duration.ofSeconds(10);
+    private static final Duration FILE_SYSTEM_DELETE_TIMEOUT = Duration.ofMinutes(2);
+
     protected String prefix;
 
     // Clients for API tests
@@ -131,10 +148,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
         prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
+            interceptorManager
+                .addSanitizers(Arrays.asList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                    new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("<SessionToken>(?<secret>.*?)</SessionToken>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"),
+                    new TestProxySanitizer("<SessionKey>(?<secret>.*?)</SessionKey>", "REDACTED",
+                        TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret")));
             // Remove `id` and `name` sanitizers from the list of common sanitizers.
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
         }
@@ -145,7 +166,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
                 "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
-                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
+                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256",
+                "x-ms-blob-if-modified-since", "x-ms-blob-if-unmodified-since"))
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
 
@@ -200,6 +222,49 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient() {
         return getOAuthServiceClientBuilder().buildAsyncClient();
+    }
+
+    protected SessionContext getEnabledDfsSessionContext() {
+        return new SessionContext(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(),
+            StorageCommonTestUtils.getTokenCredential(interceptorManager))
+                .setSessionMode(SessionContext.SessionMode.ENABLED);
+    }
+
+    protected DataLakeServiceClient getOAuthServiceClient(SessionContext sessionContext) {
+        return getOAuthServiceClient(sessionContext, (HttpPipelinePolicy[]) null);
+    }
+
+    protected DataLakeServiceClient getOAuthServiceClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, policies).buildClient();
+    }
+
+    protected DataLakeServiceClientBuilder getOAuthServiceClientBuilder(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        DataLakeServiceClientBuilder builder
+            = new DataLakeServiceClientBuilder().endpoint(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
+                .sessionContext(sessionContext);
+
+        instrument(builder);
+
+        if (policies != null) {
+            for (HttpPipelinePolicy policy : policies) {
+                if (policy != null) {
+                    builder.addPolicy(policy);
+                }
+            }
+        }
+
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
+    }
+
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext) {
+        return getOAuthServiceAsyncClient(sessionContext, (HttpPipelinePolicy[]) null);
+    }
+
+    protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient(SessionContext sessionContext,
+        HttpPipelinePolicy... policies) {
+        return getOAuthServiceClientBuilder(sessionContext, policies).buildAsyncClient();
     }
 
     protected DataLakeServiceClient getServiceClient(TestAccount account) {
@@ -707,9 +772,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
         BlobErrorCode errMessage) {
+        assertExceptionStatusCodeAndMessage(throwable, expectedStatusCode, errMessage.toString());
+    }
+
+    protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
+        String errorCode) {
         DataLakeStorageException exception = assertInstanceOf(DataLakeStorageException.class, throwable);
         assertEquals(expectedStatusCode, exception.getStatusCode());
-        assertEquals(errMessage.toString(), exception.getErrorCode());
+        assertEquals(errorCode, exception.getErrorCode());
     }
 
     protected static <T> void assertAsyncResponseStatusCode(Mono<Response<T>> response, int expectedStatusCode) {
@@ -759,5 +829,145 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
             sleepIfLiveTesting(delayMillis);
         }
+    }
+
+    /**
+     * Runs an operation that needs a just-deleted file system name, such as a create or an undelete, once the service
+     * has finished the delete. Waits {@link #FILE_SYSTEM_DELETE_MIN_WAIT} without sending anything, then retries every
+     * {@link #FILE_SYSTEM_DELETE_RETRY_INTERVAL} while the service answers 409 ContainerBeingDeleted, up to
+     * {@link #FILE_SYSTEM_DELETE_TIMEOUT}. Playback replays the recorded responses without waiting.
+     *
+     * @param operation The operation, run when subscribed to.
+     * @param <T> The result of the operation.
+     * @return A {@link Mono} of the first attempt that the service does not refuse as ContainerBeingDeleted.
+     */
+    protected static <T> Mono<T> runAfterFileSystemDeleteCompletes(Mono<T> operation) {
+        long maxRetries = FILE_SYSTEM_DELETE_TIMEOUT.minus(FILE_SYSTEM_DELETE_MIN_WAIT).toMillis()
+            / FILE_SYSTEM_DELETE_RETRY_INTERVAL.toMillis();
+        Predicate<Throwable> beingDeleted
+            = t -> DataLakeImplUtils.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_BEING_DELETED.toString());
+
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            return operation.retryWhen(
+                Retry.max(maxRetries).filter(beingDeleted).onRetryExhaustedThrow((spec, signal) -> signal.failure()));
+        }
+
+        return Mono.delay(FILE_SYSTEM_DELETE_MIN_WAIT)
+            .then(operation.retryWhen(Retry.fixedDelay(maxRetries, FILE_SYSTEM_DELETE_RETRY_INTERVAL)
+                .filter(beingDeleted)
+                .onRetryExhaustedThrow((spec, signal) -> signal.failure())));
+    }
+
+    /**
+     * Synchronous form of {@link #runAfterFileSystemDeleteCompletes(Mono)}. The operation runs on
+     * {@link Schedulers#boundedElastic()} because synchronous clients block, which Reactor's timer threads forbid.
+     *
+     * @param operation The operation; may throw {@link DataLakeStorageException}.
+     * @param <T> The result of the operation.
+     * @return The result of the first attempt that the service does not refuse as ContainerBeingDeleted.
+     */
+    protected static <T> T runAfterFileSystemDeleteCompletes(Supplier<T> operation) {
+        return runAfterFileSystemDeleteCompletes(Mono.fromSupplier(operation).subscribeOn(Schedulers.boundedElastic()))
+            .block();
+    }
+
+    protected Map<String, String> getTags() {
+        Map<String, String> tags = new HashMap<>();
+        tags.put("foo", "bar");
+        return tags;
+    }
+
+    protected void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
+        int retry = 0;
+
+        // Try up to 5 times (4 retries + 1 final attempt)
+        while (retry < 4) {
+            try {
+                runnable.run();
+                return; // success
+            } catch (Exception ex) {
+                retry++;
+                sleepIfRunningAgainstService(5000);
+            }
+        }
+        // Final attempt (5th try)
+        runnable.run();
+    }
+
+    protected static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received) {
+        validatePropsSet(sent, received, true);
+    }
+
+    protected static void validatePropsSet(DataLakeServiceProperties sent, DataLakeServiceProperties received,
+        boolean isStaticWebsite) {
+        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
+        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
+        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
+        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
+            received.getLogging().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
+            received.getLogging().getRetentionPolicy().getDays());
+        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
+
+        assertEquals(sent.getCors().size(), received.getCors().size());
+        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
+        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
+        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
+        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
+        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
+
+        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
+
+        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
+        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
+            received.getHourMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
+            received.getHourMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
+
+        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
+        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
+            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
+        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
+            received.getMinuteMetrics().getRetentionPolicy().getDays());
+        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
+
+        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
+        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
+
+        if (isStaticWebsite) {
+            assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
+            assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
+                received.getStaticWebsite().getErrorDocument404Path());
+        }
+    }
+
+    public static HttpPipelinePolicy getAddHeadersAndQueryPolicy(Map<String, String> requestHeaders,
+        Map<String, String> requestQueryParams) {
+        // Create policy to add headers and query params to request
+        return (context, next) -> {
+            // Add request headers
+            for (Map.Entry<String, String> entry : requestHeaders.entrySet()) {
+                context.getHttpRequest().setHeader(HttpHeaderName.fromString(entry.getKey()), entry.getValue());
+            }
+
+            // Add query parameters
+            String extraQuery = requestQueryParams.entrySet()
+                .stream()
+                .map(e -> Utility.urlEncode(e.getKey()) + "=" + Utility.urlEncode(e.getValue()))
+                .collect(Collectors.joining("&"));
+
+            String currentUrl = context.getHttpRequest().getUrl().toString();
+            context.getHttpRequest().setUrl(currentUrl + "&" + extraQuery);
+
+            return next.process();
+        };
     }
 }

@@ -36,7 +36,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                 exceptionCountAfterHandling++;
                 int successCountAfterHandling = 0;
 
-                LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
+                LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder(locationSpecificHealthContext)
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
                     .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
@@ -62,10 +62,13 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
             case Unavailable:
                 // the tests done so far view this as an unreachable piece of code - but not failing the operation
                 // with IllegalStateException and simply logging that a presumed unreachable code path seems to make sense for now
-                logger.warn("Region {} should not be handling failures in {} health status for partition key range : {} and collection RID : {}",
-                    regionWithException,
-                    locationHealthStatus.getStringifiedLocationHealthStatus(),
-                    partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive() + "-" + partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                logger.warn("Region " +
+                    regionWithException +
+                    " should not be handling failures in " +
+                    locationHealthStatus.getStringifiedLocationHealthStatus() +
+                    " health status for partitionKeyRange : " +
+                    partitionKeyRangeWrapper.getPartitionKeyRange() +
+                    " and collectionResourceId : " +
                     partitionKeyRangeWrapper.getCollectionResourceId());
                 return locationSpecificHealthContext;
             default:
@@ -94,7 +97,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
 
                 exceptionCountAfterHandling = 0;
 
-                LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
+                LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder(locationSpecificHealthContext)
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
                     .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
@@ -121,7 +124,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
 
                 successCountAfterHandling++;
 
-                builder = new LocationSpecificHealthContext.Builder()
+                builder = new LocationSpecificHealthContext.Builder(locationSpecificHealthContext)
                     .withUnavailableSince(locationSpecificHealthContext.getUnavailableSince())
                     .withLocationHealthStatus(locationSpecificHealthContext.getLocationHealthStatus())
                     .withExceptionThresholdBreached(locationSpecificHealthContext.isExceptionThresholdBreached());
@@ -148,10 +151,13 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
             case Unavailable:
                 // the tests done so far view this as an unreachable piece of code - but not failing the operation
                 // and simply logging that a presumed unreachable code path seems to make sense for now
-                logger.warn("Region {} should not be handling successes in {} health status for partition key range : {} and collection RID : {}",
-                    regionWithSuccess,
-                    locationHealthStatus.getStringifiedLocationHealthStatus(),
-                    partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive() + "-" + partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
+                logger.warn("Region " +
+                    regionWithSuccess +
+                    " should not be handling successes in " +
+                    locationHealthStatus.getStringifiedLocationHealthStatus() +
+                    " health status for partitionKeyRange : " +
+                    partitionKeyRangeWrapper.getPartitionKeyRange() +
+                    " and collectionResourceId : " +
                     partitionKeyRangeWrapper.getCollectionResourceId());
                 return locationSpecificHealthContext;
             default:

@@ -1,0 +1,366 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// Generated code
+
+package com.azure.resourcemanager.resources.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Map;
+
+/**
+ * The SubscriptionFeatureRegistrationProperties model.
+ */
+@Fluent
+public final class SubscriptionFeatureRegistrationProperties
+    implements JsonSerializable<SubscriptionFeatureRegistrationProperties> {
+    /*
+     * The tenantId.
+     */
+    private String tenantId;
+
+    /*
+     * The subscriptionId.
+     */
+    private String subscriptionId;
+
+    /*
+     * The featureName.
+     */
+    private String featureName;
+
+    /*
+     * The featureDisplayName.
+     */
+    private String displayName;
+
+    /*
+     * The providerNamespace.
+     */
+    private String providerNamespace;
+
+    /*
+     * The state.
+     */
+    private SubscriptionFeatureRegistrationState state;
+
+    /*
+     * Authorization Profile
+     */
+    private AuthorizationProfile authorizationProfile;
+
+    /*
+     * Key-value pairs for meta data.
+     */
+    private Map<String, String> metadata;
+
+    /*
+     * The feature release date.
+     */
+    private OffsetDateTime releaseDate;
+
+    /*
+     * The feature registration date.
+     */
+    private OffsetDateTime registrationDate;
+
+    /*
+     * The feature documentation link.
+     */
+    private String documentationLink;
+
+    /*
+     * The feature approval type.
+     */
+    private SubscriptionFeatureRegistrationApprovalType approvalType;
+
+    /*
+     * Indicates whether feature should be displayed in Portal.
+     */
+    private Boolean shouldFeatureDisplayInPortal;
+
+    /*
+     * The feature description.
+     */
+    private String description;
+
+    /**
+     * Creates an instance of SubscriptionFeatureRegistrationProperties class.
+     */
+    public SubscriptionFeatureRegistrationProperties() {
+    }
+
+    /**
+     * Get the tenantId property: The tenantId.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the subscriptionId property: The subscriptionId.
+     * 
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.subscriptionId;
+    }
+
+    /**
+     * Get the featureName property: The featureName.
+     * 
+     * @return the featureName value.
+     */
+    public String featureName() {
+        return this.featureName;
+    }
+
+    /**
+     * Get the displayName property: The featureDisplayName.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Get the providerNamespace property: The providerNamespace.
+     * 
+     * @return the providerNamespace value.
+     */
+    public String providerNamespace() {
+        return this.providerNamespace;
+    }
+
+    /**
+     * Get the state property: The state.
+     * 
+     * @return the state value.
+     */
+    public SubscriptionFeatureRegistrationState state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: The state.
+     * 
+     * @param state the state value to set.
+     * @return the SubscriptionFeatureRegistrationProperties object itself.
+     */
+    public SubscriptionFeatureRegistrationProperties withState(SubscriptionFeatureRegistrationState state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
+     * Get the authorizationProfile property: Authorization Profile.
+     * 
+     * @return the authorizationProfile value.
+     */
+    public AuthorizationProfile authorizationProfile() {
+        return this.authorizationProfile;
+    }
+
+    /**
+     * Set the authorizationProfile property: Authorization Profile.
+     * 
+     * @param authorizationProfile the authorizationProfile value to set.
+     * @return the SubscriptionFeatureRegistrationProperties object itself.
+     */
+    public SubscriptionFeatureRegistrationProperties
+        withAuthorizationProfile(AuthorizationProfile authorizationProfile) {
+        this.authorizationProfile = authorizationProfile;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Key-value pairs for meta data.
+     * 
+     * @return the metadata value.
+     */
+    public Map<String, String> metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Key-value pairs for meta data.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the SubscriptionFeatureRegistrationProperties object itself.
+     */
+    public SubscriptionFeatureRegistrationProperties withMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the releaseDate property: The feature release date.
+     * 
+     * @return the releaseDate value.
+     */
+    public OffsetDateTime releaseDate() {
+        return this.releaseDate;
+    }
+
+    /**
+     * Get the registrationDate property: The feature registration date.
+     * 
+     * @return the registrationDate value.
+     */
+    public OffsetDateTime registrationDate() {
+        return this.registrationDate;
+    }
+
+    /**
+     * Get the documentationLink property: The feature documentation link.
+     * 
+     * @return the documentationLink value.
+     */
+    public String documentationLink() {
+        return this.documentationLink;
+    }
+
+    /**
+     * Get the approvalType property: The feature approval type.
+     * 
+     * @return the approvalType value.
+     */
+    public SubscriptionFeatureRegistrationApprovalType approvalType() {
+        return this.approvalType;
+    }
+
+    /**
+     * Get the shouldFeatureDisplayInPortal property: Indicates whether feature should be displayed in Portal.
+     * 
+     * @return the shouldFeatureDisplayInPortal value.
+     */
+    public Boolean shouldFeatureDisplayInPortal() {
+        return this.shouldFeatureDisplayInPortal;
+    }
+
+    /**
+     * Set the shouldFeatureDisplayInPortal property: Indicates whether feature should be displayed in Portal.
+     * 
+     * @param shouldFeatureDisplayInPortal the shouldFeatureDisplayInPortal value to set.
+     * @return the SubscriptionFeatureRegistrationProperties object itself.
+     */
+    public SubscriptionFeatureRegistrationProperties
+        withShouldFeatureDisplayInPortal(Boolean shouldFeatureDisplayInPortal) {
+        this.shouldFeatureDisplayInPortal = shouldFeatureDisplayInPortal;
+        return this;
+    }
+
+    /**
+     * Get the description property: The feature description.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: The feature description.
+     * 
+     * @param description the description value to set.
+     * @return the SubscriptionFeatureRegistrationProperties object itself.
+     */
+    public SubscriptionFeatureRegistrationProperties withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (authorizationProfile() != null) {
+            authorizationProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("authorizationProfile", this.authorizationProfile);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("shouldFeatureDisplayInPortal", this.shouldFeatureDisplayInPortal);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionFeatureRegistrationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionFeatureRegistrationProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionFeatureRegistrationProperties.
+     */
+    public static SubscriptionFeatureRegistrationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionFeatureRegistrationProperties deserializedSubscriptionFeatureRegistrationProperties
+                = new SubscriptionFeatureRegistrationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.tenantId = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.subscriptionId = reader.getString();
+                } else if ("featureName".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.featureName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.displayName = reader.getString();
+                } else if ("providerNamespace".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.providerNamespace = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.state
+                        = SubscriptionFeatureRegistrationState.fromString(reader.getString());
+                } else if ("authorizationProfile".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.authorizationProfile
+                        = AuthorizationProfile.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSubscriptionFeatureRegistrationProperties.metadata = metadata;
+                } else if ("releaseDate".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.releaseDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("registrationDate".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.registrationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("documentationLink".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.documentationLink = reader.getString();
+                } else if ("approvalType".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.approvalType
+                        = SubscriptionFeatureRegistrationApprovalType.fromString(reader.getString());
+                } else if ("shouldFeatureDisplayInPortal".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.shouldFeatureDisplayInPortal
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionFeatureRegistrationProperties;
+        });
+    }
+}

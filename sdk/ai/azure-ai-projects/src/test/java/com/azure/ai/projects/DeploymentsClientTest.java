@@ -14,39 +14,10 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public class DeploymentsClientTest extends ClientTestBase {
 
-    private AIProjectClientBuilder clientBuilder;
-    private DeploymentsClient deploymentsClient;
-
-    private void setup(HttpClient httpClient) {
-        clientBuilder = getClientBuilder(httpClient);
-        deploymentsClient = clientBuilder.buildDeploymentsClient();
-    }
-
-    /**
-     * Helper method to verify a Deployment has valid properties.
-     * @param deployment The deployment to validate
-     * @param expectedName The expected name of the deployment, or null if no specific name is expected
-     * @param expectedType The expected deployment type, or null if no specific type is expected
-     */
-    private void assertValidDeployment(Deployment deployment, String expectedName, DeploymentType expectedType) {
-        Assertions.assertNotNull(deployment);
-        Assertions.assertNotNull(deployment.getName());
-        Assertions.assertNotNull(deployment.getType());
-
-        if (expectedName != null) {
-            Assertions.assertEquals(expectedName, deployment.getName());
-        }
-
-        if (expectedType != null) {
-            Assertions.assertEquals(expectedType, deployment.getType());
-        }
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListDeployments(HttpClient httpClient) {
-        setup(httpClient);
-
+    public void testListDeployments(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsClient deploymentsClient = getDeploymentsClient(httpClient, serviceVersion);
         // Verify that listing deployments returns results
         Iterable<Deployment> deployments = deploymentsClient.listDeployments();
         Assertions.assertNotNull(deployments);
@@ -67,8 +38,8 @@ public class DeploymentsClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListDeploymentsWithFilters(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListDeploymentsWithFilters(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsClient deploymentsClient = getDeploymentsClient(httpClient, serviceVersion);
 
         // Test listing deployments with model publisher filter
         String testPublisher = "openai";
@@ -94,8 +65,8 @@ public class DeploymentsClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetDeployment(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetDeployment(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsClient deploymentsClient = getDeploymentsClient(httpClient, serviceVersion);
 
         String deploymentName = Configuration.getGlobalConfiguration().get("TEST_DEPLOYMENT_NAME", "gpt-4o-mini");
 
@@ -117,8 +88,8 @@ public class DeploymentsClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetDeploymentAndVerifyType(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetDeploymentAndVerifyType(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        DeploymentsClient deploymentsClient = getDeploymentsClient(httpClient, serviceVersion);
 
         String deploymentName = Configuration.getGlobalConfiguration().get("TEST_DEPLOYMENT_NAME", "gpt-4o-mini");
 

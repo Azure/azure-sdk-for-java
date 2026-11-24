@@ -26,6 +26,12 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
     private final OffsetDateTime deleteTime;
 
     /*
+     * The Sequence id of the message
+     */
+    @Generated
+    private Long sequenceId;
+
+    /*
      * The display name of the sender
      */
     @Generated
@@ -69,6 +75,17 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
     }
 
     /**
+     * Get the sequenceId property: The Sequence id of the message.
+     *
+     * @return the sequenceId value.
+     */
+    @Generated
+    @Override
+    public Long getSequenceId() {
+        return this.sequenceId;
+    }
+
+    /**
      * Get the senderDisplayName property: The display name of the sender.
      *
      * @return the senderDisplayName value.
@@ -107,6 +124,7 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
         jsonWriter.writeLongField("version", getVersion());
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
+        jsonWriter.writeNumberField("sequenceId", getSequenceId());
         jsonWriter.writeStringField("deleteTime",
             this.deleteTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deleteTime));
         return jsonWriter.writeEndObject();
@@ -133,6 +151,7 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
             long version = 0L;
             String transactionId = null;
             String senderDisplayName = null;
+            Long sequenceId = null;
             OffsetDateTime deleteTime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -156,6 +175,8 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
                     transactionId = reader.getString();
                 } else if ("senderDisplayName".equals(fieldName)) {
                     senderDisplayName = reader.getString();
+                } else if ("sequenceId".equals(fieldName)) {
+                    sequenceId = reader.getNullable(JsonReader::getLong);
                 } else if ("deleteTime".equals(fieldName)) {
                     deleteTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -168,6 +189,7 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
                     senderCommunicationIdentifier, composeTime, type, version, deleteTime);
             deserializedAcsChatMessageDeletedEventData.transactionId = transactionId;
             deserializedAcsChatMessageDeletedEventData.senderDisplayName = senderDisplayName;
+            deserializedAcsChatMessageDeletedEventData.sequenceId = sequenceId;
             return deserializedAcsChatMessageDeletedEventData;
         });
     }

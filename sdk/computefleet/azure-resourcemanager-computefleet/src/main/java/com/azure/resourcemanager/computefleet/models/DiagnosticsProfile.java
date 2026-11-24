@@ -60,17 +60,6 @@ public final class DiagnosticsProfile implements JsonSerializable<DiagnosticsPro
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (bootDiagnostics() != null) {
-            bootDiagnostics().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

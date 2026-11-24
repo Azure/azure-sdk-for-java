@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.neonpostgres.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.BranchInner;
@@ -187,4 +188,27 @@ public interface Branch {
      * @return the refreshed resource.
      */
     Branch refresh(Context context);
+
+    /**
+     * Action to validate preflight checks.
+     * 
+     * @param parameters Parameters for preflight checks.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the pre-deletion validation operation along with {@link Response}.
+     */
+    Response<PreflightCheckResult> preflightWithResponse(PreflightCheckParameters parameters, Context context);
+
+    /**
+     * Action to validate preflight checks.
+     * 
+     * @param parameters Parameters for preflight checks.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the pre-deletion validation operation.
+     */
+    PreflightCheckResult preflight(PreflightCheckParameters parameters);
 }

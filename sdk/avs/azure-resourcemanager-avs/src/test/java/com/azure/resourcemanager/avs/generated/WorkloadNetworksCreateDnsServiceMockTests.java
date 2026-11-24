@@ -23,7 +23,7 @@ public final class WorkloadNetworksCreateDnsServiceMockTests {
     @Test
     public void testCreateDnsService() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"qgvriibakcla\",\"dnsServiceIp\":\"fr\",\"defaultDnsZone\":\"ousxauzlwvsgmw\",\"fqdnZones\":[\"fz\"],\"logLevel\":\"FATAL\",\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":5429285928052285759},\"id\":\"thnwpzte\",\"name\":\"ovmribiattg\",\"type\":\"lu\"}";
+            = "{\"properties\":{\"displayName\":\"xkxbhxvu\",\"dnsServiceIp\":\"ulgm\",\"defaultDnsZone\":\"jevdyznf\",\"fqdnZones\":[\"vkskmqozzk\",\"vyhjrl\",\"izjixlq\"],\"logLevel\":\"WARNING\",\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":2236190932702422821},\"id\":\"ron\",\"name\":\"qlmgnlqxsjxt\",\"type\":\"lexhv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,21 +33,21 @@ public final class WorkloadNetworksCreateDnsServiceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkDnsService response = manager.workloadNetworks()
-            .defineDnsService("kqmhhaowjr")
-            .withExistingPrivateCloud("idibgqjxgpn", "hgovfgp")
-            .withDisplayName("uporqzdfu")
-            .withDnsServiceIp("zvkfv")
-            .withDefaultDnsZone("nq")
-            .withFqdnZones(Arrays.asList("psw", "kmvkhl", "gdhbe", "zqkzszuwi"))
-            .withLogLevel(DnsServiceLogLevelEnum.DEBUG)
-            .withRevision(1211280845205616458L)
+            .defineDnsService("qbxyxoyfpuqqi")
+            .withExistingPrivateCloud("xomeikjclwzacn", "wpfsuqtaaz")
+            .withDisplayName("xlhdj")
+            .withDnsServiceIp("dcadwvpsozjiihjr")
+            .withDefaultDnsZone("bmrzoepnx")
+            .withFqdnZones(Arrays.asList("wnjkgvfn"))
+            .withLogLevel(DnsServiceLogLevelEnum.FATAL)
+            .withRevision(5940630190503622951L)
             .create();
 
-        Assertions.assertEquals("qgvriibakcla", response.displayName());
-        Assertions.assertEquals("fr", response.dnsServiceIp());
-        Assertions.assertEquals("ousxauzlwvsgmw", response.defaultDnsZone());
-        Assertions.assertEquals("fz", response.fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.FATAL, response.logLevel());
-        Assertions.assertEquals(5429285928052285759L, response.revision());
+        Assertions.assertEquals("xkxbhxvu", response.displayName());
+        Assertions.assertEquals("ulgm", response.dnsServiceIp());
+        Assertions.assertEquals("jevdyznf", response.defaultDnsZone());
+        Assertions.assertEquals("vkskmqozzk", response.fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.WARNING, response.logLevel());
+        Assertions.assertEquals(2236190932702422821L, response.revision());
     }
 }

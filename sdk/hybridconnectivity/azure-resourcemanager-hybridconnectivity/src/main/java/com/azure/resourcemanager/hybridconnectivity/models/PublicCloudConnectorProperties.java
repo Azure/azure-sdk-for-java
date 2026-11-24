@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +20,11 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
      * Cloud profile for AWS.
      */
     private AwsCloudProfile awsCloudProfile;
+
+    /*
+     * Cloud profile for GCP.
+     */
+    private GcpCloudProfile gcpCloudProfile;
 
     /*
      * Host cloud the public cloud connector.
@@ -64,6 +68,26 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
     }
 
     /**
+     * Get the gcpCloudProfile property: Cloud profile for GCP.
+     * 
+     * @return the gcpCloudProfile value.
+     */
+    public GcpCloudProfile gcpCloudProfile() {
+        return this.gcpCloudProfile;
+    }
+
+    /**
+     * Set the gcpCloudProfile property: Cloud profile for GCP.
+     * 
+     * @param gcpCloudProfile the gcpCloudProfile value to set.
+     * @return the PublicCloudConnectorProperties object itself.
+     */
+    public PublicCloudConnectorProperties withGcpCloudProfile(GcpCloudProfile gcpCloudProfile) {
+        this.gcpCloudProfile = gcpCloudProfile;
+        return this;
+    }
+
+    /**
      * Get the hostType property: Host cloud the public cloud connector.
      * 
      * @return the hostType value.
@@ -102,35 +126,14 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (awsCloudProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property awsCloudProfile in model PublicCloudConnectorProperties"));
-        } else {
-            awsCloudProfile().validate();
-        }
-        if (hostType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property hostType in model PublicCloudConnectorProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(PublicCloudConnectorProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("awsCloudProfile", this.awsCloudProfile);
         jsonWriter.writeStringField("hostType", this.hostType == null ? null : this.hostType.toString());
+        jsonWriter.writeJsonField("awsCloudProfile", this.awsCloudProfile);
+        jsonWriter.writeJsonField("gcpCloudProfile", this.gcpCloudProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -151,10 +154,12 @@ public final class PublicCloudConnectorProperties implements JsonSerializable<Pu
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("awsCloudProfile".equals(fieldName)) {
-                    deserializedPublicCloudConnectorProperties.awsCloudProfile = AwsCloudProfile.fromJson(reader);
-                } else if ("hostType".equals(fieldName)) {
+                if ("hostType".equals(fieldName)) {
                     deserializedPublicCloudConnectorProperties.hostType = HostType.fromString(reader.getString());
+                } else if ("awsCloudProfile".equals(fieldName)) {
+                    deserializedPublicCloudConnectorProperties.awsCloudProfile = AwsCloudProfile.fromJson(reader);
+                } else if ("gcpCloudProfile".equals(fieldName)) {
+                    deserializedPublicCloudConnectorProperties.gcpCloudProfile = GcpCloudProfile.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPublicCloudConnectorProperties.provisioningState
                         = ResourceProvisioningState.fromString(reader.getString());

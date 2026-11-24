@@ -111,7 +111,7 @@ public interface PlaywrightWorkspacesClient {
         PlaywrightWorkspaceInner resource, Context context);
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -127,7 +127,7 @@ public interface PlaywrightWorkspacesClient {
         PlaywrightWorkspaceUpdate properties, Context context);
 
     /**
-     * Update a PlaywrightWorkspace.
+     * Updates a Playwright workspace resource synchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -142,7 +142,7 @@ public interface PlaywrightWorkspacesClient {
         PlaywrightWorkspaceUpdate properties);
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -155,7 +155,7 @@ public interface PlaywrightWorkspacesClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String playwrightWorkspaceName);
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -170,7 +170,7 @@ public interface PlaywrightWorkspacesClient {
         Context context);
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -182,7 +182,7 @@ public interface PlaywrightWorkspacesClient {
     void delete(String resourceGroupName, String playwrightWorkspaceName);
 
     /**
-     * Delete a PlaywrightWorkspace.
+     * Deletes a Playwright workspace resource asynchronously.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -242,7 +242,7 @@ public interface PlaywrightWorkspacesClient {
     PagedIterable<PlaywrightWorkspaceInner> list(Context context);
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @param context The context to associate with this operation.
@@ -256,7 +256,7 @@ public interface PlaywrightWorkspacesClient {
         Context context);
 
     /**
-     * Implements global CheckNameAvailability operations.
+     * Checks if a Playwright workspace name is available globally.
      * 
      * @param body The CheckAvailability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -13,29 +13,37 @@ public final class ExascaleDbStorageVaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExascaleDbStorageVaultProperties model = BinaryData.fromString(
-            "{\"additionalFlashCacheInPercent\":1142386997,\"description\":\"zhhzjhfjmhvvmu\",\"displayName\":\"gpmuneqsxvmhfbuz\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1911590455},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":1432279174,\"totalSizeInGbs\":1240497337},\"timeZone\":\"hudypohyuemsl\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Updating\",\"lifecycleDetails\":\"pfoobr\",\"vmClusterCount\":1019229263,\"ocid\":\"msjnygqdnfw\",\"ociUrl\":\"dzgtil\"}")
+            "{\"additionalFlashCacheInPercent\":923226003,\"description\":\"ugeyzihgrkyuiza\",\"displayName\":\"snmfpphojeevy\",\"highCapacityDatabaseStorageInput\":{\"totalSizeInGbs\":1109468062},\"highCapacityDatabaseStorage\":{\"availableSizeInGbs\":837668712,\"totalSizeInGbs\":1792442027},\"timeZone\":\"zbgomfgbeg\",\"provisioningState\":\"Failed\",\"lifecycleState\":\"Terminating\",\"lifecycleDetails\":\"hibetnluankrr\",\"vmClusterCount\":684950471,\"ocid\":\"ebtijvacvbmqzbqq\",\"ociUrl\":\"aj\",\"exadataInfrastructureId\":\"wxacevehj\",\"attachedShapeAttributes\":[\"BLOCK_STORAGE\",\"SMART_STORAGE\"],\"isAutoscaleEnabled\":false,\"autoscaleLimitInGbs\":168622521}")
             .toObject(ExascaleDbStorageVaultProperties.class);
-        Assertions.assertEquals(1142386997, model.additionalFlashCacheInPercent());
-        Assertions.assertEquals("zhhzjhfjmhvvmu", model.description());
-        Assertions.assertEquals("gpmuneqsxvmhfbuz", model.displayName());
-        Assertions.assertEquals(1911590455, model.highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("hudypohyuemsl", model.timeZone());
+        Assertions.assertEquals(923226003, model.additionalFlashCacheInPercent());
+        Assertions.assertEquals("ugeyzihgrkyuiza", model.description());
+        Assertions.assertEquals("snmfpphojeevy", model.displayName());
+        Assertions.assertEquals(1109468062, model.highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("zbgomfgbeg", model.timeZone());
+        Assertions.assertEquals("wxacevehj", model.exadataInfrastructureId());
+        Assertions.assertFalse(model.isAutoscaleEnabled());
+        Assertions.assertEquals(168622521, model.autoscaleLimitInGbs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExascaleDbStorageVaultProperties model
-            = new ExascaleDbStorageVaultProperties().withAdditionalFlashCacheInPercent(1142386997)
-                .withDescription("zhhzjhfjmhvvmu")
-                .withDisplayName("gpmuneqsxvmhfbuz")
-                .withHighCapacityDatabaseStorageInput(
-                    new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1911590455))
-                .withTimeZone("hudypohyuemsl");
+        ExascaleDbStorageVaultProperties model = new ExascaleDbStorageVaultProperties()
+            .withAdditionalFlashCacheInPercent(923226003)
+            .withDescription("ugeyzihgrkyuiza")
+            .withDisplayName("snmfpphojeevy")
+            .withHighCapacityDatabaseStorageInput(new ExascaleDbStorageInputDetails().withTotalSizeInGbs(1109468062))
+            .withTimeZone("zbgomfgbeg")
+            .withExadataInfrastructureId("wxacevehj")
+            .withIsAutoscaleEnabled(false)
+            .withAutoscaleLimitInGbs(168622521);
         model = BinaryData.fromObject(model).toObject(ExascaleDbStorageVaultProperties.class);
-        Assertions.assertEquals(1142386997, model.additionalFlashCacheInPercent());
-        Assertions.assertEquals("zhhzjhfjmhvvmu", model.description());
-        Assertions.assertEquals("gpmuneqsxvmhfbuz", model.displayName());
-        Assertions.assertEquals(1911590455, model.highCapacityDatabaseStorageInput().totalSizeInGbs());
-        Assertions.assertEquals("hudypohyuemsl", model.timeZone());
+        Assertions.assertEquals(923226003, model.additionalFlashCacheInPercent());
+        Assertions.assertEquals("ugeyzihgrkyuiza", model.description());
+        Assertions.assertEquals("snmfpphojeevy", model.displayName());
+        Assertions.assertEquals(1109468062, model.highCapacityDatabaseStorageInput().totalSizeInGbs());
+        Assertions.assertEquals("zbgomfgbeg", model.timeZone());
+        Assertions.assertEquals("wxacevehj", model.exadataInfrastructureId());
+        Assertions.assertFalse(model.isAutoscaleEnabled());
+        Assertions.assertEquals(168622521, model.autoscaleLimitInGbs());
     }
 }

@@ -693,7 +693,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/deletedcertificates/{certificate-name}")
         @ExpectedResponses({ 204 })
@@ -703,7 +703,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> purgeDeletedCertificateSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/deletedcertificates/{certificate-name}/recover")
         @ExpectedResponses({ 200 })
@@ -1071,6 +1071,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -1101,6 +1107,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -1176,6 +1188,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -1206,6 +1224,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -2245,6 +2269,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2275,6 +2305,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2371,6 +2407,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2401,6 +2443,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2499,6 +2547,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2529,6 +2583,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2576,6 +2636,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2606,6 +2672,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -2681,6 +2753,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2711,6 +2789,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -2758,6 +2842,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -2788,6 +2878,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -3071,6 +3167,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3101,6 +3203,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3158,6 +3266,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3188,6 +3302,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3245,6 +3365,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3275,6 +3401,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3311,6 +3443,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3341,6 +3479,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3401,6 +3545,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3431,6 +3581,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3467,6 +3623,12 @@ public final class CertificateClientImpl {
      *             upns (Optional): [
      *                 String (Optional)
      *             ]
+     *             uris (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             ipAddresses (Optional): [
+     *                 String (Optional)
+     *             ]
      *         }
      *         key_usage (Optional): [
      *             String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3497,6 +3659,12 @@ public final class CertificateClientImpl {
      *         updated: Long (Optional)
      *         recoverableDays: Integer (Optional)
      *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     platformManaged (Optional): {
+     *         certificateUsage: String (Required)
+     *         metadata (Optional): {
+     *             String: BinaryData (Required)
+     *         }
      *     }
      * }
      * }
@@ -3557,6 +3725,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3587,6 +3761,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -3633,6 +3813,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3663,6 +3849,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -3734,6 +3926,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3764,6 +3962,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     attributes (Optional): (recursive schema, see attributes above)
@@ -3810,6 +4014,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3840,6 +4050,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -3912,6 +4128,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -3942,6 +4164,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4017,6 +4245,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -4047,6 +4281,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4465,6 +4705,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -4495,6 +4741,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4593,6 +4845,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -4623,6 +4881,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4767,6 +5031,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -4797,6 +5067,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -4879,6 +5155,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -4909,6 +5191,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5215,6 +5503,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -5245,6 +5539,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5320,6 +5620,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -5350,6 +5656,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5401,9 +5713,8 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedCertificateWithResponseAsync(String certificateName,
         RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.purgeDeletedCertificate(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), certificateName, requestOptions, context));
     }
 
     /**
@@ -5423,9 +5734,8 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.purgeDeletedCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, requestOptions, Context.NONE);
+            certificateName, requestOptions, Context.NONE);
     }
 
     /**
@@ -5470,6 +5780,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -5500,6 +5816,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5572,6 +5894,12 @@ public final class CertificateClientImpl {
      *                 upns (Optional): [
      *                     String (Optional)
      *                 ]
+     *                 uris (Optional): [
+     *                     String (Optional)
+     *                 ]
+     *                 ipAddresses (Optional): [
+     *                     String (Optional)
+     *                 ]
      *             }
      *             key_usage (Optional): [
      *                 String(digitalSignature/nonRepudiation/keyEncipherment/dataEncipherment/keyAgreement/keyCertSign/cRLSign/encipherOnly/decipherOnly) (Optional)
@@ -5602,6 +5930,12 @@ public final class CertificateClientImpl {
      *             updated: Long (Optional)
      *             recoverableDays: Integer (Optional)
      *             recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *         }
+     *         platformManaged (Optional): {
+     *             certificateUsage: String (Required)
+     *             metadata (Optional): {
+     *                 String: BinaryData (Required)
+     *             }
      *         }
      *     }
      *     cer: byte[] (Optional)
@@ -5977,20 +6311,26 @@ public final class CertificateClientImpl {
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
-    private List<BinaryData> getValues(BinaryData binaryData, String path) {
+    private List<BinaryData> getValues(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            List<?> values = (List<?>) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            List<?> values = (List<?>) value;
             return values.stream().map(BinaryData::fromObject).collect(Collectors.toList());
         } catch (RuntimeException e) {
             return null;
         }
     }
 
-    private String getNextLink(BinaryData binaryData, String path) {
+    private String getNextLink(BinaryData binaryData, String... path) {
         try {
-            Map<?, ?> obj = binaryData.toObject(Map.class);
-            return (String) obj.get(path);
+            Object value = binaryData.toObject(Map.class);
+            for (String segment : path) {
+                value = ((Map<?, ?>) value).get(segment);
+            }
+            return (String) value;
         } catch (RuntimeException e) {
             return null;
         }

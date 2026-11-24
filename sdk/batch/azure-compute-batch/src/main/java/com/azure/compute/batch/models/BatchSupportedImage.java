@@ -32,13 +32,13 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
      * The reference to the Azure Virtual Machine's Marketplace Image.
      */
     @Generated
-    private final ImageReference imageReference;
+    private final BatchVmImageReference imageReference;
 
     /*
      * The type of operating system (e.g. Windows or Linux) of the Image.
      */
     @Generated
-    private final OSType osType;
+    private final BatchOSType osType;
 
     /*
      * The capabilities or features which the Image supports. Not every capability of the Image is listed. Capabilities
@@ -62,23 +62,6 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
     private final ImageVerificationType verificationType;
 
     /**
-     * Creates an instance of BatchSupportedImage class.
-     *
-     * @param nodeAgentSkuId the nodeAgentSkuId value to set.
-     * @param imageReference the imageReference value to set.
-     * @param osType the osType value to set.
-     * @param verificationType the verificationType value to set.
-     */
-    @Generated
-    private BatchSupportedImage(String nodeAgentSkuId, ImageReference imageReference, OSType osType,
-        ImageVerificationType verificationType) {
-        this.nodeAgentSkuId = nodeAgentSkuId;
-        this.imageReference = imageReference;
-        this.osType = osType;
-        this.verificationType = verificationType;
-    }
-
-    /**
      * Get the nodeAgentSkuId property: The ID of the Compute Node agent SKU which the Image supports.
      *
      * @return the nodeAgentSkuId value.
@@ -94,7 +77,7 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
      * @return the imageReference value.
      */
     @Generated
-    public ImageReference getImageReference() {
+    public BatchVmImageReference getImageReference() {
         return this.imageReference;
     }
 
@@ -104,7 +87,7 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
      * @return the osType value.
      */
     @Generated
-    public OSType getOsType() {
+    public BatchOSType getOsType() {
         return this.osType;
     }
 
@@ -175,8 +158,8 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
     public static BatchSupportedImage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String nodeAgentSkuId = null;
-            ImageReference imageReference = null;
-            OSType osType = null;
+            BatchVmImageReference imageReference = null;
+            BatchOSType osType = null;
             ImageVerificationType verificationType = null;
             List<String> capabilities = null;
             OffsetDateTime batchSupportEndOfLife = null;
@@ -186,9 +169,9 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
                 if ("nodeAgentSKUId".equals(fieldName)) {
                     nodeAgentSkuId = reader.getString();
                 } else if ("imageReference".equals(fieldName)) {
-                    imageReference = ImageReference.fromJson(reader);
+                    imageReference = BatchVmImageReference.fromJson(reader);
                 } else if ("osType".equals(fieldName)) {
-                    osType = OSType.fromString(reader.getString());
+                    osType = BatchOSType.fromString(reader.getString());
                 } else if ("verificationType".equals(fieldName)) {
                     verificationType = ImageVerificationType.fromString(reader.getString());
                 } else if ("capabilities".equals(fieldName)) {
@@ -206,5 +189,22 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
             deserializedBatchSupportedImage.batchSupportEndOfLife = batchSupportEndOfLife;
             return deserializedBatchSupportedImage;
         });
+    }
+
+    /**
+     * Creates an instance of BatchSupportedImage class.
+     *
+     * @param nodeAgentSkuId the nodeAgentSkuId value to set.
+     * @param imageReference the imageReference value to set.
+     * @param osType the osType value to set.
+     * @param verificationType the verificationType value to set.
+     */
+    @Generated
+    private BatchSupportedImage(String nodeAgentSkuId, BatchVmImageReference imageReference, BatchOSType osType,
+        ImageVerificationType verificationType) {
+        this.nodeAgentSkuId = nodeAgentSkuId;
+        this.imageReference = imageReference;
+        this.osType = osType;
+        this.verificationType = verificationType;
     }
 }

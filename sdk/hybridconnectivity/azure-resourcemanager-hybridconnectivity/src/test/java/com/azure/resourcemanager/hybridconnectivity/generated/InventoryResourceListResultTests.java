@@ -14,13 +14,13 @@ public final class InventoryResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InventoryResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"pbuxwgipwhon\",\"azureResourceId\":\"kgshwa\",\"status\":\"Failed\",\"statusDetails\":\"zbinjeputtm\",\"provisioningState\":\"Succeeded\"},\"id\":\"uzoqft\",\"name\":\"yqzrnkcqvyxlw\",\"type\":\"zlsico\"},{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"wvl\",\"azureResourceId\":\"avwhheunm\",\"status\":\"Completed\",\"statusDetails\":\"yxzk\",\"provisioningState\":\"Failed\"},\"id\":\"uko\",\"name\":\"lyaxuc\",\"type\":\"nuqszfkbey\"},{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"jmwvvj\",\"azureResourceId\":\"tcxsenhwlrs\",\"status\":\"Failed\",\"statusDetails\":\"pwvlqdq\",\"provisioningState\":\"Failed\"},\"id\":\"ylihkaetckt\",\"name\":\"fcivfsnkym\",\"type\":\"ctq\"},{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"brjcxe\",\"azureResourceId\":\"uwutttxfvjrbi\",\"status\":\"Failed\",\"statusDetails\":\"epcyvahfnlj\",\"provisioningState\":\"Canceled\"},\"id\":\"j\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"}],\"nextLink\":\"gsncghkjeszz\"}")
+            "{\"value\":[{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"qnermclfplphoxu\",\"azureResourceId\":\"rpabg\",\"status\":\"InProgress\",\"statusDetails\":\"bjtazqugxywpmu\",\"provisioningState\":\"Succeeded\"},\"id\":\"zwfqkqujidsuyon\",\"name\":\"bglaocqxtccm\",\"type\":\"yudxytlmoy\"}],\"nextLink\":\"vwfudwpzntxhd\"}")
             .toObject(InventoryResourceListResult.class);
         Assertions.assertEquals(CloudNativeType.EC2, model.value().get(0).properties().cloudNativeType());
-        Assertions.assertEquals("pbuxwgipwhon", model.value().get(0).properties().cloudNativeResourceId());
-        Assertions.assertEquals("kgshwa", model.value().get(0).properties().azureResourceId());
-        Assertions.assertEquals(SolutionConfigurationStatus.FAILED, model.value().get(0).properties().status());
-        Assertions.assertEquals("zbinjeputtm", model.value().get(0).properties().statusDetails());
-        Assertions.assertEquals("gsncghkjeszz", model.nextLink());
+        Assertions.assertEquals("qnermclfplphoxu", model.value().get(0).properties().cloudNativeResourceId());
+        Assertions.assertEquals("rpabg", model.value().get(0).properties().azureResourceId());
+        Assertions.assertEquals(SolutionConfigurationStatus.IN_PROGRESS, model.value().get(0).properties().status());
+        Assertions.assertEquals("bjtazqugxywpmu", model.value().get(0).properties().statusDetails());
+        Assertions.assertEquals("vwfudwpzntxhd", model.nextLink());
     }
 }

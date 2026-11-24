@@ -11,6 +11,9 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager;
 import com.azure.resourcemanager.hybridconnectivity.models.AwsCloudProfile;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpCloudProfile;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpOrganizationProperties;
+import com.azure.resourcemanager.hybridconnectivity.models.GcpProjectProperties;
 import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnector;
 import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorProperties;
@@ -27,7 +30,7 @@ public final class PublicCloudConnectorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"twwaezkojvdcpzf\",\"excludedAccounts\":[\"uicybxarzgszuf\",\"x\",\"iqopidoamciod\",\"khazxkhnzbonlwn\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Succeeded\",\"connectorPrimaryIdentifier\":\"wbw\"},\"location\":\"szzcmrvexztv\",\"tags\":{\"lmnguxaw\":\"gsfraoyzkoow\",\"uximerqfobw\":\"aldsy\",\"r\":\"znkbykutwpfhpagm\",\"kkze\":\"kdsnfdsdoakgtdl\"},\"id\":\"dlhewp\",\"name\":\"sdsttwvog\",\"type\":\"bbejdcngqqm\"}";
+            = "{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"szfjvfbgofelja\",\"excludedAccounts\":[\"mqhldvrii\",\"ojnal\",\"hfkvtvsexsowuel\"],\"isOrganizationalAccount\":true},\"gcpCloudProfile\":{\"projectProperties\":{\"projectNumber\":\"hhxvrhmzkwpj\",\"projectId\":\"wws\"},\"organizationProperties\":{\"organizationId\":\"ghftqsxhqxujxuk\",\"managementProjectNumber\":\"dxdigr\",\"managementProjectId\":\"guufzd\",\"excludedProjectNumbers\":[\"qtfihwhbotzinga\",\"vppho\"],\"excludedFolderIds\":[\"zudphqamvdkfw\",\"nwcvtbvkayhmtnv\"]}},\"hostType\":\"GCP\",\"provisioningState\":\"Succeeded\",\"connectorPrimaryIdentifier\":\"kzwpcnpw\"},\"kind\":\"GCP\",\"location\":\"esgvvsccyaj\",\"tags\":{\"mdwzrmuhapfcqdps\":\"fhwygzlvdnkfxus\",\"svuo\":\"xqv\"},\"id\":\"mgccelvezrypq\",\"name\":\"mfe\",\"type\":\"kerqwkyh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,23 +40,45 @@ public final class PublicCloudConnectorsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PublicCloudConnector response = manager.publicCloudConnectors()
-            .define("or")
-            .withRegion("f")
-            .withExistingResourceGroup("ppriol")
-            .withTags(mapOf("bgdknnqv", "gj", "sgsahmkycgr", "aznqntoru", "s", "uwjuetaeburuvdmo", "tpuqujmq",
-                "zlxwabmqoefkifr"))
-            .withProperties(
-                new PublicCloudConnectorProperties().withAwsCloudProfile(new AwsCloudProfile().withAccountId("lt")
-                    .withExcludedAccounts(Arrays.asList("ncwsob", "wcsdbnwdcfhucq", "pfuvglsbjjca", "vxb"))
-                    .withIsOrganizationalAccount(true)).withHostType(HostType.AWS))
+            .define("vfvpdbodaciz")
+            .withRegion("twbdsrezpdrhn")
+            .withExistingResourceGroup("g")
+            .withTags(mapOf("ircgpikpz", "owqkdwytisi", "rmbzo", "mejzanlfzxia", "zpfrla", "okixrjqcir", "indfpwpjyl",
+                "szrnwo"))
+            .withProperties(new PublicCloudConnectorProperties()
+                .withAwsCloudProfile(new AwsCloudProfile().withAccountId("lhkrribdeibqipqk")
+                    .withExcludedAccounts(Arrays.asList("xndzwm", "refajpjorwkqnyh"))
+                    .withIsOrganizationalAccount(false))
+                .withGcpCloudProfile(new GcpCloudProfile()
+                    .withProjectProperties(
+                        new GcpProjectProperties().withProjectNumber("jivfxzsjabib").withProjectId("ystawfsdjpvkvp"))
+                    .withOrganizationProperties(new GcpOrganizationProperties().withOrganizationId("xbkzbzkdvncj")
+                        .withManagementProjectNumber("budurgkakmo")
+                        .withManagementProjectId("zhjjklffhmouwq")
+                        .withExcludedProjectNumbers(Arrays.asList("rfzeey", "bizikayuhq"))
+                        .withExcludedFolderIds(Arrays.asList("bs", "bbqwrvtldg"))))
+                .withHostType(HostType.AWS))
             .create();
 
-        Assertions.assertEquals("szzcmrvexztv", response.location());
-        Assertions.assertEquals("gsfraoyzkoow", response.tags().get("lmnguxaw"));
-        Assertions.assertEquals("twwaezkojvdcpzf", response.properties().awsCloudProfile().accountId());
-        Assertions.assertEquals("uicybxarzgszuf", response.properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(true, response.properties().awsCloudProfile().isOrganizationalAccount());
-        Assertions.assertEquals(HostType.AWS, response.properties().hostType());
+        Assertions.assertEquals("esgvvsccyaj", response.location());
+        Assertions.assertEquals("fhwygzlvdnkfxus", response.tags().get("mdwzrmuhapfcqdps"));
+        Assertions.assertEquals("szfjvfbgofelja", response.properties().awsCloudProfile().accountId());
+        Assertions.assertEquals("mqhldvrii", response.properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertTrue(response.properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertEquals("hhxvrhmzkwpj",
+            response.properties().gcpCloudProfile().projectProperties().projectNumber());
+        Assertions.assertEquals("wws", response.properties().gcpCloudProfile().projectProperties().projectId());
+        Assertions.assertEquals("ghftqsxhqxujxuk",
+            response.properties().gcpCloudProfile().organizationProperties().organizationId());
+        Assertions.assertEquals("dxdigr",
+            response.properties().gcpCloudProfile().organizationProperties().managementProjectNumber());
+        Assertions.assertEquals("guufzd",
+            response.properties().gcpCloudProfile().organizationProperties().managementProjectId());
+        Assertions.assertEquals("qtfihwhbotzinga",
+            response.properties().gcpCloudProfile().organizationProperties().excludedProjectNumbers().get(0));
+        Assertions.assertEquals("zudphqamvdkfw",
+            response.properties().gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
+        Assertions.assertEquals(HostType.GCP, response.properties().hostType());
     }
 
     // Use "Map.of" if available

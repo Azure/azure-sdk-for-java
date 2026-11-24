@@ -49,17 +49,6 @@ public final class WinRMConfiguration implements JsonSerializable<WinRMConfigura
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (listeners() != null) {
-            listeners().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

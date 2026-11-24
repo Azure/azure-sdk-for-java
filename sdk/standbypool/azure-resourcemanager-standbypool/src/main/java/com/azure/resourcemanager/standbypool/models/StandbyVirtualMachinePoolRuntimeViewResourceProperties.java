@@ -87,23 +87,6 @@ public final class StandbyVirtualMachinePoolRuntimeViewResourceProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (instanceCountSummary() != null) {
-            instanceCountSummary().forEach(e -> e.validate());
-        }
-        if (status() != null) {
-            status().validate();
-        }
-        if (prediction() != null) {
-            prediction().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -17,61 +17,61 @@ public final class ServiceSkuListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceSkuList model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"ikayuhqlbjbsybb\",\"sku\":{\"name\":\"vtldgmfpgvmpip\",\"family\":\"ltha\",\"size\":\"x\",\"tier\":\"mwutwbdsre\"},\"capacity\":{\"minimum\":187520251,\"maximum\":1550318758,\"default\":51733848,\"scaleType\":\"none\"}},{\"resourceType\":\"q\",\"sku\":{\"name\":\"ytisibir\",\"family\":\"pikpz\",\"size\":\"ejzanlfz\",\"tier\":\"av\"},\"capacity\":{\"minimum\":913620687,\"maximum\":1220636721,\"default\":1274938421,\"scaleType\":\"none\"}},{\"resourceType\":\"jq\",\"sku\":{\"name\":\"gzpfrla\",\"family\":\"zrnw\",\"size\":\"indfpwpjyl\",\"tier\":\"tlhflsjcdhszf\"},\"capacity\":{\"minimum\":29574674,\"maximum\":1004918836,\"default\":1130233947,\"scaleType\":\"manual\"}}],\"nextLink\":\"grqmqhldvrii\"}")
+            "{\"value\":[{\"resourceType\":\"riiiojnalghfkv\",\"sku\":{\"name\":\"ex\",\"family\":\"wueluqhhahhxv\",\"size\":\"mzkwpjg\",\"tier\":\"spughftqsxhq\"},\"capacity\":{\"minimum\":318834407,\"maximum\":649615996,\"default\":1485711526,\"scaleType\":\"automatic\"}},{\"resourceType\":\"grjguufzd\",\"sku\":{\"name\":\"qtfihwhbotzinga\",\"family\":\"pph\",\"size\":\"zqzudph\",\"tier\":\"mvdk\"},\"capacity\":{\"minimum\":1652341313,\"maximum\":1190901652,\"default\":1116936670,\"scaleType\":\"automatic\"}},{\"resourceType\":\"ayhmtnvyqiatkz\",\"sku\":{\"name\":\"npwzcjaes\",\"family\":\"v\",\"size\":\"cyajguqf\",\"tier\":\"ygz\"},\"capacity\":{\"minimum\":307379599,\"maximum\":536838169,\"default\":1230837058,\"scaleType\":\"none\"}}],\"nextLink\":\"dwzrmuh\"}")
             .toObject(ServiceSkuList.class);
-        Assertions.assertEquals("ikayuhqlbjbsybb", model.value().get(0).resourceType());
-        Assertions.assertEquals("vtldgmfpgvmpip", model.value().get(0).sku().name());
-        Assertions.assertEquals("ltha", model.value().get(0).sku().family());
-        Assertions.assertEquals("x", model.value().get(0).sku().size());
-        Assertions.assertEquals("mwutwbdsre", model.value().get(0).sku().tier());
-        Assertions.assertEquals(187520251, model.value().get(0).capacity().minimum());
-        Assertions.assertEquals(1550318758, model.value().get(0).capacity().maximum());
-        Assertions.assertEquals(51733848, model.value().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(ServiceScalability.NONE, model.value().get(0).capacity().scaleType());
-        Assertions.assertEquals("grqmqhldvrii", model.nextLink());
+        Assertions.assertEquals("riiiojnalghfkv", model.value().get(0).resourceType());
+        Assertions.assertEquals("ex", model.value().get(0).sku().name());
+        Assertions.assertEquals("wueluqhhahhxv", model.value().get(0).sku().family());
+        Assertions.assertEquals("mzkwpjg", model.value().get(0).sku().size());
+        Assertions.assertEquals("spughftqsxhq", model.value().get(0).sku().tier());
+        Assertions.assertEquals(318834407, model.value().get(0).capacity().minimum());
+        Assertions.assertEquals(649615996, model.value().get(0).capacity().maximum());
+        Assertions.assertEquals(1485711526, model.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(ServiceScalability.AUTOMATIC, model.value().get(0).capacity().scaleType());
+        Assertions.assertEquals("dwzrmuh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceSkuList model = new ServiceSkuList().withValue(Arrays.asList(
-            new AvailableServiceSkuInner().withResourceType("ikayuhqlbjbsybb")
-                .withSku(new AvailableServiceSkuSku().withName("vtldgmfpgvmpip")
-                    .withFamily("ltha")
-                    .withSize("x")
-                    .withTier("mwutwbdsre"))
-                .withCapacity(new AvailableServiceSkuCapacity().withMinimum(187520251)
-                    .withMaximum(1550318758)
-                    .withDefaultProperty(51733848)
-                    .withScaleType(ServiceScalability.NONE)),
-            new AvailableServiceSkuInner().withResourceType("q")
-                .withSku(new AvailableServiceSkuSku().withName("ytisibir")
-                    .withFamily("pikpz")
-                    .withSize("ejzanlfz")
-                    .withTier("av"))
-                .withCapacity(new AvailableServiceSkuCapacity().withMinimum(913620687)
-                    .withMaximum(1220636721)
-                    .withDefaultProperty(1274938421)
-                    .withScaleType(ServiceScalability.NONE)),
-            new AvailableServiceSkuInner().withResourceType("jq")
-                .withSku(new AvailableServiceSkuSku().withName("gzpfrla")
-                    .withFamily("zrnw")
-                    .withSize("indfpwpjyl")
-                    .withTier("tlhflsjcdhszf"))
-                .withCapacity(new AvailableServiceSkuCapacity().withMinimum(29574674)
-                    .withMaximum(1004918836)
-                    .withDefaultProperty(1130233947)
-                    .withScaleType(ServiceScalability.MANUAL))))
-            .withNextLink("grqmqhldvrii");
+            new AvailableServiceSkuInner().withResourceType("riiiojnalghfkv")
+                .withSku(new AvailableServiceSkuSku().withName("ex")
+                    .withFamily("wueluqhhahhxv")
+                    .withSize("mzkwpjg")
+                    .withTier("spughftqsxhq"))
+                .withCapacity(new AvailableServiceSkuCapacity().withMinimum(318834407)
+                    .withMaximum(649615996)
+                    .withDefaultProperty(1485711526)
+                    .withScaleType(ServiceScalability.AUTOMATIC)),
+            new AvailableServiceSkuInner().withResourceType("grjguufzd")
+                .withSku(new AvailableServiceSkuSku().withName("qtfihwhbotzinga")
+                    .withFamily("pph")
+                    .withSize("zqzudph")
+                    .withTier("mvdk"))
+                .withCapacity(new AvailableServiceSkuCapacity().withMinimum(1652341313)
+                    .withMaximum(1190901652)
+                    .withDefaultProperty(1116936670)
+                    .withScaleType(ServiceScalability.AUTOMATIC)),
+            new AvailableServiceSkuInner().withResourceType("ayhmtnvyqiatkz")
+                .withSku(new AvailableServiceSkuSku().withName("npwzcjaes")
+                    .withFamily("v")
+                    .withSize("cyajguqf")
+                    .withTier("ygz"))
+                .withCapacity(new AvailableServiceSkuCapacity().withMinimum(307379599)
+                    .withMaximum(536838169)
+                    .withDefaultProperty(1230837058)
+                    .withScaleType(ServiceScalability.NONE))))
+            .withNextLink("dwzrmuh");
         model = BinaryData.fromObject(model).toObject(ServiceSkuList.class);
-        Assertions.assertEquals("ikayuhqlbjbsybb", model.value().get(0).resourceType());
-        Assertions.assertEquals("vtldgmfpgvmpip", model.value().get(0).sku().name());
-        Assertions.assertEquals("ltha", model.value().get(0).sku().family());
-        Assertions.assertEquals("x", model.value().get(0).sku().size());
-        Assertions.assertEquals("mwutwbdsre", model.value().get(0).sku().tier());
-        Assertions.assertEquals(187520251, model.value().get(0).capacity().minimum());
-        Assertions.assertEquals(1550318758, model.value().get(0).capacity().maximum());
-        Assertions.assertEquals(51733848, model.value().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(ServiceScalability.NONE, model.value().get(0).capacity().scaleType());
-        Assertions.assertEquals("grqmqhldvrii", model.nextLink());
+        Assertions.assertEquals("riiiojnalghfkv", model.value().get(0).resourceType());
+        Assertions.assertEquals("ex", model.value().get(0).sku().name());
+        Assertions.assertEquals("wueluqhhahhxv", model.value().get(0).sku().family());
+        Assertions.assertEquals("mzkwpjg", model.value().get(0).sku().size());
+        Assertions.assertEquals("spughftqsxhq", model.value().get(0).sku().tier());
+        Assertions.assertEquals(318834407, model.value().get(0).capacity().minimum());
+        Assertions.assertEquals(649615996, model.value().get(0).capacity().maximum());
+        Assertions.assertEquals(1485711526, model.value().get(0).capacity().defaultProperty());
+        Assertions.assertEquals(ServiceScalability.AUTOMATIC, model.value().get(0).capacity().scaleType());
+        Assertions.assertEquals("dwzrmuh", model.nextLink());
     }
 }

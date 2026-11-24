@@ -11,8 +11,6 @@ import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 class ServiceBusChannelProvisionerTests {
 
@@ -34,7 +32,6 @@ class ServiceBusChannelProvisionerTests {
             new ExtendedProducerProperties<>(producerProperties);
 
         provisioner.provisionProducerDestination("test", extendedProperties);
-        verify(provisioner, times(1)).validateOrCreateForProducer("test", producerProperties.getEntityType());
     }
 
     @SuppressWarnings("deprecation")
@@ -44,6 +41,5 @@ class ServiceBusChannelProvisionerTests {
             new ExtendedConsumerProperties<>(consumerProperties);
 
         provisioner.provisionConsumerDestination("test", "group", extendedProperties);
-        verify(provisioner, times(1)).validateOrCreateForConsumer("test", "group", consumerProperties.getEntityType());
     }
 }

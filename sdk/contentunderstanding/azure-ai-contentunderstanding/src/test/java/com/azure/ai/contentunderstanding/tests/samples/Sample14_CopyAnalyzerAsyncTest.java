@@ -1,0 +1,443 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Async sample demonstrates how to copy an analyzer within the same resource.
+ * For cross-resource copying, see Sample15_GrantCopyAuthAsync.
+ */
+public class Sample14_CopyAnalyzerAsyncTest extends ContentUnderstandingClientTestBase {
+
+    /**
+     * Asynchronous sample for copying an analyzer.
+     */
+    @Test
+    public void testCopyAnalyzerAsync() {
+        System.out.println("✓ Client initialized successfully");
+
+        // Generate unique analyzer IDs for this test
+        String sourceAnalyzerId = testResourceNamer.randomName("test_analyzer_source_", 50);
+        String targetAnalyzerId = testResourceNamer.randomName("test_analyzer_target_", 50);
+
+        try {
+            // BEGIN: com.azure.ai.contentunderstanding.copyAnalyzerAsync
+            // Step 1: Create the source analyzer
+            ContentAnalyzerConfig sourceConfig = new ContentAnalyzerConfig();
+            sourceConfig.setFormulaEnabled(false);
+            sourceConfig.setLayoutEnabled(true);
+            sourceConfig.setOcrEnabled(true);
+            sourceConfig.setEstimateFieldSourceAndConfidence(true);
+            sourceConfig.setReturnDetails(true);
+
+            Map<String, ContentFieldDefinition> fields = new HashMap<>();
+
+            ContentFieldDefinition companyNameField = new ContentFieldDefinition();
+            companyNameField.setType(ContentFieldType.STRING);
+            companyNameField.setMethod(GenerationMethod.EXTRACT);
+            companyNameField.setDescription("Name of the company");
+            fields.put("company_name", companyNameField);
+
+            ContentFieldDefinition totalAmountField = new ContentFieldDefinition();
+            totalAmountField.setType(ContentFieldType.NUMBER);
+            totalAmountField.setMethod(GenerationMethod.EXTRACT);
+            totalAmountField.setDescription("Total amount on the document");
+            fields.put("total_amount", totalAmountField);
+
+            ContentFieldSchema sourceFieldSchema = new ContentFieldSchema();
+            sourceFieldSchema.setName("company_schema");
+            sourceFieldSchema.setDescription("Schema for extracting company information");
+            sourceFieldSchema.setFields(fields);
+
+            ContentAnalyzer sourceAnalyzer = new ContentAnalyzer();
+            sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
+            sourceAnalyzer.setDescription("Source analyzer for copying");
+            sourceAnalyzer.setConfig(sourceConfig);
+            sourceAnalyzer.setFieldSchema(sourceFieldSchema);
+
+            Map<String, String> models = new HashMap<>();
+            models.put("completion", getModelProfile().getCompletionModel());
+            sourceAnalyzer.setModels(models);
+
+            Map<String, String> tags = new HashMap<>();
+            tags.put("modelType", "in_development");
+            sourceAnalyzer.setTags(tags);
+
+            // Create source analyzer
+            PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+                = contentUnderstandingAsyncClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
+            setPlaybackPollerFluxPollInterval(createPoller);
+
+            ContentAnalyzer sourceResult = createPoller.last()
+                .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                    pollResponse.getFinalResult(), "Source analyzer creation"))
+                .block();
+            assertNotNull(sourceResult, "Source analyzer creation should return a result");
+
+            System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
+
+            // Verify source analyzer is available before copying (ensure it's fully provisioned)
+            ContentAnalyzer verifiedSource = contentUnderstandingAsyncClient.getAnalyzer(sourceAnalyzerId).block();
+            System.out.println("Source analyzer verified: " + verifiedSource.getDescription());
+
+            // Step 2: Copy the source analyzer to target
+            // Note: This copies within the same resource using the simplified 2-parameter method.
+            PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller
+                = contentUnderstandingAsyncClient.beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId);
+            setPlaybackPollerFluxPollInterval(copyPoller);
+
+            ContentAnalyzer copiedAnalyzer = copyPoller.last()
+                .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                    pollResponse.getFinalResult(), "Analyzer copy"))
+                .block();
+            assertNotNull(copiedAnalyzer, "Analyzer copy should return a result");
+
+            System.out.println("Analyzer copied to '" + targetAnalyzerId + "' successfully!");
+            // END: com.azure.ai.contentunderstanding.copyAnalyzerAsync
+
+            // ========== VERIFICATION: Source Analyzer Creation ==========
+            System.out.println("\n📋 Source Analyzer Creation Verification:");
+
+            // Verify analyzer IDs
+            assertNotNull(sourceAnalyzerId, "Source analyzer ID should not be null");
+            assertFalse(sourceAnalyzerId.trim().isEmpty(), "Source analyzer ID should not be empty");
+            assertNotNull(targetAnalyzerId, "Target analyzer ID should not be null");
+            assertFalse(targetAnalyzerId.trim().isEmpty(), "Target analyzer ID should not be empty");
+            assertNotEquals(sourceAnalyzerId, targetAnalyzerId, "Source and target IDs should be different");
+            System.out.println("  ✓ Analyzer IDs validated");
+            System.out.println("    Source: " + sourceAnalyzerId);
+            System.out.println("    Target: " + targetAnalyzerId);
+
+            // Verify source config
+            assertNotNull(sourceConfig, "Source config should not be null");
+            assertEquals(false, sourceConfig.isFormulaEnabled(), "EnableFormula should be false");
+            assertEquals(true, sourceConfig.isLayoutEnabled(), "EnableLayout should be true");
+            assertEquals(true, sourceConfig.isOcrEnabled(), "EnableOcr should be true");
+            assertEquals(true, sourceConfig.isEstimateFieldSourceAndConfidence(),
+                "EstimateFieldSourceAndConfidence should be true");
+            assertEquals(true, sourceConfig.isReturnDetails(), "ReturnDetails should be true");
+            System.out.println("  ✓ Source config verified");
+
+            // Verify source field schema
+            assertNotNull(sourceFieldSchema, "Source field schema should not be null");
+            assertEquals("company_schema", sourceFieldSchema.getName(), "Field schema name should match");
+            assertEquals("Schema for extracting company information", sourceFieldSchema.getDescription(),
+                "Field schema description should match");
+            assertEquals(2, sourceFieldSchema.getFields().size(), "Should have 2 fields");
+            System.out.println("  ✓ Source field schema verified: " + sourceFieldSchema.getName());
+
+            // Verify individual field definitions
+            assertTrue(sourceFieldSchema.getFields().containsKey("company_name"), "Should contain company_name field");
+            ContentFieldDefinition companyField = sourceFieldSchema.getFields().get("company_name");
+            assertEquals(ContentFieldType.STRING, companyField.getType(), "company_name should be STRING type");
+            assertEquals(GenerationMethod.EXTRACT, companyField.getMethod(), "company_name should use EXTRACT method");
+            assertEquals("Name of the company", companyField.getDescription(), "company_name description should match");
+            System.out.println("    ✓ company_name field verified");
+
+            assertTrue(sourceFieldSchema.getFields().containsKey("total_amount"), "Should contain total_amount field");
+            ContentFieldDefinition amountField = sourceFieldSchema.getFields().get("total_amount");
+            assertEquals(ContentFieldType.NUMBER, amountField.getType(), "total_amount should be NUMBER type");
+            assertEquals(GenerationMethod.EXTRACT, amountField.getMethod(), "total_amount should use EXTRACT method");
+            assertEquals("Total amount on the document", amountField.getDescription(),
+                "total_amount description should match");
+            System.out.println("    ✓ total_amount field verified");
+
+            // Verify source analyzer object
+            assertNotNull(sourceAnalyzer, "Source analyzer object should not be null");
+            assertEquals("prebuilt-document", sourceAnalyzer.getBaseAnalyzerId(), "Base analyzer ID should match");
+            assertEquals("Source analyzer for copying", sourceAnalyzer.getDescription(), "Description should match");
+            assertTrue(sourceAnalyzer.getModels().containsKey("completion"), "Should have completion model");
+            assertEquals(getModelProfile().getCompletionModel(), sourceAnalyzer.getModels().get("completion"),
+                "Completion model should match the configured profile");
+            assertTrue(sourceAnalyzer.getTags().containsKey("modelType"), "Should have modelType tag");
+            assertEquals("in_development", sourceAnalyzer.getTags().get("modelType"),
+                "modelType tag should be in_development");
+            System.out.println("  ✓ Source analyzer object verified");
+
+            // Verify creation result
+            assertNotNull(sourceResult, "Source analyzer result should not be null");
+            assertEquals("prebuilt-document", sourceResult.getBaseAnalyzerId(), "Base analyzer ID should match");
+            assertEquals("Source analyzer for copying", sourceResult.getDescription(), "Description should match");
+            System.out.println("  ✓ Source analyzer created: " + sourceAnalyzerId);
+
+            // Verify config in result
+            assertNotNull(sourceResult.getConfig(), "Config should not be null in result");
+            assertEquals(false, sourceResult.getConfig().isFormulaEnabled(), "EnableFormula should be preserved");
+            assertEquals(true, sourceResult.getConfig().isLayoutEnabled(), "EnableLayout should be preserved");
+            assertEquals(true, sourceResult.getConfig().isOcrEnabled(), "EnableOcr should be preserved");
+            System.out.println("  ✓ Config preserved in result");
+
+            // Verify field schema in result
+            assertNotNull(sourceResult.getFieldSchema(), "Field schema should not be null in result");
+            assertEquals("company_schema", sourceResult.getFieldSchema().getName(),
+                "Field schema name should be preserved");
+            assertEquals(2, sourceResult.getFieldSchema().getFields().size(), "Should have 2 fields in result");
+            assertTrue(sourceResult.getFieldSchema().getFields().containsKey("company_name"),
+                "Should contain company_name in result");
+            assertTrue(sourceResult.getFieldSchema().getFields().containsKey("total_amount"),
+                "Should contain total_amount in result");
+            System.out
+                .println("  ✓ Field schema preserved: " + sourceResult.getFieldSchema().getFields().size() + " fields");
+
+            // Verify tags in result
+            assertNotNull(sourceResult.getTags(), "Tags should not be null in result");
+            assertTrue(sourceResult.getTags().containsKey("modelType"), "Should contain modelType tag in result");
+            assertEquals("in_development", sourceResult.getTags().get("modelType"),
+                "modelType tag should be preserved");
+            System.out.println("  ✓ Tags preserved: " + sourceResult.getTags().size() + " tag(s)");
+
+            // Verify models in result
+            assertNotNull(sourceResult.getModels(), "Models should not be null in result");
+            assertTrue(sourceResult.getModels().containsKey("completion"), "Should have completion model in result");
+            assertEquals(getModelProfile().getCompletionModel(), sourceResult.getModels().get("completion"),
+                "Completion model should be preserved");
+            System.out.println("  ✓ Models preserved: " + sourceResult.getModels().size() + " model(s)");
+
+            System.out.println("\n✅ Source analyzer creation completed:");
+            System.out.println("    ID: " + sourceAnalyzerId);
+            System.out.println("    Base: " + sourceResult.getBaseAnalyzerId());
+            System.out.println("    Fields: " + sourceResult.getFieldSchema().getFields().size());
+            System.out.println("    Tags: " + sourceResult.getTags().size());
+            System.out.println("    Models: " + sourceResult.getModels().size());
+
+            // Get the source analyzer to verify retrieval
+            ContentAnalyzer sourceAnalyzerInfo = contentUnderstandingAsyncClient.getAnalyzer(sourceAnalyzerId).block();
+
+            System.out.println("\n📋 Source Analyzer Retrieval Verification:");
+            assertNotNull(sourceAnalyzerInfo, "Source analyzer info should not be null");
+            assertEquals(sourceResult.getBaseAnalyzerId(), sourceAnalyzerInfo.getBaseAnalyzerId(),
+                "Base analyzer should match");
+            assertEquals(sourceResult.getDescription(), sourceAnalyzerInfo.getDescription(),
+                "Description should match");
+            System.out.println("  ✓ Source analyzer retrieved successfully");
+            System.out.println("    Description: " + sourceAnalyzerInfo.getDescription());
+            System.out.println("    Tags: " + String.join(", ",
+                sourceAnalyzerInfo.getTags()
+                    .entrySet()
+                    .stream()
+                    .map(e -> e.getKey() + "=" + e.getValue())
+                    .toArray(String[]::new)));
+
+            // ========== VERIFICATION: Analyzer Copy Operation ==========
+            System.out.println("\n📋 Analyzer Copy Verification:");
+            assertNotNull(copiedAnalyzer, "Copied analyzer should not be null");
+            System.out.println("  ✓ Copy operation completed");
+
+            // Verify base properties match source
+            assertEquals(sourceResult.getBaseAnalyzerId(), copiedAnalyzer.getBaseAnalyzerId(),
+                "Copied analyzer should have same base analyzer ID");
+            assertEquals(sourceResult.getDescription(), copiedAnalyzer.getDescription(),
+                "Copied analyzer should have same description");
+            System.out.println("  ✓ Base properties preserved");
+            System.out.println("    Base analyzer ID: " + copiedAnalyzer.getBaseAnalyzerId());
+            System.out.println("    Description: '" + copiedAnalyzer.getDescription() + "'");
+
+            // Verify field schema structure
+            assertNotNull(copiedAnalyzer.getFieldSchema(), "Copied analyzer should have field schema");
+            assertEquals(sourceResult.getFieldSchema().getName(), copiedAnalyzer.getFieldSchema().getName(),
+                "Field schema name should match");
+            assertEquals(sourceResult.getFieldSchema().getDescription(),
+                copiedAnalyzer.getFieldSchema().getDescription(), "Field schema description should match");
+            assertEquals(sourceResult.getFieldSchema().getFields().size(),
+                copiedAnalyzer.getFieldSchema().getFields().size(), "Field count should match");
+            System.out.println("  ✓ Field schema structure preserved");
+            System.out.println("    Schema: " + copiedAnalyzer.getFieldSchema().getName());
+            System.out.println("    Fields: " + copiedAnalyzer.getFieldSchema().getFields().size());
+
+            // Verify individual field definitions were copied correctly
+            assertTrue(copiedAnalyzer.getFieldSchema().getFields().containsKey("company_name"),
+                "Copied analyzer should contain company_name field");
+            ContentFieldDefinition copiedCompanyField = copiedAnalyzer.getFieldSchema().getFields().get("company_name");
+            assertEquals(ContentFieldType.STRING, copiedCompanyField.getType(),
+                "company_name type should be preserved");
+            assertEquals(GenerationMethod.EXTRACT, copiedCompanyField.getMethod(),
+                "company_name method should be preserved");
+            System.out.println(
+                "    ✓ company_name field: " + copiedCompanyField.getType() + " / " + copiedCompanyField.getMethod());
+
+            assertTrue(copiedAnalyzer.getFieldSchema().getFields().containsKey("total_amount"),
+                "Copied analyzer should contain total_amount field");
+            ContentFieldDefinition copiedAmountField = copiedAnalyzer.getFieldSchema().getFields().get("total_amount");
+            assertEquals(ContentFieldType.NUMBER, copiedAmountField.getType(), "total_amount type should be preserved");
+            assertEquals(GenerationMethod.EXTRACT, copiedAmountField.getMethod(),
+                "total_amount method should be preserved");
+            System.out.println(
+                "    ✓ total_amount field: " + copiedAmountField.getType() + " / " + copiedAmountField.getMethod());
+
+            // Verify tags were copied
+            assertNotNull(copiedAnalyzer.getTags(), "Copied analyzer should have tags");
+            assertEquals(sourceResult.getTags().size(), copiedAnalyzer.getTags().size(), "Tag count should match");
+            assertTrue(copiedAnalyzer.getTags().containsKey("modelType"),
+                "Copied analyzer should contain modelType tag");
+            assertEquals("in_development", copiedAnalyzer.getTags().get("modelType"),
+                "Copied analyzer should have same tag value");
+            System.out.println("  ✓ Tags preserved: " + copiedAnalyzer.getTags().size() + " tag(s)");
+            System.out.println("    modelType=" + copiedAnalyzer.getTags().get("modelType"));
+
+            // Verify config was copied
+            assertNotNull(copiedAnalyzer.getConfig(), "Copied analyzer should have config");
+            assertEquals(sourceResult.getConfig().isFormulaEnabled(), copiedAnalyzer.getConfig().isFormulaEnabled(),
+                "EnableFormula should match");
+            assertEquals(sourceResult.getConfig().isLayoutEnabled(), copiedAnalyzer.getConfig().isLayoutEnabled(),
+                "EnableLayout should match");
+            assertEquals(sourceResult.getConfig().isOcrEnabled(), copiedAnalyzer.getConfig().isOcrEnabled(),
+                "EnableOcr should match");
+            assertEquals(sourceResult.getConfig().isEstimateFieldSourceAndConfidence(),
+                copiedAnalyzer.getConfig().isEstimateFieldSourceAndConfidence(),
+                "EstimateFieldSourceAndConfidence should match");
+            assertEquals(sourceResult.getConfig().isReturnDetails(), copiedAnalyzer.getConfig().isReturnDetails(),
+                "ReturnDetails should match");
+            System.out.println("  ✓ Config preserved");
+            System.out.println("    EnableLayout: " + copiedAnalyzer.getConfig().isLayoutEnabled());
+            System.out.println("    EnableOcr: " + copiedAnalyzer.getConfig().isOcrEnabled());
+
+            // Verify models were copied
+            assertNotNull(copiedAnalyzer.getModels(), "Copied analyzer should have models");
+            assertEquals(sourceResult.getModels().size(), copiedAnalyzer.getModels().size(),
+                "Model count should match");
+            if (copiedAnalyzer.getModels().containsKey("completion")) {
+                assertEquals(getModelProfile().getCompletionModel(), copiedAnalyzer.getModels().get("completion"),
+                    "Completion model should match");
+                System.out.println("  ✓ Models preserved: " + copiedAnalyzer.getModels().size() + " model(s)");
+                System.out.println("    completion=" + copiedAnalyzer.getModels().get("completion"));
+            }
+
+            // Verify the copied analyzer via Get operation
+            ContentAnalyzer verifiedCopy = contentUnderstandingAsyncClient.getAnalyzer(targetAnalyzerId).block();
+
+            System.out.println("\n📋 Copied Analyzer Retrieval Verification:");
+            assertNotNull(verifiedCopy, "Retrieved copied analyzer should not be null");
+            assertEquals(copiedAnalyzer.getBaseAnalyzerId(), verifiedCopy.getBaseAnalyzerId(),
+                "Retrieved analyzer should match copied analyzer");
+            assertEquals(copiedAnalyzer.getDescription(), verifiedCopy.getDescription(),
+                "Retrieved description should match");
+            assertNotNull(verifiedCopy.getFieldSchema(), "Retrieved field schema should not be null");
+            assertNotNull(verifiedCopy.getConfig(), "Retrieved config should not be null");
+            assertNotNull(verifiedCopy.getModels(), "Retrieved models should not be null");
+            assertEquals(copiedAnalyzer.getFieldSchema().getFields().size(),
+                verifiedCopy.getFieldSchema().getFields().size(), "Retrieved field count should match");
+            System.out.println("  ✓ Copied analyzer verified via retrieval");
+
+            // BEGIN: com.azure.ai.contentunderstanding.updateAndVerifyCopiedAnalyzerAsync
+            // Step 3: Update the copied analyzer with a production tag
+            Map<String, String> updatedTags = new HashMap<>();
+            updatedTags.put("modelType", "model_in_production");
+            ContentAnalyzer analyzerUpdate
+                = new ContentAnalyzer().setBaseAnalyzerId(verifiedCopy.getBaseAnalyzerId()).setTags(updatedTags);
+            ContentAnalyzer updateResult
+                = contentUnderstandingAsyncClient.updateAnalyzer(targetAnalyzerId, analyzerUpdate).block();
+            assertNotNull(updateResult, "Analyzer update should return a result");
+
+            // Step 4: Retrieve the copied analyzer and verify preserved properties
+            ContentAnalyzer updatedTargetAnalyzer
+                = contentUnderstandingAsyncClient.getAnalyzer(targetAnalyzerId).block();
+            assertNotNull(updatedTargetAnalyzer, "Updated target analyzer should not be null");
+            assertEquals(verifiedCopy.getBaseAnalyzerId(), updatedTargetAnalyzer.getBaseAnalyzerId(),
+                "Base analyzer ID should be preserved");
+            assertEquals(verifiedCopy.getDescription(), updatedTargetAnalyzer.getDescription(),
+                "Description should be preserved");
+            assertNotNull(updatedTargetAnalyzer.getFieldSchema(), "Field schema should be preserved");
+            assertEquals(verifiedCopy.getFieldSchema().getName(), updatedTargetAnalyzer.getFieldSchema().getName(),
+                "Field schema name should be preserved");
+            assertEquals(verifiedCopy.getFieldSchema().getDescription(),
+                updatedTargetAnalyzer.getFieldSchema().getDescription(),
+                "Field schema description should be preserved");
+            assertEquals(verifiedCopy.getFieldSchema().getFields().size(),
+                updatedTargetAnalyzer.getFieldSchema().getFields().size(), "Field count should be preserved");
+            assertTrue(updatedTargetAnalyzer.getFieldSchema().getFields().containsKey("company_name"),
+                "company_name should be preserved");
+            assertTrue(updatedTargetAnalyzer.getFieldSchema().getFields().containsKey("total_amount"),
+                "total_amount should be preserved");
+            assertNotNull(updatedTargetAnalyzer.getConfig(), "Config should be preserved");
+            assertEquals(verifiedCopy.getConfig().isFormulaEnabled(),
+                updatedTargetAnalyzer.getConfig().isFormulaEnabled(), "EnableFormula should be preserved");
+            assertEquals(verifiedCopy.getConfig().isLayoutEnabled(),
+                updatedTargetAnalyzer.getConfig().isLayoutEnabled(), "EnableLayout should be preserved");
+            assertEquals(verifiedCopy.getConfig().isOcrEnabled(), updatedTargetAnalyzer.getConfig().isOcrEnabled(),
+                "EnableOcr should be preserved");
+            assertEquals(verifiedCopy.getConfig().isEstimateFieldSourceAndConfidence(),
+                updatedTargetAnalyzer.getConfig().isEstimateFieldSourceAndConfidence(),
+                "EstimateFieldSourceAndConfidence should be preserved");
+            assertEquals(verifiedCopy.getConfig().isReturnDetails(),
+                updatedTargetAnalyzer.getConfig().isReturnDetails(), "ReturnDetails should be preserved");
+            assertEquals(verifiedCopy.getModels(), updatedTargetAnalyzer.getModels(), "Models should be preserved");
+            assertNotNull(updatedTargetAnalyzer.getTags(), "Updated tags should not be null");
+            assertEquals("model_in_production", updatedTargetAnalyzer.getTags().get("modelType"),
+                "modelType should be updated");
+            assertNotEquals("in_development", updatedTargetAnalyzer.getTags().get("modelType"),
+                "modelType should no longer be in_development");
+            System.out.println("  ✓ Copied analyzer updated and preserved properties verified");
+            // END: com.azure.ai.contentunderstanding.updateAndVerifyCopiedAnalyzerAsync
+
+            // Summary
+            String separator = new String(new char[60]).replace("\0", "═");
+            System.out.println("\n" + separator);
+            System.out.println("✅ ANALYZER COPY VERIFICATION COMPLETED SUCCESSFULLY");
+            System.out.println(separator);
+            System.out.println("Source Analyzer:");
+            System.out.println("  ID:          " + sourceAnalyzerId);
+            System.out.println("  Base:        " + sourceResult.getBaseAnalyzerId());
+            System.out.println("  Description: " + sourceResult.getDescription());
+            System.out.println("  Fields:      " + sourceResult.getFieldSchema().getFields().size());
+            System.out.println("  Tags:        " + sourceResult.getTags().size());
+            System.out.println("  Models:      " + sourceResult.getModels().size());
+            System.out.println("\nTarget Analyzer (Copied):");
+            System.out.println("  ID:          " + targetAnalyzerId);
+            System.out.println("  Base:        " + updatedTargetAnalyzer.getBaseAnalyzerId());
+            System.out.println("  Description: " + updatedTargetAnalyzer.getDescription());
+            System.out.println("  Fields:      " + updatedTargetAnalyzer.getFieldSchema().getFields().size());
+            System.out.println("  Tags:        " + updatedTargetAnalyzer.getTags().size());
+            System.out.println("  Models:      " + updatedTargetAnalyzer.getModels().size());
+            System.out.println("  modelType:   " + updatedTargetAnalyzer.getTags().get("modelType"));
+            System.out.println("\n✅ All properties successfully copied, updated, and verified!");
+            System.out.println(separator);
+
+        } finally {
+            // Cleanup: Delete the analyzers
+            try {
+                contentUnderstandingAsyncClient.deleteAnalyzer(sourceAnalyzerId).block();
+                System.out.println("\nSource analyzer deleted: " + sourceAnalyzerId);
+            } catch (RuntimeException e) {
+                System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
+            }
+
+            try {
+                contentUnderstandingAsyncClient.deleteAnalyzer(targetAnalyzerId).block();
+                System.out.println("Target analyzer deleted: " + targetAnalyzerId);
+            } catch (RuntimeException e) {
+                System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
+            }
+        }
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+}

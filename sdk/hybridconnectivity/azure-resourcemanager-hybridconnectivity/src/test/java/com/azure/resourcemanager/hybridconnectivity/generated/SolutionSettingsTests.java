@@ -8,18 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionSettings;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class SolutionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionSettings model = BinaryData.fromString("{\"\":{\"f\":\"dgbb\",\"bexppb\":\"dgmb\",\"rolfpfp\":\"tq\"}}")
+        SolutionSettings model = BinaryData.fromString("{\"f\":\"dgbb\",\"bexppb\":\"dgmb\",\"rolfpfp\":\"tq\"}")
             .toObject(SolutionSettings.class);
+        Assertions.assertEquals("tq", model.additionalProperties().get("rolfpfp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionSettings model = new SolutionSettings().withAdditionalProperties(mapOf());
+        SolutionSettings model
+            = new SolutionSettings().withAdditionalProperties(mapOf("rolfpfp", "tq", "f", "dgbb", "bexppb", "dgmb"));
         model = BinaryData.fromObject(model).toObject(SolutionSettings.class);
+        Assertions.assertEquals("tq", model.additionalProperties().get("rolfpfp"));
     }
 
     // Use "Map.of" if available

@@ -2,43 +2,47 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.json.JsonReadFeature;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
-final class JsonConfigurationParser {
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+public final class JsonConfigurationParser {
 
-    static boolean isJsonContentType(String contentType) {
-        String acceptedMainType = "application";
-        String acceptedSubType = "json";
+    private static final ObjectMapper MAPPER = JsonMapper.builder().enable(JsonReadFeature.ALLOW_JAVA_COMMENTS).build();
 
+    public static boolean isJsonContentType(String contentType) {
         if (!StringUtils.hasText(contentType)) {
             return false;
         }
 
-        if (contentType.contains("/")) {
-            String mainType = contentType.split("/")[0];
-            String subType = contentType.split("/")[1];
+        contentType = contentType.strip().toLowerCase();
+        String mimeType = contentType.split(";")[0].strip();
 
-            if (mainType.equalsIgnoreCase(acceptedMainType)) {
-                if (subType.contains("+")) {
-                    List<String> subtypes = Arrays.asList(subType.split("\\+"));
-                    return subtypes.contains(acceptedSubType);
-                } else {
-                    return subType.equalsIgnoreCase(acceptedSubType);
-                }
-            }
+        String[] typeParts = mimeType.split("/");
+        if (typeParts.length != 2) {
+            return false;
+        }
+
+        String mainType = typeParts[0];
+        String subType = typeParts[1];
+        
+        if (!"application".equals(mainType)) {
+            return false;
+        }
+
+        String[] subTypes = subType.split("\\+");
+        // Check if the last part (suffix) is "json"
+        if (subTypes.length > 0 && subTypes[subTypes.length - 1].equals("json")) {
+            return true;
         }
 
         return false;
@@ -50,7 +54,7 @@ final class JsonConfigurationParser {
         try {
             JsonNode json = MAPPER.readTree(setting.getValue());
             parseSetting(setting.getKey(), json, settings);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             throw new InvalidConfigurationPropertyValueException(
                 setting.getKey(),
                 "<Redacted>",
@@ -68,15 +72,13 @@ final class JsonConfigurationParser {
                 }
                 break;
             case OBJECT:
-                Iterator<String> fieldNames = currentValue.fieldNames();
-                while (fieldNames.hasNext()) {
-                    String fieldName = fieldNames.next();
-                    String newKey = currentKey + "." + fieldName;
-                    parseSetting(newKey, currentValue.get(fieldName), settings);
+                for (Map.Entry<String, JsonNode> property : currentValue.properties()) {
+                    String newKey = currentKey + "." + property.getKey();
+                    parseSetting(newKey, property.getValue(), settings);
                 }
                 break;
             default:
-                settings.put(currentKey, currentValue.asText());
+                settings.put(currentKey, currentValue.asString());
                 break;
 
         }

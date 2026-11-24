@@ -13,24 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduledOperationsTypeUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduledOperationsTypeUpdate model = BinaryData
-            .fromString(
-                "{\"dayOfWeek\":{\"name\":\"Thursday\"},\"scheduledStartTime\":\"amtmcz\",\"scheduledStopTime\":\"m\"}")
+        ScheduledOperationsTypeUpdate model = BinaryData.fromString(
+            "{\"dayOfWeek\":{\"name\":\"Saturday\"},\"scheduledStartTime\":\"swsmys\",\"scheduledStopTime\":\"luqypfcvlerch\"}")
             .toObject(ScheduledOperationsTypeUpdate.class);
-        Assertions.assertEquals(DayOfWeekName.THURSDAY, model.dayOfWeek().name());
-        Assertions.assertEquals("amtmcz", model.scheduledStartTime());
-        Assertions.assertEquals("m", model.scheduledStopTime());
+        Assertions.assertEquals(DayOfWeekName.SATURDAY, model.dayOfWeek().name());
+        Assertions.assertEquals("swsmys", model.scheduledStartTime());
+        Assertions.assertEquals("luqypfcvlerch", model.scheduledStopTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledOperationsTypeUpdate model
-            = new ScheduledOperationsTypeUpdate().withDayOfWeek(new DayOfWeekUpdate().withName(DayOfWeekName.THURSDAY))
-                .withScheduledStartTime("amtmcz")
-                .withScheduledStopTime("m");
+            = new ScheduledOperationsTypeUpdate().withDayOfWeek(new DayOfWeekUpdate().withName(DayOfWeekName.SATURDAY))
+                .withScheduledStartTime("swsmys")
+                .withScheduledStopTime("luqypfcvlerch");
         model = BinaryData.fromObject(model).toObject(ScheduledOperationsTypeUpdate.class);
-        Assertions.assertEquals(DayOfWeekName.THURSDAY, model.dayOfWeek().name());
-        Assertions.assertEquals("amtmcz", model.scheduledStartTime());
-        Assertions.assertEquals("m", model.scheduledStopTime());
+        Assertions.assertEquals(DayOfWeekName.SATURDAY, model.dayOfWeek().name());
+        Assertions.assertEquals("swsmys", model.scheduledStartTime());
+        Assertions.assertEquals("luqypfcvlerch", model.scheduledStopTime());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dependencymap.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -73,24 +72,6 @@ public final class ProcessNameFilter implements JsonSerializable<ProcessNameFilt
         this.processNames = processNames;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operator() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property operator in model ProcessNameFilter"));
-        }
-        if (processNames() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property processNames in model ProcessNameFilter"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ProcessNameFilter.class);
 
     /**
      * {@inheritDoc}

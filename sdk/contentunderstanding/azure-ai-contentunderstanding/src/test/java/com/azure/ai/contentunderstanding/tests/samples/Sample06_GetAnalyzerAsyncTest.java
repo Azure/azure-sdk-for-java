@@ -1,0 +1,166 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Async sample demonstrating how to retrieve information about prebuilt and custom analyzers.
+ */
+public class Sample06_GetAnalyzerAsyncTest extends ContentUnderstandingClientTestBase {
+
+    @Test
+    public void testGetPrebuiltAnalyzerAsync() throws IOException {
+        // BEGIN:ContentUnderstandingGetPrebuiltAnalyzerAsync
+        Response<BinaryData> response
+            = contentUnderstandingAsyncClient.getAnalyzerWithResponse("prebuilt-documentSearch", new RequestOptions())
+                .block();
+        ContentAnalyzer analyzer = response.getValue().toObject(ContentAnalyzer.class);
+
+        // Print a few properties from ContentAnalyzer
+        System.out.println("Analyzer ID: " + analyzer.getAnalyzerId());
+        System.out.println(
+            "Base Analyzer ID: " + (analyzer.getBaseAnalyzerId() != null ? analyzer.getBaseAnalyzerId() : "N/A"));
+        System.out.println("Description: " + (analyzer.getDescription() != null ? analyzer.getDescription() : "N/A"));
+        System.out.println("Enable OCR: " + analyzer.getConfig().isOcrEnabled());
+        System.out.println("Enable Layout: " + analyzer.getConfig().isLayoutEnabled());
+        System.out.println("Models: " + analyzer.getModels());
+
+        String rawJson = formatJson(response.getValue());
+        System.out.println("\nPrebuilt-documentSearch Analyzer (Raw JSON):");
+        System.out.println(rawJson);
+        // END:ContentUnderstandingGetPrebuiltAnalyzerAsync
+
+        assertSuccessfulResponse(response, rawJson);
+        assertEquals("prebuilt-documentSearch", analyzer.getAnalyzerId());
+        assertNotNull(analyzer.getConfig());
+        assertNotNull(analyzer.getModels());
+        assertTrue(rawJson.contains("prebuilt-documentSearch"));
+    }
+
+    @Test
+    public void testGetPrebuiltInvoiceAsync() throws IOException {
+        // BEGIN:ContentUnderstandingGetPrebuiltInvoiceAsync
+        Response<BinaryData> response
+            = contentUnderstandingAsyncClient.getAnalyzerWithResponse("prebuilt-invoice", new RequestOptions()).block();
+        ContentAnalyzer analyzer = response.getValue().toObject(ContentAnalyzer.class);
+
+        String rawJson = formatJson(response.getValue());
+        System.out.println(rawJson);
+        // END:ContentUnderstandingGetPrebuiltInvoiceAsync
+
+        assertSuccessfulResponse(response, rawJson);
+        assertEquals("prebuilt-invoice", analyzer.getAnalyzerId());
+        assertNotNull(analyzer.getFieldSchema());
+        assertNotNull(analyzer.getFieldSchema().getFields());
+        assertTrue(analyzer.getFieldSchema().getFields().size() > 0);
+        assertTrue(rawJson.contains("invoice") || rawJson.contains("Invoice"));
+    }
+
+    @Test
+    public void testGetCustomAnalyzerAsync() throws IOException {
+        // BEGIN:ContentUnderstandingGetCustomAnalyzerAsync
+        String analyzerId = testResourceNamer.randomName("get_custom_analyzer_async_", 50);
+
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        fields.put("company_name",
+            new ContentFieldDefinition().setType(ContentFieldType.STRING)
+                .setMethod(GenerationMethod.EXTRACT)
+                .setDescription("Name of the company"));
+
+        ContentFieldSchema fieldSchema = new ContentFieldSchema().setName("test_schema")
+            .setDescription("Test schema for GetAnalyzer sample")
+            .setFields(fields);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", getModelProfile().getCompletionModel());
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Test analyzer for GetAnalyzer sample")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
+
+        ContentAnalyzer createdAnalyzer = setPlaybackPollerFluxPollInterval(
+            contentUnderstandingAsyncClient.beginCreateAnalyzer(analyzerId, analyzer, true))
+                .last()
+                .flatMap(response -> requireSuccessfulResult(response.getStatus(), response.getFinalResult(),
+                    "Custom analyzer creation"))
+                .block();
+        assertNotNull(createdAnalyzer);
+
+        Response<BinaryData> response;
+        ContentAnalyzer retrievedAnalyzer;
+        String rawJson;
+        try {
+            response
+                = contentUnderstandingAsyncClient.getAnalyzerWithResponse(analyzerId, new RequestOptions()).block();
+            retrievedAnalyzer = response.getValue().toObject(ContentAnalyzer.class);
+            rawJson = formatJson(response.getValue());
+            System.out.println(rawJson);
+        } finally {
+            contentUnderstandingAsyncClient.deleteAnalyzer(analyzerId).block();
+        }
+        // END:ContentUnderstandingGetCustomAnalyzerAsync
+
+        assertSuccessfulResponse(response, rawJson);
+        assertEquals(analyzerId, retrievedAnalyzer.getAnalyzerId());
+        assertEquals("prebuilt-document", retrievedAnalyzer.getBaseAnalyzerId());
+        assertEquals("Test analyzer for GetAnalyzer sample", retrievedAnalyzer.getDescription());
+        assertNotNull(retrievedAnalyzer.getConfig());
+        assertEquals(Boolean.TRUE, retrievedAnalyzer.getConfig().isReturnDetails());
+        assertNotNull(retrievedAnalyzer.getFieldSchema());
+        assertEquals("test_schema", retrievedAnalyzer.getFieldSchema().getName());
+        assertEquals(1, retrievedAnalyzer.getFieldSchema().getFields().size());
+        assertTrue(retrievedAnalyzer.getFieldSchema().getFields().containsKey("company_name"));
+        assertEquals(getModelProfile().getCompletionModel(), retrievedAnalyzer.getModels().get("completion"));
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    private static void assertSuccessfulResponse(Response<BinaryData> response, String rawJson) {
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+        assertNotNull(response.getValue());
+        assertTrue(response.getValue().toBytes().length > 0);
+        assertNotNull(rawJson);
+        assertTrue(rawJson.length() > 0);
+    }
+
+    private static String formatJson(BinaryData json) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(json.toBytes());
+        assertNotNull(jsonNode, "Response should contain valid JSON");
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
+    }
+}

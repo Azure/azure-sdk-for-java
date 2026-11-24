@@ -61,16 +61,16 @@ public class LocationSpecificHealthContextTransitionHandler {
                             isReadOnlyRequest);
 
                     if (this.consecutiveExceptionBasedCircuitBreaker.canHealthStatusBeUpgraded(locationSpecificHealthContextInner, isReadOnlyRequest)) {
-
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Partition {}-{} of collection : {} marked as Healthy from HealthyTentative for region : {}",
-                                partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                                partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                                partitionKeyRangeWrapper.getCollectionResourceId(),
-                                regionWithSuccess);
-                        }
-
-                        return this.transitionHealthStatus(LocationHealthStatus.Healthy, isReadOnlyRequest);
+                        logger.debug("PartitionKeyRange : " +
+                            partitionKeyRangeWrapper.getPartitionKeyRange() +
+                            " of collectionResourceId : " +
+                            partitionKeyRangeWrapper.getCollectionResourceId() +
+                            " marked as Healthy from HealthyTentative for region : " +
+                            regionWithSuccess);
+                        return this.transitionHealthStatus(
+                            LocationHealthStatus.Healthy,
+                            isReadOnlyRequest,
+                            locationSpecificHealthContextInner);
                     } else {
                         return locationSpecificHealthContextInner;
                     }
@@ -80,28 +80,23 @@ public class LocationSpecificHealthContextTransitionHandler {
                 Instant unavailableSinceActual = locationSpecificHealthContext.getUnavailableSince();
                 if (!forceStatusChange) {
                     if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(Configs.getAllowedPartitionUnavailabilityDurationInSeconds())) > 0) {
-
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
-                                partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                                partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                                partitionKeyRangeWrapper.getCollectionResourceId(),
-                                regionWithSuccess);
-                        }
-
-                        return this.transitionHealthStatus(LocationHealthStatus.HealthyTentative, isReadOnlyRequest);
+                        logger.debug("PartitionKeyRange : " +
+                            partitionKeyRangeWrapper.getPartitionKeyRange() +
+                            " of collectionResourceId : " +
+                            partitionKeyRangeWrapper.getCollectionResourceId() +
+                            " marked as HealthyTentative from Unavailable for region :" +
+                            regionWithSuccess);
+                        return this.transitionHealthStatus(
+                            LocationHealthStatus.HealthyTentative,
+                            isReadOnlyRequest,
+                            locationSpecificHealthContext);
                     }
                 } else {
-
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
-                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                            partitionKeyRangeWrapper.getCollectionResourceId(),
-                            regionWithSuccess);
-                    }
-
-                    return this.transitionHealthStatus(LocationHealthStatus.HealthyTentative, isReadOnlyRequest);
+                    logger.debug("PartitionKeyRange " + partitionKeyRangeWrapper.getPartitionKeyRange() + " and collectionResourceId : " + partitionKeyRangeWrapper.getCollectionResourceId() + " marked as HealthyTentative from Unavailable for region : " + regionWithSuccess);;
+                    return this.transitionHealthStatus(
+                        LocationHealthStatus.HealthyTentative,
+                        isReadOnlyRequest,
+                        locationSpecificHealthContext);
                 }
                 break;
             default:
@@ -121,16 +116,11 @@ public class LocationSpecificHealthContextTransitionHandler {
 
         switch (currentLocationHealthStatusSnapshot) {
             case Healthy:
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Partition {}-{} of collection : {} marked as HealthyWithFailures from Healthy for region : {}",
-                        partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                        partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                        partitionKeyRangeWrapper.getCollectionResourceId(),
-                        regionWithException);
-                }
-
-                return this.transitionHealthStatus(LocationHealthStatus.HealthyWithFailures, isReadOnlyRequest);
+                logger.debug("PartitionKeyRange " + partitionKeyRangeWrapper.getPartitionKeyRange() + " of collectionResourceId : " + partitionKeyRangeWrapper.getCollectionResourceId() + " marked as HealthyWithFailures from Healthy for region : " + regionWithException);
+                return this.transitionHealthStatus(
+                    LocationHealthStatus.HealthyWithFailures,
+                    isReadOnlyRequest,
+                    locationSpecificHealthContext);
             case HealthyWithFailures:
                 if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
 
@@ -142,27 +132,28 @@ public class LocationSpecificHealthContextTransitionHandler {
                             regionWithException,
                             isReadOnlyRequest);
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Partition {}-{} of collection : {} has exception count of {} for region : {}",
-                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                            partitionKeyRangeWrapper.getCollectionResourceId(),
-                            isReadOnlyRequest ? locationSpecificHealthContextInner.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContextInner.getExceptionCountForWriteForCircuitBreaking(),
-                            regionWithException);
-                    }
+                    logger.debug("PartitionKeyRange " +
+                        partitionKeyRangeWrapper.getPartitionKeyRange() +
+                        " of collectionResourceId " +
+                        partitionKeyRangeWrapper.getCollectionResourceId() +
+                        " has exception count of " +
+                        (isReadOnlyRequest ? locationSpecificHealthContextInner.getExceptionCountForReadForCircuitBreaking() : locationSpecificHealthContextInner.getExceptionCountForWriteForCircuitBreaking()) +
+                        " for region : " +
+                        regionWithException);
 
                     return locationSpecificHealthContextInner;
                 } else {
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Partition {}-{} of collection : {} marked as Unavailable from HealthyWithFailures for region : {}",
-                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                            partitionKeyRangeWrapper.getPartitionKeyRange(),
-                            regionWithException);
-                    }
-
-                    return this.transitionHealthStatus(LocationHealthStatus.Unavailable, isReadOnlyRequest);
+                    logger.warn("PartitionKeyRange " +
+                        partitionKeyRangeWrapper.getPartitionKeyRange() +
+                        " of collectionResourceId " +
+                        partitionKeyRangeWrapper.getCollectionResourceId() +
+                        " marked as Unavailable from HealthyWithFailures for region : " +
+                        regionWithException);
+                    return this.transitionHealthStatus(
+                        LocationHealthStatus.Unavailable,
+                        isReadOnlyRequest,
+                        locationSpecificHealthContext);
                 }
             case HealthyTentative:
                 if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
@@ -173,16 +164,16 @@ public class LocationSpecificHealthContextTransitionHandler {
                             regionWithException,
                             isReadOnlyRequest);
                 } else {
-
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Partition {}-{} of collection : {} marked as Unavailable from HealthyTentative for region : {}",
-                            partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
-                            partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
-                            partitionKeyRangeWrapper.getCollectionResourceId(),
-                            regionWithException);
-                    }
-
-                    return this.transitionHealthStatus(LocationHealthStatus.Unavailable, isReadOnlyRequest);
+                    logger.warn("PartitionKeyRange " +
+                        partitionKeyRangeWrapper.getPartitionKeyRange() +
+                        " of collectionResourceId " +
+                        partitionKeyRangeWrapper.getCollectionResourceId() +
+                        " marked as Unavailable from HealthyTentative for region : " +
+                        regionWithException);
+                    return this.transitionHealthStatus(
+                        LocationHealthStatus.Unavailable,
+                        isReadOnlyRequest,
+                        locationSpecificHealthContext);
                 }
             case Unavailable:
                 return this.consecutiveExceptionBasedCircuitBreaker
@@ -200,7 +191,19 @@ public class LocationSpecificHealthContextTransitionHandler {
         LocationHealthStatus newStatus,
         boolean isReadOnlyRequest) {
 
-        LocationSpecificHealthContext.Builder builder = new LocationSpecificHealthContext.Builder()
+        return this.transitionHealthStatus(newStatus, isReadOnlyRequest, null);
+    }
+
+    private LocationSpecificHealthContext transitionHealthStatus(
+        LocationHealthStatus newStatus,
+        boolean isReadOnlyRequest,
+        LocationSpecificHealthContext previousContext) {
+
+        LocationSpecificHealthContext.Builder builder = previousContext == null
+            ? new LocationSpecificHealthContext.Builder()
+            : new LocationSpecificHealthContext.Builder(previousContext);
+
+        builder
             .withSuccessCountForWriteForRecovery(0)
             .withExceptionCountForWriteForCircuitBreaking(0)
             .withSuccessCountForReadForRecovery(0)
@@ -243,7 +246,7 @@ public class LocationSpecificHealthContextTransitionHandler {
             case HealthyTentative:
 
                 return builder
-                    .withUnavailableSince(Instant.now())
+                    .withUnavailableSince(Instant.MAX)
                     .withLocationHealthStatus(LocationHealthStatus.HealthyTentative)
                     .withExceptionThresholdBreached(false)
                     .build();

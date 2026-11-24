@@ -11,6 +11,5 @@
 
   <modules>
     <module>azure-resourcemanager-hdinsight</module>
-    <module>azure-resourcemanager-hdinsight-containers</module>
   </modules>
 </project>

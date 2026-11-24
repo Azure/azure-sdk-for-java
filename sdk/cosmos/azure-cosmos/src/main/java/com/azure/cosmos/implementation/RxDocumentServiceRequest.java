@@ -37,6 +37,14 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class RxDocumentServiceRequest implements Cloneable {
 
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
+
+    private static CosmosItemSerializer internalDefaultSerializer() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().getInternalDefaultSerializer();
+    }
+
     private final DiagnosticsClientContext clientContext;
     public volatile boolean forcePartitionKeyRangeRefresh;
     public volatile boolean forceCollectionRoutingMapRefresh;
@@ -77,6 +85,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     // so it means most likely the corresponding features are also missing from the main sdk
     // we need to wire this up.
     public boolean useGatewayMode;
+    public boolean useThinClientMode;
 
     private volatile boolean isDisposed = false;
     public volatile String entityId;
@@ -85,6 +94,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile Map<String, Object> properties;
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
+    public volatile boolean isBarrierRequest = false;
     private volatile Duration responseTimeout;
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
@@ -181,7 +191,9 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.forceNameCacheRefresh = false;
         this.resourceType = resourceType;
         this.contentAsByteArray = toByteArray(byteBuffer);
-        this.headers = headers != null ? headers : new HashMap<>();
+        // Pre-size to 32 (threshold 24 at 0.75 load factor) to accommodate typical request
+        // headers (auth, content-type, consistency, session-token, partition-key, etc.) without resize.
+        this.headers = headers != null ? headers : new HashMap<>(32);
         this.activityId = UUIDs.nonBlockingRandomUUID();
         this.isFeed = false;
         this.isNameBased = isNameBased;
@@ -215,7 +227,9 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.operationType = operationType;
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
-        this.headers = headers != null ? headers : new HashMap<>();
+        // Pre-size to 32 (threshold 24 at 0.75 load factor) to accommodate typical request
+        // headers (auth, content-type, consistency, session-token, partition-key, etc.) without resize.
+        this.headers = headers != null ? headers : new HashMap<>(32);
         this.activityId = UUIDs.nonBlockingRandomUUID();
         this.isFeed = false;
 
@@ -406,7 +420,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         // only ever used for non Document operations
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             resource.serializeJsonToByteBuffer(
-                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                internalDefaultSerializer(),
                 null,
                 resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert)),
             headers,
@@ -598,7 +612,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
         ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
-            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER, // only used from test code
+            internalDefaultSerializer(), // only used from test code
             null,
             resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
@@ -737,7 +751,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String resourceFullName,
             ResourceType resourceType) {
         ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
-            DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER, // only used from test code
+            internalDefaultSerializer(), // only used from test code
             null,
             resourceType == ResourceType.Document && (operationType == OperationType.Create || operationType == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext,
@@ -954,6 +968,15 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
 
+    public boolean isExecuteStoredProcedureBasedRequest() {
+        return this.resourceType == ResourceType.StoredProcedure && this.operationType == OperationType.ExecuteJavaScript;
+    }
+
+    public boolean isAllVersionsAndDeletesChangeFeedMode() {
+        String aImHeader = this.headers.get(HttpConstants.HttpHeaders.A_IM);
+        return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM) && HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED.equals(aImHeader);
+    }
+
     public boolean isWritingToMaster() {
         return operationType.isWriteOperation() && resourceType.isMasterResource();
     }
@@ -1031,8 +1054,18 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     @Override
     public RxDocumentServiceRequest clone() {
+        // Deep-copy headers so availability-strategy / hedging clones do not share
+        // the same HashMap reference with their parent. The shared-reference pattern
+        // was previously safe-by-convention (assumption: no mutation after clone),
+        // but resolveEffectiveConsistencyHeaders mutates the map on every request,
+        // which races with concurrent hedged clones. A racing put can trigger HashMap
+        // resize and corrupt the map (lost inserts, null reads of unrelated keys).
+        // Same defensive-copy pattern already used for requestContext and
+        // faultInjectionRequestContext below.
+        Map<String, String> sourceHeaders = this.getHeaders();
+        Map<String, String> clonedHeaders = sourceHeaders != null ? new HashMap<>(sourceHeaders) : null;
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(),
-            this.resourceId, this.isNameBased, this.getResourceType(),this.getHeaders());
+            this.resourceId, this.isNameBased, this.getResourceType(), clonedHeaders);
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
@@ -1042,10 +1075,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setIsMedia(this.getIsMedia());
         rxDocumentServiceRequest.setOriginalSessionToken(this.getOriginalSessionToken());
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
+        rxDocumentServiceRequest.setAddressRefresh(this.isAddressRefresh(), this.shouldForceAddressRefresh());
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
-        rxDocumentServiceRequest.requestContext = this.requestContext;
+        rxDocumentServiceRequest.useThinClientMode = this.useThinClientMode;
         rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
         rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
         rxDocumentServiceRequest.setResourceAddress(this.resourceAddress);
@@ -1056,6 +1090,17 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.resourceId = this.resourceId;
         rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
         rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest = this.isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
+        rxDocumentServiceRequest.partitionKeyDefinition = this.partitionKeyDefinition;
+        rxDocumentServiceRequest.effectivePartitionKey = this.effectivePartitionKey;
+        rxDocumentServiceRequest.numberOfItemsInBatchRequest = this.numberOfItemsInBatchRequest;
+        rxDocumentServiceRequest.entityId = this.entityId;
+        rxDocumentServiceRequest.authorizationTokenType = this.authorizationTokenType;
+        rxDocumentServiceRequest.properties = this.properties != null ? new HashMap<>(this.properties) : null;
+        rxDocumentServiceRequest.throughputControlGroupName = this.throughputControlGroupName;
+        rxDocumentServiceRequest.intendedCollectionRidPassedIntoSDK = this.intendedCollectionRidPassedIntoSDK;
+        rxDocumentServiceRequest.isBarrierRequest = this.isBarrierRequest;
+        rxDocumentServiceRequest.responseTimeout = this.responseTimeout;
+        rxDocumentServiceRequest.httpTransportSerializer.set(this.httpTransportSerializer.get());
         return rxDocumentServiceRequest;
     }
 
@@ -1084,9 +1129,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else if (options instanceof RequestOptions) {
             return ((RequestOptions) options).getProperties();
         } else if (options instanceof CosmosQueryRequestOptions) {
-            return ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
+            return queryOptionsAccessor()
                 .getProperties((CosmosQueryRequestOptions) options);
         } else if (options instanceof CosmosChangeFeedRequestOptions) {
             return ModelBridgeInternal.getPropertiesFromChangeFeedRequestOptions(
@@ -1177,6 +1220,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         if (throughputBucket != null) {
             this.headers.put(HttpConstants.HttpHeaders.THROUGHPUT_BUCKET, throughputBucket.toString());
         }
+    }
+
+    public void setHubRegionProcessingOnly(boolean hubRegionProcessingOnly) {
+        this.headers.put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, Boolean.toString(hubRegionProcessingOnly));
     }
 
     public Duration getResponseTimeout() {

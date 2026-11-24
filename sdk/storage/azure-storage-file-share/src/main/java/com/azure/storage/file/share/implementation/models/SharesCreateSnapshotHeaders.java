@@ -23,12 +23,6 @@ public final class SharesCreateSnapshotHeaders {
     private String xMsSnapshot;
 
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The ETag property.
      */
     @Generated
@@ -45,6 +39,12 @@ public final class SharesCreateSnapshotHeaders {
      */
     @Generated
     private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
 
     /*
      * The Date property.
@@ -64,7 +64,6 @@ public final class SharesCreateSnapshotHeaders {
      */
     public SharesCreateSnapshotHeaders(HttpHeaders rawHeaders) {
         this.xMsSnapshot = rawHeaders.getValue(X_MS_SNAPSHOT);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -73,6 +72,7 @@ public final class SharesCreateSnapshotHeaders {
             this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -100,28 +100,6 @@ public final class SharesCreateSnapshotHeaders {
     @Generated
     public SharesCreateSnapshotHeaders setXMsSnapshot(String xMsSnapshot) {
         this.xMsSnapshot = xMsSnapshot;
-        return this;
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the SharesCreateSnapshotHeaders object itself.
-     */
-    @Generated
-    public SharesCreateSnapshotHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
         return this;
     }
 
@@ -195,6 +173,28 @@ public final class SharesCreateSnapshotHeaders {
     @Generated
     public SharesCreateSnapshotHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the SharesCreateSnapshotHeaders object itself.
+     */
+    @Generated
+    public SharesCreateSnapshotHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -15,6 +16,8 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryResult;
+import com.azure.cosmos.implementation.query.metrics.HybridSearchCumulativeSchedulingStopWatch;
+import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceType;
@@ -22,10 +25,13 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.hybridsearch.FullTextQueryStatistics;
 import com.azure.cosmos.implementation.query.hybridsearch.GlobalFullTextSearchQueryStatistics;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
+import com.azure.cosmos.models.CosmosFullTextScoreScope;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -47,13 +53,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQueryExecutionContextBase<Document> {
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor() {
+        return ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
-        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+    private static final Logger logger = LoggerFactory.getLogger(HybridSearchDocumentQueryExecutionContext.class);
 
     private static final String FORMATTABLE_TOTAL_DOCUMENT_COUNT = "{documentdb-formattablehybridsearchquery-totaldocumentcount}";
     private static final String FORMATTABLE_TOTAL_WORD_COUNT = "{documentdb-formattablehybridsearchquery-totalwordcount-%d}";
@@ -69,6 +77,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
     private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
     private Flux<HybridSearchQueryResult<Document>> hybridObservable;
     private Mono<GlobalFullTextSearchQueryStatistics> aggregatedGlobalStatistics;
+    private final SchedulingStopwatch hybridSearchSchedulingStopwatch;
 
     protected HybridSearchDocumentQueryExecutionContext(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -88,6 +97,10 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
         this.clientSideRequestStatistics = ConcurrentHashMap.newKeySet();
+
+        // Initialize the shared stopwatch for hybrid search timing
+        this.hybridSearchSchedulingStopwatch = new HybridSearchCumulativeSchedulingStopWatch();
+        this.hybridSearchSchedulingStopwatch.ready();
     }
 
     public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
@@ -130,26 +143,44 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         int initialPageSize,
         DocumentCollection collection) {
 
+        // Start the hybrid search cumulative stopwatch when search begins
+        this.hybridSearchSchedulingStopwatch.start();
 
         if (hybridSearchQueryInfo.getRequiresGlobalStatistics()) {
+            // When FullTextScoreScope is GLOBAL (default), use allFeedRanges for statistics.
+            // When LOCAL, use only targetFeedRanges for scoped statistics.
+            CosmosFullTextScoreScope scope = this.cosmosQueryRequestOptions.getFullTextScoreScope();
+            List<FeedRangeEpkImpl> statisticsTargetRanges =
+                scope == CosmosFullTextScoreScope.LOCAL
+                    ? targetFeedRanges
+                    : allFeedRanges;
+
+            if (scope == CosmosFullTextScoreScope.LOCAL && targetFeedRanges.size() == allFeedRanges.size()) {
+                logger.warn("LOCAL fullTextScoreScope is set but no partition key filter was specified; "
+                    + "statistics will be computed across all partitions, equivalent to GLOBAL scope.");
+            }
+
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
-            for (FeedRangeEpkImpl feedRangeEpk : allFeedRanges) {
+            for (FeedRangeEpkImpl feedRangeEpk : statisticsTargetRanges) {
                 partitionKeyRangeToContinuationToken.put(feedRangeEpk, null);
             }
-            super.initialize(collection,
+
+            List<DocumentProducer<Document>> globalStatsProducers = createProducers(
+                collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery())
-            );
+                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters()));
 
-            aggregatedGlobalStatistics = Flux.fromIterable(documentProducers)
+            aggregatedGlobalStatistics = Flux.fromIterable(globalStatsProducers)
                 .flatMap(producer -> producer.produceAsync()
                     .map(documentProducerFeedResponse -> {
+                        this.captureClientSideRequestStatistics(documentProducerFeedResponse.pageResult);
                         List<Document> results = documentProducerFeedResponse.pageResult.getResults();
                         return new GlobalFullTextSearchQueryStatistics(results.get(0));
                     }))
                 .collectList()
-                .map(this::aggregateStatistics);
+                .map(this::aggregateStatistics)
+                .cache();
         }
 
         hybridObservable = hybridSearch(targetFeedRanges, initialPageSize, collection);
@@ -165,17 +196,22 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         // Run component queries, and retrieve component query results.
         Flux<Document> componentQueryResults = getComponentQueryResults(targetFeedRanges, initialPageSize, collection, rewrittenQueryInfos);
 
-        // Coalesce the results on unique _rids, and sort it based on the _rid
-        Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults = coalesceAndSortResults(componentQueryResults);
+        // Deduplicate by encoded RID, then order by numeric document RID.
+        Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults =
+            coalesceAndSortResults(componentQueryResults).cache();
 
         // Compose component scores matrix, where each tuple is (score, index)
         Mono<List<List<ScoreTuple>>> componentScoresList = retrieveComponentScores(coalescedAndSortedResults, componentWeights);
 
-        // Compute Ranks
+        // Assign each result its 1-based sorted position, including equal component scores.
         Mono<List<List<Integer>>> ranks = computeRanks(componentScoresList);
 
         // Compute the RRF scores
-        return computeRRFScores(ranks, coalescedAndSortedResults, componentWeights);
+        return computeRRFScores(ranks, coalescedAndSortedResults, componentWeights)
+            .doFinally(signalType -> {
+                // Stop the hybrid search cumulative stopwatch when search completes
+                this.hybridSearchSchedulingStopwatch.stop();
+            });
     }
 
     @Override
@@ -206,9 +242,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             initialPageSize,
             continuationToken,
             top,
-            this.getOperationContextTextProvider());
+            this.getOperationContextTextProvider(),
+            this.hybridSearchSchedulingStopwatch);
     }
-
 
     @Override
     public Flux<FeedResponse<Document>> drainAsync(int maxPageSize) {
@@ -251,7 +287,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                 .window(maxPageSize).map(Flux::collectList)
                 .flatMap(resultListObs -> resultListObs, 1)
                 .map(hybridSearchQueryResults -> {
-                    FeedResponse<HybridSearchQueryResult<Document>> feedResponse = feedResponseAccessor.createFeedResponse(
+                    FeedResponse<HybridSearchQueryResult<Document>> feedResponse = feedResponseAccessor().createFeedResponse(
                         hybridSearchQueryResults,
                         headerResponse(tracker.getAndResetCharge()),
                         null
@@ -277,7 +313,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                         false,
                         false,
                         feedOfHybridSearchQueryResults.getCosmosDiagnostics());
-                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    diagAccessor().addClientSideDiagnosticsToFeed(
                         feedResponse.getCosmosDiagnostics(), clientSideRequestStatistics);
                     return feedResponse;
                 }).switchIfEmpty(Flux.defer(() -> {
@@ -289,16 +325,17 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                         false,
                         false,
                         null);
-                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                    diagAccessor().addClientSideDiagnosticsToFeed(
                         frp.getCosmosDiagnostics(), clientSideRequestStatistics);
                     return Flux.just(frp);
             }));
         }
     }
 
-    private static Flux<HybridSearchQueryResult<Document>> computeRRFScores(Mono<List<List<Integer>>> ranks,
-                                                                            Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults,
-                                                                            List<ComponentWeight> componentWeights) {
+    private static Flux<HybridSearchQueryResult<Document>> computeRRFScores(
+        Mono<List<List<Integer>>> ranks,
+        Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults,
+        List<ComponentWeight> componentWeights) {
         return ranks.zipWith(coalescedAndSortedResults)
             .map(tuple -> {
                 List<List<Integer>> ranksInternal = tuple.getT1();
@@ -311,8 +348,13 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                     }
                     results.get(index).setScore(rrfScore);
                 }
-                // Sort on the RRF scores to build the final result
-                results.sort(Comparator.comparing(HybridSearchQueryResult::getScore, Comparator.reverseOrder()));
+
+                // Fused scores and their numeric document RID tie-breaker are always descending.
+                results.sort((x, y) -> {
+                    int scoreComparison = Double.compare(y.getScore(), x.getScore());
+                    return scoreComparison != 0 ? scoreComparison
+                        : Long.compareUnsigned(y.getDocumentRid(), x.getDocumentRid());
+                });
                 return results;
             }).flatMapMany(Flux::fromIterable);
     }
@@ -330,24 +372,21 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             }
 
             for (int componentIndex = 0; componentIndex < componentScores.size(); componentIndex++) {
-                int rank = 1; // ranks are 1 based
                 for (int index = 0; index < componentScores.get(componentIndex).size(); index++) {
-                    // Identical scores should have the same rank
-                    if ((index > 0) && (componentScores.get(componentIndex).get(index).getScore() != componentScores.get(componentIndex).get(index - 1).getScore())) {
-                        rank += 1;
-                    }
                     int rankIndex = componentScores.get(componentIndex).get(index).getIndex();
-                    ranksInternal.get(componentIndex).set(rankIndex, rank);
+                    ranksInternal.get(componentIndex).set(rankIndex, index + 1);
                 }
             }
             return ranksInternal;
         });
     }
 
-    private static Mono<List<List<ScoreTuple>>> retrieveComponentScores(Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults, List<ComponentWeight> componentWeights) {
+    private static Mono<List<List<ScoreTuple>>> retrieveComponentScores(
+        Mono<List<HybridSearchQueryResult<Document>>> coalescedAndSortedResults, List<ComponentWeight> componentWeights) {
         return coalescedAndSortedResults.map(results -> {
             List<List<ScoreTuple>> componentScoresInternal = new ArrayList<>();
-            for (int i = 0; i < results.get(0).getComponentScores().size(); i++) {
+            // The plan defines the dimensions, even when the first row has no component scores.
+            for (int i = 0; i < componentWeights.size(); i++) {
                 componentScoresInternal.add(new ArrayList<>());
             }
             List<Double> undefinedComponentScores = new ArrayList<>();
@@ -365,32 +404,76 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                     componentScoresInternal.get(j).add(scoreTuple);
                 }
             }
+
+            // Component ties follow the same query-plan direction as their scores.
             for (int i = 0; i < componentScoresInternal.size(); i++) {
-                final int componentIndex = i;
-                componentScoresInternal.get(i).sort((x,y) ->
-                    componentWeights.get(componentIndex).getComparator().compare(x.getScore(), y.getScore()));
+                ComponentWeight componentWeight = componentWeights.get(i);
+                componentScoresInternal.get(i).sort((x, y) -> {
+                    int scoreComparison = componentWeight.getComparator().compare(x.getScore(), y.getScore());
+                    return scoreComparison != 0 ? scoreComparison
+                        : componentWeight.comparisonFactor * Long.compareUnsigned(
+                            results.get(x.getIndex()).getDocumentRid(), results.get(y.getIndex()).getDocumentRid());
+                });
             }
             return componentScoresInternal;
         });
     }
 
+    /**
+     * Creates document producers for the given feed ranges and query, returning them as an isolated
+     * local list. This avoids relying on the shared mutable {@code documentProducers} field in
+     * {@link ParallelDocumentQueryExecutionContextBase}, preventing race conditions when multiple
+     * logical operations (global statistics, component queries) each need their own producer set.
+     */
+    private List<DocumentProducer<Document>> createProducers(
+        DocumentCollection collection,
+        Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap,
+        int initialPageSize,
+        SqlQuerySpec querySpecForInit) {
+
+        documentProducers = new ArrayList<>();
+        super.initialize(collection, feedRangeToContinuationTokenMap, initialPageSize, querySpecForInit);
+        List<DocumentProducer<Document>> result = new ArrayList<>(documentProducers);
+        documentProducers = new ArrayList<>();
+        return result;
+    }
+
     private Flux<Document> getComponentQueryResults(List<FeedRangeEpkImpl> targetFeedRanges, int initialPageSize, DocumentCollection collection, Flux<QueryInfo> rewrittenQueryInfos) {
-        return rewrittenQueryInfos.flatMap(queryInfo -> {
+        // Use concatMap to serialize component query initialization. Each component query still
+        // executes its partition queries in parallel via the inner flatMap.
+        return rewrittenQueryInfos.concatMap(queryInfo -> {
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
             for (FeedRangeEpkImpl feedRangeEpk : targetFeedRanges) {
-                partitionKeyRangeToContinuationToken.put(feedRangeEpk,
-                    null);
+                partitionKeyRangeToContinuationToken.put(feedRangeEpk, null);
             }
-            documentProducers = new ArrayList<>();
-            super.initialize(collection,
+
+            List<DocumentProducer<Document>> componentProducers = createProducers(
+                collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(queryInfo.getRewrittenQuery()));
+                new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
-            return Flux.fromIterable(documentProducers)
+            return Flux.fromIterable(componentProducers)
                 .flatMap(DocumentProducer::produceAsync)
+                .doOnNext(response -> this.captureClientSideRequestStatistics(response.pageResult))
                 .flatMap(response -> Flux.fromIterable(response.pageResult.getResults()));
         });
+    }
+
+    private void captureClientSideRequestStatistics(FeedResponse<?> response) {
+        if (response == null || response.getCosmosDiagnostics() == null) {
+            return;
+        }
+
+        CosmosDiagnostics diagnostics = response.getCosmosDiagnostics();
+        Collection<ClientSideRequestStatistics> requestStatistics =
+            diagAccessor().getFeedResponseDiagnostics(diagnostics) != null
+                ? diagAccessor().getClientSideRequestStatisticsForQueryPipelineAggregations(diagnostics)
+                : diagAccessor().getClientSideRequestStatistics(diagnostics);
+
+        if (requestStatistics != null && !requestStatistics.isEmpty()) {
+            this.clientSideRequestStatistics.addAll(requestStatistics);
+        }
     }
 
     private Flux<QueryInfo> retrieveRewrittenQueryInfos(List<QueryInfo> componentQueryInfos) {
@@ -425,7 +508,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         });
     }
 
-    private Mono<List<HybridSearchQueryResult<Document>>> coalesceAndSortResults(Flux<Document> componentQueryResults) {
+    private static Mono<List<HybridSearchQueryResult<Document>>> coalesceAndSortResults(Flux<Document> componentQueryResults) {
         return componentQueryResults.collectList()
             .map(results -> {
                 Map<String, HybridSearchQueryResult<Document>> uniqueDocuments = new LinkedHashMap<>();
@@ -435,9 +518,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                     uniqueDocuments.putIfAbsent(rid, result);
                 }
 
-                // Sort by _rid
+                // RID identity remains encoded; only ordering uses the cached document component.
                 List<HybridSearchQueryResult<Document>> coalescedResults = new ArrayList<>(uniqueDocuments.values());
-                coalescedResults.sort(Comparator.comparing(HybridSearchQueryResult::getRid));
+                coalescedResults.sort((x, y) -> Long.compareUnsigned(y.getDocumentRid(), x.getDocumentRid()));
                 return coalescedResults;
             });
     }
@@ -497,7 +580,7 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         return aggregatedStats;
     }
 
-    private List<ComponentWeight> retrieveComponentWeights(List<Double> componentWeightList, List<QueryInfo> componentQueryInfos) {
+    private static List<ComponentWeight> retrieveComponentWeights(List<Double> componentWeightList, List<QueryInfo> componentQueryInfos) {
         boolean useDefaultComponentWeight = componentWeightList == null || componentWeightList.isEmpty();
         List<ComponentWeight> componentWeights = new ArrayList<>();
         for (int i=0;i<componentQueryInfos.size();i++) {
@@ -512,11 +595,13 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
     private static class ComponentWeight {
         private final Double weight;
         private final Comparator<Double> comparator;
+        private final int comparisonFactor;
 
         public ComponentWeight(Double weight, SortOrder sortOrder) {
             this.weight = weight;
 
-            int comparisonFactor = (sortOrder == SortOrder.Ascending) ? 1 : -1;
+            // Direction comes from the plan, not the (potentially normalized) weight.
+            this.comparisonFactor = (sortOrder == SortOrder.Ascending) ? 1 : -1;
             this.comparator = (x, y) -> comparisonFactor * Double.compare(x, y);
         }
 

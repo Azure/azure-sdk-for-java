@@ -14,20 +14,20 @@ public final class NsgCidrTests {
     public void testDeserialize() throws Exception {
         NsgCidr model = BinaryData
             .fromString(
-                "{\"source\":\"eopzfqrhhuaopp\",\"destinationPortRange\":{\"min\":1290719044,\"max\":646649620}}")
+                "{\"source\":\"ievseotgqrllt\",\"destinationPortRange\":{\"min\":1136277704,\"max\":1887219641}}")
             .toObject(NsgCidr.class);
-        Assertions.assertEquals("eopzfqrhhuaopp", model.source());
-        Assertions.assertEquals(1290719044, model.destinationPortRange().min());
-        Assertions.assertEquals(646649620, model.destinationPortRange().max());
+        Assertions.assertEquals("ievseotgqrllt", model.source());
+        Assertions.assertEquals(1136277704, model.destinationPortRange().min());
+        Assertions.assertEquals(1887219641, model.destinationPortRange().max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NsgCidr model = new NsgCidr().withSource("eopzfqrhhuaopp")
-            .withDestinationPortRange(new PortRange().withMin(1290719044).withMax(646649620));
+        NsgCidr model = new NsgCidr().withSource("ievseotgqrllt")
+            .withDestinationPortRange(new PortRange().withMin(1136277704).withMax(1887219641));
         model = BinaryData.fromObject(model).toObject(NsgCidr.class);
-        Assertions.assertEquals("eopzfqrhhuaopp", model.source());
-        Assertions.assertEquals(1290719044, model.destinationPortRange().min());
-        Assertions.assertEquals(646649620, model.destinationPortRange().max());
+        Assertions.assertEquals("ievseotgqrllt", model.source());
+        Assertions.assertEquals(1136277704, model.destinationPortRange().min());
+        Assertions.assertEquals(1887219641, model.destinationPortRange().max());
     }
 }

@@ -3,6 +3,15 @@
 
 package com.azure.data.appconfiguration.implementation;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.junit.jupiter.api.Test;
+
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -15,15 +24,8 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.Test;
+
 import reactor.core.publisher.Mono;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for Sync Token
@@ -200,6 +202,40 @@ public class SyncTokenPolicyTest {
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
+        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
+    }
+
+    @SyncAsyncTest
+    public void syncTokenPolicyWithAfterParameterTest() throws MalformedURLException {
+        final SyncTokenPolicy syncTokenPolicy = new SyncTokenPolicy();
+        final String afterValue = "abcdefg";
+        final String urlWithAfter = "https://example.azconfig.io/kv?api-version=2023-11-01&After=" + afterValue
+            + "&tags=tag3%3Dvalue3&key=*&label=dev&$Select=key&tags=tag2%3Dvalue2&tags=tag1%3Dvalue1";
+
+        syncTokenPolicy.updateSyncToken(SYNC_TOKEN_VALUE + ";sn=1");
+
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            final String headerValue = context.getHttpRequest().getHeaders().getValue(SYNC_TOKEN);
+            final String requestUrl = context.getHttpRequest().getUrl().toString();
+
+            // Verify sync token is present in header
+            assertEquals(SYNC_TOKEN_VALUE, headerValue);
+            // Verify the URL contains the "After" parameter with correct value
+            assertTrue(requestUrl.contains("After=" + afterValue));
+            // Verify the URL contains other expected parameters
+            assertTrue(requestUrl.contains("api-version=2023-11-01"));
+            assertTrue(requestUrl.contains("key=*"));
+            assertTrue(requestUrl.contains("label=dev"));
+            assertTrue(requestUrl.contains("$Select=key"));
+
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(syncTokenPolicy, auditorPolicy)
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, urlWithAfter);
         SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));
     }
 

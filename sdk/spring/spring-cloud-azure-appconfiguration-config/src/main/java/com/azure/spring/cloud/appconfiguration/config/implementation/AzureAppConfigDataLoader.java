@@ -1,0 +1,467 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.appconfiguration.config.implementation;
+
+import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.springframework.boot.bootstrap.BootstrapRegistry.InstanceSupplier;
+import org.springframework.boot.context.config.ConfigData;
+import org.springframework.boot.context.config.ConfigDataLoader;
+import org.springframework.boot.context.config.ConfigDataLoaderContext;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.boot.logging.DeferredLog;
+import org.springframework.boot.logging.DeferredLogFactory;
+import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.util.StringUtils;
+
+import com.azure.core.util.Context;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
+
+/**
+ * Azure App Configuration data loader implementation for Spring Boot's ConfigDataLoader.
+ *
+ * @since 6.0.0
+ */
+
+public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfigDataResource> {
+
+    /**
+     * Logger instance for this class.
+     */
+    private static Log logger = new DeferredLog();
+
+    /**
+     * The Azure App Configuration data resource being processed.
+     */
+    private AzureAppConfigDataResource resource;
+
+    /**
+     * Factory for creating replica clients to connect to Azure App Configuration.
+     */
+    private AppConfigurationReplicaClientFactory replicaClientFactory;
+
+    /**
+     * Factory for creating Key Vault clients for secret resolution.
+     */
+    private AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
+
+    /**
+     * State holder for managing configuration and feature flag states.
+     */
+    private StateHolder storeState;
+
+    /**
+     * Client for handling feature flag operations.
+     */
+    private FeatureFlagClient featureFlagClient;
+
+    /**
+     * Request context for tracking operations and telemetry.
+     */
+    private Context requestContext;
+
+    /**
+     * Application start time for calculating delays.
+     */
+    private static final Instant START_DATE = Instant.now();
+
+    /**
+     * Pre-kill time in seconds for delaying exceptions during startup.
+     */
+    private static final Integer PREKILL_TIME = 5;
+
+    /**
+     * Fixed backoff intervals for startup retries: (elapsed_time_threshold_seconds, backoff_duration_seconds). Defines
+     * fixed backoff durations based on how long startup has been attempting.
+     */
+    private static final int[][] STARTUP_BACKOFF_INTERVALS = {
+        { 100, 5 }, // 0-100 seconds elapsed: 5 second backoff
+        { 200, 10 }, // 100-200 seconds elapsed: 10 second backoff
+        { 600, 30 } // 200-600 seconds elapsed: 30 second backoff
+    };
+
+    /**
+     * Constructs a new AzureAppConfigDataLoader with the specified logger factory.
+     *
+     * @param logFactory the deferred log factory for creating loggers
+     */
+    public AzureAppConfigDataLoader(DeferredLogFactory logFactory) {
+        logger = logFactory.getLog(getClass());
+    }
+
+    /**
+     * Loads configuration data from Azure App Configuration service.
+     *
+     * @param context the config data loader context
+     * @param resource the Azure App Configuration data resource
+     * @return ConfigData containing loaded property sources
+     * @throws IOException if an I/O error occurs during loading
+     * @throws ConfigDataResourceNotFoundException if the configuration resource is not found
+     */
+    @Override
+    public ConfigData load(ConfigDataLoaderContext context, AzureAppConfigDataResource resource)
+        throws IOException, ConfigDataResourceNotFoundException {
+        this.resource = resource;
+
+        // Get StateHolder from BootstrapContext (registered by AzureAppConfigBootstrapRegistrar)
+        storeState = context.getBootstrapContext().get(StateHolder.class);
+        storeState.setNextForcedRefresh(resource.getRefreshInterval());
+
+        if (context.getBootstrapContext().isRegistered(FeatureFlagClient.class)) {
+            featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
+        } else {
+            featureFlagClient = new FeatureFlagClient();
+            context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class,
+                InstanceSupplier.from(() -> featureFlagClient));
+        }
+        featureFlagClient.resetTelemetry();
+
+        List<EnumerablePropertySource<?>> sourceList = new ArrayList<>();
+        if (resource.isConfigStoreEnabled()) {
+            replicaClientFactory = context.getBootstrapContext().get(AppConfigurationReplicaClientFactory.class);
+            keyVaultClientFactory = context.getBootstrapContext().get(AppConfigurationKeyVaultClientFactory.class);
+
+            Exception loadException = loadConfiguration(sourceList);
+            if (loadException != null) {
+                if (resource.isRefresh()) {
+                    throw new RuntimeException(
+                        "Failed to refresh property sources for " + resource.getEndpoint(), loadException);
+                }
+                logger.error("Azure App Configuration failed to load configuration during startup for store: "
+                    + resource.getEndpoint() + ". Application cannot start without required configuration.");
+                failedToGeneratePropertySource(loadException);
+            }
+        }
+
+        if (!featureFlagClient.getFeatureFlags().isEmpty()) {
+            sourceList.add(new AppConfigurationFeatureManagementPropertySource(featureFlagClient));
+        }
+        return new ConfigData(sourceList);
+    }
+
+    /**
+     * Loads configuration from Azure App Configuration with replica failover support.
+     *
+     * @param sourceList the list to populate with property sources
+     * @return the exception if loading failed, null on success
+     */
+    private Exception loadConfiguration(List<EnumerablePropertySource<?>> sourceList) {
+        PushNotification notification = resource.getMonitoring().getPushNotification();
+        boolean pushRefresh = (notification.getPrimaryToken() != null
+            && StringUtils.hasText(notification.getPrimaryToken().getName()))
+            || (notification.getSecondaryToken() != null
+                && StringUtils.hasText(notification.getSecondaryToken().getName()));
+
+        requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH, pushRefresh);
+
+        // During refresh, attempt once without retry
+        if (resource.isRefresh()) {
+            replicaClientFactory.findActiveClients(resource.getEndpoint());
+            return attemptLoadFromClients(sourceList, null);
+        }
+
+        // During startup, retry with backoff until deadline
+        Instant startTime = Instant.now();
+        Instant deadline = startTime.plus(resource.getStartupTimeout());
+        Exception lastException = null;
+        int postFixedWindowAttempts = 0;
+
+        while (Instant.now().isBefore(deadline)) {
+            replicaClientFactory.findActiveClients(resource.getEndpoint());
+            lastException = attemptLoadFromClients(sourceList, lastException);
+
+            if (lastException == null) {
+                return null; // Success
+            }
+
+            // All clients failed, use fixed backoff based on elapsed time
+            if (Instant.now().isBefore(deadline)) {
+                long elapsedSeconds = Instant.now().getEpochSecond() - startTime.getEpochSecond();
+                Long backoffSeconds = getBackoffDuration(elapsedSeconds);
+
+                // If backoff is null, elapsed time exceeds fixed intervals - use exponential backoff
+                if (backoffSeconds == null) {
+                    postFixedWindowAttempts++;
+                    // Convert nanoseconds to seconds
+                    backoffSeconds = BackoffTimeCalculator.calculateBackoff(postFixedWindowAttempts) / 1_000_000_000L;
+                }
+
+                long clientWaitMillis = replicaClientFactory.getMillisUntilNextClientAvailable(resource.getEndpoint());
+                long backoffMillis = clientWaitMillis > 0 ? clientWaitMillis : backoffSeconds * 1000;
+                long remainingMillis = Duration.between(Instant.now(), deadline).toMillis();
+                long waitMillis = Math.min(backoffMillis, remainingMillis);
+
+                if (waitMillis > 0) {
+                    logger.debug("All replicas in backoff for store: " + resource.getEndpoint()
+                        + ". Waiting " + waitMillis + "ms before retry (elapsed: " + elapsedSeconds + "s).");
+                    try {
+                        Thread.sleep(waitMillis);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return lastException;
+                    }
+                }
+            }
+        }
+        return lastException != null ? lastException
+            : new IllegalStateException("Azure App Configuration startup timeout expired for store: "
+                + resource.getEndpoint());
+    }
+
+    /**
+     * Gets the backoff duration based on elapsed time since startup began.
+     *
+     * @param elapsedSeconds the number of seconds elapsed since startup began
+     * @return the backoff duration in seconds, or null if elapsed time exceeds all thresholds
+     */
+    private Long getBackoffDuration(long elapsedSeconds) {
+        for (int[] interval : STARTUP_BACKOFF_INTERVALS) {
+            if (elapsedSeconds < interval[0]) {
+                return (long) interval[1];
+            }
+        }
+        // Return null when elapsed time exceeds all defined thresholds
+        return null;
+    }
+
+    /**
+     * Attempts to load configuration from available clients.
+     *
+     * @param sourceList the list to populate with property sources
+     * @param previousException the last startup failure to preserve when no clients are available
+     * @return the exception if loading failed or no clients were available, null on success
+     */
+    private Exception attemptLoadFromClients(List<EnumerablePropertySource<?>> sourceList, Exception previousException) {
+        boolean reloadFailed = false;
+        Exception lastException = previousException != null ? previousException
+            : new IllegalStateException("No Azure App Configuration clients available for store: "
+                + resource.getEndpoint());
+        AppConfigurationReplicaClient client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), true);
+        List<EnumerablePropertySource<?>> tempSourceList = new ArrayList<>();
+
+        while (client != null) {
+            tempSourceList.clear();
+            final AppConfigurationReplicaClient currentClient = client;
+
+            if (reloadFailed && !AppConfigurationRefreshUtil.refreshStoreCheck(currentClient,
+                replicaClientFactory.findOriginForEndpoint(currentClient.getEndpoint()), requestContext, storeState)) {
+                client = replicaClientFactory.getNextActiveClient(resource.getEndpoint(), false);
+                continue;
+            }
+
+            try {
+                tempSourceList.addAll(createSettings(currentClient));
+                List<WatchedConfigurationSettings> featureFlags = createFeatureFlags(currentClient);
+
+                AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
+
+                storeState.setStateFeatureFlag(resource.getEndpoint(), featureFlags,
+                    monitoring.getFeatureFlagRefreshInterval());
+
+                if (monitoring.isEnabled()) {
+                    setupMonitoringState(currentClient, monitoring);
+                }
+
+                storeState.setLoadState(resource.getEndpoint(), true);
+                sourceList.addAll(tempSourceList);
+                return null; // Success
+            } catch (AppConfigurationStatusException e) {
+                reloadFailed = true;
+                lastException = e;
+                client = handleReplicaFailure(currentClient, "status exception", e);
+            } catch (Exception e) {
+                lastException = e;
+                client = handleReplicaFailure(currentClient, "exception", e);
+            }
+        }
+
+        return lastException;
+    }
+
+    /**
+     * Sets up the monitoring state based on the configuration.
+     *
+     * @param client the replica client
+     * @param monitoring the monitoring configuration
+     * @throws Exception if setting up monitoring fails
+     */
+    private void setupMonitoringState(AppConfigurationReplicaClient client, AppConfigurationStoreMonitoring monitoring)
+        throws Exception {
+        if (monitoring.getTriggers().isEmpty()) {
+            // Use watched configuration settings for refresh
+            List<WatchedConfigurationSettings> watchedConfigurationSettingsList = getWatchedConfigurationSettings(
+                client);
+            storeState.setState(resource.getEndpoint(), Collections.emptyList(),
+                watchedConfigurationSettingsList, monitoring.getRefreshInterval());
+            return;
+        }
+        // Use traditional watch key monitoring
+        List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
+            .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(), requestContext))
+            .toList();
+
+        storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
+    }
+
+    /**
+     * Handles a replica failure by backing off the client and getting the next available replica.
+     *
+     * @param client the failed client
+     * @param exceptionType a description of the exception type
+     * @param exception the exception that occurred
+     * @return the next available client, or null if none available
+     */
+    private AppConfigurationReplicaClient handleReplicaFailure(AppConfigurationReplicaClient client,
+        String exceptionType, Exception exception) {
+        replicaClientFactory.backoffClient(resource.getEndpoint(), client.getEndpoint());
+        AppConfigurationReplicaClient nextClient = replicaClientFactory.getNextActiveClient(resource.getEndpoint(),
+            false);
+
+        if (nextClient != null) {
+            nextClient.getTracingInfo().setFailoverRequest();
+        }
+
+        String scenario = resource.isRefresh() ? "refresh" : "startup";
+        String nextAction = nextClient != null ? "Trying next replica." : "No more replicas available.";
+        logger.warn("Azure App Configuration replica " + client.getEndpoint()
+            + " failed during " + scenario + " with " + exceptionType + ". "
+            + nextAction + " Store: " + resource.getEndpoint(), exception);
+
+        return nextClient;
+    }
+
+    /**
+     * Handles failed property source generation when all replicas fail during application startup.
+     *
+     * @param e the exception that caused the failure
+     * @throws RuntimeException always thrown to indicate the startup failure
+     */
+    private void failedToGeneratePropertySource(Exception e) {
+        logger.error("Configuration loading failed during application startup from Azure App Configuration store "
+            + resource.getEndpoint() + ". Application cannot start without required configuration.");
+        delayException();
+        throw new RuntimeException("Failed to generate property sources for " + resource.getEndpoint(), e);
+    }
+
+    /**
+     * Creates a new set of AppConfigurationPropertySources, 1 per Label.
+     *
+     * @param client client for connecting to App Configuration
+     * @return a list of AppConfigurationPropertySources
+     * @throws Exception creating a property source failed
+     */
+    private List<AppConfigurationPropertySource> createSettings(AppConfigurationReplicaClient client)
+        throws Exception {
+        List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
+        List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
+        List<String> profiles = resource.getProfiles().getActive();
+
+        for (AppConfigurationKeyValueSelector selectedKeys : selects) {
+            AppConfigurationApplicationSettingPropertySource propertySource;
+
+            if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
+                propertySource = new AppConfigurationSnapshotPropertySource(
+                    selectedKeys.getSnapshotName() + "/" + resource.getEndpoint(), client, keyVaultClientFactory,
+                    selectedKeys.getSnapshotName(), featureFlagClient);
+            } else {
+                propertySource = new AppConfigurationApplicationSettingPropertySource(
+                    selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
+                    selectedKeys.getTagsFilter(), featureFlagClient);
+            }
+            propertySource.initProperties(resource.getTrimKeyPrefix(), requestContext);
+            sourceList.add(propertySource);
+        }
+        return sourceList;
+    }
+
+    /**
+     * Creates a list of feature flags from Azure App Configuration.
+     *
+     * @param client client for connecting to App Configuration
+     * @return a list of WatchedConfigurationSettings
+     * @throws Exception creating feature flags failed
+     */
+    private List<WatchedConfigurationSettings> createFeatureFlags(AppConfigurationReplicaClient client)
+        throws Exception {
+        List<WatchedConfigurationSettings> featureFlagWatchKeys = new ArrayList<>();
+        List<String> profiles = resource.getProfiles().getActive();
+
+        for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
+            List<WatchedConfigurationSettings> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
+                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles),
+                selectedKeys.getTagsFilter(), requestContext);
+            featureFlagWatchKeys.addAll(storesFeatureFlags);
+        }
+
+        return featureFlagWatchKeys;
+    }
+
+    /**
+     * Creates a list of watched configuration settings for configuration settings from Azure App Configuration. This is
+     * used for collection-based refresh monitoring as an alternative to individual watch keys.
+     *
+     * @param client client for connecting to App Configuration
+     * @return a list of WatchedConfigurationSettings for configuration settings
+     * @throws Exception creating watched configuration settings failed
+     */
+    private List<WatchedConfigurationSettings> getWatchedConfigurationSettings(AppConfigurationReplicaClient client)
+        throws Exception {
+        List<WatchedConfigurationSettings> watchedConfigurationSettingsList = new ArrayList<>();
+        List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
+        List<String> profiles = resource.getProfiles().getActive();
+
+        for (AppConfigurationKeyValueSelector selectedKeys : selects) {
+            // Skip snapshots - they don't support watched configuration settings
+            if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
+                continue;
+            }
+
+            // Create watched configuration settings for each label
+            for (String label : selectedKeys.getLabelFilter(profiles)) {
+                SettingSelector settingSelector = new SettingSelector()
+                    .setKeyFilter(selectedKeys.getKeyFilter() + "*")
+                    .setLabelFilter(label);
+
+                if (selectedKeys.getTagsFilter() != null && !selectedKeys.getTagsFilter().isEmpty()) {
+                    settingSelector.setTagsFilter(selectedKeys.getTagsFilter());
+                }
+
+                WatchedConfigurationSettings watchedConfigurationSettings = client.listSettingsByPage(settingSelector,
+                    requestContext);
+                watchedConfigurationSettingsList.add(watchedConfigurationSettings);
+            }
+        }
+
+        return watchedConfigurationSettingsList;
+    }
+
+    /**
+     * Introduces a delay before throwing exceptions during startup to prevent fast crash loops.
+     */
+    private void delayException() {
+        Instant currentDate = Instant.now();
+        Instant preKillTime = START_DATE.plusSeconds(PREKILL_TIME);
+        if (currentDate.isBefore(preKillTime)) {
+            long diffInMillies = Math.abs(preKillTime.toEpochMilli() - currentDate.toEpochMilli());
+            try {
+                Thread.sleep(diffInMillies);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Restore interrupted status
+            }
+        }
+    }
+}

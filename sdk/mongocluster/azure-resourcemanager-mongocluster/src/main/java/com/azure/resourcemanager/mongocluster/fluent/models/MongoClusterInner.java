@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Represents a mongo cluster resource.
+ * Represents a DocumentDB cluster resource.
  */
 @Fluent
 public final class MongoClusterInner extends Resource {
@@ -151,20 +151,6 @@ public final class MongoClusterInner extends Resource {
     public MongoClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
-        }
     }
 
     /**

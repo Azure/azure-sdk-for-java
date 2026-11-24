@@ -11,6 +11,9 @@ parameters:
   - name: RunLinting
     type: boolean
     default: false
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: ContinueOnError
     type: boolean
     default: false
@@ -19,7 +22,6 @@ parameters:
     default: client
 
 steps:
-  # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
   - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Build and Run SpotBugs and Checkstyle'
@@ -38,7 +40,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
     continueOnError: ${{ parameters.ContinueOnError }}
-    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+    condition: or(${{ parameters.IsLatestNonLtsJdk }}, and(${{ parameters.RunLinting }}, succeeded()))
 
   - task: PowerShell@2
     inputs:
@@ -48,7 +50,7 @@ steps:
       workingDirectory: $(Pipeline.Workspace)
     displayName: 'Generate Linting Reports'
     continueOnError: ${{ parameters.ContinueOnError }}
-    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+    condition: or(${{ parameters.IsLatestNonLtsJdk }}, and(${{ parameters.RunLinting }}, succeeded()))
 
   - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
@@ -68,4 +70,4 @@ steps:
       ${{ else }}:
         goals: 'javadoc:jar codesnippet:verify-codesnippet spotless:check'
     continueOnError: ${{ parameters.ContinueOnError }}
-    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+    condition: or(${{ parameters.IsLatestNonLtsJdk }}, and(${{ parameters.RunLinting }}, succeeded()))

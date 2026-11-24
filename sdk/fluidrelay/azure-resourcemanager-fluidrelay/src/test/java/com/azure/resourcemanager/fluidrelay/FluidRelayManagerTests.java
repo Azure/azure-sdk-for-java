@@ -8,12 +8,13 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.fluidrelay.models.FluidRelayServer;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
@@ -32,7 +33,7 @@ public class FluidRelayManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
@@ -81,7 +82,15 @@ public class FluidRelayManagerTests extends TestProxyTestBase {
             Assertions.assertTrue(fluidRelayManager.fluidRelayServers().list().stream().count() > 0);
         } finally {
             if (server != null) {
-                fluidRelayManager.fluidRelayServers().deleteById(server.id());
+                try {
+                    fluidRelayManager.fluidRelayServers().deleteById(server.id());
+                } catch (ManagementException e) {
+                    if (e.getResponse() != null && e.getResponse().getStatusCode() == 202) {
+                        System.err.println("Warning: Fluid Relay delete was accepted but the SDK rejected HTTP 202.");
+                    } else {
+                        throw e;
+                    }
+                }
             }
         }
     }

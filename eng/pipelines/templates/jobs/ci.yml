@@ -40,6 +40,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: BuildOptions
+    type: string
+    default: ''
   - name: TestGoals
     type: string
     default: $(TestGoals)
@@ -52,6 +55,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: IsLatestNonLtsJdk
+    type: boolean
+    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -79,7 +85,7 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
-    
+
     # Only run CG and codeql on internal build job
     ${{ if eq(variables['System.TeamProject'], 'internal') }}:
       templateContext:
@@ -87,9 +93,14 @@ jobs:
           componentgovernance:
             enabled: true
           codeql:
-            binaryLanguages: java # Need to specify the language because we clone after the codeql initialize step
+            binaryLanguages: java
             compiled:
               enabled: true
+          sbom:
+            ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+              buildComponentPath: $(Build.SourcesDirectory)/sdk
+            ${{ else }}:
+              buildComponentPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
 
     pool:
       name: $(LINUXPOOL)
@@ -97,23 +108,34 @@ jobs:
       os: linux
 
     steps:
+      # Fail fast if this is a manual release build but no packages were selected.
+      # When manually triggering the pipeline, at least one release_* parameter must be checked.
+      - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual'), eq(length(parameters.ReleaseArtifacts), 0)) }}:
+        - pwsh: |
+            Write-Host "##vso[task.logissue type=error]No packages selected for release. When manually queuing this pipeline, please select at least one package by checking the appropriate package-name parameter(s)."
+            exit 1
+          displayName: 'Validate: at least one package is selected for release'
+
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths:
-              - '**/*.xml'
-              - '**/*.md'
-              - '**/ci*.yml' # necessary for save-package-properties.yml
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
+        - checkout: self
+          path: s
+          fetchFilter: tree:0
+          fetchDepth: 0
+          fetchTags: ${{ parameters.TestPipeline }}
+          sparseCheckoutPatterns: /* !/*/ /eng /.config **/*.xml **/*.md **/ci*.yml !sdk/**/test-recordings !sdk/**/session-records
+          env:
+            AGENT_SOURCE_CHECKOUT_QUIET: 'true'
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build'
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
+
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
       - task: UsePythonVersion@0
         displayName: 'Use Python $(PythonVersion)'
@@ -137,7 +159,6 @@ jobs:
         - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
           parameters:
             Paths: $(SparseCheckoutDirectories)
-            SkipCheckoutNone: true
 
       - ${{ parameters.PreBuildSteps }}
 
@@ -146,11 +167,15 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+      - ${{ if eq(parameters.TestPipeline, true) }}:
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            Artifacts:
+              - ${{ each artifact in parameters.ReleaseArtifacts }}:
+                - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                  - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
 
       # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
       # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
@@ -159,6 +184,7 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
           parameters:
             ServiceDirectory: ${{parameters.ServiceDirectory}}
+            Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - task: PowerShell@2
         displayName: Setup Dev versioning
@@ -179,10 +205,21 @@ jobs:
               -ServiceDirectory ${{parameters.ServiceDirectory}}
               -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
               -AddDevVersion
+              -artifactList @('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Select-Object -ExpandProperty name)
             pwsh: true
             workingDirectory: $(Pipeline.Workspace)
           displayName: Update package properties with dev version
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+          parameters:
+            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+
+      - task: PipAuthenticate@1
+        displayName: 'Pip Authenticate to Azure Artifacts'
+        inputs:
+          artifactFeeds: 'public/azure-sdk-for-python'
 
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
@@ -260,18 +297,23 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
-          Artifacts: ${{parameters.ReleaseArtifacts}}
+          PackageInfoFiles:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
+          PackageInfoFiles:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+    timeoutInMinutes: 120
 
     pool:
       name: $(LINUXPOOL)
@@ -287,15 +329,14 @@ jobs:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-          parameters:
-            Paths:
-              - '**/*.xml'
-              - '**/*.md'
-              - '**/*.yml'
-              - '.vscode/cspell.json'
-              - '!sdk/**/test-recordings'
-              - '!sdk/**/session-records'
+        - checkout: self
+          path: s
+          fetchFilter: tree:0
+          fetchDepth: 0
+          fetchTags: ${{ parameters.TestPipeline }}
+          sparseCheckoutPatterns: /* !/*/ /eng /.config **/*.xml **/*.md **/*.yml .vscode/cspell.json !sdk/**/test-recordings !sdk/**/session-records
+          env:
+            AGENT_SOURCE_CHECKOUT_QUIET: 'true'
 
       - task: PowerShell@2
         displayName: 'Verify versions in POM files'
@@ -331,27 +372,26 @@ jobs:
         - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
           parameters:
             Paths: $(SparseCheckoutDirectories)
-            SkipCheckoutNone: true
 
-      - template: /eng/common/pipelines/templates/steps/check-spelling.yml
-        parameters:
-          CspellConfigPath: .vscode/cspell.json
-          ContinueOnError: false
+      - task: UseNode@1
+        inputs:
+          version: 22.x
+        displayName: Use Node.js 22.x
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+      # Authenticate npm to Azure Artifacts before any npm-backed Analyze steps run.
+      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
         parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+          npmrcPath: $(Agent.TempDirectory)/analyze-job/.npmrc
 
-      - template: /eng/common/pipelines/templates/steps/verify-links.yml
-        parameters:
-          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: ''
-            Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-            Directory: sdk/${{ parameters.ServiceDirectory }}
-          CheckLinkGuidance: $true
+      - ${{ if eq(parameters.TestPipeline, true) }}:
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            Artifacts:
+              - ${{ each artifact in parameters.ReleaseArtifacts }}:
+                - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                  - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
 
       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
         # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below and
@@ -380,39 +420,24 @@ jobs:
         parameters:
           ServiceDirectories: $(PRServiceDirectories)
 
-      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+      # Use BasePathLength of 30 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
         parameters:
           SourceDirectory: $(Build.SourcesDirectory)
-          BasePathLength: 38
+          BasePathLength: 30
 
-      - ${{if ne(parameters.SDKType, 'data')}}:
-        - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-          - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-            parameters:
-              PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-        - ${{ else }}:
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                parameters:
-                  PackageName: ${{artifact.name}}
-                  ServiceName: ${{parameters.ServiceDirectory}}
-                  ForRelease: false
-
-      - task: UseNode@1
-        inputs:
-          version: 22.x
-        displayName: Use Node.js 22.x
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
       - task: PowerShell@2
-        displayName: Verify Swagger and TypeSpec Code Generation
+        displayName: Verify TypeSpec Code Generation
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
-            -RegenerationType 'All'
+        env:
+          npm_config_userconfig: $(Agent.TempDirectory)/analyze-job/.npmrc
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
@@ -477,12 +502,29 @@ jobs:
             parameters:
               ServiceDirectory: ${{parameters.ServiceDirectory}}
               ExcludePaths: ${{parameters.ExcludePaths}}
+          - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            # Phase 1 keeps Build and Analyze enabled so their unique validation is preserved.
+            # Clearing only this job's PackageInfo folder produces an empty test matrix.
+            - task: PowerShell@2
+              displayName: Classify PR changes for Java test matrix
+              name: classify_changes
+              inputs:
+                pwsh: true
+                filePath: eng/scripts/Classify-PRChanges.ps1
+                arguments: >
+                  -DiffPath '$(Build.ArtifactStagingDirectory)/diff/diff.json'
+                  -PackageInfoDirectory '$(Build.ArtifactStagingDirectory)/PackageInfo'
+              # Define ForceFullValidation=true on the pipeline to disable test suppression
+              # without requiring a code change.
+              env:
+                FORCE_FULL_VALIDATION: $(ForceFullValidation)
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:
         Cloud: Public
       AdditionalParameters:
         SDKType: ${{ parameters.SDKType }}
+        IsLatestNonLtsJdk: ${{ parameters.IsLatestNonLtsJdk }}
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ExcludePaths: ${{ parameters.ExcludePaths }}
         TestPipeline: ${{ parameters.TestPipeline }}
@@ -492,6 +534,7 @@ jobs:
         TestOptions: ${{ parameters.TestOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
+        BuildOptions: ${{ parameters.BuildOptions }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
         EnvVars: ${{ parameters.EnvVars }}

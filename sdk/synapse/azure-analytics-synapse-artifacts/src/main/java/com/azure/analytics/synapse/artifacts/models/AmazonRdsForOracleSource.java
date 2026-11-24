@@ -57,6 +57,22 @@ public final class AmazonRdsForOracleSource extends CopySource {
     @Generated
     private Object additionalColumns;
 
+    /*
+     * The decimal precision used to represent Oracle NUMBER type without precision and scale. The range is 1 to 256 and
+     * default value is 256 if not specified. Type: integer (or Expression with resultType integer). Only used for
+     * Version 2.0.
+     */
+    @Generated
+    private Object numberPrecision;
+
+    /*
+     * The decimal scale used to represent Oracle NUMBER type without precision and scale. The range is 0 to 130 and
+     * default value is 130 if not specified. Type: integer (or Expression with resultType integer). Only used for
+     * Version 2.0.
+     */
+    @Generated
+    private Object numberScale;
+
     /**
      * Creates an instance of AmazonRdsForOracleSource class.
      */
@@ -196,6 +212,58 @@ public final class AmazonRdsForOracleSource extends CopySource {
     }
 
     /**
+     * Get the numberPrecision property: The decimal precision used to represent Oracle NUMBER type without precision
+     * and scale. The range is 1 to 256 and default value is 256 if not specified. Type: integer (or Expression with
+     * resultType integer). Only used for Version 2.0.
+     * 
+     * @return the numberPrecision value.
+     */
+    @Generated
+    public Object getNumberPrecision() {
+        return this.numberPrecision;
+    }
+
+    /**
+     * Set the numberPrecision property: The decimal precision used to represent Oracle NUMBER type without precision
+     * and scale. The range is 1 to 256 and default value is 256 if not specified. Type: integer (or Expression with
+     * resultType integer). Only used for Version 2.0.
+     * 
+     * @param numberPrecision the numberPrecision value to set.
+     * @return the AmazonRdsForOracleSource object itself.
+     */
+    @Generated
+    public AmazonRdsForOracleSource setNumberPrecision(Object numberPrecision) {
+        this.numberPrecision = numberPrecision;
+        return this;
+    }
+
+    /**
+     * Get the numberScale property: The decimal scale used to represent Oracle NUMBER type without precision and scale.
+     * The range is 0 to 130 and default value is 130 if not specified. Type: integer (or Expression with resultType
+     * integer). Only used for Version 2.0.
+     * 
+     * @return the numberScale value.
+     */
+    @Generated
+    public Object getNumberScale() {
+        return this.numberScale;
+    }
+
+    /**
+     * Set the numberScale property: The decimal scale used to represent Oracle NUMBER type without precision and scale.
+     * The range is 0 to 130 and default value is 130 if not specified. Type: integer (or Expression with resultType
+     * integer). Only used for Version 2.0.
+     * 
+     * @param numberScale the numberScale value to set.
+     * @return the AmazonRdsForOracleSource object itself.
+     */
+    @Generated
+    public AmazonRdsForOracleSource setNumberScale(Object numberScale) {
+        this.numberScale = numberScale;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -255,6 +323,12 @@ public final class AmazonRdsForOracleSource extends CopySource {
         if (this.additionalColumns != null) {
             jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
         }
+        if (this.numberPrecision != null) {
+            jsonWriter.writeUntypedField("numberPrecision", this.numberPrecision);
+        }
+        if (this.numberScale != null) {
+            jsonWriter.writeUntypedField("numberScale", this.numberScale);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -299,6 +373,10 @@ public final class AmazonRdsForOracleSource extends CopySource {
                         = AmazonRdsForOraclePartitionSettings.fromJson(reader);
                 } else if ("additionalColumns".equals(fieldName)) {
                     deserializedAmazonRdsForOracleSource.additionalColumns = reader.readUntyped();
+                } else if ("numberPrecision".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.numberPrecision = reader.readUntyped();
+                } else if ("numberScale".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.numberScale = reader.readUntyped();
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

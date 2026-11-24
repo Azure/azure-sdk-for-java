@@ -110,17 +110,6 @@ public final class ActionStatus implements JsonSerializable<ActionStatus> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (targets() != null) {
-            targets().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

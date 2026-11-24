@@ -20,163 +20,68 @@ public final class BillingResponseListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BillingResponseListResultInner model = BinaryData.fromString(
-            "{\"vmSizes\":[\"fdwoyuhh\",\"iuiefozbhdmsm\"],\"vmSizesWithEncryptionAtHost\":[\"qhoftrmaequiah\",\"icslfaoq\"],\"vmSizeFilters\":[{\"filterMode\":\"Recommend\",\"regions\":[\"alnswhccsphk\",\"ivwitqscywugg\"],\"clusterFlavors\":[\"uhczbwemh\",\"i\"],\"nodeTypes\":[\"rgzdwmsweyp\"],\"clusterVersions\":[\"xggicccnxqhuexmk\",\"tlstvlzywem\",\"zrncsdt\",\"lusiy\"],\"osType\":[\"Linux\",\"Linux\",\"Windows\",\"Windows\"],\"vmSizes\":[\"sl\",\"eadcygqukyhejhz\"],\"espApplied\":\"xgfpelolppv\",\"computeIsolationSupported\":\"r\"},{\"filterMode\":\"Exclude\",\"regions\":[\"zraehtwd\",\"r\",\"tswiby\"],\"clusterFlavors\":[\"l\"],\"nodeTypes\":[\"hfwpracstwit\",\"khevxccedc\",\"nmdyodnwzxl\",\"jc\"],\"clusterVersions\":[\"ltiugcxnavv\"],\"osType\":[\"Linux\"],\"vmSizes\":[\"qunyowxwlmdjr\"],\"espApplied\":\"fgbvfvpdbo\",\"computeIsolationSupported\":\"cizsjqlhkrribdei\"},{\"filterMode\":\"Default\",\"regions\":[\"kghv\"],\"clusterFlavors\":[\"zwmk\",\"efajpj\",\"rwkq\"],\"nodeTypes\":[\"gbijtjivfx\",\"sjabibs\"],\"clusterVersions\":[\"awfsdjpvkvpbjxbk\",\"bzkdvn\",\"jabudurgkakmo\"],\"osType\":[\"Windows\",\"Windows\"],\"vmSizes\":[\"ffhmouwqlgzr\",\"zeeyebi\",\"ikayuhqlbjbsybb\"],\"espApplied\":\"r\",\"computeIsolationSupported\":\"ldgmfpgvmpip\"},{\"filterMode\":\"Exclude\",\"regions\":[\"aqfxss\"],\"clusterFlavors\":[\"twbdsrezpdrhn\"],\"nodeTypes\":[\"owqkdwytisi\",\"ircgpikpz\",\"mejzanlfzxia\",\"rmbzo\"],\"clusterVersions\":[\"i\",\"rjqc\"],\"osType\":[\"Windows\",\"Windows\"],\"vmSizes\":[\"lazszrn\",\"oiindfpwpjy\",\"wbtlhflsjcdh\"],\"espApplied\":\"fjvfbgofeljagr\",\"computeIsolationSupported\":\"qhl\"}],\"vmSizeProperties\":[{\"name\":\"iiojnal\",\"cores\":524245347,\"dataDiskStorageTier\":\"vtvsexsowueluq\",\"label\":\"ahhxvrh\",\"maxDataDiskCount\":9171909100636996860,\"memoryInMb\":4157804500338386814,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":7214299945919733789,\"webWorkerResourceDiskSizeInMb\":2856222414032375851},{\"name\":\"xhqxujxukndxdigr\",\"cores\":1599924393,\"dataDiskStorageTier\":\"fzdm\",\"label\":\"qtfihwhbotzinga\",\"maxDataDiskCount\":2353170453764663846,\"memoryInMb\":449816124137860976,\"supportedByVirtualMachines\":false,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":8200061235460803535,\"webWorkerResourceDiskSizeInMb\":7279242451300460541},{\"name\":\"dkfw\",\"cores\":2014780251,\"dataDiskStorageTier\":\"vtbvkayh\",\"label\":\"nvyq\",\"maxDataDiskCount\":2949816427464265295,\"memoryInMb\":1497619530378227200,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":941265626595578709,\"webWorkerResourceDiskSizeInMb\":2780468814645606920},{\"name\":\"vvsccyajguq\",\"cores\":1811586286,\"dataDiskStorageTier\":\"gzlvdnkfxu\",\"label\":\"mdwzrmuhapfcqdps\",\"maxDataDiskCount\":1717467823158981449,\"memoryInMb\":3875353793969101932,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":5946523647295808209,\"webWorkerResourceDiskSizeInMb\":3613891103592609366}],\"billingResources\":[{\"region\":\"ypql\",\"billingMeters\":[{\"meterParameter\":\"kerqwkyh\",\"meter\":\"bopgxedkowepbqp\",\"unit\":\"fkbw\"},{\"meterParameter\":\"snjvcdwxlpqekftn\",\"meter\":\"tjsyin\",\"unit\":\"fq\"},{\"meterParameter\":\"mtdh\",\"meter\":\"dvypgikdgsz\",\"unit\":\"kbir\"},{\"meterParameter\":\"uzhlhkjoqrv\",\"meter\":\"aatjinrvgoupmfi\",\"unit\":\"fggjioolvr\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"tkkgllqwjy\",\"sku\":\"jayvblmhv\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"bxvvyhg\",\"sku\":\"pbyrqufegxu\",\"tier\":\"Standard\"}]},{\"region\":\"bnhlmc\",\"billingMeters\":[{\"meterParameter\":\"ngitvgbmhrixkwm\",\"meter\":\"jejveg\",\"unit\":\"bpnaixexccbdre\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"exdrrvqahqkg\",\"sku\":\"pwijnhy\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"ycxzbfvoo\",\"sku\":\"rvmtgjq\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"s\",\"sku\":\"on\",\"tier\":\"Premium\"}]},{\"region\":\"gfipnsxk\",\"billingMeters\":[{\"meterParameter\":\"ekrrjr\",\"meter\":\"fxtsgum\",\"unit\":\"glikkxwslolb\"},{\"meterParameter\":\"vuzlm\",\"meter\":\"elfk\",\"unit\":\"plcrpwjxeznoig\"},{\"meterParameter\":\"njwmwkpnbsazejj\",\"meter\":\"kagfhsxtt\",\"unit\":\"gzxnfaazpxdtnk\"},{\"meterParameter\":\"kqjjlwuenvrkp\",\"meter\":\"uaibrebqaaysj\",\"unit\":\"xqtnq\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"lwfffi\",\"sku\":\"pjpqqmtedltmmji\",\"tier\":\"Standard\"}]},{\"region\":\"zphv\",\"billingMeters\":[{\"meterParameter\":\"qncygupkvi\",\"meter\":\"dscwxqupevzhf\",\"unit\":\"otxhojujby\"},{\"meterParameter\":\"lmcuvhixb\",\"meter\":\"yfwnylr\",\"unit\":\"o\"},{\"meterParameter\":\"ttpkiwkkbnujrywv\",\"meter\":\"lbfpncurd\",\"unit\":\"wiithtywub\"},{\"meterParameter\":\"bihwqknfdnt\",\"meter\":\"chrdgoihxumwcto\",\"unit\":\"zj\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"fdlwg\",\"sku\":\"tsbwtovvtgse\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"iufxqknpir\",\"sku\":\"epttwqmsniff\",\"tier\":\"Premium\"}]}]}")
+            "{\"vmSizes\":[\"wabm\",\"oefki\"],\"vmSizesWithEncryptionAtHost\":[\"tpuqujmq\",\"gkfbtndoaong\",\"jcntuj\"],\"vmSizeFilters\":[{\"filterMode\":\"Exclude\",\"regions\":[\"twwaezkojvdcpzf\",\"qouicybxarzgsz\",\"foxciq\",\"p\"],\"clusterFlavors\":[\"amcio\",\"hkh\"],\"nodeTypes\":[\"khnzbonlw\",\"toego\",\"dwbwhkszzcmrvexz\",\"vbtqgsfraoyzk\"],\"clusterVersions\":[\"tlmngu\"],\"osType\":[\"Windows\",\"Windows\"],\"vmSizes\":[\"syuuximerq\",\"obwyznkb\",\"kutwpf\",\"pagmhrskdsnf\"],\"espApplied\":\"doakgtdlmkkzevdl\",\"computeIsolationSupported\":\"wpusdsttwvogv\"}],\"vmSizeProperties\":[{\"name\":\"dcngqqmoakufgmj\",\"cores\":349751254,\"dataDiskStorageTier\":\"dgrtwaenuuzkopbm\",\"label\":\"rfdwoyu\",\"maxDataDiskCount\":4568735292262817818,\"memoryInMb\":3459177326935122788,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":6074773218082221902,\"webWorkerResourceDiskSizeInMb\":4135226248111903185},{\"name\":\"zqhof\",\"cores\":1813126235,\"dataDiskStorageTier\":\"equi\",\"label\":\"xicslfao\",\"maxDataDiskCount\":8310123876106634171,\"memoryInMb\":2494227720059523553,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":false,\"virtualMachineResourceDiskSizeInMb\":4772469373607782969,\"webWorkerResourceDiskSizeInMb\":9111708836032441220},{\"name\":\"hka\",\"cores\":2029124466,\"dataDiskStorageTier\":\"tqscywug\",\"label\":\"oluhczbwemh\",\"maxDataDiskCount\":861506686210387635,\"memoryInMb\":2312516572905893398,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":3711551930232886433,\"webWorkerResourceDiskSizeInMb\":3553034048925104478},{\"name\":\"dxggicccnxqhuexm\",\"cores\":735026566,\"dataDiskStorageTier\":\"stvlzywemhzrnc\",\"label\":\"tclusiypbsfgy\",\"maxDataDiskCount\":7838664702645676425,\"memoryInMb\":9132015277397116650,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":1362554750636902661,\"webWorkerResourceDiskSizeInMb\":3695850185212160621}],\"billingResources\":[{\"region\":\"zis\",\"billingMeters\":[{\"meterParameter\":\"elolppvksrpqvuj\",\"meter\":\"aehtwd\",\"unit\":\"ftswibyrcdlbhsh\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"acstwityk\",\"sku\":\"vxccedcp\",\"tier\":\"Premium\"}]}]}")
             .toObject(BillingResponseListResultInner.class);
-        Assertions.assertEquals("fdwoyuhh", model.vmSizes().get(0));
-        Assertions.assertEquals("qhoftrmaequiah", model.vmSizesWithEncryptionAtHost().get(0));
-        Assertions.assertEquals(FilterMode.RECOMMEND, model.vmSizeFilters().get(0).filterMode());
-        Assertions.assertEquals("alnswhccsphk", model.vmSizeFilters().get(0).regions().get(0));
-        Assertions.assertEquals("uhczbwemh", model.vmSizeFilters().get(0).clusterFlavors().get(0));
-        Assertions.assertEquals("rgzdwmsweyp", model.vmSizeFilters().get(0).nodeTypes().get(0));
-        Assertions.assertEquals("xggicccnxqhuexmk", model.vmSizeFilters().get(0).clusterVersions().get(0));
-        Assertions.assertEquals(OSType.LINUX, model.vmSizeFilters().get(0).osType().get(0));
-        Assertions.assertEquals("sl", model.vmSizeFilters().get(0).vmSizes().get(0));
-        Assertions.assertEquals("xgfpelolppv", model.vmSizeFilters().get(0).espApplied());
-        Assertions.assertEquals("r", model.vmSizeFilters().get(0).computeIsolationSupported());
-        Assertions.assertEquals("ypql", model.billingResources().get(0).region());
-        Assertions.assertEquals("kerqwkyh", model.billingResources().get(0).billingMeters().get(0).meterParameter());
-        Assertions.assertEquals("bopgxedkowepbqp", model.billingResources().get(0).billingMeters().get(0).meter());
-        Assertions.assertEquals("fkbw", model.billingResources().get(0).billingMeters().get(0).unit());
-        Assertions.assertEquals("tkkgllqwjy", model.billingResources().get(0).diskBillingMeters().get(0).diskRpMeter());
-        Assertions.assertEquals("jayvblmhv", model.billingResources().get(0).diskBillingMeters().get(0).sku());
-        Assertions.assertEquals(Tier.STANDARD, model.billingResources().get(0).diskBillingMeters().get(0).tier());
+        Assertions.assertEquals("wabm", model.vmSizes().get(0));
+        Assertions.assertEquals("tpuqujmq", model.vmSizesWithEncryptionAtHost().get(0));
+        Assertions.assertEquals(FilterMode.EXCLUDE, model.vmSizeFilters().get(0).filterMode());
+        Assertions.assertEquals("twwaezkojvdcpzf", model.vmSizeFilters().get(0).regions().get(0));
+        Assertions.assertEquals("amcio", model.vmSizeFilters().get(0).clusterFlavors().get(0));
+        Assertions.assertEquals("khnzbonlw", model.vmSizeFilters().get(0).nodeTypes().get(0));
+        Assertions.assertEquals("tlmngu", model.vmSizeFilters().get(0).clusterVersions().get(0));
+        Assertions.assertEquals(OSType.WINDOWS, model.vmSizeFilters().get(0).osType().get(0));
+        Assertions.assertEquals("syuuximerq", model.vmSizeFilters().get(0).vmSizes().get(0));
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.vmSizeFilters().get(0).espApplied());
+        Assertions.assertEquals("wpusdsttwvogv", model.vmSizeFilters().get(0).computeIsolationSupported());
+        Assertions.assertEquals("zis", model.billingResources().get(0).region());
+        Assertions.assertEquals("elolppvksrpqvuj",
+            model.billingResources().get(0).billingMeters().get(0).meterParameter());
+        Assertions.assertEquals("aehtwd", model.billingResources().get(0).billingMeters().get(0).meter());
+        Assertions.assertEquals("ftswibyrcdlbhsh", model.billingResources().get(0).billingMeters().get(0).unit());
+        Assertions.assertEquals("acstwityk", model.billingResources().get(0).diskBillingMeters().get(0).diskRpMeter());
+        Assertions.assertEquals("vxccedcp", model.billingResources().get(0).diskBillingMeters().get(0).sku());
+        Assertions.assertEquals(Tier.PREMIUM, model.billingResources().get(0).diskBillingMeters().get(0).tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingResponseListResultInner model
-            = new BillingResponseListResultInner().withVmSizes(Arrays.asList("fdwoyuhh", "iuiefozbhdmsm"))
-                .withVmSizesWithEncryptionAtHost(Arrays.asList("qhoftrmaequiah", "icslfaoq"))
-                .withVmSizeFilters(
-                    Arrays
-                        .asList(
-                            new VmSizeCompatibilityFilterV2().withFilterMode(FilterMode.RECOMMEND)
-                                .withRegions(Arrays.asList("alnswhccsphk", "ivwitqscywugg"))
-                                .withClusterFlavors(Arrays.asList("uhczbwemh", "i"))
-                                .withNodeTypes(Arrays.asList("rgzdwmsweyp"))
-                                .withClusterVersions(
-                                    Arrays.asList("xggicccnxqhuexmk", "tlstvlzywem", "zrncsdt", "lusiy"))
-                                .withOsType(Arrays.asList(OSType.LINUX, OSType.LINUX, OSType.WINDOWS, OSType.WINDOWS))
-                                .withVmSizes(Arrays.asList("sl", "eadcygqukyhejhz"))
-                                .withEspApplied("xgfpelolppv")
-                                .withComputeIsolationSupported("r"),
-                            new VmSizeCompatibilityFilterV2().withFilterMode(FilterMode.EXCLUDE)
-                                .withRegions(Arrays.asList("zraehtwd", "r", "tswiby"))
-                                .withClusterFlavors(Arrays.asList("l"))
-                                .withNodeTypes(Arrays.asList("hfwpracstwit", "khevxccedc", "nmdyodnwzxl", "jc"))
-                                .withClusterVersions(Arrays.asList("ltiugcxnavv"))
-                                .withOsType(Arrays.asList(OSType.LINUX))
-                                .withVmSizes(Arrays.asList("qunyowxwlmdjr"))
-                                .withEspApplied("fgbvfvpdbo")
-                                .withComputeIsolationSupported("cizsjqlhkrribdei"),
-                            new VmSizeCompatibilityFilterV2().withFilterMode(FilterMode.DEFAULT)
-                                .withRegions(Arrays.asList("kghv"))
-                                .withClusterFlavors(Arrays.asList("zwmk", "efajpj", "rwkq"))
-                                .withNodeTypes(Arrays.asList("gbijtjivfx", "sjabibs"))
-                                .withClusterVersions(Arrays.asList("awfsdjpvkvpbjxbk", "bzkdvn", "jabudurgkakmo"))
-                                .withOsType(Arrays.asList(OSType.WINDOWS, OSType.WINDOWS))
-                                .withVmSizes(Arrays.asList("ffhmouwqlgzr", "zeeyebi", "ikayuhqlbjbsybb"))
-                                .withEspApplied("r")
-                                .withComputeIsolationSupported("ldgmfpgvmpip"),
-                            new VmSizeCompatibilityFilterV2().withFilterMode(FilterMode.EXCLUDE)
-                                .withRegions(Arrays.asList("aqfxss"))
-                                .withClusterFlavors(Arrays.asList("twbdsrezpdrhn"))
-                                .withNodeTypes(Arrays.asList("owqkdwytisi", "ircgpikpz", "mejzanlfzxia", "rmbzo"))
-                                .withClusterVersions(Arrays.asList("i", "rjqc"))
-                                .withOsType(Arrays.asList(OSType.WINDOWS, OSType.WINDOWS))
-                                .withVmSizes(Arrays.asList("lazszrn", "oiindfpwpjy", "wbtlhflsjcdh"))
-                                .withEspApplied("fjvfbgofeljagr")
-                                .withComputeIsolationSupported("qhl")))
-                .withBillingResources(Arrays.asList(
-                    new BillingResources().withRegion("ypql")
-                        .withBillingMeters(Arrays.asList(new BillingMeters()
-                            .withMeterParameter("kerqwkyh")
-                            .withMeter("bopgxedkowepbqp")
-                            .withUnit("fkbw"),
-                            new BillingMeters().withMeterParameter("snjvcdwxlpqekftn")
-                                .withMeter("tjsyin")
-                                .withUnit("fq"),
-                            new BillingMeters().withMeterParameter("mtdh").withMeter("dvypgikdgsz").withUnit("kbir"),
-                            new BillingMeters()
-                                .withMeterParameter("uzhlhkjoqrv")
-                                .withMeter("aatjinrvgoupmfi")
-                                .withUnit("fggjioolvr")))
-                        .withDiskBillingMeters(Arrays.asList(
-                            new DiskBillingMeters().withDiskRpMeter("tkkgllqwjy")
-                                .withSku("jayvblmhv")
-                                .withTier(Tier.STANDARD),
-                            new DiskBillingMeters()
-                                .withDiskRpMeter("bxvvyhg")
-                                .withSku("pbyrqufegxu")
-                                .withTier(Tier.STANDARD))),
-                    new BillingResources().withRegion("bnhlmc")
-                        .withBillingMeters(Arrays
-                            .asList(new BillingMeters().withMeterParameter("ngitvgbmhrixkwm")
-                                .withMeter("jejveg")
-                                .withUnit("bpnaixexccbdre")))
-                        .withDiskBillingMeters(Arrays.asList(new DiskBillingMeters()
-                            .withDiskRpMeter("exdrrvqahqkg")
-                            .withSku("pwijnhy")
-                            .withTier(Tier.STANDARD),
-                            new DiskBillingMeters()
-                                .withDiskRpMeter("ycxzbfvoo")
-                                .withSku("rvmtgjq")
-                                .withTier(Tier.STANDARD),
-                            new DiskBillingMeters().withDiskRpMeter("s").withSku("on").withTier(Tier.PREMIUM))),
-                    new BillingResources().withRegion("gfipnsxk")
-                        .withBillingMeters(Arrays.asList(new BillingMeters()
-                            .withMeterParameter("ekrrjr")
-                            .withMeter("fxtsgum")
-                            .withUnit("glikkxwslolb"),
-                            new BillingMeters().withMeterParameter("vuzlm")
-                                .withMeter("elfk")
-                                .withUnit("plcrpwjxeznoig"),
-                            new BillingMeters().withMeterParameter("njwmwkpnbsazejj")
-                                .withMeter("kagfhsxtt")
-                                .withUnit("gzxnfaazpxdtnk"),
-                            new BillingMeters().withMeterParameter("kqjjlwuenvrkp")
-                                .withMeter("uaibrebqaaysj")
-                                .withUnit("xqtnq")))
-                        .withDiskBillingMeters(Arrays.asList(new DiskBillingMeters().withDiskRpMeter("lwfffi")
-                            .withSku("pjpqqmtedltmmji")
-                            .withTier(Tier.STANDARD))),
-                    new BillingResources().withRegion("zphv")
-                        .withBillingMeters(Arrays.asList(
-                            new BillingMeters().withMeterParameter("qncygupkvi")
-                                .withMeter("dscwxqupevzhf")
-                                .withUnit("otxhojujby"),
-                            new BillingMeters().withMeterParameter("lmcuvhixb").withMeter("yfwnylr").withUnit("o"),
-                            new BillingMeters().withMeterParameter("ttpkiwkkbnujrywv")
-                                .withMeter("lbfpncurd")
-                                .withUnit("wiithtywub"),
-                            new BillingMeters().withMeterParameter("bihwqknfdnt")
-                                .withMeter("chrdgoihxumwcto")
-                                .withUnit("zj")))
-                        .withDiskBillingMeters(Arrays.asList(
-                            new DiskBillingMeters().withDiskRpMeter("fdlwg")
-                                .withSku("tsbwtovvtgse")
-                                .withTier(Tier.STANDARD),
-                            new DiskBillingMeters().withDiskRpMeter("iufxqknpir")
-                                .withSku("epttwqmsniff")
-                                .withTier(Tier.PREMIUM)))));
+        BillingResponseListResultInner model = new BillingResponseListResultInner()
+            .withVmSizes(Arrays.asList("wabm", "oefki"))
+            .withVmSizesWithEncryptionAtHost(Arrays.asList("tpuqujmq", "gkfbtndoaong", "jcntuj"))
+            .withVmSizeFilters(Arrays.asList(new VmSizeCompatibilityFilterV2().withFilterMode(FilterMode.EXCLUDE)
+                .withRegions(Arrays.asList("twwaezkojvdcpzf", "qouicybxarzgsz", "foxciq", "p"))
+                .withClusterFlavors(Arrays.asList("amcio", "hkh"))
+                .withNodeTypes(Arrays.asList("khnzbonlw", "toego", "dwbwhkszzcmrvexz", "vbtqgsfraoyzk"))
+                .withClusterVersions(Arrays.asList("tlmngu"))
+                .withOsType(Arrays.asList(OSType.WINDOWS, OSType.WINDOWS))
+                .withVmSizes(Arrays.asList("syuuximerq", "obwyznkb", "kutwpf", "pagmhrskdsnf"))
+                .withEspApplied("doakgtdlmkkzevdl")
+                .withComputeIsolationSupported("wpusdsttwvogv")))
+            .withBillingResources(Arrays.asList(new BillingResources().withRegion("zis")
+                .withBillingMeters(Arrays.asList(new BillingMeters().withMeterParameter("elolppvksrpqvuj")
+                    .withMeter("aehtwd")
+                    .withUnit("ftswibyrcdlbhsh")))
+                .withDiskBillingMeters(Arrays.asList(
+                    new DiskBillingMeters().withDiskRpMeter("acstwityk").withSku("vxccedcp").withTier(Tier.PREMIUM)))));
         model = BinaryData.fromObject(model).toObject(BillingResponseListResultInner.class);
-        Assertions.assertEquals("fdwoyuhh", model.vmSizes().get(0));
-        Assertions.assertEquals("qhoftrmaequiah", model.vmSizesWithEncryptionAtHost().get(0));
-        Assertions.assertEquals(FilterMode.RECOMMEND, model.vmSizeFilters().get(0).filterMode());
-        Assertions.assertEquals("alnswhccsphk", model.vmSizeFilters().get(0).regions().get(0));
-        Assertions.assertEquals("uhczbwemh", model.vmSizeFilters().get(0).clusterFlavors().get(0));
-        Assertions.assertEquals("rgzdwmsweyp", model.vmSizeFilters().get(0).nodeTypes().get(0));
-        Assertions.assertEquals("xggicccnxqhuexmk", model.vmSizeFilters().get(0).clusterVersions().get(0));
-        Assertions.assertEquals(OSType.LINUX, model.vmSizeFilters().get(0).osType().get(0));
-        Assertions.assertEquals("sl", model.vmSizeFilters().get(0).vmSizes().get(0));
-        Assertions.assertEquals("xgfpelolppv", model.vmSizeFilters().get(0).espApplied());
-        Assertions.assertEquals("r", model.vmSizeFilters().get(0).computeIsolationSupported());
-        Assertions.assertEquals("ypql", model.billingResources().get(0).region());
-        Assertions.assertEquals("kerqwkyh", model.billingResources().get(0).billingMeters().get(0).meterParameter());
-        Assertions.assertEquals("bopgxedkowepbqp", model.billingResources().get(0).billingMeters().get(0).meter());
-        Assertions.assertEquals("fkbw", model.billingResources().get(0).billingMeters().get(0).unit());
-        Assertions.assertEquals("tkkgllqwjy", model.billingResources().get(0).diskBillingMeters().get(0).diskRpMeter());
-        Assertions.assertEquals("jayvblmhv", model.billingResources().get(0).diskBillingMeters().get(0).sku());
-        Assertions.assertEquals(Tier.STANDARD, model.billingResources().get(0).diskBillingMeters().get(0).tier());
+        Assertions.assertEquals("wabm", model.vmSizes().get(0));
+        Assertions.assertEquals("tpuqujmq", model.vmSizesWithEncryptionAtHost().get(0));
+        Assertions.assertEquals(FilterMode.EXCLUDE, model.vmSizeFilters().get(0).filterMode());
+        Assertions.assertEquals("twwaezkojvdcpzf", model.vmSizeFilters().get(0).regions().get(0));
+        Assertions.assertEquals("amcio", model.vmSizeFilters().get(0).clusterFlavors().get(0));
+        Assertions.assertEquals("khnzbonlw", model.vmSizeFilters().get(0).nodeTypes().get(0));
+        Assertions.assertEquals("tlmngu", model.vmSizeFilters().get(0).clusterVersions().get(0));
+        Assertions.assertEquals(OSType.WINDOWS, model.vmSizeFilters().get(0).osType().get(0));
+        Assertions.assertEquals("syuuximerq", model.vmSizeFilters().get(0).vmSizes().get(0));
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.vmSizeFilters().get(0).espApplied());
+        Assertions.assertEquals("wpusdsttwvogv", model.vmSizeFilters().get(0).computeIsolationSupported());
+        Assertions.assertEquals("zis", model.billingResources().get(0).region());
+        Assertions.assertEquals("elolppvksrpqvuj",
+            model.billingResources().get(0).billingMeters().get(0).meterParameter());
+        Assertions.assertEquals("aehtwd", model.billingResources().get(0).billingMeters().get(0).meter());
+        Assertions.assertEquals("ftswibyrcdlbhsh", model.billingResources().get(0).billingMeters().get(0).unit());
+        Assertions.assertEquals("acstwityk", model.billingResources().get(0).diskBillingMeters().get(0).diskRpMeter());
+        Assertions.assertEquals("vxccedcp", model.billingResources().get(0).diskBillingMeters().get(0).sku());
+        Assertions.assertEquals(Tier.PREMIUM, model.billingResources().get(0).diskBillingMeters().get(0).tier());
     }
 }

@@ -20,7 +20,7 @@ public final class FlexComponentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"minimumCoreCount\":1738094377,\"availableCoreCount\":2007499127,\"availableDbStorageInGbs\":980930736,\"runtimeMinimumCoreCount\":1178868371,\"shape\":\"hi\",\"availableMemoryInGbs\":1164057360,\"availableLocalStorageInGbs\":1478665162,\"computeModel\":\"shiy\",\"hardwareType\":\"COMPUTE\",\"descriptionSummary\":\"lfcldu\"},\"id\":\"birdsvuwcobiegs\",\"name\":\"mninwjizcilng\",\"type\":\"gshejjtbxqmulux\"}";
+            = "{\"properties\":{\"minimumCoreCount\":2117577597,\"availableCoreCount\":1744362363,\"availableDbStorageInGbs\":1624544775,\"runtimeMinimumCoreCount\":1098996902,\"shape\":\"py\",\"availableMemoryInGbs\":1432807244,\"availableLocalStorageInGbs\":1584163101,\"computeModel\":\"blydyvkf\",\"hardwareType\":\"CELL\",\"descriptionSummary\":\"cxneh\"},\"id\":\"mtodl\",\"name\":\"pyapucygvoav\",\"type\":\"unssxlghieegjl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class FlexComponentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FlexComponent response = manager.flexComponents()
-            .getWithResponse("wemxswvruunzz", "gehkfkimrtixokff", com.azure.core.util.Context.NONE)
+            .getWithResponse("unwqr", "zfrgqhaohcm", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

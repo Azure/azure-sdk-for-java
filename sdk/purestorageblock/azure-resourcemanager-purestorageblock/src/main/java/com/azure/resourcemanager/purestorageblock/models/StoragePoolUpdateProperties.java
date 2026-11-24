@@ -21,6 +21,11 @@ public final class StoragePoolUpdateProperties implements JsonSerializable<Stora
      */
     private Long provisionedBandwidthMbPerSec;
 
+    /*
+     * Platform console access settings for the storage pool
+     */
+    private PlatformConsoleSettings platformConsoleSettings;
+
     /**
      * Creates an instance of StoragePoolUpdateProperties class.
      */
@@ -48,11 +53,23 @@ public final class StoragePoolUpdateProperties implements JsonSerializable<Stora
     }
 
     /**
-     * Validates the instance.
+     * Get the platformConsoleSettings property: Platform console access settings for the storage pool.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the platformConsoleSettings value.
      */
-    public void validate() {
+    public PlatformConsoleSettings platformConsoleSettings() {
+        return this.platformConsoleSettings;
+    }
+
+    /**
+     * Set the platformConsoleSettings property: Platform console access settings for the storage pool.
+     * 
+     * @param platformConsoleSettings the platformConsoleSettings value to set.
+     * @return the StoragePoolUpdateProperties object itself.
+     */
+    public StoragePoolUpdateProperties withPlatformConsoleSettings(PlatformConsoleSettings platformConsoleSettings) {
+        this.platformConsoleSettings = platformConsoleSettings;
+        return this;
     }
 
     /**
@@ -62,6 +79,7 @@ public final class StoragePoolUpdateProperties implements JsonSerializable<Stora
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("provisionedBandwidthMbPerSec", this.provisionedBandwidthMbPerSec);
+        jsonWriter.writeJsonField("platformConsoleSettings", this.platformConsoleSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -83,6 +101,9 @@ public final class StoragePoolUpdateProperties implements JsonSerializable<Stora
                 if ("provisionedBandwidthMbPerSec".equals(fieldName)) {
                     deserializedStoragePoolUpdateProperties.provisionedBandwidthMbPerSec
                         = reader.getNullable(JsonReader::getLong);
+                } else if ("platformConsoleSettings".equals(fieldName)) {
+                    deserializedStoragePoolUpdateProperties.platformConsoleSettings
+                        = PlatformConsoleSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

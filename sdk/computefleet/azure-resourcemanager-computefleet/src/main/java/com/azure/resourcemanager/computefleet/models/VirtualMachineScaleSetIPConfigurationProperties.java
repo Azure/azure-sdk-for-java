@@ -271,20 +271,6 @@ public final class VirtualMachineScaleSetIPConfigurationProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (subnet() != null) {
-            subnet().validate();
-        }
-        if (publicIPAddressConfiguration() != null) {
-            publicIPAddressConfiguration().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -65,18 +65,6 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
     private final double peakDiskGiB;
 
     /*
-     * The total number of disk read operations across all Compute Nodes in the Pool.
-     */
-    @Generated
-    private final long diskReadIOps;
-
-    /*
-     * The total number of disk write operations across all Compute Nodes in the Pool.
-     */
-    @Generated
-    private final long diskWriteIOps;
-
-    /*
      * The total amount of data in GiB of disk reads across all Compute Nodes in the Pool.
      */
     @Generated
@@ -110,8 +98,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
      * @param peakMemoryGiB the peakMemoryGiB value to set.
      * @param avgDiskGiB the avgDiskGiB value to set.
      * @param peakDiskGiB the peakDiskGiB value to set.
-     * @param diskReadIOps the diskReadIOps value to set.
-     * @param diskWriteIOps the diskWriteIOps value to set.
+     * @param diskReadIops the diskReadIops value to set.
+     * @param diskWriteIops the diskWriteIops value to set.
      * @param diskReadGiB the diskReadGiB value to set.
      * @param diskWriteGiB the diskWriteGiB value to set.
      * @param networkReadGiB the networkReadGiB value to set.
@@ -120,7 +108,7 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
     @Generated
     private BatchPoolResourceStatistics(OffsetDateTime startTime, OffsetDateTime lastUpdateTime,
         double avgCpuPercentage, double avgMemoryGiB, double peakMemoryGiB, double avgDiskGiB, double peakDiskGiB,
-        long diskReadIOps, long diskWriteIOps, double diskReadGiB, double diskWriteGiB, double networkReadGiB,
+        long diskReadIops, long diskWriteIops, double diskReadGiB, double diskWriteGiB, double networkReadGiB,
         double networkWriteGiB) {
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
@@ -129,8 +117,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
         this.peakMemoryGiB = peakMemoryGiB;
         this.avgDiskGiB = avgDiskGiB;
         this.peakDiskGiB = peakDiskGiB;
-        this.diskReadIOps = diskReadIOps;
-        this.diskWriteIOps = diskWriteIOps;
+        this.diskReadIops = diskReadIops;
+        this.diskWriteIops = diskWriteIops;
         this.diskReadGiB = diskReadGiB;
         this.diskWriteGiB = diskWriteGiB;
         this.networkReadGiB = networkReadGiB;
@@ -210,26 +198,6 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
     }
 
     /**
-     * Get the diskReadIOps property: The total number of disk read operations across all Compute Nodes in the Pool.
-     *
-     * @return the diskReadIOps value.
-     */
-    @Generated
-    public long getDiskReadIOps() {
-        return this.diskReadIOps;
-    }
-
-    /**
-     * Get the diskWriteIOps property: The total number of disk write operations across all Compute Nodes in the Pool.
-     *
-     * @return the diskWriteIOps value.
-     */
-    @Generated
-    public long getDiskWriteIOps() {
-        return this.diskWriteIOps;
-    }
-
-    /**
      * Get the diskReadGiB property: The total amount of data in GiB of disk reads across all Compute Nodes in the Pool.
      *
      * @return the diskReadGiB value.
@@ -288,8 +256,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
         jsonWriter.writeDoubleField("peakMemoryGiB", this.peakMemoryGiB);
         jsonWriter.writeDoubleField("avgDiskGiB", this.avgDiskGiB);
         jsonWriter.writeDoubleField("peakDiskGiB", this.peakDiskGiB);
-        jsonWriter.writeStringField("diskReadIOps", Objects.toString(this.diskReadIOps, null));
-        jsonWriter.writeStringField("diskWriteIOps", Objects.toString(this.diskWriteIOps, null));
+        jsonWriter.writeStringField("diskReadIOps", Objects.toString(this.diskReadIops, null));
+        jsonWriter.writeStringField("diskWriteIOps", Objects.toString(this.diskWriteIops, null));
         jsonWriter.writeDoubleField("diskReadGiB", this.diskReadGiB);
         jsonWriter.writeDoubleField("diskWriteGiB", this.diskWriteGiB);
         jsonWriter.writeDoubleField("networkReadGiB", this.networkReadGiB);
@@ -316,8 +284,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
             double peakMemoryGiB = 0.0;
             double avgDiskGiB = 0.0;
             double peakDiskGiB = 0.0;
-            long diskReadIOps = Long.parseLong("0");
-            long diskWriteIOps = Long.parseLong("0");
+            long diskReadIops = Long.parseLong("0");
+            long diskWriteIops = Long.parseLong("0");
             double diskReadGiB = 0.0;
             double diskWriteGiB = 0.0;
             double networkReadGiB = 0.0;
@@ -342,9 +310,9 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
                 } else if ("peakDiskGiB".equals(fieldName)) {
                     peakDiskGiB = reader.getDouble();
                 } else if ("diskReadIOps".equals(fieldName)) {
-                    diskReadIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    diskReadIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("diskWriteIOps".equals(fieldName)) {
-                    diskWriteIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
+                    diskWriteIops = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("diskReadGiB".equals(fieldName)) {
                     diskReadGiB = reader.getDouble();
                 } else if ("diskWriteGiB".equals(fieldName)) {
@@ -358,8 +326,40 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
                 }
             }
             return new BatchPoolResourceStatistics(startTime, lastUpdateTime, avgCpuPercentage, avgMemoryGiB,
-                peakMemoryGiB, avgDiskGiB, peakDiskGiB, diskReadIOps, diskWriteIOps, diskReadGiB, diskWriteGiB,
+                peakMemoryGiB, avgDiskGiB, peakDiskGiB, diskReadIops, diskWriteIops, diskReadGiB, diskWriteGiB,
                 networkReadGiB, networkWriteGiB);
         });
+    }
+
+    /*
+     * The total number of disk read operations across all Compute Nodes in the Pool.
+     */
+    @Generated
+    private final long diskReadIops;
+
+    /*
+     * The total number of disk write operations across all Compute Nodes in the Pool.
+     */
+    @Generated
+    private final long diskWriteIops;
+
+    /**
+     * Get the diskReadIops property: The total number of disk read operations across all Compute Nodes in the Pool.
+     *
+     * @return the diskReadIops value.
+     */
+    @Generated
+    public long getDiskReadIops() {
+        return this.diskReadIops;
+    }
+
+    /**
+     * Get the diskWriteIops property: The total number of disk write operations across all Compute Nodes in the Pool.
+     *
+     * @return the diskWriteIops value.
+     */
+    @Generated
+    public long getDiskWriteIops() {
+        return this.diskWriteIops;
     }
 }

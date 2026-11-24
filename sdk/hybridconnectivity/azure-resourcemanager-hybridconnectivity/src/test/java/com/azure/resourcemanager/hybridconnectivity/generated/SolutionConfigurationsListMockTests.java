@@ -22,7 +22,7 @@ public final class SolutionConfigurationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"solutionType\":\"ggicccnxqhue\",\"solutionSettings\":{\"zrncsdt\":\"tlstvlzywem\",\"bsfgytguslfea\":\"lusiy\",\"qukyhejhzi\":\"cy\",\"srp\":\"xgfpelolppv\"},\"status\":\"InProgress\",\"statusDetails\":\"zraehtwd\",\"lastSyncTime\":\"2021-10-09T15:06:55Z\"},\"id\":\"swibyr\",\"name\":\"dl\",\"type\":\"h\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"solutionType\":\"xvvy\",\"solutionSettings\":{\"wz\":\"pbyrqufegxu\",\"l\":\"bnhlmc\",\"itvgbmhrixkwm\":\"dn\"},\"status\":\"InProgress\",\"statusDetails\":\"jvegrhbpnaixexcc\",\"lastSyncTime\":\"2020-12-28T17:34:21Z\"},\"id\":\"ax\",\"name\":\"cexdrrvqa\",\"type\":\"qkghtpwijnhy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,10 @@ public final class SolutionConfigurationsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SolutionConfiguration> response
-            = manager.solutionConfigurations().list("rgzdwmsweyp", com.azure.core.util.Context.NONE);
+            = manager.solutionConfigurations().list("wjygvjayvblmhvk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ggicccnxqhue", response.iterator().next().properties().solutionType());
+        Assertions.assertEquals("xvvy", response.iterator().next().properties().solutionType());
+        Assertions.assertEquals("pbyrqufegxu",
+            response.iterator().next().properties().solutionSettings().additionalProperties().get("wz"));
     }
 }

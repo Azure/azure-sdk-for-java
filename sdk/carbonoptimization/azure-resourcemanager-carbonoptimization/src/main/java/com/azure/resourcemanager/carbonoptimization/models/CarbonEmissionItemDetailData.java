@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.carbonoptimization.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -66,27 +65,6 @@ public final class CarbonEmissionItemDetailData extends CarbonEmissionData {
     public CategoryTypeEnum categoryType() {
         return this.categoryType;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (itemName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property itemName in model CarbonEmissionItemDetailData"));
-        }
-        if (categoryType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property categoryType in model CarbonEmissionItemDetailData"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CarbonEmissionItemDetailData.class);
 
     /**
      * {@inheritDoc}

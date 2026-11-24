@@ -103,17 +103,6 @@ public final class VirtualMachineInstancePropertiesStorageProfileOsDisk
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (managedDisk() != null) {
-            managedDisk().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

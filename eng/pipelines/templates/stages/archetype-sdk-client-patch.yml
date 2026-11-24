@@ -17,6 +17,9 @@ parameters:
 - name: TestPipeline
   type: boolean
   default: false
+- name: PatchMergeBack
+  type: boolean
+  default: false
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -46,23 +49,37 @@ extends:
             # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories as we require the GitHub
             # service connection to be loaded.
             - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                parameters:
-                  Paths:
-                    - '**/*.xml'
-                    - '**/*.md'
-                    - '**/*.yml'
-                    - '!sdk/**/test-recordings/*'
-                    - '!sdk/**/session-records/*'
+              - checkout: self
+                path: s
+                fetchFilter: tree:0
+                fetchDepth: 0
+                fetchTags: ${{ parameters.TestPipeline }}
+                sparseCheckoutPatterns: /* !/*/ /eng /.config **/*.xml **/*.md **/*.yml !sdk/**/test-recordings/* !sdk/**/session-records/*
+                env:
+                  AGENT_SOURCE_CHECKOUT_QUIET: 'true'
 
-            - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
-              parameters:
-                JobType: 'Build'
+              - ${{ if eq(parameters.PatchMergeBack, true) }}:
+                - task: PowerShell@2
+                  inputs:
+                    pwsh: true
+                    filePath: eng/scripts/Test-Patch-Mergeback.ps1
+                    arguments: >
+                      -RepoRoot "$(Build.SourcesDirectory)"
+                      -ValidationRoot "$(Agent.TempDirectory)/patch-mergeback-validation-$(System.JobAttempt)"
+                      -ReleaseBranch "$(Build.SourceVersion)"
+                      -ExpectedArtifacts $('$(ArtifactsJson)' | ConvertFrom-Json | ForEach-Object { "$($_.groupId):$($_.name)" })
+                  displayName: 'Dry run patch merge-back against main'
+
+              - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+                parameters:
+                  JobType: 'Build'
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                Artifacts:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                    - ${{ artifact }}
                 TestPipeline: ${{parameters.TestPipeline}}
 
             - task: UsePythonVersion@0
@@ -92,11 +109,18 @@ extends:
             - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
               parameters:
                 Paths: $(SparseCheckoutDirectories)
-                SkipCheckoutNone: true
+
+            - task: PipAuthenticate@1
+              displayName: 'Pip Authenticate to Azure Artifacts'
+              inputs:
+                artifactFeeds: 'public/azure-sdk-for-python'
 
             - script: |
-                python -m pip install markdown2 BeautifulSoup4
+                python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
               displayName: 'pip install markdown2 and BeautifulSoup4'
+
+            # Authenticate with Azure Artifacts
+            - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
             # Save the Package Properties
             #
@@ -104,11 +128,23 @@ extends:
             # generate_from_source_pom script above.
             - pwsh: |
                 $ServiceDirs = '$(ServiceDirectories)'
+                $ArtifactList = @('${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}' `
+                  | ConvertFrom-Json `
+                  | Select-Object -ExpandProperty name)
                 foreach($ServiceDir in $ServiceDirs.Split(',')) {
-                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 -ServiceDirectory $ServiceDir -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+                  $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1 `
+                    -ServiceDirectory $ServiceDir `
+                    -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo `
+                    -artifactList $ArtifactList
                 }
               workingDirectory: $(Pipeline.Workspace)
               displayName: "Save Package Properties"
+
+            - ${{if ne(parameters.SDKType, 'data')}}:
+              - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+                parameters:
+                  PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+                  ForRelease: true
 
             - task: Maven@4
               displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
@@ -186,15 +222,15 @@ extends:
               inputs:
                 versionSpec: $(PythonVersion)
 
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                Paths:
-                  - '**/*.xml'
-                  - '**/*.md'
-                  - '**/*.yml' # needed for package properties when setting the test pipeline version
-                  - '.vscode/cspell.json'
-                  - '!sdk/**/test-recordings/*'
-                  - '!sdk/**/session-records/*'
+            - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+              - checkout: self
+                path: s
+                fetchFilter: tree:0
+                fetchDepth: 0
+                fetchTags: ${{ parameters.TestPipeline }}
+                sparseCheckoutPatterns: /* !/*/ /eng /.config **/*.xml **/*.md **/*.yml .vscode/cspell.json !sdk/**/test-recordings/* !sdk/**/session-records/*
+                env:
+                  AGENT_SOURCE_CHECKOUT_QUIET: 'true'
 
             - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
               parameters:
@@ -203,8 +239,10 @@ extends:
 
             - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
               parameters:
-                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-                ServiceDirectory: "template"
+                Artifacts:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                    - ${{ artifact }}
                 TestPipeline: ${{parameters.TestPipeline}}
 
             - task: PythonScript@0
@@ -229,7 +267,6 @@ extends:
             - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
               parameters:
                 Paths: $(SparseCheckoutDirectories)
-                SkipCheckoutNone: true
 
             - template: /eng/common/pipelines/templates/steps/check-spelling.yml
               parameters:
@@ -276,25 +313,11 @@ extends:
               parameters:
                 ServiceDirectories: $(ServiceDirectories)
 
-            # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+            # Use BasePathLength of 30 instead of the default 49 as some released files fail when the number is higher.
             - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
               parameters:
                 SourceDirectory: $(Build.SourcesDirectory)
-                BasePathLength: 38
-
-            # Verify changelog, the way it currently works would require a complete overhaul in order to be able to deal
-            # with multiple artifacts and multiple service directories. Even ignoring this, there's still the fact that each
-            # artifact's metadata can cause this step to be skipped, so we still need to loop over this.
-            - ${{if ne(parameters.SDKType, 'data')}}:
-              - ${{ each artifact in parameters.Artifacts }}:
-                - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-                  - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                    parameters:
-                      PackageName: ${{artifact.name}}
-                      ServiceName: ${{artifact.ServiceDirectory}}
-                      # Note: For the patch release pipeline there's no point in verifying the non-release changelog since
-                      # the only time this pipeline should run is for a patch release.
-                      ForRelease: true
+                BasePathLength: 30
 
             - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
@@ -307,3 +330,4 @@ extends:
               - Build
             Artifacts: ${{ parameters.Artifacts }}
             TestPipeline: ${{ parameters.TestPipeline }}
+            PatchMergeBack: ${{ parameters.PatchMergeBack }}

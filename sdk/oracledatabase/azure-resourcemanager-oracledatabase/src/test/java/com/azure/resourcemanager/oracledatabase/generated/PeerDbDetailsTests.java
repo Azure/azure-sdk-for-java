@@ -12,20 +12,20 @@ public final class PeerDbDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PeerDbDetails model = BinaryData
-            .fromString("{\"peerDbId\":\"cwwqiokn\",\"peerDbOcid\":\"xmojmsvpkjp\",\"peerDbLocation\":\"kwcf\"}")
+            .fromString("{\"peerDbId\":\"f\",\"peerDbOcid\":\"babwidfcxss\",\"peerDbLocation\":\"unnoxyhk\"}")
             .toObject(PeerDbDetails.class);
-        Assertions.assertEquals("cwwqiokn", model.peerDbId());
-        Assertions.assertEquals("xmojmsvpkjp", model.peerDbOcid());
-        Assertions.assertEquals("kwcf", model.peerDbLocation());
+        Assertions.assertEquals("f", model.peerDbId());
+        Assertions.assertEquals("babwidfcxss", model.peerDbOcid());
+        Assertions.assertEquals("unnoxyhk", model.peerDbLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PeerDbDetails model
-            = new PeerDbDetails().withPeerDbId("cwwqiokn").withPeerDbOcid("xmojmsvpkjp").withPeerDbLocation("kwcf");
+            = new PeerDbDetails().withPeerDbId("f").withPeerDbOcid("babwidfcxss").withPeerDbLocation("unnoxyhk");
         model = BinaryData.fromObject(model).toObject(PeerDbDetails.class);
-        Assertions.assertEquals("cwwqiokn", model.peerDbId());
-        Assertions.assertEquals("xmojmsvpkjp", model.peerDbOcid());
-        Assertions.assertEquals("kwcf", model.peerDbLocation());
+        Assertions.assertEquals("f", model.peerDbId());
+        Assertions.assertEquals("babwidfcxss", model.peerDbOcid());
+        Assertions.assertEquals("unnoxyhk", model.peerDbLocation());
     }
 }

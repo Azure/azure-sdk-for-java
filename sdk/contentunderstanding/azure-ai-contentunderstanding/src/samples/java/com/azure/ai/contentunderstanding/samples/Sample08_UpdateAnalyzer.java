@@ -1,0 +1,111 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Sample demonstrating how to update an existing analyzer.
+ * This sample shows:
+ * 1. Creating an analyzer
+ * 2. Updating analyzer description
+ * 3. Updating analyzer tags
+ * 4. Preserving analyzer properties omitted from the merge update
+ */
+public class Sample08_UpdateAnalyzer {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample08.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample08.buildClient
+
+        // Create an analyzer for testing
+        String analyzerId = "update_test_analyzer_" + System.currentTimeMillis();
+        System.out.println("Creating test analyzer '" + analyzerId + "'...");
+
+        Map<String, ContentFieldDefinition> fields = new HashMap<>();
+        ContentFieldDefinition titleDef = new ContentFieldDefinition();
+        titleDef.setType(ContentFieldType.STRING);
+        titleDef.setMethod(GenerationMethod.EXTRACT);
+        titleDef.setDescription("Document title");
+        fields.put("title", titleDef);
+
+        ContentFieldSchema fieldSchema = new ContentFieldSchema();
+        fieldSchema.setName("basic_schema");
+        fieldSchema.setDescription("Basic document schema");
+        fieldSchema.setFields(fields);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", SampleModelConfiguration.getCompletionModel());
+
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "tag1_initial_value");
+
+        ContentAnalyzer analyzer = new ContentAnalyzer()
+            .setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Original analyzer for update testing")
+            .setTags(tags)
+            .setConfig(new ContentAnalyzerConfig()
+                .setOcrEnabled(true)
+                .setLayoutEnabled(true))
+            .setFieldSchema(fieldSchema)
+            .setModels(models);
+
+        client.beginCreateAnalyzer(analyzerId, analyzer, true).getFinalResult();
+        System.out.println("Test analyzer created: " + analyzerId);
+
+        try {
+            // BEGIN:ContentUnderstandingUpdateAnalyzer
+            // Get the current analyzer
+            ContentAnalyzer currentAnalyzer = client.getAnalyzer(analyzerId);
+            System.out.println("\nCurrent description: " + currentAnalyzer.getDescription());
+
+            Map<String, String> updatedTags = new HashMap<>();
+            updatedTags.put("tag1", "tag1_updated_value");
+            updatedTags.put("tag3", "tag3_value");
+
+            ContentAnalyzer updatedAnalyzer = new ContentAnalyzer()
+                .setBaseAnalyzerId(currentAnalyzer.getBaseAnalyzerId())
+                .setDescription("Updated analyzer description")
+                .setTags(updatedTags);
+
+            client.updateAnalyzer(analyzerId, updatedAnalyzer);
+            ContentAnalyzer result = client.getAnalyzer(analyzerId);
+
+            System.out.println("Analyzer updated successfully!");
+            System.out.println("New description: " + result.getDescription());
+            System.out.println("Updated tags: " + result.getTags());
+            // END:ContentUnderstandingUpdateAnalyzer
+        } finally {
+            System.out.println("\nCleaning up: deleting test analyzer '" + analyzerId + "'...");
+            client.deleteAnalyzer(analyzerId);
+            System.out.println("Test analyzer deleted successfully.");
+        }
+    }
+}

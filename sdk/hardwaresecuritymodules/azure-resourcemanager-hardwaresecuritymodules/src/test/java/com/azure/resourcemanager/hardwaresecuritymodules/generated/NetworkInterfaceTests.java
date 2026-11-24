@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterface model
-            = BinaryData.fromString("{\"resourceId\":\"srzdzucerscdn\",\"privateIpAddress\":\"evfiwjmygt\"}")
-                .toObject(NetworkInterface.class);
-        Assertions.assertEquals("evfiwjmygt", model.privateIpAddress());
+        NetworkInterface model = BinaryData.fromString("{\"resourceId\":\"xuqlcvydypat\",\"privateIpAddress\":\"oa\"}")
+            .toObject(NetworkInterface.class);
+        Assertions.assertEquals("oa", model.privateIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterface model = new NetworkInterface().withPrivateIpAddress("evfiwjmygt");
+        NetworkInterface model = new NetworkInterface().withPrivateIpAddress("oa");
         model = BinaryData.fromObject(model).toObject(NetworkInterface.class);
-        Assertions.assertEquals("evfiwjmygt", model.privateIpAddress());
+        Assertions.assertEquals("oa", model.privateIpAddress());
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.actuator.implementation.storage;
 
-import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.health.contributor.Status;
 
 /**
  * Azure Storage actuator related constants.

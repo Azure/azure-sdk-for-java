@@ -37,14 +37,6 @@ public final class StorageInformation implements JsonSerializable<StorageInforma
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

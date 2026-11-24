@@ -84,7 +84,7 @@ class PartitionControllerImpl implements PartitionController {
                 return updatedLease;
             })
             .onErrorResume(throwable -> {
-                logger.warn("Partition {}: unexpected error; removing lease from current cache.", lease.getLeaseToken());
+                logger.warn("Partition " + lease.getLeaseToken() + ": unexpected error; removing lease from current cache.", throwable);
                 return this.removeLease(lease).then(Mono.error(throwable));
             });
     }
@@ -123,7 +123,7 @@ class PartitionControllerImpl implements PartitionController {
                 if (e instanceof LeaseLostException) {
                     logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
                 } else {
-                    logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
+                    logger.warn("Partition " + lease.getLeaseToken() + ": failed to remove lease.", e);
                 }
 
                 return Mono.empty();
@@ -159,7 +159,7 @@ class PartitionControllerImpl implements PartitionController {
                 } else if (throwable instanceof TaskCancelledException) {
                     logger.debug("Partition {}: processing canceled.", lease.getLeaseToken());
                 } else {
-                    logger.warn("Partition {}: processing failed.", lease.getLeaseToken(), throwable);
+                    logger.warn("Partition " + lease.getLeaseToken() + ": processing failed.", throwable);
                 }
 
                 return Mono.empty();
@@ -189,7 +189,7 @@ class PartitionControllerImpl implements PartitionController {
                 }
             }).then(this.leaseManager.delete(lease))
             .onErrorResume(throwable -> {
-                logger.warn("Partition {}: failed to split", lease.getLeaseToken(), throwable);
+                logger.warn("Partition " + lease.getLeaseToken() + ": failed to split", throwable);
                 return  Mono.empty();
             });
     }

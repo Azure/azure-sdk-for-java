@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -128,27 +127,6 @@ public class EventBase implements JsonSerializable<EventBase> {
         this.topic = topic;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model EventBase"));
-        }
-        if (eventNotifier() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property eventNotifier in model EventBase"));
-        }
-        if (topic() != null) {
-            topic().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(EventBase.class);
 
     /**
      * {@inheritDoc}

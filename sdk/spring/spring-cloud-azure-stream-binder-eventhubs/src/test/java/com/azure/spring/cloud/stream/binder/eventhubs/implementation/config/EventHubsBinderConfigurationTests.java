@@ -3,10 +3,13 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.implementation.config;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.EventHubsProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsProcessorFactoryCustomizer;
@@ -19,6 +22,8 @@ import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsP
 import com.azure.spring.cloud.stream.binder.eventhubs.core.implementation.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.implementation.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
+import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
+import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.eventhubs.core.listener.EventHubsMessageListenerContainer;
 import com.azure.spring.messaging.eventhubs.core.properties.EventHubsContainerProperties;
@@ -32,6 +37,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -93,9 +99,6 @@ public class EventHubsBinderConfigurationTests {
             });
     }
 
-    // conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
-    // https://github.com/Azure/azure-sdk-for-java/issues/46359
-    @SuppressWarnings("deprecation")
     @Test
     void testExtendedBindingPropertiesShouldBind() {
         String producerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-producer-namespace");
@@ -278,6 +281,94 @@ public class EventHubsBinderConfigurationTests {
         @Override
         public void customize(Object builder) {
 
+        }
+    }
+
+    @Test
+    void testCustomTokenCredentialConfiguration() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+
+        this.contextRunner
+            .withConfiguration(AutoConfigurations.of(CustomTokenCredentialConfiguration.class))
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + connectionString,
+                "spring.cloud.azure.eventhubs.credential.token-credential-bean-name=customTokenCredential"
+            )
+            .run(context -> {
+                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
+                AzureEventHubsProperties props = context.getBean(AzureEventHubsProperties.class);
+                EventHubsProducerFactoryCustomizer customizer = context.getBean(EventHubsProducerFactoryCustomizer.class);
+
+                // Create producer factory and apply customizer
+                DefaultEventHubsNamespaceProducerFactory producerFactory = new DefaultEventHubsNamespaceProducerFactory(
+                    context.getBean(NamespaceProperties.class));
+                customizer.customize(producerFactory);
+
+                // Validate credential resolution - without ApplicationContext propagation fix,
+                // tokenCredentialBeanName would be silently ignored
+                assertThat(resolveCredential(producerFactory, props))
+                    .isSameAs(customCredential);
+
+                // Validate runtime producer creation
+                EventHubProducerAsyncClient producer = producerFactory.createProducer("test-eventhub");
+                producer.close();
+            });
+    }
+
+    @Test
+    void testCustomTokenCredentialConfigurationWithBinder() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+
+        this.contextRunner
+            .withConfiguration(AutoConfigurations.of(CustomTokenCredentialConfiguration.class))
+            .withBean(CheckpointStore.class, () -> mock(CheckpointStore.class))
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + connectionString,
+                "spring.cloud.azure.eventhubs.credential.token-credential-bean-name=customTokenCredential",
+                "spring.cloud.azure.eventhubs.namespace=test-namespace"
+            )
+            .run(context -> {
+                EventHubsMessageChannelBinder binder = context.getBean(EventHubsMessageChannelBinder.class);
+                TokenCredential customCredential = context.getBean("customTokenCredential", TokenCredential.class);
+                AzureEventHubsProperties props = context.getBean(AzureEventHubsProperties.class);
+
+                // Get producer factory from binder
+                EventHubsTemplate eventHubsTemplate = ReflectionTestUtils.invokeMethod(binder, "getEventHubTemplate");
+                DefaultEventHubsNamespaceProducerFactory producerFactory =
+                    (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+
+                // Get processor factory from binder
+                Object processorFactory = ReflectionTestUtils.invokeMethod(binder, "getProcessorFactory");
+
+                // Validate credential resolution for both factories
+                assertThat(resolveCredential(producerFactory, props))
+                    .isSameAs(customCredential);
+                assertThat(resolveCredential(processorFactory, props))
+                    .isSameAs(customCredential);
+
+                // Validate runtime producer creation
+                EventHubProducerAsyncClient producer = producerFactory.createProducer("test-eventhub");
+                producer.close();
+            });
+    }
+
+    @SuppressWarnings("unchecked")
+    private TokenCredential resolveCredential(Object factory, AzureEventHubsProperties properties) {
+        try {
+            java.lang.reflect.Field field = factory.getClass().getDeclaredField("tokenCredentialResolver");
+            field.setAccessible(true);
+            AzureCredentialResolver<TokenCredential> resolver = (AzureCredentialResolver<TokenCredential>) field.get(factory);
+            return resolver.resolve(properties);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Configuration
+    public static class CustomTokenCredentialConfiguration {
+        @Bean
+        public TokenCredential customTokenCredential() {
+            return mock(TokenCredential.class);
         }
     }
 

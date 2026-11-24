@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * The {@link StorageQueueClientFactory} implementation to produce new {@link QueueAsyncClient} instances
  * for provided {@link QueueServiceAsyncClient} on each {@link #createQueueClient} invocation.
  */
+@SuppressWarnings("deprecation")
 public final class DefaultStorageQueueClientFactory implements StorageQueueClientFactory, DisposableBean {
 
     private final List<Listener> listeners = new ArrayList<>();

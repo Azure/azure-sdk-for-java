@@ -13,16 +13,16 @@ public final class ChaosTargetSelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChaosTargetSelector model = BinaryData.fromString(
-            "{\"type\":\"ChaosTargetSelector\",\"id\":\"hsgcbacphejkot\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}")
+            "{\"type\":\"ChaosTargetSelector\",\"id\":\"wutttxfvjrbi\",\"filter\":{\"type\":\"ChaosTargetFilter\"}}")
             .toObject(ChaosTargetSelector.class);
-        Assertions.assertEquals("hsgcbacphejkot", model.id());
+        Assertions.assertEquals("wutttxfvjrbi", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChaosTargetSelector model
-            = new ChaosTargetSelector().withId("hsgcbacphejkot").withFilter(new ChaosTargetFilter());
+            = new ChaosTargetSelector().withId("wutttxfvjrbi").withFilter(new ChaosTargetFilter());
         model = BinaryData.fromObject(model).toObject(ChaosTargetSelector.class);
-        Assertions.assertEquals("hsgcbacphejkot", model.id());
+        Assertions.assertEquals("wutttxfvjrbi", model.id());
     }
 }

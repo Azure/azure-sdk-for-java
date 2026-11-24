@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dependencymap.fluent.models.MapsResourceInner;
+import com.azure.resourcemanager.dependencymap.models.ExportDependenciesOperationResult;
 import com.azure.resourcemanager.dependencymap.models.ExportDependenciesRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsForProcessOnFocusedMachineRequest;
 import com.azure.resourcemanager.dependencymap.models.GetConnectionsWithConnectedMachineForFocusedMachineRequest;
@@ -129,8 +130,12 @@ public final class MapsResourceImpl implements MapsResource, MapsResource.Defini
         com.azure.resourcemanager.dependencymap.DependencyMapManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.mapName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "maps");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}",
+            "resourceGroupName");
+        this.mapName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}",
+            "mapName");
     }
 
     public MapsResource refresh() {
@@ -177,12 +182,12 @@ public final class MapsResourceImpl implements MapsResource, MapsResource.Defini
         serviceManager.maps().getConnectionsForProcessOnFocusedMachine(resourceGroupName, mapName, body, context);
     }
 
-    public void exportDependencies(ExportDependenciesRequest body) {
-        serviceManager.maps().exportDependencies(resourceGroupName, mapName, body);
+    public ExportDependenciesOperationResult exportDependencies(ExportDependenciesRequest body) {
+        return serviceManager.maps().exportDependencies(resourceGroupName, mapName, body);
     }
 
-    public void exportDependencies(ExportDependenciesRequest body, Context context) {
-        serviceManager.maps().exportDependencies(resourceGroupName, mapName, body, context);
+    public ExportDependenciesOperationResult exportDependencies(ExportDependenciesRequest body, Context context) {
+        return serviceManager.maps().exportDependencies(resourceGroupName, mapName, body, context);
     }
 
     public MapsResourceImpl withRegion(Region location) {

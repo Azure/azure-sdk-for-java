@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.DeploymentPreflightsClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.DeploymentPreflightModelInner;
 import reactor.core.publisher.Mono;
@@ -96,24 +95,6 @@ public final class DeploymentPreflightsClientImpl implements DeploymentPreflight
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeploymentPreflightModelInner>> postWithResponseAsync(String resourceGroupName,
         String deploymentId, DeploymentPreflightModelInner body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deploymentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter deploymentId is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -157,27 +138,6 @@ public final class DeploymentPreflightsClientImpl implements DeploymentPreflight
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentPreflightModelInner> postWithResponse(String resourceGroupName, String deploymentId,
         DeploymentPreflightModelInner body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (deploymentId == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter deploymentId is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, deploymentId, accept, body, context);
@@ -200,6 +160,4 @@ public final class DeploymentPreflightsClientImpl implements DeploymentPreflight
         final DeploymentPreflightModelInner body = null;
         return postWithResponse(resourceGroupName, deploymentId, body, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DeploymentPreflightsClientImpl.class);
 }

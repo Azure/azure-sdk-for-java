@@ -130,26 +130,6 @@ public final class VirtualMachineInstanceUpdateProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (hardwareProfile() != null) {
-            hardwareProfile().validate();
-        }
-        if (storageProfile() != null) {
-            storageProfile().validate();
-        }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-        if (osProfile() != null) {
-            osProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

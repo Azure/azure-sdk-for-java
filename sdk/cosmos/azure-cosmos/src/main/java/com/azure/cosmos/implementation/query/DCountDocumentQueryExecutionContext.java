@@ -29,9 +29,9 @@ import java.util.function.BiFunction;
 public class DCountDocumentQueryExecutionContext
     implements IDocumentQueryExecutionComponent<Document> {
 
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
     private final IDocumentQueryExecutionComponent<Document> component;
     private final QueryInfo info;
@@ -75,7 +75,7 @@ public class DCountDocumentQueryExecutionContext
 
                        for (FeedResponse<Document> page : superList) {
                            diagnostics.addAll(
-                               diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
+                               diagAccessor().getClientSideRequestStatisticsForQueryPipelineAggregations(page.getCosmosDiagnostics()));
                            count += page.getResults().size();
                            requestCharge += page.getRequestCharge();
                            QueryMetrics.mergeQueryMetricsMap(queryMetricsMap,
@@ -99,7 +99,7 @@ public class DCountDocumentQueryExecutionContext
                                                                              queryMetricsMap, null, false,
                                                                              false, null);
 
-                       diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                       diagAccessor().addClientSideDiagnosticsToFeed(
                            frp.getCosmosDiagnostics(), diagnostics);
                        return BridgeInternal
                                         .createFeedResponseWithQueryMetrics(Collections

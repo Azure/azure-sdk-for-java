@@ -148,13 +148,45 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
     log.info("Add dependency management for file: " + file_path)
     with open(file_path, 'r', encoding = 'utf-8') as pom_file:
         pom_file_content = pom_file.read()
-        insert_position = pom_file_content.find('<dependencies>')
-        if insert_position == -1:
-            # no dependencies section in pom, not adding <dependencyManagement> section
-            log.warn("No dependencies section found in " + file_path + ". Not adding dependencyManagement.")
-            return
-        insert_content = get_dependency_management_content()
-        dependency_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
+
+        # Check if dependencyManagement already exists
+        dependency_management_start = pom_file_content.find('<dependencyManagement>')
+
+        if dependency_management_start != -1:
+            # dependencyManagement already exists, insert new dependencies inside it
+            log.info("Found existing dependencyManagement in " + file_path + ". Inserting new dependencies.")
+            dependencies_in_dm_start = pom_file_content.find('<dependencies>', dependency_management_start)
+
+            if dependencies_in_dm_start == -1:
+                # No dependencies section in dependencyManagement, create one
+                log.info("No dependencies section found in dependencyManagement for " + file_path + ". Creating new dependencies section.")
+                dependency_management_end = pom_file_content.find('</dependencyManagement>', dependency_management_start)
+                if dependency_management_end == -1:
+                    log.warn("No closing dependencyManagement tag found for " + file_path + ". Skipping.")
+                    return
+                insert_position = dependency_management_end
+                insert_content = "    <dependencies>\n{}    </dependencies>\n".format(get_dependency_content_for_existing_management())
+                dependency_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
+            else:
+                # Find the position to insert (before </dependencies> closing tag)
+                dependencies_in_dm_end = pom_file_content.find('</dependencies>', dependencies_in_dm_start)
+                if dependencies_in_dm_end == -1:
+                    log.warn("No closing dependencies tag found in dependencyManagement for " + file_path + ". Skipping.")
+                    return
+                insert_position = dependencies_in_dm_end
+                insert_content = get_dependency_content_for_existing_management()
+                dependency_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
+        else:
+            # No dependencyManagement exists, create new one
+            log.info("No existing dependencyManagement in " + file_path + ". Creating new one.")
+            insert_position = pom_file_content.find('<dependencies>')
+            if insert_position == -1:
+                # no dependencies section in pom, not adding <dependencyManagement> section
+                log.warn("No dependencies section found in " + file_path + ". Not adding dependencyManagement.")
+                return
+            insert_content = get_dependency_management_content()
+            dependency_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
+
         insert_position = get_prop_position(pom_file_content)
         insert_content = get_prop_content(pom_file_content, spring_boot_dependencies_version, spring_cloud_dependencies_version)
         prop_content = dependency_content[:insert_position] + insert_content + dependency_content[insert_position:]
@@ -189,11 +221,9 @@ def update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependenci
              updated_pom_file.writelines(new_content)
 
 
-def get_dependency_management_content():
-    return """
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
+def get_dependencies_content():
+    """Returns the dependency entries without any wrapping tags."""
+    return """      <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring.boot.version}</version>
@@ -207,9 +237,22 @@ def get_dependency_management_content():
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-    </dependencies>
+    """
+
+
+def get_dependency_management_content():
+    """Returns complete dependencyManagement section with dependencies."""
+    return """
+  <dependencyManagement>
+    <dependencies>
+{}    </dependencies>
   </dependencyManagement>
-"""
+""".format(get_dependencies_content())
+
+
+def get_dependency_content_for_existing_management():
+    """Returns dependency entries to insert into existing dependencyManagement."""
+    return get_dependencies_content()
 
 
 def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_cloud_dependencies_version):
@@ -217,13 +260,12 @@ def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_clo
   <properties>
     {}
   </properties>
-  
+
   """.format(get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version))
 
 
 def get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version):
-    return """
-    <spring.boot.version>{}</spring.boot.version>
+    return """  <spring.boot.version>{}</spring.boot.version>
     <spring.cloud.version>{}</spring.cloud.version>
   """.format(spring_boot_dependencies_version, spring_cloud_dependencies_version)
 

@@ -29,12 +29,8 @@ public final class ImpactCategoriesImpl implements ImpactCategories {
 
     public Response<ImpactCategory> getWithResponse(String impactCategoryName, Context context) {
         Response<ImpactCategoryInner> inner = this.serviceClient().getWithResponse(impactCategoryName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ImpactCategoryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ImpactCategoryImpl(inner.getValue(), this.manager()));
     }
 
     public ImpactCategory get(String impactCategoryName) {

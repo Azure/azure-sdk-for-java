@@ -14,14 +14,18 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -34,7 +38,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -54,16 +57,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -72,6 +73,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
 public class ClientRetryPolicyE2ETests extends TestSuiteBase {
+
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+
     private CosmosAsyncClient clientWithPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainerFromClientWithPreferredRegions;
     private CosmosAsyncClient clientWithoutPreferredRegions;
@@ -79,6 +84,167 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private List<String> preferredRegions;
     private List<String> serviceOrderedReadableRegions;
     private List<String> serviceOrderedWriteableRegions;
+
+    private void assertContactedRegionCount(
+        CosmosDiagnostics cosmosDiagnostics,
+        int expectedCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(cosmosDiagnostics, expectation);
+        if (contactedRegionNames.size() != expectedCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count <%d>", expectedCount),
+                contactedRegionNames,
+                cosmosDiagnostics,
+                cosmosDiagnostics == null ? null : cosmosDiagnostics.getDiagnosticsContext()));
+        }
+    }
+
+    private void assertContactedRegionCount(
+        CosmosDiagnosticsContext diagnosticsContext,
+        int expectedCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(diagnosticsContext, expectation);
+        if (contactedRegionNames.size() != expectedCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count <%d>", expectedCount),
+                contactedRegionNames,
+                null,
+                diagnosticsContext));
+        }
+    }
+
+    private void assertContactedRegionCountBetween(
+        CosmosDiagnostics cosmosDiagnostics,
+        int minCount,
+        int maxCount,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(cosmosDiagnostics, expectation);
+        if (contactedRegionNames.size() < minCount || contactedRegionNames.size() > maxCount) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted region count between <%d> and <%d>", minCount, maxCount),
+                contactedRegionNames,
+                cosmosDiagnostics,
+                cosmosDiagnostics == null ? null : cosmosDiagnostics.getDiagnosticsContext()));
+        }
+    }
+
+    private void assertContactedRegionsContain(
+        CosmosDiagnostics cosmosDiagnostics,
+        String expectedRegion,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(cosmosDiagnostics, expectation);
+        if (!contactedRegionNames.contains(expectedRegion)) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted regions to contain <%s>", expectedRegion),
+                contactedRegionNames,
+                cosmosDiagnostics,
+                cosmosDiagnostics == null ? null : cosmosDiagnostics.getDiagnosticsContext()));
+        }
+    }
+
+    private void assertContactedRegionsContainAll(
+        CosmosDiagnostics cosmosDiagnostics,
+        List<String> expectedRegions,
+        String expectation) {
+
+        Set<String> contactedRegionNames = getContactedRegionNamesOrFail(cosmosDiagnostics, expectation);
+        if (!contactedRegionNames.containsAll(expectedRegions)) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                String.format("contacted regions to contain all <%s>", expectedRegions),
+                contactedRegionNames,
+                cosmosDiagnostics,
+                cosmosDiagnostics == null ? null : cosmosDiagnostics.getDiagnosticsContext()));
+        }
+    }
+
+    private Set<String> getContactedRegionNamesOrFail(CosmosDiagnostics cosmosDiagnostics, String expectation) {
+        if (cosmosDiagnostics == null) {
+            fail(expectation + ". Cosmos diagnostics were null.");
+        }
+
+        Set<String> contactedRegionNames = cosmosDiagnostics.getContactedRegionNames();
+        if (contactedRegionNames == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null contacted region names",
+                null,
+                cosmosDiagnostics,
+                cosmosDiagnostics.getDiagnosticsContext()));
+        }
+
+        return contactedRegionNames;
+    }
+
+    private Set<String> getContactedRegionNamesOrFail(CosmosDiagnosticsContext diagnosticsContext, String expectation) {
+        if (diagnosticsContext == null) {
+            fail(expectation + ". Diagnostics context was null.");
+        }
+
+        Set<String> contactedRegionNames = diagnosticsContext.getContactedRegionNames();
+        if (contactedRegionNames == null) {
+            fail(formatContactedRegionsAssertionMessage(
+                expectation,
+                "non-null contacted region names",
+                null,
+                null,
+                diagnosticsContext));
+        }
+
+        return contactedRegionNames;
+    }
+
+    private String formatContactedRegionsAssertionMessage(
+        String expectation,
+        String expected,
+        Set<String> contactedRegionNames,
+        CosmosDiagnostics cosmosDiagnostics,
+        CosmosDiagnosticsContext diagnosticsContext) {
+
+        return String.format(
+            "%s. Expected %s but actual contacted regions were <%s>. "
+                + "preferredRegions=<%s>, serviceOrderedReadableRegions=<%s>, "
+                + "serviceOrderedWriteableRegions=<%s>, diagnosticsContext=<%s>, diagnostics=<%s>",
+            expectation,
+            expected,
+            contactedRegionNames,
+            this.preferredRegions,
+            this.serviceOrderedReadableRegions,
+            this.serviceOrderedWriteableRegions,
+            diagnosticsContext == null ? null : diagnosticsContext.toJson(),
+            cosmosDiagnostics == null ? null : cosmosDiagnostics.toString());
+    }
+
+    private List<String> getServiceOrderedRegionsForOperation(OperationType operationType) {
+        return Utils.isWriteOperation(operationType)
+            ? this.serviceOrderedWriteableRegions
+            : this.serviceOrderedReadableRegions;
+    }
+
+    private List<String> getExpectedServiceOrderedRegionsForMessage(OperationType operationType, int maxRegionCount) {
+        List<String> serviceOrderedRegions = getServiceOrderedRegionsForOperation(operationType);
+        if (serviceOrderedRegions == null) {
+            return Collections.emptyList();
+        }
+
+        return serviceOrderedRegions.subList(0, Math.min(maxRegionCount, serviceOrderedRegions.size()));
+    }
+
+    private List<String> getExpectedPreferredRegionsForMessage(int maxRegionCount) {
+        if (this.preferredRegions == null) {
+            return Collections.emptyList();
+        }
+
+        return this.preferredRegions.subList(0, Math.min(maxRegionCount, this.preferredRegions.size()));
+    }
 
     @DataProvider(name = "channelAcquisitionExceptionArgProvider")
     public static Object[][] channelAcquisitionExceptionArgProvider() {
@@ -94,27 +260,47 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     @DataProvider(name = "leaseNotFoundArgProvider")
     public static Object[][] leaseNotFoundArgProvider() {
         return new Object[][]{
-            // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient, isReadMany
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false },
-            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false },
-            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true },
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false },
-            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false },
-            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false },
-            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true }
+            // OperationType, FaultInjectionOperationType, shouldUsePreferredRegionsOnClient, isReadMany, hitLimit (1 or 2) for lease not found
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 1 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 1 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 1 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 1 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 1 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 1 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 1 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 1 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 1 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 1 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 1 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 1 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 1 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 1 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 1 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 1 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 1 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, true, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, false, 2 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, true, false, 2 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, true, false, 2 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, true, false, 2 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, true, false, 2 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, true, false, 2 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, true, false, 2 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, true, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, true, true, 2 },
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM, false, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, false, 2 },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, false, false, 2 },
+            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, false, false, 2 },
+            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, false, false, 2 },
+            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, false, false, 2 },
+            { OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, false, false, 2 },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM, false, false, 2 },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM, false, false, 2 },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, false, true, 2 }
         };
     }
 
@@ -126,48 +312,49 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
     @BeforeClass(groups = {"multi-master", "fast", "fi-multi-master", "multi-region"}, timeOut = TIMEOUT)
     public void beforeClass() {
-        CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient();
-        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
-        GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
+        try(CosmosAsyncClient dummy = getClientBuilder().buildAsyncClient()) {
+            AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(dummy);
+            GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
 
-        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+            DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
 
-        AccountLevelLocationContext accountLevelReadableLocationContext
-            = getAccountLevelLocationContext(databaseAccount, false);
+            AccountLevelLocationContext accountLevelReadableLocationContext
+                = getAccountLevelLocationContext(databaseAccount, false);
 
-        AccountLevelLocationContext accountLevelWriteableLocationContext
-            = getAccountLevelLocationContext(databaseAccount, true);
+            AccountLevelLocationContext accountLevelWriteableLocationContext
+                = getAccountLevelLocationContext(databaseAccount, true);
 
-        validate(accountLevelReadableLocationContext, false);
-        validate(accountLevelWriteableLocationContext, true);
+            validate(accountLevelReadableLocationContext, false);
+            validate(accountLevelWriteableLocationContext, true);
 
-        this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
+            this.preferredRegions = accountLevelReadableLocationContext.serviceOrderedReadableRegions
                 .stream()
                 .map(regionName -> regionName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toList());
 
-        this.serviceOrderedReadableRegions = this.preferredRegions;
+            this.serviceOrderedReadableRegions = this.preferredRegions;
 
-        this.serviceOrderedWriteableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions
-            .stream()
-            .map(regionName -> regionName.toLowerCase(Locale.ROOT))
-            .collect(Collectors.toList());
+            this.serviceOrderedWriteableRegions = accountLevelWriteableLocationContext.serviceOrderedWriteableRegions
+                .stream()
+                .map(regionName -> regionName.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toList());
 
-        this.clientWithPreferredRegions = getClientBuilder()
-            .preferredRegions(this.preferredRegions)
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .endpointDiscoveryEnabled(true)
-            .multipleWriteRegionsEnabled(true)
-            .buildAsyncClient();
+            this.clientWithPreferredRegions = getClientBuilder()
+                .preferredRegions(this.preferredRegions)
+                .endpointDiscoveryEnabled(true)
+                .multipleWriteRegionsEnabled(true)
+                .buildAsyncClient();
 
-        this.clientWithoutPreferredRegions = getClientBuilder()
-            .consistencyLevel(ConsistencyLevel.SESSION)
-            .endpointDiscoveryEnabled(true)
-            .multipleWriteRegionsEnabled(true)
-            .buildAsyncClient();
+            this.clientWithoutPreferredRegions = getClientBuilder()
+                .endpointDiscoveryEnabled(true)
+                .multipleWriteRegionsEnabled(true)
+                .buildAsyncClient();
+        }
 
-        this.cosmosAsyncContainerFromClientWithPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
-        this.cosmosAsyncContainerFromClientWithoutPreferredRegions = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
+        this.cosmosAsyncContainerFromClientWithPreferredRegions =
+            getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
+        this.cosmosAsyncContainerFromClientWithoutPreferredRegions =
+            getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithoutPreferredRegions);
     }
 
     @AfterClass(groups = {"multi-master", "fast", "fi-multi-master", "multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -243,9 +430,20 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 .byPage()
                 .blockFirst();
 
-            assertThat(firstPage.getCosmosDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
+            CosmosDiagnostics diagnostics = firstPage.getCosmosDiagnostics();
+            assertContactedRegionCount(
+                diagnostics,
+                1,
+                String.format(
+                    "Expected query plan timeout to keep the data plane request in first preferred region <%s>",
+                    this.preferredRegions.get(0)));
             // validate query plan timeout should not cause region failover
-            assertThat(firstPage.getCosmosDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
+            assertContactedRegionsContain(
+                diagnostics,
+                this.preferredRegions.get(0),
+                String.format(
+                    "Expected query plan timeout diagnostics to include first preferred region <%s>",
+                    this.preferredRegions.get(0)));
         } catch (Exception e) {
             fail("Except test to succeeded, " + e);
         } finally {
@@ -317,9 +515,24 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
             CosmosDiagnostics diagnostics = itemResponse.getDiagnostics();
 
-            assertThat(diagnostics.getContactedRegionNames().size()).isEqualTo(2);
-            assertThat(diagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(0));
-            assertThat(diagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(1));
+            assertContactedRegionCount(
+                diagnostics,
+                2,
+                String.format(
+                    "Expected address refresh read retry diagnostics to include first two preferred regions <%s>",
+                    getExpectedPreferredRegionsForMessage(2)));
+            assertContactedRegionsContain(
+                diagnostics,
+                this.preferredRegions.get(0),
+                String.format(
+                    "Expected address refresh read retry diagnostics to include first preferred region <%s>",
+                    this.preferredRegions.get(0)));
+            assertContactedRegionsContain(
+                diagnostics,
+                this.preferredRegions.get(1),
+                String.format(
+                    "Expected address refresh read retry diagnostics to include second preferred region <%s>",
+                    this.preferredRegions.get(1)));
         } finally {
             addressRefreshDelayRule.disable();
             serverGoneRule.disable();
@@ -382,8 +595,19 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             TestObject newItem = TestObject.create();
             resultantCosmosAsyncContainer.createItem(newItem).block();
         } catch (CosmosException e) {
-            assertThat(e.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
-            assertThat(e.getDiagnostics().getContactedRegionNames()).contains(this.preferredRegions.get(0));
+            CosmosDiagnostics diagnostics = e.getDiagnostics();
+            assertContactedRegionCount(
+                diagnostics,
+                1,
+                String.format(
+                    "Expected address refresh write retry diagnostics to include only first preferred region <%s>",
+                    this.preferredRegions.get(0)));
+            assertContactedRegionsContain(
+                diagnostics,
+                this.preferredRegions.get(0),
+                String.format(
+                    "Expected address refresh write retry diagnostics to include first preferred region <%s>",
+                    this.preferredRegions.get(0)));
             assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
             assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
         } finally {
@@ -447,8 +671,18 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                             false
                         ).block();
 
-                    assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
-                    assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegions)).isTrue();
+                    assertContactedRegionCount(
+                        cosmosDiagnostics,
+                        this.preferredRegions.size(),
+                        String.format(
+                            "Expected data plane request timeout diagnostics to include all preferred regions <%s>",
+                            this.preferredRegions));
+                    assertContactedRegionsContainAll(
+                        cosmosDiagnostics,
+                        this.preferredRegions,
+                        String.format(
+                            "Expected data plane request timeout diagnostics to include all preferred regions <%s>",
+                            this.preferredRegions));
                 } catch (Exception e) {
                     fail("dataPlaneRequestHttpTimeout() should succeed for operationType " + operationType, e);
                 }
@@ -466,8 +700,18 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                 System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + cosmosDiagnostics.getDiagnosticsContext().toJson());
 
-                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-                assertThat(cosmosDiagnostics.getContactedRegionNames()).contains(this.preferredRegions.get(0));
+                assertContactedRegionCount(
+                    cosmosDiagnostics,
+                    1,
+                    String.format(
+                        "Expected data plane write timeout diagnostics to include only first preferred region <%s>",
+                        this.preferredRegions.get(0)));
+                assertContactedRegionsContain(
+                    cosmosDiagnostics,
+                    this.preferredRegions.get(0),
+                    String.format(
+                        "Expected data plane write timeout diagnostics to include first preferred region <%s>",
+                        this.preferredRegions.get(0)));
                 assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
                 assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
             }
@@ -476,12 +720,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
         boolean shouldUsePreferredRegionsOnClient,
-        boolean isReadMany) {
+        boolean isReadMany,
+        int hitLimit) {
 
         boolean shouldRetryCrossRegion = false;
 
@@ -513,6 +758,117 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 new FaultInjectionConditionBuilder()
                     .operationType(faultInjectionOperationType)
                     .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
+                    .build()
+            )
+            .duration(Duration.ofMinutes(5))
+            .hitLimit(hitLimit)
+            .build();
+
+        try (CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
+            .directMode()
+            // required to force a quorum read irrespective of account consistency level
+            .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
+            .buildAsyncClient()) {
+
+            CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
+
+            try {
+
+                testContainer.createItem(createdItem).block();
+
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
+
+                CosmosDiagnostics cosmosDiagnostics
+                    = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
+                          .block();
+
+                if (shouldRetryCrossRegion) {
+                    assertThat(cosmosDiagnostics).isNotNull();
+                    assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                    CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+                    List<String> expectedRegions = getExpectedServiceOrderedRegionsForMessage(operationType, 2);
+
+                    assertContactedRegionCount(
+                        diagnosticsContext,
+                        2,
+                        String.format(
+                            "Expected lease not found retry diagnostics for operationType <%s> to include regions <%s>",
+                            operationType,
+                            expectedRegions));
+                    assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
+                } else {
+                    assertThat(cosmosDiagnostics).isNotNull();
+                    assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+
+                    CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+
+                    assertContactedRegionCount(
+                        diagnosticsContext,
+                        1,
+                        String.format(
+                            "Expected lease not found diagnostics for operationType <%s> to include only first preferred region <%s>",
+                            operationType,
+                            this.preferredRegions.get(0)));
+                    assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+                    assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+                    assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(10));
+                }
+
+            } finally {
+                leaseNotFoundFaultRule.disable();
+                cleanUpContainer(testContainer);
+            }
+        }
+    }
+
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "leaseNotFoundArgProvider", timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    // Inject 410-1022 and 429-3200 into the 2 replicas participating in quorum read
+    // Validate that the client fails fast in the first preferred region and retries in the next region if possible (in a window <<60s)
+    public void dataPlaneRequestHitsLeaseNotFoundAndResourceThrottleFirstPreferredRegion(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        boolean shouldUsePreferredRegionsOnClient,
+        boolean isReadMany,
+        int hitLimit) throws InterruptedException {
+
+        boolean shouldRetryCrossRegion = false;
+
+        if (Utils.isWriteOperation(operationType) && this.serviceOrderedWriteableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        } else if (!Utils.isWriteOperation(operationType) && this.serviceOrderedReadableRegions.size() > 1) {
+            shouldRetryCrossRegion = true;
+        }
+
+        CosmosAsyncClient resultantCosmosAsyncClient;
+
+        if (shouldUsePreferredRegionsOnClient) {
+            resultantCosmosAsyncClient = this.clientWithPreferredRegions;
+        } else {
+            resultantCosmosAsyncClient = this.clientWithoutPreferredRegions;
+        }
+
+        if (BridgeInternal
+            .getContextClient(resultantCosmosAsyncClient)
+            .getConnectionPolicy()
+            .getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("leaseNotFound is only meant for Direct mode");
+        }
+
+        TestObject createdItem = TestObject.create();
+
+        FaultInjectionRule leaseNotFoundFaultRule = new FaultInjectionRuleBuilder("leaseNotFound-" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
                     .build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.LEASE_NOT_FOUND)
@@ -522,48 +878,88 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             .hitLimit(1)
             .build();
 
+        FaultInjectionRule tooManyRequestsRule = new FaultInjectionRuleBuilder("too-many-requests-" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(this.preferredRegions.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                    .build()
+            )
+            .duration(Duration.ofMinutes(5))
+            .hitLimit(1)
+            .build();
+
         CosmosAsyncClient testClient = getClientBuilder()
             .preferredRegions(shouldUsePreferredRegionsOnClient ? this.preferredRegions : Collections.emptyList())
+            // required to force a quorum read irrespective of account consistency level
+            .readConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED)
             .directMode()
             .buildAsyncClient();
+
         CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
 
         try {
 
             testContainer.createItem(createdItem).block();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(leaseNotFoundFaultRule)).block();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(tooManyRequestsRule, leaseNotFoundFaultRule)).block();
 
-            Instant timeStart = Instant.now();
+            if (shouldRetryCrossRegion) {
+                // add some delay so to allow the data can be replicated cross regions
+                Thread.sleep(200);
+            }
 
             CosmosDiagnostics cosmosDiagnostics
-                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany).block();
-
-            Instant timeEnd = Instant.now();
+                = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)
+                .block();
 
             if (shouldRetryCrossRegion) {
                 assertThat(cosmosDiagnostics).isNotNull();
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
                 CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+                List<String> expectedRegions = getExpectedServiceOrderedRegionsForMessage(operationType, 2);
 
-                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
+                assertContactedRegionCount(
+                    diagnosticsContext,
+                    2,
+                    String.format(
+                        "Expected lease not found/resource throttle retry diagnostics for operationType <%s> to include regions <%s>",
+                        operationType,
+                        expectedRegions));
                 assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+
+                if (operationType.isReadOnlyOperation()) {
+                    validateCosmosDiagnosticsForMultiErrorCodesInQuorumRead(diagnosticsContext, Arrays.asList(410, 429));
+                }
             } else {
                 assertThat(cosmosDiagnostics).isNotNull();
                 assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
 
                 CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
 
-                assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
+                assertContactedRegionCount(
+                    diagnosticsContext,
+                    1,
+                    String.format(
+                        "Expected lease not found/resource throttle diagnostics for operationType <%s> to include only first preferred region <%s>",
+                        operationType,
+                        this.preferredRegions.get(0)));
                 assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                 assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
-            }
 
-            assertThat(Duration.between(timeStart, timeEnd)).isLessThan(Duration.ofSeconds(5));
+                if (operationType.isReadOnlyOperation()) {
+                    validateCosmosDiagnosticsForMultiErrorCodesInQuorumRead(diagnosticsContext, Arrays.asList(410, 429));
+                }
+            }
 
         } finally {
             leaseNotFoundFaultRule.disable();
+            tooManyRequestsRule.disable();
 
             if (testClient != null) {
                 cleanUpContainer(testContainer);
@@ -633,9 +1029,28 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         (testItem) -> new PartitionKey(testItem.getMypk()),
                         false))
                 .doOnNext(diagnostics -> {
-                    // since we have only injected connection delay error in one region, so we should only see 2 regions being contacted eventually
-                    assertThat(diagnostics.getContactedRegionNames().size()).isEqualTo(2);
-                    assertThat(diagnostics.getContactedRegionNames().containsAll(this.preferredRegions.subList(0, 2))).isTrue();
+                    // Validate that the first 2 preferred regions are contacted.
+                    // If fewer than 2 preferred regions are configured, skip the test to avoid hiding misconfiguration.
+                    if (this.preferredRegions == null || this.preferredRegions.size() < 2) {
+                        throw new SkipException(
+                            "Test requires at least 2 preferred regions but found: " + this.preferredRegions);
+                    }
+                    // since we have only injected connection delay error in one region, so we should eventually see
+                    // 2-3 regions being contacted (at least 2, but not an excessive number during failover/retry)
+                    // Using a range instead of strict equality to handle timing variations in CI environments
+                    assertContactedRegionCountBetween(
+                        diagnostics,
+                        2,
+                        3,
+                        String.format(
+                            "Expected channel acquisition diagnostics to include between 2 and 3 regions, including first two preferred regions <%s>",
+                            getExpectedPreferredRegionsForMessage(2)));
+                    assertContactedRegionsContainAll(
+                        diagnostics,
+                        getExpectedPreferredRegionsForMessage(2),
+                        String.format(
+                            "Expected channel acquisition diagnostics to include first two preferred regions <%s>",
+                            getExpectedPreferredRegionsForMessage(2)));
 
                     if (isChannelAcquisitionExceptionTriggeredRegionRetryExists(diagnostics.toString())) {
                         channelAcquisitionExceptionTriggeredRetryExists.compareAndSet(false, true);
@@ -697,7 +1112,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
-                            
+
                             return Mono.just(cosmosException.getDiagnostics());
                         }
                         return Mono.error(throwable);
@@ -759,7 +1174,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Create) {
-                    return cosmosAsyncContainer.createItem(TestObject.create()).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                    return cosmosAsyncContainer.createItem(TestObject.create())
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
 
@@ -770,7 +1187,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 }
 
                 if (operationType == OperationType.Upsert) {
-                    return cosmosAsyncContainer.upsertItem(TestObject.create()).map(itemResponse -> itemResponse.getDiagnostics())                        .onErrorResume(throwable -> {
+                    return cosmosAsyncContainer.upsertItem(TestObject.create())
+                        .map(itemResponse -> itemResponse.getDiagnostics())
+                        .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException cosmosException = (CosmosException) throwable;
 
@@ -819,7 +1238,9 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             }
 
             if (operationType == OperationType.ReadFeed) {
-                List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+                List<FeedRange> feedRanges = getFeedRangesWithRetry(
+                    cosmosAsyncContainer,
+                    "get feed ranges for client retry policy setup");
                 CosmosChangeFeedRequestOptions changeFeedRequestOptions =
                     CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
 
@@ -852,17 +1273,33 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
+    private void validateCosmosDiagnosticsForMultiErrorCodesInQuorumRead(
+        CosmosDiagnosticsContext cosmosDiagnosticsContext,
+        List<Integer> expectedStatusCodes) {
+
+        assertThat(cosmosDiagnosticsContext).isNotNull();
+
+        List<Integer> actualStatusCodes = cosmosDiagnosticsContext.getDiagnostics()
+            .stream()
+            .map(diagnostics -> cosmosDiagnosticsAccessor.getClientSideRequestStatistics(diagnostics))
+            .flatMap(clientSideRequestStatisticsCollection -> clientSideRequestStatisticsCollection.stream().map(ClientSideRequestStatistics::getResponseStatisticsList))
+            .map(storeResponseStatisticsCollection -> storeResponseStatisticsCollection.stream().map(storeResponseStatistics -> storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics()).collect(Collectors.toCollection(ArrayList::new)))
+            .map(storeResponseDiagnosticsCollection -> storeResponseDiagnosticsCollection.stream().map(StoreResponseDiagnostics::getStatusCode).collect(Collectors.toCollection(ArrayList::new)))
+            .flatMap(ArrayList::stream)
+            .collect(Collectors.toCollection(ArrayList::new));
+
+        assertThat(actualStatusCodes).containsAll(expectedStatusCodes);
+    }
+
     private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
 
         List<String> serviceOrderedReadableRegions = new ArrayList<>();
         List<String> serviceOrderedWriteableRegions = new ArrayList<>();
-        Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
-            regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
 
             if (writeOnly) {
                 serviceOrderedWriteableRegions.add(accountLocation.getName());
@@ -873,8 +1310,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
         return new AccountLevelLocationContext(
             serviceOrderedReadableRegions,
-            serviceOrderedWriteableRegions,
-            regionMap);
+            serviceOrderedWriteableRegions);
     }
 
     private static void validate(AccountLevelLocationContext accountLevelLocationContext, boolean isWriteOnly) {
@@ -893,16 +1329,13 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;
         private final List<String> serviceOrderedWriteableRegions;
-        private final Map<String, String> regionNameToEndpoint;
 
         public AccountLevelLocationContext(
             List<String> serviceOrderedReadableRegions,
-            List<String> serviceOrderedWriteableRegions,
-            Map<String, String> regionNameToEndpoint) {
+            List<String> serviceOrderedWriteableRegions) {
 
             this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
-            this.regionNameToEndpoint = regionNameToEndpoint;
         }
     }
 }

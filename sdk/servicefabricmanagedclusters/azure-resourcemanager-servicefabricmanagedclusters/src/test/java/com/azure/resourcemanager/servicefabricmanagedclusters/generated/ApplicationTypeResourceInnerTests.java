@@ -14,21 +14,19 @@ public final class ApplicationTypeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"kthfui\"},\"tags\":{\"yzydagfuaxbezyi\":\"dsfcpkvxodpuoz\",\"ywqsmbsurexim\":\"okktwhrdxw\",\"stkiiuxhqyud\":\"ryocfsfksymdd\",\"rq\":\"o\"},\"location\":\"poczvyifqrvkdvjs\",\"id\":\"rm\",\"name\":\"vdfwatkpn\",\"type\":\"ulexxbczwtr\"}")
+            "{\"properties\":{\"provisioningState\":\"xdbabphlwr\"},\"tags\":{\"azt\":\"ktsthsucocmny\"},\"location\":\"twwrqp\",\"id\":\"dckzywbiexz\",\"name\":\"eyueaxibxujwb\",\"type\":\"qwalmuzyoxaepd\"}")
             .toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.tags().get("yzydagfuaxbezyi"));
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.location());
+        Assertions.assertEquals("ktsthsucocmny", model.tags().get("azt"));
+        Assertions.assertEquals("twwrqp", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeResourceInner model = new ApplicationTypeResourceInner()
-            .withTags(mapOf("yzydagfuaxbezyi", "dsfcpkvxodpuoz", "ywqsmbsurexim", "okktwhrdxw", "stkiiuxhqyud",
-                "ryocfsfksymdd", "rq", "o"))
-            .withLocation("poczvyifqrvkdvjs");
+        ApplicationTypeResourceInner model
+            = new ApplicationTypeResourceInner().withTags(mapOf("azt", "ktsthsucocmny")).withLocation("twwrqp");
         model = BinaryData.fromObject(model).toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.tags().get("yzydagfuaxbezyi"));
-        Assertions.assertEquals("poczvyifqrvkdvjs", model.location());
+        Assertions.assertEquals("ktsthsucocmny", model.tags().get("azt"));
+        Assertions.assertEquals("twwrqp", model.location());
     }
 
     // Use "Map.of" if available

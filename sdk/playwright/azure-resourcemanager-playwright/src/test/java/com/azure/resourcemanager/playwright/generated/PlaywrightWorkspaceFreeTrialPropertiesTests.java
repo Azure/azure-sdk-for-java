@@ -11,7 +11,7 @@ public final class PlaywrightWorkspaceFreeTrialPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlaywrightWorkspaceFreeTrialProperties model = BinaryData.fromString(
-            "{\"createdAt\":\"2021-03-16T09:26:04Z\",\"expiryAt\":\"2021-03-25T06:01:40Z\",\"allocatedValue\":2146582590,\"usedValue\":49.90956213135442,\"percentageUsed\":20.176645993530162}")
+            "{\"createdAt\":\"2021-06-30T18:10:14Z\",\"expiryAt\":\"2021-04-17T12:51:37Z\",\"allocatedValue\":1348050771,\"usedValue\":82.72109126571668,\"percentageUsed\":1.3006697238957976}")
             .toObject(PlaywrightWorkspaceFreeTrialProperties.class);
     }
 }

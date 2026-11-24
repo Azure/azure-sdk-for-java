@@ -22,7 +22,7 @@ public final class PureStoragePoliciesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storagePolicyDefinition\":\"ixqcahyhxalybxaw\",\"storagePoolId\":\"ijpodtblxpkkwj\",\"provisioningState\":\"Succeeded\"},\"id\":\"qhykincn\",\"name\":\"emehllizh\",\"type\":\"eumoqod\"}";
+            = "{\"properties\":{\"storagePolicyDefinition\":\"ac\",\"storagePoolId\":\"jvhrweft\",\"provisioningState\":\"Succeeded\"},\"id\":\"jp\",\"name\":\"vssehaepw\",\"type\":\"mcxtczhu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class PureStoragePoliciesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PureStoragePolicy response = manager.pureStoragePolicies()
-            .define("xlzdesygrijwa")
-            .withExistingPrivateCloud("swmowegmmuteyxe", "guqigijiitns")
-            .withProperties(new PureStoragePolicyProperties().withStoragePolicyDefinition("fanraybfu")
-                .withStoragePoolId("qfrojsydgrhyd"))
+            .define("gctmgxuupbezq")
+            .withExistingPrivateCloud("jxl", "bsjuscvsfx")
+            .withProperties(new PureStoragePolicyProperties().withStoragePolicyDefinition("ydrtc")
+                .withStoragePoolId("ukdqkkyihztg"))
             .create();
 
-        Assertions.assertEquals("ixqcahyhxalybxaw", response.properties().storagePolicyDefinition());
-        Assertions.assertEquals("ijpodtblxpkkwj", response.properties().storagePoolId());
+        Assertions.assertEquals("ac", response.properties().storagePolicyDefinition());
+        Assertions.assertEquals("jvhrweft", response.properties().storagePoolId());
     }
 }

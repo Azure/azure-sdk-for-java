@@ -11,7 +11,6 @@ import com.azure.resourcemanager.cloudhealth.fluent.models.HealthModelInner;
 import com.azure.resourcemanager.cloudhealth.models.HealthModel;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelProperties;
 import com.azure.resourcemanager.cloudhealth.models.HealthModelUpdate;
-import com.azure.resourcemanager.cloudhealth.models.HealthModelUpdateProperties;
 import com.azure.resourcemanager.cloudhealth.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
@@ -132,8 +131,12 @@ public final class HealthModelImpl implements HealthModel, HealthModel.Definitio
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}",
+            "healthModelName");
     }
 
     public HealthModel refresh() {
@@ -185,11 +188,6 @@ public final class HealthModelImpl implements HealthModel, HealthModel.Definitio
             this.updateProperties.withIdentity(identity);
             return this;
         }
-    }
-
-    public HealthModelImpl withProperties(HealthModelUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
     }
 
     private boolean isInCreateMode() {

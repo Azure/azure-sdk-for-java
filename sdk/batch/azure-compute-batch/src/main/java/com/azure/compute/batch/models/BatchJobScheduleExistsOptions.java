@@ -5,19 +5,13 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import java.time.Duration;
 
 /**
  * Optional parameters for Job Schedule Exists operation.
  */
 @Fluent
 public final class BatchJobScheduleExistsOptions {
-
-    /*
-     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
-     * value is larger than 30, the default will be used instead.".
-     */
-    @Generated
-    private Integer timeOutInSeconds;
 
     /**
      * Creates an instance of BatchJobScheduleExistsOptions class.
@@ -26,27 +20,41 @@ public final class BatchJobScheduleExistsOptions {
     public BatchJobScheduleExistsOptions() {
     }
 
-    /**
-     * Get the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @return the timeOutInSeconds value.
+    /*
+     * The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the
+     * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    public Integer getTimeOutInSeconds() {
-        return this.timeOutInSeconds;
+    private Long timeout;
+
+    /**
+     * Get the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @return the timeout value.
+     */
+    @Generated
+    public Duration getTimeout() {
+        if (this.timeout == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeout);
     }
 
     /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     * Set the timeout property: The maximum time that the server can spend processing the request, in seconds. The
+     * default is 30 seconds. If the value is larger than 30, the default will be used instead.".
      *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @param timeout the timeout value to set.
      * @return the BatchJobScheduleExistsOptions object itself.
      */
     @Generated
-    public BatchJobScheduleExistsOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
-        this.timeOutInSeconds = timeOutInSeconds;
+    public BatchJobScheduleExistsOptions setTimeout(Duration timeout) {
+        if (timeout == null) {
+            this.timeout = null;
+        } else {
+            this.timeout = timeout.getSeconds();
+        }
         return this;
     }
 }

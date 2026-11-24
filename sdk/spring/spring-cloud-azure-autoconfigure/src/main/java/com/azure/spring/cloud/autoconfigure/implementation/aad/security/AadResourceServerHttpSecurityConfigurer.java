@@ -30,16 +30,18 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
 
     private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
 
-    @SuppressWarnings({"deprecation", "removal"})
     @Override
-    public void init(HttpSecurity builder) throws Exception {
-        super.init(builder);
+    public void init(HttpSecurity builder) {
+        try {
+            super.init(builder);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize AadResourceServerHttpSecurityConfigurer", e);
+        }
         ApplicationContext context = builder.getSharedObject(ApplicationContext.class);
         this.properties = context.getBean(AadResourceServerProperties.class);
         // @formatter:off
-        builder.oauth2ResourceServer()
-                   .jwt()
-                   .jwtAuthenticationConverter(jwtAuthenticationConverter());
+        builder.oauth2ResourceServer(oauth2 -> oauth2
+                .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         // @formatter:off
     }
 

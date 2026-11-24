@@ -1,0 +1,51 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// Deprecated generated code
+
+package com.azure.resourcemanager.authorization.fluent.models;
+
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
+/**
+ * Defines values for ApplicationsExpand.
+ */
+public final class ApplicationsExpand extends ExpandableStringEnum<ApplicationsExpand> {
+    /**
+     * Static value * for ApplicationsExpand.
+     */
+    public static final ApplicationsExpand ASTERISK = fromString("*");
+
+    /**
+     * Static value appliesTo for ApplicationsExpand.
+     */
+    public static final ApplicationsExpand APPLIES_TO = fromString("appliesTo");
+
+    /**
+     * Creates a new instance of ApplicationsExpand value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationsExpand() {
+    }
+
+    /**
+     * Creates or finds a ApplicationsExpand from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ApplicationsExpand.
+     */
+    public static ApplicationsExpand fromString(String name) {
+        return fromString(name, ApplicationsExpand.class);
+    }
+
+    /**
+     * Gets known ApplicationsExpand values.
+     * 
+     * @return known ApplicationsExpand values.
+     */
+    public static Collection<ApplicationsExpand> values() {
+        return values(ApplicationsExpand.class);
+    }
+}

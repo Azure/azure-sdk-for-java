@@ -177,17 +177,6 @@ public final class PatchSettings implements JsonSerializable<PatchSettings> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (automaticByPlatformSettings() != null) {
-            automaticByPlatformSettings().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

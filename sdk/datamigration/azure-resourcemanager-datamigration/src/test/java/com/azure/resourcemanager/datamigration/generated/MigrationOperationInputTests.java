@@ -13,16 +13,16 @@ public final class MigrationOperationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrationOperationInput model
-            = BinaryData.fromString("{\"migrationOperationId\":\"8f9dbf95-ea60-4e43-b388-0ce1df5e82bb\"}")
+            = BinaryData.fromString("{\"migrationOperationId\":\"1b2c1268-7bba-4f66-a1b1-2c4e6637be50\"}")
                 .toObject(MigrationOperationInput.class);
-        Assertions.assertEquals(UUID.fromString("8f9dbf95-ea60-4e43-b388-0ce1df5e82bb"), model.migrationOperationId());
+        Assertions.assertEquals(UUID.fromString("1b2c1268-7bba-4f66-a1b1-2c4e6637be50"), model.migrationOperationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrationOperationInput model = new MigrationOperationInput()
-            .withMigrationOperationId(UUID.fromString("8f9dbf95-ea60-4e43-b388-0ce1df5e82bb"));
+            .withMigrationOperationId(UUID.fromString("1b2c1268-7bba-4f66-a1b1-2c4e6637be50"));
         model = BinaryData.fromObject(model).toObject(MigrationOperationInput.class);
-        Assertions.assertEquals(UUID.fromString("8f9dbf95-ea60-4e43-b388-0ce1df5e82bb"), model.migrationOperationId());
+        Assertions.assertEquals(UUID.fromString("1b2c1268-7bba-4f66-a1b1-2c4e6637be50"), model.migrationOperationId());
     }
 }

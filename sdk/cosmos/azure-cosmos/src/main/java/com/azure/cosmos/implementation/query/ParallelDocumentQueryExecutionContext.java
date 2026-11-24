@@ -53,15 +53,15 @@ import java.util.stream.Collectors;
  */
 public class ParallelDocumentQueryExecutionContext<T>
         extends ParallelDocumentQueryExecutionContextBase<T> {
-    private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
-        ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor();
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
+
+    private static final Logger logger = LoggerFactory.getLogger(ParallelDocumentQueryExecutionContext.class);
 
     private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationTokenMap;
@@ -292,7 +292,7 @@ public class ParallelDocumentQueryExecutionContext<T>
             if (!skippedClientSideRequestStatistics.isEmpty()) {
                 if (diagnostics != null) {
 
-                    FeedResponseDiagnostics feedResponseDiagnostics = diagnosticsAccessor
+                    FeedResponseDiagnostics feedResponseDiagnostics = diagAccessor()
                         .getFeedResponseDiagnostics(diagnostics);
                     feedResponseDiagnostics.addClientSideRequestStatistics(skippedClientSideRequestStatistics);
                 }
@@ -316,7 +316,7 @@ public class ParallelDocumentQueryExecutionContext<T>
             // results.
             return source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
-                        && !qryOptAccessor.getAllowEmptyPages(this.cosmosQueryRequestOptions)) {
+                        && !qryOptAccessor().getAllowEmptyPages(this.cosmosQueryRequestOptions)) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
@@ -326,12 +326,12 @@ public class ParallelDocumentQueryExecutionContext<T>
 
                     // keep a reference of the request statistics for the skipped FeedResponses
                     Collection<ClientSideRequestStatistics> skippedRequestStatsForPage =
-                        diagnosticsAccessor.getClientSideRequestStatistics(cosmosDiagnostics);
+                        diagAccessor().getClientSideRequestStatistics(cosmosDiagnostics);
                     if (skippedRequestStatsForPage != null && !skippedRequestStatsForPage.isEmpty()) {
                         skippedClientSideRequestStatistics.addAll(skippedRequestStatsForPage);
                     }
 
-                    if (qryOptAccessor
+                    if (qryOptAccessor()
                         .isEmptyPageDiagnosticsEnabled(cosmosQueryRequestOptions)) {
 
                         logEmptyPageDiagnostics(
@@ -432,7 +432,7 @@ public class ParallelDocumentQueryExecutionContext<T>
         String activityId,
         Supplier<String> operationContextTextProvider) {
         Collection<ClientSideRequestStatistics> requestStatistics =
-            diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(cosmosDiagnostics);
+            diagAccessor().getClientSideRequestStatisticsForQueryPipelineAggregations(cosmosDiagnostics);
 
         try {
             if (logger.isInfoEnabled()) {

@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberProvisioningState;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMemberStatus;
+import com.azure.resourcemanager.containerservicefleet.models.MeshProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -211,14 +212,12 @@ public final class FleetMemberInner extends ProxyResource {
     }
 
     /**
-     * Validates the instance.
+     * Get the meshProperties property: The Mesh Member Properties associated with this Fleet Member.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the meshProperties value.
      */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
+    public MeshProperties meshProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().meshProperties();
     }
 
     /**

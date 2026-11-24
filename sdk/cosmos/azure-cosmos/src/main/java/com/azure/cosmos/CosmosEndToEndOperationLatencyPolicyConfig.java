@@ -46,7 +46,7 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
     }
 
     /**
-     * Gets the defined end to end operatoin timeout
+     * Gets the defined end to end operation timeout
      *
      * @return the end to end operation timeout
      */

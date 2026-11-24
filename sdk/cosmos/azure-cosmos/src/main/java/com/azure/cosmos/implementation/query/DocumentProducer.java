@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
@@ -49,9 +50,9 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 class DocumentProducer<T> {
-
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    private static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor() {
+        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(DocumentProducer.class);
     private int retries;
@@ -163,7 +164,7 @@ class DocumentProducer<T> {
         this.correlatedActivityId = correlatedActivityId;
 
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null
-            ? qryOptionsAccessor.clone(cosmosQueryRequestOptions)
+            ? qryOptionsAccessor().clone(cosmosQueryRequestOptions)
             : new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
 
@@ -207,10 +208,10 @@ class DocumentProducer<T> {
                         top,
                         pageSize,
                         Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
-                        qryOptionsAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
-                        qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
-                    client.getGlobalEndpointManager(),
-                    client.getGlobalPartitionEndpointManagerForCircuitBreaker()
+                        qryOptionsAccessor().getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
+                        qryOptionsAccessor().getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+                        client.getGlobalEndpointManager(),
+                        client.getGlobalPartitionEndpointManagerForCircuitBreaker()
                 )
                 .map(rsp -> {
                     this.lastResponseContinuationToken = rsp.getContinuationToken();
@@ -256,8 +257,8 @@ class DocumentProducer<T> {
                         if (partitionKeyRangesValueHolder == null
                             || partitionKeyRangesValueHolder.v == null
                             || partitionKeyRangesValueHolder.v.size() == 0) {
-                            logger.error("Failed to find at least one child range");
-                            return Mono.error(new IllegalStateException("Failed to find at least one child range"));
+                            logger.error("Failed to find at least one child range for range {}", this.feedRange.getRange() );
+                            return Mono.error(new InvalidPartitionException("Failed to find at least one child range"));
                         }
 
                         if (partitionKeyRangesValueHolder.v.size() == 1) {
@@ -321,8 +322,20 @@ class DocumentProducer<T> {
                 pageSize,
                 initialContinuationToken,
                 top,
-                new FeedRangeEpkImpl(targetRange.toRange()),
+                intersectFeedRange(this.feedRange.getRange(), targetRange.toRange()),
                 this.operationContextTextProvider);
+    }
+
+    protected FeedRangeEpkImpl intersectFeedRange(
+        Range<String> requestedRange, Range<String> physicalRange) {
+        // The ranges overlap, and the physical range has an inclusive minimum and exclusive maximum.
+        boolean useRequestedMin = requestedRange.getMin().compareTo(physicalRange.getMin()) >= 0;
+        boolean useRequestedMax = requestedRange.getMax().compareTo(physicalRange.getMax()) < 0;
+        return new FeedRangeEpkImpl(new Range<>(
+            useRequestedMin ? requestedRange.getMin() : physicalRange.getMin(),
+            useRequestedMax ? requestedRange.getMax() : physicalRange.getMax(),
+            !useRequestedMin || requestedRange.isMinInclusive(),
+            useRequestedMax && requestedRange.isMaxInclusive()));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {
@@ -331,7 +344,7 @@ class DocumentProducer<T> {
             collectionRid,
             range,
             true,
-            qryOptionsAccessor.getProperties(cosmosQueryRequestOptions));
+            qryOptionsAccessor().getProperties(cosmosQueryRequestOptions));
     }
 
     private boolean isSplitOrMerge(CosmosException e) {

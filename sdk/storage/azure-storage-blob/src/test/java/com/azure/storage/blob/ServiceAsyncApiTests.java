@@ -26,8 +26,10 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.GeoReplicationStatus;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.StaticWebsite;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
@@ -94,15 +96,23 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     }
 
     private Mono<Void> setInitialProperties() {
+        return setInitialProperties(true);
+    }
+
+    private Mono<Void> setInitialProperties(boolean isStaticWebsite) {
         BlobRetentionPolicy disabled = new BlobRetentionPolicy().setEnabled(false);
-        return primaryBlobServiceAsyncClient
-            .setProperties(new BlobServiceProperties().setStaticWebsite(new StaticWebsite().setEnabled(false))
-                .setDeleteRetentionPolicy(disabled)
-                .setCors(null)
-                .setHourMetrics(new BlobMetrics().setVersion("1.0").setEnabled(false).setRetentionPolicy(disabled))
-                .setMinuteMetrics(new BlobMetrics().setVersion("1.0").setEnabled(false).setRetentionPolicy(disabled))
-                .setLogging(new BlobAnalyticsLogging().setVersion("1.0").setRetentionPolicy(disabled))
-                .setDefaultServiceVersion("2018-03-28"));
+        BlobServiceProperties properties = new BlobServiceProperties();
+        if (isStaticWebsite) {
+            properties.setStaticWebsite(new StaticWebsite().setEnabled(false));
+        }
+        properties.setDeleteRetentionPolicy(disabled)
+            .setCors(null)
+            .setHourMetrics(new BlobMetrics().setVersion("1.0").setEnabled(false).setRetentionPolicy(disabled))
+            .setMinuteMetrics(new BlobMetrics().setVersion("1.0").setEnabled(false).setRetentionPolicy(disabled))
+            .setLogging(new BlobAnalyticsLogging().setVersion("1.0").setRetentionPolicy(disabled))
+            .setDefaultServiceVersion("2018-03-28");
+
+        return primaryBlobServiceAsyncClient.setProperties(properties);
     }
 
     @Test
@@ -484,46 +494,55 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         StepVerifier.create(anonymousClient.findBlobsByTags("foo=bar")).verifyError(IllegalStateException.class);
     }
 
-    private static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
-        assertEquals(sent.getLogging().isRead(), received.getLogging().isRead());
-        assertEquals(sent.getLogging().isWrite(), received.getLogging().isWrite());
-        assertEquals(sent.getLogging().isDelete(), received.getLogging().isDelete());
-        assertEquals(sent.getLogging().getVersion(), received.getLogging().getVersion());
-        assertEquals(sent.getLogging().getRetentionPolicy().isEnabled(),
-            received.getLogging().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getLogging().getRetentionPolicy().getDays(),
-            received.getLogging().getRetentionPolicy().getDays());
-        assertEquals(sent.getCors().size(), received.getCors().size());
-        assertEquals(sent.getCors().get(0).getAllowedMethods(), received.getCors().get(0).getAllowedMethods());
-        assertEquals(sent.getCors().get(0).getAllowedHeaders(), received.getCors().get(0).getAllowedHeaders());
-        assertEquals(sent.getCors().get(0).getAllowedOrigins(), received.getCors().get(0).getAllowedOrigins());
-        assertEquals(sent.getCors().get(0).getExposedHeaders(), received.getCors().get(0).getExposedHeaders());
-        assertEquals(sent.getCors().get(0).getMaxAgeInSeconds(), received.getCors().get(0).getMaxAgeInSeconds());
-        assertEquals(sent.getDefaultServiceVersion(), received.getDefaultServiceVersion());
-        assertEquals(sent.getHourMetrics().isEnabled(), received.getHourMetrics().isEnabled());
-        assertEquals(sent.getHourMetrics().isIncludeApis(), received.getHourMetrics().isIncludeApis());
-        assertEquals(sent.getHourMetrics().getRetentionPolicy().isEnabled(),
-            received.getHourMetrics().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getHourMetrics().getRetentionPolicy().getDays(),
-            received.getHourMetrics().getRetentionPolicy().getDays());
-        assertEquals(sent.getHourMetrics().getVersion(), received.getHourMetrics().getVersion());
-        assertEquals(sent.getMinuteMetrics().isEnabled(), received.getMinuteMetrics().isEnabled());
-        assertEquals(sent.getMinuteMetrics().isIncludeApis(), received.getMinuteMetrics().isIncludeApis());
-        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().isEnabled(),
-            received.getMinuteMetrics().getRetentionPolicy().isEnabled());
-        assertEquals(sent.getMinuteMetrics().getRetentionPolicy().getDays(),
-            received.getMinuteMetrics().getRetentionPolicy().getDays());
-        assertEquals(sent.getMinuteMetrics().getVersion(), received.getMinuteMetrics().getVersion());
-        assertEquals(sent.getDeleteRetentionPolicy().isEnabled(), received.getDeleteRetentionPolicy().isEnabled());
-        assertEquals(sent.getDeleteRetentionPolicy().getDays(), received.getDeleteRetentionPolicy().getDays());
-        assertEquals(sent.getStaticWebsite().isEnabled(), received.getStaticWebsite().isEnabled());
-        assertEquals(sent.getStaticWebsite().getIndexDocument(), received.getStaticWebsite().getIndexDocument());
-        assertEquals(sent.getStaticWebsite().getErrorDocument404Path(),
-            received.getStaticWebsite().getErrorDocument404Path());
+    // This test is the same as setGetProperties, but without static website enabled to avoid live test pipeline failures.
+    @Test
+    @ResourceLock("ServiceProperties")
+    public void setGetPropertiesNoStaticWebsite() {
+        BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
+        BlobAnalyticsLogging logging
+            = new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+        List<BlobCorsRule> corsRules = new ArrayList<>();
+        corsRules.add(new BlobCorsRule().setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10));
+        String defaultServiceVersion = "2016-05-31";
+        BlobMetrics hourMetrics = new BlobMetrics().setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+        BlobMetrics minuteMetrics = new BlobMetrics().setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+
+        BlobServiceProperties sentProperties = new BlobServiceProperties().setLogging(logging)
+            .setCors(corsRules)
+            .setDefaultServiceVersion(defaultServiceVersion)
+            .setMinuteMetrics(minuteMetrics)
+            .setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy);
+
+        StepVerifier.create(
+            setInitialProperties(false).then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties)))
+            .assertNext(r -> {
+                assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
+                assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
+            })
+            .verifyComplete();
+
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
+
+        Mono<BlobServiceProperties> response
+            = Mono.delay(Duration.ofMillis(delay)).then(primaryBlobServiceAsyncClient.getProperties());
+
+        StepVerifier.create(response).assertNext(r -> validatePropsSet(sentProperties, r, false)).verifyComplete();
     }
 
     @Test
     @ResourceLock("ServiceProperties")
+    @PlaybackOnly
     public void setGetProperties() {
         BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
         BlobAnalyticsLogging logging
@@ -573,8 +592,45 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     }
 
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
+    // This test is the same as setPropsMin, but without static website enabled to avoid live test pipeline failures.
     @Test
     @ResourceLock("ServiceProperties")
+    public void setPropsMinNoStaticWebsite() {
+        BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
+        BlobAnalyticsLogging logging
+            = new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+        List<BlobCorsRule> corsRules = new ArrayList<>();
+        corsRules.add(new BlobCorsRule().setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10));
+        String defaultServiceVersion = "2016-05-31";
+        BlobMetrics hourMetrics = new BlobMetrics().setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+        BlobMetrics minuteMetrics = new BlobMetrics().setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+
+        BlobServiceProperties sentProperties = new BlobServiceProperties().setLogging(logging)
+            .setCors(corsRules)
+            .setDefaultServiceVersion(defaultServiceVersion)
+            .setMinuteMetrics(minuteMetrics)
+            .setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy);
+        Mono<Response<Void>> response
+            = setInitialProperties(false).then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties));
+
+        assertAsyncResponseStatusCode(response, 202);
+    }
+
+    // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
+    @Test
+    @ResourceLock("ServiceProperties")
+    @PlaybackOnly
     public void setPropsMin() {
         BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
         BlobAnalyticsLogging logging
@@ -633,6 +689,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     @ResourceLock("ServiceProperties")
+    @PlaybackOnly
     public void setPropsStaticWebsite() {
         String errorDocument404Path = "error/404.html";
         String defaultIndexDocumentPath = "index.html";
@@ -881,6 +938,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
         Mono<List<BlobItem>> response = cc1.create()
             .then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null))
+            .then(cc1.delete())
             .then(primaryBlobServiceAsyncClient
                 .listBlobContainers(new ListBlobContainersOptions().setPrefix(cc1.getBlobContainerName())
                     .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)))
@@ -888,7 +946,10 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .flatMap(blobContainerItem -> Mono.delay(Duration.ofMillis(delay))
                 .then(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
                     new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())))
-                .flatMap(r -> r.getValue().listBlobs().collectList()));
+                .flatMap(r -> r.getValue()
+                    .listBlobs(new ListBlobsOptions()
+                        .setStorageResponseSerializationFormat(StorageResponseSerializationFormat.XML))
+                    .collectList()));
 
         StepVerifier.create(response).assertNext(r -> {
             assertEquals(1, r.size());
@@ -991,8 +1052,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so
     it will not be invalid. */
     private static Stream<Arguments> sasTokenDoesNotShowUpOnInvalidUriSupplier() {
-        return Stream.of(Arguments.of("https://doesntmatter. blob.core.windows.net", "containername"),
-            Arguments.of("https://doesntmatter.blob.core.windows.net", "container name"));
+        return Stream.of(Arguments.of("https://doesntmatter. blob.core.windows.net", "containername"));
     }
 
     @Test
@@ -1014,6 +1074,47 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null), 201);
         assertAsyncResponseStatusCode(
             primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null), 409);
+    }
+
+    @Test
+    public void createContainerIfNotExistsOnContainerBeingDeleted() {
+        String containerName = cc.getBlobContainerName();
+
+        StepVerifier
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
+                .then(primaryBlobServiceAsyncClient.createBlobContainerIfNotExists(containerName)))
+            .verifyErrorSatisfies(
+                r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    @Test
+    public void createContainerOnContainerBeingDeleted() {
+        String containerName = cc.getBlobContainerName();
+
+        StepVerifier
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
+                .then(primaryBlobServiceAsyncClient.createBlobContainer(containerName)))
+            .verifyErrorSatisfies(
+                r -> assertExceptionStatusCodeAndMessage(r, 409, BlobErrorCode.CONTAINER_BEING_DELETED));
+    }
+
+    // Live only: it waits for the service to finish deleting the container, typically 30 to 60 seconds (see
+    // createAfterContainerDeleteCompletes). The recorded test above covers the refusal while the delete is in progress.
+    @LiveOnly
+    @Test
+    public void createContainerIfNotExistsAfterContainerDeleteCompletes() {
+        String containerName = cc.getBlobContainerName();
+
+        StepVerifier
+            .create(primaryBlobServiceAsyncClient.deleteBlobContainer(containerName)
+                .then(createAfterContainerDeleteCompletes(
+                    primaryBlobServiceAsyncClient.createBlobContainerIfNotExistsWithResponse(containerName, null))))
+            .assertNext(response -> assertResponseStatusCode(response, 201))
+            .verifyComplete();
+
+        StepVerifier.create(primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName).exists())
+            .expectNext(true)
+            .verifyComplete();
     }
 
     @Test

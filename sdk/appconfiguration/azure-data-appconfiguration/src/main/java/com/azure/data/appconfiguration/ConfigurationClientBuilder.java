@@ -3,6 +3,16 @@
 
 package com.azure.data.appconfiguration;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
@@ -33,28 +43,21 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import static com.azure.core.util.CoreUtils.getApplicationId;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import com.azure.data.appconfiguration.implementation.AudiencePolicy;
+import com.azure.data.appconfiguration.implementation.ConfigurationClientImpl;
+import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
+import com.azure.data.appconfiguration.implementation.QueryParamPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.models.ConfigurationAudience;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static com.azure.core.util.CoreUtils.getApplicationId;
-import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -207,7 +210,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * @throws IllegalArgumentException if {@code tokenCredential} is not null. App Configuration builder support single
      * authentication per builder instance.
      */
-    private AzureAppConfigurationImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
+    private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
         String endpointLocal = endpoint;
         ConfigurationClientCredentials credentialsLocal = null;
         TokenCredential tokenCredentialLocal = null;
@@ -237,7 +240,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
             ? createDefaultHttpPipeline(syncTokenPolicy, credentialsLocal, tokenCredentialLocal)
             : pipeline;
 
-        return new AzureAppConfigurationImpl(buildPipeline, null, endpointLocal, serviceVersion.getVersion());
+        return new ConfigurationClientImpl(buildPipeline, endpointLocal, serviceVersion);
     }
 
     private HttpPipeline createDefaultHttpPipeline(SyncTokenPolicy syncTokenPolicy,
@@ -263,6 +266,9 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(ADD_HEADERS_POLICY);
 
+        // Add query parameter reordering policy
+        policies.add(new QueryParamPolicy());
+
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -273,7 +279,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
 
         if (tokenCredential != null) {
             // User token based policy
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, getDefaultScope(endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, getDefaultScope(buildEndpoint)));
         } else if (credentials != null) {
             // Use credentialS based policy
             policies.add(new ConfigurationCredentialsPolicy(credentials));
@@ -284,6 +290,9 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         }
         policies.add(syncTokenPolicy);
         policies.addAll(perRetryPolicies);
+
+        // Add policy to provide better error messages for AAD audience authentication failures
+        policies.add(new AudiencePolicy(audience));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
         localClientOptions.getHeaders()
@@ -542,8 +551,11 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     }
 
     /**
-     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra. The audience is not
-     * considered when using a shared key.
+     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra ID. By default, the
+     * audience is inferred from the endpoint hostname, including sovereign cloud and staging endpoints. If the hostname
+     * is not recognized, the public Azure App Configuration audience is used. An explicitly configured audience
+     * overrides inference. The audience is not considered when using a shared key.
+     * See <a href="https://aka.ms/appconfig/client-token-audience">authentication token audiences</a> for details.
      *
      * @param audience {@link ConfigurationAudience} of the service to be used when making requests.
      * @return The updated ConfigurationClientBuilder object.
@@ -560,16 +572,28 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
      * @return The default scope for the given endpoint.
      */
     private String getDefaultScope(String endpoint) {
-        String defaultValue = "/.default";
-        if (audience == null || audience.toString().isEmpty()) {
-            if (endpoint.endsWith("azconfig.azure.us") || endpoint.endsWith("appconfig.azure.us")) {
-                return ConfigurationAudience.AZURE_GOVERNMENT + defaultValue;
-            } else if (endpoint.endsWith("azconfig.azure.cn") || endpoint.endsWith("appconfig.azure.cn")) {
-                return ConfigurationAudience.AZURE_CHINA + defaultValue;
-            } else {
-                return ConfigurationAudience.AZURE_PUBLIC_CLOUD + defaultValue;
+        if (audience != null && !audience.toString().isEmpty()) {
+            return audience + "/.default";
+        }
+
+        final String hostname;
+        try {
+            hostname = new URL(endpoint).getHost().toLowerCase(Locale.ROOT);
+        } catch (MalformedURLException ex) {
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+        }
+
+        // Regional staging endpoints use "appconfig-stage" but share the staging audience.
+        if (hostname.endsWith(".appconfig-staging.azure.com") || hostname.endsWith(".appconfig-stage.azure.com")) {
+            return "https://appconfig-staging.azure.com/.default";
+        }
+
+        String[] labels = hostname.split("\\.");
+        for (int index = labels.length - 1; index >= 0; index--) {
+            if ("appconfig".equals(labels[index]) || "azconfig".equals(labels[index])) {
+                return "https://" + String.join(".", Arrays.copyOfRange(labels, index, labels.length)) + "/.default";
             }
         }
-        return audience + defaultValue;
+        return ConfigurationAudience.AZURE_PUBLIC_CLOUD + "/.default";
     }
 }

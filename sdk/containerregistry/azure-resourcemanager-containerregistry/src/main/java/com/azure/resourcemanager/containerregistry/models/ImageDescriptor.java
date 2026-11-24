@@ -1,0 +1,176 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.resourcemanager.containerregistry.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+
+/**
+ * Properties for a registry image.
+ */
+@Fluent
+public final class ImageDescriptor implements JsonSerializable<ImageDescriptor> {
+    /*
+     * The registry login server.
+     */
+    private String registry;
+
+    /*
+     * The repository name.
+     */
+    private String repository;
+
+    /*
+     * The tag name.
+     */
+    private String tag;
+
+    /*
+     * The sha256-based digest of the image manifest.
+     */
+    private String digest;
+
+    /**
+     * Creates an instance of ImageDescriptor class.
+     */
+    public ImageDescriptor() {
+    }
+
+    /**
+     * Get the registry property: The registry login server.
+     * 
+     * @return the registry value.
+     */
+    public String registry() {
+        return this.registry;
+    }
+
+    /**
+     * Set the registry property: The registry login server.
+     * 
+     * @param registry the registry value to set.
+     * @return the ImageDescriptor object itself.
+     */
+    public ImageDescriptor withRegistry(String registry) {
+        this.registry = registry;
+        return this;
+    }
+
+    /**
+     * Get the repository property: The repository name.
+     * 
+     * @return the repository value.
+     */
+    public String repository() {
+        return this.repository;
+    }
+
+    /**
+     * Set the repository property: The repository name.
+     * 
+     * @param repository the repository value to set.
+     * @return the ImageDescriptor object itself.
+     */
+    public ImageDescriptor withRepository(String repository) {
+        this.repository = repository;
+        return this;
+    }
+
+    /**
+     * Get the tag property: The tag name.
+     * 
+     * @return the tag value.
+     */
+    public String tag() {
+        return this.tag;
+    }
+
+    /**
+     * Set the tag property: The tag name.
+     * 
+     * @param tag the tag value to set.
+     * @return the ImageDescriptor object itself.
+     */
+    public ImageDescriptor withTag(String tag) {
+        this.tag = tag;
+        return this;
+    }
+
+    /**
+     * Get the digest property: The sha256-based digest of the image manifest.
+     * 
+     * @return the digest value.
+     */
+    public String digest() {
+        return this.digest;
+    }
+
+    /**
+     * Set the digest property: The sha256-based digest of the image manifest.
+     * 
+     * @param digest the digest value to set.
+     * @return the ImageDescriptor object itself.
+     */
+    public ImageDescriptor withDigest(String digest) {
+        this.digest = digest;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("registry", this.registry);
+        jsonWriter.writeStringField("repository", this.repository);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeStringField("digest", this.digest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageDescriptor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageDescriptor if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageDescriptor.
+     */
+    public static ImageDescriptor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageDescriptor deserializedImageDescriptor = new ImageDescriptor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("registry".equals(fieldName)) {
+                    deserializedImageDescriptor.registry = reader.getString();
+                } else if ("repository".equals(fieldName)) {
+                    deserializedImageDescriptor.repository = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedImageDescriptor.tag = reader.getString();
+                } else if ("digest".equals(fieldName)) {
+                    deserializedImageDescriptor.digest = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageDescriptor;
+        });
+    }
+}

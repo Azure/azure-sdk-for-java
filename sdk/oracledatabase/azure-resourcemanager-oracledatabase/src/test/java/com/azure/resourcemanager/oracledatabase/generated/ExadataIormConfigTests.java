@@ -14,13 +14,13 @@ public final class ExadataIormConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExadataIormConfig model = BinaryData.fromString(
-            "{\"dbPlans\":[{\"dbName\":\"t\",\"flashCacheLimit\":\"gbkdmoizpos\",\"share\":1176728044}],\"lifecycleDetails\":\"cfbu\",\"lifecycleState\":\"BootStrapping\",\"objective\":\"HighThroughput\"}")
+            "{\"dbPlans\":[{\"dbName\":\"cjefuzmu\",\"flashCacheLimit\":\"bttdumorppxe\",\"share\":1702938248},{\"dbName\":\"btbhjpglkfgohd\",\"flashCacheLimit\":\"uel\",\"share\":571890155},{\"dbName\":\"dyhtozfikdowwquu\",\"flashCacheLimit\":\"zx\",\"share\":1297043875}],\"lifecycleDetails\":\"thhqzonosggbh\",\"lifecycleState\":\"Disabled\",\"objective\":\"HighThroughput\"}")
             .toObject(ExadataIormConfig.class);
-        Assertions.assertEquals("t", model.dbPlans().get(0).dbName());
-        Assertions.assertEquals("gbkdmoizpos", model.dbPlans().get(0).flashCacheLimit());
-        Assertions.assertEquals(1176728044, model.dbPlans().get(0).share());
-        Assertions.assertEquals("cfbu", model.lifecycleDetails());
-        Assertions.assertEquals(IormLifecycleState.BOOT_STRAPPING, model.lifecycleState());
+        Assertions.assertEquals("cjefuzmu", model.dbPlans().get(0).dbName());
+        Assertions.assertEquals("bttdumorppxe", model.dbPlans().get(0).flashCacheLimit());
+        Assertions.assertEquals(1702938248, model.dbPlans().get(0).share());
+        Assertions.assertEquals("thhqzonosggbh", model.lifecycleDetails());
+        Assertions.assertEquals(IormLifecycleState.DISABLED, model.lifecycleState());
         Assertions.assertEquals(Objective.HIGH_THROUGHPUT, model.objective());
     }
 }

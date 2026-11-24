@@ -21,12 +21,14 @@
 - [CreateOrUpdate](#databasemigrationssqldb_createorupdate)
 - [Delete](#databasemigrationssqldb_delete)
 - [Get](#databasemigrationssqldb_get)
+- [Retry](#databasemigrationssqldb_retry)
 
 ## DatabaseMigrationsSqlMi
 
 - [Cancel](#databasemigrationssqlmi_cancel)
 - [CreateOrUpdate](#databasemigrationssqlmi_createorupdate)
 - [Cutover](#databasemigrationssqlmi_cutover)
+- [Delete](#databasemigrationssqlmi_delete)
 - [Get](#databasemigrationssqlmi_get)
 
 ## DatabaseMigrationsSqlVm
@@ -34,6 +36,7 @@
 - [Cancel](#databasemigrationssqlvm_cancel)
 - [CreateOrUpdate](#databasemigrationssqlvm_createorupdate)
 - [Cutover](#databasemigrationssqlvm_cutover)
+- [Delete](#databasemigrationssqlvm_delete)
 - [Get](#databasemigrationssqlvm_get)
 
 ## Files
@@ -137,7 +140,7 @@ import java.util.Arrays;
 public final class DatabaseMigrationsMongoToCosmosDbRUMongoCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoCreateOrUpdateDatabaseMigrationMAX.json
      */
     /**
@@ -179,7 +182,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoCreateOrUpdateDatabaseMigrationMIN.json
      */
     /**
@@ -222,7 +225,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoCreateSamples {
 public final class DatabaseMigrationsMongoToCosmosDbRUMongoDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoDeleteDatabaseMigration.json
      */
     /**
@@ -247,7 +250,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoDeleteSamples {
 public final class DatabaseMigrationsMongoToCosmosDbRUMongoGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoGetDatabaseMigrationExpanded.json
      */
     /**
@@ -264,7 +267,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoGetDatabaseMigration.json
      */
     /**
@@ -290,7 +293,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoGetSamples {
 public final class DatabaseMigrationsMongoToCosmosDbRUMongoGetForScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoListByScopeDatabaseMigration.json
      */
     /**
@@ -306,7 +309,7 @@ public final class DatabaseMigrationsMongoToCosmosDbRUMongoGetForScopeSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoListByScopeDatabaseMigration.json
      */
     /**
@@ -337,7 +340,7 @@ import java.util.Arrays;
 public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoCreateOrUpdateDatabaseMigrationMIN.json
      */
     /**
@@ -371,7 +374,7 @@ public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoCreateOrUpdateDatabaseMigrationMAX.json
      */
     /**
@@ -421,7 +424,7 @@ public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoCreateSamples {
 public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoDeleteDatabaseMigration.json
      */
     /**
@@ -446,7 +449,7 @@ public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoDeleteSamples {
 public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoGetDatabaseMigrationExpanded.json
      */
     /**
@@ -463,7 +466,7 @@ public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoGetDatabaseMigration.json
      */
     /**
@@ -489,7 +492,7 @@ public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoGetSamples {
 public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoGetForScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoListByScopeDatabaseMigration.json
      */
     /**
@@ -505,7 +508,7 @@ public final class DatabaseMigrationsMongoToCosmosDbvCoreMongoGetForScopeSamples
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CosmosDbMongoListByScopeDatabaseMigration.json
      */
     /**
@@ -533,7 +536,7 @@ import java.util.UUID;
 public final class DatabaseMigrationsSqlDbCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlDbCancelDatabaseMigration.json
      */
     /**
@@ -563,7 +566,7 @@ import java.util.Arrays;
 public final class DatabaseMigrationsSqlDbCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlDbCreateOrUpdateDatabaseMigrationMAX.json
      */
     /**
@@ -599,7 +602,7 @@ public final class DatabaseMigrationsSqlDbCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlDbCreateOrUpdateDatabaseMigrationMIN.json
      */
     /**
@@ -643,7 +646,7 @@ public final class DatabaseMigrationsSqlDbCreateOrUpdateSamples {
 public final class DatabaseMigrationsSqlDbDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlDbDeleteDatabaseMigration.json
      */
     /**
@@ -669,7 +672,7 @@ public final class DatabaseMigrationsSqlDbDeleteSamples {
 public final class DatabaseMigrationsSqlDbGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlDbGetDatabaseMigration.json
      */
     /**
@@ -685,7 +688,7 @@ public final class DatabaseMigrationsSqlDbGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlDbGetDatabaseMigrationExpanded.json
      */
     /**
@@ -702,6 +705,35 @@ public final class DatabaseMigrationsSqlDbGetSamples {
 }
 ```
 
+### DatabaseMigrationsSqlDb_Retry
+
+```java
+import com.azure.resourcemanager.datamigration.models.MigrationOperationInput;
+import java.util.UUID;
+
+/**
+ * Samples for DatabaseMigrationsSqlDb Retry.
+ */
+public final class DatabaseMigrationsSqlDbRetrySamples {
+    /*
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
+     * SqlDbRetryDatabaseMigration.json
+     */
+    /**
+     * Sample code: Retry Database Migration resource.
+     * 
+     * @param manager Entry point to DataMigrationManager.
+     */
+    public static void
+        retryDatabaseMigrationResource(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+        manager.databaseMigrationsSqlDbs()
+            .retry("testrg", "sqldbinstance", "db1", new MigrationOperationInput().withMigrationOperationId(
+                UUID.fromString("9a90bb84-e70f-46f7-b0ae-1aef5b3b9f07")), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### DatabaseMigrationsSqlMi_Cancel
 
 ```java
@@ -714,7 +746,7 @@ import java.util.UUID;
 public final class DatabaseMigrationsSqlMiCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlMiCancelDatabaseMigration.json
      */
     /**
@@ -755,7 +787,7 @@ import java.util.Map;
 public final class DatabaseMigrationsSqlMiCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlMiCreateOrUpdateDatabaseMigrationMAX.json
      */
     /**
@@ -794,7 +826,7 @@ public final class DatabaseMigrationsSqlMiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlMiCreateOrUpdateDatabaseMigrationBlobManagedIdentity.json
      */
     /**
@@ -828,7 +860,7 @@ public final class DatabaseMigrationsSqlMiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlMiCreateOrUpdateDatabaseMigrationMIN.json
      */
     /**
@@ -889,7 +921,7 @@ import java.util.UUID;
 public final class DatabaseMigrationsSqlMiCutoverSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlMiCutoverDatabaseMigration.json
      */
     /**
@@ -906,6 +938,31 @@ public final class DatabaseMigrationsSqlMiCutoverSamples {
 }
 ```
 
+### DatabaseMigrationsSqlMi_Delete
+
+```java
+/**
+ * Samples for DatabaseMigrationsSqlMi Delete.
+ */
+public final class DatabaseMigrationsSqlMiDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
+     * SqlMiDeleteDatabaseMigration.json
+     */
+    /**
+     * Sample code: Delete Database Migration resource with Minimum parameters.
+     * 
+     * @param manager Entry point to DataMigrationManager.
+     */
+    public static void deleteDatabaseMigrationResourceWithMinimumParameters(
+        com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+        manager.databaseMigrationsSqlMis()
+            .delete("testrg", "managedInstance1", "db1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### DatabaseMigrationsSqlMi_Get
 
 ```java
@@ -916,7 +973,7 @@ public final class DatabaseMigrationsSqlMiCutoverSamples {
 public final class DatabaseMigrationsSqlMiGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlMiGetDatabaseMigrationExpanded.json
      */
     /**
@@ -933,7 +990,7 @@ public final class DatabaseMigrationsSqlMiGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlMiGetDatabaseMigration.json
      */
     /**
@@ -961,7 +1018,7 @@ import java.util.UUID;
 public final class DatabaseMigrationsSqlVmCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlVmCancelDatabaseMigration.json
      */
     /**
@@ -995,7 +1052,7 @@ import com.azure.resourcemanager.datamigration.models.TargetLocation;
 public final class DatabaseMigrationsSqlVmCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlVmCreateOrUpdateDatabaseMigrationMAX.json
      */
     /**
@@ -1034,7 +1091,7 @@ public final class DatabaseMigrationsSqlVmCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlVmCreateOrUpdateDatabaseMigrationMIN.json
      */
     /**
@@ -1083,7 +1140,7 @@ import java.util.UUID;
 public final class DatabaseMigrationsSqlVmCutoverSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlVmCutoverDatabaseMigration.json
      */
     /**
@@ -1100,6 +1157,30 @@ public final class DatabaseMigrationsSqlVmCutoverSamples {
 }
 ```
 
+### DatabaseMigrationsSqlVm_Delete
+
+```java
+/**
+ * Samples for DatabaseMigrationsSqlVm Delete.
+ */
+public final class DatabaseMigrationsSqlVmDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
+     * SqlVmDeleteDatabaseMigration.json
+     */
+    /**
+     * Sample code: Create or Update Database Migration resource with Minimum parameters.
+     * 
+     * @param manager Entry point to DataMigrationManager.
+     */
+    public static void createOrUpdateDatabaseMigrationResourceWithMinimumParameters(
+        com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+        manager.databaseMigrationsSqlVms().delete("testrg", "testvm", "db1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### DatabaseMigrationsSqlVm_Get
 
 ```java
@@ -1110,7 +1191,7 @@ public final class DatabaseMigrationsSqlVmCutoverSamples {
 public final class DatabaseMigrationsSqlVmGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlVmGetDatabaseMigrationExpanded.json
      */
     /**
@@ -1127,7 +1208,7 @@ public final class DatabaseMigrationsSqlVmGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * SqlVmGetDatabaseMigration.json
      */
     /**
@@ -1154,7 +1235,7 @@ import com.azure.resourcemanager.datamigration.models.ProjectFileProperties;
 public final class FilesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Files_CreateOrUpdate.json
      */
     /**
@@ -1181,7 +1262,7 @@ public final class FilesCreateOrUpdateSamples {
 public final class FilesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Files_Delete.json
      */
     /**
@@ -1206,7 +1287,7 @@ public final class FilesDeleteSamples {
 public final class FilesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Files_Get.json
      */
     /**
@@ -1231,7 +1312,7 @@ public final class FilesGetSamples {
 public final class FilesListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Files_List.json
      */
     /**
@@ -1254,7 +1335,7 @@ public final class FilesListSamples {
 public final class FilesReadSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Files_Read.json
      */
     /**
@@ -1279,7 +1360,7 @@ public final class FilesReadSamples {
 public final class FilesReadWriteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Files_ReadWrite.json
      */
     /**
@@ -1307,7 +1388,7 @@ import com.azure.resourcemanager.datamigration.models.ProjectFileProperties;
 public final class FilesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Files_Update.json
      */
     /**
@@ -1336,7 +1417,7 @@ public final class FilesUpdateSamples {
 public final class MigrationServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CreateOrUpdateMigrationServiceMIN.json
      */
     /**
@@ -1355,7 +1436,7 @@ public final class MigrationServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CreateOrUpdateMigrationServiceMAX.json
      */
     /**
@@ -1383,7 +1464,7 @@ public final class MigrationServicesCreateOrUpdateSamples {
 public final class MigrationServicesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * DeleteMigrationService.json
      */
     /**
@@ -1406,7 +1487,7 @@ public final class MigrationServicesDeleteSamples {
 public final class MigrationServicesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * GetMigrationService.json
      */
     /**
@@ -1430,7 +1511,7 @@ public final class MigrationServicesGetByResourceGroupSamples {
 public final class MigrationServicesListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ListBySubscriptionMigrationService.json
      */
     /**
@@ -1454,7 +1535,7 @@ public final class MigrationServicesListSamples {
 public final class MigrationServicesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ListByResourceGroupMigrationService.json
      */
     /**
@@ -1478,7 +1559,7 @@ public final class MigrationServicesListByResourceGroupSamples {
 public final class MigrationServicesListMigrationsSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ListMigrationsByMigrationService.json
      */
     /**
@@ -1506,7 +1587,7 @@ import java.util.Map;
 public final class MigrationServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * UpdateMigrationService.json
      */
     /**
@@ -1544,7 +1625,7 @@ public final class MigrationServicesUpdateSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ListOperation.json
      */
     /**
@@ -1571,7 +1652,7 @@ import com.azure.resourcemanager.datamigration.models.ProjectTargetPlatform;
 public final class ProjectsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Projects_CreateOrUpdate.json
      */
     /**
@@ -1600,7 +1681,7 @@ public final class ProjectsCreateOrUpdateSamples {
 public final class ProjectsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Projects_Delete.json
      */
     /**
@@ -1624,7 +1705,7 @@ public final class ProjectsDeleteSamples {
 public final class ProjectsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Projects_Get.json
      */
     /**
@@ -1648,7 +1729,7 @@ public final class ProjectsGetSamples {
 public final class ProjectsListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Projects_List.json
      */
     /**
@@ -1675,7 +1756,7 @@ import com.azure.resourcemanager.datamigration.models.ProjectTargetPlatform;
 public final class ProjectsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Projects_Update.json
      */
     /**
@@ -1704,7 +1785,7 @@ public final class ProjectsUpdateSamples {
 public final class ResourceSkusListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ResourceSkus_ListSkus.json
      */
     /**
@@ -1727,7 +1808,7 @@ public final class ResourceSkusListSamples {
 public final class ServiceTasksCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ServiceTasks_Cancel.json
      */
     /**
@@ -1756,7 +1837,7 @@ import com.azure.resourcemanager.datamigration.models.MySqlConnectionInfo;
 public final class ServiceTasksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ServiceTasks_CreateOrUpdate.json
      */
     /**
@@ -1783,7 +1864,7 @@ public final class ServiceTasksCreateOrUpdateSamples {
 public final class ServiceTasksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ServiceTasks_Delete.json
      */
     /**
@@ -1807,7 +1888,7 @@ public final class ServiceTasksDeleteSamples {
 public final class ServiceTasksGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ServiceTasks_Get.json
      */
     /**
@@ -1831,7 +1912,7 @@ public final class ServiceTasksGetSamples {
 public final class ServiceTasksListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ServiceTasks_List.json
      */
     /**
@@ -1859,7 +1940,7 @@ import com.azure.resourcemanager.datamigration.models.MySqlConnectionInfo;
 public final class ServiceTasksUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ServiceTasks_Update.json
      */
     /**
@@ -1888,7 +1969,7 @@ import com.azure.resourcemanager.datamigration.models.NameAvailabilityRequest;
 public final class ServicesCheckChildrenNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_CheckChildrenNameAvailability.json
      */
     /**
@@ -1916,7 +1997,7 @@ import com.azure.resourcemanager.datamigration.models.NameAvailabilityRequest;
 public final class ServicesCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_CheckNameAvailability.json
      */
     /**
@@ -1943,7 +2024,7 @@ public final class ServicesCheckNameAvailabilitySamples {
 public final class ServicesCheckStatusSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_CheckStatus.json
      */
     /**
@@ -1968,7 +2049,7 @@ import com.azure.resourcemanager.datamigration.models.ServiceSku;
 public final class ServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_CreateOrUpdate.json
      */
     /**
@@ -1998,7 +2079,7 @@ public final class ServicesCreateOrUpdateSamples {
 public final class ServicesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_Delete.json
      */
     /**
@@ -2021,7 +2102,7 @@ public final class ServicesDeleteSamples {
 public final class ServicesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_Get.json
      */
     /**
@@ -2045,7 +2126,7 @@ public final class ServicesGetByResourceGroupSamples {
 public final class ServicesListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_List.json
      */
     /**
@@ -2068,7 +2149,7 @@ public final class ServicesListSamples {
 public final class ServicesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_ListByResourceGroup.json
      */
     /**
@@ -2092,7 +2173,7 @@ public final class ServicesListByResourceGroupSamples {
 public final class ServicesListSkusSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_ListSkus.json
      */
     /**
@@ -2115,7 +2196,7 @@ public final class ServicesListSkusSamples {
 public final class ServicesStartSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_Start.json
      */
     /**
@@ -2138,7 +2219,7 @@ public final class ServicesStartSamples {
 public final class ServicesStopSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_Stop.json
      */
     /**
@@ -2163,7 +2244,7 @@ import com.azure.resourcemanager.datamigration.models.DataMigrationService;
 public final class ServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Services_Update.json
      */
     /**
@@ -2192,7 +2273,7 @@ public final class ServicesUpdateSamples {
 public final class SqlMigrationServicesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CreateOrUpdateSqlMigrationServiceMAX.json
      */
     /**
@@ -2211,7 +2292,7 @@ public final class SqlMigrationServicesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * CreateOrUpdateSqlMigrationServiceMIN.json
      */
     /**
@@ -2239,7 +2320,7 @@ public final class SqlMigrationServicesCreateOrUpdateSamples {
 public final class SqlMigrationServicesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * DeleteSqlMigrationService.json
      */
     /**
@@ -2264,7 +2345,7 @@ import com.azure.resourcemanager.datamigration.fluent.models.DeleteNodeInner;
 public final class SqlMigrationServicesDeleteNodeSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * DeleteIntegrationRuntimeNode.json
      */
     /**
@@ -2291,7 +2372,7 @@ public final class SqlMigrationServicesDeleteNodeSamples {
 public final class SqlMigrationServicesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * GetSqlMigrationService.json
      */
     /**
@@ -2315,7 +2396,7 @@ public final class SqlMigrationServicesGetByResourceGroupSamples {
 public final class SqlMigrationServicesListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ListBySubscriptionSqlMigrationService.json
      */
     /**
@@ -2339,7 +2420,7 @@ public final class SqlMigrationServicesListSamples {
 public final class SqlMigrationServicesListAuthKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ListAuthKeysSqlMigrationService.json
      */
     /**
@@ -2363,7 +2444,7 @@ public final class SqlMigrationServicesListAuthKeysSamples {
 public final class SqlMigrationServicesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ListByResourceGroupSqlMigrationService.json
      */
     /**
@@ -2387,7 +2468,7 @@ public final class SqlMigrationServicesListByResourceGroupSamples {
 public final class SqlMigrationServicesListMigrationsSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * ListMigrationsBySqlMigrationService.json
      */
     /**
@@ -2411,7 +2492,7 @@ public final class SqlMigrationServicesListMigrationsSamples {
 public final class SqlMigrationServicesListMonitoringDataSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * GetMonitorDataSqlMigrationService.json
      */
     /**
@@ -2437,7 +2518,7 @@ import com.azure.resourcemanager.datamigration.fluent.models.RegenAuthKeysInner;
 public final class SqlMigrationServicesRegenerateAuthKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * RegenAuthKeysSqlMigrationService.json
      */
     /**
@@ -2467,7 +2548,7 @@ import java.util.Map;
 public final class SqlMigrationServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * UpdateSqlMigrationService.json
      */
     /**
@@ -2505,7 +2586,7 @@ public final class SqlMigrationServicesUpdateSamples {
 public final class TasksCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Tasks_Cancel.json
      */
     /**
@@ -2533,7 +2614,7 @@ import com.azure.resourcemanager.datamigration.models.MigrateSyncCompleteCommand
 public final class TasksCommandSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Tasks_Command.json
      */
     /**
@@ -2565,7 +2646,7 @@ import com.azure.resourcemanager.datamigration.models.SqlConnectionInfo;
 public final class TasksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Tasks_CreateOrUpdate.json
      */
     /**
@@ -2598,7 +2679,7 @@ public final class TasksCreateOrUpdateSamples {
 public final class TasksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Tasks_Delete.json
      */
     /**
@@ -2623,7 +2704,7 @@ public final class TasksDeleteSamples {
 public final class TasksGetSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Tasks_Get.json
      */
     /**
@@ -2648,7 +2729,7 @@ public final class TasksGetSamples {
 public final class TasksListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Tasks_List.json
      */
     /**
@@ -2677,7 +2758,7 @@ import com.azure.resourcemanager.datamigration.models.SqlConnectionInfo;
 public final class TasksUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Tasks_Update.json
      */
     /**
@@ -2712,7 +2793,7 @@ public final class TasksUpdateSamples {
 public final class UsagesListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/preview/2025-03-15-preview/examples/
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
      * Usages_List.json
      */
     /**

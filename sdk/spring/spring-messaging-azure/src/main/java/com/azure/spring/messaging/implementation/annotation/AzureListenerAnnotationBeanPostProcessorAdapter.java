@@ -63,6 +63,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see AzureListenerEndpointRegistrar
  * @see AzureListenerEndpointRegistry
  */
+@SuppressWarnings("deprecation")
 public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
         implements MergedBeanDefinitionPostProcessor, Ordered, BeanFactoryAware, SmartInitializingSingleton {
 

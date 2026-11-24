@@ -75,20 +75,6 @@ public final class ScheduledEventsProfile implements JsonSerializable<ScheduledE
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (terminateNotificationProfile() != null) {
-            terminateNotificationProfile().validate();
-        }
-        if (osImageNotificationProfile() != null) {
-            osImageNotificationProfile().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -12,16 +12,16 @@ public final class ServicePlacementRequireDomainDistributionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServicePlacementRequireDomainDistributionPolicy model
-            = BinaryData.fromString("{\"type\":\"RequiredDomainDistribution\",\"domainName\":\"przqlveu\"}")
+            = BinaryData.fromString("{\"type\":\"RequiredDomainDistribution\",\"domainName\":\"zhedplvwiw\"}")
                 .toObject(ServicePlacementRequireDomainDistributionPolicy.class);
-        Assertions.assertEquals("przqlveu", model.domainName());
+        Assertions.assertEquals("zhedplvwiw", model.domainName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServicePlacementRequireDomainDistributionPolicy model
-            = new ServicePlacementRequireDomainDistributionPolicy().withDomainName("przqlveu");
+            = new ServicePlacementRequireDomainDistributionPolicy().withDomainName("zhedplvwiw");
         model = BinaryData.fromObject(model).toObject(ServicePlacementRequireDomainDistributionPolicy.class);
-        Assertions.assertEquals("przqlveu", model.domainName());
+        Assertions.assertEquals("zhedplvwiw", model.domainName());
     }
 }

@@ -15,24 +15,24 @@ public final class VmPlacementPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmPlacementPolicyProperties model = BinaryData.fromString(
-            "{\"type\":\"VmVm\",\"vmMembers\":[\"eburu\",\"dmovsm\",\"l\"],\"affinityType\":\"Affinity\",\"state\":\"Enabled\",\"displayName\":\"q\",\"provisioningState\":\"Deleting\"}")
+            "{\"type\":\"VmVm\",\"vmMembers\":[\"bzmnvdfznud\"],\"affinityType\":\"Affinity\",\"state\":\"Enabled\",\"displayName\":\"zbn\",\"provisioningState\":\"Updating\"}")
             .toObject(VmPlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.ENABLED, model.state());
-        Assertions.assertEquals("q", model.displayName());
-        Assertions.assertEquals("eburu", model.vmMembers().get(0));
+        Assertions.assertEquals("zbn", model.displayName());
+        Assertions.assertEquals("bzmnvdfznud", model.vmMembers().get(0));
         Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmPlacementPolicyProperties model = new VmPlacementPolicyProperties().withState(PlacementPolicyState.ENABLED)
-            .withDisplayName("q")
-            .withVmMembers(Arrays.asList("eburu", "dmovsm", "l"))
+            .withDisplayName("zbn")
+            .withVmMembers(Arrays.asList("bzmnvdfznud"))
             .withAffinityType(AffinityType.AFFINITY);
         model = BinaryData.fromObject(model).toObject(VmPlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.ENABLED, model.state());
-        Assertions.assertEquals("q", model.displayName());
-        Assertions.assertEquals("eburu", model.vmMembers().get(0));
+        Assertions.assertEquals("zbn", model.displayName());
+        Assertions.assertEquals("bzmnvdfznud", model.vmMembers().get(0));
         Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
     }
 }

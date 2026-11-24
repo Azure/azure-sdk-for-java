@@ -224,8 +224,9 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
      * {@inheritDoc}
      */
     @Override
-    public AutonomousDatabaseProperties withScheduledOperations(ScheduledOperationsType scheduledOperations) {
-        super.withScheduledOperations(scheduledOperations);
+    public AutonomousDatabaseProperties
+        withScheduledOperationsList(List<ScheduledOperationsType> scheduledOperationsList) {
+        super.withScheduledOperationsList(scheduledOperationsList);
         return this;
     }
 
@@ -349,36 +350,57 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (remoteDisasterRecoveryConfiguration() != null) {
-            remoteDisasterRecoveryConfiguration().validate();
-        }
-        if (localStandbyDb() != null) {
-            localStandbyDb().validate();
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (apexDetails() != null) {
-            apexDetails().validate();
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().validate();
-        }
-        if (connectionUrls() != null) {
-            connectionUrls().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
+    public AutonomousDatabaseProperties withIsScheduleAzUpdateToEarliest(Boolean isScheduleAzUpdateToEarliest) {
+        super.withIsScheduleAzUpdateToEarliest(isScheduleAzUpdateToEarliest);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseProperties withTimeScheduledAzUpdate(String timeScheduledAzUpdate) {
+        super.withTimeScheduledAzUpdate(timeScheduledAzUpdate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseProperties withZone(String zone) {
+        super.withZone(zone);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseProperties withBackupDestination(BackupDestinationType backupDestination) {
+        super.withBackupDestination(backupDestination);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseProperties withResourceAnchorId(String resourceAnchorId) {
+        super.withResourceAnchorId(resourceAnchorId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseProperties withNetworkAnchorId(String networkAnchorId) {
+        super.withNetworkAnchorId(networkAnchorId);
+        return this;
     }
 
     /**
@@ -410,7 +432,8 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
             isPreviewVersionWithServiceTermsAccepted());
         jsonWriter.writeStringField("licenseModel", licenseModel() == null ? null : licenseModel().toString());
         jsonWriter.writeStringField("ncharacterSet", ncharacterSet());
-        jsonWriter.writeJsonField("scheduledOperations", scheduledOperations());
+        jsonWriter.writeArrayField("scheduledOperationsList", scheduledOperationsList(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointIp", privateEndpointIp());
         jsonWriter.writeStringField("privateEndpointLabel", privateEndpointLabel());
         jsonWriter.writeStringField("subnetId", subnetId());
@@ -425,6 +448,13 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
         jsonWriter.writeNumberField("backupRetentionPeriodInDays", backupRetentionPeriodInDays());
         jsonWriter.writeArrayField("whitelistedIps", whitelistedIps(),
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isScheduleAzUpdateToEarliest", isScheduleAzUpdateToEarliest());
+        jsonWriter.writeStringField("timeScheduledAzUpdate", timeScheduledAzUpdate());
+        jsonWriter.writeStringField("zone", zone());
+        jsonWriter.writeStringField("backupDestination",
+            backupDestination() == null ? null : backupDestination().toString());
+        jsonWriter.writeStringField("resourceAnchorId", resourceAnchorId());
+        jsonWriter.writeStringField("networkAnchorId", networkAnchorId());
         jsonWriter.writeStringField("dataBaseType", this.dataBaseType == null ? null : this.dataBaseType.toString());
         return jsonWriter.writeEndObject();
     }
@@ -527,9 +557,10 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedAutonomousDatabaseProperties
                         .withLifecycleState(AutonomousDatabaseLifecycleState.fromString(reader.getString()));
-                } else if ("scheduledOperations".equals(fieldName)) {
-                    deserializedAutonomousDatabaseProperties
-                        .withScheduledOperations(ScheduledOperationsType.fromJson(reader));
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsType> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsType.fromJson(reader1));
+                    deserializedAutonomousDatabaseProperties.withScheduledOperationsList(scheduledOperationsList);
                 } else if ("privateEndpointIp".equals(fieldName)) {
                     deserializedAutonomousDatabaseProperties.withPrivateEndpointIp(reader.getString());
                 } else if ("privateEndpointLabel".equals(fieldName)) {
@@ -644,6 +675,20 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
                 } else if ("whitelistedIps".equals(fieldName)) {
                     List<String> whitelistedIps = reader.readArray(reader1 -> reader1.getString());
                     deserializedAutonomousDatabaseProperties.withWhitelistedIps(whitelistedIps);
+                } else if ("isScheduleAzUpdateToEarliest".equals(fieldName)) {
+                    deserializedAutonomousDatabaseProperties
+                        .withIsScheduleAzUpdateToEarliest(reader.getNullable(JsonReader::getBoolean));
+                } else if ("timeScheduledAzUpdate".equals(fieldName)) {
+                    deserializedAutonomousDatabaseProperties.withTimeScheduledAzUpdate(reader.getString());
+                } else if ("zone".equals(fieldName)) {
+                    deserializedAutonomousDatabaseProperties.withZone(reader.getString());
+                } else if ("backupDestination".equals(fieldName)) {
+                    deserializedAutonomousDatabaseProperties
+                        .withBackupDestination(BackupDestinationType.fromString(reader.getString()));
+                } else if ("resourceAnchorId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseProperties.withResourceAnchorId(reader.getString());
+                } else if ("networkAnchorId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseProperties.withNetworkAnchorId(reader.getString());
                 } else if ("dataBaseType".equals(fieldName)) {
                     deserializedAutonomousDatabaseProperties.dataBaseType = DataBaseType.fromString(reader.getString());
                 } else {

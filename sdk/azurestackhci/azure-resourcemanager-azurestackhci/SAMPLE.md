@@ -11,7 +11,15 @@
 - [Get](#arcsettings_get)
 - [InitializeDisableProcess](#arcsettings_initializedisableprocess)
 - [ListByCluster](#arcsettings_listbycluster)
+- [Reconcile](#arcsettings_reconcile)
 - [Update](#arcsettings_update)
+
+## ClusterJobs
+
+- [CreateOrUpdate](#clusterjobs_createorupdate)
+- [Delete](#clusterjobs_delete)
+- [Get](#clusterjobs_get)
+- [List](#clusterjobs_list)
 
 ## Clusters
 
@@ -25,6 +33,7 @@
 - [ListByResourceGroup](#clusters_listbyresourcegroup)
 - [TriggerLogCollection](#clusters_triggerlogcollection)
 - [Update](#clusters_update)
+- [UpdateSecretsLocations](#clusters_updatesecretslocations)
 - [UploadCertificate](#clusters_uploadcertificate)
 
 ## DeploymentSettings
@@ -34,6 +43,13 @@
 - [Get](#deploymentsettings_get)
 - [ListByClusters](#deploymentsettings_listbyclusters)
 
+## EdgeDeviceJobs
+
+- [CreateOrUpdate](#edgedevicejobs_createorupdate)
+- [Delete](#edgedevicejobs_delete)
+- [Get](#edgedevicejobs_get)
+- [ListByEdgeDevice](#edgedevicejobs_listbyedgedevice)
+
 ## EdgeDevices
 
 - [CreateOrUpdate](#edgedevices_createorupdate)
@@ -41,6 +57,79 @@
 - [Get](#edgedevices_get)
 - [List](#edgedevices_list)
 - [Validate](#edgedevices_validate)
+
+## EdgeMachineDeploymentSettings
+
+- [CreateOrUpdate](#edgemachinedeploymentsettings_createorupdate)
+- [Delete](#edgemachinedeploymentsettings_delete)
+- [Get](#edgemachinedeploymentsettings_get)
+- [ListByEdgeMachine](#edgemachinedeploymentsettings_listbyedgemachine)
+
+## EdgeMachineDiskJobs
+
+- [CreateOrUpdate](#edgemachinediskjobs_createorupdate)
+- [Delete](#edgemachinediskjobs_delete)
+- [Get](#edgemachinediskjobs_get)
+- [List](#edgemachinediskjobs_list)
+
+## EdgeMachineDiskPrivilegedJobs
+
+- [CreateOrUpdate](#edgemachinediskprivilegedjobs_createorupdate)
+- [Delete](#edgemachinediskprivilegedjobs_delete)
+- [Get](#edgemachinediskprivilegedjobs_get)
+- [List](#edgemachinediskprivilegedjobs_list)
+
+## EdgeMachineDisks
+
+- [CreateOrUpdate](#edgemachinedisks_createorupdate)
+- [Delete](#edgemachinedisks_delete)
+- [Get](#edgemachinedisks_get)
+- [List](#edgemachinedisks_list)
+
+## EdgeMachineJobs
+
+- [CreateOrUpdate](#edgemachinejobs_createorupdate)
+- [Delete](#edgemachinejobs_delete)
+- [Get](#edgemachinejobs_get)
+- [List](#edgemachinejobs_list)
+
+## EdgeMachineNetworkAdapterJobs
+
+- [CreateOrUpdate](#edgemachinenetworkadapterjobs_createorupdate)
+- [Delete](#edgemachinenetworkadapterjobs_delete)
+- [Get](#edgemachinenetworkadapterjobs_get)
+- [List](#edgemachinenetworkadapterjobs_list)
+
+## EdgeMachineNetworkAdapters
+
+- [Get](#edgemachinenetworkadapters_get)
+- [List](#edgemachinenetworkadapters_list)
+
+## EdgeMachineSecuritySettingsOperations
+
+- [CreateOrUpdate](#edgemachinesecuritysettingsoperations_createorupdate)
+- [Delete](#edgemachinesecuritysettingsoperations_delete)
+- [Get](#edgemachinesecuritysettingsoperations_get)
+- [ListByEdgeMachine](#edgemachinesecuritysettingsoperations_listbyedgemachine)
+
+## EdgeMachineVolumes
+
+- [CreateOrUpdate](#edgemachinevolumes_createorupdate)
+- [Delete](#edgemachinevolumes_delete)
+- [Get](#edgemachinevolumes_get)
+- [List](#edgemachinevolumes_list)
+
+## EdgeMachines
+
+- [CreateOrUpdate](#edgemachines_createorupdate)
+- [Delete](#edgemachines_delete)
+- [GetByResourceGroup](#edgemachines_getbyresourcegroup)
+- [List](#edgemachines_list)
+- [ListByResourceGroup](#edgemachines_listbyresourcegroup)
+- [RefreshApplicableUpdates](#edgemachines_refreshapplicableupdates)
+- [RefreshSecuritySettings](#edgemachines_refreshsecuritysettings)
+- [Update](#edgemachines_update)
+- [Validate](#edgemachines_validate)
 
 ## Extensions
 
@@ -61,10 +150,14 @@
 
 - [List](#operations_list)
 
-## Publishers
+## OsImages
 
-- [Get](#publishers_get)
-- [ListByCluster](#publishers_listbycluster)
+- [Get](#osimages_get)
+- [ListBySubscriptionLocationResource](#osimages_listbysubscriptionlocationresource)
+
+## OwnershipVouchers
+
+- [Validate](#ownershipvouchers_validate)
 
 ## SecuritySettings
 
@@ -92,13 +185,24 @@
 - [List](#updatesummariesoperation_list)
 - [Put](#updatesummariesoperation_put)
 
+## UpdateSummariesOperationGroup
+
+- [CheckHealth](#updatesummariesoperationgroup_checkhealth)
+- [CheckUpdates](#updatesummariesoperationgroup_checkupdates)
+
 ## Updates
 
 - [Delete](#updates_delete)
 - [Get](#updates_get)
 - [List](#updates_list)
 - [Post](#updates_post)
+- [Prepare](#updates_prepare)
 - [Put](#updates_put)
+
+## ValidatedSolutionRecipes
+
+- [Get](#validatedsolutionrecipes_get)
+- [ListBySubscriptionLocationResource](#validatedsolutionrecipes_listbysubscriptionlocationresource)
 ### ArcSettings_ConsentAndInstallDefaultExtensions
 
 ```java
@@ -107,9 +211,7 @@
  */
 public final class ArcSettingsConsentAndInstallDefaultExtensionsSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ConsentAndInstallDefaultExtensions.json
+     * x-ms-original-file: 2026-10-01/ConsentAndInstallDefaultExtensions.json
      */
     /**
      * Sample code: Consent And Install Default Extensions.
@@ -133,9 +235,7 @@ public final class ArcSettingsConsentAndInstallDefaultExtensionsSamples {
  */
 public final class ArcSettingsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutArcSetting.json
+     * x-ms-original-file: 2026-10-01/PutArcSetting.json
      */
     /**
      * Sample code: Create ArcSetting.
@@ -156,9 +256,7 @@ public final class ArcSettingsCreateSamples {
  */
 public final class ArcSettingsCreateIdentitySamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * CreateArcIdentity.json
+     * x-ms-original-file: 2026-10-01/CreateArcIdentity.json
      */
     /**
      * Sample code: Create Arc Identity.
@@ -179,9 +277,7 @@ public final class ArcSettingsCreateIdentitySamples {
  */
 public final class ArcSettingsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteArcSetting.json
+     * x-ms-original-file: 2026-10-01/DeleteArcSetting.json
      */
     /**
      * Sample code: Delete ArcSetting.
@@ -202,9 +298,7 @@ public final class ArcSettingsDeleteSamples {
  */
 public final class ArcSettingsGeneratePasswordSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GeneratePassword.json
+     * x-ms-original-file: 2026-10-01/GeneratePassword.json
      */
     /**
      * Sample code: Generate Password.
@@ -226,9 +320,7 @@ public final class ArcSettingsGeneratePasswordSamples {
  */
 public final class ArcSettingsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetArcSetting.json
+     * x-ms-original-file: 2026-10-01/GetArcSetting.json
      */
     /**
      * Sample code: Get ArcSetting.
@@ -249,9 +341,7 @@ public final class ArcSettingsGetSamples {
  */
 public final class ArcSettingsInitializeDisableProcessSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * InitializeDisableProcess.json
+     * x-ms-original-file: 2026-10-01/InitializeDisableProcess.json
      */
     /**
      * Sample code: Trigger ARC Disable.
@@ -273,9 +363,7 @@ public final class ArcSettingsInitializeDisableProcessSamples {
  */
 public final class ArcSettingsListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListArcSettingsByCluster.json
+     * x-ms-original-file: 2026-10-01/ListArcSettingsByCluster.json
      */
     /**
      * Sample code: List ArcSetting resources by HCI Cluster.
@@ -289,38 +377,253 @@ public final class ArcSettingsListByClusterSamples {
 }
 ```
 
+### ArcSettings_Reconcile
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.ReconcileArcSettingsRequest;
+import com.azure.resourcemanager.azurestackhci.models.ReconcileArcSettingsRequestProperties;
+import java.util.Arrays;
+
+/**
+ * Samples for ArcSettings Reconcile.
+ */
+public final class ArcSettingsReconcileSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/reconcileArcSettings.json
+     */
+    /**
+     * Sample code: Reconcile Arc Settings.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void reconcileArcSettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.arcSettings()
+            .reconcile("test-rg", "myCluster", "default",
+                new ReconcileArcSettingsRequest()
+                    .withProperties(new ReconcileArcSettingsRequestProperties().withClusterNodes(Arrays.asList(
+                        "/subscriptions/sub1/resourceGroup/res1/providers/Microsoft.HybridCompute/machines/m1",
+                        "/subscriptions/sub1/resourceGroup/res1/providers/Microsoft.HybridCompute/machines/m2"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### ArcSettings_Update
 
 ```java
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.azurestackhci.models.ArcConnectivityProperties;
 import com.azure.resourcemanager.azurestackhci.models.ArcSetting;
-import java.io.IOException;
+import com.azure.resourcemanager.azurestackhci.models.ServiceConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.ServiceName;
+import java.util.Arrays;
 
 /**
  * Samples for ArcSettings Update.
  */
 public final class ArcSettingsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PatchArcSetting.json
+     * x-ms-original-file: 2026-10-01/PatchArcSetting.json
      */
     /**
      * Sample code: Patch ArcSetting.
      * 
      * @param manager Entry point to AzureStackHciManager.
      */
-    public static void patchArcSetting(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager)
-        throws IOException {
+    public static void patchArcSetting(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
         ArcSetting resource = manager.arcSettings()
             .getWithResponse("test-rg", "myCluster", "default", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withConnectivityProperties(SerializerFactory.createDefaultManagementSerializerAdapter()
-                .deserialize("{\"enabled\":true,\"serviceConfigurations\":[{\"port\":6516,\"serviceName\":\"WAC\"}]}",
-                    Object.class, SerializerEncoding.JSON))
+            .withConnectivityProperties(new ArcConnectivityProperties().withEnabled(true)
+                .withServiceConfigurations(
+                    Arrays.asList(new ServiceConfiguration().withServiceName(ServiceName.WAC).withPort(6516L))))
             .apply();
+    }
+}
+```
+
+### ClusterJobs_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.AddServerJobServerDetails;
+import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
+import com.azure.resourcemanager.azurestackhci.models.EceDeploymentSecrets;
+import com.azure.resourcemanager.azurestackhci.models.EceSecrets;
+import com.azure.resourcemanager.azurestackhci.models.HciAddServerJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.HciConfigureSdnIntegrationJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.HciRepairServerJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.RepairServerJobServerDetails;
+import com.azure.resourcemanager.azurestackhci.models.SdnIntegrationIntent;
+import java.util.Arrays;
+
+/**
+ * Samples for ClusterJobs CreateOrUpdate.
+ */
+public final class ClusterJobsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ClusterJobs_CreateOrUpdate_RepairServer.json
+     */
+    /**
+     * Sample code: ClusterJobs_CreateOrUpdate_RepairServerJob.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        clusterJobsCreateOrUpdateRepairServerJob(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusterJobs()
+            .define("repairserver")
+            .withExistingCluster("test-rg", "myCluster")
+            .withProperties(new HciRepairServerJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                .withRepairServerJobServerDetails(Arrays.asList(new RepairServerJobServerDetails()
+                    .withServerName("Node-2")
+                    .withServerResourceId(
+                        "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2")))
+                .withSecrets(Arrays.asList(
+                    new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                        .withEceSecretName(EceSecrets.LOCAL_ADMIN_CREDENTIAL)
+                        .withSecretLocation("fakeTokenPlaceholder"),
+                    new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                        .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
+                        .withSecretLocation("fakeTokenPlaceholder"))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/ClusterJobs_CreateOrUpdate_ConfigureSdnIntegration_Enable.json
+     */
+    /**
+     * Sample code: ClusterJobs_CreateOrUpdate_ConfigureSdnIntegration_Enable.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void clusterJobsCreateOrUpdateConfigureSdnIntegrationEnable(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusterJobs()
+            .define("configureSdnIntegration")
+            .withExistingCluster("test-rg", "myCluster")
+            .withProperties(new HciConfigureSdnIntegrationJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                .withSdnIntegrationIntent(SdnIntegrationIntent.ENABLE))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/ClusterJobs_CreateOrUpdate_AddServer.json
+     */
+    /**
+     * Sample code: ClusterJobs_CreateOrUpdate_AddServerJob.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        clusterJobsCreateOrUpdateAddServerJob(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusterJobs()
+            .define("addserver")
+            .withExistingCluster("test-rg", "myCluster")
+            .withProperties(new HciAddServerJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                .withAddServerJobServerDetails(Arrays.asList(new AddServerJobServerDetails().withServerName("Node-2")
+                    .withHostIpv4Address("192.168.10.10")
+                    .withServerResourceId(
+                        "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2")))
+                .withSecrets(Arrays.asList(
+                    new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                        .withEceSecretName(EceSecrets.LOCAL_ADMIN_CREDENTIAL)
+                        .withSecretLocation("fakeTokenPlaceholder"),
+                    new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                        .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
+                        .withSecretLocation("fakeTokenPlaceholder"))))
+            .create();
+    }
+}
+```
+
+### ClusterJobs_Delete
+
+```java
+/**
+ * Samples for ClusterJobs Delete.
+ */
+public final class ClusterJobsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ClusterJobs_Delete.json
+     */
+    /**
+     * Sample code: ClusterJobs_Delete.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void clusterJobsDelete(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusterJobs()
+            .delete("rghci", "3-Vz3LSRO5Q6q8EV-PKs8-5E", "configureSdnIntegration", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterJobs_Get
+
+```java
+/**
+ * Samples for ClusterJobs Get.
+ */
+public final class ClusterJobsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ClusterJobs_Get_AddServerJob.json
+     */
+    /**
+     * Sample code: ClusterJobs_Get_AddServerJob.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        clusterJobsGetAddServerJob(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusterJobs().getWithResponse("test-rg", "myCluster", "addserver", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/ClusterJobs_Get_ConfigureSdnIntegrationJob.json
+     */
+    /**
+     * Sample code: ClusterJobs_Get_ConfigureSdnIntegrationJob.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        clusterJobsGetConfigureSdnIntegrationJob(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusterJobs()
+            .getWithResponse("rghci", "Y-k0MG", "configureSdnIntegration", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/ClusterJobs_Get_RepairServerJob.json
+     */
+    /**
+     * Sample code: ClusterJobs_Get_RepairServerJob.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        clusterJobsGetRepairServerJob(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusterJobs().getWithResponse("test-rg", "myCluster", "repairserver", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ClusterJobs_List
+
+```java
+/**
+ * Samples for ClusterJobs List.
+ */
+public final class ClusterJobsListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ClusterJobs_List.json
+     */
+    /**
+     * Sample code: ClusterJobs_List.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void clusterJobsList(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusterJobs().list("rghci", "Ql40O4-I77S", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -338,9 +641,7 @@ import java.time.OffsetDateTime;
  */
 public final class ClustersConfigureRemoteSupportSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ConfigureRemoteSupport.json
+     * x-ms-original-file: 2026-10-01/ConfigureRemoteSupport.json
      */
     /**
      * Sample code: Configure Remote Support.
@@ -368,9 +669,7 @@ import com.azure.resourcemanager.azurestackhci.models.ManagedServiceIdentityType
  */
 public final class ClustersCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * CreateCluster.json
+     * x-ms-original-file: 2026-10-01/CreateCluster.json
      */
     /**
      * Sample code: Create cluster.
@@ -382,10 +681,10 @@ public final class ClustersCreateSamples {
             .define("myCluster")
             .withRegion("East US")
             .withExistingResourceGroup("test-rg")
-            .withTypeIdentityType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
             .withCloudManagementEndpoint("https://98294836-31be-4668-aeae-698667faf99b.waconazure.com")
             .withAadClientId("24a6e53d-04e5-44d2-b7cc-1b732a847dfc")
             .withAadTenantId("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94")
+            .withTypeIdentityType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
             .create();
     }
 }
@@ -399,9 +698,7 @@ public final class ClustersCreateSamples {
  */
 public final class ClustersCreateIdentitySamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * CreateClusterIdentity.json
+     * x-ms-original-file: 2026-10-01/CreateClusterIdentity.json
      */
     /**
      * Sample code: Create cluster Identity.
@@ -422,9 +719,7 @@ public final class ClustersCreateIdentitySamples {
  */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteCluster.json
+     * x-ms-original-file: 2026-10-01/DeleteCluster.json
      */
     /**
      * Sample code: Delete cluster.
@@ -449,9 +744,7 @@ import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceIntent;
  */
 public final class ClustersExtendSoftwareAssuranceBenefitSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ExtendSoftwareAssuranceBenefit.json
+     * x-ms-original-file: 2026-10-01/ExtendSoftwareAssuranceBenefit.json
      */
     /**
      * Sample code: Create cluster Identity.
@@ -476,9 +769,7 @@ public final class ClustersExtendSoftwareAssuranceBenefitSamples {
  */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetCluster.json
+     * x-ms-original-file: 2026-10-01/GetCluster.json
      */
     /**
      * Sample code: Get cluster.
@@ -499,9 +790,7 @@ public final class ClustersGetByResourceGroupSamples {
  */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListClustersBySubscription.json
+     * x-ms-original-file: 2026-10-01/ListClustersBySubscription.json
      */
     /**
      * Sample code: List clusters in a given subscription.
@@ -523,9 +812,7 @@ public final class ClustersListSamples {
  */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListClustersByResourceGroup.json
+     * x-ms-original-file: 2026-10-01/ListClustersByResourceGroup.json
      */
     /**
      * Sample code: List clusters in a given resource group.
@@ -551,9 +838,7 @@ import java.time.OffsetDateTime;
  */
 public final class ClustersTriggerLogCollectionSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * TriggerLogCollection.json
+     * x-ms-original-file: 2026-10-01/TriggerLogCollection.json
      */
     /**
      * Sample code: Trigger Log Collection.
@@ -587,9 +872,7 @@ import java.util.Map;
  */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * UpdateCluster.json
+     * x-ms-original-file: 2026-10-01/UpdateCluster.json
      */
     /**
      * Sample code: Update cluster.
@@ -624,6 +907,38 @@ public final class ClustersUpdateSamples {
 }
 ```
 
+### Clusters_UpdateSecretsLocations
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.SecretsLocationDetails;
+import com.azure.resourcemanager.azurestackhci.models.SecretsLocationsChangeRequest;
+import com.azure.resourcemanager.azurestackhci.models.SecretsType;
+import java.util.Arrays;
+
+/**
+ * Samples for Clusters UpdateSecretsLocations.
+ */
+public final class ClustersUpdateSecretsLocationsSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/Clusters_UpdateSecretsLocations.json
+     */
+    /**
+     * Sample code: Update secrets locations for a Cluster.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        updateSecretsLocationsForACluster(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusters()
+            .updateSecretsLocations("test-rg", "myCluster",
+                new SecretsLocationsChangeRequest().withProperties(
+                    Arrays.asList(new SecretsLocationDetails().withSecretsType(SecretsType.BACKUP_SECRETS)
+                        .withSecretsLocation("fakeTokenPlaceholder"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Clusters_UploadCertificate
 
 ```java
@@ -636,9 +951,7 @@ import java.util.Arrays;
  */
 public final class ClustersUploadCertificateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * UploadCertificate.json
+     * x-ms-original-file: 2026-10-01/UploadCertificate.json
      */
     /**
      * Sample code: Upload certificate.
@@ -669,16 +982,24 @@ import com.azure.resourcemanager.azurestackhci.models.DeploymentSettingIntents;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSettingStorageAdapterIpInfo;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSettingStorageNetworks;
 import com.azure.resourcemanager.azurestackhci.models.DeploymentSettingVirtualSwitchConfigurationOverrides;
+import com.azure.resourcemanager.azurestackhci.models.DnsServerConfig;
+import com.azure.resourcemanager.azurestackhci.models.DnsZones;
 import com.azure.resourcemanager.azurestackhci.models.EceDeploymentSecrets;
 import com.azure.resourcemanager.azurestackhci.models.EceSecrets;
+import com.azure.resourcemanager.azurestackhci.models.IdentityProvider;
 import com.azure.resourcemanager.azurestackhci.models.InfrastructureNetwork;
 import com.azure.resourcemanager.azurestackhci.models.IpPools;
 import com.azure.resourcemanager.azurestackhci.models.NetworkController;
 import com.azure.resourcemanager.azurestackhci.models.Observability;
 import com.azure.resourcemanager.azurestackhci.models.OperationType;
 import com.azure.resourcemanager.azurestackhci.models.OptionalServices;
+import com.azure.resourcemanager.azurestackhci.models.OverprovisioningRatio;
 import com.azure.resourcemanager.azurestackhci.models.PhysicalNodes;
 import com.azure.resourcemanager.azurestackhci.models.QosPolicyOverrides;
+import com.azure.resourcemanager.azurestackhci.models.SanAdapterIPConfig;
+import com.azure.resourcemanager.azurestackhci.models.SanAdapterProperties;
+import com.azure.resourcemanager.azurestackhci.models.SanClusterNetworkConfig;
+import com.azure.resourcemanager.azurestackhci.models.SanNetworks;
 import com.azure.resourcemanager.azurestackhci.models.SbeCredentials;
 import com.azure.resourcemanager.azurestackhci.models.SbeDeploymentInfo;
 import com.azure.resourcemanager.azurestackhci.models.SbePartnerInfo;
@@ -686,6 +1007,10 @@ import com.azure.resourcemanager.azurestackhci.models.SbePartnerProperties;
 import com.azure.resourcemanager.azurestackhci.models.ScaleUnits;
 import com.azure.resourcemanager.azurestackhci.models.SdnIntegration;
 import com.azure.resourcemanager.azurestackhci.models.Storage;
+import com.azure.resourcemanager.azurestackhci.models.StorageS2dConfig;
+import com.azure.resourcemanager.azurestackhci.models.StorageSanConfig;
+import com.azure.resourcemanager.azurestackhci.models.StorageType;
+import com.azure.resourcemanager.azurestackhci.models.VolumeType;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
@@ -694,9 +1019,248 @@ import java.util.Arrays;
  */
 public final class DeploymentSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutDeploymentSettings.json
+     * x-ms-original-file: 2026-10-01/PutDeploymentSettings_StorageS2D.json
+     */
+    /**
+     * Sample code: Create Deployment Settings with S2D Storage.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        createDeploymentSettingsWithS2DStorage(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.deploymentSettings()
+            .define("default")
+            .withExistingCluster("test-rg", "myCluster")
+            .withArcNodeResourceIds(Arrays.asList(
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"))
+            .withDeploymentMode(DeploymentMode.DEPLOY)
+            .withOperationType(OperationType.CLUSTER_PROVISIONING)
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration().withVersion("string")
+                    .withScaleUnits(Arrays.asList(new ScaleUnits()
+                        .withDeploymentData(new DeploymentData()
+                            .withSecuritySettings(new DeploymentSecuritySettings().withHvciProtection(true)
+                                .withDrtmProtection(true)
+                                .withDriftControlEnforced(true)
+                                .withCredentialGuardEnforced(false)
+                                .withSmbSigningEnforced(true)
+                                .withSmbClusterEncryption(false)
+                                .withSideChannelMitigationEnforced(true)
+                                .withBitlockerBootVolume(true)
+                                .withBitlockerDataVolumes(true)
+                                .withWdacEnforced(true))
+                            .withObservability(new Observability().withStreamingDataClient(true)
+                                .withEuLocation(false)
+                                .withEpisodicDataUpload(true))
+                            .withCluster(new DeploymentCluster().withName("testHCICluster")
+                                .withWitnessType("Cloud")
+                                .withWitnessPath("Cloud")
+                                .withCloudAccountName("myasestoragacct")
+                                .withAzureServiceEndpoint("core.windows.net"))
+                            .withStorage(new Storage().withConfigurationMode("Express")
+                                .withStorageType(StorageType.S2D)
+                                .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
+                                    .withOverprovisioningRatio(OverprovisioningRatio.TWO)))
+                            .withNamingPrefix("ms169")
+                            .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
+                            .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
+                                .withSubnetMask("255.255.248.0")
+                                .withGateway("255.255.248.0")
+                                .withIpPools(Arrays.asList(
+                                    new IpPools().withStartingAddress("10.57.48.60").withEndingAddress("10.57.48.66")))
+                                .withDnsServerConfig(DnsServerConfig.USE_DNS_SERVER)
+                                .withDnsServers(Arrays.asList("10.57.50.90"))))
+                            .withPhysicalNodes(Arrays.asList(
+                                new PhysicalNodes().withName("ms169host").withIpv4Address("10.57.51.224"),
+                                new PhysicalNodes().withName("ms154host").withIpv4Address("10.57.53.236")))
+                            .withHostNetwork(new DeploymentSettingHostNetwork()
+                                .withIntents(Arrays.asList(new DeploymentSettingIntents().withName("Compute_Management")
+                                    .withTrafficType(Arrays.asList("Compute", "Management"))
+                                    .withAdapter(Arrays.asList("Port2"))
+                                    .withOverrideVirtualSwitchConfiguration(false)
+                                    .withVirtualSwitchConfigurationOverrides(
+                                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("True")
+                                            .withLoadBalancingAlgorithm("HyperVPort"))
+                                    .withOverrideQosPolicy(false)
+                                    .withQosPolicyOverrides(
+                                        new QosPolicyOverrides().withPriorityValue8021ActionCluster("7")
+                                            .withPriorityValue8021ActionSmb("3")
+                                            .withBandwidthPercentageSmb("50"))
+                                    .withOverrideAdapterProperty(false)
+                                    .withAdapterPropertyOverrides(
+                                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("1514")
+                                            .withNetworkDirect("Enabled")
+                                            .withNetworkDirectTechnology("iWARP"))))
+                                .withStorageNetworks(
+                                    Arrays.asList(new DeploymentSettingStorageNetworks().withName("Storage1Network")
+                                        .withNetworkAdapterName("Port3")
+                                        .withVlanId("5")
+                                        .withStorageAdapterIpInfo(Arrays.asList(
+                                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
+                                                .withIpv4Address("10.57.48.60")
+                                                .withSubnetMask("255.255.248.0")))))
+                                .withStorageConnectivitySwitchless(true)
+                                .withEnableStorageAutoIp(false))
+                            .withIsManagementCluster(true)
+                            .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
+                            .withSecretsLocation("fakeTokenPlaceholder")
+                            .withSecrets(Arrays.asList(
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.fromString("BMCAdminUserCred"))
+                                    .withSecretLocation("fakeTokenPlaceholder"),
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
+                                    .withSecretLocation("fakeTokenPlaceholder")))
+                            .withOptionalServices(new OptionalServices().withCustomLocation("customLocationName")))
+                        .withSbePartnerInfo(new SbePartnerInfo()
+                            .withSbeDeploymentInfo(new SbeDeploymentInfo().withVersion("4.0.2309.13")
+                                .withFamily("Gen5")
+                                .withPublisher("Contoso")
+                                .withSbeManifestSource("default")
+                                .withSbeManifestCreationDate(OffsetDateTime.parse("2023-07-25T02:40:33Z")))
+                            .withPartnerProperties(
+                                Arrays.asList(new SbePartnerProperties().withName("EnableBMCIpV6").withValue("false"),
+                                    new SbePartnerProperties().withName("PhoneHomePort").withValue("1653"),
+                                    new SbePartnerProperties().withName("BMCSecurityState").withValue("HighSecurity")))
+                            .withCredentialList(
+                                Arrays.asList(new SbeCredentials().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName("fakeTokenPlaceholder")
+                                    .withSecretLocation("fakeTokenPlaceholder")))))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/PutDeploymentSettingsWithADLess.json
+     */
+    /**
+     * Sample code: Create Deployment Settings Without Active Directory Integration.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void createDeploymentSettingsWithoutActiveDirectoryIntegration(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.deploymentSettings()
+            .define("default")
+            .withExistingCluster("test-rg", "myCluster")
+            .withArcNodeResourceIds(Arrays.asList(
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"))
+            .withDeploymentMode(DeploymentMode.DEPLOY)
+            .withOperationType(OperationType.CLUSTER_PROVISIONING)
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration().withVersion("string")
+                    .withScaleUnits(Arrays.asList(new ScaleUnits()
+                        .withDeploymentData(new DeploymentData()
+                            .withSecuritySettings(new DeploymentSecuritySettings().withHvciProtection(true)
+                                .withDrtmProtection(true)
+                                .withDriftControlEnforced(true)
+                                .withCredentialGuardEnforced(false)
+                                .withSmbSigningEnforced(true)
+                                .withSmbClusterEncryption(false)
+                                .withSideChannelMitigationEnforced(true)
+                                .withBitlockerBootVolume(true)
+                                .withBitlockerDataVolumes(true)
+                                .withWdacEnforced(true))
+                            .withObservability(new Observability().withStreamingDataClient(true)
+                                .withEuLocation(false)
+                                .withEpisodicDataUpload(true))
+                            .withCluster(new DeploymentCluster().withName("testHCICluster")
+                                .withWitnessType("Cloud")
+                                .withWitnessPath("Cloud")
+                                .withCloudAccountName("myasestoragacct")
+                                .withAzureServiceEndpoint("core.windows.net"))
+                            .withIdentityProvider(IdentityProvider.LOCAL_IDENTITY)
+                            .withStorage(new Storage().withConfigurationMode("Express")
+                                .withStorageType(StorageType.S2D)
+                                .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
+                                    .withOverprovisioningRatio(OverprovisioningRatio.TWO)))
+                            .withNamingPrefix("ms169")
+                            .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
+                            .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
+                                .withSubnetMask("255.255.248.0")
+                                .withGateway("255.255.248.0")
+                                .withIpPools(Arrays.asList(
+                                    new IpPools().withStartingAddress("10.57.48.60").withEndingAddress("10.57.48.66")))
+                                .withDnsZones(Arrays.asList(new DnsZones().withDnsZoneName("contoso.com")
+                                    .withDnsForwarder(Arrays.asList("192.168.1.1"))))))
+                            .withPhysicalNodes(Arrays.asList(
+                                new PhysicalNodes().withName("ms169host").withIpv4Address("10.57.51.224"),
+                                new PhysicalNodes().withName("ms154host").withIpv4Address("10.57.53.236")))
+                            .withHostNetwork(new DeploymentSettingHostNetwork()
+                                .withIntents(Arrays.asList(new DeploymentSettingIntents().withName("Compute_Management")
+                                    .withTrafficType(Arrays.asList("Compute", "Management"))
+                                    .withAdapter(Arrays.asList("Port2"))
+                                    .withOverrideVirtualSwitchConfiguration(false)
+                                    .withVirtualSwitchConfigurationOverrides(
+                                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("True")
+                                            .withLoadBalancingAlgorithm("HyperVPort"))
+                                    .withOverrideQosPolicy(false)
+                                    .withQosPolicyOverrides(
+                                        new QosPolicyOverrides().withPriorityValue8021ActionCluster("7")
+                                            .withPriorityValue8021ActionSmb("3")
+                                            .withBandwidthPercentageSmb("50"))
+                                    .withOverrideAdapterProperty(false)
+                                    .withAdapterPropertyOverrides(
+                                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("1514")
+                                            .withNetworkDirect("Enabled")
+                                            .withNetworkDirectTechnology("iWARP"))))
+                                .withStorageNetworks(
+                                    Arrays.asList(new DeploymentSettingStorageNetworks().withName("Storage1Network")
+                                        .withNetworkAdapterName("Port3")
+                                        .withVlanId("5")
+                                        .withStorageAdapterIpInfo(
+                                            Arrays.asList(
+                                                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
+                                                    .withIpv4Address("10.57.48.60")
+                                                    .withSubnetMask("255.255.248.0")))))
+                                .withSanNetworks(
+                                    new SanNetworks().withClusterNetworkConfig(new SanClusterNetworkConfig()
+                                        .withAdapterProperties(
+                                            new SanAdapterProperties().withPriorityValue8021ActionCluster(7)
+                                                .withPriorityValue8021ActionSmb(3)
+                                                .withBandwidthPercentageSmb(50)
+                                                .withJumboPacket(9014))
+                                        .withAdapterIPConfig(
+                                            Arrays.asList(new SanAdapterIPConfig().withName("clusterNetwork-A")
+                                                .withNetworkAdapterName("ethernet 3")
+                                                .withVlanId(711)
+                                                .withAddressPrefix("10.10.30.0/24")))))
+                                .withStorageConnectivitySwitchless(true)
+                                .withEnableStorageAutoIp(false))
+                            .withSdnIntegration(new SdnIntegration().withNetworkController(
+                                new NetworkController().withMacAddressPoolStart("00-0D-3A-1B-C7-21")
+                                    .withMacAddressPoolStop("00-0D-3A-1B-C7-29")
+                                    .withNetworkVirtualizationEnabled(true)))
+                            .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
+                            .withSecretsLocation("fakeTokenPlaceholder")
+                            .withSecrets(Arrays.asList(
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.fromString("BMCAdminUserCred"))
+                                    .withSecretLocation("fakeTokenPlaceholder"),
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
+                                    .withSecretLocation("fakeTokenPlaceholder")))
+                            .withOptionalServices(new OptionalServices().withCustomLocation("customLocationName")))
+                        .withSbePartnerInfo(new SbePartnerInfo()
+                            .withSbeDeploymentInfo(new SbeDeploymentInfo().withVersion("4.0.2309.13")
+                                .withFamily("Gen5")
+                                .withPublisher("Contoso")
+                                .withSbeManifestSource("default")
+                                .withSbeManifestCreationDate(OffsetDateTime.parse("2023-07-25T02:40:33Z")))
+                            .withPartnerProperties(
+                                Arrays.asList(new SbePartnerProperties().withName("EnableBMCIpV6").withValue("false"),
+                                    new SbePartnerProperties().withName("PhoneHomePort").withValue("1653"),
+                                    new SbePartnerProperties().withName("BMCSecurityState").withValue("HighSecurity")))
+                            .withCredentialList(
+                                Arrays.asList(new SbeCredentials().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName("fakeTokenPlaceholder")
+                                    .withSecretLocation("fakeTokenPlaceholder")))))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/PutDeploymentSettings.json
      */
     /**
      * Sample code: Create Deployment Settings.
@@ -734,7 +1298,10 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
                                 .withWitnessPath("Cloud")
                                 .withCloudAccountName("myasestoragacct")
                                 .withAzureServiceEndpoint("core.windows.net"))
-                            .withStorage(new Storage().withConfigurationMode("Express"))
+                            .withStorage(new Storage().withConfigurationMode("Express")
+                                .withStorageType(StorageType.S2D)
+                                .withS2d(new StorageS2dConfig().withVolumeType(VolumeType.THIN_PROVISIONED)
+                                    .withOverprovisioningRatio(OverprovisioningRatio.TWO)))
                             .withNamingPrefix("ms169")
                             .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
                             .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
@@ -742,6 +1309,7 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
                                 .withGateway("255.255.248.0")
                                 .withIpPools(Arrays.asList(
                                     new IpPools().withStartingAddress("10.57.48.60").withEndingAddress("10.57.48.66")))
+                                .withDnsServerConfig(DnsServerConfig.USE_DNS_SERVER)
                                 .withDnsServers(Arrays.asList("10.57.50.90"))))
                             .withPhysicalNodes(Arrays.asList(
                                 new PhysicalNodes().withName("ms169host").withIpv4Address("10.57.51.224"),
@@ -768,16 +1336,155 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
                                     Arrays.asList(new DeploymentSettingStorageNetworks().withName("Storage1Network")
                                         .withNetworkAdapterName("Port3")
                                         .withVlanId("5")
-                                        .withStorageAdapterIpInfo(Arrays.asList(
-                                            new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
-                                                .withIpv4Address("10.57.48.60")
-                                                .withSubnetMask("255.255.248.0")))))
+                                        .withStorageAdapterIpInfo(
+                                            Arrays.asList(
+                                                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
+                                                    .withIpv4Address("10.57.48.60")
+                                                    .withSubnetMask("255.255.248.0")))))
+                                .withSanNetworks(
+                                    new SanNetworks().withClusterNetworkConfig(new SanClusterNetworkConfig()
+                                        .withAdapterProperties(
+                                            new SanAdapterProperties().withPriorityValue8021ActionCluster(7)
+                                                .withPriorityValue8021ActionSmb(3)
+                                                .withBandwidthPercentageSmb(50)
+                                                .withJumboPacket(9014))
+                                        .withAdapterIPConfig(
+                                            Arrays.asList(new SanAdapterIPConfig().withName("clusterNetwork-A")
+                                                .withNetworkAdapterName("ethernet 3")
+                                                .withVlanId(711)
+                                                .withAddressPrefix("10.10.30.0/24")))))
                                 .withStorageConnectivitySwitchless(true)
                                 .withEnableStorageAutoIp(false))
                             .withSdnIntegration(new SdnIntegration().withNetworkController(
                                 new NetworkController().withMacAddressPoolStart("00-0D-3A-1B-C7-21")
                                     .withMacAddressPoolStop("00-0D-3A-1B-C7-29")
                                     .withNetworkVirtualizationEnabled(true)))
+                            .withIsManagementCluster(true)
+                            .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
+                            .withSecretsLocation("fakeTokenPlaceholder")
+                            .withSecrets(Arrays.asList(
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.fromString("BMCAdminUserCred"))
+                                    .withSecretLocation("fakeTokenPlaceholder"),
+                                new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName(EceSecrets.AZURE_STACK_LCMUSER_CREDENTIAL)
+                                    .withSecretLocation("fakeTokenPlaceholder")))
+                            .withOptionalServices(new OptionalServices().withCustomLocation("customLocationName")))
+                        .withSbePartnerInfo(new SbePartnerInfo()
+                            .withSbeDeploymentInfo(new SbeDeploymentInfo().withVersion("4.0.2309.13")
+                                .withFamily("Gen5")
+                                .withPublisher("Contoso")
+                                .withSbeManifestSource("default")
+                                .withSbeManifestCreationDate(OffsetDateTime.parse("2023-07-25T02:40:33Z")))
+                            .withPartnerProperties(
+                                Arrays.asList(new SbePartnerProperties().withName("EnableBMCIpV6").withValue("false"),
+                                    new SbePartnerProperties().withName("PhoneHomePort").withValue("1653"),
+                                    new SbePartnerProperties().withName("BMCSecurityState").withValue("HighSecurity")))
+                            .withCredentialList(
+                                Arrays.asList(new SbeCredentials().withSecretName("fakeTokenPlaceholder")
+                                    .withEceSecretName("fakeTokenPlaceholder")
+                                    .withSecretLocation("fakeTokenPlaceholder")))))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/PutDeploymentSettings_StorageSAN.json
+     */
+    /**
+     * Sample code: Create Deployment Settings with SAN Storage.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        createDeploymentSettingsWithSANStorage(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.deploymentSettings()
+            .define("default")
+            .withExistingCluster("test-rg", "myCluster")
+            .withArcNodeResourceIds(Arrays.asList(
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-2"))
+            .withDeploymentMode(DeploymentMode.DEPLOY)
+            .withOperationType(OperationType.CLUSTER_PROVISIONING)
+            .withDeploymentConfiguration(
+                new DeploymentConfiguration().withVersion("string")
+                    .withScaleUnits(Arrays.asList(new ScaleUnits()
+                        .withDeploymentData(new DeploymentData()
+                            .withSecuritySettings(new DeploymentSecuritySettings().withHvciProtection(true)
+                                .withDrtmProtection(true)
+                                .withDriftControlEnforced(true)
+                                .withCredentialGuardEnforced(false)
+                                .withSmbSigningEnforced(true)
+                                .withSmbClusterEncryption(false)
+                                .withSideChannelMitigationEnforced(true)
+                                .withBitlockerBootVolume(true)
+                                .withBitlockerDataVolumes(true)
+                                .withWdacEnforced(true))
+                            .withObservability(new Observability().withStreamingDataClient(true)
+                                .withEuLocation(false)
+                                .withEpisodicDataUpload(true))
+                            .withCluster(new DeploymentCluster().withName("testHCICluster")
+                                .withWitnessType("Cloud")
+                                .withWitnessPath("Cloud")
+                                .withCloudAccountName("myasestoragacct")
+                                .withAzureServiceEndpoint("core.windows.net"))
+                            .withStorage(new Storage().withConfigurationMode("Express")
+                                .withStorageType(StorageType.SAN)
+                                .withSan(new StorageSanConfig().withInfraVolLunId("PURE1234567890ABCDEF")
+                                    .withInfraPerfLunId("PURE0987654321MNOPQR")))
+                            .withNamingPrefix("ms169")
+                            .withDomainFqdn("ASZ1PLab8.nttest.microsoft.com")
+                            .withInfrastructureNetwork(Arrays.asList(new InfrastructureNetwork()
+                                .withSubnetMask("255.255.248.0")
+                                .withGateway("255.255.248.0")
+                                .withIpPools(Arrays.asList(
+                                    new IpPools().withStartingAddress("10.57.48.60").withEndingAddress("10.57.48.66")))
+                                .withDnsServerConfig(DnsServerConfig.USE_DNS_SERVER)
+                                .withDnsServers(Arrays.asList("10.57.50.90"))))
+                            .withPhysicalNodes(Arrays.asList(
+                                new PhysicalNodes().withName("ms169host").withIpv4Address("10.57.51.224"),
+                                new PhysicalNodes().withName("ms154host").withIpv4Address("10.57.53.236")))
+                            .withHostNetwork(new DeploymentSettingHostNetwork()
+                                .withIntents(Arrays.asList(new DeploymentSettingIntents().withName("Compute_Management")
+                                    .withTrafficType(Arrays.asList("Compute", "Management"))
+                                    .withAdapter(Arrays.asList("Port2"))
+                                    .withOverrideVirtualSwitchConfiguration(false)
+                                    .withVirtualSwitchConfigurationOverrides(
+                                        new DeploymentSettingVirtualSwitchConfigurationOverrides().withEnableIov("True")
+                                            .withLoadBalancingAlgorithm("HyperVPort"))
+                                    .withOverrideQosPolicy(false)
+                                    .withQosPolicyOverrides(
+                                        new QosPolicyOverrides().withPriorityValue8021ActionCluster("7")
+                                            .withPriorityValue8021ActionSmb("3")
+                                            .withBandwidthPercentageSmb("50"))
+                                    .withOverrideAdapterProperty(false)
+                                    .withAdapterPropertyOverrides(
+                                        new DeploymentSettingAdapterPropertyOverrides().withJumboPacket("1514")
+                                            .withNetworkDirect("Enabled")
+                                            .withNetworkDirectTechnology("iWARP"))))
+                                .withStorageNetworks(
+                                    Arrays.asList(new DeploymentSettingStorageNetworks().withName("Storage1Network")
+                                        .withNetworkAdapterName("Port3")
+                                        .withVlanId("5")
+                                        .withStorageAdapterIpInfo(
+                                            Arrays.asList(
+                                                new DeploymentSettingStorageAdapterIpInfo().withPhysicalNode("string")
+                                                    .withIpv4Address("10.57.48.60")
+                                                    .withSubnetMask("255.255.248.0")))))
+                                .withSanNetworks(
+                                    new SanNetworks().withClusterNetworkConfig(new SanClusterNetworkConfig()
+                                        .withAdapterProperties(
+                                            new SanAdapterProperties().withPriorityValue8021ActionCluster(7)
+                                                .withPriorityValue8021ActionSmb(3)
+                                                .withBandwidthPercentageSmb(50)
+                                                .withJumboPacket(9014))
+                                        .withAdapterIPConfig(
+                                            Arrays.asList(new SanAdapterIPConfig().withName("clusterNetwork-A")
+                                                .withNetworkAdapterName("ethernet 3")
+                                                .withVlanId(711)
+                                                .withAddressPrefix("10.10.30.0/24")))))
+                                .withStorageConnectivitySwitchless(true)
+                                .withEnableStorageAutoIp(false))
+                            .withIsManagementCluster(true)
                             .withAdouPath("OU=ms169,DC=ASZ1PLab8,DC=nttest,DC=microsoft,DC=com")
                             .withSecretsLocation("fakeTokenPlaceholder")
                             .withSecrets(Arrays.asList(
@@ -815,9 +1522,7 @@ public final class DeploymentSettingsCreateOrUpdateSamples {
  */
 public final class DeploymentSettingsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteDeploymentSettings.json
+     * x-ms-original-file: 2026-10-01/DeleteDeploymentSettings.json
      */
     /**
      * Sample code: Delete Deployment Settings.
@@ -838,9 +1543,7 @@ public final class DeploymentSettingsDeleteSamples {
  */
 public final class DeploymentSettingsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetDeploymentSettings.json
+     * x-ms-original-file: 2026-10-01/GetDeploymentSettings.json
      */
     /**
      * Sample code: Get Deployment Settings.
@@ -862,9 +1565,7 @@ public final class DeploymentSettingsGetSamples {
  */
 public final class DeploymentSettingsListByClustersSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListDeploymentSettingsByCluster.json
+     * x-ms-original-file: 2026-10-01/ListDeploymentSettingsByCluster.json
      */
     /**
      * Sample code: List Deployment Settings.
@@ -873,6 +1574,137 @@ public final class DeploymentSettingsListByClustersSamples {
      */
     public static void listDeploymentSettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
         manager.deploymentSettings().listByClusters("test-rg", "myCluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeDeviceJobs_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.HciCollectLogJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.HciEdgeDeviceJob;
+import com.azure.resourcemanager.azurestackhci.models.HciRemoteSupportJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.RemoteSupportAccessLevel;
+import com.azure.resourcemanager.azurestackhci.models.RemoteSupportType;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for EdgeDeviceJobs CreateOrUpdate.
+ */
+public final class EdgeDeviceJobsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.json
+     */
+    /**
+     * Sample code: EdgeDeviceJobs_CreateOrUpdate_RemoteSupport.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeDeviceJobsCreateOrUpdateRemoteSupport(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeDeviceJobs()
+            .createOrUpdate(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "default", "collectLog",
+                new HciEdgeDeviceJob().withProperties(
+                    new HciRemoteSupportJobProperties().withAccessLevel(RemoteSupportAccessLevel.DIAGNOSTICS)
+                        .withExpirationTimestamp(OffsetDateTime.parse("2024-01-29T10:43:27.9471574Z"))
+                        .withType(RemoteSupportType.ENABLE)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeDeviceJobs_CreateOrUpdate_CollectLog.json
+     */
+    /**
+     * Sample code: EdgeDeviceJobs_CreateOrUpdate_CollectLog.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeDeviceJobsCreateOrUpdateCollectLog(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeDeviceJobs()
+            .createOrUpdate(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "default", "collectLog",
+                new HciEdgeDeviceJob().withProperties(
+                    new HciCollectLogJobProperties().withFromDate(OffsetDateTime.parse("2024-01-29T10:43:27.9471574Z"))
+                        .withToDate(OffsetDateTime.parse("2024-01-29T10:43:27.9471574Z"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeDeviceJobs_Delete
+
+```java
+/**
+ * Samples for EdgeDeviceJobs Delete.
+ */
+public final class EdgeDeviceJobsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeDeviceJobs_Delete.json
+     */
+    /**
+     * Sample code: EdgeDeviceJobs_Delete.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeDeviceJobsDelete(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeDeviceJobs()
+            .delete(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "lAq", "Ihlm3R-bZ4vTC4ABA456", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeDeviceJobs_Get
+
+```java
+/**
+ * Samples for EdgeDeviceJobs Get.
+ */
+public final class EdgeDeviceJobsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeDeviceJobs_Get_RemoteSupport.json
+     */
+    /**
+     * Sample code: EdgeDeviceJobs_Get_RemoteSupport.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeDeviceJobsGetRemoteSupport(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeDeviceJobs()
+            .getWithResponse(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "-5M1G7G10OZ-o5b-HS3-c72", "-oUxs", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeDeviceJobs_ListByEdgeDevice
+
+```java
+/**
+ * Samples for EdgeDeviceJobs ListByEdgeDevice.
+ */
+public final class EdgeDeviceJobsListByEdgeDeviceSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeDeviceJobs_ListByEdgeDevice.json
+     */
+    /**
+     * Sample code: EdgeDeviceJobs_ListByEdgeDevice.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeDeviceJobsListByEdgeDevice(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeDeviceJobs()
+            .listByEdgeDevice(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1",
+                "YE-855IEIN585-", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -891,9 +1723,7 @@ import java.util.Arrays;
  */
 public final class EdgeDevicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * CreateHciEdgeDevice.json
+     * x-ms-original-file: 2026-10-01/CreateHciEdgeDevice.json
      */
     /**
      * Sample code: Create HCI Edge Device.
@@ -928,9 +1758,7 @@ public final class EdgeDevicesCreateOrUpdateSamples {
  */
 public final class EdgeDevicesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteEdgeDevices.json
+     * x-ms-original-file: 2026-10-01/DeleteEdgeDevices.json
      */
     /**
      * Sample code: Delete Edge Devices.
@@ -954,9 +1782,7 @@ public final class EdgeDevicesDeleteSamples {
  */
 public final class EdgeDevicesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetEdgeDevices.json
+     * x-ms-original-file: 2026-10-01/GetEdgeDevices.json
      */
     /**
      * Sample code: Get Edge Device.
@@ -980,9 +1806,7 @@ public final class EdgeDevicesGetSamples {
  */
 public final class EdgeDevicesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListEdgeDevices.json
+     * x-ms-original-file: 2026-10-01/ListEdgeDevices.json
      */
     /**
      * Sample code: List Edge Devices.
@@ -1009,9 +1833,7 @@ import java.util.Arrays;
  */
 public final class EdgeDevicesValidateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ValidateEdgeDevices.json
+     * x-ms-original-file: 2026-10-01/ValidateEdgeDevices.json
      */
     /**
      * Sample code: Validate Edge Devices.
@@ -1032,6 +1854,1324 @@ public final class EdgeDevicesValidateSamples {
 }
 ```
 
+### EdgeMachineDeploymentSettings_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.EceDeploymentSecrets;
+import com.azure.resourcemanager.azurestackhci.models.EceSecrets;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineDeploymentConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineDeploymentData;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineDeploymentSettingProperties;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineScaleUnits;
+import com.azure.resourcemanager.azurestackhci.models.IscsiAdapterIPConfig;
+import com.azure.resourcemanager.azurestackhci.models.IscsiAdapterProperties;
+import com.azure.resourcemanager.azurestackhci.models.IscsiChapSettings;
+import com.azure.resourcemanager.azurestackhci.models.IscsiChapType;
+import com.azure.resourcemanager.azurestackhci.models.IscsiConfig;
+import com.azure.resourcemanager.azurestackhci.models.IscsiNetworkConfig;
+import com.azure.resourcemanager.azurestackhci.models.IscsiTargetPortalAddress;
+import com.azure.resourcemanager.azurestackhci.models.NodeStorageType;
+import java.util.Arrays;
+
+/**
+ * Samples for EdgeMachineDeploymentSettings CreateOrUpdate.
+ */
+public final class EdgeMachineDeploymentSettingsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDeploymentSettings_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: EdgeMachineDeploymentSettings_CreateOrUpdate.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDeploymentSettingsCreateOrUpdate(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDeploymentSettings()
+            .define("default")
+            .withExistingEdgeMachine("test-rg", "EdgeMachine01")
+            .withProperties(
+                new EdgeMachineDeploymentSettingProperties()
+                    .withDeploymentConfiguration(
+                        new EdgeMachineDeploymentConfiguration().withVersion("10.2.0.0")
+                            .withScaleUnits(Arrays.asList(new EdgeMachineScaleUnits().withDeploymentData(
+                                new EdgeMachineDeploymentData().withStorageType(NodeStorageType.SAN_ISCSI)
+                                    .withIScsiConfig(new IscsiConfig()
+                                        .withIScsiNetworkConfig(new IscsiNetworkConfig()
+                                            .withAdapterProperties(new IscsiAdapterProperties().withJumboPacket(9014))
+                                            .withAdapterIPConfig(Arrays
+                                                .asList(new IscsiAdapterIPConfig().withNetworkAdapterName("iSCSI-A")
+                                                    .withVlanId(401)
+                                                    .withAddressPrefix("10.10.50.0/24")
+                                                    .withTargetPortalAddresses(Arrays
+                                                        .asList(new IscsiTargetPortalAddress().withIpAddress("10.0.0.1")
+                                                            .withNextHop("10.10.50.1"))))))
+                                        .withChapSettings(
+                                            new IscsiChapSettings().withChapType(IscsiChapType.BIDIRECTIONAL))
+                                        .withInitiatorIqn("iqn.2025-01.com.example:storage-target"))
+                                    .withSecrets(
+                                        Arrays.asList(new EceDeploymentSecrets().withSecretName("fakeTokenPlaceholder")
+                                            .withEceSecretName(EceSecrets.CHAP_CREDENTIAL)
+                                            .withSecretLocation("fakeTokenPlaceholder"))))))))
+            .create();
+    }
+}
+```
+
+### EdgeMachineDeploymentSettings_Delete
+
+```java
+/**
+ * Samples for EdgeMachineDeploymentSettings Delete.
+ */
+public final class EdgeMachineDeploymentSettingsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDeploymentSettings_Delete.json
+     */
+    /**
+     * Sample code: EdgeMachineDeploymentSettings_Delete.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineDeploymentSettingsDelete(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDeploymentSettings()
+            .delete("test-rg", "EdgeMachine01", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDeploymentSettings_Get
+
+```java
+/**
+ * Samples for EdgeMachineDeploymentSettings Get.
+ */
+public final class EdgeMachineDeploymentSettingsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDeploymentSettings_Get.json
+     */
+    /**
+     * Sample code: EdgeMachineDeploymentSettings_Get.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineDeploymentSettingsGet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDeploymentSettings()
+            .getWithResponse("test-rg", "EdgeMachine01", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDeploymentSettings_ListByEdgeMachine
+
+```java
+/**
+ * Samples for EdgeMachineDeploymentSettings ListByEdgeMachine.
+ */
+public final class EdgeMachineDeploymentSettingsListByEdgeMachineSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDeploymentSettings_ListByEdgeMachine.json
+     */
+    /**
+     * Sample code: EdgeMachineDeploymentSettings_ListByEdgeMachine.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDeploymentSettingsListByEdgeMachine(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDeploymentSettings()
+            .listByEdgeMachine("test-rg", "EdgeMachine01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDiskJobs_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.CreateVolumeJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
+import com.azure.resourcemanager.azurestackhci.models.DiskFileSystemType;
+
+/**
+ * Samples for EdgeMachineDiskJobs CreateOrUpdate.
+ */
+public final class EdgeMachineDiskJobsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDiskJobs_CreateOrUpdate_CreateVolume.json
+     */
+    /**
+     * Sample code: EdgeMachineDiskJobs_CreateOrUpdate_CreateVolume.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDiskJobsCreateOrUpdateCreateVolume(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDiskJobs()
+            .define("CreateVolume")
+            .withExistingDisk("test-rg", "EdgeMachine01", "disk-001")
+            .withProperties(new CreateVolumeJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                .withSizeInBytes("107374182400")
+                .withPath("/data")
+                .withFileSystem(DiskFileSystemType.EXT4))
+            .create();
+    }
+}
+```
+
+### EdgeMachineDiskJobs_Delete
+
+```java
+/**
+ * Samples for EdgeMachineDiskJobs Delete.
+ */
+public final class EdgeMachineDiskJobsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDiskJobs_Delete.json
+     */
+    /**
+     * Sample code: EdgeMachineDiskJobs_Delete.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDiskJobsDelete(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDiskJobs()
+            .delete("test-rg", "EdgeMachine01", "disk-001", "CreateVolume", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDiskJobs_Get
+
+```java
+/**
+ * Samples for EdgeMachineDiskJobs Get.
+ */
+public final class EdgeMachineDiskJobsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDiskJobs_Get_CreateVolume.json
+     */
+    /**
+     * Sample code: EdgeMachineDiskJobs_Get_CreateVolume.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineDiskJobsGetCreateVolume(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDiskJobs()
+            .getWithResponse("test-rg", "EdgeMachine01", "disk-001", "CreateVolume", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDiskJobs_List
+
+```java
+/**
+ * Samples for EdgeMachineDiskJobs List.
+ */
+public final class EdgeMachineDiskJobsListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDiskJobs_List.json
+     */
+    /**
+     * Sample code: EdgeMachineDiskJobs_List.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDiskJobsList(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDiskJobs().list("test-rg", "EdgeMachine01", "disk-001", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDiskPrivilegedJobs_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.DeleteVolumeJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
+
+/**
+ * Samples for EdgeMachineDiskPrivilegedJobs CreateOrUpdate.
+ */
+public final class EdgeMachineDiskPrivilegedJobsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDiskPrivilegedJobs_CreateOrUpdate_DeleteVolume.json
+     */
+    /**
+     * Sample code: EdgeMachineDiskPrivilegedJobs_CreateOrUpdate_DeleteVolume.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDiskPrivilegedJobsCreateOrUpdateDeleteVolume(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDiskPrivilegedJobs()
+            .define("DeleteVolume")
+            .withExistingDisk("test-rg", "EdgeMachine01", "disk-001")
+            .withProperties(new DeleteVolumeJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                .withVolumePath("/data")
+                .withConfirmDeletion(true))
+            .create();
+    }
+}
+```
+
+### EdgeMachineDiskPrivilegedJobs_Delete
+
+```java
+/**
+ * Samples for EdgeMachineDiskPrivilegedJobs Delete.
+ */
+public final class EdgeMachineDiskPrivilegedJobsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDiskPrivilegedJobs_Delete.json
+     */
+    /**
+     * Sample code: EdgeMachineDiskPrivilegedJobs_Delete.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineDiskPrivilegedJobsDelete(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDiskPrivilegedJobs()
+            .delete("test-rg", "EdgeMachine01", "disk-001", "DeleteVolume", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDiskPrivilegedJobs_Get
+
+```java
+/**
+ * Samples for EdgeMachineDiskPrivilegedJobs Get.
+ */
+public final class EdgeMachineDiskPrivilegedJobsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDiskPrivilegedJobs_Get_DeleteVolume.json
+     */
+    /**
+     * Sample code: EdgeMachineDiskPrivilegedJobs_Get_DeleteVolume.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDiskPrivilegedJobsGetDeleteVolume(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDiskPrivilegedJobs()
+            .getWithResponse("test-rg", "EdgeMachine01", "disk-001", "DeleteVolume", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDiskPrivilegedJobs_List
+
+```java
+/**
+ * Samples for EdgeMachineDiskPrivilegedJobs List.
+ */
+public final class EdgeMachineDiskPrivilegedJobsListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDiskPrivilegedJobs_List.json
+     */
+    /**
+     * Sample code: EdgeMachineDiskPrivilegedJobs_List.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineDiskPrivilegedJobsList(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDiskPrivilegedJobs()
+            .list("test-rg", "EdgeMachine01", "disk-001", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDisks_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.DiskConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.DiskFileSystemType;
+import com.azure.resourcemanager.azurestackhci.models.DiskVolumeConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineDiskProperties;
+import java.util.Arrays;
+
+/**
+ * Samples for EdgeMachineDisks CreateOrUpdate.
+ */
+public final class EdgeMachineDisksCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDisks_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: EdgeMachineDisks_CreateOrUpdate.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineDisksCreateOrUpdate(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDisks()
+            .define("disk-001")
+            .withExistingEdgeMachine("test-rg", "EdgeMachine01")
+            .withProperties(new EdgeMachineDiskProperties().withDiskConfiguration(new DiskConfiguration()
+                .withVolumes(Arrays.asList(new DiskVolumeConfiguration().withSizeInBytes("107374182400")
+                    .withPath("/data")
+                    .withFileSystem(DiskFileSystemType.EXT4)))))
+            .create();
+    }
+}
+```
+
+### EdgeMachineDisks_Delete
+
+```java
+/**
+ * Samples for EdgeMachineDisks Delete.
+ */
+public final class EdgeMachineDisksDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDisks_Delete.json
+     */
+    /**
+     * Sample code: EdgeMachineDisks_Delete.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDisksDelete(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDisks().delete("test-rg", "EdgeMachine01", "disk-001", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDisks_Get
+
+```java
+/**
+ * Samples for EdgeMachineDisks Get.
+ */
+public final class EdgeMachineDisksGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDisks_Get.json
+     */
+    /**
+     * Sample code: EdgeMachineDisks_Get.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDisksGet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDisks()
+            .getWithResponse("test-rg", "EdgeMachine01", "disk-001", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineDisks_List
+
+```java
+/**
+ * Samples for EdgeMachineDisks List.
+ */
+public final class EdgeMachineDisksListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineDisks_List.json
+     */
+    /**
+     * Sample code: EdgeMachineDisks_List.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineDisksList(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineDisks().list("test-rg", "EdgeMachine01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineJobs_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
+import com.azure.resourcemanager.azurestackhci.models.DownloadOsJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.DownloadOsProfile;
+import com.azure.resourcemanager.azurestackhci.models.DownloadRequest;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineRemoteSupportJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.IpAddressRange;
+import com.azure.resourcemanager.azurestackhci.models.IpAssignmentType;
+import com.azure.resourcemanager.azurestackhci.models.NetworkAdapter;
+import com.azure.resourcemanager.azurestackhci.models.NetworkConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.OSOperationType;
+import com.azure.resourcemanager.azurestackhci.models.OnboardingConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.OnboardingResourceType;
+import com.azure.resourcemanager.azurestackhci.models.OsProvisionProfile;
+import com.azure.resourcemanager.azurestackhci.models.ProvisionOsJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningOsType;
+import com.azure.resourcemanager.azurestackhci.models.ProvisioningRequest;
+import com.azure.resourcemanager.azurestackhci.models.RemoteSupportAccessLevel;
+import com.azure.resourcemanager.azurestackhci.models.RemoteSupportType;
+import com.azure.resourcemanager.azurestackhci.models.SecretType;
+import com.azure.resourcemanager.azurestackhci.models.StorageConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.TargetDeviceConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.TimeConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.UserDetails;
+import com.azure.resourcemanager.azurestackhci.models.WebProxyConfiguration;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+
+/**
+ * Samples for EdgeMachineJobs CreateOrUpdate.
+ */
+public final class EdgeMachineJobsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_CreateOrUpdate_DownloadOs.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_CreateOrUpdate_DownloadOs.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsCreateOrUpdateDownloadOs(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .define("DownloadOs")
+            .withExistingEdgeMachine("ArcInstance-rg", "machine1")
+            .withProperties(new DownloadOsJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                .withDownloadRequest(new DownloadRequest().withTarget(ProvisioningOsType.AZURE_LINUX)
+                    .withOsProfile(new DownloadOsProfile().withOsName("AzureLinux")
+                        .withOsType("AzureLinux")
+                        .withOsVersion("3.0")
+                        .withOsImageLocation("https://aka.ms/aep/azlinux3.0")
+                        .withVsrVersion("1.0.0")
+                        .withImageHash("sha256:a8b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1")
+                        .withGpgPubKey("fakeTokenPlaceholder"))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_CreateOrUpdate_ProvisionOs.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_CreateOrUpdate_ProvisionOs.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsCreateOrUpdateProvisionOs(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .define("ProvisionOs")
+            .withExistingEdgeMachine("ArcInstance-rg", "machine1")
+            .withProperties(new ProvisionOsJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                .withProvisioningRequest(new ProvisioningRequest().withTarget(ProvisioningOsType.AZURE_LINUX)
+                    .withOsProfile(new OsProvisionProfile().withOsName("AzureLinux")
+                        .withOsType("AzureLinux")
+                        .withOsVersion("3.0")
+                        .withOsImageLocation("https://aka.ms/aep/azlinux3.0")
+                        .withVsrVersion("1.0.0")
+                        .withImageHash("sha256:a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456")
+                        .withGpgPubKey("fakeTokenPlaceholder")
+                        .withOperationType(OSOperationType.PROVISION))
+                    .withUserDetails(Arrays.asList(new UserDetails().withUserName("edgeuser")
+                        .withSecretType(SecretType.KEY_VAULT)
+                        .withSecretLocation("fakeTokenPlaceholder")
+                        .withSshPubKey(
+                            Arrays.asList("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7... edgeuser@example.com"))))
+                    .withOnboardingConfiguration(new OnboardingConfiguration()
+                        .withType(OnboardingResourceType.HYBRID_COMPUTE_MACHINE)
+                        .withResourceId(
+                            "/subscriptions/ff0aa6da-20f8-44fe-9aee-381c8e8a4aeb/resourceGroups/bhukumar-test-rg/providers/Microsoft.HybridCompute/machines/bkumar-t1")
+                        .withLocation("eastus")
+                        .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                        .withArcVirtualMachineId("634b9db8-83e1-46ed-b391-c1614e2d0097"))
+                    .withDeviceConfiguration(new TargetDeviceConfiguration()
+                        .withNetwork(new NetworkConfiguration().withNetworkAdapters(
+                            Arrays.asList(new NetworkAdapter().withIpAssignmentType(IpAssignmentType.AUTOMATIC)
+                                .withIpAddress("")
+                                .withIpAddressRange(new IpAddressRange().withStartIp("").withEndIp(""))
+                                .withGateway("")
+                                .withSubnetMask("")
+                                .withDnsAddressArray(Arrays.asList("8.8.8.8"))
+                                .withVlanId("0"))))
+                        .withHostName("634b9db8-83e1-46ed-b391-c1614e2d0097")
+                        .withWebProxy(new WebProxyConfiguration().withConnectionUri("https://microsoft.com/a")
+                            .withPort("")
+                            .withBypassList(Arrays.asList()))
+                        .withTime(new TimeConfiguration().withPrimaryTimeServer("")
+                            .withSecondaryTimeServer("")
+                            .withTimeZone("UTC"))
+                        .withStorage(new StorageConfiguration().withPartitionSize("30GB")))
+                    .withCustomConfiguration("eyJjdXN0b21Db25maWciOiAiZXhhbXBsZSBiYXNlNjQgZW5jb2RlZCBjb25maWcifQ==")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_CreateOrUpdate_UpdateOs.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_CreateOrUpdate_UpdateOs.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsCreateOrUpdateUpdateOs(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .define("UpdateOs")
+            .withExistingEdgeMachine("ArcInstance-rg", "machine1")
+            .withProperties(new ProvisionOsJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                .withProvisioningRequest(new ProvisioningRequest().withTarget(ProvisioningOsType.AZURE_LINUX)
+                    .withOsProfile(new OsProvisionProfile().withOsName("AzureLinux")
+                        .withOsType("AzureLinux")
+                        .withOsVersion("3.1")
+                        .withOsImageLocation("https://aka.ms/aep/azlinux3.1")
+                        .withVsrVersion("1.1.0")
+                        .withImageHash("sha256:b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef12345678")
+                        .withGpgPubKey("fakeTokenPlaceholder")
+                        .withOperationType(OSOperationType.UPDATE))
+                    .withUserDetails(Arrays.asList(new UserDetails().withUserName("edgeuser")
+                        .withSecretType(SecretType.KEY_VAULT)
+                        .withSecretLocation("fakeTokenPlaceholder")
+                        .withSshPubKey(
+                            Arrays.asList("ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7... edgeuser@example.com"))))
+                    .withOnboardingConfiguration(new OnboardingConfiguration()
+                        .withType(OnboardingResourceType.HYBRID_COMPUTE_MACHINE)
+                        .withResourceId(
+                            "/subscriptions/ff0aa6da-20f8-44fe-9aee-381c8e8a4aeb/resourceGroups/bhukumar-test-rg/providers/Microsoft.HybridCompute/machines/bkumar-t1")
+                        .withLocation("eastus")
+                        .withTenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+                        .withArcVirtualMachineId("634b9db8-83e1-46ed-b391-c1614e2d0097"))
+                    .withDeviceConfiguration(new TargetDeviceConfiguration()
+                        .withNetwork(new NetworkConfiguration().withNetworkAdapters(
+                            Arrays.asList(new NetworkAdapter().withIpAssignmentType(IpAssignmentType.AUTOMATIC)
+                                .withIpAddress("")
+                                .withIpAddressRange(new IpAddressRange().withStartIp("").withEndIp(""))
+                                .withGateway("")
+                                .withSubnetMask("")
+                                .withDnsAddressArray(Arrays.asList("8.8.8.8"))
+                                .withVlanId("0"))))
+                        .withHostName("634b9db8-83e1-46ed-b391-c1614e2d0097")
+                        .withWebProxy(new WebProxyConfiguration().withConnectionUri("https://microsoft.com/a")
+                            .withPort("")
+                            .withBypassList(Arrays.asList()))
+                        .withTime(new TimeConfiguration().withPrimaryTimeServer("")
+                            .withSecondaryTimeServer("")
+                            .withTimeZone("UTC")))
+                    .withCustomConfiguration("eyJjdXN0b21Db25maWciOiAiZXhhbXBsZSBiYXNlNjQgZW5jb2RlZCBjb25maWcifQ==")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_CreateOrUpdate_CollectLog.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_CreateOrUpdate_CollectLog.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsCreateOrUpdateCollectLog(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .define("triggerLogCollection")
+            .withExistingEdgeMachine("ArcInstance-rg", "machine1")
+            .withProperties(new EdgeMachineJobProperties().withDeploymentMode(DeploymentMode.VALIDATE))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_CreateOrUpdate_RemoteSupport.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_CreateOrUpdate_RemoteSupport.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineJobsCreateOrUpdateRemoteSupport(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .define("RemoteSupport")
+            .withExistingEdgeMachine("ArcInstance-rg", "machine1")
+            .withProperties(
+                new EdgeMachineRemoteSupportJobProperties().withAccessLevel(RemoteSupportAccessLevel.DIAGNOSTICS)
+                    .withExpirationTimestamp(OffsetDateTime.parse("2024-01-29T10:43:27.9471574Z"))
+                    .withType(RemoteSupportType.ENABLE))
+            .create();
+    }
+}
+```
+
+### EdgeMachineJobs_Delete
+
+```java
+/**
+ * Samples for EdgeMachineJobs Delete.
+ */
+public final class EdgeMachineJobsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsDeleteMaximumSet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .delete("ArcInstance-rg", "machine1", "triggerLogCollection", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineJobs_Get
+
+```java
+/**
+ * Samples for EdgeMachineJobs Get.
+ */
+public final class EdgeMachineJobsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_Get_ProvisionOs.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_Get_ProvisionOs.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsGetProvisionOs(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .getWithResponse("ArcInstance-rg", "machine1", "ProvisionOs", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_Get_CollectLog.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_Get_CollectLog.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsGetCollectLog(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .getWithResponse("ArcInstance-rg", "machine1", "collectLog", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_Get_RemoteSupport.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_Get_RemoteSupport.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsGetRemoteSupport(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs()
+            .getWithResponse("ArcInstance-rg", "machine1", "RemoteSupport", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineJobs_List
+
+```java
+/**
+ * Samples for EdgeMachineJobs List.
+ */
+public final class EdgeMachineJobsListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineJobs_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: EdgeMachineJobs_List_MaximumSet.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineJobsListMaximumSet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineJobs().list("ArcInstance-rg", "machine1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineNetworkAdapterJobs_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.ApplyConfigurationNetworkAdapterJobProperties;
+import com.azure.resourcemanager.azurestackhci.models.DeploymentMode;
+import com.azure.resourcemanager.azurestackhci.models.InterfaceState;
+import com.azure.resourcemanager.azurestackhci.models.IpInterfaceType;
+import com.azure.resourcemanager.azurestackhci.models.NetworkAdapterConfiguration;
+import java.util.Arrays;
+
+/**
+ * Samples for EdgeMachineNetworkAdapterJobs CreateOrUpdate.
+ */
+public final class EdgeMachineNetworkAdapterJobsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineNetworkAdapterJobs_CreateOrUpdate_ApplyConfiguration.json
+     */
+    /**
+     * Sample code: EdgeMachineNetworkAdapterJobs_CreateOrUpdate_ApplyConfiguration.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineNetworkAdapterJobsCreateOrUpdateApplyConfiguration(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineNetworkAdapterJobs()
+            .define("ApplyConfiguration")
+            .withExistingNetworkAdapter("test-rg", "EdgeMachine01", "ethernet0")
+            .withProperties(
+                new ApplyConfigurationNetworkAdapterJobProperties().withDeploymentMode(DeploymentMode.DEPLOY)
+                    .withTargetConfiguration(new NetworkAdapterConfiguration().withAdapterName("ethernet0")
+                        .withIp4Address("192.168.1.100")
+                        .withSubnetMask("255.255.255.0")
+                        .withDefaultGateway("192.168.1.1")
+                        .withDnsServers(Arrays.asList("8.8.8.8", "8.8.4.4"))
+                        .withIpInterfaceType(IpInterfaceType.STATIC)
+                        .withVlanId(100)
+                        .withInterfaceState(InterfaceState.UP)))
+            .create();
+    }
+}
+```
+
+### EdgeMachineNetworkAdapterJobs_Delete
+
+```java
+/**
+ * Samples for EdgeMachineNetworkAdapterJobs Delete.
+ */
+public final class EdgeMachineNetworkAdapterJobsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineNetworkAdapterJobs_Delete.json
+     */
+    /**
+     * Sample code: EdgeMachineNetworkAdapterJobs_Delete.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineNetworkAdapterJobsDelete(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineNetworkAdapterJobs()
+            .delete("test-rg", "EdgeMachine01", "ethernet0", "ApplyConfiguration", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineNetworkAdapterJobs_Get
+
+```java
+/**
+ * Samples for EdgeMachineNetworkAdapterJobs Get.
+ */
+public final class EdgeMachineNetworkAdapterJobsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineNetworkAdapterJobs_Get.json
+     */
+    /**
+     * Sample code: EdgeMachineNetworkAdapterJobs_Get.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineNetworkAdapterJobsGet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineNetworkAdapterJobs()
+            .getWithResponse("test-rg", "EdgeMachine01", "ethernet0", "ApplyConfiguration",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineNetworkAdapterJobs_List
+
+```java
+/**
+ * Samples for EdgeMachineNetworkAdapterJobs List.
+ */
+public final class EdgeMachineNetworkAdapterJobsListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineNetworkAdapterJobs_List.json
+     */
+    /**
+     * Sample code: EdgeMachineNetworkAdapterJobs_List.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineNetworkAdapterJobsList(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineNetworkAdapterJobs()
+            .list("test-rg", "EdgeMachine01", "ethernet0", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineNetworkAdapters_Get
+
+```java
+/**
+ * Samples for EdgeMachineNetworkAdapters Get.
+ */
+public final class EdgeMachineNetworkAdaptersGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineNetworkAdapters_Get.json
+     */
+    /**
+     * Sample code: EdgeMachineNetworkAdapters_Get.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineNetworkAdaptersGet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineNetworkAdapters()
+            .getWithResponse("test-rg", "EdgeMachine01", "ethernet0", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineNetworkAdapters_List
+
+```java
+/**
+ * Samples for EdgeMachineNetworkAdapters List.
+ */
+public final class EdgeMachineNetworkAdaptersListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineNetworkAdapters_List.json
+     */
+    /**
+     * Sample code: EdgeMachineNetworkAdapters_List.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineNetworkAdaptersList(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineNetworkAdapters().list("test-rg", "EdgeMachine01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineSecuritySettingsOperations_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineSecurityProperties;
+
+/**
+ * Samples for EdgeMachineSecuritySettingsOperations CreateOrUpdate.
+ */
+public final class EdgeMachineSecuritySettingsOperationsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineSecuritySettingsOperations_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: Create or update edge machine security settings.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void createOrUpdateEdgeMachineSecuritySettings(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineSecuritySettingsOperations()
+            .define("default")
+            .withExistingEdgeMachine("test-rg", "testEdgeMachine")
+            .withProperties(new EdgeMachineSecurityProperties())
+            .create();
+    }
+}
+```
+
+### EdgeMachineSecuritySettingsOperations_Delete
+
+```java
+/**
+ * Samples for EdgeMachineSecuritySettingsOperations Delete.
+ */
+public final class EdgeMachineSecuritySettingsOperationsDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineSecuritySettingsOperations_Delete.json
+     */
+    /**
+     * Sample code: Delete edge machine security settings.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        deleteEdgeMachineSecuritySettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineSecuritySettingsOperations()
+            .delete("test-rg", "testEdgeMachine", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineSecuritySettingsOperations_Get
+
+```java
+/**
+ * Samples for EdgeMachineSecuritySettingsOperations Get.
+ */
+public final class EdgeMachineSecuritySettingsOperationsGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineSecuritySettingsOperations_Get.json
+     */
+    /**
+     * Sample code: Get edge machine security settings.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        getEdgeMachineSecuritySettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineSecuritySettingsOperations()
+            .getWithResponse("test-rg", "testEdgeMachine", "default", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineSecuritySettingsOperations_ListByEdgeMachine
+
+```java
+/**
+ * Samples for EdgeMachineSecuritySettingsOperations ListByEdgeMachine.
+ */
+public final class EdgeMachineSecuritySettingsOperationsListByEdgeMachineSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineSecuritySettingsOperations_ListByEdgeMachine.json
+     */
+    /**
+     * Sample code: List edge machine security settings.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        listEdgeMachineSecuritySettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineSecuritySettingsOperations()
+            .listByEdgeMachine("test-rg", "testEdgeMachine", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineVolumes_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineVolumeProperties;
+import com.azure.resourcemanager.azurestackhci.models.VolumeConfiguration;
+
+/**
+ * Samples for EdgeMachineVolumes CreateOrUpdate.
+ */
+public final class EdgeMachineVolumesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineVolumes_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: EdgeMachineVolumes_CreateOrUpdate.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachineVolumesCreateOrUpdate(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineVolumes()
+            .define("vol-001")
+            .withExistingEdgeMachine("test-rg", "EdgeMachine01")
+            .withProperties(
+                new EdgeMachineVolumeProperties().withVolumeConfiguration(new VolumeConfiguration().withReserved("")))
+            .create();
+    }
+}
+```
+
+### EdgeMachineVolumes_Delete
+
+```java
+/**
+ * Samples for EdgeMachineVolumes Delete.
+ */
+public final class EdgeMachineVolumesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineVolumes_Delete.json
+     */
+    /**
+     * Sample code: EdgeMachineVolumes_Delete.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineVolumesDelete(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineVolumes().delete("test-rg", "EdgeMachine01", "vol-001", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineVolumes_Get
+
+```java
+/**
+ * Samples for EdgeMachineVolumes Get.
+ */
+public final class EdgeMachineVolumesGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineVolumes_Get.json
+     */
+    /**
+     * Sample code: EdgeMachineVolumes_Get.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineVolumesGet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineVolumes()
+            .getWithResponse("test-rg", "EdgeMachine01", "vol-001", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachineVolumes_List
+
+```java
+/**
+ * Samples for EdgeMachineVolumes List.
+ */
+public final class EdgeMachineVolumesListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachineVolumes_List.json
+     */
+    /**
+     * Sample code: EdgeMachineVolumes_List.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachineVolumesList(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachineVolumes().list("test-rg", "EdgeMachine01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachines_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineProperties;
+
+/**
+ * Samples for EdgeMachines CreateOrUpdate.
+ */
+public final class EdgeMachinesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: EdgeMachines_CreateOrUpdate.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachinesCreateOrUpdate(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachines()
+            .define("machine-1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("ArcInstance-rg")
+            .withProperties(new EdgeMachineProperties()
+                .withArcMachineResourceGroupId(
+                    "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg")
+                .withArcMachineResourceId(
+                    "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1"))
+            .create();
+    }
+}
+```
+
+### EdgeMachines_Delete
+
+```java
+/**
+ * Samples for EdgeMachines Delete.
+ */
+public final class EdgeMachinesDeleteSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_Delete.json
+     */
+    /**
+     * Sample code: EdgeMachines_Delete_MaximumSet.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        edgeMachinesDeleteMaximumSet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachines().delete("ArcInstance-rg", "machine-1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachines_GetByResourceGroup
+
+```java
+/**
+ * Samples for EdgeMachines GetByResourceGroup.
+ */
+public final class EdgeMachinesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_Get.json
+     */
+    /**
+     * Sample code: EdgeMachines_Get_MaximumSet.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachinesGetMaximumSet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachines()
+            .getByResourceGroupWithResponse("ArcInstance-rg", "machine-1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachines_List
+
+```java
+/**
+ * Samples for EdgeMachines List.
+ */
+public final class EdgeMachinesListSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_ListBySubscription.json
+     */
+    /**
+     * Sample code: List edge machines in a given subscription.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        listEdgeMachinesInAGivenSubscription(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachines().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachines_ListByResourceGroup
+
+```java
+/**
+ * Samples for EdgeMachines ListByResourceGroup.
+ */
+public final class EdgeMachinesListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_ListByResourceGroup.json
+     */
+    /**
+     * Sample code: List edge machines in a given resource group.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        listEdgeMachinesInAGivenResourceGroup(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachines().listByResourceGroup("ArcInstance-rg", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachines_RefreshApplicableUpdates
+
+```java
+/**
+ * Samples for EdgeMachines RefreshApplicableUpdates.
+ */
+public final class EdgeMachinesRefreshApplicableUpdatesSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_RefreshApplicableUpdates.json
+     */
+    /**
+     * Sample code: Refresh edge machine applicable updates.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        refreshEdgeMachineApplicableUpdates(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachines().refreshApplicableUpdates("test-rg", "testEdgeMachine", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachines_RefreshSecuritySettings
+
+```java
+/**
+ * Samples for EdgeMachines RefreshSecuritySettings.
+ */
+public final class EdgeMachinesRefreshSecuritySettingsSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_RefreshSecuritySettings.json
+     */
+    /**
+     * Sample code: Refresh edge machine security settings.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        refreshEdgeMachineSecuritySettings(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachines().refreshSecuritySettings("test-rg", "testEdgeMachine", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### EdgeMachines_Update
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachine;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for EdgeMachines Update.
+ */
+public final class EdgeMachinesUpdateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_Update.json
+     */
+    /**
+     * Sample code: EdgeMachines_Update.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachinesUpdate(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        EdgeMachine resource = manager.edgeMachines()
+            .getByResourceGroupWithResponse("ArcInstance-rg", "machine-1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("key2335", "fakeTokenPlaceholder")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### EdgeMachines_Validate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.EdgeMachineValidateRequest;
+import java.util.Arrays;
+
+/**
+ * Samples for EdgeMachines Validate.
+ */
+public final class EdgeMachinesValidateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/EdgeMachines_Validate.json
+     */
+    /**
+     * Sample code: EdgeMachines_Validate.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void edgeMachinesValidate(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.edgeMachines()
+            .validate("ArcInstance-rg", "machine-1", new EdgeMachineValidateRequest().withEdgeMachineIds(Arrays.asList(
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.AzureStackHCI/edgeMachines/machine-2",
+                "/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.AzureStackHCI/edgeMachines/machine-3"))
+                .withAdditionalInfo("Validate before cluster creation"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Extensions_Create
 
 ```java
@@ -1044,9 +3184,7 @@ import java.io.IOException;
  */
 public final class ExtensionsCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutExtension.json
+     * x-ms-original-file: 2026-10-01/PutExtension.json
      */
     /**
      * Sample code: Create Arc Extension.
@@ -1079,9 +3217,7 @@ public final class ExtensionsCreateSamples {
  */
 public final class ExtensionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteExtension.json
+     * x-ms-original-file: 2026-10-01/DeleteExtension.json
      */
     /**
      * Sample code: Delete Arc Extension.
@@ -1103,9 +3239,7 @@ public final class ExtensionsDeleteSamples {
  */
 public final class ExtensionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetExtension.json
+     * x-ms-original-file: 2026-10-01/GetExtension.json
      */
     /**
      * Sample code: Get ArcSettings Extension.
@@ -1128,9 +3262,7 @@ public final class ExtensionsGetSamples {
  */
 public final class ExtensionsListByArcSettingSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListExtensionsByArcSetting.json
+     * x-ms-original-file: 2026-10-01/ListExtensionsByArcSetting.json
      */
     /**
      * Sample code: List Extensions under ArcSetting resource.
@@ -1158,9 +3290,7 @@ import java.io.IOException;
  */
 public final class ExtensionsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PatchExtension.json
+     * x-ms-original-file: 2026-10-01/PatchExtension.json
      */
     /**
      * Sample code: Update Arc Extension.
@@ -1195,9 +3325,7 @@ import com.azure.resourcemanager.azurestackhci.models.ExtensionUpgradeParameters
  */
 public final class ExtensionsUpgradeSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * Extensions_Upgrade.json
+     * x-ms-original-file: 2026-10-01/Extensions_Upgrade.json
      */
     /**
      * Sample code: Upgrade Machine Extensions.
@@ -1220,9 +3348,7 @@ public final class ExtensionsUpgradeSamples {
  */
 public final class OffersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/GetOffer
-     * .json
+     * x-ms-original-file: 2026-10-01/GetOffer.json
      */
     /**
      * Sample code: Get Offer.
@@ -1244,9 +3370,7 @@ public final class OffersGetSamples {
  */
 public final class OffersListByClusterSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListOffersByCluster.json
+     * x-ms-original-file: 2026-10-01/ListOffersByCluster.json
      */
     /**
      * Sample code: List Offer resources by HCI Cluster.
@@ -1268,9 +3392,7 @@ public final class OffersListByClusterSamples {
  */
 public final class OffersListByPublisherSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListOffersByPublisher.json
+     * x-ms-original-file: 2026-10-01/ListOffersByPublisher.json
      */
     /**
      * Sample code: List Offer resources by publisher for the HCI Cluster.
@@ -1292,64 +3414,91 @@ public final class OffersListByPublisherSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/operations/stable/2024-04-01/examples/
-     * ListOperations.json
+     * x-ms-original-file: 2026-10-01/Operations_List.json
      */
     /**
-     * Sample code: Create cluster.
-     * 
-     * @param manager Entry point to AzureStackHciManager.
-     */
-    public static void createCluster(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.operations().listWithResponse(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Publishers_Get
-
-```java
-/**
- * Samples for Publishers Get.
- */
-public final class PublishersGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetPublisher.json
-     */
-    /**
-     * Sample code: Get Publisher.
-     * 
-     * @param manager Entry point to AzureStackHciManager.
-     */
-    public static void getPublisher(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.publishers().getWithResponse("test-rg", "myCluster", "publisher1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Publishers_ListByCluster
-
-```java
-/**
- * Samples for Publishers ListByCluster.
- */
-public final class PublishersListByClusterSamples {
-    /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListPublishersByCluster.json
-     */
-    /**
-     * Sample code: List Publisher resources by HCI Cluster.
+     * Sample code: List the operations for the provider.
      * 
      * @param manager Entry point to AzureStackHciManager.
      */
     public static void
-        listPublisherResourcesByHCICluster(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.publishers().listByCluster("test-rg", "myCluster", com.azure.core.util.Context.NONE);
+        listTheOperationsForTheProvider(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OsImages_Get
+
+```java
+/**
+ * Samples for OsImages Get.
+ */
+public final class OsImagesGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/OsImages_Get_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: OsImages_Get_MaximumSet.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void osImagesGetMaximumSet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.osImages().getWithResponse("arowdcr", "10.2408.0.1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OsImages_ListBySubscriptionLocationResource
+
+```java
+/**
+ * Samples for OsImages ListBySubscriptionLocationResource.
+ */
+public final class OsImagesListBySubscriptionLocationResourceSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/OsImages_ListBySubscriptionLocationResource_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: OsImages_ListBySubscriptionLocationResource_MaximumSet.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void osImagesListBySubscriptionLocationResourceMaximumSet(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.osImages().listBySubscriptionLocationResource("westus2", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OwnershipVouchers_Validate
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.OwnerKeyType;
+import com.azure.resourcemanager.azurestackhci.models.OwnershipVoucherDetails;
+import com.azure.resourcemanager.azurestackhci.models.ValidateOwnershipVouchersRequest;
+import java.util.Arrays;
+
+/**
+ * Samples for OwnershipVouchers Validate.
+ */
+public final class OwnershipVouchersValidateSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ValidateOwnershipVouchers_ByResourceGroup.json
+     */
+    /**
+     * Sample code: Validate ownership vouchers in a given resource group.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void validateOwnershipVouchersInAGivenResourceGroup(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.ownershipVouchers()
+            .validateWithResponse("ArcInstance-rg", "westus",
+                new ValidateOwnershipVouchersRequest().withOwnershipVoucherDetails(
+                    Arrays.asList(new OwnershipVoucherDetails().withOwnershipVoucher("Device Model Ownership content")
+                        .withOwnerKeyType(OwnerKeyType.MICROSOFT_MANAGED))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1364,9 +3513,7 @@ import com.azure.resourcemanager.azurestackhci.models.ComplianceAssignmentType;
  */
 public final class SecuritySettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutSecuritySettings.json
+     * x-ms-original-file: 2026-10-01/PutSecuritySettings.json
      */
     /**
      * Sample code: Create Security Settings.
@@ -1393,9 +3540,7 @@ public final class SecuritySettingsCreateOrUpdateSamples {
  */
 public final class SecuritySettingsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteSecuritySettings.json
+     * x-ms-original-file: 2026-10-01/DeleteSecuritySettings.json
      */
     /**
      * Sample code: Delete Security Settings.
@@ -1416,9 +3561,7 @@ public final class SecuritySettingsDeleteSamples {
  */
 public final class SecuritySettingsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetSecuritySettings.json
+     * x-ms-original-file: 2026-10-01/GetSecuritySettings.json
      */
     /**
      * Sample code: Get Security Settings.
@@ -1439,9 +3582,7 @@ public final class SecuritySettingsGetSamples {
  */
 public final class SecuritySettingsListByClustersSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListSecuritySettingsByCluster.json
+     * x-ms-original-file: 2026-10-01/ListSecuritySettingsByCluster.json
      */
     /**
      * Sample code: List Security Settings.
@@ -1462,9 +3603,7 @@ public final class SecuritySettingsListByClustersSamples {
  */
 public final class SkusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/GetSku.
-     * json
+     * x-ms-original-file: 2026-10-01/GetSku.json
      */
     /**
      * Sample code: Get Sku.
@@ -1487,9 +3626,7 @@ public final class SkusGetSamples {
  */
 public final class SkusListByOfferSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListSkusByOffer.json
+     * x-ms-original-file: 2026-10-01/ListSkusByOffer.json
      */
     /**
      * Sample code: List SKU resources by offer for the HCI Cluster.
@@ -1512,9 +3649,7 @@ public final class SkusListByOfferSamples {
  */
 public final class UpdateRunsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteUpdateRuns.json
+     * x-ms-original-file: 2026-10-01/DeleteUpdateRuns.json
      */
     /**
      * Sample code: Delete an Update.
@@ -1537,9 +3672,7 @@ public final class UpdateRunsDeleteSamples {
  */
 public final class UpdateRunsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetUpdateRuns.json
+     * x-ms-original-file: 2026-10-01/GetUpdateRuns.json
      */
     /**
      * Sample code: Get Update runs under cluster resource.
@@ -1563,9 +3696,7 @@ public final class UpdateRunsGetSamples {
  */
 public final class UpdateRunsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListUpdateRuns.json
+     * x-ms-original-file: 2026-10-01/ListUpdateRuns.json
      */
     /**
      * Sample code: List Update runs under cluster resource.
@@ -1592,9 +3723,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutUpdateRuns.json
+     * x-ms-original-file: 2026-10-01/PutUpdateRuns.json
      */
     /**
      * Sample code: Get Update runs under cluster resource.
@@ -1636,9 +3765,7 @@ public final class UpdateRunsPutSamples {
  */
 public final class UpdateSummariesOperationDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteUpdateSummaries.json
+     * x-ms-original-file: 2026-10-01/DeleteUpdateSummaries.json
      */
     /**
      * Sample code: Delete an Update.
@@ -1659,9 +3786,7 @@ public final class UpdateSummariesOperationDeleteSamples {
  */
 public final class UpdateSummariesOperationGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetUpdateSummaries.json
+     * x-ms-original-file: 2026-10-01/GetUpdateSummaries.json
      */
     /**
      * Sample code: Get Update summaries under cluster resource.
@@ -1683,9 +3808,7 @@ public final class UpdateSummariesOperationGetSamples {
  */
 public final class UpdateSummariesOperationListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListUpdateSummaries.json
+     * x-ms-original-file: 2026-10-01/ListUpdateSummaries.json
      */
     /**
      * Sample code: Get Update summaries under cluster resource.
@@ -1711,9 +3834,7 @@ import java.time.OffsetDateTime;
  */
 public final class UpdateSummariesOperationPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutUpdateSummaries.json
+     * x-ms-original-file: 2026-10-01/PutUpdateSummaries.json
      */
     /**
      * Sample code: Put Update summaries under cluster resource.
@@ -1735,6 +3856,67 @@ public final class UpdateSummariesOperationPutSamples {
 }
 ```
 
+### UpdateSummariesOperationGroup_CheckHealth
+
+```java
+/**
+ * Samples for UpdateSummariesOperationGroup CheckHealth.
+ */
+public final class UpdateSummariesOperationGroupCheckHealthSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/UpdateSummaries_CheckHealth.json
+     */
+    /**
+     * Sample code: Check health of UpdateSummaries.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        checkHealthOfUpdateSummaries(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.updateSummariesOperationGroups().checkHealth("testrg", "testcluster", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### UpdateSummariesOperationGroup_CheckUpdates
+
+```java
+import com.azure.resourcemanager.azurestackhci.models.CheckUpdatesRequest;
+
+/**
+ * Samples for UpdateSummariesOperationGroup CheckUpdates.
+ */
+public final class UpdateSummariesOperationGroupCheckUpdatesSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/UpdateSummaries_CheckUpdates.json
+     */
+    /**
+     * Sample code: Check for updates.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void checkForUpdates(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.updateSummariesOperationGroups()
+            .checkUpdates("testrg", "testcluster", new CheckUpdatesRequest(), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2026-10-01/UpdateSummaries_CheckUpdates_MaximumSet.json
+     */
+    /**
+     * Sample code: Check for specific update by name.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        checkForSpecificUpdateByName(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.updateSummariesOperationGroups()
+            .checkUpdates("testrg", "testcluster", new CheckUpdatesRequest().withUpdateName("Microsoft4.2203.2.32"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Updates_Delete
 
 ```java
@@ -1743,9 +3925,7 @@ public final class UpdateSummariesOperationPutSamples {
  */
 public final class UpdatesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * DeleteUpdates.json
+     * x-ms-original-file: 2026-10-01/DeleteUpdates.json
      */
     /**
      * Sample code: Delete an Update.
@@ -1766,9 +3946,7 @@ public final class UpdatesDeleteSamples {
  */
 public final class UpdatesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * GetUpdates.json
+     * x-ms-original-file: 2026-10-01/GetUpdates.json
      */
     /**
      * Sample code: Get a specific update.
@@ -1790,9 +3968,7 @@ public final class UpdatesGetSamples {
  */
 public final class UpdatesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * ListUpdates.json
+     * x-ms-original-file: 2026-10-01/ListUpdates.json
      */
     /**
      * Sample code: List available updates.
@@ -1813,9 +3989,7 @@ public final class UpdatesListSamples {
  */
 public final class UpdatesPostSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PostUpdates.json
+     * x-ms-original-file: 2026-10-01/PostUpdates.json
      */
     /**
      * Sample code: List available updates.
@@ -1824,6 +3998,27 @@ public final class UpdatesPostSamples {
      */
     public static void listAvailableUpdates(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
         manager.updates().post("testrg", "testcluster", "Microsoft4.2203.2.32", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Updates_Prepare
+
+```java
+/**
+ * Samples for Updates Prepare.
+ */
+public final class UpdatesPrepareSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/Updates_Prepare.json
+     */
+    /**
+     * Sample code: Prepare Update.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void prepareUpdate(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.updates().prepare("testrg", "testcluster", "Microsoft4.2203.2.32", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1843,9 +4038,7 @@ import java.util.Arrays;
  */
 public final class UpdatesPutSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
-     * PutUpdates.json
+     * x-ms-original-file: 2026-10-01/PutUpdates.json
      */
     /**
      * Sample code: Put a specific update.
@@ -1864,7 +4057,7 @@ public final class UpdatesPutSamples {
                 .withVersion("prerequisite version")
                 .withPackageName("update package name")))
             .withPackagePath("\\\\SU1FileServer\\SU1_Infrastructure_2\\Updates\\Packages\\Microsoft4.2203.2.32")
-            .withPackageSizeInMb(18858.0F)
+            .withPackageSizeInMb(18858.0D)
             .withDisplayName("AzS Update - 4.2203.2.32")
             .withVersion("4.2203.2.32")
             .withPublisher("Microsoft")
@@ -1872,9 +4065,54 @@ public final class UpdatesPutSamples {
             .withAvailabilityType(AvailabilityType.LOCAL)
             .withPackageType("Infrastructure")
             .withAdditionalProperties("additional properties")
-            .withProgressPercentage(0.0F)
+            .withProgressPercentage(0.0D)
             .withNotifyMessage("Brief message with instructions for updates of AvailabilityType Notify")
             .apply();
+    }
+}
+```
+
+### ValidatedSolutionRecipes_Get
+
+```java
+/**
+ * Samples for ValidatedSolutionRecipes Get.
+ */
+public final class ValidatedSolutionRecipesGetSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ValidatedSolutionRecipes_Get.json
+     */
+    /**
+     * Sample code: ValidatedSolutionRecipes_Get.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void
+        validatedSolutionRecipesGet(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.validatedSolutionRecipes().getWithResponse("westus2", "10.2408.0", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ValidatedSolutionRecipes_ListBySubscriptionLocationResource
+
+```java
+/**
+ * Samples for ValidatedSolutionRecipes ListBySubscriptionLocationResource.
+ */
+public final class ValidatedSolutionRecipesListBySubscriptionLocationResourceSamples {
+    /*
+     * x-ms-original-file: 2026-10-01/ValidatedSolutionRecipes_ListBySubscriptionLocationResource.json
+     */
+    /**
+     * Sample code: ValidatedSolutionRecipes_ListBySubscriptionLocationResource.
+     * 
+     * @param manager Entry point to AzureStackHciManager.
+     */
+    public static void validatedSolutionRecipesListBySubscriptionLocationResource(
+        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.validatedSolutionRecipes()
+            .listBySubscriptionLocationResource("westus2", com.azure.core.util.Context.NONE);
     }
 }
 ```

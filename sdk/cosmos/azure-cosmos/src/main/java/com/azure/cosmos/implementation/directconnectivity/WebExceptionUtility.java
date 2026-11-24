@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.http.Http2PingTimeoutChannelClosedException;
 import io.netty.channel.ChannelException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import reactor.netty.http.client.PrematureCloseException;
@@ -115,6 +116,31 @@ public class WebExceptionUtility {
     private static boolean isReadTimeoutExceptionInternal(Exception ex) {
         if (ex instanceof ReadTimeoutException) {
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns {@code true} when {@code ex} (or any link in its cause chain) is a
+     * {@link Http2PingTimeoutChannelClosedException} -- i.e. the connection was
+     * closed by {@code Http2PingHandler} after consecutive PING ACK timeouts.
+     * <p>
+     * This is a strict subset of {@link #isNetworkFailure(Exception)} (the typed
+     * exception extends {@link java.nio.channels.ClosedChannelException}); callers
+     * that branch on the PING-close case should check this BEFORE general-network-
+     * failure handling so the more specific subStatusCode is stamped.
+     */
+    public static boolean isHttp2PingTimeoutClose(Exception ex) {
+        Exception iterator = ex;
+
+        while (iterator != null) {
+            if (iterator instanceof Http2PingTimeoutChannelClosedException) {
+                return true;
+            }
+
+            Throwable t = iterator.getCause();
+            iterator = Utils.as(t, Exception.class);
         }
 
         return false;

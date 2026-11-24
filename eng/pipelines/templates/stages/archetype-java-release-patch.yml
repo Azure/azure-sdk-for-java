@@ -7,11 +7,14 @@ parameters:
   - name: TestPipeline
     type: boolean
     default: false
+  - name: PatchMergeBack
+    type: boolean
+    default: false
     # A different environment will be passed in for service directories that have
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment
     type: string
-    default: 'maven'
+    default: 'package-publish'
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -33,14 +36,11 @@ stages:
         steps:
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-            parameters:
-              SkipCheckoutNone: true
-              Repositories:
-                - Name: Azure/azure-sdk-for-java
-                  Commitish: $(Build.SourceVersion)
-                  WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+
+          - checkout: self
+            fetchDepth: 1
+            fetchTags: false
+            path: azure-sdk-for-java
 
           - download: current
             displayName: 'Download Artifact: packages'
@@ -57,6 +57,11 @@ stages:
           - download: current
             displayName: 'Download Signed Artifacts'
             artifact: packages-signed
+
+          # Setup Maven mirror settings and authenticate with Azure Artifacts
+          - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+            parameters:
+              SourceDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
           # gpg-sign and create the flattened directory for ESRP bulk publish
           # Note: The maven release requires the files to be local GPG signed
@@ -80,7 +85,7 @@ stages:
   # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
   # pipeline completes.
   - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-    - stage:
+    - stage: Release
       displayName: 'Releasing: ${{ length(parameters.Artifacts) }} libraries'
       dependsOn: Signing
       variables:
@@ -96,7 +101,13 @@ stages:
             image: $(WINDOWSVMIMAGE)
             os: windows
           steps:
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            - checkout: self
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: false
+              sparseCheckoutPatterns: /* !/*/ /eng /.config
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
             - template: /eng/common/pipelines/templates/steps/retain-run.yml
             # No pattern, just download everything that's been signed
             - download: current
@@ -108,6 +119,7 @@ stages:
                   ArtifactLocation: $(Pipeline.Workspace)/packages-signed/${{artifact.groupId}}/${{artifact.name}}
                   PackageRepository: Maven
                   ReleaseSha: $(Build.SourceVersion)
+                  AuthToken: ''
 
         - deployment: PublishESRPPackage
           displayName: "Publish to Maven Central via ESRP"
@@ -153,14 +165,14 @@ stages:
           steps:
             - checkout: azure-sdk-build-tools
               path: azure-sdk-build-tools
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                SkipCheckoutNone: true
-                Repositories:
-                  - Name: Azure/azure-sdk-for-java
-                    Commitish: $(Build.SourceVersion)
-                    WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-            - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+            - checkout: self
+              path: azure-sdk-for-java
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: false
+              sparseCheckoutPatterns: /* !/*/ /eng /.config
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
             - download: current
               displayName: 'Download Artifacts'
               artifact: packages-signed
@@ -175,15 +187,20 @@ stages:
                 ArtifactPath: $(Pipeline.Workspace)/packages-signed
             - template: /eng/common/pipelines/templates/steps/create-apireview.yml
               parameters:
+                PackageInfoFiles:
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - $(Pipeline.Workspace)/packages-signed/PackageInfo/${{artifact.name}}.json
                 ArtifactPath: $(Pipeline.Workspace)/packages-signed
-                Artifacts: ${{parameters.Artifacts}}
                 ConfigFileDir: $(Pipeline.Workspace)/packages-signed/PackageInfo
                 MarkPackageAsShipped: true
                 ArtifactName: packages-signed
                 SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - job: UpdatePackageVersion
-          displayName: "Update Package Version"
+          ${{ if eq(parameters.PatchMergeBack, true) }}:
+            displayName: "Create Patch Merge-back"
+          ${{ else }}:
+            displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
           dependsOn: PublishESRPPackage
           variables:
@@ -197,45 +214,69 @@ stages:
           steps:
             - download: none
 
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                Paths:
-                  - '**/*.xml'
-                  - '**/*.md'
-                  - '!sdk/**/test-recordings/*'
-                  - '!sdk/**/session-records/*'
+            - checkout: self
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: false
+              sparseCheckoutPatterns: /* !/*/ /eng /.config **/*.xml **/*.md !sdk/**/test-recordings/* !sdk/**/session-records/*
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
 
             - task: UsePythonVersion@0
               displayName: 'Use Python $(PythonVersion)'
               inputs:
                 versionSpec: $(PythonVersion)
 
-            # Apply the version increment to each library, which only updates the version_client.txt file,
-            # and then call to update_versions will then apply all the updates.
-            - pwsh: |
-                $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
-                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-                python --version
-                foreach($artifact in $ArtifactsList) {
-                  python eng/versioning/set_versions.py --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
-                }
-              displayName: Increment package versions
+            - ${{ if eq(parameters.PatchMergeBack, true) }}:
+              - task: PowerShell@2
+                inputs:
+                  pwsh: true
+                  filePath: eng/scripts/Create-Patch-Mergeback.ps1
+                  arguments: >
+                    -ReleaseBranch "$(Build.SourceVersion)"
+                    -ExpectedArtifacts $('$(ArtifactsJson)' | ConvertFrom-Json | ForEach-Object { "$($_.groupId):$($_.name)" })
+                displayName: 'Prepare patch merge-back against main'
 
-            - script: |
-                python --version
-                python eng/versioning/update_versions.py --auto-version-increment --skip-readme
-              displayName: Update pom files for incremented versions
+              - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                parameters:
+                  BaseBranchName: refs/heads/main
+                  PRBranchName: merge-back-patch-release-$(Build.SourceBranchName)-$(Build.BuildId)
+                  CommitMsg: "Merge back patch release $(Build.SourceBranchName)"
+                  PRTitle: "Merge back patch release $(Build.SourceBranchName)"
+                  PRBody: "Promotes released patch dependency versions, inserts the prepared patch changelog entries, and regenerates pom.xml files. Source resets and README changes are intentionally excluded."
+                  CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                  AuthToken: ''
 
-            - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-              parameters:
-                PRBranchName: increment-package-version-patch-release-$(Build.BuildId)
-                CommitMsg: "Increment package versions for patch releases"
-                PRTitle: "Increment versions for patch releases"
-                CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+            - ${{ else }}:
+              # Apply the version increment to each library, which only updates the version_client.txt file,
+              # and then call to update_versions will then apply all the updates.
+              - pwsh: |
+                  $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
+                  $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                  foreach($artifact in $ArtifactsList) {
+                    python eng/versioning/set_versions.py --increment-version --ai $($artifact.name) --gi $($artifact.groupId)
+                  }
+                displayName: Increment package versions
+
+              - task: PythonScript@0
+                inputs:
+                  scriptPath: eng/versioning/update_versions.py
+                  arguments: >
+                    --auto-version-increment
+                    --skip-readme
+                displayName: Update pom files for incremented versions
+
+              - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                parameters:
+                  PRBranchName: increment-package-version-patch-release-$(Build.BuildId)
+                  CommitMsg: "Increment package versions for patch releases"
+                  PRTitle: "Increment versions for patch releases"
+                  CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                  AuthToken: ''
 
         - job: PublishDocsMs
           displayName: Docs.MS Release
-          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           timeoutInMinutes: 180
           dependsOn: PublishDevFeedPackage
 
@@ -248,11 +289,13 @@ stages:
             - template: /eng/pipelines/templates/variables/globals.yml
 
           steps:
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-              parameters:
-                Paths:
-                  - sdk/**/*.md
-                  - '!**/pom*.xml'
+            - checkout: self
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: false
+              sparseCheckoutPatterns: /* !/*/ /eng /.config sdk/**/*.md !**/pom*.xml
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
             - download: current
               displayName: 'Download Artifact: packages'
               artifact: packages
@@ -277,7 +320,7 @@ stages:
 
         - job: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
-          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           timeoutInMinutes: 120
           dependsOn: PublishESRPPackage
           variables:
@@ -287,7 +330,13 @@ stages:
             image: $(WINDOWSVMIMAGE)
             os: windows
           steps:
-            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            - checkout: self
+              fetchFilter: tree:0
+              fetchDepth: 0
+              fetchTags: false
+              sparseCheckoutPatterns: /* !/*/ /eng /.config
+              env:
+                AGENT_SOURCE_CHECKOUT_QUIET: 'true'
             - download: current
               displayName: 'Download Artifact: packages-signed'
               artifact: packages-signed

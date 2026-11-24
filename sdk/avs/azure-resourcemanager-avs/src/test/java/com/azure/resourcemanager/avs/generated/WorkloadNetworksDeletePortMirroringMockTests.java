@@ -28,7 +28,7 @@ public final class WorkloadNetworksDeletePortMirroringMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.workloadNetworks()
-            .deletePortMirroring("bsazgakg", "cyrcmjdmspo", "apvu", com.azure.core.util.Context.NONE);
+            .deletePortMirroring("owa", "ywalhjymxcg", "tagdrc", com.azure.core.util.Context.NONE);
 
     }
 }

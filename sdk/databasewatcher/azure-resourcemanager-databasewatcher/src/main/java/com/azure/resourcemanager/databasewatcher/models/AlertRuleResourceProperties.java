@@ -6,7 +6,6 @@ package com.azure.resourcemanager.databasewatcher.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -164,41 +163,6 @@ public final class AlertRuleResourceProperties implements JsonSerializable<Alert
         this.alertRuleTemplateVersion = alertRuleTemplateVersion;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (alertRuleResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property alertRuleResourceId in model AlertRuleResourceProperties"));
-        }
-        if (createdWithProperties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property createdWithProperties in model AlertRuleResourceProperties"));
-        }
-        if (creationTime() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property creationTime in model AlertRuleResourceProperties"));
-        }
-        if (alertRuleTemplateId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property alertRuleTemplateId in model AlertRuleResourceProperties"));
-        }
-        if (alertRuleTemplateVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property alertRuleTemplateVersion in model AlertRuleResourceProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AlertRuleResourceProperties.class);
 
     /**
      * {@inheritDoc}

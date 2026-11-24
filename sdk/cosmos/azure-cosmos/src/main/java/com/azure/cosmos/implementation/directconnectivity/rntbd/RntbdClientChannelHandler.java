@@ -18,6 +18,7 @@ import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -30,19 +31,23 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     private final Config config;
     private final RntbdConnectionStateListener connectionStateListener;
     private final RntbdServerErrorInjector serverErrorInjector;
+    private final URI serviceKeyUsedAsActualRemoteAddress;
 
     RntbdClientChannelHandler(
         final Config config,
         final ChannelHealthChecker healthChecker,
         final RntbdConnectionStateListener connectionStateListener,
-        final RntbdServerErrorInjector serverErrorInjector) {
+        final RntbdServerErrorInjector serverErrorInjector,
+        final URI serviceKeyUsedAsActualRemoteAddress) {
         checkNotNull(healthChecker, "expected non-null healthChecker");
         checkNotNull(config, "expected non-null config");
+        checkNotNull(serviceKeyUsedAsActualRemoteAddress, "serviceKeyUsedAsActualRemoteAddress");
 
         this.healthChecker = healthChecker;
         this.config = config;
         this.connectionStateListener = connectionStateListener;
         this.serverErrorInjector = serverErrorInjector;
+        this.serviceKeyUsedAsActualRemoteAddress = serviceKeyUsedAsActualRemoteAddress;
     }
 
     /**
@@ -127,7 +132,12 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
         }
 
         // Initialize sslHandler with jdkCompatibilityMode = true for openssl context.
-        SslHandler sslHandler = new SslHandler(this.config.sslContext().newEngine(channel.alloc()));
+        // Use the actual host-name and port to allow SNI and hostname validation being enabled.
+        SslHandler sslHandler = new SslHandler(
+            this.config.sslContext().newEngine(
+                channel.alloc(),
+                this.serviceKeyUsedAsActualRemoteAddress.getHost(),
+                this.serviceKeyUsedAsActualRemoteAddress.getPort()));
         sslHandler.setHandshakeTimeout(config.sslHandshakeTimeoutInMillis(), TimeUnit.MILLISECONDS);
 
         pipeline.addFirst(SslHandler.class.toString(), sslHandler);

@@ -23,7 +23,7 @@ public final class DedicatedHsmsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"sku\":{\"name\":\"payShield10K_LMK1_CPS2500\"},\"zones\":[\"xkcgxxlxsffgcvi\",\"qzdwlvwlyoup\",\"gfbkjubdyh\"],\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"in\"},\"networkInterfaces\":[{\"resourceId\":\"zfttsttktlahb\",\"privateIpAddress\":\"ctxtgzukxi\"},{\"resourceId\":\"m\",\"privateIpAddress\":\"gqqqxh\"},{\"resourceId\":\"xrxc\",\"privateIpAddress\":\"uisavokq\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"azivjlfrqttbajl\"},\"networkInterfaces\":[{\"resourceId\":\"wxyiopidkqq\",\"privateIpAddress\":\"uvscxkdmligov\"},{\"resourceId\":\"rxkpmloazuruoc\",\"privateIpAddress\":\"oorb\"}]},\"stampId\":\"oybfhjxakvvj\",\"statusMessage\":\"lordilmywwtkgkxn\",\"provisioningState\":\"Allocating\"},\"location\":\"b\",\"tags\":{\"hxuuwhcjyxccybvp\":\"udtjuewbc\",\"dzpxgwjpl\":\"yakk\",\"yohpfkyrkdbdgiog\":\"agst\",\"nobaiyhddviacegf\":\"jkmnwq\"},\"id\":\"m\",\"name\":\"tfpmvmemfnczdw\",\"type\":\"vbalxlllc\"}]}";
+            = "{\"value\":[{\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"fdeqvhpsyl\"},\"networkInterfaces\":[{\"resourceId\":\"kbffmbmx\",\"privateIpAddress\":\"rgywwp\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"nptfujgi\"},\"networkInterfaces\":[{\"resourceId\":\"o\",\"privateIpAddress\":\"ttaqutdew\"},{\"resourceId\":\"xswvru\",\"privateIpAddress\":\"zzjgehkfki\"},{\"resourceId\":\"tixo\",\"privateIpAddress\":\"fqyinljqepqw\"}]},\"stampId\":\"xmonstshi\",\"statusMessage\":\"gvelfc\",\"provisioningState\":\"Succeeded\"},\"sku\":{\"name\":\"payShield10K_LMK1_CPS60\"},\"zones\":[\"rds\",\"uwc\",\"b\"],\"location\":\"gstmninwjizciln\",\"tags\":{\"luxlxqzvnersby\":\"shejjtbxqm\",\"ze\":\"ucrwnami\",\"fuhok\":\"rqbsmswziq\",\"czznvfbycjsxj\":\"ruswhv\"},\"id\":\"wix\",\"name\":\"vumwmxqh\",\"type\":\"dvnoamldsehaohdj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,17 @@ public final class DedicatedHsmsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DedicatedHsm> response
-            = manager.dedicatedHsms().list(1015646968, com.azure.core.util.Context.NONE);
+            = manager.dedicatedHsms().list(636641870, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("b", response.iterator().next().location());
-        Assertions.assertEquals("udtjuewbc", response.iterator().next().tags().get("hxuuwhcjyxccybvp"));
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS2500, response.iterator().next().sku().name());
-        Assertions.assertEquals("xkcgxxlxsffgcvi", response.iterator().next().zones().get(0));
-        Assertions.assertEquals("in", response.iterator().next().properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("ctxtgzukxi",
+        Assertions.assertEquals("gstmninwjizciln", response.iterator().next().location());
+        Assertions.assertEquals("shejjtbxqm", response.iterator().next().tags().get("luxlxqzvnersby"));
+        Assertions.assertEquals("fdeqvhpsyl",
+            response.iterator().next().properties().networkProfile().subnet().resourceId());
+        Assertions.assertEquals("rgywwp",
             response.iterator().next().properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("azivjlfrqttbajl",
+        Assertions.assertEquals("nptfujgi",
             response.iterator().next().properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("uvscxkdmligov",
+        Assertions.assertEquals("ttaqutdew",
             response.iterator()
                 .next()
                 .properties()
@@ -52,6 +51,8 @@ public final class DedicatedHsmsListMockTests {
                 .networkInterfaces()
                 .get(0)
                 .privateIpAddress());
-        Assertions.assertEquals("oybfhjxakvvj", response.iterator().next().properties().stampId());
+        Assertions.assertEquals("xmonstshi", response.iterator().next().properties().stampId());
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS60, response.iterator().next().sku().name());
+        Assertions.assertEquals("rds", response.iterator().next().zones().get(0));
     }
 }

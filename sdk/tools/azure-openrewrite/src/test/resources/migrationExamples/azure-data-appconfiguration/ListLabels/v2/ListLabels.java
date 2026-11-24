@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
-
-import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingLabelSelector;
+import com.azure.v2.data.appconfiguration.ConfigurationClient;
+import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.SettingLabelSelector;
+import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.utils.configuration.Configuration;
 
 /**
  * A sample demonstrate how to list labels.
@@ -23,8 +23,8 @@ public class ListLabels {
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
 
         final ConfigurationClient client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .buildClient();
+            .connectionString(connectionString)
+            .buildClient();
 
         // Prepare three settings with different labels, prod1, prod2, prod3
         ConfigurationSetting setting = client.setConfigurationSetting("prod:prod1", "prod1", "prod1");
@@ -38,15 +38,15 @@ public class ListLabels {
         // If you want to list labels by exact match, use the exact label name as the filter.
         // If you want to list all labels by wildcard, pass wildcard where AppConfig supports, such as "prod*",
         System.out.println("List all labels:");
-        client.listLabels(null, Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+        client.listLabels(null, RequestContext.none())
+            .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
         System.out.println("List label by exact match:");
-        client.listLabels(new SettingLabelSelector().setNameFilter("prod2"), Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+        client.listLabels(new SettingLabelSelector().setNameFilter("prod2"), RequestContext.none())
+            .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
         System.out.println("List labels by wildcard:");
-        client.listLabels(new SettingLabelSelector().setNameFilter("prod*"), Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+        client.listLabels(new SettingLabelSelector().setNameFilter("prod*"), RequestContext.none())
+            .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
     }
 }

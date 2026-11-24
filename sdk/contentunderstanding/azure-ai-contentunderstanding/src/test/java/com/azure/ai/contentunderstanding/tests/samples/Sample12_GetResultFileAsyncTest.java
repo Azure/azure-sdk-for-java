@@ -1,0 +1,293 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.AudioVisualContent;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Async sample demonstrates how to retrieve result files (like keyframe images) from video analysis operations.
+ */
+public class Sample12_GetResultFileAsyncTest extends ContentUnderstandingClientTestBase {
+
+    @TempDir
+    Path outputDir;
+
+    /**
+     * Asynchronous sample for getting result files from a completed analysis operation.
+     */
+    @Test
+    public void testGetResultFileAsync() throws IOException {
+
+        // BEGIN: com.azure.ai.contentunderstanding.getResultFileAsync
+        // For video analysis, use a video URL to get keyframes
+        String videoUrl
+            = "https://github.com/Azure-Samples/azure-ai-content-understanding-assets/raw/refs/heads/main/videos/sdk_samples/FlightSimulator.mp4";
+
+        // Step 1: Start the video analysis operation
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(videoUrl);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> poller
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
+        setPlaybackPollerFluxPollInterval(poller);
+
+        System.out.println("Started analysis operation");
+
+        Map.Entry<String, AnalysisResult> analysis = poller.last()
+            .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(), pollResponse.getFinalResult(),
+                "Video analysis").map(result -> {
+                    String operationId = pollResponse.getValue() == null ? null : pollResponse.getValue().getId();
+                    if (operationId == null || operationId.trim().isEmpty()) {
+                        throw new IllegalStateException("Video analysis completed without an operation ID.");
+                    }
+                    return new AbstractMap.SimpleImmutableEntry<>(operationId, result);
+                }))
+            .block();
+        if (analysis == null) {
+            throw new IllegalStateException("Video analysis completed without an operation result.");
+        }
+
+        String operationId = analysis.getKey();
+        AnalysisResult result = analysis.getValue();
+        System.out.println("Analysis completed successfully!");
+        System.out.println("Operation ID: " + operationId);
+
+        // END: com.azure.ai.contentunderstanding.getResultFileAsync
+
+        // Verify operation started and completed
+        assertNotNull(videoUrl, "Video URL should not be null");
+        System.out.println("Video URL: " + videoUrl);
+
+        assertNotNull(operationId, "Operation ID should not be null");
+        assertFalse(operationId.trim().isEmpty(), "Operation ID should not be empty");
+        assertTrue(operationId.length() > 0, "Operation ID should have length > 0");
+        assertFalse(operationId.contains(" "), "Operation ID should not contain spaces");
+        System.out.println("Operation ID obtained: " + operationId);
+        System.out.println("  Length: " + operationId.length() + " characters");
+
+        // Verify result
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result should contain contents");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+
+        // BEGIN: com.azure.ai.contentunderstanding.getResultFileAsync.keyframes
+        // Step 2: Get keyframes from video analysis result
+        AudioVisualContent videoContent = null;
+        for (Object content : result.getContents()) {
+            if (content instanceof AudioVisualContent) {
+                videoContent = (AudioVisualContent) content;
+                break;
+            }
+        }
+
+        if (videoContent != null
+            && videoContent.getKeyFrameTimes() != null
+            && !videoContent.getKeyFrameTimes().isEmpty()) {
+            List<Duration> keyFrameTimes = videoContent.getKeyFrameTimes();
+            System.out.println("Total keyframes: " + keyFrameTimes.size());
+
+            // Get the first keyframe
+            long firstFrameTimeMs = keyFrameTimes.get(0).toMillis();
+            System.out.println("First keyframe time: " + firstFrameTimeMs + " ms");
+
+            // Construct the keyframe path
+            String framePath = "keyframes/" + firstFrameTimeMs;
+            System.out.println("Getting result file: " + framePath);
+
+            Response<BinaryData> fileResponse = contentUnderstandingAsyncClient
+                .getResultFileWithResponse(operationId, framePath, new RequestOptions())
+                .block();
+            assertNotNull(fileResponse, "File response should not be null");
+            assertEquals(200, fileResponse.getStatusCode(), "Result file request should succeed");
+            String contentType = fileResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+            if (contentType != null) {
+                assertTrue(contentType.regionMatches(true, 0, "image/", 0, "image/".length()),
+                    "Result file should have an image content type");
+            }
+            BinaryData fileData = fileResponse.getValue();
+            assertNotNull(fileData, "File data should not be null");
+            byte[] imageBytes = fileData.toBytes();
+            System.out.println("Retrieved keyframe image (" + String.format("%,d", imageBytes.length) + " bytes)");
+
+            // Save the keyframe image
+            String outputFileName = "keyframe_" + firstFrameTimeMs + ".jpg";
+            Path outputPath = outputDir.resolve(outputFileName);
+            Files.write(outputPath, imageBytes);
+
+            System.out.println("Keyframe image saved to: " + outputPath.toAbsolutePath());
+            // END: com.azure.ai.contentunderstanding.getResultFileAsync.keyframes
+
+            // Verify video content
+            assertNotNull(videoContent, "Video content should not be null");
+            assertNotNull(keyFrameTimes, "KeyFrameTimesMs should not be null");
+            assertTrue(keyFrameTimes.size() > 0, "Should have at least one keyframe");
+            System.out.println("\n🎬 Keyframe Information:");
+            System.out.println("Total keyframes: " + keyFrameTimes.size());
+
+            // Verify keyframe times are valid
+            for (Duration frameTime : keyFrameTimes) {
+                assertTrue(frameTime.toMillis() >= 0,
+                    "Keyframe time should be non-negative, but was " + frameTime.toMillis());
+            }
+
+            // Get keyframe statistics
+            long lastFrameTimeMs = keyFrameTimes.get(keyFrameTimes.size() - 1).toMillis();
+            double avgFrameInterval = keyFrameTimes.size() > 1
+                ? (double) (lastFrameTimeMs - firstFrameTimeMs) / (keyFrameTimes.size() - 1)
+                : 0;
+
+            assertTrue(firstFrameTimeMs >= 0, "First keyframe time should be >= 0");
+            assertTrue(lastFrameTimeMs >= firstFrameTimeMs, "Last keyframe time should be >= first keyframe time");
+
+            System.out.println("  First keyframe: " + firstFrameTimeMs + " ms ("
+                + String.format("%.2f", firstFrameTimeMs / 1000.0) + " seconds)");
+            System.out.println("  Last keyframe: " + lastFrameTimeMs + " ms ("
+                + String.format("%.2f", lastFrameTimeMs / 1000.0) + " seconds)");
+            if (keyFrameTimes.size() > 1) {
+                System.out.println("  Average interval: " + String.format("%.2f", avgFrameInterval) + " ms");
+            }
+
+            // Verify file data
+            System.out.println("\n📥 File Data Verification:");
+
+            // Verify image data
+            System.out.println("\nVerifying image data...");
+            assertNotNull(imageBytes, "Image bytes should not be null");
+            assertTrue(imageBytes.length > 0, "Image should have content");
+            assertTrue(imageBytes.length >= 100, "Image should have reasonable size (>= 100 bytes)");
+            System.out.println("Image size: " + String.format("%,d", imageBytes.length) + " bytes ("
+                + String.format("%.2f", imageBytes.length / 1024.0) + " KB)");
+
+            // Verify image format
+            String imageFormat = detectImageFormat(imageBytes);
+            System.out.println("Detected image format: " + imageFormat);
+            assertNotEquals("Unknown", imageFormat, "Image format should be recognized");
+
+            // Verify saved file
+            System.out.println("\n💾 Saved File Verification:");
+            assertTrue(Files.exists(outputPath), "Saved file should exist");
+            long fileSize = Files.size(outputPath);
+            assertTrue(fileSize > 0, "Saved file should have content");
+            assertEquals(imageBytes.length, fileSize, "Saved file size should match image size");
+            System.out.println("File saved: " + outputPath.toAbsolutePath());
+            System.out.println("File size verified: " + String.format("%,d", fileSize) + " bytes");
+
+            // Verify file can be read back
+            byte[] readBackBytes = Files.readAllBytes(outputPath);
+            assertEquals(imageBytes.length, readBackBytes.length, "Read back file size should match original");
+            assertArrayEquals(imageBytes, readBackBytes, "Read back file content should match original");
+            System.out.println("File content verified (read back matches original)");
+
+            // Test additional keyframes if available
+            if (keyFrameTimes.size() > 1) {
+                System.out
+                    .println("\nTesting additional keyframes (" + (keyFrameTimes.size() - 1) + " more available)...");
+                int middleIndex = keyFrameTimes.size() / 2;
+                long middleFrameTimeMs = keyFrameTimes.get(middleIndex).toMillis();
+                String middleFramePath = "keyframes/" + middleFrameTimeMs;
+
+                BinaryData middleFileData
+                    = contentUnderstandingAsyncClient.getResultFile(operationId, middleFramePath).block();
+                assertNotNull(middleFileData, "Middle keyframe data should not be null");
+                assertTrue(middleFileData.toBytes().length > 0, "Middle keyframe should have content");
+                System.out.println(
+                    "Successfully retrieved keyframe at index " + middleIndex + " (" + middleFrameTimeMs + " ms)");
+                System.out.println("  Size: " + String.format("%,d", middleFileData.toBytes().length) + " bytes");
+            }
+
+            // Summary
+            System.out.println("\n✅ Keyframe retrieval verification completed successfully:");
+            System.out.println("  Operation ID: " + operationId);
+            System.out.println("  Total keyframes: " + keyFrameTimes.size());
+            System.out.println("  First keyframe time: " + firstFrameTimeMs + " ms");
+            System.out.println("  Image format: " + imageFormat);
+            System.out.println("  Image size: " + String.format("%,d", imageBytes.length) + " bytes");
+            System.out.println("  Saved to: " + outputPath.toAbsolutePath());
+            System.out.println("  File verified: Yes");
+            Files.deleteIfExists(outputPath);
+        } else {
+            throw new AssertionError("Video analysis must return AudioVisualContent with keyframes.");
+        }
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+    /**
+     * Detect image format from magic bytes.
+     */
+    private String detectImageFormat(byte[] imageBytes) {
+        if (imageBytes.length < 2) {
+            return "Unknown";
+        }
+
+        // Check JPEG magic bytes (FF D8)
+        if (imageBytes[0] == (byte) 0xFF && imageBytes[1] == (byte) 0xD8) {
+            return "JPEG";
+        }
+
+        // Check PNG magic bytes (89 50 4E 47)
+        if (imageBytes.length >= 4
+            && imageBytes[0] == (byte) 0x89
+            && imageBytes[1] == 0x50
+            && imageBytes[2] == 0x4E
+            && imageBytes[3] == 0x47) {
+            return "PNG";
+        }
+
+        // Check GIF magic bytes (47 49 46)
+        if (imageBytes.length >= 3 && imageBytes[0] == 0x47 && imageBytes[1] == 0x49 && imageBytes[2] == 0x46) {
+            return "GIF";
+        }
+
+        // Check WebP magic bytes (52 49 46 46 ... 57 45 42 50)
+        if (imageBytes.length >= 12
+            && imageBytes[0] == 0x52
+            && imageBytes[1] == 0x49
+            && imageBytes[8] == 0x57
+            && imageBytes[9] == 0x45
+            && imageBytes[10] == 0x42
+            && imageBytes[11] == 0x50) {
+            return "WebP";
+        }
+
+        return "Unknown";
+    }
+}

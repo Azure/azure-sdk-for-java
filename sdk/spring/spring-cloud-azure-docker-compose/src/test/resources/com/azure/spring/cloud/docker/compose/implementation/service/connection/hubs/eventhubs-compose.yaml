@@ -1,0 +1,34 @@
+services:
+  eventhubs:
+    image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest
+    pull_policy: always
+    volumes:
+      # Mount the emulator configuration to the path expected by the emulator image
+      - "./Config.json:/Eventhubs_Emulator/ConfigFiles/Config.json"
+    ports:
+      - "5672"
+    environment:
+      # Event Hubs emulator requires external blob/metadata storage provided by azurite
+      BLOB_SERVER: azurite
+      METADATA_SERVER: azurite
+      ACCEPT_EULA: Y
+    depends_on:
+      - azurite
+    networks:
+      eh-emulator:
+        aliases:
+          - "eh-emulator"
+
+  azurite:
+    image: "mcr.microsoft.com/azure-storage/azurite:latest"
+    ports:
+      - "10000"
+      - "10001"
+      - "10002"
+    networks:
+      eh-emulator:
+        aliases:
+          - "azurite"
+
+networks:
+    eh-emulator:

@@ -28,7 +28,7 @@ public final class AuthorizationsDeleteMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.authorizations()
-            .delete("dzsylollgtrczz", "dmxzjijpv", "aurkihcirlde", com.azure.core.util.Context.NONE);
+            .delete("mochpprprsnmok", "yzejnhlbk", "bzpcpiljhahzvec", com.azure.core.util.Context.NONE);
 
     }
 }

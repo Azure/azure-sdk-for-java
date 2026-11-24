@@ -15,23 +15,25 @@ public final class FaultSimulationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FaultSimulationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"simulationId\":\"pulpqblylsyxk\",\"status\":\"StopFailed\",\"startTime\":\"2021-09-15T07:03:18Z\",\"endTime\":\"2021-04-06T04:34:54Z\",\"details\":{\"clusterId\":\"iagxsdszuempsbz\",\"operationId\":\"z\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"pnqi\",\"status\":\"Active\",\"operationId\":\"v\",\"operationStatus\":\"Failed\"},{\"nodeTypeName\":\"dxrbuukzcle\",\"status\":\"StartFailed\",\"operationId\":\"lw\",\"operationStatus\":\"Succeeded\"},{\"nodeTypeName\":\"zpof\",\"status\":\"Stopping\",\"operationId\":\"wyfzqwhxxbuyqa\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"qztpp\",\"status\":\"Stopping\",\"operationId\":\"xorjaltolmncwsob\",\"operationStatus\":\"Created\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-09-05T19:42:48Z\"}}}},{\"simulationId\":\"fhucqdpfuv\",\"status\":\"Done\",\"startTime\":\"2021-09-06T08:21:41Z\",\"endTime\":\"2021-05-13T14:00:03Z\",\"details\":{\"clusterId\":\"vxb\",\"operationId\":\"vudutncor\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"qtvcofudflvkgj\",\"status\":\"Done\",\"operationId\":\"knnqvsaznq\",\"operationStatus\":\"Failed\"},{\"nodeTypeName\":\"udsgs\",\"status\":\"Done\",\"operationId\":\"yc\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"wjue\",\"status\":\"StartFailed\",\"operationId\":\"uruv\",\"operationStatus\":\"Aborted\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2020-12-25T04:12:31Z\"}}}}],\"nextLink\":\"ab\"}")
+            "{\"value\":[{\"simulationId\":\"wyznkbyku\",\"status\":\"StartFailed\",\"startTime\":\"2021-12-03T17:47:47Z\",\"endTime\":\"2021-10-22T08:31:17Z\",\"details\":{\"clusterId\":\"hrskdsnfd\",\"operationId\":\"oakgtdlmkkzev\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"wpusdsttwvogv\",\"status\":\"Done\",\"operationId\":\"dcngqqmoakufgmj\",\"operationStatus\":\"Canceled\"},{\"nodeTypeName\":\"dgrtwaenuuzkopbm\",\"status\":\"Active\",\"operationId\":\"dwoyuhhziuiefoz\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"smlmzqhoftrm\",\"status\":\"Starting\",\"operationId\":\"iahxicsl\",\"operationStatus\":\"Succeeded\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":true,\"constraints\":{\"expirationTime\":\"2021-04-23T06:55:46Z\"}}}},{\"simulationId\":\"halns\",\"status\":\"Done\",\"startTime\":\"2021-07-18T12:17:06Z\",\"endTime\":\"2021-10-17T19:05:13Z\",\"details\":{\"clusterId\":\"ivwitqscywugg\",\"operationId\":\"luhczbw\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"i\",\"status\":\"Starting\",\"operationId\":\"gzd\",\"operationStatus\":\"Succeeded\"},{\"nodeTypeName\":\"eypqwdxggicccn\",\"status\":\"Starting\",\"operationId\":\"exmk\",\"operationStatus\":\"Failed\"},{\"nodeTypeName\":\"tvlz\",\"status\":\"Starting\",\"operationId\":\"hz\",\"operationStatus\":\"Started\"},{\"nodeTypeName\":\"dtclusiypb\",\"status\":\"Done\",\"operationId\":\"tg\",\"operationStatus\":\"Created\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-06-12T00:27:16Z\"}}}}],\"nextLink\":\"qukyhejhzi\"}")
             .toObject(FaultSimulationListResult.class);
-        Assertions.assertEquals("pulpqblylsyxk", model.value().get(0).simulationId());
-        Assertions.assertEquals(FaultSimulationStatus.STOP_FAILED, model.value().get(0).status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-15T07:03:18Z"), model.value().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T04:34:54Z"), model.value().get(0).endTime());
-        Assertions.assertEquals("iagxsdszuempsbz", model.value().get(0).details().clusterId());
-        Assertions.assertEquals("z", model.value().get(0).details().operationId());
-        Assertions.assertEquals("pnqi", model.value().get(0).details().nodeTypeFaultSimulation().get(0).nodeTypeName());
-        Assertions.assertEquals(FaultSimulationStatus.ACTIVE,
+        Assertions.assertEquals("wyznkbyku", model.value().get(0).simulationId());
+        Assertions.assertEquals(FaultSimulationStatus.START_FAILED, model.value().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T17:47:47Z"), model.value().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T08:31:17Z"), model.value().get(0).endTime());
+        Assertions.assertEquals("hrskdsnfd", model.value().get(0).details().clusterId());
+        Assertions.assertEquals("oakgtdlmkkzev", model.value().get(0).details().operationId());
+        Assertions.assertEquals("wpusdsttwvogv",
+            model.value().get(0).details().nodeTypeFaultSimulation().get(0).nodeTypeName());
+        Assertions.assertEquals(FaultSimulationStatus.DONE,
             model.value().get(0).details().nodeTypeFaultSimulation().get(0).status());
-        Assertions.assertEquals("v", model.value().get(0).details().nodeTypeFaultSimulation().get(0).operationId());
-        Assertions.assertEquals(SfmcOperationStatus.FAILED,
+        Assertions.assertEquals("dcngqqmoakufgmj",
+            model.value().get(0).details().nodeTypeFaultSimulation().get(0).operationId());
+        Assertions.assertEquals(SfmcOperationStatus.CANCELED,
             model.value().get(0).details().nodeTypeFaultSimulation().get(0).operationStatus());
-        Assertions.assertFalse(model.value().get(0).details().parameters().force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T19:42:48Z"),
+        Assertions.assertTrue(model.value().get(0).details().parameters().force());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-23T06:55:46Z"),
             model.value().get(0).details().parameters().constraints().expirationTime());
-        Assertions.assertEquals("ab", model.nextLink());
+        Assertions.assertEquals("qukyhejhzi", model.nextLink());
     }
 }

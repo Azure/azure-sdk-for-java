@@ -81,6 +81,9 @@ public class BarrierRequestHelper {
         }
 
         barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+        barrierLsnRequest.getHeaders().put(
+            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
         if (targetLsn != null && targetLsn > 0) {
             barrierLsnRequest.getHeaders().put(HttpConstants.HttpHeaders.TARGET_LSN, targetLsn.toString());
@@ -131,6 +134,10 @@ public class BarrierRequestHelper {
 
         barrierLsnRequest.requestContext = request.requestContext.clone();
 
+        // barrier requests are associated with the write/read operation
+        // copy over the fault injection context here
+        barrierLsnRequest.faultInjectionRequestContext = request.faultInjectionRequestContext;
+
         if (request.getPartitionKeyRangeIdentity() != null) {
             barrierLsnRequest.routeTo(request.getPartitionKeyRangeIdentity());
         }
@@ -141,6 +148,8 @@ public class BarrierRequestHelper {
         if (request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID) != null) {
             barrierLsnRequest.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, request.getHeaders().get(WFConstants.BackendHeaders.COLLECTION_RID));
         }
+
+        barrierLsnRequest.isBarrierRequest = true;
 
         if (hasAadToken) {
             return authorizationTokenProvider.populateAuthorizationHeader(barrierLsnRequest);

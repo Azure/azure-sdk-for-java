@@ -4,9 +4,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AvailabilityStrategyContext;
-import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -16,11 +17,16 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
-import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelFailoverInfo;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelAutomaticFailoverInfo;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
@@ -33,11 +39,11 @@ import org.testng.annotations.Test;
 import java.lang.reflect.Field;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
@@ -86,13 +92,11 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
             .map(RegionalRoutingContext::new)
             .collect(Collectors.toList());
 
-        Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getAvailableReadEndpoints()).thenReturn(availableReadEndpoints);
         Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getAvailableReadRoutingContexts()).thenReturn(availableReadRegionalRoutingContexts);
         Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn(new UnmodifiableList<>(availableReadRegionalRoutingContexts));
         Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.canUseMultipleWriteLocations()).thenReturn(false);
         Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.canUseMultipleWriteLocations(Mockito.any())).thenReturn(false);
 
-        Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.getAvailableReadEndpoints()).thenReturn(availableReadEndpoints);
         Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.getAvailableReadRoutingContexts()).thenReturn(availableReadRegionalRoutingContexts);
         Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.getApplicableReadRegionalRoutingContexts(Mockito.anyList())).thenReturn(new UnmodifiableList<>(availableReadRegionalRoutingContexts));
         Mockito.when(this.multiWriteAccountGlobalEndpointManagerMock.canUseMultipleWriteLocations()).thenReturn(true);
@@ -142,21 +146,19 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
         boolean expectedCanOpOrchestrateFailover) throws NoSuchFieldException, IllegalAccessException {
 
         try {
-            System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
-
             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(globalEndpointManager, Objects.equals(Configs.isPerPartitionAutomaticFailoverEnabled(), "true"));
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(globalEndpointManager, true);
 
             String pkRangeId = "0";
             String minInclusive = "AA";
             String maxExclusive = "BB";
             String collectionResourceId = "dbs/db1/colls/coll1";
 
-            Field failedRegionalRoutingContextsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
+            Field failedRegionalRoutingContextsField = PartitionLevelAutomaticFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
 
             assertThat(failedRegionalRoutingContextsField).isNotNull();
 
-            Field currentRegionalContextField = PartitionLevelFailoverInfo.class.getDeclaredField("current");
+            Field currentRegionalContextField = PartitionLevelAutomaticFailoverInfo.class.getDeclaredField("current");
 
             assertThat(currentRegionalContextField).isNotNull();
 
@@ -207,12 +209,160 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
     }
 
     @Test(groups = {"unit"})
+    public void diagnosticsAreEmptyWithoutDesignatedOverride() throws Exception {
+        RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
+            OperationType.Create,
+            ResourceType.Document,
+            "dbs/db1/colls/coll1",
+            "0",
+            "dbs/db1/colls/coll1",
+            "AA",
+            "BB",
+            EAST_US_URI_CNST);
+        request.requestContext.regionalRoutingContextToRoute = null;
+
+        ClientSideRequestStatistics directStatistics
+            = new ClientSideRequestStatistics(mockDiagnosticsClientContext());
+        directStatistics.recordResponse(request, null, this.singleWriteAccountGlobalEndpointManagerMock);
+
+        ClientSideRequestStatistics gatewayStatistics
+            = new ClientSideRequestStatistics(mockDiagnosticsClientContext());
+        gatewayStatistics.recordGatewayResponse(
+            request,
+            Mockito.mock(StoreResponseDiagnostics.class),
+            this.singleWriteAccountGlobalEndpointManagerMock);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode directJson = objectMapper.readTree(objectMapper.writeValueAsString(directStatistics));
+        JsonNode gatewayJson = objectMapper.readTree(objectMapper.writeValueAsString(gatewayStatistics));
+
+        Assertions.assertThat(directJson.at("/responseStatisticsList/0/ppaf").isObject()).isTrue();
+        Assertions.assertThat(directJson.at("/responseStatisticsList/0/ppaf").isEmpty()).isTrue();
+        Assertions.assertThat(gatewayJson.at("/gatewayStatisticsList/0/ppaf").isObject()).isTrue();
+        Assertions.assertThat(gatewayJson.at("/gatewayStatisticsList/0/ppaf").isEmpty()).isTrue();
+    }
+
+    @Test(groups = {"unit"})
+    public void designatedOverrideDiagnosticsContainRegionAndStableSince() throws Exception {
+        String collectionResourceId = "dbs/db1/colls/coll1";
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover manager
+            = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(
+                this.singleWriteAccountGlobalEndpointManagerMock,
+                true);
+        RxDocumentServiceRequest failoverRequest = constructRxDocumentServiceRequestInstance(
+            OperationType.Create,
+            ResourceType.Document,
+            collectionResourceId,
+            "0",
+            collectionResourceId,
+            "AA",
+            "BB",
+            EAST_US_URI_CNST);
+
+        Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getRegionName(
+            EAST_US_2_URI_CNST,
+            OperationType.Read)).thenReturn(EAST_US_2_CNST);
+        Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getRegionName(
+            EAST_US_URI_CNST,
+            OperationType.Read)).thenReturn(EAST_US_CNST);
+
+        Mockito.clearInvocations(this.singleWriteAccountGlobalEndpointManagerMock);
+        Instant beforeDesignation = Instant.now();
+        Assertions.assertThat(manager.tryMarkEndpointAsUnavailableForPartitionKeyRange(failoverRequest, false))
+            .isTrue();
+        Instant afterDesignation = Instant.now();
+
+        java.lang.reflect.Method getDiagnosticsSnapshot
+            = PerPartitionAutomaticFailoverInfoHolder.class.getDeclaredMethod("getDiagnosticsSnapshot");
+        getDiagnosticsSnapshot.setAccessible(true);
+        Object firstDiagnosticsSnapshot = getDiagnosticsSnapshot.invoke(
+            failoverRequest.requestContext.getPerPartitionFailoverContextHolder());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode firstSnapshot = objectMapper.readTree(objectMapper.writeValueAsString(
+            failoverRequest.requestContext.getPerPartitionFailoverContextHolder()));
+        Instant designatedSince = Instant.parse(firstSnapshot.get("since").asText());
+
+        Assertions.assertThat(firstSnapshot.get("currWriteRegion").asText()).isEqualTo(EAST_US_2_CNST);
+        Assertions.assertThat(firstSnapshot.get("failedRegions").size()).isEqualTo(1);
+        Assertions.assertThat(firstSnapshot.get("failedRegions").get(0).asText()).isEqualTo(EAST_US_CNST);
+        Assertions.assertThat(designatedSince).isBetween(beforeDesignation, afterDesignation);
+
+        RxDocumentServiceRequest reuseRequest = constructRxDocumentServiceRequestInstance(
+            OperationType.Create,
+            ResourceType.Document,
+            collectionResourceId,
+            "0",
+            collectionResourceId,
+            "AA",
+            "BB",
+            EAST_US_URI_CNST);
+        Assertions.assertThat(manager.tryAddPartitionLevelLocationOverride(reuseRequest)).isTrue();
+
+        Assertions.assertThat(getDiagnosticsSnapshot.invoke(reuseRequest.requestContext.getPerPartitionFailoverContextHolder()))
+            .isSameAs(firstDiagnosticsSnapshot);
+        JsonNode reusedSnapshot = objectMapper.readTree(objectMapper.writeValueAsString(
+            reuseRequest.requestContext.getPerPartitionFailoverContextHolder()));
+        Assertions.assertThat(reusedSnapshot.get("currWriteRegion").asText()).isEqualTo(EAST_US_2_CNST);
+        Assertions.assertThat(reusedSnapshot.get("since").asText()).isEqualTo(firstSnapshot.get("since").asText());
+        Mockito.verify(this.singleWriteAccountGlobalEndpointManagerMock, Mockito.times(1))
+            .getRegionName(EAST_US_2_URI_CNST, OperationType.Read);
+    }
+
+    @Test(groups = {"unit"})
+    public void responseStatisticsRetainDesignatedOverrideAtRecordTime() throws Exception {
+        String collectionResourceId = "dbs/db1/colls/coll1";
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover manager
+            = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(
+                this.singleWriteAccountGlobalEndpointManagerMock,
+                true);
+        RxDocumentServiceRequest request = constructRxDocumentServiceRequestInstance(
+            OperationType.Create,
+            ResourceType.Document,
+            collectionResourceId,
+            "0",
+            collectionResourceId,
+            "AA",
+            "BB",
+            EAST_US_URI_CNST);
+
+        Mockito.when(this.singleWriteAccountGlobalEndpointManagerMock.getRegionName(
+            EAST_US_2_URI_CNST,
+            OperationType.Read)).thenReturn(EAST_US_2_CNST);
+        Assertions.assertThat(manager.tryMarkEndpointAsUnavailableForPartitionKeyRange(request, false)).isTrue();
+        request.requestContext.regionalRoutingContextToRoute = null;
+
+        ClientSideRequestStatistics directStatistics
+            = new ClientSideRequestStatistics(mockDiagnosticsClientContext());
+        directStatistics.recordResponse(request, null, this.singleWriteAccountGlobalEndpointManagerMock);
+        request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(null);
+
+        Assertions.assertThat(manager.tryAddPartitionLevelLocationOverride(request)).isTrue();
+        request.requestContext.regionalRoutingContextToRoute = null;
+        ClientSideRequestStatistics gatewayStatistics
+            = new ClientSideRequestStatistics(mockDiagnosticsClientContext());
+        gatewayStatistics.recordGatewayResponse(
+            request,
+            Mockito.mock(StoreResponseDiagnostics.class),
+            this.singleWriteAccountGlobalEndpointManagerMock);
+        request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(null);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode directJson = objectMapper.readTree(objectMapper.writeValueAsString(directStatistics));
+        JsonNode gatewayJson = objectMapper.readTree(objectMapper.writeValueAsString(gatewayStatistics));
+
+        assertPopulatedPpaf(directJson.at("/responseStatisticsList/0/ppaf"));
+        assertPopulatedPpaf(gatewayJson.at("/gatewayStatisticsList/0/ppaf"));
+        Assertions.assertThat(directJson.at("/responseStatisticsList/0")
+            .has("perPartitionAutomaticFailoverInfoHolder")).isFalse();
+        Assertions.assertThat(gatewayJson.at("/gatewayStatisticsList/0")
+            .has("perPartitionAutomaticFailoverInfoHolder")).isFalse();
+    }
+
+    @Test(groups = {"unit"})
     public void allRegionUnavailableHandlingWithMultiThreading() {
 
         try {
-
-            System.setProperty(IS_PARTITION_LEVEL_CONFIG_ENABLED_SYS_PROPERTY_KEY, "true");
-
             int threadPoolSizeForExecutors = 4;
 
             ScheduledThreadPoolExecutor executorForEastUs = new ScheduledThreadPoolExecutor(threadPoolSizeForExecutors);
@@ -274,7 +424,7 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
                 LocationEastUs2EndpointToLocationPair.getKey());
 
             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
-                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.singleWriteAccountGlobalEndpointManagerMock, Objects.equals(Configs.isPerPartitionAutomaticFailoverEnabled(), "true"));
+                = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.singleWriteAccountGlobalEndpointManagerMock, true);
 
             for (int i = 1; i <= 100; i++) {
 
@@ -369,11 +519,11 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
         logger.warn("Handling exception for {}", locationWithFailure.getPath());
         globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request, false);
 
-        Field failedLocationsField = PartitionLevelFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
+        Field failedLocationsField = PartitionLevelAutomaticFailoverInfo.class.getDeclaredField("failedRegionalRoutingContexts");
 
         assertThat(failedLocationsField).isNotNull();
 
-        Field currentField = PartitionLevelFailoverInfo.class.getDeclaredField("current");
+        Field currentField = PartitionLevelAutomaticFailoverInfo.class.getDeclaredField("current");
 
         assertThat(currentField).isNotNull();
 
@@ -428,11 +578,22 @@ public class GlobalPartitionEndpointManagerForPPAFUnitTests extends TestSuiteBas
                     false,
                     collectionLink,
                     new SerializationDiagnosticsContext()),
-                new AvailabilityStrategyContext(true, true)
-            )
+                new AvailabilityStrategyContext(true, true),
+                new AtomicBoolean(false),
+                new PerPartitionCircuitBreakerInfoHolder(),
+                new PerPartitionAutomaticFailoverInfoHolder())
 );
 
         return request;
+    }
+
+    private static void assertPopulatedPpaf(JsonNode ppaf) {
+        Assertions.assertThat(ppaf.isObject()).isTrue();
+        Assertions.assertThat(ppaf.get("currWriteRegion").asText()).isEqualTo(EAST_US_2_CNST);
+        Assertions.assertThat(ppaf.get("failedRegions").isArray()).isTrue();
+        Assertions.assertThat(ppaf.get("failedRegions").size()).isEqualTo(1);
+        Assertions.assertThat(ppaf.get("failedRegions").get(0).asText()).isEqualTo(EAST_US_CNST);
+        Assertions.assertThat(Instant.parse(ppaf.get("since").asText())).isNotNull();
     }
 
     private static URI createUrl(String url) {

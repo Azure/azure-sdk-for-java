@@ -22,7 +22,7 @@ public final class ConnectorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"connectorId\":\"qbex\",\"tenantId\":\"mcqibycnojv\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-02-06T03:19:14Z\"},\"id\":\"qsgzvahapj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"connectorId\":\"t\",\"tenantId\":\"elmqk\",\"connectorType\":\"AzureMonitor\",\"lastRunTimeStamp\":\"2021-03-05T16:16:31Z\"},\"id\":\"vljua\",\"name\":\"aquhcdhm\",\"type\":\"ualaexqpvfadmw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,7 @@ public final class ConnectorsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Connector response
-            = manager.connectors().getWithResponse("mdyvxqtayriw", com.azure.core.util.Context.NONE).getValue();
+        Connector response = manager.connectors().getWithResponse("mx", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(Platform.AZURE_MONITOR, response.properties().connectorType());
     }

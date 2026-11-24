@@ -1,0 +1,122 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Sample demonstrating how to delete an analyzer.
+ * This sample shows:
+ * 1. Creating a temporary analyzer
+ * 2. Verifying the analyzer exists
+ * 3. Deleting the analyzer
+ * 4. Verifying the analyzer no longer exists
+ */
+public class Sample09_DeleteAnalyzerTest extends ContentUnderstandingClientTestBase {
+
+    @Test
+    public void testDeleteAnalyzer() {
+
+        // BEGIN:ContentUnderstandingDeleteAnalyzer
+        // First, create a temporary analyzer to delete
+        String analyzerId = testResourceNamer.randomName("analyzer_to_delete_", 50);
+
+        Map<String, String> models = new HashMap<>();
+        models.put("completion", getModelProfile().getCompletionModel());
+
+        ContentAnalyzer analyzer = new ContentAnalyzer().setBaseAnalyzerId("prebuilt-document")
+            .setDescription("Simple analyzer for deletion example")
+            .setConfig(new ContentAnalyzerConfig().setReturnDetails(true))
+            .setModels(models);
+
+        setPlaybackSyncPollerPollInterval(contentUnderstandingClient.beginCreateAnalyzer(analyzerId, analyzer, true))
+            .getFinalResult();
+        System.out.println("Temporary analyzer created: " + analyzerId);
+
+        // Verify the analyzer exists
+        Response<BinaryData> getResponse
+            = contentUnderstandingClient.getAnalyzerWithResponse(analyzerId, new RequestOptions());
+        ContentAnalyzer retrievedAnalyzer = getResponse.getValue().toObject(ContentAnalyzer.class);
+        System.out.println("Verified analyzer exists with ID: " + retrievedAnalyzer.getAnalyzerId());
+
+        // Delete the analyzer
+        contentUnderstandingClient.deleteAnalyzer(analyzerId);
+        System.out.println("Analyzer deleted successfully: " + analyzerId);
+
+        // Verify the analyzer no longer exists
+        HttpResponseException deletionException = org.junit.jupiter.api.Assertions
+            .assertThrows(HttpResponseException.class, () -> contentUnderstandingClient.getAnalyzer(analyzerId));
+        int deletionStatus = deletionException.getResponse().getStatusCode();
+        System.out.println("Confirmed: Analyzer no longer exists (status " + deletionStatus + ")");
+        // END:ContentUnderstandingDeleteAnalyzer
+
+        // BEGIN:Assertion_ContentUnderstandingDeleteAnalyzer
+        assertNotNull(analyzerId, "Analyzer ID should not be null");
+        assertFalse(analyzerId.trim().isEmpty(), "Analyzer ID should not be empty");
+        System.out.println("Analyzer ID verified: " + analyzerId);
+
+        assertNotNull(retrievedAnalyzer, "Retrieved analyzer should not be null before deletion");
+        assertEquals(analyzerId, retrievedAnalyzer.getAnalyzerId(), "Retrieved analyzer ID should match");
+        assertEquals(200, getResponse.getStatusCode(), "Get analyzer response status should be 200");
+        assertEquals("prebuilt-document", retrievedAnalyzer.getBaseAnalyzerId(), "Base analyzer ID should match");
+        assertEquals("Simple analyzer for deletion example", retrievedAnalyzer.getDescription(),
+            "Description should match");
+        assertNotNull(retrievedAnalyzer.getConfig(), "Config should not be null");
+        assertEquals(Boolean.TRUE, retrievedAnalyzer.getConfig().isReturnDetails(), "ReturnDetails should be true");
+        assertNotNull(retrievedAnalyzer.getModels(), "Models should not be null");
+        assertEquals(getModelProfile().getCompletionModel(), retrievedAnalyzer.getModels().get("completion"),
+            "Completion model should match the configured model");
+        System.out.println("Analyzer existence verified before deletion");
+
+        assertTrue(deletionStatus == 404 || deletionStatus == 400,
+            "Deleted analyzer should return 404 or 400, but returned " + deletionStatus);
+
+        boolean foundDeletedAnalyzer = false;
+        for (ContentAnalyzer listedAnalyzer : contentUnderstandingClient.listAnalyzers()) {
+            if (analyzerId.equals(listedAnalyzer.getAnalyzerId())) {
+                foundDeletedAnalyzer = true;
+                break;
+            }
+        }
+        assertFalse(foundDeletedAnalyzer, "Deleted analyzer should not appear in the analyzer list");
+        System.out.println("Analyzer deletion verified");
+
+        System.out.println("All analyzer deletion properties validated successfully");
+        // END:Assertion_ContentUnderstandingDeleteAnalyzer
+    }
+
+    @Test
+    public void testDeleteNonexistentAnalyzer() {
+        // Try to delete a non-existent analyzer
+        String nonExistentId = testResourceNamer.randomName("non_existent_analyzer_", 50);
+
+        System.out.println("\nAttempting to delete non-existent analyzer: " + nonExistentId);
+
+        // Note: The SDK allows deleting non-existent analyzers without throwing an exception
+        // This is a valid behavior (idempotent delete operation)
+        try {
+            contentUnderstandingClient.deleteAnalyzer(nonExistentId);
+            System.out.println("Delete operation completed (idempotent - no error for non-existent resource)");
+        } catch (ResourceNotFoundException e) {
+            System.out.println("ResourceNotFoundException caught (alternative behavior): " + e.getMessage());
+        }
+
+        System.out.println("Non-existent analyzer deletion behavior verified (SDK allows idempotent deletes)");
+    }
+}

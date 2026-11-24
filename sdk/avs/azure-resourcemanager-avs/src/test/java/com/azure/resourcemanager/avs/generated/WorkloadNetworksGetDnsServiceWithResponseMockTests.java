@@ -22,7 +22,7 @@ public final class WorkloadNetworksGetDnsServiceWithResponseMockTests {
     @Test
     public void testGetDnsServiceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"thmkyib\",\"dnsServiceIp\":\"sihsgqcwdhohsd\",\"defaultDnsZone\":\"cdzsu\",\"fqdnZones\":[\"hdxbzlm\",\"muapcvhdbevw\",\"qxeysko\"],\"logLevel\":\"INFO\",\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":6797873766638315886},\"id\":\"z\",\"name\":\"owxeqocljmy\",\"type\":\"vkzqk\"}";
+            = "{\"properties\":{\"displayName\":\"dftujwjjufwbeqr\",\"dnsServiceIp\":\"orhtss\",\"defaultDnsZone\":\"qnmdvhazcvjy\",\"fqdnZones\":[\"swbqerzwxi\",\"txtd\",\"ukvlb\"],\"logLevel\":\"WARNING\",\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":936808456697088809},\"id\":\"mbewreswmo\",\"name\":\"egmmuteyxe\",\"type\":\"guqigijiitns\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,14 @@ public final class WorkloadNetworksGetDnsServiceWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WorkloadNetworkDnsService response = manager.workloadNetworks()
-            .getDnsServiceWithResponse("mftpmdtz", "jltfvnzcyjtotpv", "pvpbdbzqgqqiheds",
-                com.azure.core.util.Context.NONE)
+            .getDnsServiceWithResponse("zulo", "saeuzanhsfnhsenw", "hpzfngqj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("thmkyib", response.displayName());
-        Assertions.assertEquals("sihsgqcwdhohsd", response.dnsServiceIp());
-        Assertions.assertEquals("cdzsu", response.defaultDnsZone());
-        Assertions.assertEquals("hdxbzlm", response.fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.INFO, response.logLevel());
-        Assertions.assertEquals(6797873766638315886L, response.revision());
+        Assertions.assertEquals("dftujwjjufwbeqr", response.displayName());
+        Assertions.assertEquals("orhtss", response.dnsServiceIp());
+        Assertions.assertEquals("qnmdvhazcvjy", response.defaultDnsZone());
+        Assertions.assertEquals("swbqerzwxi", response.fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.WARNING, response.logLevel());
+        Assertions.assertEquals(936808456697088809L, response.revision());
     }
 }

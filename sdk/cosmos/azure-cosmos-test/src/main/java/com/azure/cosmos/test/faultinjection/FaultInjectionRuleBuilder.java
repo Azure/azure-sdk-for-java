@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.test.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
+import java.util.EnumSet;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -15,6 +17,18 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * The fault injection rule builder.
  */
 public final class FaultInjectionRuleBuilder {
+
+    private static final Set<FaultInjectionServerErrorType> ADDRESS_REFRESH_SERVER_ERROR_TYPES = EnumSet.of(
+        FaultInjectionServerErrorType.REQUEST_TIMEOUT,
+        FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR,
+        FaultInjectionServerErrorType.CONNECTION_RESET_BY_DOWNSTREAM_SERVICE,
+        FaultInjectionServerErrorType.COMPUTE_INTERNAL_ERROR,
+        FaultInjectionServerErrorType.PARTITION_FAILOVER_ERROR_CODE,
+        FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_WITH_UNKNOWN_SUBSTATUS,
+        FaultInjectionServerErrorType.SERVICE_UNAVAILABLE_LEASE_NOT_FOUND,
+        FaultInjectionServerErrorType.CHANNEL_CLOSED,
+        FaultInjectionServerErrorType.SERVER_COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT,
+        FaultInjectionServerErrorType.SERVER_READ_QUORUM_NOT_MET);
 
     private final String id;
     private FaultInjectionCondition condition;
@@ -164,17 +178,31 @@ public final class FaultInjectionRuleBuilder {
             throw new IllegalArgumentException("STALED_ADDRESSES exception can not be injected for rule with gateway connection type");
         }
 
-        // for metadata request related rule, only CONNECTION_DELAY, RESPONSE_DELAY, TOO_MANY_REQUEST error can be injected
+        // for metadata request related rule, only metadata-safe errors can be injected
         if (ImplementationBridgeHelpers
                 .FaultInjectionConditionHelper
                 .getFaultInjectionConditionAccessor()
                 .isMetadataOperationType(this.condition)) {
-            if (serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.TOO_MANY_REQUEST
-                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.RESPONSE_DELAY
-                && serverErrorResult.getServerErrorType() != FaultInjectionServerErrorType.CONNECTION_DELAY) {
+            if (!isSupportedMetadataServerErrorType(serverErrorResult.getServerErrorType())) {
 
                 throw new IllegalArgumentException("Error type " + serverErrorResult.getServerErrorType() + " is not supported for rule with metadata request");
             }
         }
+    }
+
+    private boolean isSupportedMetadataServerErrorType(FaultInjectionServerErrorType serverErrorType) {
+        if (serverErrorType == FaultInjectionServerErrorType.TOO_MANY_REQUEST
+            || serverErrorType == FaultInjectionServerErrorType.RESPONSE_DELAY
+            || serverErrorType == FaultInjectionServerErrorType.CONNECTION_DELAY) {
+            return true;
+        }
+
+        if (this.condition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_ADDRESS_REFRESH) {
+            return ADDRESS_REFRESH_SERVER_ERROR_TYPES.contains(serverErrorType);
+        }
+
+        return this.condition.getOperationType() == FaultInjectionOperationType.METADATA_REQUEST_PARTITION_KEY_RANGES
+            && (serverErrorType == FaultInjectionServerErrorType.OWNER_RESOURCE_NOT_EXISTS
+            || serverErrorType == FaultInjectionServerErrorType.COLLECTION_NOT_AVAILABLE_FOR_READ);
     }
 }

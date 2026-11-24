@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorInner;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in PublicCloudConnectorsClient.
@@ -122,7 +123,7 @@ public interface PublicCloudConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PublicCloudConnectorInner> updateWithResponse(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties, Context context);
+        PublicCloudConnectorUpdate properties, Context context);
 
     /**
      * Update a PublicCloudConnector.
@@ -137,7 +138,7 @@ public interface PublicCloudConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PublicCloudConnectorInner update(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties);
+        PublicCloudConnectorUpdate properties);
 
     /**
      * Delete a PublicCloudConnector.
@@ -220,7 +221,7 @@ public interface PublicCloudConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
@@ -235,7 +236,7 @@ public interface PublicCloudConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
@@ -249,7 +250,7 @@ public interface PublicCloudConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner testPermissions(String resourceGroupName, String publicCloudConnector);
@@ -263,7 +264,7 @@ public interface PublicCloudConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner testPermissions(String resourceGroupName, String publicCloudConnector, Context context);

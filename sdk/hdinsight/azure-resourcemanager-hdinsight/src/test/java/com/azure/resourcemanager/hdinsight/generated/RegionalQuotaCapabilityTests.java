@@ -13,21 +13,21 @@ public final class RegionalQuotaCapabilityTests {
     public void testDeserialize() throws Exception {
         RegionalQuotaCapability model = BinaryData
             .fromString(
-                "{\"regionName\":\"df\",\"coresUsed\":537247289030713733,\"coresAvailable\":4579200553418378126}")
+                "{\"regionName\":\"tpp\",\"coresUsed\":344862766670091820,\"coresAvailable\":1768663983323478544}")
             .toObject(RegionalQuotaCapability.class);
-        Assertions.assertEquals("df", model.regionName());
-        Assertions.assertEquals(537247289030713733L, model.coresUsed());
-        Assertions.assertEquals(4579200553418378126L, model.coresAvailable());
+        Assertions.assertEquals("tpp", model.regionName());
+        Assertions.assertEquals(344862766670091820L, model.coresUsed());
+        Assertions.assertEquals(1768663983323478544L, model.coresAvailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionalQuotaCapability model = new RegionalQuotaCapability().withRegionName("df")
-            .withCoresUsed(537247289030713733L)
-            .withCoresAvailable(4579200553418378126L);
+        RegionalQuotaCapability model = new RegionalQuotaCapability().withRegionName("tpp")
+            .withCoresUsed(344862766670091820L)
+            .withCoresAvailable(1768663983323478544L);
         model = BinaryData.fromObject(model).toObject(RegionalQuotaCapability.class);
-        Assertions.assertEquals("df", model.regionName());
-        Assertions.assertEquals(537247289030713733L, model.coresUsed());
-        Assertions.assertEquals(4579200553418378126L, model.coresAvailable());
+        Assertions.assertEquals("tpp", model.regionName());
+        Assertions.assertEquals(344862766670091820L, model.coresUsed());
+        Assertions.assertEquals(1768663983323478544L, model.coresAvailable());
     }
 }

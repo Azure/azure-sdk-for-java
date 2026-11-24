@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -305,27 +304,6 @@ public final class HyperVToAzStackHciReplicationExtCustomProps extends Replicati
     public String resourceGroup() {
         return this.resourceGroup;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (hyperVFabricArmId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property hyperVFabricArmId in model HyperVToAzStackHciReplicationExtCustomProps"));
-        }
-        if (azStackHciFabricArmId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property azStackHciFabricArmId in model HyperVToAzStackHciReplicationExtCustomProps"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(HyperVToAzStackHciReplicationExtCustomProps.class);
 
     /**
      * {@inheritDoc}

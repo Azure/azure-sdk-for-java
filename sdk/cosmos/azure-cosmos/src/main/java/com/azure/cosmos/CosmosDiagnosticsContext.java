@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -43,8 +42,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkSt
  * by diagnostic handlers
  */
 public final class CosmosDiagnosticsContext {
-    private final static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagAccessor() {
+        return ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+    }
 
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
@@ -255,7 +255,6 @@ public final class CosmosDiagnosticsContext {
      * The effective read consistency strategy used for the operation
      * @return the effective read consistency strategy used for the operation
      */
-    @Beta(value = Beta.SinceVersion.V4_71_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ReadConsistencyStrategy getEffectiveReadConsistencyStrategy() {
         return this.readConsistencyStrategy;
     }
@@ -336,17 +335,17 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (cosmosDiagnostics.getFeedResponseDiagnostics() != null &&
-            !diagAccessor.isDiagnosticsCapturedInPagedFlux(cosmosDiagnostics).get()) {
+            !diagAccessor().isDiagnosticsCapturedInPagedFlux(cosmosDiagnostics).get()) {
 
             return;
         }
 
         synchronized (this.contextId) {
             if (this.samplingRateSnapshot != null) {
-                diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
+                diagAccessor().setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
             }
-            this.addRequestSize(diagAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics));
-            this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
+            this.addRequestSize(diagAccessor().getRequestPayloadSizeInBytes(cosmosDiagnostics));
+            this.addResponseSize(diagAccessor().getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
             this.diagnostics.add(cosmosDiagnostics);
             this.cachedRequestDiagnostics = null;
             this.requestInfo = null;
@@ -617,7 +616,7 @@ public final class CosmosDiagnosticsContext {
             this.samplingRateSnapshot = samplingRate;
             this.isSampledOut = isSampledOut;
             for (CosmosDiagnostics d : this.diagnostics) {
-                diagAccessor.setSamplingRateSnapshot(d, samplingRate);
+                diagAccessor().setSamplingRateSnapshot(d, samplingRate);
             }
         }
     }
@@ -992,12 +991,8 @@ public final class CosmosDiagnosticsContext {
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
-        ImplementationBridgeHelpers
-            .CosmosDiagnosticsContextHelper
-            .setCosmosDiagnosticsContextAccessor(
-                new ImplementationBridgeHelpers
-                    .CosmosDiagnosticsContextHelper
-                    .CosmosDiagnosticsContextAccessor() {
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.setCosmosDiagnosticsContextAccessor(
+                new ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor() {
 
                     @Override
                     public CosmosDiagnosticsContext create(String spanName, String account, String endpoint,
@@ -1201,4 +1196,6 @@ public final class CosmosDiagnosticsContext {
                     }
                 });
     }
+
+    static { initialize(); }
 }

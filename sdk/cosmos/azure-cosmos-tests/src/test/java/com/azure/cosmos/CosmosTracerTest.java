@@ -203,8 +203,10 @@ public class CosmosTracerTest extends TestSuiteBase {
         createAndInitializeDiagnosticsProvider(
             mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryMode.NONE, forceThresholdViolations, samplingRate);
 
-        CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(),
-            ThroughputProperties.createManualThroughput(5000)).block();
+        CosmosDatabaseResponse cosmosDatabaseResponse = executeControlPlaneWithRetry(
+            () -> client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(),
+                ThroughputProperties.createManualThroughput(5000)).block(),
+            mockTracer::reset);
         assertThat(cosmosDatabaseResponse).isNotNull();
         verifyTracerAttributes(
             mockTracer,
@@ -220,7 +222,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         mockTracer.reset();
 
         FeedResponse<CosmosDatabaseProperties> feedResponseReadAllDatabases =
-            client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().single().block();
+            client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().next().block();
         assertThat(feedResponseReadAllDatabases).isNotNull();
         verifyTracerAttributes(
             mockTracer,
@@ -920,6 +922,29 @@ public class CosmosTracerTest extends TestSuiteBase {
             "readMany",
             samplingRate);
         mockTracer.reset();
+        List<PartitionKey> partitionKeys = createdDocs
+            .stream()
+            .map(CosmosItemIdentity::getPartitionKey)
+            .collect(Collectors.toList());
+        feedItemResponse = cosmosAsyncContainer
+            .readManyByPartitionKeys(partitionKeys, ObjectNode.class)
+            .byPage(1)
+            .blockFirst();
+        assertThat(feedItemResponse).isNotNull();
+        assertThat(feedItemResponse.getResults()).isNotEmpty();
+        verifyTracerAttributes(
+            mockTracer,
+            "readManyByPartitionKeys." + cosmosAsyncContainer.getId(),
+            cosmosAsyncDatabase.getId(),
+            cosmosAsyncContainer.getId(),
+            feedItemResponse.getCosmosDiagnostics(),
+            null,
+            useLegacyTracing,
+            enableRequestLevelTracing,
+            forceThresholdViolations,
+            "readManyByPartitionKeys",
+            samplingRate);
+        mockTracer.reset();
     }
 
     @Test(groups = { "fast", "simple" }, timeOut = 10 * TIMEOUT)
@@ -959,7 +984,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         boolean forceThresholdViolations,
         double samplingRate) throws Exception {
 
-        if (this.client.getContextClient().getGlobalEndpointManager().getAvailableWriteEndpoints().size() > 1) {
+        if (this.client.getContextClient().getGlobalEndpointManager().getAvailableWriteRoutingContexts().size() > 1) {
 
             throw new SkipException("Tests would take too long to run on multi master account because " +
                 "scrips etc. creation can take several seconds for replication.");
@@ -1762,7 +1787,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isNotNull();
             assertThat(attributes.get("azure.cosmosdb.operation.request_charge")).isInstanceOf(Double.class);
 
-            boolean isRequestChargeMismatch = 
+            boolean isRequestChargeMismatch =
                 (double)attributes.get("azure.cosmosdb.operation.request_charge") != 0d
                 || Double.valueOf(ctx.getTotalRequestCharge()) == 0d;
 

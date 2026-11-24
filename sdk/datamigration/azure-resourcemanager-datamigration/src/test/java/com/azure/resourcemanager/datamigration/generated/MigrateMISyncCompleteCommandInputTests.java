@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrateMISyncCompleteCommandInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateMISyncCompleteCommandInput model = BinaryData.fromString("{\"sourceDatabaseName\":\"kjprvk\"}")
+        MigrateMISyncCompleteCommandInput model = BinaryData.fromString("{\"sourceDatabaseName\":\"jkqa\"}")
             .toObject(MigrateMISyncCompleteCommandInput.class);
-        Assertions.assertEquals("kjprvk", model.sourceDatabaseName());
+        Assertions.assertEquals("jkqa", model.sourceDatabaseName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MigrateMISyncCompleteCommandInput model
-            = new MigrateMISyncCompleteCommandInput().withSourceDatabaseName("kjprvk");
+            = new MigrateMISyncCompleteCommandInput().withSourceDatabaseName("jkqa");
         model = BinaryData.fromObject(model).toObject(MigrateMISyncCompleteCommandInput.class);
-        Assertions.assertEquals("kjprvk", model.sourceDatabaseName());
+        Assertions.assertEquals("jkqa", model.sourceDatabaseName());
     }
 }

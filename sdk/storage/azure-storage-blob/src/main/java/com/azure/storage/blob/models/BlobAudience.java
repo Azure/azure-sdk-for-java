@@ -46,7 +46,7 @@ public class BlobAudience extends ExpandableStringEnum<BlobAudience> {
      * For the Language service, this value corresponds to a URL that identifies the Azure cloud where the resource is
      * located.
      * For more information see
-     * <a href="https://learn.microsoft.com/en-us/azure/storage/blobs/authorize-access-azure-active-directory">
+     * <a href="https://learn.microsoft.com/azure/storage/blobs/authorize-access-azure-active-directory">
      *     Authorize access to Azure blobs using Azure Active Directory</a>.
      *
      * @param audience The Azure Active Directory audience to use when forming authorization scopes.

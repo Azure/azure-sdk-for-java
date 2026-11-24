@@ -13,27 +13,27 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The properties of a mongo cluster.
+ * The properties of a DocumentDB cluster.
  */
 @Fluent
 public final class MongoClusterProperties implements JsonSerializable<MongoClusterProperties> {
     /*
-     * The mode to create a mongo cluster.
+     * The mode to create a DocumentDB cluster.
      */
     private CreateMode createMode;
 
     /*
-     * The parameters to create a point-in-time restore mongo cluster.
+     * The parameters to create a point-in-time restore DocumentDB cluster.
      */
     private MongoClusterRestoreParameters restoreParameters;
 
     /*
-     * The parameters to create a replica mongo cluster.
+     * The parameters to create a replica DocumentDB cluster.
      */
     private MongoClusterReplicaParameters replicaParameters;
 
     /*
-     * The local administrator properties for the mongo cluster.
+     * The local administrator properties for the DocumentDB cluster.
      */
     private AdministratorProperties administrator;
 
@@ -48,47 +48,47 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     private String connectionString;
 
     /*
-     * The provisioning state of the mongo cluster.
+     * The provisioning state of the DocumentDB cluster.
      */
     private ProvisioningState provisioningState;
 
     /*
-     * The status of the mongo cluster.
+     * The status of the DocumentDB cluster.
      */
     private MongoClusterStatus clusterStatus;
 
     /*
-     * Whether or not public endpoint access is allowed for this mongo cluster.
+     * Whether or not public endpoint access is allowed for this DocumentDB cluster.
      */
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The high availability properties of the mongo cluster.
+     * The high availability properties of the DocumentDB cluster.
      */
     private HighAvailabilityProperties highAvailability;
 
     /*
-     * The storage properties of the mongo cluster.
+     * The storage properties of the DocumentDB cluster.
      */
     private StorageProperties storage;
 
     /*
-     * The sharding properties of the mongo cluster.
+     * The sharding properties of the DocumentDB cluster.
      */
     private ShardingProperties sharding;
 
     /*
-     * The compute properties of the mongo cluster.
+     * The compute properties of the DocumentDB cluster.
      */
     private ComputeProperties compute;
 
     /*
-     * The backup properties of the mongo cluster.
+     * The backup properties of the DocumentDB cluster.
      */
     private BackupProperties backup;
 
     /*
-     * The Data API properties of the mongo cluster.
+     * The Data API properties of the DocumentDB cluster.
      */
     private DataApiProperties dataApi;
 
@@ -103,7 +103,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     private List<PreviewFeature> previewFeatures;
 
     /*
-     * The replication properties for the mongo cluster
+     * The replication properties for the DocumentDB cluster
      */
     private ReplicationProperties replica;
 
@@ -122,6 +122,12 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      */
     private EncryptionProperties encryption;
 
+    /*
+     * The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows the Azure Cosmos DB service to bypass
+     * network restrictions.
+     */
+    private NetworkBypassMode networkBypassMode;
+
     /**
      * Creates an instance of MongoClusterProperties class.
      */
@@ -129,7 +135,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the createMode property: The mode to create a mongo cluster.
+     * Get the createMode property: The mode to create a DocumentDB cluster.
      * 
      * @return the createMode value.
      */
@@ -138,7 +144,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the createMode property: The mode to create a mongo cluster.
+     * Set the createMode property: The mode to create a DocumentDB cluster.
      * 
      * @param createMode the createMode value to set.
      * @return the MongoClusterProperties object itself.
@@ -149,7 +155,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the restoreParameters property: The parameters to create a point-in-time restore mongo cluster.
+     * Get the restoreParameters property: The parameters to create a point-in-time restore DocumentDB cluster.
      * 
      * @return the restoreParameters value.
      */
@@ -158,7 +164,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the restoreParameters property: The parameters to create a point-in-time restore mongo cluster.
+     * Set the restoreParameters property: The parameters to create a point-in-time restore DocumentDB cluster.
      * 
      * @param restoreParameters the restoreParameters value to set.
      * @return the MongoClusterProperties object itself.
@@ -169,7 +175,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the replicaParameters property: The parameters to create a replica mongo cluster.
+     * Get the replicaParameters property: The parameters to create a replica DocumentDB cluster.
      * 
      * @return the replicaParameters value.
      */
@@ -178,7 +184,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the replicaParameters property: The parameters to create a replica mongo cluster.
+     * Set the replicaParameters property: The parameters to create a replica DocumentDB cluster.
      * 
      * @param replicaParameters the replicaParameters value to set.
      * @return the MongoClusterProperties object itself.
@@ -189,7 +195,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the administrator property: The local administrator properties for the mongo cluster.
+     * Get the administrator property: The local administrator properties for the DocumentDB cluster.
      * 
      * @return the administrator value.
      */
@@ -198,7 +204,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the administrator property: The local administrator properties for the mongo cluster.
+     * Set the administrator property: The local administrator properties for the DocumentDB cluster.
      * 
      * @param administrator the administrator value to set.
      * @return the MongoClusterProperties object itself.
@@ -240,7 +246,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the mongo cluster.
+     * Get the provisioningState property: The provisioning state of the DocumentDB cluster.
      * 
      * @return the provisioningState value.
      */
@@ -249,7 +255,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the clusterStatus property: The status of the mongo cluster.
+     * Get the clusterStatus property: The status of the DocumentDB cluster.
      * 
      * @return the clusterStatus value.
      */
@@ -258,7 +264,8 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this mongo cluster.
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this DocumentDB
+     * cluster.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -267,7 +274,8 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this mongo cluster.
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this DocumentDB
+     * cluster.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the MongoClusterProperties object itself.
@@ -278,7 +286,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the highAvailability property: The high availability properties of the mongo cluster.
+     * Get the highAvailability property: The high availability properties of the DocumentDB cluster.
      * 
      * @return the highAvailability value.
      */
@@ -287,7 +295,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the highAvailability property: The high availability properties of the mongo cluster.
+     * Set the highAvailability property: The high availability properties of the DocumentDB cluster.
      * 
      * @param highAvailability the highAvailability value to set.
      * @return the MongoClusterProperties object itself.
@@ -298,7 +306,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the storage property: The storage properties of the mongo cluster.
+     * Get the storage property: The storage properties of the DocumentDB cluster.
      * 
      * @return the storage value.
      */
@@ -307,7 +315,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the storage property: The storage properties of the mongo cluster.
+     * Set the storage property: The storage properties of the DocumentDB cluster.
      * 
      * @param storage the storage value to set.
      * @return the MongoClusterProperties object itself.
@@ -318,7 +326,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the sharding property: The sharding properties of the mongo cluster.
+     * Get the sharding property: The sharding properties of the DocumentDB cluster.
      * 
      * @return the sharding value.
      */
@@ -327,7 +335,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the sharding property: The sharding properties of the mongo cluster.
+     * Set the sharding property: The sharding properties of the DocumentDB cluster.
      * 
      * @param sharding the sharding value to set.
      * @return the MongoClusterProperties object itself.
@@ -338,7 +346,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the compute property: The compute properties of the mongo cluster.
+     * Get the compute property: The compute properties of the DocumentDB cluster.
      * 
      * @return the compute value.
      */
@@ -347,7 +355,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the compute property: The compute properties of the mongo cluster.
+     * Set the compute property: The compute properties of the DocumentDB cluster.
      * 
      * @param compute the compute value to set.
      * @return the MongoClusterProperties object itself.
@@ -358,7 +366,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the backup property: The backup properties of the mongo cluster.
+     * Get the backup property: The backup properties of the DocumentDB cluster.
      * 
      * @return the backup value.
      */
@@ -367,7 +375,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the backup property: The backup properties of the mongo cluster.
+     * Set the backup property: The backup properties of the DocumentDB cluster.
      * 
      * @param backup the backup value to set.
      * @return the MongoClusterProperties object itself.
@@ -378,7 +386,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the dataApi property: The Data API properties of the mongo cluster.
+     * Get the dataApi property: The Data API properties of the DocumentDB cluster.
      * 
      * @return the dataApi value.
      */
@@ -387,7 +395,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Set the dataApi property: The Data API properties of the mongo cluster.
+     * Set the dataApi property: The Data API properties of the DocumentDB cluster.
      * 
      * @param dataApi the dataApi value to set.
      * @return the MongoClusterProperties object itself.
@@ -427,7 +435,7 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Get the replica property: The replication properties for the mongo cluster.
+     * Get the replica property: The replication properties for the DocumentDB cluster.
      * 
      * @return the replica value.
      */
@@ -485,50 +493,25 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Validates the instance.
+     * Get the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
+     * the Azure Cosmos DB service to bypass network restrictions.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the networkBypassMode value.
      */
-    public void validate() {
-        if (restoreParameters() != null) {
-            restoreParameters().validate();
-        }
-        if (replicaParameters() != null) {
-            replicaParameters().validate();
-        }
-        if (administrator() != null) {
-            administrator().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (sharding() != null) {
-            sharding().validate();
-        }
-        if (compute() != null) {
-            compute().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (dataApi() != null) {
-            dataApi().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (replica() != null) {
-            replica().validate();
-        }
-        if (authConfig() != null) {
-            authConfig().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
+    public NetworkBypassMode networkBypassMode() {
+        return this.networkBypassMode;
+    }
+
+    /**
+     * Set the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
+     * the Azure Cosmos DB service to bypass network restrictions.
+     * 
+     * @param networkBypassMode the networkBypassMode value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withNetworkBypassMode(NetworkBypassMode networkBypassMode) {
+        this.networkBypassMode = networkBypassMode;
+        return this;
     }
 
     /**
@@ -554,6 +537,8 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("authConfig", this.authConfig);
         jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("networkBypassMode",
+            this.networkBypassMode == null ? null : this.networkBypassMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -623,6 +608,9 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
                     deserializedMongoClusterProperties.authConfig = AuthConfigProperties.fromJson(reader);
                 } else if ("encryption".equals(fieldName)) {
                     deserializedMongoClusterProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else if ("networkBypassMode".equals(fieldName)) {
+                    deserializedMongoClusterProperties.networkBypassMode
+                        = NetworkBypassMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

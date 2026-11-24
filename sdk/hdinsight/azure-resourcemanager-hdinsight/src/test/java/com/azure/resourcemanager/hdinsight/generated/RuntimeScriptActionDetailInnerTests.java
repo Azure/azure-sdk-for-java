@@ -13,24 +13,24 @@ public final class RuntimeScriptActionDetailInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeScriptActionDetailInner model = BinaryData.fromString(
-            "{\"scriptExecutionId\":1138155605453758000,\"startTime\":\"pmjerbdkelvidiz\",\"endTime\":\"sdbccxjmonfdgnwn\",\"status\":\"puuw\",\"operation\":\"tvuqjctzenkeifzz\",\"executionSummary\":[{\"status\":\"as\",\"instanceCount\":897576014},{\"status\":\"hbxcu\",\"instanceCount\":995133757},{\"status\":\"gsrboldforobw\",\"instanceCount\":2116230034},{\"status\":\"zbfhfovvac\",\"instanceCount\":1350154839}],\"debugInformation\":\"uodxesza\",\"name\":\"belawumuaslzkwr\",\"uri\":\"woycqucwyha\",\"parameters\":\"omd\",\"roles\":[\"ywuhpsvfuur\",\"tlwexxwlalniexz\",\"rzpgep\"],\"applicationName\":\"yb\"}")
+            "{\"scriptExecutionId\":7186783444328616687,\"startTime\":\"jednlj\",\"endTime\":\"geuaulx\",\"status\":\"smjbnkppxyn\",\"operation\":\"lsvxeizz\",\"executionSummary\":[{\"status\":\"nsrmffeycx\",\"instanceCount\":750514021},{\"status\":\"iymerteeammxqi\",\"instanceCount\":1876834385},{\"status\":\"zddrt\",\"instanceCount\":550978856}],\"debugInformation\":\"jbmxvavre\",\"name\":\"de\",\"uri\":\"svecuijpxtxs\",\"parameters\":\"prtujwsawdd\",\"roles\":[\"babxvitit\",\"tzeexav\",\"xtfglecdmdqb\",\"pypqtgsfj\"],\"applicationName\":\"b\"}")
             .toObject(RuntimeScriptActionDetailInner.class);
-        Assertions.assertEquals("belawumuaslzkwr", model.name());
-        Assertions.assertEquals("woycqucwyha", model.uri());
-        Assertions.assertEquals("omd", model.parameters());
-        Assertions.assertEquals("ywuhpsvfuur", model.roles().get(0));
+        Assertions.assertEquals("de", model.name());
+        Assertions.assertEquals("svecuijpxtxs", model.uri());
+        Assertions.assertEquals("prtujwsawdd", model.parameters());
+        Assertions.assertEquals("babxvitit", model.roles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuntimeScriptActionDetailInner model = new RuntimeScriptActionDetailInner().withName("belawumuaslzkwr")
-            .withUri("woycqucwyha")
-            .withParameters("omd")
-            .withRoles(Arrays.asList("ywuhpsvfuur", "tlwexxwlalniexz", "rzpgep"));
+        RuntimeScriptActionDetailInner model = new RuntimeScriptActionDetailInner().withName("de")
+            .withUri("svecuijpxtxs")
+            .withParameters("prtujwsawdd")
+            .withRoles(Arrays.asList("babxvitit", "tzeexav", "xtfglecdmdqb", "pypqtgsfj"));
         model = BinaryData.fromObject(model).toObject(RuntimeScriptActionDetailInner.class);
-        Assertions.assertEquals("belawumuaslzkwr", model.name());
-        Assertions.assertEquals("woycqucwyha", model.uri());
-        Assertions.assertEquals("omd", model.parameters());
-        Assertions.assertEquals("ywuhpsvfuur", model.roles().get(0));
+        Assertions.assertEquals("de", model.name());
+        Assertions.assertEquals("svecuijpxtxs", model.uri());
+        Assertions.assertEquals("prtujwsawdd", model.parameters());
+        Assertions.assertEquals("babxvitit", model.roles().get(0));
     }
 }

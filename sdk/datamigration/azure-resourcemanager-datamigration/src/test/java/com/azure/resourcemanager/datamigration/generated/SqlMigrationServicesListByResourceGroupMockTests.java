@@ -22,7 +22,7 @@ public final class SqlMigrationServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"bdfmm\",\"integrationRuntimeState\":\"dnajuopjyyqmkwlh\"},\"systemData\":{\"createdBy\":\"loqd\",\"createdByType\":\"Key\",\"createdAt\":\"2021-09-23T07:12:25Z\",\"lastModifiedBy\":\"xrwzo\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-04-29T22:07Z\"},\"location\":\"xga\",\"tags\":{\"rmimrljdpoqfxyem\":\"tkwppthuzd\",\"loamfmxtllfltym\":\"kftbaewhte\"},\"id\":\"cn\",\"name\":\"rfijhggabq\",\"type\":\"gamk\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"xoau\",\"integrationRuntimeState\":\"suykznhrfgsl\"},\"location\":\"hpryjfzihuioa\",\"tags\":{\"dd\":\"pajtfeyvkbd\",\"cxbeuuqutkzwtjww\":\"rhd\"},\"id\":\"uzy\",\"name\":\"ijcxfno\",\"type\":\"deg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class SqlMigrationServicesListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SqlMigrationService> response
-            = manager.sqlMigrationServices().listByResourceGroup("dkynrceqa", com.azure.core.util.Context.NONE);
+            = manager.sqlMigrationServices().listByResourceGroup("lrat", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xga", response.iterator().next().location());
-        Assertions.assertEquals("tkwppthuzd", response.iterator().next().tags().get("rmimrljdpoqfxyem"));
+        Assertions.assertEquals("hpryjfzihuioa", response.iterator().next().location());
+        Assertions.assertEquals("pajtfeyvkbd", response.iterator().next().tags().get("dd"));
     }
 }

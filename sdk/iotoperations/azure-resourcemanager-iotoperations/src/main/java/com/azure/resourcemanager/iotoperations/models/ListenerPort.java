@@ -175,17 +175,6 @@ public final class ListenerPort implements JsonSerializable<ListenerPort> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (tls() != null) {
-            tls().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

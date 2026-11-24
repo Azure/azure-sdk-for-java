@@ -17,22 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ContainersBreakLeaseHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The ETag property.
      */
     @Generated
     private String eTag;
-
-    /*
-     * The x-ms-lease-time property.
-     */
-    @Generated
-    private Integer xMsLeaseTime;
 
     /*
      * The Last-Modified property.
@@ -41,10 +29,10 @@ public final class ContainersBreakLeaseHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-request-id property.
+     * The x-ms-lease-time property.
      */
     @Generated
-    private String xMsRequestId;
+    private Integer xMsLeaseTime;
 
     /*
      * The x-ms-client-request-id property.
@@ -53,14 +41,26 @@ public final class ContainersBreakLeaseHeaders {
     private String xMsClientRequestId;
 
     /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
     private static final HttpHeaderName X_MS_LEASE_TIME = HttpHeaderName.fromString("x-ms-lease-time");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -69,50 +69,28 @@ public final class ContainersBreakLeaseHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersBreakLeaseHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String xMsLeaseTime = rawHeaders.getValue(X_MS_LEASE_TIME);
-        if (xMsLeaseTime != null) {
-            this.xMsLeaseTime = Integer.parseInt(xMsLeaseTime);
-        } else {
-            this.xMsLeaseTime = null;
-        }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         } else {
             this.lastModified = null;
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        String xMsLeaseTime = rawHeaders.getValue(X_MS_LEASE_TIME);
+        if (xMsLeaseTime != null) {
+            this.xMsLeaseTime = Integer.parseInt(xMsLeaseTime);
+        } else {
+            this.xMsLeaseTime = null;
+        }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the ContainersBreakLeaseHeaders object itself.
-     */
-    @Generated
-    public ContainersBreakLeaseHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
     }
 
     /**
@@ -134,28 +112,6 @@ public final class ContainersBreakLeaseHeaders {
     @Generated
     public ContainersBreakLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseTime property: The x-ms-lease-time property.
-     * 
-     * @return the xMsLeaseTime value.
-     */
-    @Generated
-    public Integer getXMsLeaseTime() {
-        return this.xMsLeaseTime;
-    }
-
-    /**
-     * Set the xMsLeaseTime property: The x-ms-lease-time property.
-     * 
-     * @param xMsLeaseTime the xMsLeaseTime value to set.
-     * @return the ContainersBreakLeaseHeaders object itself.
-     */
-    @Generated
-    public ContainersBreakLeaseHeaders setXMsLeaseTime(Integer xMsLeaseTime) {
-        this.xMsLeaseTime = xMsLeaseTime;
         return this;
     }
 
@@ -189,24 +145,24 @@ public final class ContainersBreakLeaseHeaders {
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the xMsLeaseTime property: The x-ms-lease-time property.
      * 
-     * @return the xMsRequestId value.
+     * @return the xMsLeaseTime value.
      */
     @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public Integer getXMsLeaseTime() {
+        return this.xMsLeaseTime;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
+     * Set the xMsLeaseTime property: The x-ms-lease-time property.
      * 
-     * @param xMsRequestId the xMsRequestId value to set.
+     * @param xMsLeaseTime the xMsLeaseTime value to set.
      * @return the ContainersBreakLeaseHeaders object itself.
      */
     @Generated
-    public ContainersBreakLeaseHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
+    public ContainersBreakLeaseHeaders setXMsLeaseTime(Integer xMsLeaseTime) {
+        this.xMsLeaseTime = xMsLeaseTime;
         return this;
     }
 
@@ -229,6 +185,50 @@ public final class ContainersBreakLeaseHeaders {
     @Generated
     public ContainersBreakLeaseHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the ContainersBreakLeaseHeaders object itself.
+     */
+    @Generated
+    public ContainersBreakLeaseHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the ContainersBreakLeaseHeaders object itself.
+     */
+    @Generated
+    public ContainersBreakLeaseHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

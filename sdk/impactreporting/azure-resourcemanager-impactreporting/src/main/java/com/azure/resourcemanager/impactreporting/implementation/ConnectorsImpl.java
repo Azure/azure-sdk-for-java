@@ -29,12 +29,8 @@ public final class ConnectorsImpl implements Connectors {
 
     public Response<Connector> getWithResponse(String connectorName, Context context) {
         Response<ConnectorInner> inner = this.serviceClient().getWithResponse(connectorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConnectorImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConnectorImpl(inner.getValue(), this.manager()));
     }
 
     public Connector get(String connectorName) {
@@ -65,7 +61,8 @@ public final class ConnectorsImpl implements Connectors {
     }
 
     public Connector getById(String id) {
-        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "connectors");
+        String connectorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}", "connectorName");
         if (connectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
@@ -74,7 +71,8 @@ public final class ConnectorsImpl implements Connectors {
     }
 
     public Response<Connector> getByIdWithResponse(String id, Context context) {
-        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "connectors");
+        String connectorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}", "connectorName");
         if (connectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
@@ -83,7 +81,8 @@ public final class ConnectorsImpl implements Connectors {
     }
 
     public void deleteById(String id) {
-        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "connectors");
+        String connectorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}", "connectorName");
         if (connectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
@@ -92,7 +91,8 @@ public final class ConnectorsImpl implements Connectors {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "connectors");
+        String connectorName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}", "connectorName");
         if (connectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));

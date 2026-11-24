@@ -27,6 +27,11 @@ public final class StandbyContainerGroupPoolElasticityProfile
      */
     private RefillPolicy refillPolicy;
 
+    /*
+     * Specifies the dynamic sizing configuration.
+     */
+    private DynamicSizing dynamicSizing;
+
     /**
      * Creates an instance of StandbyContainerGroupPoolElasticityProfile class.
      */
@@ -74,11 +79,23 @@ public final class StandbyContainerGroupPoolElasticityProfile
     }
 
     /**
-     * Validates the instance.
+     * Get the dynamicSizing property: Specifies the dynamic sizing configuration.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the dynamicSizing value.
      */
-    public void validate() {
+    public DynamicSizing dynamicSizing() {
+        return this.dynamicSizing;
+    }
+
+    /**
+     * Set the dynamicSizing property: Specifies the dynamic sizing configuration.
+     * 
+     * @param dynamicSizing the dynamicSizing value to set.
+     * @return the StandbyContainerGroupPoolElasticityProfile object itself.
+     */
+    public StandbyContainerGroupPoolElasticityProfile withDynamicSizing(DynamicSizing dynamicSizing) {
+        this.dynamicSizing = dynamicSizing;
+        return this;
     }
 
     /**
@@ -89,6 +106,7 @@ public final class StandbyContainerGroupPoolElasticityProfile
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("maxReadyCapacity", this.maxReadyCapacity);
         jsonWriter.writeStringField("refillPolicy", this.refillPolicy == null ? null : this.refillPolicy.toString());
+        jsonWriter.writeJsonField("dynamicSizing", this.dynamicSizing);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,6 +132,9 @@ public final class StandbyContainerGroupPoolElasticityProfile
                 } else if ("refillPolicy".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolElasticityProfile.refillPolicy
                         = RefillPolicy.fromString(reader.getString());
+                } else if ("dynamicSizing".equals(fieldName)) {
+                    deserializedStandbyContainerGroupPoolElasticityProfile.dynamicSizing
+                        = DynamicSizing.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

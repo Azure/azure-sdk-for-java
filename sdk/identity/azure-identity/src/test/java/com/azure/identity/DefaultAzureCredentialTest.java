@@ -7,41 +7,61 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.EmptyEnvironmentConfigurationSource;
+import com.azure.identity.util.ImdsProbeTestServer;
 import com.azure.identity.util.TestUtils;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
+import org.mockito.MockedStatic;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class DefaultAzureCredentialTest {
 
     private static final String TENANT_ID = "contoso.com";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private static final String RESOURCE_ID = "/subscriptions/" + UUID.randomUUID()
+        + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+    private static final int IDENTITY_CLIENT_CLIENT_ID_ARGUMENT_INDEX = 1;
+    private static final int IDENTITY_CLIENT_RESOURCE_ID_ARGUMENT_INDEX = 5;
+    private static final int IDENTITY_CLIENT_OBJECT_ID_ARGUMENT_INDEX = 6;
 
     @Test
     public void testUseEnvironmentCredential() {
@@ -112,6 +132,102 @@ public class DefaultAzureCredentialTest {
         }
     }
 
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    @Timeout(10)
+    public void testUnresponsiveImdsFallsBackToDeveloperCredential(boolean synchronous) {
+        try (ImdsProbeTestServer server = new ImdsProbeTestServer((request, response) -> Mono.never())) {
+            assertUnavailableImdsFallsBackToDeveloperCredential(server.getEndpoint(), synchronous);
+            assertEquals(1, server.getRequestCount());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void testNonHttpImdsEndpointFallsBackToDeveloperCredential(boolean synchronous) {
+        assertUnavailableImdsFallsBackToDeveloperCredential("file:///imds", synchronous);
+    }
+
+    private static void assertUnavailableImdsFallsBackToDeveloperCredential(String endpoint, boolean synchronous) {
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com/.default");
+        AccessToken expectedToken = new AccessToken("developer-token", OffsetDateTime.now().plusHours(1));
+        AtomicInteger tokenRequests = new AtomicInteger();
+        HttpClient transport = httpRequest -> {
+            tokenRequests.incrementAndGet();
+            return Mono.just(new MockHttpResponse(httpRequest, 500));
+        };
+        try (
+            MockedStatic<ManagedIdentityApplication> application
+                = mockStatic(ManagedIdentityApplication.class, CALLS_REAL_METHODS);
+            MockedConstruction<IntelliJCredential> developerCredentials
+                = mockConstruction(IntelliJCredential.class, (credential, context) -> {
+                    when(credential.getToken(request)).thenReturn(Mono.just(expectedToken));
+                    when(credential.getTokenSync(request)).thenReturn(expectedToken);
+                })) {
+            application.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.DEFAULT_TO_IMDS);
+            Configuration configuration = TestUtils.createTestConfiguration(
+                new TestConfigurationSource().put("AZURE_POD_IDENTITY_AUTHORITY_HOST", endpoint));
+            DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration)
+                .httpClient(transport)
+                .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
+                .build();
+
+            if (synchronous) {
+                assertEquals(expectedToken, credential.getTokenSync(request));
+                verify(developerCredentials.constructed().get(0)).getTokenSync(request);
+            } else {
+                StepVerifier.create(credential.getToken(request))
+                    .expectNext(expectedToken)
+                    .expectComplete()
+                    .verify(Duration.ofSeconds(5));
+                verify(developerCredentials.constructed().get(0)).getToken(request);
+            }
+            assertEquals(0, tokenRequests.get(), "Unavailable IMDS must not enter token acquisition or retries.");
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "clientId", "resourceId" })
+    public void testUseArcUserAssignedManagedIdentityCredential(String identityType) {
+        // setup
+        String token = "token";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("AZURE_TOKEN_CREDENTIALS", "ManagedIdentityCredential"));
+        String clientId = "clientId".equals(identityType) ? CLIENT_ID : null;
+        String resourceId = "resourceId".equals(identityType) ? RESOURCE_ID : null;
+
+        // mock
+        try (MockedStatic<ManagedIdentityApplication> applicationMock = mockStatic(ManagedIdentityApplication.class);
+            MockedConstruction<IdentityClient> mocked
+                = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                    assertEquals(clientId, context.arguments().get(IDENTITY_CLIENT_CLIENT_ID_ARGUMENT_INDEX));
+                    assertEquals(resourceId, context.arguments().get(IDENTITY_CLIENT_RESOURCE_ID_ARGUMENT_INDEX));
+                    Assertions.assertNull(context.arguments().get(IDENTITY_CLIENT_OBJECT_ID_ARGUMENT_INDEX));
+                    when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                        .thenReturn(TestUtils.getMockAccessToken(token, expiresAt));
+                })) {
+            applicationMock.when(ManagedIdentityApplication::getManagedIdentitySource)
+                .thenReturn(ManagedIdentitySourceType.AZURE_ARC);
+
+            DefaultAzureCredentialBuilder builder = new DefaultAzureCredentialBuilder().configuration(configuration);
+            if (clientId != null) {
+                builder.managedIdentityClientId(clientId);
+            } else {
+                builder.managedIdentityResourceId(resourceId);
+            }
+
+            // test
+            StepVerifier.create(builder.build().getToken(request))
+                .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            assertEquals(1, mocked.constructed().size());
+        }
+    }
+
     @Test
     public void testUseWorkloadIdentityCredentialWithManagedIdentityClientId() {
         // setup
@@ -127,7 +243,8 @@ public class DefaultAzureCredentialTest {
         try (MockedConstruction<IdentityClient> mocked
             = mockConstruction(IdentityClient.class, (identityClient, context) -> {
                 when(identityClient.authenticateWithAzureDeveloperCli(request)).thenReturn(Mono.empty());
-                when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request))
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             });
             MockedConstruction<IntelliJCredential> ijcredential
@@ -163,7 +280,8 @@ public class DefaultAzureCredentialTest {
         // mock
         try (MockedConstruction<IdentityClient> mocked
             = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request))
+                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+                when(identityClient.authenticateWithConfidentialClient(any(TokenRequestContext.class)))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
             // test
@@ -447,14 +565,10 @@ public class DefaultAzureCredentialTest {
 
     @Test
     public void testInvalidIdCombination() {
-        // setup
-        String resourceId = "/subscriptions/" + UUID.randomUUID()
-            + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
-
         // test
         Assertions.assertThrows(IllegalStateException.class,
             () -> new DefaultAzureCredentialBuilder().managedIdentityClientId(CLIENT_ID)
-                .managedIdentityResourceId(resourceId)
+                .managedIdentityResourceId(RESOURCE_ID)
                 .build());
     }
 
@@ -810,5 +924,89 @@ public class DefaultAzureCredentialTest {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Failed to extract credentials", e);
         }
+    }
+
+    @Test
+    public void testRequireEnvVarsSuccess() {
+        // Setup - create configuration with required environment variables present
+        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID)
+            .put("AZURE_TENANT_ID", TENANT_ID)
+            .put("AZURE_CLIENT_SECRET", "test-secret");
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Test - should not throw when all required env vars are present
+        DefaultAzureCredential credential
+            = new DefaultAzureCredentialBuilder()
+                .requireEnvVars(AzureIdentityEnvVars.AZURE_CLIENT_ID, AzureIdentityEnvVars.AZURE_TENANT_ID,
+                    AzureIdentityEnvVars.AZURE_CLIENT_SECRET)
+                .configuration(configuration)
+                .build();
+
+        // Verify the credential was created successfully
+        Assertions.assertNotNull(credential);
+    }
+
+    @Test
+    public void testRequireEnvVarsSingleMissing() {
+        // Setup - create configuration missing one required environment variable
+        TestConfigurationSource configSource
+            = new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID).put("AZURE_TENANT_ID", TENANT_ID);
+        // AZURE_CLIENT_SECRET is missing
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Test - should throw when required env var is missing
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> new DefaultAzureCredentialBuilder()
+                .requireEnvVars(AzureIdentityEnvVars.AZURE_CLIENT_ID, AzureIdentityEnvVars.AZURE_TENANT_ID,
+                    AzureIdentityEnvVars.AZURE_CLIENT_SECRET)
+                .configuration(configuration)
+                .build());
+
+        // Verify error message
+        assertTrue(exception.getMessage().contains("Required environment variable is missing: AZURE_CLIENT_SECRET"));
+    }
+
+    @Test
+    public void testRequireEnvVarsMultipleMissing() {
+        // Setup - create configuration missing multiple required environment variables
+        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID);
+        // AZURE_TENANT_ID and AZURE_CLIENT_SECRET are missing
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Test - should throw when multiple required env vars are missing
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> new DefaultAzureCredentialBuilder()
+                .requireEnvVars(AzureIdentityEnvVars.AZURE_CLIENT_ID, AzureIdentityEnvVars.AZURE_TENANT_ID,
+                    AzureIdentityEnvVars.AZURE_CLIENT_SECRET)
+                .configuration(configuration)
+                .build());
+
+        // Verify error message contains all missing variables
+        assertTrue(exception.getMessage().contains("Required environment variables are missing:"));
+        assertTrue(exception.getMessage().contains("AZURE_TENANT_ID"));
+        assertTrue(exception.getMessage().contains("AZURE_CLIENT_SECRET"));
+        // Should not contain AZURE_CLIENT_ID since it is present
+        String message = exception.getMessage();
+        assertFalse(message.contains("AZURE_CLIENT_ID"));
+    }
+
+    @Test
+    public void testRequireEnvVarsEmptyValue() {
+        // Setup - create configuration with empty string for required environment variable
+        TestConfigurationSource configSource = new TestConfigurationSource().put("AZURE_CLIENT_ID", CLIENT_ID)
+            .put("AZURE_TENANT_ID", TENANT_ID)
+            .put("AZURE_CLIENT_SECRET", ""); // Empty string should be treated as missing
+        Configuration configuration = TestUtils.createTestConfiguration(configSource);
+
+        // Test - should throw when required env var is empty
+        IllegalStateException exception = assertThrows(IllegalStateException.class,
+            () -> new DefaultAzureCredentialBuilder()
+                .requireEnvVars(AzureIdentityEnvVars.AZURE_CLIENT_ID, AzureIdentityEnvVars.AZURE_TENANT_ID,
+                    AzureIdentityEnvVars.AZURE_CLIENT_SECRET)
+                .configuration(configuration)
+                .build());
+
+        // Verify error message
+        assertTrue(exception.getMessage().contains("Required environment variable is missing: AZURE_CLIENT_SECRET"));
     }
 }

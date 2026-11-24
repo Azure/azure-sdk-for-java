@@ -120,6 +120,19 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
     }
 
     /**
+     * Set the clientMetric property: The client metric on which the criteria should be applied.
+     *
+     * @param clientMetric the clientMetric value to set.
+     * @return the PassFailMetric object itself.
+     */
+    @Generated
+    public PassFailMetric setClientMetric(PfMetrics clientMetric) {
+        this.clientMetric = clientMetric;
+        this.updatedProperties.add("clientMetric");
+        return this;
+    }
+
+    /**
      * Get the aggregate property: The aggregation function to be applied on the client metric. Allowed functions
      * - ‘percentage’ - for error metric , ‘avg’, percentiles like ‘p50’, ‘p90’, &amp; so on, ‘min’,
      * ‘max’ - for response_time_ms and latency metric, ‘avg’ - for requests_per_sec,
@@ -130,6 +143,22 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
     @Generated
     public PassFailAggregationFunction getAggregate() {
         return this.aggregate;
+    }
+
+    /**
+     * Set the aggregate property: The aggregation function to be applied on the client metric. Allowed functions
+     * - ‘percentage’ - for error metric , ‘avg’, percentiles like ‘p50’, ‘p90’, &amp; so on, ‘min’,
+     * ‘max’ - for response_time_ms and latency metric, ‘avg’ - for requests_per_sec,
+     * ‘count’ - for requests.
+     *
+     * @param aggregate the aggregate value to set.
+     * @return the PassFailMetric object itself.
+     */
+    @Generated
+    public PassFailMetric setAggregate(PassFailAggregationFunction aggregate) {
+        this.aggregate = aggregate;
+        this.updatedProperties.add("aggregate");
+        return this;
     }
 
     /**
@@ -211,6 +240,19 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
     @Generated
     public PassFailAction getAction() {
         return this.action;
+    }
+
+    /**
+     * Set the action property: Action taken after the threshold is met. Default is ‘continue’.
+     *
+     * @param action the action value to set.
+     * @return the PassFailMetric object itself.
+     */
+    @Generated
+    public PassFailMetric setAction(PassFailAction action) {
+        this.action = action;
+        this.updatedProperties.add("action");
+        return this;
     }
 
     /**
@@ -339,47 +381,5 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
             }
             return deserializedPassFailMetric;
         });
-    }
-
-    /**
-     * Set the aggregate property: The aggregation function to be applied on the client metric. Allowed functions
-     * - ‘percentage’ - for error metric , ‘avg’, percentiles like ‘p50’, ‘p90’, &amp; so on, ‘min’,
-     * ‘max’ - for response_time_ms and latency metric, ‘avg’ - for requests_per_sec,
-     * ‘count’ - for requests.
-     *
-     * @param aggregate the aggregate value to set.
-     * @return the PassFailMetric object itself.
-     */
-    @Generated
-    public PassFailMetric setAggregate(PassFailAggregationFunction aggregate) {
-        this.aggregate = aggregate;
-        this.updatedProperties.add("aggregate");
-        return this;
-    }
-
-    /**
-     * Set the action property: Action taken after the threshold is met. Default is ‘continue’.
-     *
-     * @param action the action value to set.
-     * @return the PassFailMetric object itself.
-     */
-    @Generated
-    public PassFailMetric setAction(PassFailAction action) {
-        this.action = action;
-        this.updatedProperties.add("action");
-        return this;
-    }
-
-    /**
-     * Set the clientMetric property: The client metric on which the criteria should be applied.
-     *
-     * @param clientMetric the clientMetric value to set.
-     * @return the PassFailMetric object itself.
-     */
-    @Generated
-    public PassFailMetric setClientMetric(PfMetrics clientMetric) {
-        this.clientMetric = clientMetric;
-        this.updatedProperties.add("clientMetric");
-        return this;
     }
 }

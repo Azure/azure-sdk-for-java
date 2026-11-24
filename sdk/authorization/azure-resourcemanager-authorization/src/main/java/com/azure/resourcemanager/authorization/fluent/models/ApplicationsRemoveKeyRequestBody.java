@@ -1,0 +1,163 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// Deprecated generated code
+
+package com.azure.resourcemanager.authorization.fluent.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
+/**
+ * The ApplicationsRemoveKeyRequestBody model.
+ */
+@Fluent
+public final class ApplicationsRemoveKeyRequestBody implements JsonSerializable<ApplicationsRemoveKeyRequestBody> {
+    /*
+     * The keyId property.
+     */
+    private UUID keyId;
+
+    /*
+     * The proof property.
+     */
+    private String proof;
+
+    /*
+     * Dictionary of <AnyObject>
+     */
+    private Map<String, Object> additionalProperties;
+
+    /**
+     * Creates an instance of ApplicationsRemoveKeyRequestBody class.
+     */
+    public ApplicationsRemoveKeyRequestBody() {
+    }
+
+    /**
+     * Get the keyId property: The keyId property.
+     * 
+     * @return the keyId value.
+     */
+    public UUID keyId() {
+        return this.keyId;
+    }
+
+    /**
+     * Set the keyId property: The keyId property.
+     * 
+     * @param keyId the keyId value to set.
+     * @return the ApplicationsRemoveKeyRequestBody object itself.
+     */
+    public ApplicationsRemoveKeyRequestBody withKeyId(UUID keyId) {
+        this.keyId = keyId;
+        return this;
+    }
+
+    /**
+     * Get the proof property: The proof property.
+     * 
+     * @return the proof value.
+     */
+    public String proof() {
+        return this.proof;
+    }
+
+    /**
+     * Set the proof property: The proof property.
+     * 
+     * @param proof the proof value to set.
+     * @return the ApplicationsRemoveKeyRequestBody object itself.
+     */
+    public ApplicationsRemoveKeyRequestBody withProof(String proof) {
+        this.proof = proof;
+        return this;
+    }
+
+    /**
+     * Get the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
+     * 
+     * @return the additionalProperties value.
+     */
+    public Map<String, Object> additionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
+     * 
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the ApplicationsRemoveKeyRequestBody object itself.
+     */
+    public ApplicationsRemoveKeyRequestBody withAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyId", Objects.toString(this.keyId, null));
+        jsonWriter.writeStringField("proof", this.proof);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationsRemoveKeyRequestBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationsRemoveKeyRequestBody if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationsRemoveKeyRequestBody.
+     */
+    public static ApplicationsRemoveKeyRequestBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationsRemoveKeyRequestBody deserializedApplicationsRemoveKeyRequestBody
+                = new ApplicationsRemoveKeyRequestBody();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyId".equals(fieldName)) {
+                    deserializedApplicationsRemoveKeyRequestBody.keyId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("proof".equals(fieldName)) {
+                    deserializedApplicationsRemoveKeyRequestBody.proof = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedApplicationsRemoveKeyRequestBody.additionalProperties = additionalProperties;
+
+            return deserializedApplicationsRemoveKeyRequestBody;
+        });
+    }
+}

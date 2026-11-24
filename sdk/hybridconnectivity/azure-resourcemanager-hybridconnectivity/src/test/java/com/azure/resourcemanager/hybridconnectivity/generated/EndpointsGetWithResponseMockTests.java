@@ -22,7 +22,7 @@ public final class EndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"default\",\"resourceId\":\"ndoygmifthnzdnd\",\"provisioningState\":\"gnayqigynduh\"},\"id\":\"hqlkthumaqo\",\"name\":\"bgycduiertgccym\",\"type\":\"aolps\"}";
+            = "{\"properties\":{\"type\":\"custom\",\"resourceId\":\"uicpd\",\"provisioningState\":\"kzzlvmbmpaxmodf\"},\"id\":\"efyw\",\"name\":\"bpfvm\",\"type\":\"yhrfouyftaakcpw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,11 @@ public final class EndpointsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        EndpointResource response
-            = manager.endpoints().getWithResponse("ewgdrjervn", "enq", com.azure.core.util.Context.NONE).getValue();
+        EndpointResource response = manager.endpoints()
+            .getWithResponse("mgxcxrslpm", "twuoegrpkhjwni", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(Type.DEFAULT, response.properties().type());
-        Assertions.assertEquals("ndoygmifthnzdnd", response.properties().resourceId());
+        Assertions.assertEquals(Type.CUSTOM, response.properties().type());
+        Assertions.assertEquals("uicpd", response.properties().resourceId());
     }
 }

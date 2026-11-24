@@ -11,7 +11,7 @@ import com.azure.resourcemanager.trustedsigning.models.CheckNameAvailability;
  */
 public final class CodeSigningAccountsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2024-09-30-preview/CodeSigningAccounts_CheckNameAvailability.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_CheckNameAvailability.json
      */
     /**
      * Sample code: Checks that the trusted signing account name is available.

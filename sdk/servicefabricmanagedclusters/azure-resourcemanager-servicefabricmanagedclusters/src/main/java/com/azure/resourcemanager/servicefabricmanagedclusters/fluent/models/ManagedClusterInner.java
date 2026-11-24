@@ -7,7 +7,6 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -1134,23 +1133,31 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Validates the instance.
+     * Get the skipManagedNsgAssignment property: Determines whether to skip the assignment of the managed network
+     * security group (SF-NSG) to the cluster subnet when using a bring-your-own virtual network (BYOVNET)
+     * configuration. The default value is false.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the skipManagedNsgAssignment value.
      */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
-        if (sku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sku in model ManagedClusterInner"));
-        } else {
-            sku().validate();
-        }
+    public Boolean skipManagedNsgAssignment() {
+        return this.innerProperties() == null ? null : this.innerProperties().skipManagedNsgAssignment();
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterInner.class);
+    /**
+     * Set the skipManagedNsgAssignment property: Determines whether to skip the assignment of the managed network
+     * security group (SF-NSG) to the cluster subnet when using a bring-your-own virtual network (BYOVNET)
+     * configuration. The default value is false.
+     * 
+     * @param skipManagedNsgAssignment the skipManagedNsgAssignment value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withSkipManagedNsgAssignment(Boolean skipManagedNsgAssignment) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withSkipManagedNsgAssignment(skipManagedNsgAssignment);
+        return this;
+    }
 
     /**
      * {@inheritDoc}

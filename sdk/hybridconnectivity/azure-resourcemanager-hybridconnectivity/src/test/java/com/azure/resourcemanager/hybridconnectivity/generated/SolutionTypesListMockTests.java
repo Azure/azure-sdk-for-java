@@ -11,6 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager;
+import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionTypeResource;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,7 +23,7 @@ public final class SolutionTypesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"solutionType\":\"ysjkixqtnqttez\",\"description\":\"fffiak\",\"supportedAzureRegions\":[\"qqmtedltmmji\",\"yeozphvwauyqncy\"],\"solutionSettings\":[{\"name\":\"kvi\",\"displayName\":\"mdscwxqupev\",\"type\":\"hfstotxhojujbyp\",\"description\":\"lmcuvhixb\",\"allowedValues\":[\"yfwnylr\",\"ool\",\"ttpkiwkkbnujrywv\"],\"defaultValue\":\"y\"}]},\"id\":\"fpncurdo\",\"name\":\"wiithtywub\",\"type\":\"cbihwqk\"}]}";
+            = "{\"value\":[{\"properties\":{\"solutionType\":\"jb\",\"description\":\"eorfm\",\"supportedAzureRegions\":[\"qtqzfavyv\",\"qqybarye\",\"ayjkqa\"],\"hostTypes\":[\"GCP\",\"GCP\",\"AWS\",\"GCP\"],\"solutionSettings\":[{\"name\":\"cbhernntiewdj\",\"displayName\":\"vbquwr\",\"type\":\"ehwagoh\",\"description\":\"uffkmrqemvvh\",\"allowedValues\":[\"tdrjfutacoebj\"],\"hostTypes\":[\"GCP\",\"GCP\",\"GCP\"],\"defaultValue\":\"jznmwcpmguaa\"},{\"name\":\"raufactkahzova\",\"displayName\":\"j\",\"type\":\"iuxxpshneekulfg\",\"description\":\"lqubkwdlen\",\"allowedValues\":[\"sutujba\"],\"hostTypes\":[\"GCP\",\"AWS\",\"AWS\"],\"defaultValue\":\"hminyflnorwmduv\"}]},\"id\":\"klvxwmyg\",\"name\":\"xpgpq\",\"type\":\"hiszepnnbjcrxgib\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +34,22 @@ public final class SolutionTypesListMockTests {
 
         PagedIterable<SolutionTypeResource> response = manager.solutionTypes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ysjkixqtnqttez", response.iterator().next().properties().solutionType());
-        Assertions.assertEquals("fffiak", response.iterator().next().properties().description());
-        Assertions.assertEquals("qqmtedltmmji", response.iterator().next().properties().supportedAzureRegions().get(0));
-        Assertions.assertEquals("kvi", response.iterator().next().properties().solutionSettings().get(0).name());
-        Assertions.assertEquals("mdscwxqupev",
+        Assertions.assertEquals("jb", response.iterator().next().properties().solutionType());
+        Assertions.assertEquals("eorfm", response.iterator().next().properties().description());
+        Assertions.assertEquals("qtqzfavyv", response.iterator().next().properties().supportedAzureRegions().get(0));
+        Assertions.assertEquals(HostType.GCP, response.iterator().next().properties().hostTypes().get(0));
+        Assertions.assertEquals("cbhernntiewdj",
+            response.iterator().next().properties().solutionSettings().get(0).name());
+        Assertions.assertEquals("vbquwr",
             response.iterator().next().properties().solutionSettings().get(0).displayName());
-        Assertions.assertEquals("hfstotxhojujbyp",
-            response.iterator().next().properties().solutionSettings().get(0).type());
-        Assertions.assertEquals("lmcuvhixb",
+        Assertions.assertEquals("ehwagoh", response.iterator().next().properties().solutionSettings().get(0).type());
+        Assertions.assertEquals("uffkmrqemvvh",
             response.iterator().next().properties().solutionSettings().get(0).description());
-        Assertions.assertEquals("yfwnylr",
+        Assertions.assertEquals("tdrjfutacoebj",
             response.iterator().next().properties().solutionSettings().get(0).allowedValues().get(0));
-        Assertions.assertEquals("y", response.iterator().next().properties().solutionSettings().get(0).defaultValue());
+        Assertions.assertEquals(HostType.GCP,
+            response.iterator().next().properties().solutionSettings().get(0).hostTypes().get(0));
+        Assertions.assertEquals("jznmwcpmguaa",
+            response.iterator().next().properties().solutionSettings().get(0).defaultValue());
     }
 }

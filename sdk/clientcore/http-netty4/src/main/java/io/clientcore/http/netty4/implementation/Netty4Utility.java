@@ -85,10 +85,12 @@ public final class Netty4Utility {
     // Non-native dependencies are required while native dependencies are optional. Without the native dependencies
     // the SDK will fall back to using the JDK implementations.
     private static final List<String> REQUIRED_NETTY_VERSION_ARTIFACTS
-        = Arrays.asList("netty-buffer", "netty-codec", "netty-codec-http", "netty-codec-http2", "netty-common",
-            "netty-handler", "netty-handler-proxy", "netty-resolver", "netty-resolver-dns", "netty-transport");
-    private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
-        .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
+        = Arrays.asList("netty-buffer", "netty-codec-base", "netty-codec-compression", "netty-codec-dns",
+            "netty-codec-socks", "netty-codec-http", "netty-codec-http2", "netty-common", "netty-handler",
+            "netty-handler-proxy", "netty-resolver", "netty-resolver-dns", "netty-transport");
+    private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS
+        = Arrays.asList("netty-transport-native-unix-common", "netty-transport-native-epoll",
+            "netty-transport-native-kqueue", "netty-transport-classes-epoll", "netty-transport-classes-kqueue");
 
     private static final int TWO_FIFTY_SIX_KB = 256 * 1024;
 

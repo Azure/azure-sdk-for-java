@@ -13,19 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RemoveVirtualMachineFromExadbVmClusterDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RemoveVirtualMachineFromExadbVmClusterDetails model = BinaryData.fromString(
-            "{\"dbNodes\":[{\"dbNodeId\":\"jhf\"},{\"dbNodeId\":\"mvec\"},{\"dbNodeId\":\"ctxmwoteyowcluq\"},{\"dbNodeId\":\"vekqvgqo\"}]}")
-            .toObject(RemoveVirtualMachineFromExadbVmClusterDetails.class);
-        Assertions.assertEquals("jhf", model.dbNodes().get(0).dbNodeId());
+        RemoveVirtualMachineFromExadbVmClusterDetails model
+            = BinaryData.fromString("{\"dbNodes\":[{\"dbNodeId\":\"oylhjlmuoyxprimr\"},{\"dbNodeId\":\"opteecj\"}]}")
+                .toObject(RemoveVirtualMachineFromExadbVmClusterDetails.class);
+        Assertions.assertEquals("oylhjlmuoyxprimr", model.dbNodes().get(0).dbNodeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemoveVirtualMachineFromExadbVmClusterDetails model
-            = new RemoveVirtualMachineFromExadbVmClusterDetails().withDbNodes(
-                Arrays.asList(new DbNodeDetails().withDbNodeId("jhf"), new DbNodeDetails().withDbNodeId("mvec"),
-                    new DbNodeDetails().withDbNodeId("ctxmwoteyowcluq"), new DbNodeDetails().withDbNodeId("vekqvgqo")));
+            = new RemoveVirtualMachineFromExadbVmClusterDetails().withDbNodes(Arrays.asList(
+                new DbNodeDetails().withDbNodeId("oylhjlmuoyxprimr"), new DbNodeDetails().withDbNodeId("opteecj")));
         model = BinaryData.fromObject(model).toObject(RemoveVirtualMachineFromExadbVmClusterDetails.class);
-        Assertions.assertEquals("jhf", model.dbNodes().get(0).dbNodeId());
+        Assertions.assertEquals("oylhjlmuoyxprimr", model.dbNodes().get(0).dbNodeId());
     }
 }

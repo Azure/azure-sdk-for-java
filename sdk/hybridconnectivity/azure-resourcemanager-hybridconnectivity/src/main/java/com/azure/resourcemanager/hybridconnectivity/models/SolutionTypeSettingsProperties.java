@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridconnectivity.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -42,6 +41,11 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
      * Array of allowed values for this solution settings property.
      */
     private List<String> allowedValues;
+
+    /*
+     * The supported host types for the current solution setting
+     */
+    private List<HostType> hostTypes;
 
     /*
      * Default value for this solution settings property.
@@ -100,6 +104,15 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
     }
 
     /**
+     * Get the hostTypes property: The supported host types for the current solution setting.
+     * 
+     * @return the hostTypes value.
+     */
+    public List<HostType> hostTypes() {
+        return this.hostTypes;
+    }
+
+    /**
      * Get the defaultValue property: Default value for this solution settings property.
      * 
      * @return the defaultValue value.
@@ -107,46 +120,6 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
     public String defaultValue() {
         return this.defaultValue;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property name in model SolutionTypeSettingsProperties"));
-        }
-        if (displayName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property displayName in model SolutionTypeSettingsProperties"));
-        }
-        if (type() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property type in model SolutionTypeSettingsProperties"));
-        }
-        if (description() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property description in model SolutionTypeSettingsProperties"));
-        }
-        if (allowedValues() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property allowedValues in model SolutionTypeSettingsProperties"));
-        }
-        if (defaultValue() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property defaultValue in model SolutionTypeSettingsProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SolutionTypeSettingsProperties.class);
 
     /**
      * {@inheritDoc}
@@ -160,6 +133,8 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("allowedValues", this.allowedValues,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("hostTypes", this.hostTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("defaultValue", this.defaultValue);
         return jsonWriter.writeEndObject();
     }
@@ -192,6 +167,9 @@ public final class SolutionTypeSettingsProperties implements JsonSerializable<So
                 } else if ("allowedValues".equals(fieldName)) {
                     List<String> allowedValues = reader.readArray(reader1 -> reader1.getString());
                     deserializedSolutionTypeSettingsProperties.allowedValues = allowedValues;
+                } else if ("hostTypes".equals(fieldName)) {
+                    List<HostType> hostTypes = reader.readArray(reader1 -> HostType.fromString(reader1.getString()));
+                    deserializedSolutionTypeSettingsProperties.hostTypes = hostTypes;
                 } else if ("defaultValue".equals(fieldName)) {
                     deserializedSolutionTypeSettingsProperties.defaultValue = reader.getString();
                 } else {

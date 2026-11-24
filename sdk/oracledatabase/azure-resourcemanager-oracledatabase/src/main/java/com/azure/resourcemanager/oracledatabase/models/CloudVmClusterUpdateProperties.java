@@ -79,6 +79,12 @@ public final class CloudVmClusterUpdateProperties implements JsonSerializable<Cl
      */
     private List<String> computeNodes;
 
+    /*
+     * Indicates if the Accelerated Networking feature is enabled or disabled for provisioning an Exadata VM cluster.
+     * The default value is: false.
+     */
+    private Boolean isAcceleratedNetworkEnabled;
+
     /**
      * Creates an instance of CloudVmClusterUpdateProperties class.
      */
@@ -335,17 +341,25 @@ public final class CloudVmClusterUpdateProperties implements JsonSerializable<Cl
     }
 
     /**
-     * Validates the instance.
+     * Get the isAcceleratedNetworkEnabled property: Indicates if the Accelerated Networking feature is enabled or
+     * disabled for provisioning an Exadata VM cluster. The default value is: false.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the isAcceleratedNetworkEnabled value.
      */
-    public void validate() {
-        if (fileSystemConfigurationDetails() != null) {
-            fileSystemConfigurationDetails().forEach(e -> e.validate());
-        }
-        if (dataCollectionOptions() != null) {
-            dataCollectionOptions().validate();
-        }
+    public Boolean isAcceleratedNetworkEnabled() {
+        return this.isAcceleratedNetworkEnabled;
+    }
+
+    /**
+     * Set the isAcceleratedNetworkEnabled property: Indicates if the Accelerated Networking feature is enabled or
+     * disabled for provisioning an Exadata VM cluster. The default value is: false.
+     * 
+     * @param isAcceleratedNetworkEnabled the isAcceleratedNetworkEnabled value to set.
+     * @return the CloudVmClusterUpdateProperties object itself.
+     */
+    public CloudVmClusterUpdateProperties withIsAcceleratedNetworkEnabled(Boolean isAcceleratedNetworkEnabled) {
+        this.isAcceleratedNetworkEnabled = isAcceleratedNetworkEnabled;
+        return this;
     }
 
     /**
@@ -368,6 +382,7 @@ public final class CloudVmClusterUpdateProperties implements JsonSerializable<Cl
         jsonWriter.writeJsonField("dataCollectionOptions", this.dataCollectionOptions);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeArrayField("computeNodes", this.computeNodes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isAcceleratedNetworkEnabled", this.isAcceleratedNetworkEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -421,6 +436,9 @@ public final class CloudVmClusterUpdateProperties implements JsonSerializable<Cl
                 } else if ("computeNodes".equals(fieldName)) {
                     List<String> computeNodes = reader.readArray(reader1 -> reader1.getString());
                     deserializedCloudVmClusterUpdateProperties.computeNodes = computeNodes;
+                } else if ("isAcceleratedNetworkEnabled".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.isAcceleratedNetworkEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

@@ -52,6 +52,16 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
      */
     private String ownerName;
 
+    /*
+     * Name of the database
+     */
+    private String databaseName;
+
+    /*
+     * Timestamp indicating when the database was last updated
+     */
+    private String lastUpdated;
+
     /**
      * Creates an instance of NeonDatabaseProperties class.
      */
@@ -166,14 +176,32 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
     }
 
     /**
-     * Validates the instance.
+     * Get the databaseName property: Name of the database.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the databaseName value.
      */
-    public void validate() {
-        if (attributes() != null) {
-            attributes().forEach(e -> e.validate());
-        }
+    public String databaseName() {
+        return this.databaseName;
+    }
+
+    /**
+     * Set the databaseName property: Name of the database.
+     * 
+     * @param databaseName the databaseName value to set.
+     * @return the NeonDatabaseProperties object itself.
+     */
+    public NeonDatabaseProperties withDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+        return this;
+    }
+
+    /**
+     * Get the lastUpdated property: Timestamp indicating when the database was last updated.
+     * 
+     * @return the lastUpdated value.
+     */
+    public String lastUpdated() {
+        return this.lastUpdated;
     }
 
     /**
@@ -186,6 +214,7 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
         jsonWriter.writeArrayField("attributes", this.attributes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("branchId", this.branchId);
         jsonWriter.writeStringField("ownerName", this.ownerName);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
         return jsonWriter.writeEndObject();
     }
 
@@ -220,6 +249,10 @@ public final class NeonDatabaseProperties implements JsonSerializable<NeonDataba
                     deserializedNeonDatabaseProperties.branchId = reader.getString();
                 } else if ("ownerName".equals(fieldName)) {
                     deserializedNeonDatabaseProperties.ownerName = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedNeonDatabaseProperties.databaseName = reader.getString();
+                } else if ("lastUpdated".equals(fieldName)) {
+                    deserializedNeonDatabaseProperties.lastUpdated = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

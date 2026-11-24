@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -61,6 +60,11 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
      * format "hh:mm:ss".
      */
     private String servicePlacementTimeLimit;
+
+    /*
+     * The current deployment or provisioning state, which only appears in the response
+     */
+    private String provisioningState;
 
     /**
      * Creates an instance of StatefulServiceProperties class.
@@ -229,6 +233,17 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     }
 
     /**
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -321,41 +336,6 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (correlationScheme() != null) {
-            correlationScheme().forEach(e -> e.validate());
-        }
-        if (serviceLoadMetrics() != null) {
-            serviceLoadMetrics().forEach(e -> e.validate());
-        }
-        if (servicePlacementPolicies() != null) {
-            servicePlacementPolicies().forEach(e -> e.validate());
-        }
-        if (scalingPolicies() != null) {
-            scalingPolicies().forEach(e -> e.validate());
-        }
-        if (serviceTypeName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property serviceTypeName in model StatefulServiceProperties"));
-        }
-        if (partitionDescription() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property partitionDescription in model StatefulServiceProperties"));
-        } else {
-            partitionDescription().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StatefulServiceProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -427,7 +407,7 @@ public final class StatefulServiceProperties extends ServiceResourceProperties {
                     List<ScalingPolicy> scalingPolicies = reader.readArray(reader1 -> ScalingPolicy.fromJson(reader1));
                     deserializedStatefulServiceProperties.withScalingPolicies(scalingPolicies);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedStatefulServiceProperties.withProvisioningState(reader.getString());
+                    deserializedStatefulServiceProperties.provisioningState = reader.getString();
                 } else if ("servicePackageActivationMode".equals(fieldName)) {
                     deserializedStatefulServiceProperties
                         .withServicePackageActivationMode(ServicePackageActivationMode.fromString(reader.getString()));

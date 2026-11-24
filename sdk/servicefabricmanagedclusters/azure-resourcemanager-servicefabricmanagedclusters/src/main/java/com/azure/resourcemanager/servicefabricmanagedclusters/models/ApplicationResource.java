@@ -303,7 +303,7 @@ public interface ApplicationResource {
     /**
      * The template for ApplicationResource update.
      */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -335,6 +335,19 @@ public interface ApplicationResource {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the ApplicationResource update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Application update parameters properties..
+             * 
+             * @param properties Application update parameters properties.
+             * @return the next definition stage.
+             */
+            Update withProperties(ApplicationUpdateParametersProperties properties);
         }
     }
 
@@ -415,4 +428,71 @@ public interface ApplicationResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void startRollback(Context context);
+
+    /**
+     * Send a request to update the current application upgrade.
+     * 
+     * @param parameters The parameters for updating an application upgrade.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateUpgrade(RuntimeUpdateApplicationUpgradeParameters parameters);
+
+    /**
+     * Send a request to update the current application upgrade.
+     * 
+     * @param parameters The parameters for updating an application upgrade.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void updateUpgrade(RuntimeUpdateApplicationUpgradeParameters parameters, Context context);
+
+    /**
+     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+     * application.
+     * 
+     * @param parameters The parameters for fetching the health of a deployed application.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void fetchHealth(ApplicationFetchHealthRequest parameters);
+
+    /**
+     * Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+     * application.
+     * 
+     * @param parameters The parameters for fetching the health of a deployed application.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void fetchHealth(ApplicationFetchHealthRequest parameters, Context context);
+
+    /**
+     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
+     * that should be used with immense care.
+     * 
+     * @param parameters The parameters for restarting a deployed code package.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restartDeployedCodePackage(RestartDeployedCodePackageRequest parameters);
+
+    /**
+     * Restart a code package instance of a service replica or instance. This is a potentially destabilizing operation
+     * that should be used with immense care.
+     * 
+     * @param parameters The parameters for restarting a deployed code package.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void restartDeployedCodePackage(RestartDeployedCodePackageRequest parameters, Context context);
 }

@@ -32,6 +32,12 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
     private final OffsetDateTime deleteTime;
 
     /*
+     * The chat thread deletion reason.
+     */
+    @Generated
+    private AcsChatThreadDeletedReason reason;
+
+    /*
      * The version of the thread
      */
     @Generated
@@ -81,6 +87,16 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
     }
 
     /**
+     * Get the reason property: The chat thread deletion reason.
+     *
+     * @return the reason value.
+     */
+    @Generated
+    public AcsChatThreadDeletedReason getReason() {
+        return this.reason;
+    }
+
+    /**
      * Get the version property: The version of the thread.
      *
      * @return the version value.
@@ -117,6 +133,7 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
         jsonWriter.writeJsonField("deletedByCommunicationIdentifier", this.deletedByCommunicationIdentifier);
         jsonWriter.writeStringField("deleteTime",
             this.deleteTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deleteTime));
+        jsonWriter.writeStringField("reason", this.reason == null ? null : this.reason.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -138,6 +155,7 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
             Long version = null;
             CommunicationIdentifierModel deletedByCommunicationIdentifier = null;
             OffsetDateTime deleteTime = null;
+            AcsChatThreadDeletedReason reason = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -155,6 +173,8 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
                 } else if ("deleteTime".equals(fieldName)) {
                     deleteTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("reason".equals(fieldName)) {
+                    reason = AcsChatThreadDeletedReason.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -163,6 +183,7 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
                 = new AcsChatThreadDeletedEventData(threadId, createTime, deletedByCommunicationIdentifier, deleteTime);
             deserializedAcsChatThreadDeletedEventData.transactionId = transactionId;
             deserializedAcsChatThreadDeletedEventData.version = version;
+            deserializedAcsChatThreadDeletedEventData.reason = reason;
             return deserializedAcsChatThreadDeletedEventData;
         });
     }

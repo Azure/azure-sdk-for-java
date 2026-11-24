@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mongocluster.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -61,24 +60,6 @@ public final class EntraIdentityProvider extends IdentityProvider {
         this.properties = properties;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (properties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property properties in model EntraIdentityProvider"));
-        } else {
-            properties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(EntraIdentityProvider.class);
 
     /**
      * {@inheritDoc}

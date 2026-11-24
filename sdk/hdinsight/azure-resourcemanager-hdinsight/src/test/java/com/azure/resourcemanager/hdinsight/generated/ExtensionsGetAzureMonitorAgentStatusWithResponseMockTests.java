@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.AzureMonitorResponse;
@@ -21,23 +21,23 @@ public final class ExtensionsGetAzureMonitorAgentStatusWithResponseMockTests {
     @Test
     public void testGetAzureMonitorAgentStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"oknssqyzqedikdf\",\"selectedConfigurations\":{\"configurationVersion\":\"iqmrjgeihfqlggw\",\"globalConfigurations\":{\"mgtvlj\":\"zcxmjpbyep\",\"yfqi\":\"rc\",\"ui\":\"gxhnpomyqwcabv\",\"augmrmfjlr\":\"eeyaswl\"},\"tableList\":[{\"name\":\"aukhfkvcisiz\"},{\"name\":\"a\"},{\"name\":\"sx\"},{\"name\":\"uivedwcgyeewxeiq\"}]}}";
+            = "{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"ozusgz\",\"selectedConfigurations\":{\"configurationVersion\":\"snnjzfpafolpym\",\"globalConfigurations\":{\"dphtv\":\"xqzragp\"},\"tableList\":[{\"name\":\"jvlej\"}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureMonitorResponse response = manager.extensions()
-            .getAzureMonitorAgentStatusWithResponse("mhbrbqgvg", "vpbbt", com.azure.core.util.Context.NONE)
+            .getAzureMonitorAgentStatusWithResponse("chl", "mltx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.clusterMonitoringEnabled());
-        Assertions.assertEquals("oknssqyzqedikdf", response.workspaceId());
-        Assertions.assertEquals("iqmrjgeihfqlggw", response.selectedConfigurations().configurationVersion());
-        Assertions.assertEquals("zcxmjpbyep", response.selectedConfigurations().globalConfigurations().get("mgtvlj"));
-        Assertions.assertEquals("aukhfkvcisiz", response.selectedConfigurations().tableList().get(0).name());
+        Assertions.assertFalse(response.clusterMonitoringEnabled());
+        Assertions.assertEquals("ozusgz", response.workspaceId());
+        Assertions.assertEquals("snnjzfpafolpym", response.selectedConfigurations().configurationVersion());
+        Assertions.assertEquals("xqzragp", response.selectedConfigurations().globalConfigurations().get("dphtv"));
+        Assertions.assertEquals("jvlej", response.selectedConfigurations().tableList().get(0).name());
     }
 }

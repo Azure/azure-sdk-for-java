@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class NotificationContent implements JsonSerializable<NotificationContent> {
 
     /*
-     * The type discriminator describing a notification type.
+     * The type discriminator describing a message type.
      */
     @Generated
     private CommunicationMessageKind kind = CommunicationMessageKind.fromString("NotificationContent");
@@ -49,7 +49,7 @@ public abstract class NotificationContent implements JsonSerializable<Notificati
     }
 
     /**
-     * Get the kind property: The type discriminator describing a notification type.
+     * Get the kind property: The type discriminator describing a message type.
      *
      * @return the kind value.
      */

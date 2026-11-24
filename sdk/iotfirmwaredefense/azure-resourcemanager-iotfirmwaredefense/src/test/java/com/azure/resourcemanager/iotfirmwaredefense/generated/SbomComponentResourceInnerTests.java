@@ -12,12 +12,12 @@ public final class SbomComponentResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SbomComponentResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"componentId\":\"puedckzywbiexzf\",\"componentName\":\"ue\",\"version\":\"ibx\",\"license\":\"wbhqwal\",\"filePaths\":[\"yoxa\",\"pdkzjancuxr\",\"d\",\"bavxbniwdjswzt\"],\"provisioningState\":\"Pending\"},\"id\":\"gnxytxhpzxbz\",\"name\":\"fzab\",\"type\":\"lcuhxwtctyqiklb\"}")
+            "{\"properties\":{\"componentId\":\"fmisg\",\"componentName\":\"nbbelda\",\"version\":\"zbaliourqha\",\"license\":\"uhashsfwx\",\"filePaths\":[\"w\",\"xcug\"],\"provisioningState\":\"Extracting\"},\"id\":\"oxdjebwpuc\",\"name\":\"wfvovbv\",\"type\":\"euecivyhzceuoj\"}")
             .toObject(SbomComponentResourceInner.class);
-        Assertions.assertEquals("puedckzywbiexzf", model.componentId());
-        Assertions.assertEquals("ue", model.componentName());
-        Assertions.assertEquals("ibx", model.version());
-        Assertions.assertEquals("wbhqwal", model.license());
-        Assertions.assertEquals("yoxa", model.filePaths().get(0));
+        Assertions.assertEquals("fmisg", model.componentId());
+        Assertions.assertEquals("nbbelda", model.componentName());
+        Assertions.assertEquals("zbaliourqha", model.version());
+        Assertions.assertEquals("uhashsfwx", model.license());
+        Assertions.assertEquals("w", model.filePaths().get(0));
     }
 }

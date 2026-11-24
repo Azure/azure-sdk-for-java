@@ -1,0 +1,44 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/sql/
+    exclude:
+      - sdk/sql/pom.xml
+      - sdk/sql/azure-resourcemanager-sql/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/sql/
+    exclude:
+      - sdk/sql/pom.xml
+      - sdk/sql/azure-resourcemanager-sql/pom.xml
+
+parameters:
+- name: release_azureresourcemanagersql
+  displayName: 'azure-resourcemanager-sql'
+  type: boolean
+  default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: sql
+    Artifacts:
+      - name: azure-resourcemanager-sql
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersql
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersql }}

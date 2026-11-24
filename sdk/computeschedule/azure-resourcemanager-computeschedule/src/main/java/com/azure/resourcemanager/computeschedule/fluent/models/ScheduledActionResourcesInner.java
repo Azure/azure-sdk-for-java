@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.computeschedule.models.ScheduledActionProperties;
+import com.azure.resourcemanager.computeschedule.models.ScheduledActionsExtensionProperties;
 import java.io.IOException;
 
 /**
@@ -21,7 +21,7 @@ public final class ScheduledActionResourcesInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
-    private ScheduledActionProperties properties;
+    private ScheduledActionsExtensionProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -54,7 +54,7 @@ public final class ScheduledActionResourcesInner extends ProxyResource {
      * 
      * @return the properties value.
      */
-    public ScheduledActionProperties properties() {
+    public ScheduledActionsExtensionProperties properties() {
         return this.properties;
     }
 
@@ -98,17 +98,6 @@ public final class ScheduledActionResourcesInner extends ProxyResource {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -142,7 +131,8 @@ public final class ScheduledActionResourcesInner extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedScheduledActionResourcesInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedScheduledActionResourcesInner.properties = ScheduledActionProperties.fromJson(reader);
+                    deserializedScheduledActionResourcesInner.properties
+                        = ScheduledActionsExtensionProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedScheduledActionResourcesInner.systemData = SystemData.fromJson(reader);
                 } else {

@@ -23,7 +23,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservicefleet.fluent.AutoUpgradeProfileOperationsClient;
@@ -94,30 +93,12 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return generateResponse is the response of a generate request along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> generateUpdateRunWithResponseAsync(String resourceGroupName,
         String fleetName, String autoUpgradeProfileName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (fleetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
-        }
-        if (autoUpgradeProfileName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter autoUpgradeProfileName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generateUpdateRun(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -134,33 +115,11 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return generateResponse is the response of a generate request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateUpdateRunWithResponse(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (fleetName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
-        }
-        if (autoUpgradeProfileName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autoUpgradeProfileName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.generateUpdateRunSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, fleetName, autoUpgradeProfileName, accept,
@@ -177,33 +136,11 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return generateResponse is the response of a generate request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> generateUpdateRunWithResponse(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (fleetName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter fleetName is required and cannot be null."));
-        }
-        if (autoUpgradeProfileName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter autoUpgradeProfileName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.generateUpdateRunSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, fleetName, autoUpgradeProfileName, accept, context);
@@ -218,7 +155,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenerateResponseInner>, GenerateResponseInner>
@@ -239,7 +176,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenerateResponseInner>, GenerateResponseInner>
@@ -260,7 +197,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenerateResponseInner>, GenerateResponseInner> beginGenerateUpdateRun(
@@ -280,7 +217,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return generateResponse is the response of a generate request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GenerateResponseInner> generateUpdateRunAsync(String resourceGroupName, String fleetName,
@@ -298,7 +235,7 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName,
@@ -316,13 +253,11 @@ public final class AutoUpgradeProfileOperationsClientImpl implements AutoUpgrade
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return generateResponse is the response of a generate request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenerateResponseInner generateUpdateRun(String resourceGroupName, String fleetName,
         String autoUpgradeProfileName, Context context) {
         return beginGenerateUpdateRun(resourceGroupName, fleetName, autoUpgradeProfileName, context).getFinalResult();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AutoUpgradeProfileOperationsClientImpl.class);
 }

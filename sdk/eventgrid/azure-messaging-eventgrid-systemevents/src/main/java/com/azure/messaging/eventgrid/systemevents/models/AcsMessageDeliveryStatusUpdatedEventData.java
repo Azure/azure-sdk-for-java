@@ -29,6 +29,12 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     private String messageId;
 
     /*
+     * Optional. The BSUID of the recipient.
+     */
+    @Generated
+    private String toBsuid;
+
+    /*
      * The updated message status
      */
     @Generated
@@ -71,6 +77,16 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
     @Generated
     public String getMessageId() {
         return this.messageId;
+    }
+
+    /**
+     * Get the toBsuid property: Optional. The BSUID of the recipient.
+     *
+     * @return the toBsuid value.
+     */
+    @Generated
+    public String getToBsuid() {
+        return this.toBsuid;
     }
 
     /**
@@ -121,6 +137,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("channelType", this.channelKind == null ? null : this.channelKind.toString());
         jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("toBSUID", this.toBsuid);
         return jsonWriter.writeEndObject();
     }
 
@@ -143,6 +160,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
             AcsMessageDeliveryStatus status = null;
             AcsMessageChannelKind channelKind = null;
             String messageId = null;
+            String toBsuid = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -161,6 +179,8 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
                     channelKind = AcsMessageChannelKind.fromString(reader.getString());
                 } else if ("messageId".equals(fieldName)) {
                     messageId = reader.getString();
+                } else if ("toBSUID".equals(fieldName)) {
+                    toBsuid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -169,6 +189,7 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
                 = new AcsMessageDeliveryStatusUpdatedEventData(from, to, receivedTimestamp, status, channelKind);
             deserializedAcsMessageDeliveryStatusUpdatedEventData.error = error;
             deserializedAcsMessageDeliveryStatusUpdatedEventData.messageId = messageId;
+            deserializedAcsMessageDeliveryStatusUpdatedEventData.toBsuid = toBsuid;
             return deserializedAcsMessageDeliveryStatusUpdatedEventData;
         });
     }

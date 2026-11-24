@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface PlaywrightWorkspaceQuotas {
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -22,13 +22,13 @@ public interface PlaywrightWorkspaceQuotas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name along with {@link Response}.
+     * @return a Playwright workspace quota resource by name along with {@link Response}.
      */
     Response<PlaywrightWorkspaceQuota> getWithResponse(String resourceGroupName, String playwrightWorkspaceName,
         QuotaName quotaName, Context context);
 
     /**
-     * Get Playwright workspace quota resource by name.
+     * Gets a Playwright workspace quota resource by name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -36,12 +36,12 @@ public interface PlaywrightWorkspaceQuotas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return playwright workspace quota resource by name.
+     * @return a Playwright workspace quota resource by name.
      */
     PlaywrightWorkspaceQuota get(String resourceGroupName, String playwrightWorkspaceName, QuotaName quotaName);
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.
@@ -55,7 +55,7 @@ public interface PlaywrightWorkspaceQuotas {
         String playwrightWorkspaceName);
 
     /**
-     * List quota resources for a given Playwright workspace resource.
+     * Lists quota resources for a given Playwright workspace.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param playwrightWorkspaceName The name of the PlaywrightWorkspace.

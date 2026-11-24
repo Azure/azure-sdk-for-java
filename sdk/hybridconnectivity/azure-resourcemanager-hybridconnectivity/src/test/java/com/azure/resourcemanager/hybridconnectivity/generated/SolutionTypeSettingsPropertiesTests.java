@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.hybridconnectivity.models.HostType;
 import com.azure.resourcemanager.hybridconnectivity.models.SolutionTypeSettingsProperties;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,13 +13,14 @@ public final class SolutionTypeSettingsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionTypeSettingsProperties model = BinaryData.fromString(
-            "{\"name\":\"gxywpmue\",\"displayName\":\"fjz\",\"type\":\"fqkquj\",\"description\":\"dsuyonobgla\",\"allowedValues\":[\"qxtccmgyudx\"],\"defaultValue\":\"tlmoyrx\"}")
+            "{\"name\":\"pu\",\"displayName\":\"pigvpgylgqgitx\",\"type\":\"edjvcslynqw\",\"description\":\"ncw\",\"allowedValues\":[\"hxg\",\"trmgucnapkte\",\"ellwptfdy\"],\"hostTypes\":[\"GCP\",\"GCP\",\"AWS\"],\"defaultValue\":\"uaceopzfqrhhu\"}")
             .toObject(SolutionTypeSettingsProperties.class);
-        Assertions.assertEquals("gxywpmue", model.name());
-        Assertions.assertEquals("fjz", model.displayName());
-        Assertions.assertEquals("fqkquj", model.type());
-        Assertions.assertEquals("dsuyonobgla", model.description());
-        Assertions.assertEquals("qxtccmgyudx", model.allowedValues().get(0));
-        Assertions.assertEquals("tlmoyrx", model.defaultValue());
+        Assertions.assertEquals("pu", model.name());
+        Assertions.assertEquals("pigvpgylgqgitx", model.displayName());
+        Assertions.assertEquals("edjvcslynqw", model.type());
+        Assertions.assertEquals("ncw", model.description());
+        Assertions.assertEquals("hxg", model.allowedValues().get(0));
+        Assertions.assertEquals(HostType.GCP, model.hostTypes().get(0));
+        Assertions.assertEquals("uaceopzfqrhhu", model.defaultValue());
     }
 }

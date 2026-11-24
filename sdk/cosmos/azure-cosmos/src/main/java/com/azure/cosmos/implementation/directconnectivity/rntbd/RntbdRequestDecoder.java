@@ -6,10 +6,19 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.util.ResourceLeakDetector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public final class RntbdRequestDecoder extends ByteToMessageDecoder {
+
+    private static final Logger logger = LoggerFactory.getLogger(RntbdRequestDecoder.class);
+
+    private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
+        ResourceLeakDetector.Level.ADVANCED.ordinal();
+
     /**
      * Prepare for decoding an @{link RntbdRequest} or fire a channel readTree event to pass the input message along.
      *
@@ -23,14 +32,32 @@ public final class RntbdRequestDecoder extends ByteToMessageDecoder {
         if (message instanceof ByteBuf) {
 
             final ByteBuf in = (ByteBuf) message;
+            // BREADCRUMB: Track buffer before reading operation type
+            if (leakDetectionDebuggingEnabled) {
+                in.touch("RntbdRequestDecoder.channelRead: before reading resourceOperationType");
+            }
+
             final int resourceOperationType = in.getInt(in.readerIndex() + Integer.BYTES);
 
             if (resourceOperationType != 0) {
+                // BREADCRUMB: Going through normal decode path
+                if (leakDetectionDebuggingEnabled) {
+                    in.touch("RntbdRequestDecoder.channelRead: passing to super.channelRead (resourceOperationType != 0)");
+                }
                 super.channelRead(context, message);
                 return;
             }
+
+            // BREADCRUMB: Bypassing decoder - this is a potential leak point if downstream doesn't release
+            if (leakDetectionDebuggingEnabled) {
+                in.touch("RntbdRequestDecoder.channelRead: bypassing decoder (resourceOperationType == 0)");
+            }
         }
 
+        // BREADCRUMB: Message forwarded downstream - downstream MUST release it
+        if (leakDetectionDebuggingEnabled && message instanceof ByteBuf) {
+            ((ByteBuf) message).touch("RntbdRequestDecoder.channelRead: forwarding to next handler");
+        }
         context.fireChannelRead(message);
     }
 
@@ -64,5 +91,12 @@ public final class RntbdRequestDecoder extends ByteToMessageDecoder {
 
         in.discardReadBytes();
         out.add(request);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        // BREADCRUMB: Track exceptions that might lead to leaked buffers
+        logger.warn("{} RntbdRequestDecoder.exceptionCaught: {}", ctx.channel(), cause.getMessage(), cause);
+        super.exceptionCaught(ctx, cause);
     }
 }

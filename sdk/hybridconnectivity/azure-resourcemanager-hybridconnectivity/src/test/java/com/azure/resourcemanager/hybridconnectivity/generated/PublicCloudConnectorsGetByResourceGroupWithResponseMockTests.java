@@ -22,7 +22,7 @@ public final class PublicCloudConnectorsGetByResourceGroupWithResponseMockTests 
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"xywsuws\",\"excludedAccounts\":[\"ndsytgadg\"],\"isOrganizationalAccount\":true},\"hostType\":\"AWS\",\"provisioningState\":\"Succeeded\",\"connectorPrimaryIdentifier\":\"e\"},\"location\":\"zar\",\"tags\":{\"uijfqk\":\"q\",\"ibwwiftohqkv\":\"cewiipfpub\",\"ljphuopxodl\":\"uvksgplsaknynfsy\",\"sjswsrms\":\"iyntorzihle\"},\"id\":\"yzrpzbchckqqzq\",\"name\":\"ox\",\"type\":\"ysuiizynkedya\"}";
+            = "{\"properties\":{\"awsCloudProfile\":{\"accountId\":\"xtrthz\",\"excludedAccounts\":[\"tdwkqbrq\"],\"isOrganizationalAccount\":false},\"gcpCloudProfile\":{\"projectProperties\":{\"projectNumber\":\"h\",\"projectId\":\"xiilivpdtiirqt\"},\"organizationProperties\":{\"organizationId\":\"oaxoruzfgsqu\",\"managementProjectNumber\":\"fxrxxle\",\"managementProjectId\":\"tramxjez\",\"excludedProjectNumbers\":[\"nwxuqlcvydyp\",\"tdooaoj\",\"niodkooeb\"],\"excludedFolderIds\":[\"jhemms\",\"vdkcrodtj\",\"nfwjlfltkacjvefk\",\"lfoakg\"]}},\"hostType\":\"AWS\",\"provisioningState\":\"Failed\",\"connectorPrimaryIdentifier\":\"gaowpulpqblylsyx\"},\"kind\":\"GCP\",\"location\":\"sjervti\",\"tags\":{\"psbzkfzbeyvpn\":\"sdszue\",\"v\":\"icvi\",\"rbuukzclewyhmlwp\":\"jjxd\"},\"id\":\"ztzp\",\"name\":\"fn\",\"type\":\"ckw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,27 @@ public final class PublicCloudConnectorsGetByResourceGroupWithResponseMockTests 
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PublicCloudConnector response = manager.publicCloudConnectors()
-            .getByResourceGroupWithResponse("pkkpw", "reqnovvqfov", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ewzsyyceuzsoib", "ud", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zar", response.location());
-        Assertions.assertEquals("q", response.tags().get("uijfqk"));
-        Assertions.assertEquals("xywsuws", response.properties().awsCloudProfile().accountId());
-        Assertions.assertEquals("ndsytgadg", response.properties().awsCloudProfile().excludedAccounts().get(0));
-        Assertions.assertEquals(true, response.properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertEquals("sjervti", response.location());
+        Assertions.assertEquals("sdszue", response.tags().get("psbzkfzbeyvpn"));
+        Assertions.assertEquals("xtrthz", response.properties().awsCloudProfile().accountId());
+        Assertions.assertEquals("tdwkqbrq", response.properties().awsCloudProfile().excludedAccounts().get(0));
+        Assertions.assertFalse(response.properties().awsCloudProfile().isOrganizationalAccount());
+        Assertions.assertEquals("h", response.properties().gcpCloudProfile().projectProperties().projectNumber());
+        Assertions.assertEquals("xiilivpdtiirqt",
+            response.properties().gcpCloudProfile().projectProperties().projectId());
+        Assertions.assertEquals("oaxoruzfgsqu",
+            response.properties().gcpCloudProfile().organizationProperties().organizationId());
+        Assertions.assertEquals("fxrxxle",
+            response.properties().gcpCloudProfile().organizationProperties().managementProjectNumber());
+        Assertions.assertEquals("tramxjez",
+            response.properties().gcpCloudProfile().organizationProperties().managementProjectId());
+        Assertions.assertEquals("nwxuqlcvydyp",
+            response.properties().gcpCloudProfile().organizationProperties().excludedProjectNumbers().get(0));
+        Assertions.assertEquals("jhemms",
+            response.properties().gcpCloudProfile().organizationProperties().excludedFolderIds().get(0));
         Assertions.assertEquals(HostType.AWS, response.properties().hostType());
     }
 }

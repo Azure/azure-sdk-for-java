@@ -11,7 +11,7 @@ public final class StandbyContainerGroupPoolPredictionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyContainerGroupPoolPrediction model = BinaryData.fromString(
-            "{\"forecastValues\":{\"instancesRequestedCount\":[35704982359174836,23708408550027881,3884440405716336055]},\"forecastStartTime\":\"2021-04-17T02:43:52Z\",\"forecastInfo\":\"eupfhyhltrpm\"}")
+            "{\"forecastValues\":{\"instancesRequestedCount\":[2377879764372053937]},\"forecastStartTime\":\"2020-12-31T22:16:40Z\",\"forecastInfo\":\"ynnaam\"}")
             .toObject(StandbyContainerGroupPoolPrediction.class);
     }
 }

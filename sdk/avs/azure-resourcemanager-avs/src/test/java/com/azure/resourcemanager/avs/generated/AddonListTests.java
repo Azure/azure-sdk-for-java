@@ -12,8 +12,8 @@ public final class AddonListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddonList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"xrwlyc\",\"name\":\"duhpk\",\"type\":\"kgymareqnajxqug\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"ubeddg\",\"name\":\"sofwqmzqalkrmnji\",\"type\":\"pxacqqudfn\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Cancelled\"},\"id\":\"aabjyvayffimrz\",\"name\":\"tuzqogsexne\",\"type\":\"fdnw\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"},\"id\":\"zsyyceuzso\",\"name\":\"bjudpfrxtrthzv\",\"type\":\"ytdw\"}],\"nextLink\":\"brqubp\"}")
+            "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"zvgnwzs\",\"name\":\"mglzufcy\",\"type\":\"kohdbiha\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"cbjy\",\"name\":\"a\",\"type\":\"ithxqhabifpi\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Building\"},\"id\":\"byscnp\",\"name\":\"x\",\"type\":\"hiv\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Failed\"},\"id\":\"b\",\"name\":\"br\",\"type\":\"xvd\"}],\"nextLink\":\"jgrtfwvukxga\"}")
             .toObject(AddonList.class);
-        Assertions.assertEquals("brqubp", model.nextLink());
+        Assertions.assertEquals("jgrtfwvukxga", model.nextLink());
     }
 }

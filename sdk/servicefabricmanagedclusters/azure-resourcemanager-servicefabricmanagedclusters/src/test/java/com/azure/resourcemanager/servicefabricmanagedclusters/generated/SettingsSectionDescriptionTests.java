@@ -13,24 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SettingsSectionDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SettingsSectionDescription model = BinaryData.fromString(
-            "{\"name\":\"vokotllxdyh\",\"parameters\":[{\"name\":\"y\",\"value\":\"cogjltdtbn\"},{\"name\":\"hadoocrk\",\"value\":\"cikhnv\"},{\"name\":\"amqgxqquezikyw\",\"value\":\"gxk\"},{\"name\":\"lla\",\"value\":\"melwuipiccjz\"}]}")
-            .toObject(SettingsSectionDescription.class);
-        Assertions.assertEquals("vokotllxdyh", model.name());
-        Assertions.assertEquals("y", model.parameters().get(0).name());
-        Assertions.assertEquals("cogjltdtbn", model.parameters().get(0).value());
+        SettingsSectionDescription model
+            = BinaryData.fromString("{\"name\":\"rw\",\"parameters\":[{\"name\":\"co\",\"value\":\"uhpkxkgymar\"}]}")
+                .toObject(SettingsSectionDescription.class);
+        Assertions.assertEquals("rw", model.name());
+        Assertions.assertEquals("co", model.parameters().get(0).name());
+        Assertions.assertEquals("uhpkxkgymar", model.parameters().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsSectionDescription model = new SettingsSectionDescription().withName("vokotllxdyh")
-            .withParameters(Arrays.asList(new SettingsParameterDescription().withName("y").withValue("cogjltdtbn"),
-                new SettingsParameterDescription().withName("hadoocrk").withValue("cikhnv"),
-                new SettingsParameterDescription().withName("amqgxqquezikyw").withValue("gxk"),
-                new SettingsParameterDescription().withName("lla").withValue("melwuipiccjz")));
+        SettingsSectionDescription model = new SettingsSectionDescription().withName("rw")
+            .withParameters(Arrays.asList(new SettingsParameterDescription().withName("co").withValue("uhpkxkgymar")));
         model = BinaryData.fromObject(model).toObject(SettingsSectionDescription.class);
-        Assertions.assertEquals("vokotllxdyh", model.name());
-        Assertions.assertEquals("y", model.parameters().get(0).name());
-        Assertions.assertEquals("cogjltdtbn", model.parameters().get(0).value());
+        Assertions.assertEquals("rw", model.name());
+        Assertions.assertEquals("co", model.parameters().get(0).name());
+        Assertions.assertEquals("uhpkxkgymar", model.parameters().get(0).value());
     }
 }

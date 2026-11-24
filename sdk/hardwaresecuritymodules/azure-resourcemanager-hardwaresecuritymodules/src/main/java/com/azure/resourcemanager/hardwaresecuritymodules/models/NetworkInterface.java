@@ -63,14 +63,6 @@ public final class NetworkInterface implements JsonSerializable<NetworkInterface
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -12,14 +12,14 @@ public final class SourceOrTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SourceOrTarget model
-            = BinaryData.fromString("{\"azureResourceId\":\"xofpdvhpfxxypi\"}").toObject(SourceOrTarget.class);
-        Assertions.assertEquals("xofpdvhpfxxypi", model.azureResourceId());
+            = BinaryData.fromString("{\"azureResourceId\":\"xxypininmay\"}").toObject(SourceOrTarget.class);
+        Assertions.assertEquals("xxypininmay", model.azureResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SourceOrTarget model = new SourceOrTarget().withAzureResourceId("xofpdvhpfxxypi");
+        SourceOrTarget model = new SourceOrTarget().withAzureResourceId("xxypininmay");
         model = BinaryData.fromObject(model).toObject(SourceOrTarget.class);
-        Assertions.assertEquals("xofpdvhpfxxypi", model.azureResourceId());
+        Assertions.assertEquals("xxypininmay", model.azureResourceId());
     }
 }

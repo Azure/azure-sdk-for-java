@@ -14,14 +14,14 @@ public final class DnsPrivateViewInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateViewInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"kwpjgwwspughftqs\",\"displayName\":\"hqxujxukndxdi\",\"isProtected\":true,\"lifecycleState\":\"Deleted\",\"self\":\"guufzd\",\"timeCreated\":\"2021-05-17T16:17:48Z\",\"timeUpdated\":\"2021-04-01T21:46:18Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"ihwhbotzingamvpp\",\"name\":\"o\",\"type\":\"zqzudph\"}")
+            "{\"properties\":{\"ocid\":\"f\",\"displayName\":\"wnopqgikyzirtx\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"x\",\"timeCreated\":\"2021-12-08T11:07:15Z\",\"timeUpdated\":\"2021-05-05T23:09:26Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"sewgioilqukr\",\"name\":\"dxtqmieoxo\",\"type\":\"ggufhyaomtb\"}")
             .toObject(DnsPrivateViewInner.class);
-        Assertions.assertEquals("kwpjgwwspughftqs", model.properties().ocid());
-        Assertions.assertEquals("hqxujxukndxdi", model.properties().displayName());
+        Assertions.assertEquals("f", model.properties().ocid());
+        Assertions.assertEquals("wnopqgikyzirtx", model.properties().displayName());
         Assertions.assertTrue(model.properties().isProtected());
-        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETED, model.properties().lifecycleState());
-        Assertions.assertEquals("guufzd", model.properties().self());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T16:17:48Z"), model.properties().timeCreated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T21:46:18Z"), model.properties().timeUpdated());
+        Assertions.assertEquals(DnsPrivateViewsLifecycleState.DELETING, model.properties().lifecycleState());
+        Assertions.assertEquals("x", model.properties().self());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-08T11:07:15Z"), model.properties().timeCreated());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T23:09:26Z"), model.properties().timeUpdated());
     }
 }

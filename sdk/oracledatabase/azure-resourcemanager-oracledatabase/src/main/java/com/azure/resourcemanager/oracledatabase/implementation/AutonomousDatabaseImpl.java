@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseInner;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabase;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBaseProperties;
+import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseLifecycleAction;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdate;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdateProperties;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseWalletFile;
@@ -134,9 +135,12 @@ public final class AutonomousDatabaseImpl
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.autonomousdatabasename
-            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autonomousDatabases");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "resourceGroupName");
+        this.autonomousdatabasename = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}",
+            "autonomousdatabasename");
     }
 
     public AutonomousDatabase refresh() {
@@ -207,6 +211,14 @@ public final class AutonomousDatabaseImpl
         Context context) {
         return serviceManager.autonomousDatabases()
             .changeDisasterRecoveryConfiguration(resourceGroupName, autonomousdatabasename, body, context);
+    }
+
+    public AutonomousDatabase action(AutonomousDatabaseLifecycleAction body) {
+        return serviceManager.autonomousDatabases().action(resourceGroupName, autonomousdatabasename, body);
+    }
+
+    public AutonomousDatabase action(AutonomousDatabaseLifecycleAction body, Context context) {
+        return serviceManager.autonomousDatabases().action(resourceGroupName, autonomousdatabasename, body, context);
     }
 
     public AutonomousDatabaseImpl withRegion(Region location) {

@@ -12,9 +12,9 @@ public final class GiVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GiVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"twaenuuzko\"},\"id\":\"minrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"},{\"properties\":{\"version\":\"mzqhoftrmaequi\"},\"id\":\"xicslfao\",\"name\":\"z\",\"type\":\"iyylhalnswhccsp\"}],\"nextLink\":\"aivwitqscywu\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"ccelve\"},\"id\":\"ypql\",\"name\":\"feo\",\"type\":\"erqwkyhkobopg\"},{\"properties\":{\"version\":\"dkow\"},\"id\":\"bqpc\",\"name\":\"fkbw\",\"type\":\"csnjvcdwxlpqekft\"},{\"properties\":{\"version\":\"htjsying\"},\"id\":\"qatmtdhtmdvy\",\"name\":\"gikdgsz\",\"type\":\"w\"},{\"properties\":{\"version\":\"irryuzhlh\"},\"id\":\"oqrvqqaatjin\",\"name\":\"vgoup\",\"type\":\"fiibfggjioolvr\"}],\"nextLink\":\"kvtkkg\"}")
             .toObject(GiVersionListResult.class);
-        Assertions.assertEquals("twaenuuzko", model.value().get(0).properties().version());
-        Assertions.assertEquals("aivwitqscywu", model.nextLink());
+        Assertions.assertEquals("ccelve", model.value().get(0).properties().version());
+        Assertions.assertEquals("kvtkkg", model.nextLink());
     }
 }

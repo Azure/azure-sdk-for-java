@@ -7,9 +7,9 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 
 import javax.naming.NameNotFoundException;
@@ -39,7 +39,7 @@ public class ReplicaLookUp {
 
     private static final String REPLICA_PREFIX_TCP = "._tcp.";
 
-    private static final String SRC_RECORD = "SRV";
+    private static final String SRV_RECORD = "SRV";
 
     private static final String[] TRUSTED_DOMAIN_LABELS = { "azconfig", "appconfig" };
 
@@ -49,9 +49,9 @@ public class ReplicaLookUp {
 
     InitialDirContext context;
 
-    private Map<String, List<SRVRecord>> records = new HashMap<String, List<SRVRecord>>();
+    private final Map<String, List<SRVRecord>> records = new ConcurrentHashMap<>();
 
-    private Map<String, Instant> wait = new HashMap<>();
+    private final Map<String, Instant> wait = new ConcurrentHashMap<>();
 
     private final AppConfigurationProperties properties;
 
@@ -66,38 +66,45 @@ public class ReplicaLookUp {
     @Async
     public void updateAutoFailoverEndpoints() {
         if (semaphore.tryAcquire()) {
-            for (ConfigStore configStore : properties.getStores()) {
-                if (!configStore.isEnabled() || !configStore.isReplicaDiscoveryEnabled()) {
-                    continue;
+            try {
+                for (ConfigStore configStore : properties.getStores()) {
+                    if (!configStore.isEnabled() || !configStore.isReplicaDiscoveryEnabled()) {
+                        continue;
+                    }
+                    String mainEndpoint = configStore.getEndpoint();
+
+                    Instant nextRefresh = wait.get(mainEndpoint);
+                    if (nextRefresh != null && Instant.now().isBefore(nextRefresh)) {
+                        continue;
+                    }
+
+                    List<String> providedEndpoints;
+                    if (!configStore.getConnectionStrings().isEmpty()) {
+                        providedEndpoints = configStore.getConnectionStrings().stream()
+                            .map(AppConfigurationReplicaClientsBuilder::getEndpointFromConnectionString)
+                            .toList();
+                    } else if (!configStore.getEndpoints().isEmpty()) {
+                        providedEndpoints = configStore.getEndpoints();
+                    } else {
+                        providedEndpoints = List.of(configStore.getEndpoint());
+                    }
+
+                    try {
+                        List<SRVRecord> srvRecords = findAutoFailoverEndpoints(mainEndpoint, providedEndpoints);
+
+                        srvRecords.sort(SRVRecord::compareTo);
+
+                        records.put(mainEndpoint, srvRecords);
+                        wait.put(mainEndpoint, Instant.now().plus(FALLBACK_CLIENT_REFRESH_EXPIRED_INTERVAL));
+                    } catch (AppConfigurationReplicaException e) {
+                        LOGGER.warn("Failed to find replicas due to: {}", e.getMessage(), e);
+                        wait.put(mainEndpoint, Instant.now().plus(MINIMAL_CLIENT_REFRESH_INTERVAL));
+                    }
+
                 }
-                String mainEndpoint = configStore.getEndpoint();
-
-                List<String> providedEndpoints = new ArrayList<>();
-                if (configStore.getConnectionStrings().size() > 0) {
-                    providedEndpoints = configStore.getConnectionStrings().stream().map(connectionString -> {
-                        return (AppConfigurationReplicaClientsBuilder
-                            .getEndpointFromConnectionString(connectionString));
-                    }).toList();
-                } else if (configStore.getEndpoints().size() > 0) {
-                    providedEndpoints = configStore.getEndpoints();
-                } else {
-                    providedEndpoints = List.of(configStore.getEndpoint());
-                }
-
-                try {
-                    List<SRVRecord> srvRecords = findAutoFailoverEndpoints(mainEndpoint, providedEndpoints);
-
-                    srvRecords.sort((SRVRecord a, SRVRecord b) -> a.compareTo(b));
-
-                    records.put(mainEndpoint, srvRecords);
-                    wait.put(mainEndpoint, Instant.now().plus(FALLBACK_CLIENT_REFRESH_EXPIRED_INTERVAL));
-                } catch (AppConfigurationReplicaException e) {
-                    LOGGER.warn("Failed to finde replicas due to: " + e.getMessage());
-                    wait.put(mainEndpoint, Instant.now().plus(MINIMAL_CLIENT_REFRESH_INTERVAL));
-                }
-
+            } finally {
+                semaphore.release();
             }
-            semaphore.release();
         }
     }
 
@@ -111,8 +118,8 @@ public class ReplicaLookUp {
 
     private List<SRVRecord> findAutoFailoverEndpoints(String endpoint, List<String> providedEndpoints)
         throws AppConfigurationReplicaException {
-        List<SRVRecord> records = new ArrayList<>();
-        String host = "";
+        List<SRVRecord> srvRecords = new ArrayList<>();
+        String host;
         try {
             URI uri = new URI(endpoint);
             host = uri.getHost();
@@ -127,30 +134,34 @@ public class ReplicaLookUp {
             String knownDomain = getKnownDomain(endpoint);
 
             if (!providedEndpoints.contains(origin.getEndpoint()) && validate(knownDomain, origin.getEndpoint())) {
-                records.add(origin);
+                srvRecords.add(origin);
             }
-            replicas.stream().forEach(replica -> {
+            replicas.forEach(replica -> {
                 if (!providedEndpoints.contains(replica.getEndpoint())
                     && validate(knownDomain, replica.getEndpoint())) {
-                    records.add(replica);
+                    srvRecords.add(replica);
                 }
             });
         }
-        return records;
+        return srvRecords;
     }
 
     private SRVRecord getOriginRecord(String url) throws AppConfigurationReplicaException {
         Attribute attribute = requestRecord(ORIGIN_PREFIX + url);
         if (attribute != null) {
-            return parseHosts(attribute).get(0);
+            List<SRVRecord> hosts = parseHosts(attribute);
+            if (!hosts.isEmpty()) {
+                return hosts.get(0);
+            }
         }
         return null;
     }
 
+    private static final int MAX_REPLICA_COUNT = 20;
+
     private List<SRVRecord> getReplicaRecords(SRVRecord origin) throws AppConfigurationReplicaException {
         List<SRVRecord> replicas = new ArrayList<>();
-        int i = 0;
-        while (true) {
+        for (int i = 0; i < MAX_REPLICA_COUNT; i++) {
             Attribute attribute = requestRecord(
                 REPLICA_PREFIX_ALT + i + REPLICA_PREFIX_TCP + origin.getTarget());
 
@@ -159,7 +170,6 @@ public class ReplicaLookUp {
             }
 
             replicas.addAll(parseHosts(attribute));
-            i++;
         }
         return replicas;
     }
@@ -168,12 +178,18 @@ public class ReplicaLookUp {
         Instant retryTime = Instant.now().plusSeconds(30);
         while (retryTime.isAfter(Instant.now())) {
             try {
-                return context.getAttributes(name, new String[] { SRC_RECORD }).get(SRC_RECORD);
+                return context.getAttributes(name, new String[] { SRV_RECORD }).get(SRV_RECORD);
             } catch (NameNotFoundException e) {
                 // Found Last Record, should be the case that no SRV Record exists.
                 return null;
             } catch (NamingException e) {
                 // Will retry for up to 30 seconds
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new AppConfigurationReplicaException();
+                }
             }
         }
         throw new AppConfigurationReplicaException();
@@ -182,11 +198,12 @@ public class ReplicaLookUp {
     private List<SRVRecord> parseHosts(Attribute attribute) {
         List<SRVRecord> hosts = new ArrayList<>();
         try {
-            NamingEnumeration<?> records = attribute.getAll();
-            while (records.hasMore()) {
-                hosts.add(new SRVRecord(((String) records.next()).toString().split(" ")));
+            NamingEnumeration<?> srvRecords = attribute.getAll();
+            while (srvRecords.hasMore()) {
+                hosts.add(new SRVRecord(((String) srvRecords.next()).split(" ")));
             }
         } catch (NamingException e) {
+            LOGGER.warn("Failed to parse SRV record hosts", e);
         }
 
         return hosts;

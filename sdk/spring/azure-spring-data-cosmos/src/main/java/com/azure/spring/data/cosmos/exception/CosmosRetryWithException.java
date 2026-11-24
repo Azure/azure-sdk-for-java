@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 /**
  * Exception for Cosmos Retry With Exception.
  */
+@SuppressWarnings("deprecation")
 public final class CosmosRetryWithException extends CosmosAccessException {
 
     /**

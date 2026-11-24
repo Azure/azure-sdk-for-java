@@ -22,6 +22,7 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x509.Certificate;
@@ -61,6 +62,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -569,6 +571,24 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS, allowZeroInvocations = true)
+    @MethodSource("getPlatformManagedTestParameters")
+    public void createCertificateWithPlatformManagedPolicy(HttpClient httpClient,
+        CertificateServiceVersion serviceVersion) {
+        createCertificateAsyncClient(httpClient, serviceVersion);
+
+        platformManagedCertificatePolicyRunner(certificateName -> {
+            CertificatePolicy policy = setupPlatformManagedPolicy();
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackPollerFluxPollInterval(
+                    certificateAsyncClient.beginCreateCertificate(certificateName, policy));
+
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
+                .assertNext(certificate -> assertPlatformManagedPolicy(policy, certificate.getPolicy()))
+                .verifyComplete();
+        });
+    }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void restoreCertificateFromMalformedBackup(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
@@ -897,8 +917,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         importCertificateRunner((importCertificateOptions) -> StepVerifier
             .create(certificateAsyncClient.importCertificate(importCertificateOptions))
             .assertNext(importedCertificate -> {
-                assertTrue("931dd8219585752bc915684ca3967974c400de28"
-                    .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
+                assertArrayEquals(ImportCertificateFixture.getThumbprint(),
+                    importedCertificate.getProperties().getX509Thumbprint());
                 assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
                 // Load the CER part into X509Certificate object
@@ -991,6 +1011,46 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    public void createCertificateWithSanIpAndUri(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+        // IP address and URI SAN fields require API version >= 2025-06-01-preview.
+        // Old-style versions (7.x) don't support these fields, and "7.6" > "2025" lexicographically,
+        // so we check for date-based versioning instead.
+        if (!serviceVersion.getVersion().startsWith("20")) {
+            return;
+        }
+
+        createCertificateAsyncClient(httpClient, serviceVersion);
+
+        createCertificateWithSanIpAndUriRunner((certificatePolicy) -> {
+            String certName = testResourceNamer.randomName("testSanCert", 25);
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackPollerFluxPollInterval(
+                    certificateAsyncClient.beginCreateCertificate(certName, certificatePolicy));
+
+            StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
+                .assertNext(createdCert -> {
+                    assertNotNull(createdCert);
+                    assertEquals(certName, createdCert.getName());
+
+                    SubjectAlternativeNames san = createdCert.getPolicy().getSubjectAlternativeNames();
+
+                    assertNotNull(san);
+                    assertNotNull(san.getIpAddresses());
+                    assertEquals(2, san.getIpAddresses().size());
+                    assertTrue(san.getIpAddresses().contains("10.0.0.1"));
+                    assertTrue(san.getIpAddresses().contains("192.168.1.100"));
+                    assertNotNull(san.getUniformResourceIdentifiers());
+                    assertEquals(2, san.getUniformResourceIdentifiers().size());
+                    assertTrue(san.getUniformResourceIdentifiers().contains("https://example.com/api"));
+                    assertTrue(
+                        san.getUniformResourceIdentifiers().contains("spiffe://cluster.local/ns/default/sa/myapp"));
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
     public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
@@ -1002,4 +1062,5 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             })
             .verifyComplete());
     }
+
 }

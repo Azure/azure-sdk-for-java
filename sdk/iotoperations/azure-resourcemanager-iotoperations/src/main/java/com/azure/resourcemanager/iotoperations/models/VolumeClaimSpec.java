@@ -284,26 +284,6 @@ public final class VolumeClaimSpec implements JsonSerializable<VolumeClaimSpec> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dataSource() != null) {
-            dataSource().validate();
-        }
-        if (dataSourceRef() != null) {
-            dataSourceRef().validate();
-        }
-        if (resources() != null) {
-            resources().validate();
-        }
-        if (selector() != null) {
-            selector().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

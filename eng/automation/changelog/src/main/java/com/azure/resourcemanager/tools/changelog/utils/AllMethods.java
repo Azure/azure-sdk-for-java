@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.tools.changelog.utils;
 
 import japicmp.model.JApiClass;
+import japicmp.model.JApiConstructor;
+import japicmp.model.JApiField;
 import japicmp.model.JApiMethod;
 
 import java.util.ArrayList;
@@ -21,12 +23,24 @@ public class AllMethods {
         return methods;
     }
 
+    public List<JApiConstructor> getConstructors() {
+        return constructors;
+    }
+
+    public List<JApiField> getFields() {
+        return fields;
+    }
+
     private JApiClass jApiClass;
     private List<JApiMethod> methods;
+    private List<JApiConstructor> constructors;
+    private List<JApiField> fields;
 
-    private AllMethods(JApiClass jApiClass, List<JApiMethod> methods) {
+    private AllMethods(JApiClass jApiClass, List<JApiMethod> methods, List<JApiConstructor> constructors, List<JApiField> fields) {
         this.jApiClass = jApiClass;
         this.methods = methods;
+        this.constructors = constructors;
+        this.fields = fields;
     }
 
     public static void fromClasses(Map<String, JApiClass> classes, Map<String, AllMethods> results) {
@@ -47,6 +61,8 @@ public class AllMethods {
                 methods.addAll(results.get(aInterface.getFullyQualifiedName()).getMethods());
             }
         });
-        results.put(apiClass.getFullyQualifiedName(), new AllMethods(apiClass, new ArrayList<>(methods)));
+        Set<JApiConstructor> contructors = new HashSet<>(apiClass.getConstructors());
+        List<JApiField> fields = new ArrayList<>(apiClass.getFields());
+        results.put(apiClass.getFullyQualifiedName(), new AllMethods(apiClass, new ArrayList<>(methods), new ArrayList<>(contructors), fields));
     }
 }

@@ -29,11 +29,8 @@ import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.WritableByteChannel;
 import java.time.Duration;
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.LONG_BODY_PATH;
@@ -226,49 +223,5 @@ public class HttpResponseDrainsBufferTests {
             .flatMap(response -> Mono.fromRunnable(response::close))
             .delayElement(Duration.ofSeconds(1))
             .then()).verifyComplete();
-    }
-
-    private static final class TestResourceLeakDetectorFactory extends ResourceLeakDetectorFactory {
-        private final Collection<TestResourceLeakDetector<?>> createdDetectors = new ConcurrentLinkedDeque<>();
-
-        @Override
-        @SuppressWarnings("deprecation") // API is deprecated but abstract
-        public <T> ResourceLeakDetector<T> newResourceLeakDetector(Class<T> resource, int samplingInterval,
-            long maxActive) {
-            TestResourceLeakDetector<T> leakDetector
-                = new TestResourceLeakDetector<>(resource, samplingInterval, maxActive);
-            createdDetectors.add(leakDetector);
-            return leakDetector;
-        }
-
-        public int getTotalReportedLeakCount() {
-            return createdDetectors.stream().mapToInt(TestResourceLeakDetector::getReportedLeakCount).sum();
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private static final class TestResourceLeakDetector<T> extends ResourceLeakDetector<T> {
-        private final AtomicInteger reportTracedLeakCount = new AtomicInteger();
-        private final AtomicInteger reportUntracedLeakCount = new AtomicInteger();
-
-        TestResourceLeakDetector(Class<T> resource, int samplingInterval, long maxActive) {
-            super(resource, samplingInterval, maxActive);
-        }
-
-        @Override
-        protected void reportTracedLeak(String resourceType, String records) {
-            reportTracedLeakCount.incrementAndGet();
-            super.reportTracedLeak(resourceType, records);
-        }
-
-        @Override
-        protected void reportUntracedLeak(String resourceType) {
-            reportUntracedLeakCount.incrementAndGet();
-            super.reportUntracedLeak(resourceType);
-        }
-
-        public int getReportedLeakCount() {
-            return reportTracedLeakCount.get() + reportUntracedLeakCount.get();
-        }
     }
 }

@@ -2,12 +2,12 @@
 package com.azure.xml.implementation.aalto.in;
 
 import com.azure.xml.implementation.aalto.impl.CommonConfig;
+import com.azure.xml.implementation.aalto.stax.InputFactoryImpl;
 import com.azure.xml.implementation.aalto.util.BufferRecycler;
 import com.azure.xml.implementation.aalto.util.CharsetNames;
 import com.azure.xml.implementation.aalto.util.UriCanonicalizer;
 import com.azure.xml.implementation.aalto.util.XmlCharTypes;
 import com.azure.xml.implementation.aalto.util.XmlConsts;
-import com.azure.xml.implementation.stax2.XMLInputFactory2;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLReporter;
@@ -72,10 +72,10 @@ public final class ReaderConfig extends CommonConfig {
         sProperties.put(XMLInputFactory.ALLOCATOR, null);
 
         // // // Stax2:
-        sProperties.put(XMLInputFactory2.P_LAZY_PARSING, F_LAZY_PARSING);
-        sProperties.put(XMLInputFactory2.P_INTERN_NAMES, F_INTERN_NAMES);
-        sProperties.put(XMLInputFactory2.P_INTERN_NS_URIS, F_INTERN_NS_URIS);
-        sProperties.put(XMLInputFactory2.P_AUTO_CLOSE_INPUT, F_AUTO_CLOSE_INPUT);
+        sProperties.put(InputFactoryImpl.P_LAZY_PARSING, F_LAZY_PARSING);
+        sProperties.put(InputFactoryImpl.P_INTERN_NAMES, F_INTERN_NAMES);
+        sProperties.put(InputFactoryImpl.P_INTERN_NS_URIS, F_INTERN_NS_URIS);
+        sProperties.put(InputFactoryImpl.P_AUTO_CLOSE_INPUT, F_AUTO_CLOSE_INPUT);
 
         // (ones with fixed defaults)
 
@@ -83,13 +83,13 @@ public final class ReaderConfig extends CommonConfig {
          * report white space in prolog/epilog, as it's not really part
          * of document content.
          */
-        sProperties.put(XMLInputFactory2.P_REPORT_PROLOG_WHITESPACE, Boolean.FALSE);
-        sProperties.put(XMLInputFactory2.P_REPORT_CDATA, F_REPORT_CDATA);
+        sProperties.put(InputFactoryImpl.P_REPORT_PROLOG_WHITESPACE, Boolean.FALSE);
+        sProperties.put(InputFactoryImpl.P_REPORT_CDATA, F_REPORT_CDATA);
 
-        sProperties.put(XMLInputFactory2.P_PRESERVE_LOCATION, Boolean.TRUE);
+        sProperties.put(InputFactoryImpl.P_PRESERVE_LOCATION, Boolean.TRUE);
 
         // !!! Not really implemented, but let's recognize it
-        sProperties.put(XMLInputFactory2.P_DTD_OVERRIDE, null);
+        sProperties.put(InputFactoryImpl.P_DTD_OVERRIDE, null);
     }
 
     /**
@@ -104,13 +104,6 @@ public final class ReaderConfig extends CommonConfig {
      * checks, namespace URIs need to be canonicalized.
      */
     private final UriCanonicalizer mCanonicalizer;
-
-    /**
-     * Encoding passed in as external information, possibly from source
-     * from which xml content was gained from (for example, as an HTTP
-     * header, or file metadata).
-     */
-    private final String mExtEncoding;
 
     /**
      * Name of the actual encoding that input was found to be in (if any
@@ -152,10 +145,9 @@ public final class ReaderConfig extends CommonConfig {
     /**********************************************************************
      */
 
-    private ReaderConfig(String extEnc, EncodingContext encCtxt, int flags, int flagMods, XMLReporter rep,
-        XMLResolver res, UriCanonicalizer canonicalizer) {
+    private ReaderConfig(EncodingContext encCtxt, int flags, int flagMods, XMLReporter rep, XMLResolver res,
+        UriCanonicalizer canonicalizer) {
         super(flags, flagMods);
-        mExtEncoding = extEnc;
 
         /* Ok, let's then see if we can find a buffer recycler. Since they
          * are lazily constructed, and since GC may just flush them out
@@ -176,7 +168,7 @@ public final class ReaderConfig extends CommonConfig {
     }
 
     public ReaderConfig() {
-        this(null, new EncodingContext(), DEFAULT_FLAGS, 0, null, null, new UriCanonicalizer());
+        this(new EncodingContext(), DEFAULT_FLAGS, 0, null, null, new UriCanonicalizer());
     }
 
     public void setActualEncoding(String actualEnc) {
@@ -222,13 +214,8 @@ public final class ReaderConfig extends CommonConfig {
     /**********************************************************************
      */
 
-    public ReaderConfig createNonShared(String extEnc) {
-        return new ReaderConfig(extEnc, mEncCtxt, _flags, _flagMods, mReporter, mResolver, mCanonicalizer);
-    }
-
-    @Override
-    public String getExternalEncoding() {
-        return mExtEncoding;
+    public ReaderConfig createNonShared() {
+        return new ReaderConfig(mEncCtxt, _flags, _flagMods, mReporter, mResolver, mCanonicalizer);
     }
 
     @Override

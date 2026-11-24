@@ -21,50 +21,52 @@ public final class DedicatedHsmInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedHsmInner model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"payShield10K_LMK1_CPS2500\"},\"zones\":[\"uaceopzfqrhhu\"],\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"pcqeqx\"},\"networkInterfaces\":[{\"resourceId\":\"ahzxctobgbk\",\"privateIpAddress\":\"oizpostmgrcfbun\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"jhhkxbp\"},\"networkInterfaces\":[{\"resourceId\":\"jhxxjyn\",\"privateIpAddress\":\"divkrt\"},{\"resourceId\":\"bxqz\",\"privateIpAddress\":\"zjf\"},{\"resourceId\":\"vjfdx\",\"privateIpAddress\":\"vetvt\"},{\"resourceId\":\"aqtdoqmcbx\",\"privateIpAddress\":\"vxysl\"}]},\"stampId\":\"hsfxoblytkb\",\"statusMessage\":\"pe\",\"provisioningState\":\"Failed\"},\"location\":\"bkrvrnsvshqj\",\"tags\":{\"uvwbhsqfs\":\"crsbfovasr\"},\"id\":\"bcgjbirxbp\",\"name\":\"bsrfbj\",\"type\":\"dtws\"}")
+            "{\"properties\":{\"networkProfile\":{\"subnet\":{\"resourceId\":\"cogjltdtbn\"},\"networkInterfaces\":[{\"resourceId\":\"oocrkvcikhnv\",\"privateIpAddress\":\"mqg\"},{\"resourceId\":\"queziky\",\"privateIpAddress\":\"gxk\"},{\"resourceId\":\"la\",\"privateIpAddress\":\"elwuipi\"}]},\"managementNetworkProfile\":{\"subnet\":{\"resourceId\":\"kzivgvvcnayrh\"},\"networkInterfaces\":[{\"resourceId\":\"xmueed\",\"privateIpAddress\":\"rdvstkwqqtch\"},{\"resourceId\":\"lmfmtdaay\",\"privateIpAddress\":\"v\"},{\"resourceId\":\"gpiohgwxrtfudxe\",\"privateIpAddress\":\"gyqagvrvmnpkuk\"},{\"resourceId\":\"i\",\"privateIpAddress\":\"blxgwimf\"}]},\"stampId\":\"hfjx\",\"statusMessage\":\"szkkfoqre\",\"provisioningState\":\"Failed\"},\"sku\":{\"name\":\"payShield10K_LMK2_CPS2500\"},\"zones\":[\"jawneaiv\",\"wczelpci\",\"elsfeaen\",\"abfatkl\"],\"location\":\"xbjhwuaanozjosph\",\"tags\":{\"jrvxaglrv\":\"l\",\"tcs\":\"mjwosytx\"},\"id\":\"fcktqumiekke\",\"name\":\"zikhl\",\"type\":\"fjhdg\"}")
             .toObject(DedicatedHsmInner.class);
-        Assertions.assertEquals("bkrvrnsvshqj", model.location());
-        Assertions.assertEquals("crsbfovasr", model.tags().get("uvwbhsqfs"));
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS2500, model.sku().name());
-        Assertions.assertEquals("uaceopzfqrhhu", model.zones().get(0));
-        Assertions.assertEquals("pcqeqx", model.properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("oizpostmgrcfbun",
+        Assertions.assertEquals("xbjhwuaanozjosph", model.location());
+        Assertions.assertEquals("l", model.tags().get("jrvxaglrv"));
+        Assertions.assertEquals("cogjltdtbn", model.properties().networkProfile().subnet().resourceId());
+        Assertions.assertEquals("mqg",
             model.properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("jhhkxbp", model.properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("divkrt",
+        Assertions.assertEquals("kzivgvvcnayrh", model.properties().managementNetworkProfile().subnet().resourceId());
+        Assertions.assertEquals("rdvstkwqqtch",
             model.properties().managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("hsfxoblytkb", model.properties().stampId());
+        Assertions.assertEquals("hfjx", model.properties().stampId());
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK2_CPS2500, model.sku().name());
+        Assertions.assertEquals("jawneaiv", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedHsmInner model = new DedicatedHsmInner().withLocation("bkrvrnsvshqj")
-            .withTags(mapOf("uvwbhsqfs", "crsbfovasr"))
-            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS2500))
-            .withZones(Arrays.asList("uaceopzfqrhhu"))
+        DedicatedHsmInner model = new DedicatedHsmInner().withLocation("xbjhwuaanozjosph")
+            .withTags(mapOf("jrvxaglrv", "l", "tcs", "mjwosytx"))
             .withProperties(new DedicatedHsmProperties()
-                .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("pcqeqx"))
-                    .withNetworkInterfaces(
-                        Arrays.asList(new NetworkInterface().withPrivateIpAddress("oizpostmgrcfbun"))))
-                .withManagementNetworkProfile(
-                    new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("jhhkxbp"))
-                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("divkrt"),
-                            new NetworkInterface().withPrivateIpAddress("zjf"),
-                            new NetworkInterface().withPrivateIpAddress("vetvt"),
-                            new NetworkInterface().withPrivateIpAddress("vxysl"))))
-                .withStampId("hsfxoblytkb"));
+                .withNetworkProfile(
+                    new NetworkProfile().withSubnet(new ApiEntityReference().withResourceId("cogjltdtbn"))
+                        .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("mqg"),
+                            new NetworkInterface().withPrivateIpAddress("gxk"),
+                            new NetworkInterface().withPrivateIpAddress("elwuipi"))))
+                .withManagementNetworkProfile(new NetworkProfile()
+                    .withSubnet(new ApiEntityReference().withResourceId("kzivgvvcnayrh"))
+                    .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("rdvstkwqqtch"),
+                        new NetworkInterface().withPrivateIpAddress("v"),
+                        new NetworkInterface().withPrivateIpAddress("gyqagvrvmnpkuk"),
+                        new NetworkInterface().withPrivateIpAddress("blxgwimf"))))
+                .withStampId("hfjx"))
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK2_CPS2500))
+            .withZones(Arrays.asList("jawneaiv", "wczelpci", "elsfeaen", "abfatkl"));
         model = BinaryData.fromObject(model).toObject(DedicatedHsmInner.class);
-        Assertions.assertEquals("bkrvrnsvshqj", model.location());
-        Assertions.assertEquals("crsbfovasr", model.tags().get("uvwbhsqfs"));
-        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK1_CPS2500, model.sku().name());
-        Assertions.assertEquals("uaceopzfqrhhu", model.zones().get(0));
-        Assertions.assertEquals("pcqeqx", model.properties().networkProfile().subnet().resourceId());
-        Assertions.assertEquals("oizpostmgrcfbun",
+        Assertions.assertEquals("xbjhwuaanozjosph", model.location());
+        Assertions.assertEquals("l", model.tags().get("jrvxaglrv"));
+        Assertions.assertEquals("cogjltdtbn", model.properties().networkProfile().subnet().resourceId());
+        Assertions.assertEquals("mqg",
             model.properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("jhhkxbp", model.properties().managementNetworkProfile().subnet().resourceId());
-        Assertions.assertEquals("divkrt",
+        Assertions.assertEquals("kzivgvvcnayrh", model.properties().managementNetworkProfile().subnet().resourceId());
+        Assertions.assertEquals("rdvstkwqqtch",
             model.properties().managementNetworkProfile().networkInterfaces().get(0).privateIpAddress());
-        Assertions.assertEquals("hsfxoblytkb", model.properties().stampId());
+        Assertions.assertEquals("hfjx", model.properties().stampId());
+        Assertions.assertEquals(SkuName.PAY_SHIELD10K_LMK2_CPS2500, model.sku().name());
+        Assertions.assertEquals("jawneaiv", model.zones().get(0));
     }
 
     // Use "Map.of" if available

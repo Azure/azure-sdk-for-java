@@ -41,6 +41,11 @@ public final class AutoUpgradeProfileStatus implements JsonSerializable<AutoUpgr
      */
     private List<String> lastTriggerUpgradeVersions;
 
+    /*
+     * Additional information about the last trigger attempt.
+     */
+    private String lastTriggerMessage;
+
     /**
      * Creates an instance of AutoUpgradeProfileStatus class.
      */
@@ -86,11 +91,12 @@ public final class AutoUpgradeProfileStatus implements JsonSerializable<AutoUpgr
     }
 
     /**
-     * Validates the instance.
+     * Get the lastTriggerMessage property: Additional information about the last trigger attempt.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the lastTriggerMessage value.
      */
-    public void validate() {
+    public String lastTriggerMessage() {
+        return this.lastTriggerMessage;
     }
 
     /**
@@ -128,6 +134,8 @@ public final class AutoUpgradeProfileStatus implements JsonSerializable<AutoUpgr
                 } else if ("lastTriggerUpgradeVersions".equals(fieldName)) {
                     List<String> lastTriggerUpgradeVersions = reader.readArray(reader1 -> reader1.getString());
                     deserializedAutoUpgradeProfileStatus.lastTriggerUpgradeVersions = lastTriggerUpgradeVersions;
+                } else if ("lastTriggerMessage".equals(fieldName)) {
+                    deserializedAutoUpgradeProfileStatus.lastTriggerMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

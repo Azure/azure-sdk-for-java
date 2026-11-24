@@ -98,20 +98,6 @@ public final class OsProfileUpdate implements JsonSerializable<OsProfileUpdate> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (linuxConfiguration() != null) {
-            linuxConfiguration().validate();
-        }
-        if (windowsConfiguration() != null) {
-            windowsConfiguration().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

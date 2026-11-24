@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -30,10 +29,51 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     private List<UpdateGroup> groups;
 
     /*
+     * Select the members of the stage.
+     * * If specified without UpdateGroup, one implicit group containing the selected members will be created.
+     * * If specified with UpdateGroup, members will be pre-filtered before group-level selection logic is applied.
+     * * If not specified, group-level selection logic will be used.
+     */
+    private MemberSelector memberSelector;
+
+    /*
      * The time in seconds to wait at the end of this stage before starting the next one. Defaults to 0 seconds if
      * unspecified.
      */
     private Integer afterStageWaitInSeconds;
+
+    /*
+     * Limits the number of member (cluster) upgrade failures tolerated within this stage.
+     * Failures are evaluated over all members within all groups within this stage.
+     * Accepts either:
+     * • A fixed count n, where n >= 0
+     * • A percentage p%, where 0 <= p <= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this stage at scope start.
+     * Examples:
+     * • "3" --> up to 3 member upgrade failures are tolerated within this stage. The 4th failure would cause the entire
+     * stage to fail.
+     * • "25%" --> up to 25% of the members in this stage can fail their upgrade before the stage is considered failed.
+     */
+    private String maxAllowedFailures;
+
+    /*
+     * The max number of upgrades that can run concurrently across all groups in this stage.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
+     * Stage maxConcurrency has a min value of "1".
+     * Accepts either:
+     * • A fixed count, e.g., "3"
+     * • A percentage, e.g., "25%" (range 1–100). Percentage is of the total number of clusters across all groups in the
+     * stage.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --> up to 3 clusters from this stage upgrade at once (across all groups).
+     * • "100%" --> “all at once”; up to all clusters in this stage upgrade at the same time.
+     * • "25%" --> up to 25% of the stage’s total clusters upgrade at the same time.
+     */
+    private String maxConcurrency;
 
     /*
      * A list of Gates that will be created before this Stage is executed.
@@ -94,6 +134,32 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     }
 
     /**
+     * Get the memberSelector property: Select the members of the stage.
+     * * If specified without UpdateGroup, one implicit group containing the selected members will be created.
+     * * If specified with UpdateGroup, members will be pre-filtered before group-level selection logic is applied.
+     * * If not specified, group-level selection logic will be used.
+     * 
+     * @return the memberSelector value.
+     */
+    public MemberSelector memberSelector() {
+        return this.memberSelector;
+    }
+
+    /**
+     * Set the memberSelector property: Select the members of the stage.
+     * * If specified without UpdateGroup, one implicit group containing the selected members will be created.
+     * * If specified with UpdateGroup, members will be pre-filtered before group-level selection logic is applied.
+     * * If not specified, group-level selection logic will be used.
+     * 
+     * @param memberSelector the memberSelector value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withMemberSelector(MemberSelector memberSelector) {
+        this.memberSelector = memberSelector;
+        return this;
+    }
+
+    /**
      * Get the afterStageWaitInSeconds property: The time in seconds to wait at the end of this stage before starting
      * the next one. Defaults to 0 seconds if unspecified.
      * 
@@ -112,6 +178,98 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
      */
     public UpdateStage withAfterStageWaitInSeconds(Integer afterStageWaitInSeconds) {
         this.afterStageWaitInSeconds = afterStageWaitInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the maxAllowedFailures property: Limits the number of member (cluster) upgrade failures tolerated within this
+     * stage.
+     * Failures are evaluated over all members within all groups within this stage.
+     * Accepts either:
+     * • A fixed count n, where n &gt;= 0
+     * • A percentage p%, where 0 &lt;= p &lt;= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this stage at scope start.
+     * Examples:
+     * • "3" --&gt; up to 3 member upgrade failures are tolerated within this stage. The 4th failure would cause the
+     * entire stage to fail.
+     * • "25%" --&gt; up to 25% of the members in this stage can fail their upgrade before the stage is considered
+     * failed.
+     * 
+     * @return the maxAllowedFailures value.
+     */
+    public String maxAllowedFailures() {
+        return this.maxAllowedFailures;
+    }
+
+    /**
+     * Set the maxAllowedFailures property: Limits the number of member (cluster) upgrade failures tolerated within this
+     * stage.
+     * Failures are evaluated over all members within all groups within this stage.
+     * Accepts either:
+     * • A fixed count n, where n &gt;= 0
+     * • A percentage p%, where 0 &lt;= p &lt;= 100
+     * Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
+     * where p is the percentage as a decimal and N is the number of members in this stage at scope start.
+     * Examples:
+     * • "3" --&gt; up to 3 member upgrade failures are tolerated within this stage. The 4th failure would cause the
+     * entire stage to fail.
+     * • "25%" --&gt; up to 25% of the members in this stage can fail their upgrade before the stage is considered
+     * failed.
+     * 
+     * @param maxAllowedFailures the maxAllowedFailures value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withMaxAllowedFailures(String maxAllowedFailures) {
+        this.maxAllowedFailures = maxAllowedFailures;
+        return this;
+    }
+
+    /**
+     * Get the maxConcurrency property: The max number of upgrades that can run concurrently across all groups in this
+     * stage.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
+     * Stage maxConcurrency has a min value of "1".
+     * Accepts either:
+     * • A fixed count, e.g., "3"
+     * • A percentage, e.g., "25%" (range 1–100). Percentage is of the total number of clusters across all groups in the
+     * stage.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --&gt; up to 3 clusters from this stage upgrade at once (across all groups).
+     * • "100%" --&gt; “all at once”; up to all clusters in this stage upgrade at the same time.
+     * • "25%" --&gt; up to 25% of the stage’s total clusters upgrade at the same time.
+     * 
+     * @return the maxConcurrency value.
+     */
+    public String maxConcurrency() {
+        return this.maxConcurrency;
+    }
+
+    /**
+     * Set the maxConcurrency property: The max number of upgrades that can run concurrently across all groups in this
+     * stage.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
+     * Stage maxConcurrency has a min value of "1".
+     * Accepts either:
+     * • A fixed count, e.g., "3"
+     * • A percentage, e.g., "25%" (range 1–100). Percentage is of the total number of clusters across all groups in the
+     * stage.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --&gt; up to 3 clusters from this stage upgrade at once (across all groups).
+     * • "100%" --&gt; “all at once”; up to all clusters in this stage upgrade at the same time.
+     * • "25%" --&gt; up to 25% of the stage’s total clusters upgrade at the same time.
+     * 
+     * @param maxConcurrency the maxConcurrency value to set.
+     * @return the UpdateStage object itself.
+     */
+    public UpdateStage withMaxConcurrency(String maxConcurrency) {
+        this.maxConcurrency = maxConcurrency;
         return this;
     }
 
@@ -156,29 +314,6 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (name() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property name in model UpdateStage"));
-        }
-        if (groups() != null) {
-            groups().forEach(e -> e.validate());
-        }
-        if (beforeGates() != null) {
-            beforeGates().forEach(e -> e.validate());
-        }
-        if (afterGates() != null) {
-            afterGates().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UpdateStage.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -186,7 +321,10 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("memberSelector", this.memberSelector);
         jsonWriter.writeNumberField("afterStageWaitInSeconds", this.afterStageWaitInSeconds);
+        jsonWriter.writeStringField("maxAllowedFailures", this.maxAllowedFailures);
+        jsonWriter.writeStringField("maxConcurrency", this.maxConcurrency);
         jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -213,8 +351,14 @@ public final class UpdateStage implements JsonSerializable<UpdateStage> {
                 } else if ("groups".equals(fieldName)) {
                     List<UpdateGroup> groups = reader.readArray(reader1 -> UpdateGroup.fromJson(reader1));
                     deserializedUpdateStage.groups = groups;
+                } else if ("memberSelector".equals(fieldName)) {
+                    deserializedUpdateStage.memberSelector = MemberSelector.fromJson(reader);
                 } else if ("afterStageWaitInSeconds".equals(fieldName)) {
                     deserializedUpdateStage.afterStageWaitInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("maxAllowedFailures".equals(fieldName)) {
+                    deserializedUpdateStage.maxAllowedFailures = reader.getString();
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedUpdateStage.maxConcurrency = reader.getString();
                 } else if ("beforeGates".equals(fieldName)) {
                     List<GateConfiguration> beforeGates
                         = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));

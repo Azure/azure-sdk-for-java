@@ -14,12 +14,12 @@ public final class InventoryResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InventoryResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"rvjx\",\"azureResourceId\":\"nspydptkoenkoukn\",\"status\":\"Failed\",\"statusDetails\":\"tiukbldngkpoci\",\"provisioningState\":\"Succeeded\"},\"id\":\"xoegukgjnpiucgy\",\"name\":\"evqzntypmrbp\",\"type\":\"zcdrqjsdpydnfyhx\"}")
+            "{\"properties\":{\"cloudNativeType\":\"ec2\",\"cloudNativeResourceId\":\"baumnyqupedeoj\",\"azureResourceId\":\"bckhsmtxpsi\",\"status\":\"Failed\",\"statusDetails\":\"hvpesapskrdqm\",\"provisioningState\":\"Canceled\"},\"id\":\"htldwk\",\"name\":\"zxuutkncwscwsvl\",\"type\":\"otogtwrupqs\"}")
             .toObject(InventoryResourceInner.class);
         Assertions.assertEquals(CloudNativeType.EC2, model.properties().cloudNativeType());
-        Assertions.assertEquals("rvjx", model.properties().cloudNativeResourceId());
-        Assertions.assertEquals("nspydptkoenkoukn", model.properties().azureResourceId());
+        Assertions.assertEquals("baumnyqupedeoj", model.properties().cloudNativeResourceId());
+        Assertions.assertEquals("bckhsmtxpsi", model.properties().azureResourceId());
         Assertions.assertEquals(SolutionConfigurationStatus.FAILED, model.properties().status());
-        Assertions.assertEquals("tiukbldngkpoci", model.properties().statusDetails());
+        Assertions.assertEquals("hvpesapskrdqm", model.properties().statusDetails());
     }
 }

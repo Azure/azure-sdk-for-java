@@ -6,7 +6,6 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -352,8 +351,8 @@ public final class AutonomousDatabaseFromBackupTimestampProperties extends Auton
      */
     @Override
     public AutonomousDatabaseFromBackupTimestampProperties
-        withScheduledOperations(ScheduledOperationsType scheduledOperations) {
-        super.withScheduledOperations(scheduledOperations);
+        withScheduledOperationsList(List<ScheduledOperationsType> scheduledOperationsList) {
+        super.withScheduledOperationsList(scheduledOperationsList);
         return this;
     }
 
@@ -478,49 +477,60 @@ public final class AutonomousDatabaseFromBackupTimestampProperties extends Auton
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (sourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceId in model AutonomousDatabaseFromBackupTimestampProperties"));
-        }
-        if (cloneType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property cloneType in model AutonomousDatabaseFromBackupTimestampProperties"));
-        }
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (remoteDisasterRecoveryConfiguration() != null) {
-            remoteDisasterRecoveryConfiguration().validate();
-        }
-        if (localStandbyDb() != null) {
-            localStandbyDb().validate();
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (apexDetails() != null) {
-            apexDetails().validate();
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().validate();
-        }
-        if (connectionUrls() != null) {
-            connectionUrls().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
+    public AutonomousDatabaseFromBackupTimestampProperties
+        withIsScheduleAzUpdateToEarliest(Boolean isScheduleAzUpdateToEarliest) {
+        super.withIsScheduleAzUpdateToEarliest(isScheduleAzUpdateToEarliest);
+        return this;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AutonomousDatabaseFromBackupTimestampProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseFromBackupTimestampProperties withTimeScheduledAzUpdate(String timeScheduledAzUpdate) {
+        super.withTimeScheduledAzUpdate(timeScheduledAzUpdate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseFromBackupTimestampProperties withZone(String zone) {
+        super.withZone(zone);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseFromBackupTimestampProperties
+        withBackupDestination(BackupDestinationType backupDestination) {
+        super.withBackupDestination(backupDestination);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseFromBackupTimestampProperties withResourceAnchorId(String resourceAnchorId) {
+        super.withResourceAnchorId(resourceAnchorId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseFromBackupTimestampProperties withNetworkAnchorId(String networkAnchorId) {
+        super.withNetworkAnchorId(networkAnchorId);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -551,7 +561,8 @@ public final class AutonomousDatabaseFromBackupTimestampProperties extends Auton
             isPreviewVersionWithServiceTermsAccepted());
         jsonWriter.writeStringField("licenseModel", licenseModel() == null ? null : licenseModel().toString());
         jsonWriter.writeStringField("ncharacterSet", ncharacterSet());
-        jsonWriter.writeJsonField("scheduledOperations", scheduledOperations());
+        jsonWriter.writeArrayField("scheduledOperationsList", scheduledOperationsList(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointIp", privateEndpointIp());
         jsonWriter.writeStringField("privateEndpointLabel", privateEndpointLabel());
         jsonWriter.writeStringField("subnetId", subnetId());
@@ -566,6 +577,13 @@ public final class AutonomousDatabaseFromBackupTimestampProperties extends Auton
         jsonWriter.writeNumberField("backupRetentionPeriodInDays", backupRetentionPeriodInDays());
         jsonWriter.writeArrayField("whitelistedIps", whitelistedIps(),
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isScheduleAzUpdateToEarliest", isScheduleAzUpdateToEarliest());
+        jsonWriter.writeStringField("timeScheduledAzUpdate", timeScheduledAzUpdate());
+        jsonWriter.writeStringField("zone", zone());
+        jsonWriter.writeStringField("backupDestination",
+            backupDestination() == null ? null : backupDestination().toString());
+        jsonWriter.writeStringField("resourceAnchorId", resourceAnchorId());
+        jsonWriter.writeStringField("networkAnchorId", networkAnchorId());
         jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
         jsonWriter.writeStringField("sourceId", this.sourceId);
         jsonWriter.writeStringField("cloneType", this.cloneType == null ? null : this.cloneType.toString());
@@ -679,9 +697,11 @@ public final class AutonomousDatabaseFromBackupTimestampProperties extends Auton
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedAutonomousDatabaseFromBackupTimestampProperties
                         .withLifecycleState(AutonomousDatabaseLifecycleState.fromString(reader.getString()));
-                } else if ("scheduledOperations".equals(fieldName)) {
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsType> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsType.fromJson(reader1));
                     deserializedAutonomousDatabaseFromBackupTimestampProperties
-                        .withScheduledOperations(ScheduledOperationsType.fromJson(reader));
+                        .withScheduledOperationsList(scheduledOperationsList);
                 } else if ("privateEndpointIp".equals(fieldName)) {
                     deserializedAutonomousDatabaseFromBackupTimestampProperties
                         .withPrivateEndpointIp(reader.getString());
@@ -815,6 +835,22 @@ public final class AutonomousDatabaseFromBackupTimestampProperties extends Auton
                 } else if ("whitelistedIps".equals(fieldName)) {
                     List<String> whitelistedIps = reader.readArray(reader1 -> reader1.getString());
                     deserializedAutonomousDatabaseFromBackupTimestampProperties.withWhitelistedIps(whitelistedIps);
+                } else if ("isScheduleAzUpdateToEarliest".equals(fieldName)) {
+                    deserializedAutonomousDatabaseFromBackupTimestampProperties
+                        .withIsScheduleAzUpdateToEarliest(reader.getNullable(JsonReader::getBoolean));
+                } else if ("timeScheduledAzUpdate".equals(fieldName)) {
+                    deserializedAutonomousDatabaseFromBackupTimestampProperties
+                        .withTimeScheduledAzUpdate(reader.getString());
+                } else if ("zone".equals(fieldName)) {
+                    deserializedAutonomousDatabaseFromBackupTimestampProperties.withZone(reader.getString());
+                } else if ("backupDestination".equals(fieldName)) {
+                    deserializedAutonomousDatabaseFromBackupTimestampProperties
+                        .withBackupDestination(BackupDestinationType.fromString(reader.getString()));
+                } else if ("resourceAnchorId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseFromBackupTimestampProperties
+                        .withResourceAnchorId(reader.getString());
+                } else if ("networkAnchorId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseFromBackupTimestampProperties.withNetworkAnchorId(reader.getString());
                 } else if ("sourceId".equals(fieldName)) {
                     deserializedAutonomousDatabaseFromBackupTimestampProperties.sourceId = reader.getString();
                 } else if ("cloneType".equals(fieldName)) {

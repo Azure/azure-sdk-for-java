@@ -62,18 +62,14 @@ public final class RelationshipImpl implements Relationship, Relationship.Defini
     public Relationship create() {
         this.innerObject = serviceManager.serviceClient()
             .getRelationships()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Relationship create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getRelationships()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), context);
         return this;
     }
 
@@ -90,18 +86,14 @@ public final class RelationshipImpl implements Relationship, Relationship.Defini
     public Relationship apply() {
         this.innerObject = serviceManager.serviceClient()
             .getRelationships()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, this.innerModel(),
-                Context.NONE)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Relationship apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getRelationships()
-            .createOrUpdateWithResponse(resourceGroupName, healthModelName, relationshipName, this.innerModel(),
-                context)
-            .getValue();
+            .createOrUpdate(resourceGroupName, healthModelName, relationshipName, this.innerModel(), context);
         return this;
     }
 
@@ -109,9 +101,15 @@ public final class RelationshipImpl implements Relationship, Relationship.Defini
         com.azure.resourcemanager.cloudhealth.CloudHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.healthModelName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "healthmodels");
-        this.relationshipName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "relationships");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}",
+            "resourceGroupName");
+        this.healthModelName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}",
+            "healthModelName");
+        this.relationshipName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}",
+            "relationshipName");
     }
 
     public Relationship refresh() {

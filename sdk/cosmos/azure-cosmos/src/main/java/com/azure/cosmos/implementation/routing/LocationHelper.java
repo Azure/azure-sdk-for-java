@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.guava27.Strings;
 
 import java.net.URI;
 
@@ -41,12 +40,17 @@ public class LocationHelper {
                     serviceEndpoint.getPath(), serviceEndpoint.getQuery(),
                     serviceEndpoint.getFragment());
         } catch (Exception e) {
-            throw new RuntimeException(Strings.lenientFormat("invalid location [%s] or serviceEndpoint [%s]", location, serviceEndpoint.toString()), e);
+            throw new RuntimeException(String.format("invalid location [%s] or serviceEndpoint [%s]", location, serviceEndpoint.toString()), e);
         }
     }
 
     private static String dataCenterToUriPostfix(String dataCenter) {
-        return dataCenter.replace(" ", "");
+        // Convert to normalized form (lowercase, no spaces/hyphens/underscores) for use as URL suffix.
+        // DNS is case-insensitive (RFC 4343), so the lowercase change vs. the old space-strip-only
+        // behavior is invisible to resolution. The hyphen/underscore strips are no-ops on real
+        // server-returned region names (e.g., "West US 3") but keep this aligned with the single
+        // normalization used across all lookup paths.
+        return RegionNameNormalizer.normalize(dataCenter);
     }
 }
 

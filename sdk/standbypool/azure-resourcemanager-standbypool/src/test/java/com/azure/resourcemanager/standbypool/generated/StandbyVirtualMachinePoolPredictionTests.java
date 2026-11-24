@@ -11,7 +11,7 @@ public final class StandbyVirtualMachinePoolPredictionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachinePoolPrediction model = BinaryData.fromString(
-            "{\"forecastValues\":{\"instancesRequestedCount\":[4153982267147823381]},\"forecastStartTime\":\"2021-07-02T10:42:02Z\",\"forecastInfo\":\"pnddhsgcbacphejk\"}")
+            "{\"forecastValues\":{\"instancesRequestedCount\":[1068443864260527278,3240325607868125716,4248672595886107518,4325339278505434319]},\"forecastStartTime\":\"2020-12-30T06:06:44Z\",\"forecastInfo\":\"tynqgoul\"}")
             .toObject(StandbyVirtualMachinePoolPrediction.class);
     }
 }

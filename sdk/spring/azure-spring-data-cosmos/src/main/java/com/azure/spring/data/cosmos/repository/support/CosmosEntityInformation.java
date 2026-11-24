@@ -49,6 +49,7 @@ import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpr
  * @param <T> domain type.
  * @param <ID> id type.
  */
+@SuppressWarnings("deprecation")
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
     private static final Function<Class<?>, CosmosEntityInformation<?, ?>> ENTITY_INFORMATION_CREATOR =

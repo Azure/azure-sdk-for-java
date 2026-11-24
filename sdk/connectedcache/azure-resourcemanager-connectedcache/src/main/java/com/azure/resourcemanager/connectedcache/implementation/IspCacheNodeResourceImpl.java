@@ -12,8 +12,10 @@ import com.azure.resourcemanager.connectedcache.fluent.models.IspCacheNodeResour
 import com.azure.resourcemanager.connectedcache.models.CacheNodeProperty;
 import com.azure.resourcemanager.connectedcache.models.ConnectedCachePatchResource;
 import com.azure.resourcemanager.connectedcache.models.IspCacheNodeResource;
+import com.azure.resourcemanager.connectedcache.models.MccCacheNodeAutoUpdateHistory;
 import com.azure.resourcemanager.connectedcache.models.MccCacheNodeBgpCidrDetails;
 import com.azure.resourcemanager.connectedcache.models.MccCacheNodeInstallDetails;
+import com.azure.resourcemanager.connectedcache.models.MccCacheNodeIssueHistory;
 import java.util.Collections;
 import java.util.Map;
 
@@ -139,9 +141,15 @@ public final class IspCacheNodeResourceImpl
         com.azure.resourcemanager.connectedcache.ConnectedCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.customerResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ispCustomers");
-        this.cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "ispCacheNodes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}",
+            "resourceGroupName");
+        this.customerResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}",
+            "customerResourceName");
+        this.cacheNodeResourceName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}",
+            "cacheNodeResourceName");
     }
 
     public IspCacheNodeResource refresh() {
@@ -179,6 +187,28 @@ public final class IspCacheNodeResourceImpl
     public MccCacheNodeInstallDetails getCacheNodeInstallDetails() {
         return serviceManager.ispCacheNodesOperations()
             .getCacheNodeInstallDetails(resourceGroupName, customerResourceName, cacheNodeResourceName);
+    }
+
+    public Response<MccCacheNodeAutoUpdateHistory> getCacheNodeAutoUpdateHistoryWithResponse(Context context) {
+        return serviceManager.ispCacheNodesOperations()
+            .getCacheNodeAutoUpdateHistoryWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
+                context);
+    }
+
+    public MccCacheNodeAutoUpdateHistory getCacheNodeAutoUpdateHistory() {
+        return serviceManager.ispCacheNodesOperations()
+            .getCacheNodeAutoUpdateHistory(resourceGroupName, customerResourceName, cacheNodeResourceName);
+    }
+
+    public Response<MccCacheNodeIssueHistory> getCacheNodeMccIssueDetailsHistoryWithResponse(Context context) {
+        return serviceManager.ispCacheNodesOperations()
+            .getCacheNodeMccIssueDetailsHistoryWithResponse(resourceGroupName, customerResourceName,
+                cacheNodeResourceName, context);
+    }
+
+    public MccCacheNodeIssueHistory getCacheNodeMccIssueDetailsHistory() {
+        return serviceManager.ispCacheNodesOperations()
+            .getCacheNodeMccIssueDetailsHistory(resourceGroupName, customerResourceName, cacheNodeResourceName);
     }
 
     public IspCacheNodeResourceImpl withRegion(Region location) {

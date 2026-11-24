@@ -5,56 +5,41 @@
 package com.azure.resourcemanager.cloudhealth.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cloudhealth.models.DynamicDetectionRule;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdDirection;
-import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdModel;
+import com.azure.resourcemanager.cloudhealth.models.DynamicThresholdSensitivity;
 import com.azure.resourcemanager.cloudhealth.models.EvaluationRule;
 import com.azure.resourcemanager.cloudhealth.models.SignalOperator;
-import com.azure.resourcemanager.cloudhealth.models.ThresholdRule;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.cloudhealth.models.ThresholdRuleV2;
 import org.junit.jupiter.api.Assertions;
 
 public final class EvaluationRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EvaluationRule model = BinaryData.fromString(
-            "{\"dynamicDetectionRule\":{\"dynamicThresholdModel\":\"AnomalyDetection\",\"modelSensitivity\":92.68480143402465,\"dynamicThresholdDirection\":\"LowerThan\",\"trainingStartTime\":\"2021-07-20T08:46:51Z\"},\"degradedRule\":{\"operator\":\"LowerOrEquals\",\"threshold\":\"uofqwe\"},\"unhealthyRule\":{\"operator\":\"GreaterThan\",\"threshold\":\"menevfyexfwh\"}}")
+            "{\"degradedRule\":{\"operator\":\"GreaterThan\",\"threshold\":89.54885021656311,\"sensitivity\":\"Low\"},\"unhealthyRule\":{\"operator\":\"LessThanOrEqual\",\"threshold\":72.30050635322169,\"sensitivity\":\"High\"}}")
             .toObject(EvaluationRule.class);
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(92.68480143402465, model.dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.LOWER_THAN,
-            model.dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T08:46:51Z"),
-            model.dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.LOWER_OR_EQUALS, model.degradedRule().operator());
-        Assertions.assertEquals("uofqwe", model.degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.unhealthyRule().operator());
-        Assertions.assertEquals("menevfyexfwh", model.unhealthyRule().threshold());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.degradedRule().operator());
+        Assertions.assertEquals(89.54885021656311D, model.degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.unhealthyRule().operator());
+        Assertions.assertEquals(72.30050635322169D, model.unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.unhealthyRule().sensitivity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EvaluationRule model = new EvaluationRule()
-            .withDynamicDetectionRule(
-                new DynamicDetectionRule().withDynamicThresholdModel(DynamicThresholdModel.ANOMALY_DETECTION)
-                    .withModelSensitivity(92.68480143402465)
-                    .withDynamicThresholdDirection(DynamicThresholdDirection.LOWER_THAN)
-                    .withTrainingStartTime(OffsetDateTime.parse("2021-07-20T08:46:51Z")))
-            .withDegradedRule(new ThresholdRule().withOperator(SignalOperator.LOWER_OR_EQUALS).withThreshold("uofqwe"))
-            .withUnhealthyRule(
-                new ThresholdRule().withOperator(SignalOperator.GREATER_THAN).withThreshold("menevfyexfwh"));
+            .withDegradedRule(new ThresholdRuleV2().withOperator(SignalOperator.GREATER_THAN)
+                .withThreshold(89.54885021656311D)
+                .withSensitivity(DynamicThresholdSensitivity.LOW))
+            .withUnhealthyRule(new ThresholdRuleV2().withOperator(SignalOperator.LESS_THAN_OR_EQUAL)
+                .withThreshold(72.30050635322169D)
+                .withSensitivity(DynamicThresholdSensitivity.HIGH));
         model = BinaryData.fromObject(model).toObject(EvaluationRule.class);
-        Assertions.assertEquals(DynamicThresholdModel.ANOMALY_DETECTION,
-            model.dynamicDetectionRule().dynamicThresholdModel());
-        Assertions.assertEquals(92.68480143402465, model.dynamicDetectionRule().modelSensitivity());
-        Assertions.assertEquals(DynamicThresholdDirection.LOWER_THAN,
-            model.dynamicDetectionRule().dynamicThresholdDirection());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-20T08:46:51Z"),
-            model.dynamicDetectionRule().trainingStartTime());
-        Assertions.assertEquals(SignalOperator.LOWER_OR_EQUALS, model.degradedRule().operator());
-        Assertions.assertEquals("uofqwe", model.degradedRule().threshold());
-        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.unhealthyRule().operator());
-        Assertions.assertEquals("menevfyexfwh", model.unhealthyRule().threshold());
+        Assertions.assertEquals(SignalOperator.GREATER_THAN, model.degradedRule().operator());
+        Assertions.assertEquals(89.54885021656311D, model.degradedRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.LOW, model.degradedRule().sensitivity());
+        Assertions.assertEquals(SignalOperator.LESS_THAN_OR_EQUAL, model.unhealthyRule().operator());
+        Assertions.assertEquals(72.30050635322169D, model.unhealthyRule().threshold());
+        Assertions.assertEquals(DynamicThresholdSensitivity.HIGH, model.unhealthyRule().sensitivity());
     }
 }

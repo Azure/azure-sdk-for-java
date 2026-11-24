@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -49,21 +48,6 @@ public final class X509Credentials implements JsonSerializable<X509Credentials> 
         this.certificateSecretName = certificateSecretName;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (certificateSecretName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property certificateSecretName in model X509Credentials"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(X509Credentials.class);
 
     /**
      * {@inheritDoc}

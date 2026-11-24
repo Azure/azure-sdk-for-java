@@ -39,6 +39,7 @@ import com.azure.storage.file.share.implementation.models.ShareStorageExceptionI
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +97,9 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
-            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-mode") String fileMode,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -114,7 +117,9 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
-            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-mode") String fileMode,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -132,7 +137,9 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
-            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-mode") String fileMode,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -150,7 +157,9 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
-            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-mode") String fileMode,
+            @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({ 200 })
@@ -622,6 +631,54 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-source-allow-trailing-dot") Boolean allowSourceTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<ResponseBase<DirectoriesGetPropertiesHeaders, Void>> getPropertiesByFileId(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("fileid") String fileId, @QueryParam("sharesnapshot") String sharesnapshot,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<Response<Void>> getPropertiesByFileIdNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("fileid") String fileId, @QueryParam("sharesnapshot") String sharesnapshot,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        ResponseBase<DirectoriesGetPropertiesHeaders, Void> getPropertiesByFileIdSync(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("fileid") String fileId, @QueryParam("sharesnapshot") String sharesnapshot,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{shareName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Response<Void> getPropertiesByFileIdNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("fileid") String fileId, @QueryParam("sharesnapshot") String sharesnapshot,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -652,6 +709,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -662,11 +722,11 @@ public final class DirectoriesImpl {
         String directory, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
-        String fileMode) {
+        String fileMode, FilePropertySemantics filePropertySemantics) {
         return FluxUtil
             .withContext(context -> createWithResponseAsync(shareName, directory, timeout, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, owner, group, fileMode, context))
+                fileChangeTime, owner, group, fileMode, filePropertySemantics, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -698,6 +758,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -709,14 +772,14 @@ public final class DirectoriesImpl {
         String directory, Integer timeout, Map<String, String> metadata, String filePermission,
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
-        String fileMode, Context context) {
+        String fileMode, FilePropertySemantics filePropertySemantics, Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
         return service
             .create(this.client.getUrl(), shareName, directory, restype, this.client.isAllowTrailingDot(), timeout,
                 metadata, this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey,
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.getFileRequestIntent(),
-                owner, group, fileMode, accept, context)
+                owner, group, fileMode, filePropertySemantics, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -748,6 +811,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -757,10 +823,11 @@ public final class DirectoriesImpl {
     public Mono<Void> createAsync(String shareName, String directory, Integer timeout, Map<String, String> metadata,
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
-        String group, String fileMode) {
+        String group, String fileMode, FilePropertySemantics filePropertySemantics) {
         return createWithResponseAsync(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
             filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
-            fileMode).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            fileMode, filePropertySemantics)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -792,6 +859,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -802,10 +872,11 @@ public final class DirectoriesImpl {
     public Mono<Void> createAsync(String shareName, String directory, Integer timeout, Map<String, String> metadata,
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
-        String group, String fileMode, Context context) {
+        String group, String fileMode, FilePropertySemantics filePropertySemantics, Context context) {
         return createWithResponseAsync(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
             filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
-            fileMode, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            fileMode, filePropertySemantics, context)
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -837,6 +908,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -846,11 +920,12 @@ public final class DirectoriesImpl {
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String directory,
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String owner, String group, String fileMode) {
+        String fileChangeTime, String owner, String group, String fileMode,
+        FilePropertySemantics filePropertySemantics) {
         return FluxUtil
             .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, directory, timeout, metadata,
                 filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
-                fileLastWriteTime, fileChangeTime, owner, group, fileMode, context))
+                fileLastWriteTime, fileChangeTime, owner, group, fileMode, filePropertySemantics, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -882,6 +957,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -892,14 +970,16 @@ public final class DirectoriesImpl {
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String directory,
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String owner, String group, String fileMode, Context context) {
+        String fileChangeTime, String owner, String group, String fileMode, FilePropertySemantics filePropertySemantics,
+        Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
         return service
             .createNoCustomHeaders(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context)
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, filePropertySemantics,
+                accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -931,6 +1011,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -941,14 +1024,16 @@ public final class DirectoriesImpl {
     public ResponseBase<DirectoriesCreateHeaders, Void> createWithResponse(String shareName, String directory,
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String owner, String group, String fileMode, Context context) {
+        String fileChangeTime, String owner, String group, String fileMode, FilePropertySemantics filePropertySemantics,
+        Context context) {
         try {
             final String restype = "directory";
             final String accept = "application/xml";
             return service.createSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context);
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, filePropertySemantics,
+                accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -982,6 +1067,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -990,10 +1078,10 @@ public final class DirectoriesImpl {
     public void create(String shareName, String directory, Integer timeout, Map<String, String> metadata,
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
-        String group, String fileMode) {
+        String group, String fileMode, FilePropertySemantics filePropertySemantics) {
         createWithResponse(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
             filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
-            fileMode, Context.NONE);
+            fileMode, filePropertySemantics, Context.NONE);
     }
 
     /**
@@ -1024,6 +1112,9 @@ public final class DirectoriesImpl {
      * @param owner Optional, NFS only. The owner of the file or directory.
      * @param group Optional, NFS only. The owning group of the file or directory.
      * @param fileMode Optional, NFS only. The file mode of the file or directory.
+     * @param filePropertySemantics SMB only, default value is New. New will forcefully add the ARCHIVE attribute flag
+     * and alter the permissions specified in x-ms-file-permission to inherit missing permissions from the parent.
+     * Restore will apply changes without further modification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1034,14 +1125,16 @@ public final class DirectoriesImpl {
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, String directory, Integer timeout,
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
-        String fileChangeTime, String owner, String group, String fileMode, Context context) {
+        String fileChangeTime, String owner, String group, String fileMode, FilePropertySemantics filePropertySemantics,
+        Context context) {
         try {
             final String restype = "directory";
             final String accept = "application/xml";
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context);
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, filePropertySemantics,
+                accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -3718,6 +3811,264 @@ public final class DirectoriesImpl {
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
                 filePermissionFormat, filePermissionKey, metadata, this.client.isAllowTrailingDot(),
                 this.client.isAllowSourceTrailingDot(), this.client.getFileRequestIntent(), accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<DirectoriesGetPropertiesHeaders, Void>> getPropertiesByFileIdWithResponseAsync(
+        String shareName, String fileId, String sharesnapshot, Integer timeout, String requestId) {
+        return FluxUtil
+            .withContext(context -> getPropertiesByFileIdWithResponseAsync(shareName, fileId, sharesnapshot, timeout,
+                requestId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<DirectoriesGetPropertiesHeaders, Void>> getPropertiesByFileIdWithResponseAsync(
+        String shareName, String fileId, String sharesnapshot, Integer timeout, String requestId, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return service
+            .getPropertiesByFileId(this.client.getUrl(), shareName, restype, fileId, sharesnapshot, timeout,
+                this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getPropertiesByFileIdAsync(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId) {
+        return getPropertiesByFileIdWithResponseAsync(shareName, fileId, sharesnapshot, timeout, requestId)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getPropertiesByFileIdAsync(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId, Context context) {
+        return getPropertiesByFileIdWithResponseAsync(shareName, fileId, sharesnapshot, timeout, requestId, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getPropertiesByFileIdNoCustomHeadersWithResponseAsync(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId) {
+        return FluxUtil
+            .withContext(context -> getPropertiesByFileIdNoCustomHeadersWithResponseAsync(shareName, fileId,
+                sharesnapshot, timeout, requestId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getPropertiesByFileIdNoCustomHeadersWithResponseAsync(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId, Context context) {
+        final String restype = "directory";
+        final String accept = "application/xml";
+        return service
+            .getPropertiesByFileIdNoCustomHeaders(this.client.getUrl(), shareName, restype, fileId, sharesnapshot,
+                timeout, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<DirectoriesGetPropertiesHeaders, Void> getPropertiesByFileIdWithResponse(String shareName,
+        String fileId, String sharesnapshot, Integer timeout, String requestId, Context context) {
+        try {
+            final String restype = "directory";
+            final String accept = "application/xml";
+            return service.getPropertiesByFileIdSync(this.client.getUrl(), shareName, restype, fileId, sharesnapshot,
+                timeout, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getPropertiesByFileId(String shareName, String fileId, String sharesnapshot, Integer timeout,
+        String requestId) {
+        getPropertiesByFileIdWithResponse(shareName, fileId, sharesnapshot, timeout, requestId, Context.NONE);
+    }
+
+    /**
+     * Returns all system properties for the directory identified by its file ID. The data returned does not include the
+     * files in the directory or any subdirectories.
+     *
+     * @param shareName The name of the target share.
+     * @param fileId The file ID of the target file or directory.
+     * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
+     * snapshot to query.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getPropertiesByFileIdNoCustomHeadersWithResponse(String shareName, String fileId,
+        String sharesnapshot, Integer timeout, String requestId, Context context) {
+        try {
+            final String restype = "directory";
+            final String accept = "application/xml";
+            return service.getPropertiesByFileIdNoCustomHeadersSync(this.client.getUrl(), shareName, restype, fileId,
+                sharesnapshot, timeout, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
+                this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

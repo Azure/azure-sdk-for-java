@@ -11,7 +11,7 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputTableLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlDbSyncTaskOutputTableLevel model = BinaryData.fromString(
-            "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"vuicp\",\"databaseName\":\"trrmhwrb\",\"cdcInsertCounter\":2969087745138596178,\"cdcUpdateCounter\":7297695340259006779,\"cdcDeleteCounter\":3300230081025658362,\"fullLoadEstFinishTime\":\"2021-03-31T10:36:55Z\",\"fullLoadStartedOn\":\"2021-06-05T23:01:13Z\",\"fullLoadEndedOn\":\"2021-05-09T12:14:46Z\",\"fullLoadTotalRows\":4743157131369519093,\"state\":\"FAILED\",\"totalChangesApplied\":4036810121077834370,\"dataErrorsCounter\":6177921315262307200,\"lastModifiedTime\":\"2021-04-03T06:57:18Z\",\"id\":\"lutnpqme\"}")
+            "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"uzzjgnrefq\",\"databaseName\":\"qotoihiqakydiwfb\",\"cdcInsertCounter\":4277719930281258300,\"cdcUpdateCounter\":8361580452823558651,\"cdcDeleteCounter\":6188617235561665671,\"fullLoadEstFinishTime\":\"2021-03-13T16:41:36Z\",\"fullLoadStartedOn\":\"2021-09-09T00:14:51Z\",\"fullLoadEndedOn\":\"2021-02-16T13:19:15Z\",\"fullLoadTotalRows\":1435510304350507028,\"state\":\"COMPLETED\",\"totalChangesApplied\":2267966734914086276,\"dataErrorsCounter\":5922804789440623773,\"lastModifiedTime\":\"2021-08-18T13:12:40Z\",\"id\":\"fulbmoichdl\"}")
             .toObject(MigrateSqlServerSqlDbSyncTaskOutputTableLevel.class);
     }
 

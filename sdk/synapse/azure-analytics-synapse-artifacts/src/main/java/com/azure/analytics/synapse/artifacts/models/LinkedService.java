@@ -499,6 +499,8 @@ public class LinkedService implements JsonSerializable<LinkedService> {
                     return SalesforceServiceCloudV2LinkedService.fromJson(readerToUse.reset());
                 } else if ("Warehouse".equals(discriminatorValue)) {
                     return WarehouseLinkedService.fromJson(readerToUse.reset());
+                } else if ("ServiceNowV2".equals(discriminatorValue)) {
+                    return ServiceNowV2LinkedService.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

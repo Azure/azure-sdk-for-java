@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
@@ -84,8 +85,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         JsonNode doc2 = om.readValue("{\"name\":\"Alexander Pushkin\",\"description\":\"playwright\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
         JsonNode doc3 = om.readValue("{\"name\":\"حافظ شیرازی\",\"description\":\"poet\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
 
-        database.createContainer(collectionDefinition).block();
-        collection = database.getContainer(collectionDefinition.getId());
+        collection = createCollection(database, collectionDefinition, new CosmosContainerRequestOptions());
 
         InternalObjectNode properties = BridgeInternal.getProperties(collection.createItem(doc1).block());
 
@@ -120,8 +120,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
-        database.createContainer(collectionDefinition).block();
-        collection = database.getContainer(collectionDefinition.getId());
+        collection = createCollection(database, collectionDefinition, new CosmosContainerRequestOptions());
 
         ObjectMapper om = new ObjectMapper();
 
@@ -183,8 +182,10 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
-        database.createContainer(collectionDefinition).block();
-        CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
+        CosmosAsyncContainer createdCollection = createCollection(
+            database,
+            collectionDefinition,
+            new CosmosContainerRequestOptions());
 
         CosmosContainerProperties collection = createdCollection.read().block().getProperties();
 

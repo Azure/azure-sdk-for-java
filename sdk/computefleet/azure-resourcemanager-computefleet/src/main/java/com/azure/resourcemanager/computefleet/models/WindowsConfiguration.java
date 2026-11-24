@@ -242,23 +242,6 @@ public final class WindowsConfiguration implements JsonSerializable<WindowsConfi
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (additionalUnattendContent() != null) {
-            additionalUnattendContent().forEach(e -> e.validate());
-        }
-        if (patchSettings() != null) {
-            patchSettings().validate();
-        }
-        if (winRM() != null) {
-            winRM().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

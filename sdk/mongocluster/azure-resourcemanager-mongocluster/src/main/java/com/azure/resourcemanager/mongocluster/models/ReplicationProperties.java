@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Replica properties of the mongo cluster.
+ * Replica properties of the DocumentDB cluster.
  */
 @Immutable
 public final class ReplicationProperties implements JsonSerializable<ReplicationProperties> {
@@ -62,14 +62,6 @@ public final class ReplicationProperties implements JsonSerializable<Replication
      */
     public ReplicationState replicationState() {
         return this.replicationState;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

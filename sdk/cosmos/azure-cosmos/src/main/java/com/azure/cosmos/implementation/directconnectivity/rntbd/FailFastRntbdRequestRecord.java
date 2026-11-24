@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import io.netty.util.Timeout;
 import io.netty.util.TimerTask;
@@ -14,10 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.SocketAddress;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
     private static final Logger logger = LoggerFactory.getLogger(FailFastRntbdRequestRecord.class);
@@ -45,7 +40,7 @@ public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
             args,
             concurrentRequestsSnapshot);
 
-        final String reason = lenientFormat(
+        final String reason = String.format(
             "Failed due to too many (%s) concurrent requests.",
             concurrentRequestsSnapshot);
         final HttpHeaders headers = new HttpHeaders();

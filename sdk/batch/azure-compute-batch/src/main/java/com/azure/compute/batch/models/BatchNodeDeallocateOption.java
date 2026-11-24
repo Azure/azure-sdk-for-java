@@ -34,6 +34,7 @@ public final class BatchNodeDeallocateOption extends ExpandableStringEnum<BatchN
     public static final BatchNodeDeallocateOption TASK_COMPLETION = fromString("taskcompletion");
 
     /**
+     * Deprecated, we encourage you to upload task data to Azure Storage in your task and use `TaskCompletion` instead.
      * Allow currently running Tasks to complete, then wait for all Task data retention periods to expire. Schedule no
      * new Tasks while waiting. Deallocate the Compute Node when all Task retention periods have expired.
      */

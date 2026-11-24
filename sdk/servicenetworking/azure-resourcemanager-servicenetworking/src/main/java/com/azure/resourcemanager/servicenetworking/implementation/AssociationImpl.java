@@ -10,8 +10,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationInner;
 import com.azure.resourcemanager.servicenetworking.models.Association;
 import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
+import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
+import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import com.azure.resourcemanager.servicenetworking.models.AssociationUpdate;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -133,9 +134,15 @@ public final class AssociationImpl implements Association, Association.Definitio
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "trafficControllers");
-        this.associationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "associations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}",
+            "resourceGroupName");
+        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}",
+            "trafficControllerName");
+        this.associationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}",
+            "associationName");
     }
 
     public Association refresh() {
@@ -179,8 +186,13 @@ public final class AssociationImpl implements Association, Association.Definitio
         return this;
     }
 
-    public AssociationImpl withProperties(AssociationUpdateProperties properties) {
-        this.updateProperties.withProperties(properties);
+    public AssociationImpl withAssociationType(AssociationType associationType) {
+        this.updateProperties.withAssociationType(associationType);
+        return this;
+    }
+
+    public AssociationImpl withSubnet(AssociationSubnetUpdate subnet) {
+        this.updateProperties.withSubnet(subnet);
         return this;
     }
 

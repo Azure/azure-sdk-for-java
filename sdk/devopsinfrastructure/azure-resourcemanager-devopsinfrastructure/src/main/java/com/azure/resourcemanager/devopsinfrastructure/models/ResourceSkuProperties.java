@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -136,59 +135,6 @@ public final class ResourceSkuProperties implements JsonSerializable<ResourceSku
     public List<ResourceSkuRestrictions> restrictions() {
         return this.restrictions;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (resourceType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceType in model ResourceSkuProperties"));
-        }
-        if (tier() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property tier in model ResourceSkuProperties"));
-        }
-        if (size() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property size in model ResourceSkuProperties"));
-        }
-        if (family() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property family in model ResourceSkuProperties"));
-        }
-        if (locations() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property locations in model ResourceSkuProperties"));
-        }
-        if (locationInfo() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property locationInfo in model ResourceSkuProperties"));
-        } else {
-            locationInfo().forEach(e -> e.validate());
-        }
-        if (capabilities() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property capabilities in model ResourceSkuProperties"));
-        } else {
-            capabilities().forEach(e -> e.validate());
-        }
-        if (restrictions() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property restrictions in model ResourceSkuProperties"));
-        } else {
-            restrictions().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceSkuProperties.class);
 
     /**
      * {@inheritDoc}

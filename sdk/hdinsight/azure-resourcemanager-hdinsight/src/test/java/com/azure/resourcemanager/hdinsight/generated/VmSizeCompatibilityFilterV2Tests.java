@@ -15,39 +15,39 @@ public final class VmSizeCompatibilityFilterV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmSizeCompatibilityFilterV2 model = BinaryData.fromString(
-            "{\"filterMode\":\"Recommend\",\"regions\":[\"jlpijnkrx\",\"rddh\",\"ratiz\"],\"clusterFlavors\":[\"nasx\",\"ft\",\"zq\"],\"nodeTypes\":[\"f\",\"wesgogczh\",\"nnxk\"],\"clusterVersions\":[\"nyhmossxkkgthr\",\"gh\",\"jbdhqxvc\"],\"osType\":[\"Windows\",\"Windows\",\"Linux\",\"Windows\"],\"vmSizes\":[\"bshrnsvbuswd\",\"z\",\"ybycnunvj\",\"rtkfawnopq\"],\"espApplied\":\"kyzirtxdyux\",\"computeIsolationSupported\":\"jntpsewgioilqu\"}")
+            "{\"filterMode\":\"Exclude\",\"regions\":[\"wzxltjc\",\"nhltiugcxn\",\"vvwxqi\"],\"clusterFlavors\":[\"unyowxwl\",\"djrkvfgbvfvpd\",\"odacizs\",\"q\"],\"nodeTypes\":[\"rribd\",\"ibqipqkg\",\"vxndz\"],\"clusterVersions\":[\"refajpjorwkqnyh\",\"b\",\"j\"],\"osType\":[\"Windows\",\"Linux\",\"Windows\",\"Windows\"],\"vmSizes\":[\"ab\",\"bsystawfsdjpvk\",\"p\"],\"espApplied\":\"xbkzbzkdvncj\",\"computeIsolationSupported\":\"udurgkakmokz\"}")
             .toObject(VmSizeCompatibilityFilterV2.class);
-        Assertions.assertEquals(FilterMode.RECOMMEND, model.filterMode());
-        Assertions.assertEquals("jlpijnkrx", model.regions().get(0));
-        Assertions.assertEquals("nasx", model.clusterFlavors().get(0));
-        Assertions.assertEquals("f", model.nodeTypes().get(0));
-        Assertions.assertEquals("nyhmossxkkgthr", model.clusterVersions().get(0));
+        Assertions.assertEquals(FilterMode.EXCLUDE, model.filterMode());
+        Assertions.assertEquals("wzxltjc", model.regions().get(0));
+        Assertions.assertEquals("unyowxwl", model.clusterFlavors().get(0));
+        Assertions.assertEquals("rribd", model.nodeTypes().get(0));
+        Assertions.assertEquals("refajpjorwkqnyh", model.clusterVersions().get(0));
         Assertions.assertEquals(OSType.WINDOWS, model.osType().get(0));
-        Assertions.assertEquals("bshrnsvbuswd", model.vmSizes().get(0));
-        Assertions.assertEquals("kyzirtxdyux", model.espApplied());
-        Assertions.assertEquals("jntpsewgioilqu", model.computeIsolationSupported());
+        Assertions.assertEquals("ab", model.vmSizes().get(0));
+        Assertions.assertEquals("xbkzbzkdvncj", model.espApplied());
+        Assertions.assertEquals("udurgkakmokz", model.computeIsolationSupported());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmSizeCompatibilityFilterV2 model = new VmSizeCompatibilityFilterV2().withFilterMode(FilterMode.RECOMMEND)
-            .withRegions(Arrays.asList("jlpijnkrx", "rddh", "ratiz"))
-            .withClusterFlavors(Arrays.asList("nasx", "ft", "zq"))
-            .withNodeTypes(Arrays.asList("f", "wesgogczh", "nnxk"))
-            .withClusterVersions(Arrays.asList("nyhmossxkkgthr", "gh", "jbdhqxvc"))
-            .withOsType(Arrays.asList(OSType.WINDOWS, OSType.WINDOWS, OSType.LINUX, OSType.WINDOWS))
-            .withVmSizes(Arrays.asList("bshrnsvbuswd", "z", "ybycnunvj", "rtkfawnopq"))
-            .withEspApplied("kyzirtxdyux")
-            .withComputeIsolationSupported("jntpsewgioilqu");
+        VmSizeCompatibilityFilterV2 model = new VmSizeCompatibilityFilterV2().withFilterMode(FilterMode.EXCLUDE)
+            .withRegions(Arrays.asList("wzxltjc", "nhltiugcxn", "vvwxqi"))
+            .withClusterFlavors(Arrays.asList("unyowxwl", "djrkvfgbvfvpd", "odacizs", "q"))
+            .withNodeTypes(Arrays.asList("rribd", "ibqipqkg", "vxndz"))
+            .withClusterVersions(Arrays.asList("refajpjorwkqnyh", "b", "j"))
+            .withOsType(Arrays.asList(OSType.WINDOWS, OSType.LINUX, OSType.WINDOWS, OSType.WINDOWS))
+            .withVmSizes(Arrays.asList("ab", "bsystawfsdjpvk", "p"))
+            .withEspApplied("xbkzbzkdvncj")
+            .withComputeIsolationSupported("udurgkakmokz");
         model = BinaryData.fromObject(model).toObject(VmSizeCompatibilityFilterV2.class);
-        Assertions.assertEquals(FilterMode.RECOMMEND, model.filterMode());
-        Assertions.assertEquals("jlpijnkrx", model.regions().get(0));
-        Assertions.assertEquals("nasx", model.clusterFlavors().get(0));
-        Assertions.assertEquals("f", model.nodeTypes().get(0));
-        Assertions.assertEquals("nyhmossxkkgthr", model.clusterVersions().get(0));
+        Assertions.assertEquals(FilterMode.EXCLUDE, model.filterMode());
+        Assertions.assertEquals("wzxltjc", model.regions().get(0));
+        Assertions.assertEquals("unyowxwl", model.clusterFlavors().get(0));
+        Assertions.assertEquals("rribd", model.nodeTypes().get(0));
+        Assertions.assertEquals("refajpjorwkqnyh", model.clusterVersions().get(0));
         Assertions.assertEquals(OSType.WINDOWS, model.osType().get(0));
-        Assertions.assertEquals("bshrnsvbuswd", model.vmSizes().get(0));
-        Assertions.assertEquals("kyzirtxdyux", model.espApplied());
-        Assertions.assertEquals("jntpsewgioilqu", model.computeIsolationSupported());
+        Assertions.assertEquals("ab", model.vmSizes().get(0));
+        Assertions.assertEquals("xbkzbzkdvncj", model.espApplied());
+        Assertions.assertEquals("udurgkakmokz", model.computeIsolationSupported());
     }
 }

@@ -12,21 +12,21 @@ public final class DataCollectionOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataCollectionOptions model = BinaryData.fromString(
-            "{\"isDiagnosticsEventsEnabled\":true,\"isHealthMonitoringEnabled\":true,\"isIncidentLogsEnabled\":false}")
+            "{\"isDiagnosticsEventsEnabled\":true,\"isHealthMonitoringEnabled\":false,\"isIncidentLogsEnabled\":false}")
             .toObject(DataCollectionOptions.class);
         Assertions.assertTrue(model.isDiagnosticsEventsEnabled());
-        Assertions.assertTrue(model.isHealthMonitoringEnabled());
+        Assertions.assertFalse(model.isHealthMonitoringEnabled());
         Assertions.assertFalse(model.isIncidentLogsEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataCollectionOptions model = new DataCollectionOptions().withIsDiagnosticsEventsEnabled(true)
-            .withIsHealthMonitoringEnabled(true)
+            .withIsHealthMonitoringEnabled(false)
             .withIsIncidentLogsEnabled(false);
         model = BinaryData.fromObject(model).toObject(DataCollectionOptions.class);
         Assertions.assertTrue(model.isDiagnosticsEventsEnabled());
-        Assertions.assertTrue(model.isHealthMonitoringEnabled());
+        Assertions.assertFalse(model.isHealthMonitoringEnabled());
         Assertions.assertFalse(model.isIncidentLogsEnabled());
     }
 }

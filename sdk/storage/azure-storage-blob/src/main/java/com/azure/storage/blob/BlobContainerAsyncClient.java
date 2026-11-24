@@ -28,12 +28,15 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchyS
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer.ArrowListBlobsResult;
 import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -42,6 +45,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.blob.models.StorageResponseSerializationFormat;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
@@ -50,6 +54,8 @@ import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -220,7 +226,7 @@ public final class BlobContainerAsyncClient {
      * @return the URL.
      */
     public String getBlobContainerUrl() {
-        return azureBlobStorage.getUrl() + "/" + containerName;
+        return azureBlobStorage.getUrl() + "/" + Utility.urlEncode(containerName);
     }
 
     /**
@@ -372,6 +378,8 @@ public final class BlobContainerAsyncClient {
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.create -->
@@ -383,6 +391,9 @@ public final class BlobContainerAsyncClient {
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.create -->
      *
      * @return A reactive response signalling completion.
+     * Errors with a {@link BlobStorageException} if the container could not be created, for example because a container
+     * with the same name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> create() {
@@ -393,6 +404,8 @@ public final class BlobContainerAsyncClient {
      * Creates a new container within a storage account. If a container with the same name already exists, the operation
      * fails. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -409,6 +422,9 @@ public final class BlobContainerAsyncClient {
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
+     * Errors with a {@link BlobStorageException} if the container could not be created, for example because a container
+     * with the same name already exists (status code 409, error code ContainerAlreadyExists) or is still being deleted
+     * (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
@@ -431,6 +447,8 @@ public final class BlobContainerAsyncClient {
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
      *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
@@ -446,7 +464,9 @@ public final class BlobContainerAsyncClient {
      * <!-- end com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists -->
      *
      * @return A reactive response signaling completion. {@code true} indicates a new container was created,
-     * {@code true} indicates a container already existed at this location.
+     * {@code false} indicates a container already existed at this location. Errors with a
+     * {@link BlobStorageException} if the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> createIfNotExists() {
@@ -456,6 +476,8 @@ public final class BlobContainerAsyncClient {
     /**
      * Creates a new container within a storage account if it does not exist.  For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
+     *
+     * <p>A container with the same name can't be created for at least 30 seconds after it is deleted. See {@link #delete()}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -477,7 +499,9 @@ public final class BlobContainerAsyncClient {
      *
      * @param options {@link BlobContainerCreateOptions}
      * @return A reactive response signaling completion. If {@link Response}'s status code is 201, a new container was
-     * successfully created. If status code is 409, a container already existed at this location.
+     * successfully created. If status code is 409, a container already existed at this location. Errors with a
+     * {@link BlobStorageException} if the container could not be created for any other reason, for example when a
+     * container with the same name is still being deleted (status code 409, error code ContainerBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> createIfNotExistsWithResponse(BlobContainerCreateOptions options) {
@@ -493,8 +517,8 @@ public final class BlobContainerAsyncClient {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(
-                    t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 409, t -> {
+                .onErrorResume(t -> ModelHelper.isConflictWithErrorCode(t, BlobErrorCode.CONTAINER_ALREADY_EXISTS),
+                    t -> {
                         HttpResponse response = ((BlobStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), false));
@@ -508,6 +532,13 @@ public final class BlobContainerAsyncClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -530,6 +561,13 @@ public final class BlobContainerAsyncClient {
      * Marks the specified container for deletion. The container and any blobs contained within it are later deleted
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -579,6 +617,13 @@ public final class BlobContainerAsyncClient {
      * during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
      *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists -->
@@ -605,6 +650,13 @@ public final class BlobContainerAsyncClient {
      * Marks the specified container for deletion if it exists. The container and any blobs contained within it are
      * later deleted during garbage collection. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure Docs</a>.
+     *
+     * <p>When a container is deleted, a container with the same name can't be created for at least 30 seconds. The
+     * container might not be available for more than 30 seconds if the service is still processing the request. While
+     * the container is being deleted, attempts to create a container of the same name fail with status code 409
+     * (Conflict). The service indicates that the container is being deleted. Operations on blobs within the container,
+     * including reads and writes, may continue to succeed for up to 30 seconds after the delete request is accepted.
+     * After this period, all operations on the container and its blobs fail with status code 404 (Not Found).</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1115,18 +1167,20 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsFlatWithOptionalTimeout(ListBlobsOptions options, String continuationToken,
         Duration timeout) {
+        ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func = (marker, pageSize) -> {
-            ListBlobsOptions finalOptions;
+            ListBlobsOptions finalOptions = ModelHelper.copyListBlobsOptions(options);
+            ModelHelper.applyDefaultsToListBlobsOptions(finalOptions);
+            /*
+             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
+             Otherwise, prefer the new value.
+              */
             if (pageSize != null) {
-                if (options == null) {
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
-                } else {
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
-                        .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails());
-                }
-            } else {
-                finalOptions = options;
+                finalOptions.setMaxResultsPerPage(pageSize);
+            }
+
+            if (finalOptions.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
+                return listBlobsFlatSegmentArrow(marker, finalOptions, timeout);
             }
 
             return listBlobsFlatSegment(marker, finalOptions, timeout).map(response -> {
@@ -1169,10 +1223,66 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
+    }
+
+    private Mono<PagedResponse<BlobItem>> listBlobsFlatSegmentArrow(String marker, ListBlobsOptions options,
+        Duration timeout) {
+        options = options == null ? new ListBlobsOptions() : options;
+
+        ArrayList<ListBlobsIncludeItem> include = options.getDetails().toList();
+        include = include.isEmpty() ? null : include;
+
+        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
+            .listBlobFlatSegmentApacheArrowWithResponseAsync(containerName, options.getPrefix(), marker,
+                options.getMaxResultsPerPage(), include, null, options.getStartFrom(), options.getEndBefore(), null,
+                Context.NONE),
+            timeout).flatMap(response -> {
+                String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
+
+                return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
+                    java.io.ByteArrayInputStream inputStream = new java.io.ByteArrayInputStream(bytes);
+
+                    if (StorageImplUtils.hasMatchingHeaderValue(contentType,
+                        Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM)) {
+                        ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(inputStream);
+
+                        List<BlobItem> value = arrowResult.getBlobItems()
+                            .stream()
+                            .map(ModelHelper::populateBlobItem)
+                            .collect(Collectors.toList());
+
+                        return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
+                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(),
+                            response.getDeserializedHeaders());
+                    } else {
+                        // XML fallback
+                        try {
+                            ListBlobsFlatSegmentResponse xmlResponse
+                                = ListBlobsFlatSegmentResponse.fromXml(com.azure.xml.XmlReader.fromStream(inputStream));
+
+                            List<BlobItem> value = xmlResponse.getSegment() == null
+                                ? Collections.emptyList()
+                                : xmlResponse.getSegment()
+                                    .getBlobItems()
+                                    .stream()
+                                    .map(ModelHelper::populateBlobItem)
+                                    .collect(Collectors.toList());
+
+                            return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
+                                response.getStatusCode(), response.getHeaders(), value, xmlResponse.getNextMarker(),
+                                null);
+                        } catch (javax.xml.stream.XMLStreamException e) {
+                            throw LOGGER
+                                .logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                        }
+                    }
+                });
+            });
     }
 
     /**
@@ -1285,24 +1395,22 @@ public final class BlobContainerAsyncClient {
      */
     PagedFlux<BlobItem> listBlobsHierarchyWithOptionalTimeout(String delimiter, ListBlobsOptions options,
         Duration timeout) {
+        ModelHelper.validateListBlobsOptions(options);
         BiFunction<String, Integer, Mono<PagedResponse<BlobItem>>> func = (marker, pageSize) -> {
-            ListBlobsOptions finalOptions;
+            ListBlobsOptions finalOptions = ModelHelper.copyListBlobsOptions(options);
+            ModelHelper.applyDefaultsToListBlobsOptions(finalOptions);
             /*
              If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
              Otherwise, prefer the new value.
-             */
+              */
             if (pageSize != null) {
-                if (options == null) {
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize);
-                } else {
-                    // Note that this prefers the value passed to .byPage(int) over the value on the options
-                    finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
-                        .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails());
-                }
-            } else {
-                finalOptions = options;
+                finalOptions.setMaxResultsPerPage(pageSize);
             }
+
+            if (finalOptions.getStorageResponseSerializationFormat() == StorageResponseSerializationFormat.ARROW) {
+                return listBlobsHierarchySegmentArrow(marker, delimiter, finalOptions, timeout);
+            }
+
             return listBlobsHierarchySegment(marker, delimiter, finalOptions, timeout).map(response -> {
                 BlobHierarchyListSegment segment = response.getValue().getSegment();
                 List<BlobItem> value;
@@ -1334,10 +1442,76 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
+    }
+
+    private Mono<PagedResponse<BlobItem>> listBlobsHierarchySegmentArrow(String marker, String delimiter,
+        ListBlobsOptions options, Duration timeout) {
+        options = options == null ? new ListBlobsOptions() : options;
+        if (options.getDetails().getRetrieveSnapshots()) {
+            throw LOGGER.logExceptionAsError(
+                new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
+        }
+
+        ArrayList<ListBlobsIncludeItem> include
+            = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
+
+        ListBlobsOptions finalOptions = options;
+        return StorageImplUtils
+            .applyOptionalTimeout(this.azureBlobStorage.getContainers()
+                .listBlobHierarchySegmentApacheArrowWithResponseAsync(containerName, delimiter,
+                    finalOptions.getPrefix(), marker, finalOptions.getMaxResultsPerPage(), include, null,
+                    finalOptions.getStartFrom(), finalOptions.getEndBefore(), null, Context.NONE),
+                timeout)
+            .flatMap(response -> {
+                String contentType = response.getHeaders().getValue(com.azure.core.http.HttpHeaderName.CONTENT_TYPE);
+
+                return FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(bytes -> {
+                    java.io.ByteArrayInputStream inputStream = new java.io.ByteArrayInputStream(bytes);
+
+                    if (StorageImplUtils.hasMatchingHeaderValue(contentType,
+                        Constants.ContentTypeConstants.APPLICATION_VND_APACHE_ARROW_STREAM)) {
+                        ArrowListBlobsResult arrowResult = ArrowBlobListDeserializer.deserialize(inputStream);
+
+                        List<BlobItem> value = arrowResult.getBlobItems()
+                            .stream()
+                            .map(ModelHelper::populateBlobItem)
+                            .collect(Collectors.toList());
+
+                        return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
+                            response.getStatusCode(), response.getHeaders(), value, arrowResult.getNextMarker(),
+                            response.getDeserializedHeaders());
+                    } else {
+                        // XML fallback
+                        try {
+                            ListBlobsHierarchySegmentResponse xmlResponse = ListBlobsHierarchySegmentResponse
+                                .fromXml(com.azure.xml.XmlReader.fromStream(inputStream));
+
+                            BlobHierarchyListSegment segment = xmlResponse.getSegment();
+                            List<BlobItem> value = new ArrayList<>();
+                            if (segment != null) {
+                                segment.getBlobItems()
+                                    .forEach(item -> value.add(BlobItemConstructorProxy.create(item)));
+                                segment.getBlobPrefixes()
+                                    .forEach(prefix -> value
+                                        .add(new BlobItem().setName(ModelHelper.toBlobNameString(prefix.getName()))
+                                            .setIsPrefix(true)));
+                            }
+
+                            return (PagedResponse<BlobItem>) new PagedResponseBase<>(response.getRequest(),
+                                response.getStatusCode(), response.getHeaders(), value, xmlResponse.getNextMarker(),
+                                null);
+                        } catch (javax.xml.stream.XMLStreamException e) {
+                            throw LOGGER
+                                .logExceptionAsError(new RuntimeException("Failed to parse XML fallback response", e));
+                        }
+                    }
+                });
+            });
     }
 
     /**
@@ -1687,11 +1861,4 @@ public final class BlobContainerAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
-    //    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
-    //        if (modifiedRequestConditions == null) {
-    //            return true;
-    //        }
-    //        return modifiedRequestConditions.getIfModifiedSince() == null
-    //            && modifiedRequestConditions.getIfUnmodifiedSince() == null;
-    //    }
 }

@@ -6,39 +6,37 @@ package com.azure.resourcemanager.programmableconnectivity.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.programmableconnectivity.models.ApplicationProperties;
+import com.azure.resourcemanager.programmableconnectivity.models.Category;
 import org.junit.jupiter.api.Assertions;
 
 public final class ApplicationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationProperties model = BinaryData.fromString(
-            "{\"name\":\"appd\",\"applicationDescription\":\"dkvwrwjfe\",\"applicationType\":\"nhutjeltmrldhugj\",\"legalName\":\"datqxhocdgeabl\",\"organizationDescription\":\"huticndvkao\",\"taxNumber\":\"yiftyhxhuro\",\"privacyContactEmailAddress\":\"tyxolniwpwc\"}")
+            "{\"name\":\"gakeqsr\",\"applicationDescription\":\"yb\",\"category\":\"Trading\",\"commercialName\":\"qedqytbciqfoufl\",\"privacyRightsRequestEmailAddress\":\"mnkzsmod\",\"privacyPolicyUrl\":\"glougpbk\"}")
             .toObject(ApplicationProperties.class);
-        Assertions.assertEquals("appd", model.name());
-        Assertions.assertEquals("dkvwrwjfe", model.applicationDescription());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.applicationType());
-        Assertions.assertEquals("datqxhocdgeabl", model.legalName());
-        Assertions.assertEquals("huticndvkao", model.organizationDescription());
-        Assertions.assertEquals("yiftyhxhuro", model.taxNumber());
-        Assertions.assertEquals("tyxolniwpwc", model.privacyContactEmailAddress());
+        Assertions.assertEquals("gakeqsr", model.name());
+        Assertions.assertEquals("yb", model.applicationDescription());
+        Assertions.assertEquals(Category.TRADING, model.category());
+        Assertions.assertEquals("qedqytbciqfoufl", model.commercialName());
+        Assertions.assertEquals("mnkzsmod", model.privacyRightsRequestEmailAddress());
+        Assertions.assertEquals("glougpbk", model.privacyPolicyUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationProperties model = new ApplicationProperties().withName("appd")
-            .withApplicationDescription("dkvwrwjfe")
-            .withApplicationType("nhutjeltmrldhugj")
-            .withLegalName("datqxhocdgeabl")
-            .withOrganizationDescription("huticndvkao")
-            .withTaxNumber("yiftyhxhuro")
-            .withPrivacyContactEmailAddress("tyxolniwpwc");
+        ApplicationProperties model = new ApplicationProperties().withName("gakeqsr")
+            .withApplicationDescription("yb")
+            .withCategory(Category.TRADING)
+            .withCommercialName("qedqytbciqfoufl")
+            .withPrivacyRightsRequestEmailAddress("mnkzsmod")
+            .withPrivacyPolicyUrl("glougpbk");
         model = BinaryData.fromObject(model).toObject(ApplicationProperties.class);
-        Assertions.assertEquals("appd", model.name());
-        Assertions.assertEquals("dkvwrwjfe", model.applicationDescription());
-        Assertions.assertEquals("nhutjeltmrldhugj", model.applicationType());
-        Assertions.assertEquals("datqxhocdgeabl", model.legalName());
-        Assertions.assertEquals("huticndvkao", model.organizationDescription());
-        Assertions.assertEquals("yiftyhxhuro", model.taxNumber());
-        Assertions.assertEquals("tyxolniwpwc", model.privacyContactEmailAddress());
+        Assertions.assertEquals("gakeqsr", model.name());
+        Assertions.assertEquals("yb", model.applicationDescription());
+        Assertions.assertEquals(Category.TRADING, model.category());
+        Assertions.assertEquals("qedqytbciqfoufl", model.commercialName());
+        Assertions.assertEquals("mnkzsmod", model.privacyRightsRequestEmailAddress());
+        Assertions.assertEquals("glougpbk", model.privacyPolicyUrl());
     }
 }

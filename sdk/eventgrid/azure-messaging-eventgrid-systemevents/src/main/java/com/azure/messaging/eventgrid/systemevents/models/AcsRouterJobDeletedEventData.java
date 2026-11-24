@@ -18,6 +18,18 @@ import java.util.Map;
 public final class AcsRouterJobDeletedEventData extends AcsRouterJobEventData {
 
     /*
+     * Router Jobs events Tags
+     */
+    @Generated
+    private Map<String, String> tags;
+
+    /*
+     * Router Job events Labels
+     */
+    @Generated
+    private Map<String, String> labels;
+
+    /*
      * Router Job events Queue Id
      */
     @Generated
@@ -39,12 +51,32 @@ public final class AcsRouterJobDeletedEventData extends AcsRouterJobEventData {
      * Creates an instance of AcsRouterJobDeletedEventData class.
      *
      * @param jobId the jobId value to set.
-     * @param labels the labels value to set.
-     * @param tags the tags value to set.
      */
     @Generated
-    private AcsRouterJobDeletedEventData(String jobId, Map<String, String> labels, Map<String, String> tags) {
-        super(jobId, labels, tags);
+    private AcsRouterJobDeletedEventData(String jobId) {
+        super(jobId);
+    }
+
+    /**
+     * Get the tags property: Router Jobs events Tags.
+     *
+     * @return the tags value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the labels property: Router Job events Labels.
+     *
+     * @return the labels value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getLabels() {
+        return this.labels;
     }
 
     /**
@@ -88,8 +120,6 @@ public final class AcsRouterJobDeletedEventData extends AcsRouterJobEventData {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("jobId", getJobId());
-        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("channelReference", getChannelReference());
         jsonWriter.writeStringField("channelId", getChannelId());
         jsonWriter.writeStringField("queueId", getQueueId());
@@ -134,7 +164,9 @@ public final class AcsRouterJobDeletedEventData extends AcsRouterJobEventData {
                 }
             }
             AcsRouterJobDeletedEventData deserializedAcsRouterJobDeletedEventData
-                = new AcsRouterJobDeletedEventData(jobId, labels, tags);
+                = new AcsRouterJobDeletedEventData(jobId);
+            deserializedAcsRouterJobDeletedEventData.labels = labels;
+            deserializedAcsRouterJobDeletedEventData.tags = tags;
             deserializedAcsRouterJobDeletedEventData.channelReference = channelReference;
             deserializedAcsRouterJobDeletedEventData.channelId = channelId;
             deserializedAcsRouterJobDeletedEventData.queueId = queueId;

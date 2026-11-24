@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.purestorageblock.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -61,6 +60,11 @@ public final class StoragePoolProperties implements JsonSerializable<StoragePool
      * Azure resource ID of the Pure Storage Cloud service (reservation resource) this storage pool belongs to
      */
     private String reservationResourceId;
+
+    /*
+     * Platform console access settings for the storage pool
+     */
+    private PlatformConsoleSettings platformConsoleSettings;
 
     /**
      * Creates an instance of StoragePoolProperties class.
@@ -196,34 +200,24 @@ public final class StoragePoolProperties implements JsonSerializable<StoragePool
     }
 
     /**
-     * Validates the instance.
+     * Get the platformConsoleSettings property: Platform console access settings for the storage pool.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the platformConsoleSettings value.
      */
-    public void validate() {
-        if (availabilityZone() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property availabilityZone in model StoragePoolProperties"));
-        }
-        if (vnetInjection() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property vnetInjection in model StoragePoolProperties"));
-        } else {
-            vnetInjection().validate();
-        }
-        if (avs() != null) {
-            avs().validate();
-        }
-        if (reservationResourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property reservationResourceId in model StoragePoolProperties"));
-        }
+    public PlatformConsoleSettings platformConsoleSettings() {
+        return this.platformConsoleSettings;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(StoragePoolProperties.class);
+    /**
+     * Set the platformConsoleSettings property: Platform console access settings for the storage pool.
+     * 
+     * @param platformConsoleSettings the platformConsoleSettings value to set.
+     * @return the StoragePoolProperties object itself.
+     */
+    public StoragePoolProperties withPlatformConsoleSettings(PlatformConsoleSettings platformConsoleSettings) {
+        this.platformConsoleSettings = platformConsoleSettings;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -235,6 +229,7 @@ public final class StoragePoolProperties implements JsonSerializable<StoragePool
         jsonWriter.writeJsonField("vnetInjection", this.vnetInjection);
         jsonWriter.writeLongField("provisionedBandwidthMbPerSec", this.provisionedBandwidthMbPerSec);
         jsonWriter.writeStringField("reservationResourceId", this.reservationResourceId);
+        jsonWriter.writeJsonField("platformConsoleSettings", this.platformConsoleSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -273,6 +268,9 @@ public final class StoragePoolProperties implements JsonSerializable<StoragePool
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStoragePoolProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("platformConsoleSettings".equals(fieldName)) {
+                    deserializedStoragePoolProperties.platformConsoleSettings
+                        = PlatformConsoleSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

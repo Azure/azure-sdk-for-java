@@ -74,20 +74,6 @@ public final class OrganizationResourceUpdateProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (user() != null) {
-            user().validate();
-        }
-        if (partnerProperties() != null) {
-            partnerProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

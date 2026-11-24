@@ -144,23 +144,6 @@ public final class LogicalNetworkProperties implements JsonSerializable<LogicalN
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dhcpOptions() != null) {
-            dhcpOptions().validate();
-        }
-        if (subnets() != null) {
-            subnets().forEach(e -> e.validate());
-        }
-        if (status() != null) {
-            status().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

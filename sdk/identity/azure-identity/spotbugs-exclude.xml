@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+<FindBugsFilter
+    xmlns="https://github.com/spotbugs/filter/4.10.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/4.10.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.10.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Or>
@@ -14,7 +16,6 @@
     <Bug pattern="DLS_DEAD_LOCAL_STORE" />
     <Or>
       <Class name="com.azure.identity.credential.JavaDocCodeSnippets" />
-      <Class name="com.azure.redisson.sample.HelloWorld" />
     </Or>
   </Match>
   <Match>
@@ -45,11 +46,6 @@
     <Or>
       <Class name="com.azure.identity.implementation.SynchronizedAccessorTests" />
       <Class name="com.azure.identity.implementation.util.ValidationUtil" />
-      <Class name="com.azure.jedis.Authenticator" />
-      <Class name="com.azure.lettuce.sample.withcredentialprovider.AuthenticateWithTokenCache$AzureRedisCredentials" />
-      <Class name="com.azure.lettuce.sample.withcredentialprovider.HandleReauthentication$AzureRedisCredentials" />
-      <Class name="com.azure.lettuce.sample.withcredentialprovider.HelloWorld$AzureRedisCredentials" />
-      <Class name="com.azure.redisson.sample.HelloWorld" />
     </Or>
   </Match>
   <Match>
@@ -59,10 +55,6 @@
   <Match>
     <Bug pattern="OBL_UNSATISFIED_OBLIGATION" />
     <Class name="com.azure.identity.credential.JavaDocCodeSnippets" />
-  </Match>
-  <Match>
-    <Bug pattern="UL_UNRELEASED_LOCK_EXCEPTION_PATH" />
-    <Class name="com.azure.jedis.Authenticator" />
   </Match>
   <Match>
     <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD" />

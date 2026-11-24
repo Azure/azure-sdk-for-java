@@ -11,7 +11,7 @@ public final class CircuitTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Circuit model = BinaryData.fromString(
-            "{\"primarySubnet\":\"kbegibt\",\"secondarySubnet\":\"xiebwwaloayqcg\",\"expressRouteID\":\"tzjuzgwyzmhtxo\",\"expressRoutePrivatePeeringID\":\"mtsavjcbpwxqp\"}")
+            "{\"primarySubnet\":\"nzar\",\"secondarySubnet\":\"lquuijfqkacewii\",\"expressRouteID\":\"pubjibw\",\"expressRoutePrivatePeeringID\":\"f\"}")
             .toObject(Circuit.class);
     }
 

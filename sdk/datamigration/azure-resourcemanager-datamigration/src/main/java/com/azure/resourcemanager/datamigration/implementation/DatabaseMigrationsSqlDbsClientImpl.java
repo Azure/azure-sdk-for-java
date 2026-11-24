@@ -153,6 +153,28 @@ public final class DatabaseMigrationsSqlDbsClientImpl implements DatabaseMigrati
             @PathParam("sqlDbInstanceName") String sqlDbInstanceName, @PathParam("targetDbName") String targetDbName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") MigrationOperationInput parameters, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/retry")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> retry(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("sqlDbInstanceName") String sqlDbInstanceName, @PathParam("targetDbName") String targetDbName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MigrationOperationInput migrationOperationInput,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/retry")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> retrySync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("sqlDbInstanceName") String sqlDbInstanceName, @PathParam("targetDbName") String targetDbName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MigrationOperationInput migrationOperationInput,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -1148,6 +1170,287 @@ public final class DatabaseMigrationsSqlDbsClientImpl implements DatabaseMigrati
     public void cancel(String resourceGroupName, String sqlDbInstanceName, String targetDbName,
         MigrationOperationInput parameters, Context context) {
         beginCancel(resourceGroupName, sqlDbInstanceName, targetDbName, parameters, context).getFinalResult();
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> retryWithResponseAsync(String resourceGroupName, String sqlDbInstanceName,
+        String targetDbName, MigrationOperationInput migrationOperationInput) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (sqlDbInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter sqlDbInstanceName is required and cannot be null."));
+        }
+        if (targetDbName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter targetDbName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (migrationOperationInput == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter migrationOperationInput is required and cannot be null."));
+        } else {
+            migrationOperationInput.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.retry(this.client.getEndpoint(), resourceGroupName, sqlDbInstanceName,
+                targetDbName, this.client.getSubscriptionId(), this.client.getApiVersion(), migrationOperationInput,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> retryWithResponse(String resourceGroupName, String sqlDbInstanceName,
+        String targetDbName, MigrationOperationInput migrationOperationInput) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (sqlDbInstanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sqlDbInstanceName is required and cannot be null."));
+        }
+        if (targetDbName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter targetDbName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (migrationOperationInput == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter migrationOperationInput is required and cannot be null."));
+        } else {
+            migrationOperationInput.validate();
+        }
+        final String accept = "application/json";
+        return service.retrySync(this.client.getEndpoint(), resourceGroupName, sqlDbInstanceName, targetDbName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), migrationOperationInput, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> retryWithResponse(String resourceGroupName, String sqlDbInstanceName,
+        String targetDbName, MigrationOperationInput migrationOperationInput, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (sqlDbInstanceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter sqlDbInstanceName is required and cannot be null."));
+        }
+        if (targetDbName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter targetDbName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (migrationOperationInput == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter migrationOperationInput is required and cannot be null."));
+        } else {
+            migrationOperationInput.validate();
+        }
+        final String accept = "application/json";
+        return service.retrySync(this.client.getEndpoint(), resourceGroupName, sqlDbInstanceName, targetDbName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), migrationOperationInput, accept, context);
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of database Migration Resource for SQL Database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatabaseMigrationSqlDbInner>, DatabaseMigrationSqlDbInner> beginRetryAsync(
+        String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = retryWithResponseAsync(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput);
+        return this.client.<DatabaseMigrationSqlDbInner, DatabaseMigrationSqlDbInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DatabaseMigrationSqlDbInner.class, DatabaseMigrationSqlDbInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of database Migration Resource for SQL Database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DatabaseMigrationSqlDbInner>, DatabaseMigrationSqlDbInner> beginRetry(
+        String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput) {
+        Response<BinaryData> response
+            = retryWithResponse(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput);
+        return this.client.<DatabaseMigrationSqlDbInner, DatabaseMigrationSqlDbInner>getLroResult(response,
+            DatabaseMigrationSqlDbInner.class, DatabaseMigrationSqlDbInner.class, Context.NONE);
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of database Migration Resource for SQL Database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DatabaseMigrationSqlDbInner>, DatabaseMigrationSqlDbInner> beginRetry(
+        String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput, Context context) {
+        Response<BinaryData> response
+            = retryWithResponse(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput, context);
+        return this.client.<DatabaseMigrationSqlDbInner, DatabaseMigrationSqlDbInner>getLroResult(response,
+            DatabaseMigrationSqlDbInner.class, DatabaseMigrationSqlDbInner.class, context);
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DatabaseMigrationSqlDbInner> retryAsync(String resourceGroupName, String sqlDbInstanceName,
+        String targetDbName, MigrationOperationInput migrationOperationInput) {
+        return beginRetryAsync(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseMigrationSqlDbInner retry(String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput) {
+        return beginRetry(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput).getFinalResult();
+    }
+
+    /**
+     * Retry on going migration for the database.
+     * 
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
+     * the Azure Resource Manager API or the portal.
+     * @param sqlDbInstanceName The sqlDbInstanceName parameter.
+     * @param targetDbName The name of the target database.
+     * @param migrationOperationInput Required migration operation ID for which retry will be initiated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database Migration Resource for SQL Database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseMigrationSqlDbInner retry(String resourceGroupName, String sqlDbInstanceName, String targetDbName,
+        MigrationOperationInput migrationOperationInput, Context context) {
+        return beginRetry(resourceGroupName, sqlDbInstanceName, targetDbName, migrationOperationInput, context)
+            .getFinalResult();
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabaseMigrationsSqlDbsClientImpl.class);

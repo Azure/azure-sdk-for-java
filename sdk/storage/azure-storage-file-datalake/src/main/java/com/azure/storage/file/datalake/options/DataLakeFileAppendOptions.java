@@ -97,7 +97,7 @@ public class DataLakeFileAppendOptions {
      * Get lease action set on file.
      * {@link LeaseAction#ACQUIRE} will attempt to acquire a new lease on the file,
      * with {@link DataLakeFileAppendOptions#proposedLeaseId} as the lease ID.
-     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to aquire a new lease on the file,
+     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to acquire a new lease on the file,
      * with {@link DataLakeFileAppendOptions#proposedLeaseId} as the lease ID. The lease will be released once the
      * Append operation is complete.
      * {@link LeaseAction#AUTO_RENEW} will attempt to renew the lease specified by {@link DataLakeRequestConditions#getLeaseId()}.
@@ -113,7 +113,7 @@ public class DataLakeFileAppendOptions {
      * Get lease action set on file.
      * {@link LeaseAction#ACQUIRE} will attempt to acquire a new lease on the file,
      * with {@link DataLakeFileAppendOptions#proposedLeaseId} as the lease ID.
-     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to aquire a new lease on the file,
+     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to acquire a new lease on the file,
      * with {@link DataLakeFileAppendOptions#proposedLeaseId} as the lease ID. The lease will be released once the
      * Append operation is complete.
      * {@link LeaseAction#AUTO_RENEW} will attempt to renew the lease specified by {@link DataLakeRequestConditions#getLeaseId()}.

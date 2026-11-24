@@ -51,6 +51,13 @@ public interface DedicatedHsm {
     Map<String, String> tags();
 
     /**
+     * Gets the properties property: Properties of the dedicated HSM.
+     * 
+     * @return the properties value.
+     */
+    DedicatedHsmProperties properties();
+
+    /**
      * Gets the sku property: SKU details.
      * 
      * @return the sku value.
@@ -63,13 +70,6 @@ public interface DedicatedHsm {
      * @return the zones value.
      */
     List<String> zones();
-
-    /**
-     * Gets the properties property: Properties of the dedicated HSM.
-     * 
-     * @return the properties value.
-     */
-    DedicatedHsmProperties properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -111,7 +111,7 @@ public interface DedicatedHsm {
      */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
-        DefinitionStages.WithSku, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
+        DefinitionStages.WithProperties, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /**
@@ -155,20 +155,7 @@ public interface DedicatedHsm {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithSku withExistingResourceGroup(String resourceGroupName);
-        }
-
-        /**
-         * The stage of the DedicatedHsm definition allowing to specify sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies the sku property: SKU details.
-             * 
-             * @param sku SKU details.
-             * @return the next definition stage.
-             */
-            WithProperties withSku(Sku sku);
+            WithProperties withExistingResourceGroup(String resourceGroupName);
         }
 
         /**
@@ -181,7 +168,20 @@ public interface DedicatedHsm {
              * @param properties Properties of the dedicated HSM.
              * @return the next definition stage.
              */
-            WithCreate withProperties(DedicatedHsmProperties properties);
+            WithSku withProperties(DedicatedHsmProperties properties);
+        }
+
+        /**
+         * The stage of the DedicatedHsm definition allowing to specify sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies the sku property: SKU details.
+             * 
+             * @param sku SKU details.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(Sku sku);
         }
 
         /**

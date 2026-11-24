@@ -19,53 +19,52 @@ public final class DataflowEndpointFabricOneLakeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointFabricOneLake model = BinaryData.fromString(
-            "{\"authentication\":{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"elsfeaen\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"bfatklddxbjhwu\",\"scope\":\"nozj\",\"tenantId\":\"sphyoulpjrvxa\"}},\"names\":{\"lakehouseName\":\"l\",\"workspaceName\":\"vimjwos\"},\"oneLakePathType\":\"Files\",\"host\":\"xitc\",\"batching\":{\"latencySeconds\":1365275067,\"maxMessages\":468391476}}")
+            "{\"authentication\":{\"method\":\"UserAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"afnn\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"pichkoymkcdy\",\"scope\":\"pkkpw\",\"tenantId\":\"reqnovvqfov\"}},\"names\":{\"lakehouseName\":\"jxywsuws\",\"workspaceName\":\"rsndsytgadgvra\"},\"oneLakePathType\":\"Tables\",\"host\":\"en\",\"batching\":{\"latencySeconds\":596140767,\"maxMessages\":1726613749}}")
             .toObject(DataflowEndpointFabricOneLake.class);
-        Assertions.assertEquals(FabricOneLakeAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY,
+        Assertions.assertEquals(FabricOneLakeAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY,
             model.authentication().method());
-        Assertions.assertEquals("elsfeaen", model.authentication().systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("bfatklddxbjhwu",
+        Assertions.assertEquals("afnn", model.authentication().systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("pichkoymkcdy",
             model.authentication().userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("nozj", model.authentication().userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("sphyoulpjrvxa",
-            model.authentication().userAssignedManagedIdentitySettings().tenantId());
-        Assertions.assertEquals("l", model.names().lakehouseName());
-        Assertions.assertEquals("vimjwos", model.names().workspaceName());
-        Assertions.assertEquals(DataflowEndpointFabricPathType.FILES, model.oneLakePathType());
-        Assertions.assertEquals("xitc", model.host());
-        Assertions.assertEquals(1365275067, model.batching().latencySeconds());
-        Assertions.assertEquals(468391476, model.batching().maxMessages());
+        Assertions.assertEquals("pkkpw", model.authentication().userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("reqnovvqfov", model.authentication().userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("jxywsuws", model.names().lakehouseName());
+        Assertions.assertEquals("rsndsytgadgvra", model.names().workspaceName());
+        Assertions.assertEquals(DataflowEndpointFabricPathType.TABLES, model.oneLakePathType());
+        Assertions.assertEquals("en", model.host());
+        Assertions.assertEquals(596140767, model.batching().latencySeconds());
+        Assertions.assertEquals(1726613749, model.batching().maxMessages());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointFabricOneLake model = new DataflowEndpointFabricOneLake()
             .withAuthentication(new DataflowEndpointFabricOneLakeAuthentication()
-                .withMethod(FabricOneLakeAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY)
+                .withMethod(FabricOneLakeAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY)
                 .withSystemAssignedManagedIdentitySettings(
-                    new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("elsfeaen"))
+                    new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("afnn"))
                 .withUserAssignedManagedIdentitySettings(
-                    new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("bfatklddxbjhwu")
-                        .withScope("nozj")
-                        .withTenantId("sphyoulpjrvxa")))
-            .withNames(new DataflowEndpointFabricOneLakeNames().withLakehouseName("l").withWorkspaceName("vimjwos"))
-            .withOneLakePathType(DataflowEndpointFabricPathType.FILES)
-            .withHost("xitc")
-            .withBatching(new BatchingConfiguration().withLatencySeconds(1365275067).withMaxMessages(468391476));
+                    new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("pichkoymkcdy")
+                        .withScope("pkkpw")
+                        .withTenantId("reqnovvqfov")))
+            .withNames(new DataflowEndpointFabricOneLakeNames().withLakehouseName("jxywsuws")
+                .withWorkspaceName("rsndsytgadgvra"))
+            .withOneLakePathType(DataflowEndpointFabricPathType.TABLES)
+            .withHost("en")
+            .withBatching(new BatchingConfiguration().withLatencySeconds(596140767).withMaxMessages(1726613749));
         model = BinaryData.fromObject(model).toObject(DataflowEndpointFabricOneLake.class);
-        Assertions.assertEquals(FabricOneLakeAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY,
+        Assertions.assertEquals(FabricOneLakeAuthMethod.USER_ASSIGNED_MANAGED_IDENTITY,
             model.authentication().method());
-        Assertions.assertEquals("elsfeaen", model.authentication().systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("bfatklddxbjhwu",
+        Assertions.assertEquals("afnn", model.authentication().systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("pichkoymkcdy",
             model.authentication().userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("nozj", model.authentication().userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("sphyoulpjrvxa",
-            model.authentication().userAssignedManagedIdentitySettings().tenantId());
-        Assertions.assertEquals("l", model.names().lakehouseName());
-        Assertions.assertEquals("vimjwos", model.names().workspaceName());
-        Assertions.assertEquals(DataflowEndpointFabricPathType.FILES, model.oneLakePathType());
-        Assertions.assertEquals("xitc", model.host());
-        Assertions.assertEquals(1365275067, model.batching().latencySeconds());
-        Assertions.assertEquals(468391476, model.batching().maxMessages());
+        Assertions.assertEquals("pkkpw", model.authentication().userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("reqnovvqfov", model.authentication().userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("jxywsuws", model.names().lakehouseName());
+        Assertions.assertEquals("rsndsytgadgvra", model.names().workspaceName());
+        Assertions.assertEquals(DataflowEndpointFabricPathType.TABLES, model.oneLakePathType());
+        Assertions.assertEquals("en", model.host());
+        Assertions.assertEquals(596140767, model.batching().latencySeconds());
+        Assertions.assertEquals(1726613749, model.batching().maxMessages());
     }
 }

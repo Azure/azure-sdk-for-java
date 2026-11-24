@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The authentication configuration for the Mongo cluster.
+ * The authentication configuration for the DocumentDB cluster.
  */
 @Fluent
 public final class AuthConfigProperties implements JsonSerializable<AuthConfigProperties> {
@@ -46,14 +46,6 @@ public final class AuthConfigProperties implements JsonSerializable<AuthConfigPr
     public AuthConfigProperties withAllowedModes(List<AuthenticationMode> allowedModes) {
         this.allowedModes = allowedModes;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

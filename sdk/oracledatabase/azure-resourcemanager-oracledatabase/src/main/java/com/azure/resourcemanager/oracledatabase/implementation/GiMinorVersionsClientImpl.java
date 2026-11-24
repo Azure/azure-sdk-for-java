@@ -25,10 +25,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.oracledatabase.fluent.GiMinorVersionsClient;
 import com.azure.resourcemanager.oracledatabase.fluent.models.GiMinorVersionInner;
 import com.azure.resourcemanager.oracledatabase.implementation.models.GiMinorVersionListResult;
+import com.azure.resourcemanager.oracledatabase.models.GiMinorVersionSortOrder;
 import com.azure.resourcemanager.oracledatabase.models.ShapeFamily;
 import reactor.core.publisher.Mono;
 
@@ -72,7 +72,10 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("giversionname") String giversionname,
             @QueryParam("shapeFamily") ShapeFamily shapeFamily, @QueryParam("zone") String zone,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("shape") String shape,
+            @QueryParam("isGiVersionForProvisioning") Boolean isGiVersionForProvisioning,
+            @QueryParam("sortOrder") GiMinorVersionSortOrder sortOrder, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions/{giversionname}/giMinorVersions")
@@ -82,7 +85,10 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location, @PathParam("giversionname") String giversionname,
             @QueryParam("shapeFamily") ShapeFamily shapeFamily, @QueryParam("zone") String zone,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("shape") String shape,
+            @QueryParam("isGiVersionForProvisioning") Boolean isGiVersionForProvisioning,
+            @QueryParam("sortOrder") GiMinorVersionSortOrder sortOrder, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions/{giversionname}/giMinorVersions/{giMinorVersionName}")
@@ -129,6 +135,38 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
      * given shape family.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
+     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
+     * provisioning.
+     * @param sortOrder Sort order for the returned GI minor versions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a GiMinorVersion list operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<GiMinorVersionInner>> listByParentSinglePageAsync(String location, String giversionname,
+        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
+        GiMinorVersionSortOrder sortOrder) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, shape,
+                isGiVersionForProvisioning, sortOrder, accept, context))
+            .<PagedResponse<GiMinorVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List GiMinorVersion resources by GiVersion.
+     * 
+     * @param location The name of the Azure region.
+     * @param giversionname GiVersion name.
+     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
+     * given shape family.
+     * @param zone Filters the result for the given Azure Availability Zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -138,27 +176,63 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GiMinorVersionInner>> listByParentSinglePageAsync(String location, String giversionname,
         ShapeFamily shapeFamily, String zone) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
+        final String shape = null;
+        final Boolean isGiVersionForProvisioning = null;
+        final GiMinorVersionSortOrder sortOrder = null;
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParent(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, accept, context))
+                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, shape,
+                isGiVersionForProvisioning, sortOrder, accept, context))
             .<PagedResponse<GiMinorVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List GiMinorVersion resources by GiVersion.
+     * 
+     * @param location The name of the Azure region.
+     * @param giversionname GiVersion name.
+     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
+     * given shape family.
+     * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
+     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
+     * provisioning.
+     * @param sortOrder Sort order for the returned GI minor versions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<GiMinorVersionInner> listByParentAsync(String location, String giversionname,
+        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
+        GiMinorVersionSortOrder sortOrder) {
+        return new PagedFlux<>(() -> listByParentSinglePageAsync(location, giversionname, shapeFamily, zone, shape,
+            isGiVersionForProvisioning, sortOrder), nextLink -> listByParentNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List GiMinorVersion resources by GiVersion.
+     * 
+     * @param location The name of the Azure region.
+     * @param giversionname GiVersion name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<GiMinorVersionInner> listByParentAsync(String location, String giversionname) {
+        final ShapeFamily shapeFamily = null;
+        final String zone = null;
+        final String shape = null;
+        final Boolean isGiVersionForProvisioning = null;
+        final GiMinorVersionSortOrder sortOrder = null;
+        return new PagedFlux<>(() -> listByParentSinglePageAsync(location, giversionname, shapeFamily, zone, shape,
+            isGiVersionForProvisioning, sortOrder), nextLink -> listByParentNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -186,17 +260,28 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      * 
      * @param location The name of the Azure region.
      * @param giversionname GiVersion name.
+     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
+     * given shape family.
+     * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
+     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
+     * provisioning.
+     * @param sortOrder Sort order for the returned GI minor versions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a GiMinorVersion list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GiMinorVersionInner> listByParentAsync(String location, String giversionname) {
-        final ShapeFamily shapeFamily = null;
-        final String zone = null;
-        return new PagedFlux<>(() -> listByParentSinglePageAsync(location, giversionname, shapeFamily, zone),
-            nextLink -> listByParentNextSinglePageAsync(nextLink));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<GiMinorVersionInner> listByParentSinglePage(String location, String giversionname,
+        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
+        GiMinorVersionSortOrder sortOrder) {
+        final String accept = "application/json";
+        Response<GiMinorVersionListResult> res = service.listByParentSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone,
+            shape, isGiVersionForProvisioning, sortOrder, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -207,6 +292,11 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
      * given shape family.
      * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
+     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
+     * provisioning.
+     * @param sortOrder Sort order for the returned GI minor versions.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -214,29 +304,12 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentSinglePage(String location, String giversionname,
-        ShapeFamily shapeFamily, String zone) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
+        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
+        GiMinorVersionSortOrder sortOrder, Context context) {
         final String accept = "application/json";
-        Response<GiMinorVersionListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, accept, Context.NONE);
+        Response<GiMinorVersionListResult> res = service.listByParentSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone,
+            shape, isGiVersionForProvisioning, sortOrder, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -258,28 +331,13 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentSinglePage(String location, String giversionname,
         ShapeFamily shapeFamily, String zone, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
+        final String shape = null;
+        final Boolean isGiVersionForProvisioning = null;
+        final GiMinorVersionSortOrder sortOrder = null;
         final String accept = "application/json";
-        Response<GiMinorVersionListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone, accept, context);
+        Response<GiMinorVersionListResult> res = service.listByParentSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), location, giversionname, shapeFamily, zone,
+            shape, isGiVersionForProvisioning, sortOrder, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -298,8 +356,37 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     public PagedIterable<GiMinorVersionInner> listByParent(String location, String giversionname) {
         final ShapeFamily shapeFamily = null;
         final String zone = null;
-        return new PagedIterable<>(() -> listByParentSinglePage(location, giversionname, shapeFamily, zone),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        final String shape = null;
+        final Boolean isGiVersionForProvisioning = null;
+        final GiMinorVersionSortOrder sortOrder = null;
+        return new PagedIterable<>(() -> listByParentSinglePage(location, giversionname, shapeFamily, zone, shape,
+            isGiVersionForProvisioning, sortOrder), nextLink -> listByParentNextSinglePage(nextLink));
+    }
+
+    /**
+     * List GiMinorVersion resources by GiVersion.
+     * 
+     * @param location The name of the Azure region.
+     * @param giversionname GiVersion name.
+     * @param shapeFamily If provided, filters the results to the set of database versions which are supported for the
+     * given shape family.
+     * @param zone Filters the result for the given Azure Availability Zone.
+     * @param shape If provided, filters the results to the set of GI minor versions supported for the given shape.
+     * @param isGiVersionForProvisioning If true, filters the results to GI minor versions supported during VM cluster
+     * provisioning.
+     * @param sortOrder Sort order for the returned GI minor versions.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a GiMinorVersion list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GiMinorVersionInner> listByParent(String location, String giversionname,
+        ShapeFamily shapeFamily, String zone, String shape, Boolean isGiVersionForProvisioning,
+        GiMinorVersionSortOrder sortOrder, Context context) {
+        return new PagedIterable<>(() -> listByParentSinglePage(location, giversionname, shapeFamily, zone, shape,
+            isGiVersionForProvisioning, sortOrder, context), nextLink -> listByParentNextSinglePage(nextLink, context));
     }
 
     /**
@@ -337,24 +424,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GiMinorVersionInner>> getWithResponseAsync(String location, String giversionname,
         String giMinorVersionName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
-        if (giMinorVersionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter giMinorVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -394,28 +463,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GiMinorVersionInner> getWithResponse(String location, String giversionname,
         String giMinorVersionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (giversionname == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giversionname is required and cannot be null."));
-        }
-        if (giMinorVersionName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter giMinorVersionName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, giversionname, giMinorVersionName, accept, context);
@@ -449,13 +496,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GiMinorVersionInner>> listByParentNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByParentNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -475,15 +515,6 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<GiMinorVersionListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -503,21 +534,10 @@ public final class GiMinorVersionsClientImpl implements GiMinorVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<GiMinorVersionInner> listByParentNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<GiMinorVersionListResult> res
             = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(GiMinorVersionsClientImpl.class);
 }

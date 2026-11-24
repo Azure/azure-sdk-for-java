@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authe
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties;
+import org.springframework.boot.jms.autoconfigure.JmsPoolConnectionFactoryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.jms.support.QosSettings;

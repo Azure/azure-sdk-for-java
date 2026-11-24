@@ -12,21 +12,21 @@ public final class AddonHcxPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddonHcxProperties model = BinaryData.fromString(
-            "{\"addonType\":\"HCX\",\"offer\":\"qlcvydy\",\"managementNetwork\":\"tdooaoj\",\"uplinkNetwork\":\"iodkooebwnujhem\",\"provisioningState\":\"Updating\"}")
+            "{\"addonType\":\"HCX\",\"offer\":\"deh\",\"managementNetwork\":\"wyahuxinpmqnja\",\"uplinkNetwork\":\"ixjsprozvcputeg\",\"provisioningState\":\"Building\"}")
             .toObject(AddonHcxProperties.class);
-        Assertions.assertEquals("qlcvydy", model.offer());
-        Assertions.assertEquals("tdooaoj", model.managementNetwork());
-        Assertions.assertEquals("iodkooebwnujhem", model.uplinkNetwork());
+        Assertions.assertEquals("deh", model.offer());
+        Assertions.assertEquals("wyahuxinpmqnja", model.managementNetwork());
+        Assertions.assertEquals("ixjsprozvcputeg", model.uplinkNetwork());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddonHcxProperties model = new AddonHcxProperties().withOffer("qlcvydy")
-            .withManagementNetwork("tdooaoj")
-            .withUplinkNetwork("iodkooebwnujhem");
+        AddonHcxProperties model = new AddonHcxProperties().withOffer("deh")
+            .withManagementNetwork("wyahuxinpmqnja")
+            .withUplinkNetwork("ixjsprozvcputeg");
         model = BinaryData.fromObject(model).toObject(AddonHcxProperties.class);
-        Assertions.assertEquals("qlcvydy", model.offer());
-        Assertions.assertEquals("tdooaoj", model.managementNetwork());
-        Assertions.assertEquals("iodkooebwnujhem", model.uplinkNetwork());
+        Assertions.assertEquals("deh", model.offer());
+        Assertions.assertEquals("wyahuxinpmqnja", model.managementNetwork());
+        Assertions.assertEquals("ixjsprozvcputeg", model.uplinkNetwork());
     }
 }

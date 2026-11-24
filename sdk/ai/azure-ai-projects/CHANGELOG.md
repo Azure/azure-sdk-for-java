@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,433 @@
 
 ### Bugs Fixed
 
-- Projects Client: Get Azure OpenAI should use the parent resource unless caller provides a connection name
+### Other Changes
+
+## 2.10.0 (2026-11-12)
+
+### Features Added
+
+- Promoted Agent Insights monitors, runs, insights, and related models to GA through `AgentInsightMonitorsClient` and
+  `AgentInsightMonitorsAsyncClient`. Build these clients directly through `AIProjectClientBuilder`; the Agent Insights
+  preview header is no longer required.
+- Added `ListAgentInsightsOptions` and `ListAgentInsightRunsOptions` for filtered paging. Each options object contains
+  the monitor ID as well as cursors, page size, ordering, and operation-specific filters.
+- Added monitor priorities through `AgentInsightPriorities` and `AgentInsightPrioritiesDetails`, and generated agent
+  summaries through `AgentInsightSummary`.
+- Added scheduled dataset and trace evaluation rules through `DatasetEvaluationRuleAction`,
+  `TraceEvaluationRuleAction`, `EvaluationRule.schedule`, timer-trigger events, and schedule provisioning status/error
+  reporting. Scheduling trigger and recurrence models are now GA.
+- Added evaluation run data sources for CSV files, target completions, traces, and user-conversation simulation.
+  Trace selection supports trace and conversation IDs, agent filters, time ranges, sampling, and ingestion delay.
+  Added item-generation parameters for response retrieval, synthetic data generation, target completions, and
+  red teaming with seed prompts and taxonomies.
+- Added typed `DatasetEvaluationSource`, `TraceEvaluationSource`, and `UserConversationSimulationSource` unions with
+  source-specific factories such as `ofCsv(...)`, `ofTraces(...)`, and `ofFileId(...)`, respectively, and typed getters.
+  Standard and preview conversation simulation data sources share `UserConversationSimulationSource`. Evaluation
+  sources reuse OpenAI types directly where applicable; simulation scenarios and evaluation-model settings reuse
+  Agents types.
+- Expanded evaluator generation with optional model selection, dimensions, generated weights, pass thresholds, and
+  explicit trace IDs. Added preview quality/safety categories, Boolean/Likert rubric scoring, dimension eligibility,
+  and endpoint evaluator schema-version selection.
+- Added preview evaluator diagnostics through `BetaEvaluatorsClient.listEvaluatorDiagnostics` and the asynchronous
+  equivalent, including dimension, definition, version-change, and health diagnostics.
+- Added preview conversation data generation with sample limits, redaction, descriptions, rubrics, and model options,
+  plus per-test-case rubric generation for trace jobs. Data-generation results now expose warnings and warning codes.
+- Added `deleteSkillVersion` and `deleteSkillVersionWithResponse` to the synchronous and asynchronous beta Skills clients.
+- Added `JobStatus.SKIPPED`.
+
+### Breaking Changes
+
+- Replaced `BetaAgentInsightMonitorsClient` and `BetaAgentInsightMonitorsAsyncClient` with the GA clients. Replace
+  `AIProjectClientBuilder.beta().buildBetaAgentInsightMonitorsClient()` and its asynchronous equivalent with
+  `buildAgentInsightMonitorsClient()` and `buildAgentInsightMonitorsAsyncClient()` on the main builder.
+- Replaced `AgentInsightMonitorCreate` inputs with `createAgentInsightMonitor(agentName, modelDeploymentName, ...)`
+  overloads. Replaced `AgentInsightMonitorUpdate` and `AgentInsightUpdate` with `UpdateAgentInsightMonitorOptions`
+  and `UpdateAgentInsightOptions`.
+- Replaced the `AgentInsightRunCreate` convenience-method input with `beginCreateAgentInsightRun(monitorId, ...)`
+  overloads. `AgentInsightRun.getInputs()` now returns `AgentInsightRunInputs`.
+- Replaced the positional convenience overloads of `listAgentInsights` and `listAgentInsightRuns` with options bags.
+  Pass the monitor ID in the options object rather than as a separate method argument.
+- Replaced monitor overview/override models with agent summaries and priorities. `AgentInsightMonitor.getOverview()`
+  is now `getAgentSummary()`, returning `AgentInsightSummary`; removed `AgentInsightsOverview`,
+  `AgentInsightsOverviewOverride`, and `AgentInsightOverviewSource`.
+  Renamed `AgentInsightDetails.getRecommendedActions()` to `getRecommendedAction()`.
+- Renamed cron and recurrence trigger `startTime`/`endTime` accessors to `startAt`/`endAt`.
+  Cron and one-time trigger time zones now use `java.util.TimeZone` instead of `String`.
+- Replaced `DailyRecurrenceSchedule(List<Integer> hours)` with a no-argument constructor and `setHours(...)`.
+
+### Bugs Fixed
+
+- Fixed long-running job polling to recognize the service's `cancelled` status as terminal.
 
 ### Other Changes
+
+- Regenerated the client with `@azure-tools/openai-typespec` version `1.34.1`.
+- Updated `azure-ai-agents` from `2.9.0` to `2.10.0`.
+- Updated `openai-java` from `4.69.0` to `4.99.0`.
+- Updated `azure-storage-blob` from `12.36.0` to `12.37.2`.
+
+## 2.9.0 (2026-10-30)
+
+### Bugs Fixed
+
+- Fixed `SimulationSeedDataGenerationJobConfiguration` to accept and serialize the service-required `max_samples`
+  through its constructor or `setMaxSamples(int)`, while preserving the no-argument constructor for backward
+  compatibility.
+- Fixed cursor-based list operations that stopped after the first page, including data-generation jobs,
+  evaluator-generation jobs, skills and skill versions, and agent insight monitors, runs, and insights.
+  Paging now follows the service's `last_id` cursor and supports resuming from a continuation token.
+- Fixed cursor-based paging to stop when the service returns `has_more: false`, even if the response still includes
+  a `last_id`, avoiding unnecessary requests after the final page.
+
+### Other Changes
+
+- Regenerated the client from the updated Foundry TypeSpec specification.
+- Updated `azure-ai-agents` from `2.8.0` to `2.9.0`.
+- Updated `azure-core` from `1.60.0` to `1.61.0` and `azure-core-http-netty` from `1.16.8` to `1.17.0`.
+
+## 2.8.0 (2026-10-19)
+
+### Bugs Fixed
+
+- Fixed typed asynchronous list operations to forward the page-size hint supplied through `PagedFlux.byPage(...)`,
+  including when resuming from a continuation token, instead of ignoring it.
+
+### Other Changes
+
+- Regenerated from the updated Foundry TypeSpec specification.
+- Updated `azure-ai-agents` to `2.8.0` and `azure-storage-blob` to `12.36.0`.
+
+## 2.7.0 (2026-10-06)
+
+### Features Added
+
+- Added `EvaluatorsClient` and `EvaluatorsAsyncClient`, built directly through
+  `AIProjectClientBuilder.buildEvaluatorsClient()` and `buildEvaluatorsAsyncClient()`, for generally available
+  evaluator-version management and rubric-generation jobs. Preview evaluator definitions such as
+  `EndpointBasedEvaluatorDefinition` require `allowPreview(true)`. `BetaEvaluatorsClient` and
+  `BetaEvaluatorsAsyncClient` retain preview pending-upload and credential operations.
+- Evaluation data generation graduated to general availability on `DatasetsClient` and `DatasetsAsyncClient`.
+  Added scenario-specific input and result models for evaluation, supervised fine-tuning, and reinforcement
+  fine-tuning. Fine-tuning scenarios remain in preview and require `allowPreview(true)`; their output configurations
+  support merge-file IDs.
+- Added `ConnectionType.OPEN_API` (`OpenAPI`) and `ConnectionType.REMOTE_A2A` (`RemoteA2A`) for listing and identifying
+  OpenAPI and remote agent-to-agent connections.
+- Added `ApiError.getMisalignment()` to expose structured misalignment details using the OpenAI
+  `ErrorObject.Misalignment` model.
+
+### Breaking Changes
+
+- Removed `BetaDatasetsClient`, `BetaDatasetsAsyncClient`, and their beta-builder methods. Use `DatasetsClient` /
+  `DatasetsAsyncClient`, built directly through `AIProjectClientBuilder`, for data generation job operations.
+  Default requests do not send a preview feature header; set `allowPreview(true)` for preview data generation.
+- Moved evaluator-version CRUD, listing, and evaluator-generation job operations from `BetaEvaluatorsClient` /
+  `BetaEvaluatorsAsyncClient` to `EvaluatorsClient` / `EvaluatorsAsyncClient`. Build the new clients directly through
+  `AIProjectClientBuilder`; generally available operations no longer require the `Evaluations=V1Preview` header.
+- Data generation creation methods now accept `DataGenerationJobInputs` instead of `DataGenerationJob`. Construct
+  `EvaluationDataGenerationJobInputs`, `SupervisedFineTuningDataGenerationJobInputs`, or
+  `ReinforcementFineTuningDataGenerationJobInputs` with a name, sources, and generation configuration.
+  `DataGenerationJob` is now an immutable response model with top-level `getName()`, `getSources()`, and
+  `getGenerationConfiguration()` properties; its no-argument constructor and `getInputs()` / `setInputs(...)` were
+  removed.
+- Renamed `DataGenerationJobOptions` and its `SimpleQnA`, `SimulationSeed`, `ToolUseFineTuning`, and `Traces` subtypes to
+  the corresponding `*DataGenerationJobConfiguration` types. `DataGenerationJobInputs.getOptions()` was replaced by
+  `getGenerationConfiguration()`. `DataGenerationJobOutputOptions` and the `getOutputOptions()` /
+  `setOutputOptions(...)` accessors were replaced by scenario-specific `*DataGenerationJobOutputConfiguration` types
+  and `getOutputConfiguration()` / `setOutputConfiguration(...)` accessors on concrete input models.
+- Renamed `DataGenerationJobScenario.SUPERVISED_FINETUNING` and `REINFORCEMENT_FINETUNING` to
+  `SUPERVISED_FINETUNING_PREVIEW` and `REINFORCEMENT_FINETUNING_PREVIEW`. Their wire values now use the
+  `supervised_finetuning_preview` and `reinforcement_finetuning_preview` discriminator values.
+- Renamed `DataGenerationJobResult.getGeneratedSamples()` to `getGeneratedSampleCount()`.
+- Evaluator generation creation methods now accept `EvaluatorGenerationInputs` instead of `EvaluatorGenerationJob`.
+  `EvaluatorGenerationJob` is now an immutable response model with top-level source, model, and evaluator-name
+  properties; its no-argument constructor and `getInputs()` / `setInputs(...)` were removed.
+- Changed public constructors on polymorphic base models to protected: `DataGenerationJobInputs`,
+  `DataGenerationJobSource`, `EvaluationTaxonomyInput`, `EvaluatorDefinition`, `EvaluatorGenerationJobSource`,
+  `InsightRequest`, `RecurrenceSchedule`, `RoutineAction`, `RoutineDispatchPayload`, `RoutineTrigger`, `ScheduleTask`,
+  `TargetConfig`, and `Trigger`. The renamed `DataGenerationJobConfiguration` base also has a protected constructor.
+  Construct concrete subtypes instead; deserialization of unknown discriminator values remains supported.
+
+### Bugs Fixed
+
+- Fixed OpenAI clients built from `AIProjectClientBuilder` to acquire bearer tokens through the Azure HTTP pipeline.
+  Asynchronous clients now use asynchronous token acquisition instead of calling `TokenCredential.getTokenSync(...)`;
+  synchronous clients continue to use synchronous token acquisition.
+- Fixed skill file uploads to omit an unset `default` flag instead of sending the literal text `null`.
+
+### Other Changes
+
+- Organized Java samples into feature-specific folders, with synchronous and asynchronous samples together.
+- Added synchronous and asynchronous evaluation samples for inline data, uploaded JSONL datasets, and native OpenAI graders.
+- Added synchronous and asynchronous evaluator catalog and rubric generation samples, including metadata updates, version review, evaluation runs, and cleanup.
+- Updated data generation samples for the scenario-specific input, configuration, and output models.
+- Regenerated the client from the updated TypeSpec specification.
+
+#### Dependency Updates
+
+- Updated `azure-ai-agents` from `2.6.0` to `2.7.0`.
+- Updated `openai-java` from `4.45.0` to `4.69.0`.
+
+## 2.6.1 (2026-09-23)
+
+### Bugs Fixed
+
+- Fixed serialization of OpenAI tools passed to `AzureAIAgentTarget.setToolsAsOpenAITools(...)` to avoid emitting computed properties such as `isValid` in request bodies.
+
+## 2.6.0 (2026-09-22)
+
+### Features Added
+
+- Added trace filtering and sampling controls for preview data generation jobs. `TracesDataGenerationJobSource.setTraceIds(List<String>)` selects explicit trace IDs, while `TracesDataGenerationJobOptions.setMaxSamples(Integer)` optionally limits the number of generated samples; omitting the limit disables sampling.
+- Added `DataGenerationJobOutputOptions.setWriteMode(DataGenerationJobOutputWriteMode)` to control how generated dataset outputs are written. `OVERWRITE` creates the next dataset version from newly generated rows, while `MERGE` combines new rows with the latest dataset version and de-duplicates trace rows for trace-based evaluation jobs.
+
+### Breaking Changes
+
+- Data generation sample limits are now scenario-specific instead of being defined on `DataGenerationJobOptions`. `DataGenerationJobOptions(int)` was replaced by `DataGenerationJobOptions()` and its `getMaxSamples()` method was removed. `TracesDataGenerationJobOptions(int)` was replaced by a no-argument constructor and optional `Integer`-based `getMaxSamples()` / `setMaxSamples(Integer)` methods. `SimulationSeedDataGenerationJobOptions(int)` was replaced by a no-argument constructor and no longer accepts a sample limit. `SimpleQnADataGenerationJobOptions` and `ToolUseFineTuningDataGenerationJobOptions` continue to require `maxSamples` in their constructors.
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+- Updated the `azure-ai-agents` dependency to version `2.6.0`.
+
+## 2.5.0 (2026-09-09)
+
+### Features Added
+
+- Added preview `BetaAgentInsightMonitorsClient` and `BetaAgentInsightMonitorsAsyncClient`, available through `AIProjectClientBuilder.beta().buildBetaAgentInsightMonitorsClient()` and `buildBetaAgentInsightMonitorsAsyncClient()`. These clients automatically opt in to `Foundry-Features: AgentInsights=V1Preview` using the new `FoundryFeaturesOptInKeys.AGENT_INSIGHTS_V1_PREVIEW` value and support:
+  - Managing monitors with `createAgentInsightMonitor`, `getAgentInsightMonitor`, `listAgentInsightMonitors`, `updateAgentInsightMonitor`, `deleteAgentInsightMonitor`, and `resetAgentInsightMonitor`.
+  - Starting and tracking runs with `beginCreateAgentInsightRun`, `listAgentInsightRuns`, `getAgentInsightRun`, and `cancelAgentInsightRun`.
+  - Reading and updating insights with `listAgentInsights`, `getAgentInsight`, and `updateAgentInsight`, including optional expanded details through `getAgentInsight(monitorId, insightId, includeDetails)`.
+  - New models for monitors, runs, and insights, including `AgentInsightMonitor`, `AgentInsightMonitorCreate`, `AgentInsightMonitorUpdate`, `AgentInsightRun`, `AgentInsightRunCreate`, `AgentInsightRunResult`, `AgentInsight`, `AgentInsightDetails`, `AgentInsightUpdate`, `AgentInsightsOverview`, `AgentInsightProposedFix`, and related types.
+- Added optional routine dispatch authorization through `RoutineAuthorization.setIdentity(RoutineDispatchIdentity)`. Dispatch defaults to `RoutineDispatchIdentity.AGENT`; use `RoutineDispatchIdentity.CREATOR` to explicitly dispatch as the principal that created a new routine. Authorization is ignored when updating an existing routine.
+
+### Breaking Changes
+
+- `BetaRoutinesClient.createOrUpdateRoutine(String, String, Boolean, Map<String, RoutineTrigger>, RoutineAction)` and its `BetaRoutinesAsyncClient` counterpart now require an additional trailing `RoutineAuthorization authorization` parameter. Pass `null` to retain the previous agent-identity dispatch behavior.
+
+- Regenerated client from the updated TypeSpec specification.
+
+## 2.4.0 (2026-08-19)
+
+### Features Added
+
+- Added `TracesDataGenerationJobOptions.setRedactPrivateContent(...)` / `isRedactPrivateContent()` to control whether private content in traces is redacted (default is to redact; set `false` to opt out).
+
+### Breaking Changes
+
+- Routines preview was rolled to V2. `FoundryFeaturesOptInKeys.ROUTINES_V1_PREVIEW` was renamed to `ROUTINES_V2_PREVIEW` (`Routines=V2Preview`); `BetaRoutinesClient` / `BetaRoutinesAsyncClient` now emit `Foundry-Features: Routines=V2Preview` on every request, and the `@Beta` markers on routine models (`Routine`, `RoutineAction`, `RoutineActionType`, `RoutineTrigger`, `RoutineTriggerType`, `RoutineRun`, `RoutineRunPhase`, `RoutineAttemptSource`, `RoutineDispatchPayload`, `RoutineDispatchPayloadType`, `DispatchRoutineResult`, `ScheduleRoutineTrigger`, `TimerRoutineTrigger`, `CustomRoutineTrigger`, `GitHubIssueEvent`, `GitHubIssueRoutineTrigger`, `InvokeAgentInvocationsApiRoutineAction` / `InvokeAgentInvocationsApiDispatchPayload`, `InvokeAgentResponsesApiRoutineAction` / `InvokeAgentResponsesApiDispatchPayload`) were updated to reference `Routines=V2Preview`.
+- The `task_generation` data generation scenario was renamed to `simulation_seed`. `TaskGenerationDataGenerationJobOptions` was renamed to `SimulationSeedDataGenerationJobOptions`, and `DataGenerationJobType.TASK_GENERATION` was replaced by `DataGenerationJobType.SIMULATION_SEED`. The discriminator value on `DataGenerationJobOptions` changed from `task_generation` to `simulation_seed`.
+- Routine listing convenience methods on `BetaRoutinesClient` / `BetaRoutinesAsyncClient` dropped the `before` parameter and now take `com.azure.ai.agents.models.PageOrder` instead of `String` for the `order` argument. `listRoutines(Integer, String, String, String)` was replaced by `listRoutines(Integer, String, PageOrder)`, and `listRoutineRuns(String, String, Integer, String, String, String)` was replaced by `listRoutineRuns(String, String, Integer, String, PageOrder)`.
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+
+## 2.3.0 (2026-08-06)
+
+### Features Added
+
+- Added task-generation support to `BetaDatasetsClient` / `BetaDatasetsAsyncClient`: new `DataGenerationJobType.TASK_GENERATION` value and new `TaskGenerationDataGenerationJobOptions` subtype for the `task_generation` data generation scenario, intended for multi-turn evaluation with prompt, file, or agent sources.
+- Added rubric-generation input-quality warnings on `BetaEvaluatorsClient` / `BetaEvaluatorsAsyncClient`:
+  - `EvaluatorGenerationJob.getInputQualityWarnings()` returns any non-fatal input-quality advisories produced by the rubric generation pipeline.
+  - `EvaluatorVersion.getGenerationJobId()` and `EvaluatorVersion.getWarnings()` provide the read-only link back to the `EvaluatorGenerationJob` that produced the version and the categories of warnings surfaced on it.
+  - New models `GenerationWarningType`, `RubricGenerationInputQualityWarning`, `RubricGenerationInputQualityWarningCode`, `RubricGenerationInputQualityWarningSeverity`, and `RubricGenerationInputQualityWarningSource`.
+- Marked `HumanEvaluationPreviewRuleAction` with `@Beta` so preview surface area is explicit in generated API docs.
+
+### Breaking Changes
+
+- `BetaDatasetsClient` / `BetaDatasetsAsyncClient` data generation job creation is now a long-running operation. `createGenerationJob(DataGenerationJob, String)`, `createGenerationJob(DataGenerationJob)`, and `createGenerationJobWithResponse(BinaryData, RequestOptions)` were removed and replaced by `beginCreateGenerationJob` overloads returning `SyncPoller<DataGenerationJob, DataGenerationJobResult>` / `PollerFlux<DataGenerationJob, DataGenerationJobResult>`. Call `.poll().getValue()` (or the async equivalent) to obtain the created `DataGenerationJob`.
+- `BetaEvaluatorsClient` / `BetaEvaluatorsAsyncClient` evaluator generation job creation is now a long-running operation. `createEvaluatorGenerationJob(EvaluatorGenerationJob, String)`, `createEvaluatorGenerationJob(EvaluatorGenerationJob)`, and `createEvaluatorGenerationJobWithResponse(BinaryData, RequestOptions)` were removed and replaced by `beginCreateEvaluatorGenerationJob` overloads returning `SyncPoller<EvaluatorGenerationJob, EvaluatorVersion>` / `PollerFlux<EvaluatorGenerationJob, EvaluatorVersion>`.
+
+### Other Changes
+
+- Updated version of `openai` client library to `4.45.0`.
+- Regenerated client from the updated TypeSpec specification.
+
+## 2.2.0 (2026-07-01)
+
+### Features Added
+
+- Added `EndpointBasedEvaluatorDefinition` for custom evaluator definitions backed by customer-hosted endpoints and Project Connections.
+
+### Breaking Changes
+
+- Preview operation group clients now use beta-prefixed names and are built through `AIProjectClientBuilder.beta()`. `DataGenerationJobsClient` / `DataGenerationJobsAsyncClient` renamed to `BetaDatasetsClient` / `BetaDatasetsAsyncClient`; `EvaluationTaxonomies`, `Evaluators`, `Insights`, `Models`, `RedTeams`, `Routines`, `Schedules`, and `Skills` clients were renamed to their corresponding `Beta*Client` / `Beta*AsyncClient` names.
+- `Skill` renamed to `SkillDetails`. `SkillsClient` and `SkillsAsyncClient` methods such as `getSkill`, `listSkills`, and `updateSkill` now return `SkillDetails` / `PagedIterable<SkillDetails>` / `PagedFlux<SkillDetails>` instead of `Skill`.
+- `RoutineRun.getStatus()` now returns `BinaryData` instead of `String` to align with the current Routines preview contract.
+- `SystemDataV3` and `ModelVersion.getSystemData()` were removed because model versions no longer expose system data in the current service contract.
+
+### Bugs Fixed
+
+- Fixed OpenAI clients built from `AIProjectClientBuilder` to honor a custom `HttpPipeline` supplied through `pipeline(...)`, preserving custom policies while still adding required preview feature headers for applicable preview clients.
+
+### Other Changes
+
+- Added routines samples covering CRUD (`RoutinesSample` / `RoutinesAsyncSample`), schedule trigger, timer trigger, and manual dispatch, with a shared `RoutinesSampleUtils` helper.
+- Marked preview clients, models, and methods with `@Beta` annotations so preview surface area is explicit in generated API docs.
+
+## 2.1.0 (2026-06-01)
+
+### Features Added
+
+- Added new preview `DataGenerationJobsClient` and `DataGenerationJobsAsyncClient` sub-clients for creating, retrieving, listing, canceling, and deleting data generation jobs, with related data generation source, output, token usage, and options models.
+- Added new preview `ModelsClient` and `ModelsAsyncClient` sub-clients for registering and managing model weights as Foundry `ModelVersion` resources, including pending upload, asynchronous model-version creation, listing, retrieving, updating, deleting, and credential retrieval operations.
+- Added new preview `RoutinesClient` and `RoutinesAsyncClient` sub-clients for creating or updating routines, retrieving, enabling, disabling, listing, deleting, listing runs, and dispatching routines, with related routine trigger, action, dispatch payload, and run models.
+- Added evaluator generation job operations to `EvaluatorsClient` and `EvaluatorsAsyncClient`, including create, get, list, cancel, and delete operations, plus evaluator pending-upload and credential helper operations.
+- Added versioned skill management on `SkillsClient` and `SkillsAsyncClient`, including `createSkillVersion`, `createSkillVersionFromFiles`, `listSkillVersions`, `getSkillVersion`, `getSkillContent`, `getSkillVersionContent`, and `deleteSkillVersion`.
+- Added `EvaluationsHelper` and Azure evaluator model types, such as `TestingCriterionAzureAIEvaluator` and `GraderAzureAIEvaluator`, to adapt Azure evaluator definitions to OpenAI evaluation request types.
+- Added protocol-style `WithResponse` overloads with `RequestOptions` for connection retrieval and dataset file/folder upload helpers.
+- Added new feature-flag values to `FoundryFeaturesOptInKeys`: `ROUTINES_V1_PREVIEW` (`Routines=V1Preview`), `DATA_GENERATION_JOBS_V1_PREVIEW` (`DataGenerationJobs=V1Preview`), `MODELS_V1_PREVIEW` (`Models=V1Preview`), and `AGENTS_OPTIMIZATION_V1_PREVIEW` (`AgentsOptimization=V1Preview`).
+
+### Breaking Changes
+
+- The Skills API is now versioned. `SkillDetails` was removed and replaced by `Skill` and `SkillVersion`. Use `createSkillVersion` instead of `createSkill`, `createSkillVersionFromFiles` instead of `createSkillFromPackage`, `getSkillContent`/`getSkillVersionContent` instead of `downloadSkill`, and `deleteSkillVersion` for deleting a specific skill version. `updateSkill` now updates the default version only.
+- The `body` parameter on `EvaluationTaxonomiesClient.createEvaluationTaxonomy`, `EvaluationTaxonomiesClient.updateEvaluationTaxonomy`, and their async counterparts was renamed to `taxonomy`.
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+- Added samples for data generation jobs, model management, evaluator helper usage, and packaged skill upload/download.
+
+## 2.1.0-beta.1 (2026-05-12)
+
+### Features Added
+
+- Added new `SkillsClient` and `SkillsAsyncClient` sub-clients (preview, opt-in via `FoundryFeaturesOptInKeys.SKILLS_V1_PREVIEW`) with operations to `createSkill`, `createSkillFromPackage`, `getSkill`, `downloadSkill`, `listSkills`, `updateSkill`, and `deleteSkill`. New `buildSkillsClient()` and `buildSkillsAsyncClient()` methods on `AIProjectClientBuilder`. New `SkillDetails` model.
+- Added `buildAgentScopedOpenAIClient(String agentName)` and `buildAgentScopedOpenAIAsyncClient(String agentName)` to `AIProjectClientBuilder` for constructing OpenAI clients targeting a specific agent's endpoint (base URL `{endpoint}/agents/{agentName}/endpoint/protocols/openai`). The default `buildOpenAIClient()` / `buildOpenAIAsyncClient()` continue to target `{endpoint}/openai/v1`.
+- Added `threshold` property (`Double`) to `EvaluatorMetric` with `getThreshold()` and `setThreshold(Double)`.
+- Added `entryPoint`, `imageTag`, and `blobUrl` properties to `CodeBasedEvaluatorDefinition` with corresponding getters and setters; added a no-argument constructor and `setCodeText(String)` setter.
+- Added new feature-flag values to `FoundryFeaturesOptInKeys`: `SKILLS_V1_PREVIEW` (`Skills=V1Preview`) and `TOOLBOXES_V1_PREVIEW` (`Toolboxes=V1Preview`).
+- Added new samples `SkillsSample` and `SkillsAsyncSample` demonstrating end-to-end use of the Skills sub-client.
+
+### Other Changes
+
+- Regenerated client from the updated TypeSpec specification.
+- `module-info.java` now opens `com.azure.ai.projects.implementation.models` to `com.azure.core` to support serialization of new internal request types (e.g., `CreateSkillRequest`, `UpdateSkillRequest`).
+
+## 2.0.1 (2026-04-16)
+
+### Bugs Fixed
+
+- Fixed streaming APIs to properly stream response data instead of eagerly buffering the entire response body in memory, and moved async completions off I/O threads to prevent blocking.
+
+## 2.0.0 (2026-03-27)
+
+### Features Added
+
+- Added `getDefaultConnection(ConnectionType, boolean)` to `ConnectionsClient` and `ConnectionsAsyncClient` for retrieving the default connection of a given type.
+- Added `connectionName` parameter overloads to `createDatasetWithFile` and `createDatasetWithFolder` in `DatasetsClient` and `DatasetsAsyncClient`, allowing users to specify which Azure Storage Account connection to use for uploads.
+
+### Breaking Changes
+
+- Methods across sub-clients were renamed to include the resource name for disambiguation (continuing the pattern from `2.0.0-beta.1`):
+  - `DatasetsClient`: `listLatestVersion()` → `listLatestDatasetVersions()`, `listVersions()` → `listDatasetVersions()`, `deleteVersion()` → `deleteDatasetVersion()`, `createOrUpdateVersion()` → `createOrUpdateDatasetVersion()`
+  - `IndexesClient`: `listLatest()` → `listLatestIndexVersions()`, `listVersions()` → `listIndexVersions()`, `getVersion()` → `getIndexVersion()`, `createOrUpdateVersion()` → `createOrUpdateIndexVersion()`, `deleteVersion()` → `deleteIndexVersion()`
+  - `EvaluatorsClient`: `createVersion()` → `createEvaluatorVersion()`, `getVersion()` → `getEvaluatorVersion()`, `updateVersion()` → `updateEvaluatorVersion()`, `deleteVersion()` → `deleteEvaluatorVersion()`, `listVersions()` → `listEvaluatorVersions()`, `listLatestVersions()` → `listLatestEvaluatorVersions()`
+  - Same renames apply to the corresponding async clients.
+- `Connection.getCredentials()` renamed to `Connection.getCredential()` (singular).
+- `ConnectionType.REMOTE_TOOL` renamed to `ConnectionType.REMOTE_TOOL_PREVIEW`.
+- `EvaluatorMetric.setIsPrimary()` renamed to `EvaluatorMetric.setPrimary()`.
+- `BlobReferenceSasCredential.getType()` now returns `CredentialType` instead of `String`.
+- `DatasetVersion.getDataUri()` / `setDataUri()` renamed to `getDataUrl()` / `setDataUrl()` (also on `FileDatasetVersion` and `FolderDatasetVersion`).
+- `DatasetsClient.createDatasetWithFolder()` no longer throws checked `IOException`; it now throws `UncheckedIOException` instead.
+
+### Bugs Fixed
+
+- Fixed `createDatasetWithFolder` producing an invalid `dataUri` that caused a 400 error when registering the dataset.
+- Fixed `createDatasetWithFile` using the dataset name as the blob name instead of the actual file name.
+
+### Other Changes
+
+- Regenerated from updated API spec.
+
+## 2.0.0-beta.3 (2026-03-19)
+
+### Features Added
+
+- Added `generateInsight(Insight, FoundryFeaturesOptInKeys)` convenience method to `InsightsClient` and `InsightsAsyncClient`.
+
+### Breaking Changes
+
+- `FoundryFeaturesOptInKeys` changed from an `ExpandableStringEnum`-based class to a standard Java `enum` type. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.
+- The `timeZone` property in `RecurrenceTrigger` changed from `String` to `java.util.TimeZone`.
+- Removed `EvaluationsClient` and `EvaluationsAsyncClient`. Use `builder.buildOpenAIClient().evals()` (returns `EvalService`) and `builder.buildOpenAIAsyncClient().evals()` (returns `EvalServiceAsync`) from the Stainless OpenAI SDK directly. The corresponding `buildEvaluationsClient()` and `buildEvaluationsAsyncClient()` methods on `AIProjectClientBuilder` have also been removed.
+- `InsightsClient` and `InsightsAsyncClient` no longer auto-set the `Foundry-Features: Insights=V1Preview` header. The `FoundryFeaturesOptInKeys` parameter must now be passed explicitly to `generateInsight()`, `getInsight()`, and `listInsights()` overloads that require it.
+- `getInsight(String, Boolean)` overload removed; replaced by `getInsight(String)` and `getInsight(String, FoundryFeaturesOptInKeys, Boolean)`.
+- `listInsights(InsightType, String, String, String, Boolean)` signature changed to `listInsights(FoundryFeaturesOptInKeys, InsightType, String, String, String, Boolean)`.
+
+## 2.0.0-beta.2 (2026-03-04)
+
+### Breaking Changes
+
+- Renamed `Index` model to `AIProjectIndex` across the SDK; all `IndexesClient` and `IndexesAsyncClient` methods now use `AIProjectIndex` instead of `Index`
+- Replaced `DayOfWeek` custom enum (`com.azure.ai.projects.models.DayOfWeek`) with the JDK standard `java.time.DayOfWeek` in `WeeklyRecurrenceSchedule`
+- Removed `CONTAINER_AGENTS_V1_PREVIEW`, `HOSTED_AGENTS_V1_PREVIEW`, and `WORKFLOW_AGENTS_V1_PREVIEW` constants from `FoundryFeaturesOptInKeys` (agent-specific feature flags moved to `azure-ai-agents`)
+
+### Other Changes
+
+- Generated from latest API spec
+
+## 2.0.0-beta.1 (2026-02-25)
+
+### Features Added
+
+- Added `getOpenAIClient` methods to obtain an instance of the Stainless OpenAI client
+- Added documentation on how to get an `AgentsClient`
+- Added `buildOpenAIClient()` and `buildOpenAIAsyncClient()` methods to `AIProjectClientBuilder` for directly obtaining an OpenAI client instance
+- Added `FoundryFeaturesOptInKeys` enum for preview feature opt-in flags (e.g., `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`)
+- Added `ModelSamplingParams` and `AzureAIModelTarget` models
+
+### Breaking Changes
+
+- Updated service version from `2025-11-15-preview` to `v1`
+- Renamed `AgenticIdentityCredentials` to `AgenticIdentityPreviewCredentials`
+- Renamed `AgentClusterInsightsRequest` to `AgentClusterInsightRequest`
+- `ConnectionType.REMOTE_TOOL` renamed to `REMOTE_TOOL_PREVIEW` (value `RemoteTool_Preview`)
+- `CredentialType.AGENTIC_IDENTITY` renamed to `AGENTIC_IDENTITY_PREVIEW`
+- `ConnectionType.APIKEY` renamed to `API_KEY`
+- `EvaluationsClient.getOpenAIClient()` renamed to `getEvalService()`
+- `BlobReference.getBlobUri()` renamed to `getBlobUrl()`
+- `HumanEvaluationRuleAction` renamed to `HumanEvaluationPreviewRuleAction`
+- `EvaluationComparisonRequest` renamed to `EvaluationComparisonInsightRequest`; `EvaluationCompareReport` renamed to `EvaluationComparisonInsightResult`
+- `EvaluationRunClusterInsightsRequest` renamed to `EvaluationRunClusterInsightRequest`
+- Credential model classes dropped the plural suffix (e.g., `ApiKeyCredentials` → `ApiKeyCredential`, `EntraIdCredentials` → `EntraIdCredential`, `SasCredentials` → `SasCredential`, `BaseCredentials` → `BaseCredential`, `NoAuthenticationCredentials` → `NoAuthenticationCredential`)
+- Methods across sub-clients were renamed to include the resource name for disambiguation:
+  - `DeploymentsClient`: `get()` → `getDeployment()`, `list()` → `listDeployments()`
+  - `InsightsClient`: `generate()` → `generateInsight()`, `get()` → `getInsight()`, `list()` → `listInsights()`
+  - `RedTeamsClient`: `get()` → `getRedTeam()`, `list()` → `listRedTeams()`, `create()` → `createRedTeamRun()`
+  - `SchedulesClient`: `delete()` → `deleteSchedule()`, `createOrUpdate()` → `createOrUpdateSchedule()`, `getRun()` → `getScheduleRun()`, `listRuns()` → `listScheduleRuns()`
+  - `EvaluationRulesClient`: `get()` → `getEvaluationRule()`, `list()` → `listEvaluationRules()`, `delete()` → `deleteEvaluationRule()`, `createOrUpdate()` → `createOrUpdateEvaluationRule()`
+  - `EvaluationTaxonomiesClient`: `get()` → `getEvaluationTaxonomy()`, `list()` → `listEvaluationTaxonomies()`, `create()` → `createEvaluationTaxonomy()`, `update()` → `updateEvaluationTaxonomy()`, `delete()` → `deleteEvaluationTaxonomy()`
+  - `IndexesClient`: `createOrUpdate()` → `createOrUpdateVersion()`
+  - `DatasetsClient`: `listLatest()` → `listLatestVersion()`
+
+### Bugs Fixed
+
+- Fixed base URL construction in `AIProjectClientBuilder` to append `/openai/v1` directly, removing dependency on `AzureOpenAIServiceVersion` and `AzureUrlPathMode` for URL path resolution
+
+### Other Changes
+
+- Updated version of `openai` client library to `4.14.0`
+- Generated from latest v2 API spec
+- `openai-java-client-okhttp` and `openai-java-core` modules are now `transitive` dependencies in `module-info.java`
+- `com.azure.ai.agents` is now a required module in `module-info.java`
+
+## 1.0.0-beta.3 (2025-11-12)
+
+### Features Added
+
+- Added OpenAI's official library for `Evaluations` subclients
+- New sub-clients: `EvaluationRules`, `EvaluationTaxonomies`, `Evaluators`, `Insights`, `Schedules`
+
+### Breaking Changes
+
+- Agents subclients where split into their own package `azure-ai-agents`
+- `Telemetry` and `Inference` subclient was removed.
+
+### Bugs Fixed
+
+- Projects Client: Get Azure OpenAI should use the parent resource unless caller provides a connection name
 
 ## 1.0.0-beta.2 (2025-06-17)
 

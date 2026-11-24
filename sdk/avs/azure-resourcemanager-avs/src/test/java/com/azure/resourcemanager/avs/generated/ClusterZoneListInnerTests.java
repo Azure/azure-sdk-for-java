@@ -11,7 +11,7 @@ public final class ClusterZoneListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterZoneListInner model = BinaryData.fromString(
-            "{\"zones\":[{\"hosts\":[\"vq\",\"pkeqdcvdrhvoo\",\"sotbob\"],\"zone\":\"opcjwvnhd\"},{\"hosts\":[\"mgxcxrslpm\",\"twuoegrpkhjwni\",\"qsluicp\"],\"zone\":\"gk\"},{\"hosts\":[\"vmbmp\",\"xmodf\",\"uefywsbpfvmwy\",\"rfouyftaakcpw\"],\"zone\":\"zvqtmnubexkp\"}]}")
+            "{\"zones\":[{\"hosts\":[\"zsgfyccsnewmd\",\"z\",\"eiachboosflnr\"],\"zone\":\"fqpte\"},{\"hosts\":[\"zvypyqrimzinp\",\"swjdkirso\",\"dqxhcrmnohjtckwh\",\"soifiyipjxsqw\"],\"zone\":\"rjb\"},{\"hosts\":[\"rcjxvsnbyxqabn\",\"ocpcy\",\"hurzafblj\"],\"zone\":\"pbtoqcjmkl\"},{\"hosts\":[\"bqidtqaj\",\"yulpkudjkr\"],\"zone\":\"hbzhfepg\"}]}")
             .toObject(ClusterZoneListInner.class);
     }
 }

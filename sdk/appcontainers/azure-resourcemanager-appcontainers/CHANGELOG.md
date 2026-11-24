@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,2048 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2026-09-14)
+
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. Functions is an extension resource to revisions and the api listed is used to proxy the call from Web RP to the function app's host process, this api is not exposed to users and only Web RP is allowed to invoke functions extension resource. Package api-version 2026-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.WorkloadProfileStatesCollection` was removed
+
+#### `models.DaprComponentsCollection` was removed
+
+#### `models.ManagedCertificateCollection` was removed
+
+#### `models.AvailableWorkloadProfilesCollection` was removed
+
+#### `models.JobsCollection` was removed
+
+#### `models.ListUsagesResult` was removed
+
+#### `models.ContainerAppCollection` was removed
+
+#### `models.ConnectedEnvironmentCollection` was removed
+
+#### `models.CertificateCollection` was removed
+
+#### `models.WorkflowEnvelopeCollection` was removed
+
+#### `models.JavaComponentsCollection` was removed
+
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.AvailableOperations` was removed
+
+#### `models.RevisionCollection` was removed
+
+#### `models.HttpRouteConfigCollection` was removed
+
+#### `models.MaintenanceConfigurationCollection` was removed
+
+#### `models.SourceControlCollection` was removed
+
+#### `models.ManagedEnvironmentsCollection` was removed
+
+#### `models.AuthConfigCollection` was removed
+
+#### `models.SessionPoolCollection` was removed
+
+#### `models.SessionContainer` was modified
+
+* `validate()` was removed
+
+#### `models.JobConfigurationScheduleTriggerConfig` was modified
+
+* `validate()` was removed
+
+#### `models.IngressConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedCertificatePatch` was modified
+
+* `validate()` was removed
+
+#### `models.HttpRouteProvisioningErrors` was modified
+
+* `HttpRouteProvisioningErrors()` was changed to private access
+* `validate()` was removed
+
+#### `models.Runtime` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceBind` was modified
+
+* `validate()` was removed
+
+#### `models.SessionPoolUpdatableProperties` was modified
+
+* `validate()` was removed
+
+#### `models.JavaComponentPropertiesScale` was modified
+
+* `validate()` was removed
+
+#### `models.ScaleConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.Secret` was modified
+
+* `validate()` was removed
+
+#### `models.AzureActiveDirectoryValidation` was modified
+
+* `validate()` was removed
+
+#### `models.HttpRouteConfigProperties` was modified
+
+* `validate()` was removed
+
+#### `models.LoginScopes` was modified
+
+* `validate()` was removed
+
+#### `models.AvailableWorkloadProfileProperties` was modified
+
+* `AvailableWorkloadProfileProperties()` was changed to private access
+* `withCores(java.lang.Integer)` was removed
+* `withApplicability(models.Applicability)` was removed
+* `validate()` was removed
+* `withCategory(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withMemoryGiB(java.lang.Integer)` was removed
+* `withGpus(java.lang.Integer)` was removed
+
+#### `models.HttpSettings` was modified
+
+* `validate()` was removed
+
+#### `models.CertificateKeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Google` was modified
+
+* `validate()` was removed
+
+#### `models.AllowedPrincipals` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectedEnvironmentPatchResource` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerAppProbeHttpGetHttpHeadersItem` was modified
+
+* `validate()` was removed
+
+#### `models.KedaConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.SpringBootAdminComponent` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticsDefinition` was modified
+
+* `DiagnosticsDefinition()` was changed to private access
+* `withSupportTopicList(java.util.List)` was removed
+* `withAnalysisTypes(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.JavaComponentServiceBind` was modified
+
+* `validate()` was removed
+
+#### `models.GlobalValidation` was modified
+
+* `validate()` was removed
+
+#### `models.AzureActiveDirectoryLogin` was modified
+
+* `validate()` was removed
+
+#### `models.WorkloadProfile` was modified
+
+* `validate()` was removed
+
+#### `models.InitContainer` was modified
+
+* `validate()` was removed
+
+#### `models.EnvironmentVar` was modified
+
+* `validate()` was removed
+
+#### `models.CertificatePatch` was modified
+
+* `validate()` was removed
+
+#### `models.UsageName` was modified
+
+* `UsageName()` was changed to private access
+* `withLocalizedValue(java.lang.String)` was removed
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.TrafficWeight` was modified
+
+* `validate()` was removed
+
+#### `models.JobScale` was modified
+
+* `validate()` was removed
+
+#### `models.IpSecurityRestrictionRule` was modified
+
+* `validate()` was removed
+
+#### `models.AppleRegistration` was modified
+
+* `validate()` was removed
+
+#### `models.QueueScaleRule` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.OpenIdConnectLogin` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+
+#### `models.SecretKeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.JavaComponentConfigurationProperty` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectedEnvironmentStorageProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AppRegistration` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerAppSecret` was modified
+
+* `ContainerAppSecret()` was changed to private access
+* `validate()` was removed
+
+#### `models.SpringCloudConfigComponent` was modified
+
+* `validate()` was removed
+
+#### `models.Service` was modified
+
+* `validate()` was removed
+
+#### `models.DaprAppHealth` was modified
+
+* `validate()` was removed
+
+#### `models.BillingMeterProperties` was modified
+
+* `BillingMeterProperties()` was changed to private access
+* `withCategory(java.lang.String)` was removed
+* `withMeterType(java.lang.String)` was removed
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.ManagedEnvironmentStorageProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OpenIdConnectConfig` was modified
+
+* `validate()` was removed
+
+#### `models.BillingMeter` was modified
+
+* `BillingMeter()` was changed to private access
+* `withProperties(models.BillingMeterProperties)` was removed
+* `validate()` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.GithubActionConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.JobPatchPropertiesProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AllowedAudiencesValidation` was modified
+
+* `validate()` was removed
+
+#### `models.LifecycleConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ScaleRule` was modified
+
+* `validate()` was removed
+
+#### `models.ClientRegistration` was modified
+
+* `validate()` was removed
+
+#### `models.WorkflowEnvelopeProperties` was modified
+
+* `WorkflowEnvelopeProperties()` was changed to private access
+* `withHealth(models.WorkflowHealth)` was removed
+* `withFiles(java.lang.Object)` was removed
+* `withFlowState(models.WorkflowState)` was removed
+* `validate()` was removed
+
+#### `models.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem` was modified
+
+* `CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem()` was changed to private access
+* `validate()` was removed
+
+#### `models.ForwardProxy` was modified
+
+* `validate()` was removed
+
+#### `models.IdentityProviders` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerAppProbe` was modified
+
+* `validate()` was removed
+
+#### `models.ScaleRuleAuth` was modified
+
+* `validate()` was removed
+
+#### `models.JobConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.TcpScaleRule` was modified
+
+* `validate()` was removed
+
+#### `models.SecretVolumeItem` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+
+#### `models.JobConfigurationManualTriggerConfig` was modified
+
+* `validate()` was removed
+
+#### `models.JobConfigurationEventTriggerConfig` was modified
+
+* `validate()` was removed
+
+#### `models.Scale` was modified
+
+* `validate()` was removed
+
+#### `models.SessionIngress` was modified
+
+* `validate()` was removed
+
+#### `models.CustomDomain` was modified
+
+* `validate()` was removed
+
+#### `models.IngressStickySessions` was modified
+
+* `validate()` was removed
+
+#### `models.TokenStore` was modified
+
+* `validate()` was removed
+
+#### `models.ErrorEntity` was modified
+
+* `ErrorEntity()` was changed to private access
+* `withDetails(java.util.List)` was removed
+* `withTarget(java.lang.String)` was removed
+* `withExtendedCode(java.lang.String)` was removed
+* `validate()` was removed
+* `withCode(java.lang.String)` was removed
+* `withMessageTemplate(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withInnerErrors(java.util.List)` was removed
+* `withParameters(java.util.List)` was removed
+
+#### `models.VnetConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.WorkflowHealth` was modified
+
+* `WorkflowHealth()` was changed to private access
+* `withError(models.ErrorEntity)` was removed
+* `withState(models.WorkflowHealthState)` was removed
+* `validate()` was removed
+
+#### `models.LogAnalyticsConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.Mtls` was modified
+
+* `validate()` was removed
+
+#### `models.NfsAzureFileProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SessionContainerResources` was modified
+
+* `validate()` was removed
+
+#### `models.SessionPoolSecret` was modified
+
+* `validate()` was removed
+
+#### `models.AzureFileProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AuthPlatform` was modified
+
+* `validate()` was removed
+
+#### `models.CorsPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.RegistryCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.HttpRouteMatch` was modified
+
+* `validate()` was removed
+
+#### `models.OpenIdConnectClientCredential` was modified
+
+* `validate()` was removed
+
+#### `models.JobTemplate` was modified
+
+* `validate()` was removed
+
+#### `models.AzureActiveDirectoryRegistration` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `validate()` was removed
+
+#### `models.DefaultAuthorizationPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.DefaultErrorResponseError` was modified
+
+* `DefaultErrorResponseError()` was changed to private access
+* `validate()` was removed
+
+#### `models.AzureCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.WorkloadProfileStatesProperties` was modified
+
+* `WorkloadProfileStatesProperties()` was changed to private access
+* `withCurrentCount(java.lang.Integer)` was removed
+* `withMaximumCount(java.lang.Integer)` was removed
+* `withMinimumCount(java.lang.Integer)` was removed
+* `validate()` was removed
+
+#### `models.HttpScaleRule` was modified
+
+* `validate()` was removed
+
+#### `models.AzureActiveDirectory` was modified
+
+* `validate()` was removed
+
+#### `models.Login` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticsDataApiResponse` was modified
+
+* `DiagnosticsDataApiResponse()` was changed to private access
+* `withTable(models.DiagnosticDataTableResponseObject)` was removed
+* `validate()` was removed
+* `withRenderingProperties(models.DiagnosticRendering)` was removed
+
+#### `models.HttpRouteAction` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedCertificateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.JobExecutionContainer` was modified
+
+* `validate()` was removed
+
+#### `models.AzureStaticWebApps` was modified
+
+* `validate()` was removed
+
+#### `models.RuntimeJava` was modified
+
+* `validate()` was removed
+
+#### `models.DaprConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.JobPatchProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AzureStaticWebAppsRegistration` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedEnvironmentPropertiesPeerTrafficConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.TwitterRegistration` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.Twitter` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduledEntry` was modified
+
+* `validate()` was removed
+
+#### `models.Container` was modified
+
+* `validate()` was removed
+
+#### `models.CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo` was modified
+
+* `CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo()` was changed to private access
+* `withDetails(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.Facebook` was modified
+
+* `validate()` was removed
+
+#### `models.CookieExpiration` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentitySetting` was modified
+
+* `validate()` was removed
+* `models.IdentitySettingsLifeCycle lifecycle()` -> `models.SessionPoolIdentityLifeCycle lifecycle()`
+* `withLifecycle(models.IdentitySettingsLifeCycle)` was removed
+
+#### `models.CustomOpenIdConnectProvider` was modified
+
+* `validate()` was removed
+
+#### `models.CertificateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticRendering` was modified
+
+* `DiagnosticRendering()` was changed to private access
+* `withIsVisible(java.lang.Boolean)` was removed
+* `withType(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withTitle(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.Apple` was modified
+
+* `validate()` was removed
+
+#### `models.CustomContainerTemplate` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticSupportTopic` was modified
+
+* `DiagnosticSupportTopic()` was changed to private access
+* `validate()` was removed
+
+#### `models.JwtClaimChecks` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerAppProbeHttpGet` was modified
+
+* `validate()` was removed
+
+#### `models.SessionNetworkConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.JobScaleRule` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicPoolConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.RegistryInfo` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.Volume` was modified
+
+* `validate()` was removed
+
+#### `models.DaprSecret` was modified
+
+* `DaprSecret()` was changed to private access
+* `validate()` was removed
+
+#### `models.IdentitySettings` was modified
+
+* `validate()` was removed
+
+#### `models.DaprMetadata` was modified
+
+* `validate()` was removed
+
+#### `models.JobExecutionTemplate` was modified
+
+* `validate()` was removed
+
+#### `models.HttpRouteTarget` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticsProperties` was modified
+
+* `DiagnosticsProperties()` was changed to private access
+* `withStatus(models.DiagnosticsStatus)` was removed
+* `withDataProviderMetadata(models.DiagnosticDataProviderMetadata)` was removed
+* `validate()` was removed
+* `withMetadata(models.DiagnosticsDefinition)` was removed
+* `withDataset(java.util.List)` was removed
+
+#### `models.IngressPortMapping` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticsStatus` was modified
+
+* `DiagnosticsStatus()` was changed to private access
+* `withStatusId(java.lang.Integer)` was removed
+* `validate()` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.ReplicaContainer` was modified
+
+* `ReplicaContainer()` was changed to private access
+* `withContainerId(java.lang.String)` was removed
+* `validate()` was removed
+* `withReady(java.lang.Boolean)` was removed
+* `withStarted(java.lang.Boolean)` was removed
+* `withName(java.lang.String)` was removed
+* `withRestartCount(java.lang.Integer)` was removed
+
+#### `models.BaseContainer` was modified
+
+* `validate()` was removed
+
+#### `models.BlobStorageTokenStore` was modified
+
+* `validate()` was removed
+
+#### `models.VolumeMount` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticDataProviderMetadata` was modified
+
+* `DiagnosticDataProviderMetadata()` was changed to private access
+* `withProviderName(java.lang.String)` was removed
+* `validate()` was removed
+* `withPropertyBag(java.util.List)` was removed
+
+#### `models.ExtendedLocation` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticDataTableResponseObject` was modified
+
+* `DiagnosticDataTableResponseObject()` was changed to private access
+* `validate()` was removed
+* `withTableName(java.lang.String)` was removed
+* `withRows(java.util.List)` was removed
+* `withColumns(java.util.List)` was removed
+
+#### `models.SessionRegistryCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedEnvironmentPropertiesPeerAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticDataProviderMetadataPropertyBagItem` was modified
+
+* `DiagnosticDataProviderMetadataPropertyBagItem()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+
+#### `models.AppLogsConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.HttpRouteRule` was modified
+
+* `validate()` was removed
+
+#### `models.JavaComponentProperties` was modified
+
+* `validate()` was removed
+
+#### `models.GitHub` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceTags` was modified
+
+* `validate()` was removed
+
+#### `models.CustomScaleRule` was modified
+
+* `validate()` was removed
+
+#### `models.Nonce` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerResources` was modified
+
+* `validate()` was removed
+
+#### `models.OpenIdConnectRegistration` was modified
+
+* `validate()` was removed
+
+#### `models.Ingress` was modified
+
+* `validate()` was removed
+
+#### `models.HttpRoute` was modified
+
+* `validate()` was removed
+
+#### `models.CustomDomainConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.JavaComponentIngress` was modified
+
+* `validate()` was removed
+
+#### `models.Dapr` was modified
+
+* `validate()` was removed
+
+#### `models.HttpSettingsRoutes` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticDataTableResponseColumn` was modified
+
+* `DiagnosticDataTableResponseColumn()` was changed to private access
+* `validate()` was removed
+* `withDataType(java.lang.String)` was removed
+* `withColumnType(java.lang.String)` was removed
+* `withColumnName(java.lang.String)` was removed
+
+#### `models.Configuration` was modified
+
+* `validate()` was removed
+
+#### `models.Template` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerAppProbeTcpSocket` was modified
+
+* `validate()` was removed
+
+#### `models.SpringCloudEurekaComponent` was modified
+
+* `validate()` was removed
+
+#### `models.LoginRoutes` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.DotNetComponent$UpdateStages` was added
+
+* `models.LabelHistory` was added
+
+* `models.CheckMigrationEligibilityResponse` was added
+
+* `models.DaprComponentResiliencyPolicyTimeoutPolicyConfiguration` was added
+
+* `models.ContainerAppsFunction` was added
+
+* `models.VnetConnectionProperties` was added
+
+* `models.SessionPoolIdentityLifeCycle` was added
+
+* `models.DotNetComponents` was added
+
+* `models.SandboxGroups` was added
+
+* `models.LabelHistoryRecordItem` was added
+
+* `models.SessionProbe` was added
+
+* `models.VnetConnectionProvisioningState` was added
+
+* `models.ContainerAppsFunctionState` was added
+
+* `models.ContainerAppPrivateEndpointConnections` was added
+
+* `models.DotNetComponentServiceBind` was added
+
+* `models.SessionProbeTcpSocket` was added
+
+* `models.SandboxGroupProperties` was added
+
+* `models.LogsConfiguration` was added
+
+* `models.VnetConnection$Definition` was added
+
+* `models.DotNetComponent$Update` was added
+
+* `models.SandboxGroupPatchProperties` was added
+
+* `models.DotNetComponent$DefinitionStages` was added
+
+* `models.Status` was added
+
+* `models.SandboxGroup$DefinitionStages` was added
+
+* `models.VnetConnection$UpdateStages` was added
+
+* `models.DotNetComponentProvisioningState` was added
+
+* `models.DotNetComponentType` was added
+
+* `models.FunctionsExtensions` was added
+
+* `models.DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration` was added
+
+* `models.SessionProbeHttpGet` was added
+
+* `models.OtlpConfiguration` was added
+
+* `models.MetricsConfiguration` was added
+
+* `models.TracesConfiguration` was added
+
+* `models.DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration` was added
+
+* `models.VnetConnection` was added
+
+* `models.SandboxGroupPatch` was added
+
+* `models.VnetConnections` was added
+
+* `models.DotNetComponentConfigurationProperty` was added
+
+* `models.AppInsightsConfiguration` was added
+
+* `models.DaprComponentResiliencyPolicy$Definition` was added
+
+* `models.VnetConnection$Update` was added
+
+* `models.AvailableEnvironmentModeProperties` was added
+
+* `models.ContainerAppNetworkingConfiguration` was added
+
+* `models.DaprComponentResiliencyPolicy$DefinitionStages` was added
+
+* `models.DaprComponentResiliencyPolicies` was added
+
+* `models.DotNetComponent` was added
+
+* `models.ContainerAppsLabelHistories` was added
+
+* `models.DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration` was added
+
+* `models.DaprComponentResiliencyPolicyConfiguration` was added
+
+* `models.OpenTelemetryConfiguration` was added
+
+* `models.SandboxGroup$Definition` was added
+
+* `models.DaprComponentResiliencyPolicy$Update` was added
+
+* `models.ContainerAppsFunctions` was added
+
+* `models.ContainerAppPrivateLinkResources` was added
+
+* `models.DestinationsConfiguration` was added
+
+* `models.DataDogConfiguration` was added
+
+* `models.DotNetComponent$Definition` was added
+
+* `models.AvailableEnvironmentMode` was added
+
+* `models.MigrationEligibilityFailureReason` was added
+
+* `models.SandboxGroup$UpdateStages` was added
+
+* `models.DaprComponentResiliencyPolicy$UpdateStages` was added
+
+* `models.ReplicaExecutionStatus` was added
+
+* `models.ContainerExecutionStatus` was added
+
+* `models.SandboxGroupProvisioningState` was added
+
+* `models.LabelHistoryProperties` was added
+
+* `models.CheckMigrationEligibilityRequest` was added
+
+* `models.SessionProbeType` was added
+
+* `models.ExecutionStatus` was added
+
+* `models.VnetConnection$DefinitionStages` was added
+
+* `models.DaprComponentResiliencyPolicy` was added
+
+* `models.JobRunningState` was added
+
+* `models.ManagedEnvironmentMode` was added
+
+* `models.AvailableEnvironmentModes` was added
+
+* `models.SandboxGroup` was added
+
+* `models.SandboxGroup$Update` was added
+
+* `models.SessionProbeHttpGetHttpHeadersItem` was added
+
+* `models.Header` was added
+
+* `models.ContainerAppsRevisionFunctions` was added
+
+#### `models.SessionContainer` was modified
+
+* `probes()` was added
+* `withProbes(java.util.List)` was added
+
+#### `models.Job` was modified
+
+* `resume(com.azure.core.util.Context)` was added
+* `suspend(com.azure.core.util.Context)` was added
+* `suspend()` was added
+* `resume()` was added
+* `runningState()` was added
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withEnvironmentMode(models.ManagedEnvironmentMode)` was added
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
+* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was added
+
+#### `models.Jobs` was modified
+
+* `suspend(java.lang.String,java.lang.String)` was added
+* `resume(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `resume(java.lang.String,java.lang.String)` was added
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
+* `withEnvironmentMode(models.ManagedEnvironmentMode)` was added
+* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was added
+
+#### `models.ContainerApp$Update` was modified
+
+* `withNetworking(models.ContainerAppNetworkingConfiguration)` was added
+
+#### `models.Scale` was modified
+
+* `withAllowScalingRuleOverride(java.lang.Boolean)` was added
+* `allowScalingRuleOverride()` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `checkMigrationEligibility(models.CheckMigrationEligibilityRequest)` was added
+* `openTelemetryConfiguration()` was added
+* `checkMigrationEligibilityWithResponse(models.CheckMigrationEligibilityRequest,com.azure.core.util.Context)` was added
+* `appInsightsConfiguration()` was added
+* `environmentMode()` was added
+
+#### `models.ManagedEnvironments` was modified
+
+* `checkMigrationEligibility(java.lang.String,java.lang.String,models.CheckMigrationEligibilityRequest)` was added
+* `checkMigrationEligibilityWithResponse(java.lang.String,java.lang.String,models.CheckMigrationEligibilityRequest,com.azure.core.util.Context)` was added
+
+#### `models.JobExecution` was modified
+
+* `systemData()` was added
+* `detailedStatus()` was added
+* `reason()` was added
+* `message()` was added
+
+#### `models.ManagedEnvironmentPrivateLinkResources` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.ManagedIdentitySetting` was modified
+
+* `withLifecycle(models.SessionPoolIdentityLifeCycle)` was added
+
+#### `models.ContainerApp` was modified
+
+* `networking()` was added
+
+#### `ContainerAppsApiManager` was modified
+
+* `containerAppPrivateEndpointConnections()` was added
+* `containerAppsFunctions()` was added
+* `functionsExtensions()` was added
+* `vnetConnections()` was added
+* `containerAppsRevisionFunctions()` was added
+* `containerAppsLabelHistories()` was added
+* `containerAppPrivateLinkResources()` was added
+* `daprComponentResiliencyPolicies()` was added
+* `availableEnvironmentModes()` was added
+* `sandboxGroups()` was added
+* `dotNetComponents()` was added
+
+#### `models.ReplicaContainer` was modified
+
+* `debugEndpoint()` was added
+
+#### `models.BlobStorageTokenStore` was modified
+
+* `withClientId(java.lang.String)` was added
+* `clientId()` was added
+* `managedIdentityResourceId()` was added
+* `blobContainerUri()` was added
+* `withManagedIdentityResourceId(java.lang.String)` was added
+* `withBlobContainerUri(java.lang.String)` was added
+
+#### `models.ContainerApp$Definition` was modified
+
+* `withNetworking(models.ContainerAppNetworkingConfiguration)` was added
+
+## 1.2.0 (2025-10-24)
+
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. Logic app is an extension resource on container app and the extension resource enables logic specific operations on the container app through the APIs listed. Package tag package-2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ConnectedEnvironmentsStorages` was modified
+
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectedEnvironmentsDaprComponents` was modified
+
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectedEnvironment$Update` was modified
+
+* `withCustomDomainConfiguration(models.CustomDomainConfiguration)` was removed
+* `withExtendedLocation(models.ExtendedLocation)` was removed
+* `withStaticIp(java.lang.String)` was removed
+* `withDaprAIConnectionString(java.lang.String)` was removed
+
+#### `models.ConnectedEnvironmentsCertificates` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.ConnectedEnvironments` was modified
+
+* `update(java.lang.String,java.lang.String)` was removed
+* `updateWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.IngressConfiguration` was added
+
+* `models.LogicApp$Definition` was added
+
+* `models.HttpRouteProvisioningErrors` was added
+
+* `models.ManagedEnvironmentPrivateEndpointConnections` was added
+
+* `models.WorkflowState` was added
+
+* `models.PrivateEndpointConnectionListResult` was added
+
+* `models.HttpRouteConfigProperties` was added
+
+* `models.ConnectedEnvironmentPatchResource` was added
+
+* `models.HttpRouteConfig$Definition` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.LogicApps` was added
+
+* `models.PrivateEndpointConnection$Definition` was added
+
+* `models.DaprComponentProvisioningState` was added
+
+* `models.SecretKeyVaultProperties` was added
+
+* `models.MaintenanceConfigurationResource` was added
+
+* `models.HttpRouteConfig$DefinitionStages` was added
+
+* `models.ConnectedEnvironmentStorageProvisioningState` was added
+
+* `models.MaintenanceConfigurations` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.DaprAppHealth` was added
+
+* `models.HttpRouteConfigs` was added
+
+* `models.WorkflowEnvelopeProperties` was added
+
+* `models.WorkflowHealthState` was added
+
+* `models.HttpRouteConfig` was added
+
+* `models.MaintenanceConfigurationResource$DefinitionStages` was added
+
+* `models.MaintenanceConfigurationResource$UpdateStages` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.WorkflowEnvelopeCollection` was added
+
+* `models.PrivateEndpointConnection$Update` was added
+
+* `models.ErrorEntity` was added
+
+* `models.LogicApp$UpdateStages` was added
+
+* `models.MaintenanceConfigurationResource$Update` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.WorkflowHealth` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.HttpRouteConfig$Update` was added
+
+* `models.HttpRouteMatch` was added
+
+* `models.WorkflowEnvelope` was added
+
+* `models.PrivateLinkResourceListResult` was added
+
+* `models.WorkflowKind` was added
+
+* `models.HttpRouteAction` was added
+
+* `models.WeekDay` was added
+
+* `models.ManagedEnvironmentPrivateLinkResources` was added
+
+* `models.MaintenanceConfigurationResource$Definition` was added
+
+* `models.HttpRouteConfig$UpdateStages` was added
+
+* `models.ScheduledEntry` was added
+
+* `models.LogicApp` was added
+
+* `models.HttpRouteConfigCollection` was added
+
+* `models.MaintenanceConfigurationCollection` was added
+
+* `models.PrivateEndpointConnection$UpdateStages` was added
+
+* `models.HttpRouteTarget` was added
+
+* `models.HttpRouteProvisioningState` was added
+
+* `models.HttpRouteRule` was added
+
+* `models.ResourceTags` was added
+
+* `models.Kind` was added
+
+* `models.HttpRoute` was added
+
+* `models.LogicApp$Update` was added
+
+* `models.LogicApp$DefinitionStages` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.PrivateEndpointConnection$DefinitionStages` was added
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withIngressConfiguration(models.IngressConfiguration)` was added
+
+#### `models.ConnectedEnvironmentsStorages` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ConnectedEnvironmentsDaprComponents` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ConnectedEnvironmentStorageProperties` was modified
+
+* `deploymentErrors()` was added
+* `provisioningState()` was added
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withIngressConfiguration(models.IngressConfiguration)` was added
+
+#### `models.DaprComponent` was modified
+
+* `provisioningState()` was added
+* `deploymentErrors()` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `ingressConfiguration()` was added
+* `publicNetworkAccess()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.AzureFileProperties` was modified
+
+* `accountKeyVaultProperties()` was added
+* `withAccountKeyVaultProperties(models.SecretKeyVaultProperties)` was added
+
+#### `models.ConnectedEnvironmentsCertificates` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CertificateProperties` was modified
+
+* `deploymentErrors()` was added
+
+#### `models.ContainerApp` was modified
+
+* `kind()` was added
+
+#### `ContainerAppsApiManager` was modified
+
+* `managedEnvironmentPrivateEndpointConnections()` was added
+* `httpRouteConfigs()` was added
+* `maintenanceConfigurations()` was added
+* `managedEnvironmentPrivateLinkResources()` was added
+* `logicApps()` was added
+
+#### `models.ContainerApp$Definition` was modified
+
+* `withKind(models.Kind)` was added
+
+#### `models.Dapr` was modified
+
+* `maxConcurrency()` was added
+* `withAppHealth(models.DaprAppHealth)` was added
+* `withMaxConcurrency(java.lang.Integer)` was added
+* `appHealth()` was added
+
+## 1.2.0-beta.1 (2025-09-16)
+
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK. Functions is an extension resource to revisions and the api listed is used to proxy the call from Web RP to the function app's host process, this api is not exposed to users and only Web RP is allowed to invoke functions extension resource. Package tag package-preview-2025-02-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DaprComponent$DefinitionStages` was modified
+
+* `withExistingConnectedEnvironment(java.lang.String,java.lang.String)` was removed in stage 1
+
+#### `models.ContainerAppsSourceControls` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectedEnvironmentsDaprComponents` was modified
+
+* `models.DaprComponent getById(java.lang.String)` -> `models.ConnectedEnvironmentDaprComponent getById(java.lang.String)`
+* `models.DaprComponent$DefinitionStages$Blank define(java.lang.String)` -> `models.ConnectedEnvironmentDaprComponent$DefinitionStages$Blank define(java.lang.String)`
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `models.DaprComponent get(java.lang.String,java.lang.String,java.lang.String)` -> `models.ConnectedEnvironmentDaprComponent get(java.lang.String,java.lang.String,java.lang.String)`
+
+#### `models.ConnectedEnvironment$Update` was modified
+
+* `withDaprAIConnectionString(java.lang.String)` was removed
+* `withStaticIp(java.lang.String)` was removed
+* `withCustomDomainConfiguration(models.CustomDomainConfiguration)` was removed
+* `withExtendedLocation(models.ExtendedLocation)` was removed
+
+#### `models.ConnectedEnvironmentsCertificates` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+#### `models.DaprComponents` was modified
+
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.DaprComponentInner)` was removed
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.DaprComponentInner,com.azure.core.util.Context)` was removed
+
+#### `models.ConnectedEnvironments` was modified
+
+* `update(java.lang.String,java.lang.String)` was removed
+* `updateWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.DaprComponent$Definition` was modified
+
+* `withExistingConnectedEnvironment(java.lang.String,java.lang.String)` was removed
+
+#### `models.ConnectedEnvironmentsStorages` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `com.azure.core.http.rest.Response deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` -> `void deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)`
+
+### Features Added
+
+* `models.ContainerAppsBuilds` was added
+
+* `models.HttpConnectionPool` was added
+
+* `models.IngressConfiguration` was added
+
+* `models.LoggerSetting` was added
+
+* `models.RuntimeJavaAgentLogging` was added
+
+* `models.LabelHistoryRecordItem` was added
+
+* `models.BuildProvisioningState` was added
+
+* `models.DaprSubscriptions` was added
+
+* `models.PatchType` was added
+
+* `models.SessionProbe` was added
+
+* `models.HttpRouteConfigProperties` was added
+
+* `models.SmbStorage` was added
+
+* `models.EnvironmentVariable` was added
+
+* `models.DotNetComponentServiceBind` was added
+
+* `models.AppResiliencies` was added
+
+* `models.SessionProbeTcpSocket` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.LogsConfiguration` was added
+
+* `models.PatchApplyStatus` was added
+
+* `models.DaprSubscription$UpdateStages` was added
+
+* `models.ConnectedEnvironmentDaprComponent` was added
+
+* `models.DotNetComponent$DefinitionStages` was added
+
+* `models.HttpGet` was added
+
+* `models.ContainerAppsPatches` was added
+
+* `models.LogicApps` was added
+
+* `models.PrivateEndpointConnection$Definition` was added
+
+* `models.MaintenanceConfigurationResource` was added
+
+* `models.DotNetComponentProvisioningState` was added
+
+* `models.DotNetComponentType` was added
+
+* `models.FunctionsExtensions` was added
+
+* `models.DaprAppHealth` was added
+
+* `models.DaprComponentResiliencyPoliciesCollection` was added
+
+* `models.ConnectedEnvironmentDaprComponent$DefinitionStages` was added
+
+* `models.PatchCollection` was added
+
+* `models.AppResiliency$Definition` was added
+
+* `models.DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration` was added
+
+* `models.SessionProbeHttpGet` was added
+
+* `models.HttpRouteConfigs` was added
+
+* `models.ContainerAppsPatchResource` was added
+
+* `models.DaprSubscription$DefinitionStages` was added
+
+* `models.OtlpConfiguration` was added
+
+* `models.MetricsConfiguration` was added
+
+* `models.ScgRoute` was added
+
+* `models.MaintenanceConfigurationResource$UpdateStages` was added
+
+* `models.DaprSubscriptionBulkSubscribeOptions` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.LabelHistoryCollection` was added
+
+* `models.BuildsByBuilderResources` was added
+
+* `models.BuildResource` was added
+
+* `models.ContainerAppsBuildConfiguration` was added
+
+* `models.WorkflowEnvelopeCollection` was added
+
+* `models.TimeoutPolicy` was added
+
+* `models.DotNetComponentConfigurationProperty` was added
+
+* `models.ContainerAppsBuildCollection` was added
+
+* `models.DaprSubscriptionsCollection` was added
+
+* `models.ErrorEntity` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.DaprSubscriptionRoutes` was added
+
+* `models.PatchProperties` was added
+
+* `models.HttpRetryPolicy` was added
+
+* `models.PatchDetails` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+* `models.CircuitBreakerPolicy` was added
+
+* `models.TcpRetryPolicy` was added
+
+* `models.HeaderMatch` was added
+
+* `models.DiskEncryptionConfiguration` was added
+
+* `models.BuilderCollection` was added
+
+* `models.BuildStatus` was added
+
+* `models.DaprSubscription` was added
+
+* `models.DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration` was added
+
+* `models.BuildToken` was added
+
+* `models.DaprComponentResiliencyPolicyConfiguration` was added
+
+* `models.WorkflowEnvelope` was added
+
+* `models.OpenTelemetryConfiguration` was added
+
+* `models.PrivateLinkResourceListResult` was added
+
+* `models.DaprComponentResiliencyPolicy$Update` was added
+
+* `models.LogicAppsProxyMethod` was added
+
+* `models.HttpRouteAction` was added
+
+* `models.ConnectedEnvironmentDaprComponentsCollection` was added
+
+* `models.DestinationsConfiguration` was added
+
+* `models.CertificateType` was added
+
+* `models.BuildCollection` was added
+
+* `models.ScheduledEntry` was added
+
+* `models.ContainerExecutionStatus` was added
+
+* `models.DaprComponentServiceBinding` was added
+
+* `models.MaintenanceConfigurationCollection` was added
+
+* `models.ContainerAppsBuildsByContainerApps` was added
+
+* `models.WorkflowArtifacts` was added
+
+* `models.LabelHistoryProperties` was added
+
+* `models.PatchingMode` was added
+
+* `models.ContainerAppsBuildResource` was added
+
+* `models.PrivateEndpointConnection$UpdateStages` was added
+
+* `models.ConnectedEnvironmentDaprComponent$UpdateStages` was added
+
+* `models.HttpRouteProvisioningState` was added
+
+* `models.ExecutionStatus` was added
+
+* `models.ConnectedEnvironmentDaprComponent$Definition` was added
+
+* `models.ContainerRegistryWithCustomImage` was added
+
+* `models.RuntimeDotnet` was added
+
+* `models.AppResiliency$UpdateStages` was added
+
+* `models.SpringCloudGatewayComponent` was added
+
+* `models.ConnectedEnvironmentDaprComponentProvisioningState` was added
+
+* `models.Kind` was added
+
+* `models.SessionProbeHttpGetHttpHeadersItem` was added
+
+* `models.ContainerAppPropertiesPatchingConfiguration` was added
+
+* `models.BuilderResource$Definition` was added
+
+* `models.Header` was added
+
+* `models.TcpConnectionPool` was added
+
+* `models.DaprSubscription$Definition` was added
+
+* `models.BuilderProvisioningState` was added
+
+* `models.IngressConfigurationScale` was added
+
+* `models.DotNetComponent$UpdateStages` was added
+
+* `models.LabelHistory` was added
+
+* `models.DaprComponentResiliencyPolicyTimeoutPolicyConfiguration` was added
+
+* `models.LogicApp$Definition` was added
+
+* `models.HttpRouteProvisioningErrors` was added
+
+* `models.BuildResource$UpdateStages` was added
+
+* `models.ManagedEnvironmentPrivateEndpointConnections` was added
+
+* `models.DotNetComponents` was added
+
+* `models.WorkflowState` was added
+
+* `models.PrivateEndpointConnectionListResult` was added
+
+* `models.AppResiliency` was added
+
+* `models.BuilderResource$Update` was added
+
+* `models.BuildConfiguration` was added
+
+* `models.BuildResource$Update` was added
+
+* `models.ConnectedEnvironmentPatchResource` was added
+
+* `models.HttpRouteConfig$Definition` was added
+
+* `models.PatchDetailsOldLayer` was added
+
+* `models.ConnectedEnvironmentDaprComponent$Update` was added
+
+* `models.DotNetComponent$Update` was added
+
+* `models.Status` was added
+
+* `models.SecretKeyVaultProperties` was added
+
+* `models.HttpRouteConfig$DefinitionStages` was added
+
+* `models.ConnectedEnvironmentStorageProvisioningState` was added
+
+* `models.MaintenanceConfigurations` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.BuilderResourceUpdate` was added
+
+* `models.AppResiliency$DefinitionStages` was added
+
+* `models.ImageType` was added
+
+* `models.BuildAuthTokens` was added
+
+* `models.ContainerRegistry` was added
+
+* `models.IngressTargetPortHttpScheme` was added
+
+* `models.WorkflowEnvelopeProperties` was added
+
+* `models.WorkflowHealthState` was added
+
+* `models.HttpRouteConfig` was added
+
+* `models.DaprServiceBindMetadata` was added
+
+* `models.MaintenanceConfigurationResource$DefinitionStages` was added
+
+* `models.TracesConfiguration` was added
+
+* `models.DaprComponentResiliencyPolicyCircuitBreakerPolicyConfiguration` was added
+
+* `models.PrivateEndpointConnection$Update` was added
+
+* `models.LogicApp$UpdateStages` was added
+
+* `models.MaintenanceConfigurationResource$Update` was added
+
+* `models.AppInsightsConfiguration` was added
+
+* `models.WorkflowHealth` was added
+
+* `models.DaprComponentResiliencyPolicy$Definition` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.DaprComponentResiliencyPolicy$DefinitionStages` was added
+
+* `models.PatchSkipConfig` was added
+
+* `models.HttpRouteConfig$Update` was added
+
+* `models.DaprComponentResiliencyPolicies` was added
+
+* `models.AppResiliencyCollection` was added
+
+* `models.DotNetComponent` was added
+
+* `models.ContainerAppsLabelHistories` was added
+
+* `models.HttpRouteMatch` was added
+
+* `models.BuilderResource$DefinitionStages` was added
+
+* `models.Builders` was added
+
+* `models.Level` was added
+
+* `models.BuildResource$DefinitionStages` was added
+
+* `models.AppResiliency$Update` was added
+
+* `models.DaprSubscription$Update` was added
+
+* `models.WeekDay` was added
+
+* `models.DataDogConfiguration` was added
+
+* `models.DotNetComponentsCollection` was added
+
+* `models.ManagedEnvironmentPrivateLinkResources` was added
+
+* `models.MaintenanceConfigurationResource$Definition` was added
+
+* `models.DotNetComponent$Definition` was added
+
+* `models.HttpRouteConfig$UpdateStages` was added
+
+* `models.DaprComponentResiliencyPolicy$UpdateStages` was added
+
+* `models.LogicApp` was added
+
+* `models.PatchDetailsNewLayer` was added
+
+* `models.HttpRouteConfigCollection` was added
+
+* `models.DetectionStatus` was added
+
+* `models.ReplicaExecutionStatus` was added
+
+* `models.PreBuildStep` was added
+
+* `models.BuilderResource$UpdateStages` was added
+
+* `models.RuntimeJavaAgent` was added
+
+* `models.HttpRouteTarget` was added
+
+* `models.SessionProbeType` was added
+
+* `models.DaprComponentResiliencyPolicy` was added
+
+* `models.DiskEncryptionConfigurationKeyVaultConfiguration` was added
+
+* `models.JobRunningState` was added
+
+* `models.DiskEncryptionConfigurationKeyVaultConfigurationAuth` was added
+
+* `models.HttpRouteRule` was added
+
+* `models.BuilderResource` was added
+
+* `models.ResourceTags` was added
+
+* `models.BuildResource$Definition` was added
+
+* `models.Builds` was added
+
+* `models.HttpRoute` was added
+
+* `models.LogicApp$Update` was added
+
+* `models.NacosComponent` was added
+
+* `models.LogicApp$DefinitionStages` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.DaprSubscriptionRouteRule` was added
+
+* `models.PrivateEndpointConnection$DefinitionStages` was added
+
+#### `models.SessionContainer` was modified
+
+* `probes()` was added
+* `withProbes(java.util.List)` was added
+
+#### `models.ContainerAppsSourceControls` was modified
+
+* `deleteByIdWithResponse(java.lang.String,java.lang.String,java.lang.Boolean,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Boolean,java.lang.Boolean,com.azure.core.util.Context)` was added
+
+#### `models.ServiceBind` was modified
+
+* `withClientType(java.lang.String)` was added
+* `customizedKeys()` was added
+* `clientType()` was added
+* `withCustomizedKeys(java.util.Map)` was added
+
+#### `models.Job` was modified
+
+* `resume(com.azure.core.util.Context)` was added
+* `runningState()` was added
+* `suspend(com.azure.core.util.Context)` was added
+* `suspend()` was added
+* `extendedLocation()` was added
+* `resume()` was added
+
+#### `models.Revision` was modified
+
+* `labels()` was added
+
+#### `models.WorkloadProfile` was modified
+
+* `enableFips()` was added
+* `withEnableFips(java.lang.Boolean)` was added
+
+#### `models.InitContainer` was modified
+
+* `withImageType(models.ImageType)` was added
+
+#### `models.ConnectedEnvironmentsDaprComponents` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ConnectedEnvironmentStorageProperties` was modified
+
+* `withSmb(models.SmbStorage)` was added
+* `deploymentErrors()` was added
+* `provisioningState()` was added
+* `smb()` was added
+
+#### `models.GithubActionConfiguration` was modified
+
+* `dockerfilePath()` was added
+* `withDockerfilePath(java.lang.String)` was added
+* `withBuildEnvironmentVariables(java.util.List)` was added
+* `buildEnvironmentVariables()` was added
+
+#### `models.DaprComponent` was modified
+
+* `serviceComponentBind()` was added
+
+#### `models.LogAnalyticsConfiguration` was modified
+
+* `withDynamicJsonColumns(java.lang.Boolean)` was added
+* `dynamicJsonColumns()` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `publicNetworkAccess()` was added
+* `availabilityZones()` was added
+* `diskEncryptionConfiguration()` was added
+* `ingressConfiguration()` was added
+* `privateEndpointConnections()` was added
+* `privateLinkDefaultDomain()` was added
+* `appInsightsConfiguration()` was added
+* `openTelemetryConfiguration()` was added
+
+#### `models.ConnectedEnvironmentsCertificates` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.DaprComponents` was modified
+
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+
+#### `models.Container` was modified
+
+* `withImageType(models.ImageType)` was added
+
+#### `models.CertificateProperties` was modified
+
+* `certificateType()` was added
+* `deploymentErrors()` was added
+* `withCertificateType(models.CertificateType)` was added
+
+#### `models.ContainerApp` was modified
+
+* `kind()` was added
+* `patchingConfiguration()` was added
+* `deploymentErrors()` was added
+
+#### `models.ReplicaContainer` was modified
+
+* `debugEndpoint()` was added
+
+#### `models.ContainerApp$Definition` was modified
+
+* `withKind(models.Kind)` was added
+* `withPatchingConfiguration(models.ContainerAppPropertiesPatchingConfiguration)` was added
+
+#### `models.Configuration` was modified
+
+* `withRevisionTransitionThreshold(java.lang.Integer)` was added
+* `revisionTransitionThreshold()` was added
+* `withTargetLabel(java.lang.String)` was added
+* `targetLabel()` was added
+
+#### `models.Runtime` was modified
+
+* `withDotnet(models.RuntimeDotnet)` was added
+* `dotnet()` was added
+
+#### `models.DaprComponent$Definition` was modified
+
+* `withExistingManagedEnvironment(java.lang.String,java.lang.String)` was added
+* `withServiceComponentBind(java.util.List)` was added
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withDiskEncryptionConfiguration(models.DiskEncryptionConfiguration)` was added
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
+* `withAvailabilityZones(java.util.List)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withIngressConfiguration(models.IngressConfiguration)` was added
+* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was added
+
+#### `models.SourceControl$Definition` was modified
+
+* `withXMsGithubAuxiliary(java.lang.String)` was added
+
+#### `models.ConnectedEnvironmentsStorages` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Job$Definition` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.Jobs` was modified
+
+* `resume(java.lang.String,java.lang.String)` was added
+* `suspend(java.lang.String,java.lang.String)` was added
+* `resume(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `suspend(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.DaprComponent$Update` was modified
+
+* `withServiceComponentBind(java.util.List)` was added
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withAvailabilityZones(java.util.List)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withDiskEncryptionConfiguration(models.DiskEncryptionConfiguration)` was added
+* `withOpenTelemetryConfiguration(models.OpenTelemetryConfiguration)` was added
+* `withIngressConfiguration(models.IngressConfiguration)` was added
+* `withAppInsightsConfiguration(models.AppInsightsConfiguration)` was added
+
+#### `models.ContainerApp$Update` was modified
+
+* `withPatchingConfiguration(models.ContainerAppPropertiesPatchingConfiguration)` was added
+
+#### `models.SourceControl$Update` was modified
+
+* `withXMsGithubAuxiliary(java.lang.String)` was added
+
+#### `models.Job$Update` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.AzureFileProperties` was modified
+
+* `accountKeyVaultProperties()` was added
+* `withAccountKeyVaultProperties(models.SecretKeyVaultProperties)` was added
+
+#### `models.JobExecution` was modified
+
+* `detailedStatus()` was added
+
+#### `models.RuntimeJava` was modified
+
+* `javaAgent()` was added
+* `withJavaAgent(models.RuntimeJavaAgent)` was added
+
+#### `models.JobPatchProperties` was modified
+
+* `withExtendedLocation(models.ExtendedLocation)` was added
+* `extendedLocation()` was added
+
+#### `ContainerAppsApiManager` was modified
+
+* `containerAppsBuilds()` was added
+* `managedEnvironmentPrivateEndpointConnections()` was added
+* `daprSubscriptions()` was added
+* `httpRouteConfigs()` was added
+* `appResiliencies()` was added
+* `functionsExtensions()` was added
+* `buildAuthTokens()` was added
+* `dotNetComponents()` was added
+* `managedEnvironmentPrivateLinkResources()` was added
+* `containerAppsLabelHistories()` was added
+* `builds()` was added
+* `builders()` was added
+* `daprComponentResiliencyPolicies()` was added
+* `maintenanceConfigurations()` was added
+* `logicApps()` was added
+* `containerAppsPatches()` was added
+* `containerAppsBuildsByContainerApps()` was added
+* `buildsByBuilderResources()` was added
+
+#### `models.BaseContainer` was modified
+
+* `withImageType(models.ImageType)` was added
+* `imageType()` was added
+
+#### `models.BlobStorageTokenStore` was modified
+
+* `managedIdentityResourceId()` was added
+* `clientId()` was added
+* `withManagedIdentityResourceId(java.lang.String)` was added
+* `withBlobContainerUri(java.lang.String)` was added
+* `withClientId(java.lang.String)` was added
+* `blobContainerUri()` was added
+
+#### `models.ContainerResources` was modified
+
+* `withGpu(java.lang.Double)` was added
+* `gpu()` was added
+
+#### `models.Ingress` was modified
+
+* `withTargetPortHttpScheme(models.IngressTargetPortHttpScheme)` was added
+* `targetPortHttpScheme()` was added
+
+#### `models.Dapr` was modified
+
+* `withAppHealth(models.DaprAppHealth)` was added
+* `withMaxConcurrency(java.lang.Integer)` was added
+* `appHealth()` was added
+* `maxConcurrency()` was added
 
 ## 1.1.0 (2025-04-17)
 

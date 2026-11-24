@@ -39,6 +39,7 @@ class ConfigurationWithConnectionDetailsBean {
             : propertiesLoadFromServiceCommonProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
         properties.setEndpoint(connectionDetails.getEndpoint());
+        properties.setAccountName(null);
         return properties;
 
     }

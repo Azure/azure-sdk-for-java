@@ -8,6 +8,12 @@ steps:
   - script: |
       java -version
     displayName: Print Java Version
+  # java2docfx internally runs 'mvn help:effective-pom' using the short 'help' prefix.
+  # Azure Artifacts feed metadata may not contain prefix-to-artifactId mappings for
+  # plugins that haven't been requested before. This fully-qualified invocation forces
+  # the feed to cache maven-help-plugin so the 'help' prefix resolves in java2docfx.
+  - script: mvn org.apache.maven.plugins:maven-help-plugin:help --batch-mode
+    displayName: 'Warm maven-help-plugin feed cache'
   # Create a java2docfx subdirectory in the $(Build.BinariesDirectory) and install the java2docfx there
   # This way, the jar file is in its own subdirectory and isolated.
   - pwsh: |

@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -124,6 +125,7 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void canGetDefaultApiVersionForChildResources() {
         // test privateDnsZones/virtualNetworkLinks which has the same child resource name as dnsForwardingRulesets/virtualNetworkLinks
         String vnetName = generateRandomResourceName("vnet", 15);

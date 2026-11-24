@@ -10,8 +10,8 @@ import com.azure.resourcemanager.mongocluster.models.ConnectionString;
 public final class ConnectionStringTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectionString model = BinaryData
-            .fromString("{\"connectionString\":\"tduqktapspwgcuer\",\"description\":\"mkdo\",\"name\":\"qw\"}")
-            .toObject(ConnectionString.class);
+        ConnectionString model
+            = BinaryData.fromString("{\"connectionString\":\"sezcxtb\",\"description\":\"gfycc\",\"name\":\"ewmdw\"}")
+                .toObject(ConnectionString.class);
     }
 }

@@ -13,17 +13,17 @@ public final class DelayActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DelayAction model
-            = BinaryData.fromString("{\"type\":\"delay\",\"duration\":\"PT113H23M10S\",\"name\":\"iawxklry\"}")
+            = BinaryData.fromString("{\"type\":\"delay\",\"duration\":\"PT6H5M50S\",\"name\":\"kymuctqhjfbebr\"}")
                 .toObject(DelayAction.class);
-        Assertions.assertEquals("iawxklry", model.name());
-        Assertions.assertEquals(Duration.parse("PT113H23M10S"), model.duration());
+        Assertions.assertEquals("kymuctqhjfbebr", model.name());
+        Assertions.assertEquals(Duration.parse("PT6H5M50S"), model.duration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelayAction model = new DelayAction().withName("iawxklry").withDuration(Duration.parse("PT113H23M10S"));
+        DelayAction model = new DelayAction().withName("kymuctqhjfbebr").withDuration(Duration.parse("PT6H5M50S"));
         model = BinaryData.fromObject(model).toObject(DelayAction.class);
-        Assertions.assertEquals("iawxklry", model.name());
-        Assertions.assertEquals(Duration.parse("PT113H23M10S"), model.duration());
+        Assertions.assertEquals("kymuctqhjfbebr", model.name());
+        Assertions.assertEquals(Duration.parse("PT6H5M50S"), model.duration());
     }
 }

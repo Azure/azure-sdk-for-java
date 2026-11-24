@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.chaos.ChaosManager;
 import com.azure.resourcemanager.chaos.fluent.models.TargetInner;
 import com.azure.resourcemanager.chaos.models.Target;
@@ -24,7 +25,7 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{},\"location\":\"kpmloa\",\"id\":\"ruocbgo\",\"name\":\"rb\",\"type\":\"eoybfhjxakvvjgs\"}";
+            = "{\"properties\":{\"o\":\"\\\"dataehgpdohzjqatu\\\"\",\"cnwfepbnwgfmxjg\":\"\\\"datagebx\\\"\"},\"location\":\"bjb\",\"id\":\"lfgtdysnaquflqbc\",\"name\":\"q\",\"type\":\"amz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +35,15 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Target response = manager.targets()
-            .createOrUpdateWithResponse("tsttktlahbq", "ctxtgzukxi", "mmqtgqqqxhr", "xrxc", "juisavokqdzf",
-                new TargetInner().withProperties(mapOf()).withLocation("ivjlfrqttbajlka"),
+            .createOrUpdateWithResponse("iropionszon", "pngajin", "ixjawrtm", "fjmyccxlzhco", "ovne",
+                new TargetInner().withProperties(mapOf("dtjxtxrdcqt",
+                    BinaryData.fromBytes("\"dataenlusfn\"".getBytes(StandardCharsets.UTF_8)), "vuwkasiziesfuugh",
+                    BinaryData.fromBytes("\"datavidttgepuslvyjt\"".getBytes(StandardCharsets.UTF_8)), "ey",
+                    BinaryData.fromBytes("\"datauqfecj\"".getBytes(StandardCharsets.UTF_8)))).withLocation("uhxu"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kpmloa", response.location());
+        Assertions.assertEquals("bjb", response.location());
     }
 
     // Use "Map.of" if available

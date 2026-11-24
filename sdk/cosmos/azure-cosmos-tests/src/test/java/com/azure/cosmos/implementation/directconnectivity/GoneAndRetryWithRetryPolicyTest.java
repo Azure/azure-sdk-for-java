@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
@@ -18,8 +19,6 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.guava25.base.Supplier;
-import com.azure.cosmos.implementation.RetryWithException;
-import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -74,6 +73,35 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(4);
         assertThat(shouldRetryResult.backOffTime.getSeconds()).isEqualTo(4);
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void shouldNotRetryReadWithLeaseNotFoundException() {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Read,
+            ResourceType.Document);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+            .shouldRetry(new LeaseNotFoundException("0", null));
+        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isFalse();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
+        assertThat(shouldRetryResult.backOffTime).isNull();
+
+        request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Create,
+            ResourceType.Document);
+        goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        singleShouldRetry = goneAndRetryWithRetryPolicy
+            .shouldRetry(new LeaseNotFoundException("0", null));
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.shouldRetry).isFalse();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
+        assertThat(shouldRetryResult.backOffTime).isNull();
     }
 
     /**
@@ -326,7 +354,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
 
-        RetryWithException retryWithException = Mockito.mock(RetryWithException.class);
+        RetryWithException retryWithException = new RetryWithException("Test", null, null);
 
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();

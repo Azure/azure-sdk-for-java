@@ -12,10 +12,10 @@ public final class GiMinorVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GiMinorVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"oluhczbwemh\",\"gridImageOcid\":\"rsbrgzdwm\"},\"id\":\"eypqwdxggicccn\",\"name\":\"qhuexm\",\"type\":\"ttlstvlzywemhz\"}],\"nextLink\":\"csdtclusiypbs\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"wjygvjayvblmhvk\",\"gridImageOcid\":\"hbxvvyhgsopbyrqu\"},\"id\":\"g\",\"name\":\"uvwzfbnh\",\"type\":\"mctlpdngitv\"},{\"properties\":{\"version\":\"mhrixkwmyijejve\",\"gridImageOcid\":\"hbpnaixexccbd\"},\"id\":\"ax\",\"name\":\"cexdrrvqa\",\"type\":\"qkghtpwijnhy\"},{\"properties\":{\"version\":\"vfycxzb\",\"gridImageOcid\":\"oowvrv\"},\"id\":\"gjqppy\",\"name\":\"s\",\"type\":\"ronzmyhgfip\"},{\"properties\":{\"version\":\"xkmcwaekrrjre\",\"gridImageOcid\":\"xt\"},\"id\":\"umh\",\"name\":\"glikkxwslolb\",\"type\":\"pvuzlmv\"}],\"nextLink\":\"lfktgplcrpwjxe\"}")
             .toObject(GiMinorVersionListResult.class);
-        Assertions.assertEquals("oluhczbwemh", model.value().get(0).properties().version());
-        Assertions.assertEquals("rsbrgzdwm", model.value().get(0).properties().gridImageOcid());
-        Assertions.assertEquals("csdtclusiypbs", model.nextLink());
+        Assertions.assertEquals("wjygvjayvblmhvk", model.value().get(0).properties().version());
+        Assertions.assertEquals("hbxvvyhgsopbyrqu", model.value().get(0).properties().gridImageOcid());
+        Assertions.assertEquals("lfktgplcrpwjxe", model.nextLink());
     }
 }

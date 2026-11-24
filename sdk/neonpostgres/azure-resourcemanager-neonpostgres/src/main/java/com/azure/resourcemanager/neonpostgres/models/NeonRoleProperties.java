@@ -57,6 +57,21 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
      */
     private Boolean isSuperUser;
 
+    /*
+     * Name of the role
+     */
+    private String roleName;
+
+    /*
+     * Timestamp indicating when the role was last updated
+     */
+    private String lastUpdated;
+
+    /*
+     * Databases name associated with the role
+     */
+    private String owns;
+
     /**
      * Creates an instance of NeonRoleProperties class.
      */
@@ -191,14 +206,41 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
     }
 
     /**
-     * Validates the instance.
+     * Get the roleName property: Name of the role.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the roleName value.
      */
-    public void validate() {
-        if (attributes() != null) {
-            attributes().forEach(e -> e.validate());
-        }
+    public String roleName() {
+        return this.roleName;
+    }
+
+    /**
+     * Set the roleName property: Name of the role.
+     * 
+     * @param roleName the roleName value to set.
+     * @return the NeonRoleProperties object itself.
+     */
+    public NeonRoleProperties withRoleName(String roleName) {
+        this.roleName = roleName;
+        return this;
+    }
+
+    /**
+     * Get the lastUpdated property: Timestamp indicating when the role was last updated.
+     * 
+     * @return the lastUpdated value.
+     */
+    public String lastUpdated() {
+        return this.lastUpdated;
+    }
+
+    /**
+     * Get the owns property: Databases name associated with the role.
+     * 
+     * @return the owns value.
+     */
+    public String owns() {
+        return this.owns;
     }
 
     /**
@@ -212,6 +254,7 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
         jsonWriter.writeStringField("branchId", this.branchId);
         jsonWriter.writeArrayField("permissions", this.permissions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("isSuperUser", this.isSuperUser);
+        jsonWriter.writeStringField("roleName", this.roleName);
         return jsonWriter.writeEndObject();
     }
 
@@ -249,6 +292,12 @@ public final class NeonRoleProperties implements JsonSerializable<NeonRoleProper
                     deserializedNeonRoleProperties.permissions = permissions;
                 } else if ("isSuperUser".equals(fieldName)) {
                     deserializedNeonRoleProperties.isSuperUser = reader.getNullable(JsonReader::getBoolean);
+                } else if ("roleName".equals(fieldName)) {
+                    deserializedNeonRoleProperties.roleName = reader.getString();
+                } else if ("lastUpdated".equals(fieldName)) {
+                    deserializedNeonRoleProperties.lastUpdated = reader.getString();
+                } else if ("owns".equals(fieldName)) {
+                    deserializedNeonRoleProperties.owns = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

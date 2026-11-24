@@ -12,8 +12,8 @@ public final class ScriptParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptParameter model = BinaryData.fromString(
-            "{\"type\":\"Bool\",\"name\":\"sxtta\",\"description\":\"zxnfaaz\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}")
+            "{\"type\":\"SecureString\",\"name\":\"rvexztvb\",\"description\":\"gsfraoyzkoow\",\"visibility\":\"Hidden\",\"optional\":\"Required\"}")
             .toObject(ScriptParameter.class);
-        Assertions.assertEquals("sxtta", model.name());
+        Assertions.assertEquals("rvexztvb", model.name());
     }
 }

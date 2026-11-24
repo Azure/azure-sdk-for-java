@@ -96,6 +96,7 @@ public final class DeidentificationJobCustomizationOptions
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("redactionFormat", this.redactionFormat);
         jsonWriter.writeStringField("surrogateLocale", this.surrogateLocale);
+        jsonWriter.writeStringField("inputLocale", this.inputLocale);
         return jsonWriter.writeEndObject();
     }
 
@@ -119,11 +120,41 @@ public final class DeidentificationJobCustomizationOptions
                     deserializedDeidentificationJobCustomizationOptions.redactionFormat = reader.getString();
                 } else if ("surrogateLocale".equals(fieldName)) {
                     deserializedDeidentificationJobCustomizationOptions.surrogateLocale = reader.getString();
+                } else if ("inputLocale".equals(fieldName)) {
+                    deserializedDeidentificationJobCustomizationOptions.inputLocale = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedDeidentificationJobCustomizationOptions;
         });
+    }
+
+    /*
+     * Locale of the input text. Used for better PHI detection. Defaults to 'en-US'.
+     */
+    @Generated
+    private String inputLocale;
+
+    /**
+     * Get the inputLocale property: Locale of the input text. Used for better PHI detection. Defaults to 'en-US'.
+     *
+     * @return the inputLocale value.
+     */
+    @Generated
+    public String getInputLocale() {
+        return this.inputLocale;
+    }
+
+    /**
+     * Set the inputLocale property: Locale of the input text. Used for better PHI detection. Defaults to 'en-US'.
+     *
+     * @param inputLocale the inputLocale value to set.
+     * @return the DeidentificationJobCustomizationOptions object itself.
+     */
+    @Generated
+    public DeidentificationJobCustomizationOptions setInputLocale(String inputLocale) {
+        this.inputLocale = inputLocale;
+        return this;
     }
 }

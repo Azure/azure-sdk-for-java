@@ -14,18 +14,18 @@ public final class ClusterConfigurationsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterConfigurationsInner model = BinaryData.fromString(
-            "{\"configurations\":{\"lpichk\":{\"bdbutauvf\":\"qlpqwcciuq\",\"afnn\":\"tkuwhhmhykojo\"},\"qnzarrwl\":{\"novvqfovljxy\":\"mkcdyhbpkkpwdre\",\"tgadgvraeaen\":\"suwsyrsnds\"}}}")
+            "{\"configurations\":{\"bpkkpwdre\":{\"pichkoymkcdy\":\"nd\"},\"iipfpubj\":{\"syrsndsytgadgvra\":\"ovvqfovljxywsu\",\"uu\":\"aeneqnzarrwl\",\"e\":\"jfqka\"}}}")
             .toObject(ClusterConfigurationsInner.class);
-        Assertions.assertEquals("qlpqwcciuq", model.configurations().get("lpichk").get("bdbutauvf"));
+        Assertions.assertEquals("nd", model.configurations().get("bpkkpwdre").get("pichkoymkcdy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterConfigurationsInner model = new ClusterConfigurationsInner()
-            .withConfigurations(mapOf("lpichk", mapOf("bdbutauvf", "qlpqwcciuq", "afnn", "tkuwhhmhykojo"), "qnzarrwl",
-                mapOf("novvqfovljxy", "mkcdyhbpkkpwdre", "tgadgvraeaen", "suwsyrsnds")));
+        ClusterConfigurationsInner model
+            = new ClusterConfigurationsInner().withConfigurations(mapOf("bpkkpwdre", mapOf("pichkoymkcdy", "nd"),
+                "iipfpubj", mapOf("syrsndsytgadgvra", "ovvqfovljxywsu", "uu", "aeneqnzarrwl", "e", "jfqka")));
         model = BinaryData.fromObject(model).toObject(ClusterConfigurationsInner.class);
-        Assertions.assertEquals("qlpqwcciuq", model.configurations().get("lpichk").get("bdbutauvf"));
+        Assertions.assertEquals("nd", model.configurations().get("bpkkpwdre").get("pichkoymkcdy"));
     }
 
     // Use "Map.of" if available

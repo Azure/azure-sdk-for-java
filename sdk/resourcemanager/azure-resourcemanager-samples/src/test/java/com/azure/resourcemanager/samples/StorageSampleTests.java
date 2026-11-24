@@ -18,6 +18,7 @@ public class StorageSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageStorageAccountAsync() {
         Assertions.assertTrue(ManageStorageAccountAsync.runSample(azureResourceManager));
     }

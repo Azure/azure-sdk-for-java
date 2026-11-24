@@ -12,13 +12,13 @@ public final class BinaryHardeningSummaryResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BinaryHardeningSummaryResource model = BinaryData.fromString(
-            "{\"summaryType\":\"BinaryHardening\",\"totalFiles\":4538179811311563630,\"notExecutableStackCount\":9056885702416460224,\"positionIndependentExecutableCount\":5303445195272830471,\"relocationReadOnlyCount\":7203686124674464131,\"stackCanaryCount\":163949755346838285,\"strippedBinaryCount\":1525093327016049085,\"provisioningState\":\"Extracting\"}")
+            "{\"summaryType\":\"BinaryHardening\",\"totalFiles\":1248291372184779781,\"notExecutableStackCount\":5418002986537845043,\"positionIndependentExecutableCount\":692631569824073211,\"relocationReadOnlyCount\":9032907208555956547,\"stackCanaryCount\":4855611501955594368,\"strippedBinaryCount\":3414804703443363087,\"provisioningState\":\"Failed\"}")
             .toObject(BinaryHardeningSummaryResource.class);
-        Assertions.assertEquals(4538179811311563630L, model.totalFiles());
-        Assertions.assertEquals(9056885702416460224L, model.notExecutableStackCount());
-        Assertions.assertEquals(5303445195272830471L, model.positionIndependentExecutableCount());
-        Assertions.assertEquals(7203686124674464131L, model.relocationReadOnlyCount());
-        Assertions.assertEquals(163949755346838285L, model.stackCanaryCount());
-        Assertions.assertEquals(1525093327016049085L, model.strippedBinaryCount());
+        Assertions.assertEquals(1248291372184779781L, model.totalFiles());
+        Assertions.assertEquals(5418002986537845043L, model.notExecutableStackCount());
+        Assertions.assertEquals(692631569824073211L, model.positionIndependentExecutableCount());
+        Assertions.assertEquals(9032907208555956547L, model.relocationReadOnlyCount());
+        Assertions.assertEquals(4855611501955594368L, model.stackCanaryCount());
+        Assertions.assertEquals(3414804703443363087L, model.strippedBinaryCount());
     }
 }

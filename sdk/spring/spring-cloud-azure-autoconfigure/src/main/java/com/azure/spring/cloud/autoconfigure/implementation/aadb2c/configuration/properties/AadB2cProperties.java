@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.exception.AadB2cConfigurationException;
-import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.CollectionUtils;
@@ -60,25 +60,22 @@ public class AadB2cProperties implements InitializingBean {
     private String appIdUri;
 
     /**
-     * Connection Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * Connection Timeout (duration) for the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_CONNECT_TIMEOUT} milliseconds.
      */
-    @Deprecated
-    private Duration jwtConnectTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
+    private Duration jwtConnectTimeout = Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_CONNECT_TIMEOUT);
 
     /**
-     * Read Timeout(duration) for the JWKSet Remote URL call. The default value is `500s`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * Read Timeout (duration) for the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_READ_TIMEOUT} milliseconds.
      */
-    @Deprecated
-    private Duration jwtReadTimeout = Duration.ofMillis(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+    private Duration jwtReadTimeout = Duration.ofMillis(JWKSourceBuilder.DEFAULT_HTTP_READ_TIMEOUT);
 
     /**
-     * Size limit in Bytes of the JWKSet Remote URL call. The default value is `50*1024`.
-     * @deprecated If you want to configure this, please provide a RestOperations bean.
+     * Size limit in Bytes of the JWKSet Remote URL call.
+     * The default value is {@value com.nimbusds.jose.jwk.source.JWKSourceBuilder#DEFAULT_HTTP_SIZE_LIMIT} bytes.
      */
-    @Deprecated
-    private int jwtSizeLimit = RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
+    private int jwtSizeLimit = JWKSourceBuilder.DEFAULT_HTTP_SIZE_LIMIT; /* bytes */
 
     /**
      * Redirect URL after logout.
@@ -113,6 +110,8 @@ public class AadB2cProperties implements InitializingBean {
 
     /**
      * Azure AD B2C User flows. Configure the user flow type and name mapping. For instance, 'sign-up-or-sign-in: B2C_signin_or_signup'.
+     * For resource servers, configured names also restrict the token's 'tfp' claim, or 'acr' when 'tfp' is absent.
+     * When this mapping is non-empty, tokens without a matching string policy claim are rejected.
      * See Microsoft doc about User flows for more details: https://learn.microsoft.com/azure/active-directory-b2c/user-flow-overview#user-flows
      */
     private Map<String, String> userFlows = new HashMap<>();

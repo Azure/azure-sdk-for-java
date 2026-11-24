@@ -63,17 +63,6 @@ public final class RetentionPolicyProperties implements JsonSerializable<Retenti
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (retentionPolicies() != null) {
-            retentionPolicies().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

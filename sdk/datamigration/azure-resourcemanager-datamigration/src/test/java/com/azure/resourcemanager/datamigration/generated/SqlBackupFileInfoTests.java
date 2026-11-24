@@ -11,7 +11,7 @@ public final class SqlBackupFileInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlBackupFileInfo model = BinaryData.fromString(
-            "{\"fileName\":\"yoxa\",\"status\":\"dkzjancuxrh\",\"totalSize\":6012963925053357767,\"dataRead\":8686302020366055834,\"dataWritten\":6669094246951991149,\"copyThroughput\":61.30571998699323,\"copyDuration\":511976912,\"familySequenceNumber\":44682703}")
+            "{\"fileName\":\"fqkquj\",\"status\":\"suyonobglaocq\",\"totalSize\":2903733515306491145,\"dataRead\":354375671209585609,\"dataWritten\":4531156159452032810,\"copyThroughput\":37.557119629482116,\"copyDuration\":2080912340,\"familySequenceNumber\":656621417}")
             .toObject(SqlBackupFileInfo.class);
     }
 

@@ -18,6 +18,11 @@ import java.util.Map;
 @Fluent
 public final class PlaywrightWorkspaceUpdate implements JsonSerializable<PlaywrightWorkspaceUpdate> {
     /*
+     * The managed service identities assigned to this resource.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -31,6 +36,26 @@ public final class PlaywrightWorkspaceUpdate implements JsonSerializable<Playwri
      * Creates an instance of PlaywrightWorkspaceUpdate class.
      */
     public PlaywrightWorkspaceUpdate() {
+    }
+
+    /**
+     * Get the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The managed service identities assigned to this resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the PlaywrightWorkspaceUpdate object itself.
+     */
+    public PlaywrightWorkspaceUpdate withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -74,22 +99,12 @@ public final class PlaywrightWorkspaceUpdate implements JsonSerializable<Playwri
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
@@ -110,7 +125,9 @@ public final class PlaywrightWorkspaceUpdate implements JsonSerializable<Playwri
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tags".equals(fieldName)) {
+                if ("identity".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedPlaywrightWorkspaceUpdate.tags = tags;
                 } else if ("properties".equals(fieldName)) {

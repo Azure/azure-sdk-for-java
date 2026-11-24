@@ -12,18 +12,17 @@ public final class DeleteNodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeleteNodeInner model
-            = BinaryData.fromString("{\"nodeName\":\"ramxjezwlwnw\",\"integrationRuntimeName\":\"qlcvydy\"}")
+            = BinaryData.fromString("{\"nodeName\":\"pulpqblylsyxk\",\"integrationRuntimeName\":\"nsj\"}")
                 .toObject(DeleteNodeInner.class);
-        Assertions.assertEquals("ramxjezwlwnw", model.nodeName());
-        Assertions.assertEquals("qlcvydy", model.integrationRuntimeName());
+        Assertions.assertEquals("pulpqblylsyxk", model.nodeName());
+        Assertions.assertEquals("nsj", model.integrationRuntimeName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeleteNodeInner model
-            = new DeleteNodeInner().withNodeName("ramxjezwlwnw").withIntegrationRuntimeName("qlcvydy");
+        DeleteNodeInner model = new DeleteNodeInner().withNodeName("pulpqblylsyxk").withIntegrationRuntimeName("nsj");
         model = BinaryData.fromObject(model).toObject(DeleteNodeInner.class);
-        Assertions.assertEquals("ramxjezwlwnw", model.nodeName());
-        Assertions.assertEquals("qlcvydy", model.integrationRuntimeName());
+        Assertions.assertEquals("pulpqblylsyxk", model.nodeName());
+        Assertions.assertEquals("nsj", model.integrationRuntimeName());
     }
 }

@@ -23,7 +23,10 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
 - [Troubleshoot VisualStudioCodeCredential authentication issues](#troubleshoot-visualstudiocodecredential-authentication-issues)
 - [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
+- [Troubleshoot GitHubActionsCredential authentication issues](#troubleshoot-githubactionscredential-authentication-issues)
 - [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
+    - [Using a dedicated thread pool](#using-thread-pool)
+    - [Virtual-thread carrier starvation](#virtual-thread-carrier-starvation)
 - [Troubleshoot Web Account Manager (WAM) brokered authentication issues](#troubleshoot-web-account-manager-wam-brokered-authentication-issues)
 - [Get additional help](#get-additional-help)
 
@@ -43,7 +46,7 @@ To distinguish these failures from failures in the service client, Azure Identit
                 .buildClient();
 
         try {
-            KeyVaultSecret secret = client.geSecret("secret1");
+            KeyVaultSecret secret = client.getSecret("secret1");
         } catch (ClientAuthenticationException e) {
             //Handle Exception
             e.printStackTrace();
@@ -52,7 +55,7 @@ To distinguish these failures from failures in the service client, Azure Identit
 ```
 ### CredentialUnavailableException
 
-The `CredentialUnavailableExcpetion` is a special exception type derived from `ClientAuthenticationException`. This exception type is used to indicate that the credential can't authenticate in the current environment, due to lack of required configuration or setup. This exception is also used as a signal to chained credential types, such as `DefaultAzureCredential` and `ChainedTokenCredential`, that the chained credential should continue to try other credential types later in the chain.
+The `CredentialUnavailableException` is a special exception type derived from `ClientAuthenticationException`. This exception type is used to indicate that the credential can't authenticate in the current environment, due to lack of required configuration or setup. This exception is also used as a signal to chained credential types, such as `DefaultAzureCredential` and `ChainedTokenCredential`, that the chained credential should continue to try other credential types later in the chain.
 
 ### Permission issues
 
@@ -82,11 +85,20 @@ The underlying MSAL library, MSAL4J, also has detailed logging. It is highly ver
 
 ## Troubleshoot `DefaultAzureCredential` authentication issues
 
+During local development, `DefaultAzureCredential` probes the IMDS endpoint before attempting managed identity authentication. The probe uses separate one-second connection and read timeouts. If the probe fails during setup, the endpoint cannot be reached, or a read times out while waiting for HTTP response headers, managed identity is unavailable and the chain continues to the next credential. A successful TCP connection alone does not establish that IMDS is available.
+
+The read timeout limits how long a blocking read waits for data, not the total time to receive all response headers. An endpoint that keeps sending partial headers can prolong the probe. These timeouts do not guarantee a two-second total discovery limit or impose a deadline on the entire authentication operation.
+
+When the endpoint responds, managed identity token acquisition retains its normal retry behavior. Standalone `ManagedIdentityCredential` and `DefaultAzureCredential` configured with `AZURE_TOKEN_CREDENTIALS=ManagedIdentityCredential` skip the probe.
+
+To intentionally use only developer-tool credentials locally, set `AZURE_TOKEN_CREDENTIALS=dev`. This excludes deployed-service credentials, including managed identity, rather than changing their timeout or retry settings.
+
 | Error | Description | Mitigation |
 |---|---|---|
-| `CredentialUnavailableException` raised with message. "DefaultAzureCredential failed to retrieve a token from the included credentials." |All credentials in the `DefaultAzureCredential` chain failed to retrieve a token, each throwing a `CredentialUnavailableException`| <ul><li>[Enable logging](#enable-and-configure-logging) to verify the credentials being tried, and get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-managedidentitycredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li><li>[AzurePowershellCredential](#troubleshoot-azurepowershellcredential-authentication-issues)</li></ul> |
+| `CredentialUnavailableException` raised with message. "DefaultAzureCredential failed to retrieve a token from the included credentials." |All credentials in the `DefaultAzureCredential` chain failed to retrieve a token, each throwing a `CredentialUnavailableException`| <ul><li>[Enable logging](#enable-and-configure-logging) to verify the credentials being tried, and get further diagnostic information.</li><li>Consult the troubleshooting guide for underlying credential types for more information.</li><ul><li>[EnvironmentCredential](#troubleshoot-environmentcredential-authentication-issues)</li><li>[ManagedIdentityCredential](#troubleshoot-managedidentitycredential-authentication-issues)</li><li>[AzureCLICredential](#troubleshoot-azureclicredential-authentication-issues)</li><li>[AzurePowerShellCredential](#troubleshoot-azurepowershellcredential-authentication-issues)</li></ul> |
 | `HttpResponseException` raised from the client with a status code of 401 or 403                                                          |Authentication succeeded but the authorizing Azure service responded with a 401 (Authenticate), or 403 (Forbidden) status code. This can often be caused by the `DefaultAzureCredential` authenticating an account other than the intended or that the intended account does not have the correct permissions or roles assigned.| <ul><li>[Enable logging](#enable-and-configure-logging) to determine which credential in the chain returned the authenticating token.</li><li>In the case a credential other than the expected is returning a token, look too bypass this by signing out of the corresponding development tool.`</li><li>Ensure that the correct role is assigned to the account being used. For example, a service specific role rather than the subscription Owner role.</li></ul> |
 | `IllegalArgumentException` raised with message "Invalid value for AZURE_TOKEN_CREDENTIALS..."                                            | The value provided in env var `AZURE_TOKEN_CREDENTIALS` doesn't map to one of `prod`, `dev`, or a specific credential name such as `EnvironmentCredential`, `ManagedIdentityCredential`, etc. | Ensure you specify a valid value as per your application's requirements. Specifying `prod` activates production environment credentials (`EnvironmentCredential`, `WorkloadIdentityCredential`, and `ManagedIdentityCredential`). Specifying `dev` activates development tool credentials (`IntelliJCredential`, `AzureCliCredential`, `AzurePowershellCredential`, `AzureDeveloperCliCredential`, and `VisualStudioCodeCredential`). Specifying a specific credential name targets that individual credential only as part of `DefaultAzureCredential`. |
+| `IllegalStateException` raised with message "Required environment variables are missing: [variable names]"                               | The `DefaultAzureCredential` was configured to require specific environment variables using `requireEnvVars(AzureIdentityEnvVars...)`, but one or more of those variables are not set or are empty. | <ul><li>Set the missing environment variables listed in the error message.</li><li>Ensure environment variables are set **prior to application startup**.</li><li>Verify variable names are spelled correctly and match exactly what was specified in `requireEnvVars()`. When using predefined `AzureIdentityEnvVars` constants, ensure the correct enum values are used. When using custom environment variables, ensure they were created with `AzureIdentityEnvVars.fromString()`.</li><li>Check that variables are not set to empty strings or null values.</li><li>If using containerized environments, ensure environment variables are properly passed to the container.</li></ul> |
 
 ## Troubleshoot `EnvironmentCredential` authentication issues
 `CredentialUnavailableException`
@@ -130,7 +142,6 @@ The `ManagedIdentityCredential` is designed to work on a variety of Azure hosts 
 |---|---|---|
 |Azure App Service and Azure Functions|[Configuration](https://learn.microsoft.com/azure/app-service/overview-managed-identity)|[Troubleshooting](#azure-app-service-and-azure-functions-managed-identity)|
 |Azure Arc|[Configuration](https://learn.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)||
-|Azure Kubernetes Service|[Configuration](https://azure.github.io/aad-pod-identity/docs/)|[Troubleshooting](#azure-kubernetes-service-managed-identity)|
 |Azure Service Fabric|[Configuration](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)||
 |Azure Virtual Machines and Scale Sets|[Configuration](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm)|[Troubleshooting](#azure-virtual-machine-managed-identity)|
 
@@ -142,8 +153,8 @@ The `ManagedIdentityCredential` is designed to work on a variety of Azure hosts 
 |---|---|---|
 |The requested identity hasn't been assigned to this resource.|The IMDS endpoint responded with a status code of 400, indicating the requested identity isn't assigned to the VM.|If using a user assigned identity, ensure the specified `clientId` is correct.<p/><p/>If using a system assigned identity, make sure it has been enabled properly. Instructions to enable the system assigned identity on an Azure VM can be found [here](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm#enable-system-assigned-managed-identity-on-an-existing-vm).|
 |The request failed due to a gateway error.|The request to the IMDS endpoint failed due to a gateway error, 502 or 504 status code.|Calls via proxy or gateway aren't supported by IMDS. Disable proxies or gateways running on the VM for calls to the IMDS endpoint `http://169.254.169.254/`|
-|No response received from the managed identity endpoint.|No response was received for the request to IMDS or the request timed out.|<ul><li>Ensure managed identity has been properly configured on the VM. Instructions for configuring the manged identity can be found [here](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm).</li><li>Verify the IMDS endpoint is reachable on the VM, see [below](#verify-imds-is-available-on-the-vm) for instructions.</li></ul>|
-|Multiple attempts failed to obtain a token from the managed identity endpoint.|Retries to retrieve a token from the IMDS endpoint have been exhausted.|<ul><li>Refer to inner exception messages for more details on specific failures. If the data has been truncated, more detail can be obtained by [collecting logs](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#enable-client-logging).</li><li>Ensure managed identity has been properly configured on the VM. Instructions for configuring the manged identity can be found [here](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm).</li><li>Verify the IMDS endpoint is reachable on the VM, see [below](#verify-imds-is-available-on-the-vm) for instructions.</li></ul>|
+|No response received from the managed identity endpoint.|No response was received for the request to IMDS or the request timed out.|<ul><li>Ensure managed identity has been properly configured on the VM. Instructions for configuring the managed identity can be found [here](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm).</li><li>Verify the IMDS endpoint is reachable on the VM, see [below](#verify-imds-is-available-on-the-vm) for instructions.</li></ul>|
+|Multiple attempts failed to obtain a token from the managed identity endpoint.|Retries to retrieve a token from the IMDS endpoint have been exhausted.|<ul><li>Refer to inner exception messages for more details on specific failures. If the data has been truncated, more detail can be obtained by [collecting logs](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#enable-client-logging).</li><li>Ensure managed identity has been properly configured on the VM. Instructions for configuring the managed identity can be found [here](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/qs-configure-portal-windows-vm).</li><li>Verify the IMDS endpoint is reachable on the VM, see [below](#verify-imds-is-available-on-the-vm) for instructions.</li></ul>|
 
 #### Verify IMDS is available on the VM
 
@@ -162,19 +173,11 @@ curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://man
 
 #### Verify the App Service Managed Identity endpoint is available
 
-If you have access to SSH into the App Service, you can verify managed identity is available in the environment. First ensure the environment variables `MSI_ENDPOINT` and `MSI_SECRET` have been set in the environment. Then you can verify the managed identity endpoint is available using curl.
+If you have access to SSH into the App Service, you can verify managed identity is available in the environment. First ensure the environment variables `IDENTITY_ENDPOINT` and `IDENTITY_HEADER` have been set in the environment. Note: Legacy environment variables `MSI_ENDPOINT` and `MSI_SECRET` may still appear on older hosts. Then you can verify the managed identity endpoint is available using curl.
 ```bash
 curl 'http://169.254.169.254/metadata/identity/oauth2/token?resource=https://management.core.windows.net&api-version=2018-02-01' -H "Metadata: true"
 ```
 > Note that the output of this command will contain a valid access token and SHOULD NOT BE SHARED to avoid compromising account security.
-
-### Azure Kubernetes Service Managed Identity
-#### Pod Identity for Kubernetes
-`CredentialUnavailableException`
-
-| Error Message |Description| Mitigation |
-|---|---|---|
-|No Managed Identity endpoint found|The application attempted to authenticate before an identity was assigned to its pod|Verify the pod is labeled correctly. This also occurs when a correctly labeled pod authenticates before the identity is ready. To prevent initialization races, configure NMI to set the Retry-After header in its responses (see [Pod Identity documentation](https://azure.github.io/aad-pod-identity/docs/configure/feature_flags/#set-retry-after-header-in-nmi-response)).|
 
 
 ## Troubleshoot `AzureCliCredential` authentication issues
@@ -214,11 +217,19 @@ az account get-access-token --output json --resource https://management.core.win
 
 #### Verify the Azure Developer CLI can obtain tokens
 
-You can manually verify that the Azure Developer CLI is properly authenticated and can obtain tokens. First use the `config` command to verify the account which is currently logged in to the Azure Developer CLI.
+You can manually verify that the Azure Developer CLI is properly authenticated and can obtain tokens. Execute the command corresponding to your CLI version to verify the account currently logged in.
 
-```bash
-azd config list
-```
+- In Azure Developer CLI versions >= 1.23.0:
+
+    ```bash
+    azd auth status
+    ```
+
+- In Azure Developer CLI versions < 1.23.0:
+
+    ```bash
+    azd config list
+    ```
 
 Once you've verified the Azure Developer CLI is using the correct account, you can validate that it's able to obtain tokens for this account.
 
@@ -233,7 +244,7 @@ azd auth token --output json --scope https://management.core.windows.net/.defaul
 
 | Error Message |Description| Mitigation |
 |---|---|---|
-|PowerShell isn't installed.|No local installation of PowerShell was found.|Ensure that PowerShell is properly installed on the machine. Instructions for installing PowerShell can be found [here](tps://learn.microsoft.com/powershell/scripting/install/installing-powershell).|
+|PowerShell isn't installed.|No local installation of PowerShell was found.|Ensure that PowerShell is properly installed on the machine. Instructions for installing PowerShell can be found [here](https://learn.microsoft.com/powershell/scripting/install/installing-powershell).|
 |Az.Account module >= 2.2.0 isn't installed.|The Az.Account module needed for authentication in Azure PowerShell isn't installed.|Install the latest Az.Account module. Installation instructions can be found [here](https://learn.microsoft.com/powershell/azure/install-az-ps).|
 |Please run 'Connect-AzAccount' to set up account.|No account is currently logged into Azure PowerShell.|<ul><li>Login to Azure PowerShell using the `Connect-AzAccount` command. More instructions for authenticating Azure PowerShell can be found [here](https://learn.microsoft.com/powershell/azure/authenticate-azureps)</li><li>Validate that Azure PowerShell can obtain tokens. See [below](#verify-azure-powershell-can-obtain-tokens) for instructions.</li></ul>|
 
@@ -263,6 +274,9 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 |---|-------------------------------------------------------------------------------------------------------------------------------|---|  
 |`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The workload options are not fully configured."| The `WorkloadIdentityCredential` requires `clientId`, `tenantId` and `tokenFilePath` to authenticate with Microsoft Entra ID. | <ul><li>If using `DefaultAzureCredential` then:</li><ul><li>Ensure client ID is specified via `workloadIdentityClientId` setter or `AZURE_CLIENT_ID` env variable.</li><li>Ensure tenant ID is specified via `AZURE_TENANT_ID` env variable.</li><li>Ensure token file path is specified via `AZURE_FEDERATED_TOKEN_FILE` env variable.</li><li>Ensure authority host is specified via `AZURE_AUTHORITY_HOST` env variable.</ul><li>If using `WorkloadIdentityCredential` then:</li><ul><li>Ensure tenant ID is specified via `tenantId` setter on credential builder or `AZURE_TENANT_ID` env variable.</li><li>Ensure client ID is specified via `clientId` setter on the credential builder or `AZURE_CLIENT_ID` env variable.</li><li>Ensure token file path is specified via `tokenFilePath` setter on the credential builder or `AZURE_FEDERATED_TOKEN_FILE` environment variable. </li></ul></li><li>Consult the [product troubleshooting guide](https://azure.github.io/azure-workload-identity/docs/troubleshooting.html) for other issues.</li></ul>
 |`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The request to the authority host was invalid."| The configured properties for workload identity are invalid.                                                                  | Ensure the properties for workload identity are correctly configured on the credential builder and right permissions are assigned to the workload identity.
+|In an application using [Azure Kubernetes Service identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts): <ul><li>AADSTS700211: No matching federated identity record found for presented assertion issuer ...</li><li>AADSTS700212: No matching federated identity record found for presented assertion audience 'api://AKSIdentityBinding'.</li></ul> |`WorkloadIdentityCredential` isn't configured to use the identity binding proxy, or its binding and permissions aren't configured.|Use `WorkloadIdentityCredential` directly and call `WorkloadIdentityCredentialBuilder.enableAzureProxy()`. Confirm that the webhook supplied `AZURE_KUBERNETES_TOKEN_PROXY` and the pod uses an authorized service account. `DefaultAzureCredential` and `ManagedIdentityCredential` don't support identity binding mode.|
+|Invalid AKS proxy configuration.|The proxy URL is missing or invalid, both CA sources are configured, or inline CA data is empty.|Use an absolute HTTPS proxy URL without credentials, a query, or a fragment. Set at most one of `AZURE_KUBERNETES_CA_FILE` and `AZURE_KUBERNETES_CA_DATA`; inline data must be PEM text, not Base64. Keep `AZURE_AUTHORITY_HOST` set to the Microsoft Entra authority.|
+|TLS failure when connecting to the AKS token proxy.|The proxy certificate isn't trusted or doesn't match `AZURE_KUBERNETES_SNI_NAME`.|Check the webhook's CA and TLS server-name settings. Ensure the CA file exists on first use. Missing or empty files during rotation retain an already loaded CA, but invalid nonempty bundles fail authentication. Never disable TLS verification.|
 
 ## Troubleshoot `IntelliJCredential` authentication issues
 
@@ -304,6 +318,28 @@ As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentica
 |AADSTS700016: Application with identifier 'clientId' was not found in the directory 'Microsoft'. This can happen if the application has not been installed by the administrator of the tenant or consented to by any user in the tenant. You may have sent your authentication request to the wrong tenant.|The `<clientId>` provided is invalid|Verify the client ID argument is valid. If the service connection's federated identity was registered via a user-assigned managed identity, the client ID of the managed identity should be provided. If the service connection's federated identity is registered via an app registration, the Application (client) ID from your app registration should be provided.|
 
 
+## Troubleshoot `GitHubActionsCredential` authentication issues
+
+`GitHubActionsCredential` is a standalone credential for GitHub Actions OIDC federation. It is not part of
+`DefaultAzureCredential`. Missing configuration fails during `GitHubActionsCredentialBuilder.build()`, so
+constructing an unconfigured credential does not defer failure to a manually composed credential chain.
+
+| Error | Cause | Mitigation |
+| --- | --- | --- |
+| `CredentialUnavailableException` naming `AZURE_CLIENT_ID` or `AZURE_TENANT_ID` | The Azure application IDs are missing. | Set the environment variables or call `clientId` and `tenantId` on the builder. |
+| `CredentialUnavailableException` naming `ACTIONS_ID_TOKEN_REQUEST_URL` or `ACTIONS_ID_TOKEN_REQUEST_TOKEN` | The process is outside an OIDC-enabled workflow step. | Grant the job `permissions: id-token: write` and run the SDK in that GitHub Actions step. Do not supply the runner token manually. |
+| Invalid runner request URL | The configured URL is not an absolute HTTPS URL, or contains user information or a fragment. | Use the URL supplied by the GitHub Actions runner. |
+| Unsupported authority host | There is no supported audience mapping for the authority. | Use one of the [documented cloud authorities](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticate-github-actions-workflows). Custom audiences and authorities are not supported. |
+| GitHub OIDC HTTP 401/403 | GitHub rejected the runner request. | Check the job's OIDC permissions and ensure the request variables belong to the current workflow step. |
+| `Received null token from OIDC request.` | The GitHub OIDC response body is missing or empty. | Check connectivity and any proxy affecting the GitHub OIDC endpoint. |
+| `"value" field not detected in the response.` | The JSON response does not contain a nonempty string `value`. | Check that the request reaches the GitHub OIDC endpoint. Do not log the response body; it can contain an assertion. |
+| `Failed to parse OIDC response.` | The response contains malformed JSON or trailing content. | Check connectivity and any proxy affecting the GitHub OIDC endpoint. Do not log the response body. |
+| Entra reports no matching federated identity record | The presented issuer, subject, or audience does not match the app's federation configuration. | Match the actual claims for the repository/ref, including immutable subject IDs when applicable, and the audience derived from the authority host. |
+
+See [GitHub's Azure OIDC setup guide](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure)
+for federation prerequisites. Never include the runner bearer token, OIDC assertion, access token, or raw token
+response in diagnostic logs.
+
 ## Troubleshoot multi-tenant authentication issues
 `ClientAuthenticationException`
 
@@ -314,21 +350,13 @@ As of version 1.17.0-beta.1, `VisualStudioCodeCredential` uses broker authentica
 ## Troubleshoot authentication timeout issues
 
 ### Using Thread pool
-The Azure Identity library plays a pivotal role in executing authentication requests. However, a potential concern 
-arises when your application concurrently relies on the common fork-join pool. This concurrency scenario can lead to
-a deadlock situation, wherein both the Azure Identity library and your application compete for threads from the 
-common fork-join pool. In order to prevent such a deadlock and ensure smooth authentication processes, it is 
-strongly recommended that you configure a dedicated thread pool specifically for the credentials. By implementing
-this configuration, you can ensure that the Azure Identity library and your application do not clash over the 
-allocation of threads from the common fork-join pool.
 
-To effectively address this deadlock situation, follow these steps:
+By default, Azure Identity runs MSAL authentication tasks on Azure Core's `SharedExecutorService`, not on the common
+fork-join pool. A bounded executor can run out of workers if application tasks occupy its threads while waiting for
+authentication work queued on the same executor.
 
-* Create a Dedicated Thread Pool: Configure a separate and dedicated thread pool for the credential processes within your application. This ensures that the Azure Identity library does not interfere with your application's use of the common fork-join pool.
-
-* Isolation of Thread Pools: Ensure that the dedicated thread pool for credential operations remains isolated and distinct from the common fork-join pool, which is used by the application.
-
-Here's a code sample below:
+To isolate authentication work, configure the credential with a dedicated executor. Keep this executor separate from
+application tasks that make blocking Azure SDK calls. The following example uses a cached platform-thread pool:
 
 ```java
 ExecutorService executorService = Executors.newCachedThreadPool();
@@ -341,13 +369,42 @@ try {
       .executorService(executorService)
       .build();
 
+    // Use the credential and finish all SDK requests before leaving this scope.
 } finally {
-   //Shutdown the thread pool once no longer needed.
+   // Shut down the executor only after all clients using the credential have stopped.
    executorService.shutdown();
 }
 ```
 
-You can find more info about Fork Join Pool [here](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html).
+The application owns this executor's lifecycle. Choose an executor with capacity and resource limits appropriate for
+your workload; a fixed number of threads is not sufficient for every concurrency pattern.
+
+### Virtual-thread carrier starvation
+
+On Java 21, blocking while holding a `synchronized` monitor can pin a virtual thread to its carrier thread. In affected
+Azure Core versions, synchronous paging holds such a monitor while retrieving a page, including while authentication
+waits for MSAL work on the shared virtual-thread executor. If all carriers are pinned, that work cannot run and
+authentication stops making progress. See [#46231](https://github.com/Azure/azure-sdk-for-java/issues/46231).
+
+For affected versions, temporarily disable virtual threads in the shared executor with either this environment variable:
+
+```text
+AZURE_SDK_SHARED_THREADPOOL_USEVIRTUALTHREADS=false
+```
+
+or this JVM option:
+
+```text
+-Dazure.sdk.shared.threadpool.usevirtualthreads=false
+```
+
+Set the option at process startup, before any Azure SDK code initializes `SharedExecutorService`. These settings are read
+once and affect all SDK libraries using that shared executor, not only Azure Identity. The names
+`AZURE_IDENTITY_USE_VIRTUAL_THREADS` and `azure.identity.use.virtual.threads` do not configure this executor.
+
+Alternatively, keep virtual threads enabled elsewhere and pass a dedicated platform-thread executor to the credential
+builder's `executorService(...)` method, as shown above. This is a workaround for affected versions, not a replacement for
+fixing the SDK-owned paging monitor.
 
 ## Troubleshoot Web Account Manager (WAM) brokered authentication issues
 

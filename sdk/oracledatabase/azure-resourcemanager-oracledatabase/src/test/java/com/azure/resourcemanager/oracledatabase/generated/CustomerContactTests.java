@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomerContactTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomerContact model
-            = BinaryData.fromString("{\"email\":\"xoegukgjnpiucgy\"}").toObject(CustomerContact.class);
-        Assertions.assertEquals("xoegukgjnpiucgy", model.email());
+        CustomerContact model = BinaryData.fromString("{\"email\":\"ebrjcxe\"}").toObject(CustomerContact.class);
+        Assertions.assertEquals("ebrjcxe", model.email());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomerContact model = new CustomerContact().withEmail("xoegukgjnpiucgy");
+        CustomerContact model = new CustomerContact().withEmail("ebrjcxe");
         model = BinaryData.fromObject(model).toObject(CustomerContact.class);
-        Assertions.assertEquals("xoegukgjnpiucgy", model.email());
+        Assertions.assertEquals("ebrjcxe", model.email());
     }
 }

@@ -1,0 +1,101 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.resourcemanager.containerregistry.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+
+/**
+ * Describes the credential parameters for accessing the source registry.
+ */
+@Fluent
+public final class SourceRegistryCredentials implements JsonSerializable<SourceRegistryCredentials> {
+    /*
+     * The authentication mode which determines the source registry login scope. The credentials for the source registry
+     * will be generated using the given scope. These credentials will be used to login to
+     * the source registry during the run.
+     */
+    private SourceRegistryLoginMode loginMode;
+
+    /**
+     * Creates an instance of SourceRegistryCredentials class.
+     */
+    public SourceRegistryCredentials() {
+    }
+
+    /**
+     * Get the loginMode property: The authentication mode which determines the source registry login scope. The
+     * credentials for the source registry
+     * will be generated using the given scope. These credentials will be used to login to
+     * the source registry during the run.
+     * 
+     * @return the loginMode value.
+     */
+    public SourceRegistryLoginMode loginMode() {
+        return this.loginMode;
+    }
+
+    /**
+     * Set the loginMode property: The authentication mode which determines the source registry login scope. The
+     * credentials for the source registry
+     * will be generated using the given scope. These credentials will be used to login to
+     * the source registry during the run.
+     * 
+     * @param loginMode the loginMode value to set.
+     * @return the SourceRegistryCredentials object itself.
+     */
+    public SourceRegistryCredentials withLoginMode(SourceRegistryLoginMode loginMode) {
+        this.loginMode = loginMode;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("loginMode", this.loginMode == null ? null : this.loginMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceRegistryCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceRegistryCredentials if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceRegistryCredentials.
+     */
+    public static SourceRegistryCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceRegistryCredentials deserializedSourceRegistryCredentials = new SourceRegistryCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loginMode".equals(fieldName)) {
+                    deserializedSourceRegistryCredentials.loginMode
+                        = SourceRegistryLoginMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceRegistryCredentials;
+        });
+    }
+}

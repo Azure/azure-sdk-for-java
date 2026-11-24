@@ -18,32 +18,35 @@ public final class ExportDependenciesRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExportDependenciesRequest model = BinaryData.fromString(
-            "{\"focusedMachineId\":\"rxzxtheo\",\"filters\":{\"dateTime\":{\"startDateTimeUtc\":\"2021-09-30T22:34:52Z\",\"endDateTimeUtc\":\"2021-11-04T11:49:42Z\"},\"processNameFilter\":{\"operator\":\"notContains\",\"processNames\":[\"iqihn\",\"un\",\"bwjzr\"]}}}")
+            "{\"focusedMachineId\":\"xzxtheo\",\"filters\":{\"dateTime\":{\"startDateTimeUtc\":\"2021-09-30T22:34:52Z\",\"endDateTimeUtc\":\"2021-11-04T11:49:42Z\"},\"processNameFilter\":{\"operator\":\"notContains\",\"processNames\":[\"iqihn\",\"un\",\"bwjzr\"]}},\"applianceNameList\":[\"gxg\",\"spemvtzfk\",\"fublj\"]}")
             .toObject(ExportDependenciesRequest.class);
-        Assertions.assertEquals("rxzxtheo", model.focusedMachineId());
+        Assertions.assertEquals("xzxtheo", model.focusedMachineId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-30T22:34:52Z"),
             model.filters().dateTime().startDateTimeUtc());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T11:49:42Z"),
             model.filters().dateTime().endDateTimeUtc());
         Assertions.assertEquals(ProcessNameFilterOperator.NOT_CONTAINS, model.filters().processNameFilter().operator());
         Assertions.assertEquals("iqihn", model.filters().processNameFilter().processNames().get(0));
+        Assertions.assertEquals("gxg", model.applianceNameList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportDependenciesRequest model = new ExportDependenciesRequest().withFocusedMachineId("rxzxtheo")
+        ExportDependenciesRequest model = new ExportDependenciesRequest().withFocusedMachineId("xzxtheo")
             .withFilters(new DependencyMapVisualizationFilter()
                 .withDateTime(new DateTimeFilter().withStartDateTimeUtc(OffsetDateTime.parse("2021-09-30T22:34:52Z"))
                     .withEndDateTimeUtc(OffsetDateTime.parse("2021-11-04T11:49:42Z")))
                 .withProcessNameFilter(new ProcessNameFilter().withOperator(ProcessNameFilterOperator.NOT_CONTAINS)
-                    .withProcessNames(Arrays.asList("iqihn", "un", "bwjzr"))));
+                    .withProcessNames(Arrays.asList("iqihn", "un", "bwjzr"))))
+            .withApplianceNameList(Arrays.asList("gxg", "spemvtzfk", "fublj"));
         model = BinaryData.fromObject(model).toObject(ExportDependenciesRequest.class);
-        Assertions.assertEquals("rxzxtheo", model.focusedMachineId());
+        Assertions.assertEquals("xzxtheo", model.focusedMachineId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-30T22:34:52Z"),
             model.filters().dateTime().startDateTimeUtc());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T11:49:42Z"),
             model.filters().dateTime().endDateTimeUtc());
         Assertions.assertEquals(ProcessNameFilterOperator.NOT_CONTAINS, model.filters().processNameFilter().operator());
         Assertions.assertEquals("iqihn", model.filters().processNameFilter().processNames().get(0));
+        Assertions.assertEquals("gxg", model.applianceNameList().get(0));
     }
 }

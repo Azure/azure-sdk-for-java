@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.CheckNameAvailabilityResponseModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.CheckNameAvailabilityModel;
@@ -95,20 +94,6 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResponseModelInner>> postWithResponseAsync(String location,
         CheckNameAvailabilityModel body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.post(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -149,23 +134,6 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResponseModelInner> postWithResponse(String location,
         CheckNameAvailabilityModel body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (location == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
         final String accept = "application/json";
         return service.postSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             location, accept, body, context);
@@ -187,6 +155,4 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
         final CheckNameAvailabilityModel body = null;
         return postWithResponse(location, body, Context.NONE).getValue();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilitiesClientImpl.class);
 }

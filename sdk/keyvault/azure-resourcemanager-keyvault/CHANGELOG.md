@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
+## 2.58.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,246 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.58.0-beta.1 (2026-11-11)
+
+- Package api-version 2026-10-01-preview.
+
+### Features Added
+
+* `models.NetworkSecurityPerimeter` was added
+
+* `models.WrappingKeyConfiguration` was added
+
+* `models.ProvisioningIssueProperties` was added
+
+* `models.WrappingKeyValue` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProperties` was added
+
+* `models.WrappingKeyAuthenticationData` was added
+
+* `models.TokenBindingParameters` was added
+
+* `models.IssueType` was added
+
+* `models.AccessRule` was added
+
+* `models.NetworkSecurityPerimeterConfigurationProvisioningState` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.AccessRuleDirection` was added
+
+* `models.AccessRulePropertiesSubscription` was added
+
+* `models.Severity` was added
+
+* `models.ProvisioningIssue` was added
+
+* `models.AccessRuleProperties` was added
+
+* `models.ResourceAssociationAccessMode` was added
+
+* `models.TokenBindingMode` was added
+
+* `models.TokenBindingStrength` was added
+
+* `models.NetworkSecurityProfile` was added
+
+#### `models.VaultPatchParameters` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
+
+#### `models.VaultProperties` was modified
+
+* `enableCrossTenantAccessProtection()` was added
+* `withTokenBindingParameters(models.TokenBindingParameters)` was added
+* `withEnableCrossTenantAccessProtection(java.lang.Boolean)` was added
+* `protectionKeysWrappingKey()` was added
+* `tokenBindingParameters()` was added
+* `withProtectionKeysWrappingKey(models.WrappingKeyConfiguration)` was added
+
+#### `models.VaultPatchProperties` was modified
+
+* `protectionKeysWrappingKey()` was added
+* `withProtectionKeysWrappingKey(models.WrappingKeyConfiguration)` was added
+* `withTokenBindingParameters(models.TokenBindingParameters)` was added
+* `enableCrossTenantAccessProtection()` was added
+* `tokenBindingParameters()` was added
+* `withEnableCrossTenantAccessProtection(java.lang.Boolean)` was added
+
+#### `models.VaultCreateOrUpdateParameters` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `identity()` was added
+
+## 2.57.1 (2026-11-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-secrets` from `4.11.3` to version `4.13.1`.
+- Upgraded `azure-resourcemanager-resources` from `2.55.0` to version `2.56.1`.
+- Upgraded `azure-security-keyvault-keys` from `4.11.3` to version `4.12.1`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.14` to version `2.54.1`.
+
+## 2.56.0 (2026-10-12)
+
+- Package api-version 2026-05-15.
+
+### Breaking Changes
+
+#### `models.ManagedHsmSkuName` was modified
+
+* `toString()` was removed
+* `models.ManagedHsmSkuName[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+
+### Features Added
+
+#### `models.JsonWebKeyType` was modified
+
+* `OCT_HSM` was added
+
+#### `models.ManagedHsmSkuName` was modified
+
+* `ManagedHsmSkuName()` was added
+* `STANDARD_B5V2` was added
+* `STANDARD_B10V2` was added
+* `STANDARD_B20V2` was added
+* `STANDARD_B1V2` was added
+* `STANDARD_B15V2` was added
+
+## 2.55.6 (2026-10-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.54.4` to version `2.55.0`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.13` to version `2.53.14`.
+
+## 2.55.5 (2026-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-secrets` from `4.11.2` to version `4.11.3`.
+- Upgraded `azure-security-keyvault-keys` from `4.11.2` to version `4.11.3`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.3` to version `2.54.4`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.12` to version `2.53.13`.
+
+## 2.55.4 (2026-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-keys` from `4.11.0` to version `4.11.2`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.12`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.2` to version `2.54.3`.
+- Upgraded `azure-security-keyvault-secrets` from `4.11.0` to version `4.11.2`.
+
+## 2.55.3 (2026-07-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.9` to version `2.53.10`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.1` to version `2.54.2`.
+- Upgraded `azure-security-keyvault-secrets` from `4.10.7` to version `4.11.1`.
+- Upgraded `azure-security-keyvault-keys` from `4.10.7` to version `4.11.1`.
+
+
+## 2.55.2 (2026-05-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-security-keyvault-secrets` from `4.10.6` to version `4.10.7`.
+- Upgraded `azure-security-keyvault-keys` from `4.10.6` to version `4.10.7`.
+- Upgraded `azure-resourcemanager-resources` from `2.54.0` to version `2.54.1`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.7` to version `2.53.9`.
+
+## 2.55.1 (2026-03-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.7` to version `2.53.8`.
+- Upgraded `azure-security-keyvault-keys` from `4.10.5` to version `4.10.6`.
+- Upgraded `azure-security-keyvault-secrets` from `4.10.5` to version `4.10.6`.
+
+
+## 2.55.0 (2026-03-17)
+
+### Breaking Changes
+
+#### `models.ManagedHsmResource` was removed
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-02-01`.
+
+## 2.54.2 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-authorization` from `2.53.5` to version `2.53.6`.
+
+## 2.54.1 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.0 (2025-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+## 2.53.4 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.53.3 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-resourcemanager-resources` from `2.53.1` to version `2.53.3`.
+- Upgraded `azure-security-keyvault-keys` from `4.10.2` to version `4.10.3`.
+- Upgraded `azure-security-keyvault-secrets` from `4.10.2` to version `4.10.3`.
+- Upgraded `azure-resourcemanager-authorization` from `2.53.1` to version `2.53.3`.
+
+## 2.53.2 (2025-08-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.53.1 (2025-08-05)
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.ClusterResizeParameters;
@@ -27,11 +27,11 @@ public final class ClustersResizeMockTests {
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.clusters()
-            .resize("dxxewuninv", "db", RoleName.WORKERNODE,
-                new ClusterResizeParameters().withTargetInstanceCount(1594166889), com.azure.core.util.Context.NONE);
+            .resize("esfuught", "qfecjxeygtuhx", RoleName.WORKERNODE,
+                new ClusterResizeParameters().withTargetInstanceCount(1045251485), com.azure.core.util.Context.NONE);
 
     }
 }

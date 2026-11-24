@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class AllConnectionStringTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllConnectionStringType model
-            = BinaryData.fromString("{\"high\":\"xmrhu\",\"low\":\"wp\",\"medium\":\"sutrgjup\"}")
-                .toObject(AllConnectionStringType.class);
-        Assertions.assertEquals("xmrhu", model.high());
-        Assertions.assertEquals("wp", model.low());
-        Assertions.assertEquals("sutrgjup", model.medium());
+        AllConnectionStringType model = BinaryData.fromString("{\"high\":\"oaz\",\"low\":\"u\",\"medium\":\"bgo\"}")
+            .toObject(AllConnectionStringType.class);
+        Assertions.assertEquals("oaz", model.high());
+        Assertions.assertEquals("u", model.low());
+        Assertions.assertEquals("bgo", model.medium());
     }
 }

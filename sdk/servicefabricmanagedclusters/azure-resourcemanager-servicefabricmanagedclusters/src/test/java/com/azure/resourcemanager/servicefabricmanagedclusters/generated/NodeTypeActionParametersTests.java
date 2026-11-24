@@ -14,20 +14,20 @@ public final class NodeTypeActionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeActionParameters model
-            = BinaryData.fromString("{\"nodes\":[\"ckpyklyhplu\"],\"force\":false,\"updateType\":\"Default\"}")
+            = BinaryData.fromString("{\"nodes\":[\"bqplh\",\"vnuuepzl\"],\"force\":false,\"updateType\":\"Default\"}")
                 .toObject(NodeTypeActionParameters.class);
-        Assertions.assertEquals("ckpyklyhplu", model.nodes().get(0));
+        Assertions.assertEquals("bqplh", model.nodes().get(0));
         Assertions.assertFalse(model.force());
         Assertions.assertEquals(UpdateType.DEFAULT, model.updateType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeTypeActionParameters model = new NodeTypeActionParameters().withNodes(Arrays.asList("ckpyklyhplu"))
+        NodeTypeActionParameters model = new NodeTypeActionParameters().withNodes(Arrays.asList("bqplh", "vnuuepzl"))
             .withForce(false)
             .withUpdateType(UpdateType.DEFAULT);
         model = BinaryData.fromObject(model).toObject(NodeTypeActionParameters.class);
-        Assertions.assertEquals("ckpyklyhplu", model.nodes().get(0));
+        Assertions.assertEquals("bqplh", model.nodes().get(0));
         Assertions.assertFalse(model.force());
         Assertions.assertEquals(UpdateType.DEFAULT, model.updateType());
     }

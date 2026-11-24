@@ -228,20 +228,6 @@ public final class ApplicationUpgradePolicy implements JsonSerializable<Applicat
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (applicationHealthPolicy() != null) {
-            applicationHealthPolicy().validate();
-        }
-        if (rollingUpgradeMonitoringPolicy() != null) {
-            rollingUpgradeMonitoringPolicy().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

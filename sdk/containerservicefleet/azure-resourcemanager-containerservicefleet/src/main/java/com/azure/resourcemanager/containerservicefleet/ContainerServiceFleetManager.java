@@ -27,19 +27,25 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfileOperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.AutoUpgradeProfilesImpl;
+import com.azure.resourcemanager.containerservicefleet.implementation.ClusterMeshProfilesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.ContainerServiceFleetManagementClientBuilder;
+import com.azure.resourcemanager.containerservicefleet.implementation.FleetManagedNamespacesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembersImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.GatesImpl;
+import com.azure.resourcemanager.containerservicefleet.implementation.IdentityBindingProfilesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfileOperations;
 import com.azure.resourcemanager.containerservicefleet.models.AutoUpgradeProfiles;
+import com.azure.resourcemanager.containerservicefleet.models.ClusterMeshProfiles;
+import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamespaces;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
 import com.azure.resourcemanager.containerservicefleet.models.Fleets;
 import com.azure.resourcemanager.containerservicefleet.models.Gates;
+import com.azure.resourcemanager.containerservicefleet.models.IdentityBindingProfiles;
 import com.azure.resourcemanager.containerservicefleet.models.Operations;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRuns;
 import java.time.Duration;
@@ -57,11 +63,17 @@ import java.util.stream.Collectors;
 public final class ContainerServiceFleetManager {
     private Operations operations;
 
+    private ClusterMeshProfiles clusterMeshProfiles;
+
     private Fleets fleets;
 
     private FleetMembers fleetMembers;
 
+    private FleetManagedNamespaces fleetManagedNamespaces;
+
     private Gates gates;
+
+    private IdentityBindingProfiles identityBindingProfiles;
 
     private UpdateRuns updateRuns;
 
@@ -300,6 +312,18 @@ public final class ContainerServiceFleetManager {
     }
 
     /**
+     * Gets the resource collection API of ClusterMeshProfiles. It manages ClusterMeshProfile.
+     * 
+     * @return Resource collection API of ClusterMeshProfiles.
+     */
+    public ClusterMeshProfiles clusterMeshProfiles() {
+        if (this.clusterMeshProfiles == null) {
+            this.clusterMeshProfiles = new ClusterMeshProfilesImpl(clientObject.getClusterMeshProfiles(), this);
+        }
+        return clusterMeshProfiles;
+    }
+
+    /**
      * Gets the resource collection API of Fleets. It manages Fleet.
      * 
      * @return Resource collection API of Fleets.
@@ -324,6 +348,19 @@ public final class ContainerServiceFleetManager {
     }
 
     /**
+     * Gets the resource collection API of FleetManagedNamespaces. It manages FleetManagedNamespace.
+     * 
+     * @return Resource collection API of FleetManagedNamespaces.
+     */
+    public FleetManagedNamespaces fleetManagedNamespaces() {
+        if (this.fleetManagedNamespaces == null) {
+            this.fleetManagedNamespaces
+                = new FleetManagedNamespacesImpl(clientObject.getFleetManagedNamespaces(), this);
+        }
+        return fleetManagedNamespaces;
+    }
+
+    /**
      * Gets the resource collection API of Gates.
      * 
      * @return Resource collection API of Gates.
@@ -333,6 +370,19 @@ public final class ContainerServiceFleetManager {
             this.gates = new GatesImpl(clientObject.getGates(), this);
         }
         return gates;
+    }
+
+    /**
+     * Gets the resource collection API of IdentityBindingProfiles. It manages IdentityBindingProfile.
+     * 
+     * @return Resource collection API of IdentityBindingProfiles.
+     */
+    public IdentityBindingProfiles identityBindingProfiles() {
+        if (this.identityBindingProfiles == null) {
+            this.identityBindingProfiles
+                = new IdentityBindingProfilesImpl(clientObject.getIdentityBindingProfiles(), this);
+        }
+        return identityBindingProfiles;
     }
 
     /**

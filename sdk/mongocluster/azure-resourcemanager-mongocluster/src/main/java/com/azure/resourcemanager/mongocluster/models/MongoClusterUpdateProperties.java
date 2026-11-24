@@ -18,7 +18,7 @@ import java.util.List;
 @Fluent
 public final class MongoClusterUpdateProperties implements JsonSerializable<MongoClusterUpdateProperties> {
     /*
-     * The local administrator properties for the mongo cluster.
+     * The local administrator properties for the DocumentDB cluster.
      */
     private AdministratorProperties administrator;
 
@@ -28,37 +28,37 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     private String serverVersion;
 
     /*
-     * Whether or not public endpoint access is allowed for this mongo cluster.
+     * Whether or not public endpoint access is allowed for this DocumentDB cluster.
      */
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The high availability properties of the mongo cluster.
+     * The high availability properties of the DocumentDB cluster.
      */
     private HighAvailabilityProperties highAvailability;
 
     /*
-     * The storage properties of the mongo cluster.
+     * The storage properties of the DocumentDB cluster.
      */
     private StorageProperties storage;
 
     /*
-     * The sharding properties of the mongo cluster.
+     * The sharding properties of the DocumentDB cluster.
      */
     private ShardingProperties sharding;
 
     /*
-     * The compute properties of the mongo cluster.
+     * The compute properties of the DocumentDB cluster.
      */
     private ComputeProperties compute;
 
     /*
-     * The backup properties of the mongo cluster.
+     * The backup properties of the DocumentDB cluster.
      */
     private BackupProperties backup;
 
     /*
-     * The Data API properties of the mongo cluster.
+     * The Data API properties of the DocumentDB cluster.
      */
     private DataApiProperties dataApi;
 
@@ -72,6 +72,17 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      */
     private AuthConfigProperties authConfig;
 
+    /*
+     * The encryption configuration for the cluster. Depends on identity being configured.
+     */
+    private EncryptionProperties encryption;
+
+    /*
+     * The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows the Azure Cosmos DB service to bypass
+     * network restrictions.
+     */
+    private NetworkBypassMode networkBypassMode;
+
     /**
      * Creates an instance of MongoClusterUpdateProperties class.
      */
@@ -79,7 +90,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the administrator property: The local administrator properties for the mongo cluster.
+     * Get the administrator property: The local administrator properties for the DocumentDB cluster.
      * 
      * @return the administrator value.
      */
@@ -88,7 +99,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the administrator property: The local administrator properties for the mongo cluster.
+     * Set the administrator property: The local administrator properties for the DocumentDB cluster.
      * 
      * @param administrator the administrator value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -121,7 +132,8 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this mongo cluster.
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this DocumentDB
+     * cluster.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -130,7 +142,8 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this mongo cluster.
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this DocumentDB
+     * cluster.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -141,7 +154,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the highAvailability property: The high availability properties of the mongo cluster.
+     * Get the highAvailability property: The high availability properties of the DocumentDB cluster.
      * 
      * @return the highAvailability value.
      */
@@ -150,7 +163,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the highAvailability property: The high availability properties of the mongo cluster.
+     * Set the highAvailability property: The high availability properties of the DocumentDB cluster.
      * 
      * @param highAvailability the highAvailability value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -161,7 +174,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the storage property: The storage properties of the mongo cluster.
+     * Get the storage property: The storage properties of the DocumentDB cluster.
      * 
      * @return the storage value.
      */
@@ -170,7 +183,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the storage property: The storage properties of the mongo cluster.
+     * Set the storage property: The storage properties of the DocumentDB cluster.
      * 
      * @param storage the storage value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -181,7 +194,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the sharding property: The sharding properties of the mongo cluster.
+     * Get the sharding property: The sharding properties of the DocumentDB cluster.
      * 
      * @return the sharding value.
      */
@@ -190,7 +203,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the sharding property: The sharding properties of the mongo cluster.
+     * Set the sharding property: The sharding properties of the DocumentDB cluster.
      * 
      * @param sharding the sharding value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -201,7 +214,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the compute property: The compute properties of the mongo cluster.
+     * Get the compute property: The compute properties of the DocumentDB cluster.
      * 
      * @return the compute value.
      */
@@ -210,7 +223,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the compute property: The compute properties of the mongo cluster.
+     * Set the compute property: The compute properties of the DocumentDB cluster.
      * 
      * @param compute the compute value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -221,7 +234,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the backup property: The backup properties of the mongo cluster.
+     * Get the backup property: The backup properties of the DocumentDB cluster.
      * 
      * @return the backup value.
      */
@@ -230,7 +243,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the backup property: The backup properties of the mongo cluster.
+     * Set the backup property: The backup properties of the DocumentDB cluster.
      * 
      * @param backup the backup value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -241,7 +254,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Get the dataApi property: The Data API properties of the mongo cluster.
+     * Get the dataApi property: The Data API properties of the DocumentDB cluster.
      * 
      * @return the dataApi value.
      */
@@ -250,7 +263,7 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Set the dataApi property: The Data API properties of the mongo cluster.
+     * Set the dataApi property: The Data API properties of the DocumentDB cluster.
      * 
      * @param dataApi the dataApi value to set.
      * @return the MongoClusterUpdateProperties object itself.
@@ -301,35 +314,45 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
-     * Validates the instance.
+     * Get the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the encryption value.
      */
-    public void validate() {
-        if (administrator() != null) {
-            administrator().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (sharding() != null) {
-            sharding().validate();
-        }
-        if (compute() != null) {
-            compute().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (dataApi() != null) {
-            dataApi().validate();
-        }
-        if (authConfig() != null) {
-            authConfig().validate();
-        }
+    public EncryptionProperties encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withEncryption(EncryptionProperties encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
+     * the Azure Cosmos DB service to bypass network restrictions.
+     * 
+     * @return the networkBypassMode value.
+     */
+    public NetworkBypassMode networkBypassMode() {
+        return this.networkBypassMode;
+    }
+
+    /**
+     * Set the networkBypassMode property: The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows
+     * the Azure Cosmos DB service to bypass network restrictions.
+     * 
+     * @param networkBypassMode the networkBypassMode value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withNetworkBypassMode(NetworkBypassMode networkBypassMode) {
+        this.networkBypassMode = networkBypassMode;
+        return this;
     }
 
     /**
@@ -351,6 +374,9 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
         jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("authConfig", this.authConfig);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeStringField("networkBypassMode",
+            this.networkBypassMode == null ? null : this.networkBypassMode.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -395,6 +421,11 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
                     deserializedMongoClusterUpdateProperties.previewFeatures = previewFeatures;
                 } else if ("authConfig".equals(fieldName)) {
                     deserializedMongoClusterUpdateProperties.authConfig = AuthConfigProperties.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else if ("networkBypassMode".equals(fieldName)) {
+                    deserializedMongoClusterUpdateProperties.networkBypassMode
+                        = NetworkBypassMode.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

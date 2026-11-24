@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterUpdateProperties model
-            = BinaryData.fromString("{\"clusterSize\":1271427468,\"hosts\":[\"fcnihgwq\",\"pnedgf\"]}")
-                .toObject(ClusterUpdateProperties.class);
-        Assertions.assertEquals(1271427468, model.clusterSize());
-        Assertions.assertEquals("fcnihgwq", model.hosts().get(0));
+        ClusterUpdateProperties model = BinaryData
+            .fromString(
+                "{\"clusterSize\":881303294,\"hosts\":[\"wisdkft\",\"wxmnteiwao\",\"vkmijcmmxdcuf\",\"fsrpymzidnse\"]}")
+            .toObject(ClusterUpdateProperties.class);
+        Assertions.assertEquals(881303294, model.clusterSize());
+        Assertions.assertEquals("wisdkft", model.hosts().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterUpdateProperties model
-            = new ClusterUpdateProperties().withClusterSize(1271427468).withHosts(Arrays.asList("fcnihgwq", "pnedgf"));
+        ClusterUpdateProperties model = new ClusterUpdateProperties().withClusterSize(881303294)
+            .withHosts(Arrays.asList("wisdkft", "wxmnteiwao", "vkmijcmmxdcuf", "fsrpymzidnse"));
         model = BinaryData.fromObject(model).toObject(ClusterUpdateProperties.class);
-        Assertions.assertEquals(1271427468, model.clusterSize());
-        Assertions.assertEquals("fcnihgwq", model.hosts().get(0));
+        Assertions.assertEquals(881303294, model.clusterSize());
+        Assertions.assertEquals("wisdkft", model.hosts().get(0));
     }
 }

@@ -15,6 +15,7 @@
       <module>azure-messaging-eventhubs-checkpointstore-jedis</module>
       <module>azure-messaging-eventhubs-stress</module>
       <module>azure-messaging-eventhubs-track2-perf</module>
+      <module>azure-resourcemanager-eventhubs</module>
   </modules>
 
 </project>

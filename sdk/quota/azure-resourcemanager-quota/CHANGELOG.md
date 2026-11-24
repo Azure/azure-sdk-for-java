@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 2.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,165 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.0.0 (2025-09-19)
+
+- Azure Resource Manager Quota client library for Java. This package contains Microsoft Azure SDK for Quota Management SDK. Microsoft Azure Quota Resource Provider. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.UsagesLimits` was removed
+
+#### `models.QuotasListResponse` was removed
+
+#### `models.QuotaAllocationRequestStatusList` was removed
+
+#### `models.QuotaRequestDetailsList` was removed
+
+#### `models.SubmittedResourceRequestStatusList` was removed
+
+#### `models.GroupQuotaList` was removed
+
+#### `models.UsagesListHeaders` was removed
+
+#### `models.UsagesListNextResponse` was removed
+
+#### `models.QuotasListHeaders` was removed
+
+#### `models.GroupQuotaSubscriptionRequestStatusList` was removed
+
+#### `models.GroupQuotaSubscriptionIdList` was removed
+
+#### `models.OperationList` was removed
+
+#### `models.QuotasListNextHeaders` was removed
+
+#### `models.QuotaLimits` was removed
+
+#### `models.LroResponseProperties` was removed
+
+#### `models.UsagesListResponse` was removed
+
+#### `models.LroResponse` was removed
+
+#### `models.UsagesListNextHeaders` was removed
+
+#### `models.QuotasListNextResponse` was removed
+
+#### `models.GroupQuotaRequestBase` was modified
+
+* `withRegion(java.lang.String)` was removed
+* `withComments(java.lang.String)` was removed
+* `withLimit(java.lang.Long)` was removed
+
+#### `models.QuotaAllocationRequestBase` was modified
+
+* `withLimit(java.lang.Long)` was removed
+* `withRegion(java.lang.String)` was removed
+
+#### `models.GroupQuotaSubscriptions` was modified
+
+* `com.azure.core.management.ProxyResource createOrUpdate(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.GroupQuotaSubscriptionId createOrUpdate(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `com.azure.core.management.ProxyResource createOrUpdate(java.lang.String,java.lang.String)` -> `models.GroupQuotaSubscriptionId createOrUpdate(java.lang.String,java.lang.String)`
+
+#### `models.AllocatedQuotaToSubscriptionList` was modified
+
+* `withValue(java.util.List)` was removed
+
+#### `models.SubmittedResourceRequestStatusProperties` was modified
+
+* `withRequestedResource(models.GroupQuotaRequestBase)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `withResource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+
+#### `models.GroupQuotaSubscriptionRequestStatusProperties` was modified
+
+* `withRequestSubmitTime(java.time.OffsetDateTime)` was removed
+* `withSubscriptionId(java.lang.String)` was removed
+
+#### `models.UsagesObject` was modified
+
+* `withValue(int)` was removed
+* `withUsagesType(models.UsagesTypes)` was removed
+
+#### `models.GroupQuotas` was modified
+
+* `com.azure.core.management.ProxyResource createOrUpdate(java.lang.String,java.lang.String,fluent.models.GroupQuotasEntityInner,com.azure.core.util.Context)` -> `models.GroupQuotasEntity createOrUpdate(java.lang.String,java.lang.String,fluent.models.GroupQuotasEntityInner,com.azure.core.util.Context)`
+* `com.azure.core.management.ProxyResource createOrUpdate(java.lang.String,java.lang.String)` -> `models.GroupQuotasEntity createOrUpdate(java.lang.String,java.lang.String)`
+
+#### `models.GroupQuotaSubscriptionIdProperties` was modified
+
+* `withSubscriptionId(java.lang.String)` was removed
+
+#### `QuotaManager` was modified
+
+* `fluent.AzureQuotaExtensionApi serviceClient()` -> `fluent.QuotaManagementClient serviceClient()`
+
+#### `models.SubRequest` was modified
+
+* `withName(models.ResourceName)` was removed
+* `withLimit(models.LimitJsonObject)` was removed
+* `withUnit(java.lang.String)` was removed
+
+#### `models.AllocatedToSubscription` was modified
+
+* `withSubscriptionId(java.lang.String)` was removed
+* `withQuotaAllocated(java.lang.Long)` was removed
+
+#### `models.UsagesProperties` was modified
+
+* `withProperties(java.lang.Object)` was removed
+* `withUsages(models.UsagesObject)` was removed
+* `withName(models.ResourceName)` was removed
+* `withResourceType(java.lang.String)` was removed
+
+### Features Added
+
+* `models.GroupType` was added
+
+* `models.EnforcementState` was added
+
+* `models.ResourceUsages` was added
+
+* `models.GroupQuotaLocationSettings` was added
+
+* `models.GroupQuotasEnforcementStatus` was added
+
+* `models.GroupQuotasEnforcementStatusProperties` was added
+
+* `models.GroupQuotaUsages` was added
+
+* `models.GroupQuotaUsagesBase` was added
+
+#### `models.GroupQuotasEntityBase` was modified
+
+* `groupType()` was added
+
+#### `models.CurrentQuotaLimitBase` was modified
+
+* `systemData()` was added
+
+#### `models.GroupQuotasEntityProperties` was modified
+
+* `groupType()` was added
+
+#### `models.CurrentUsagesBase` was modified
+
+* `systemData()` was added
+
+#### `models.QuotaRequestDetails` was modified
+
+* `systemData()` was added
+
+#### `QuotaManager` was modified
+
+* `groupQuotaUsages()` was added
+* `groupQuotaLocationSettings()` was added
 
 ## 1.1.0 (2025-02-21)
 

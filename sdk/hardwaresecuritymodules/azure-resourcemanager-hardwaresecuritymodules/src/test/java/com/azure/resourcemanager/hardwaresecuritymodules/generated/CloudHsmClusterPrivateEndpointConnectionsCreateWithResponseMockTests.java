@@ -25,7 +25,7 @@ public final class CloudHsmClusterPrivateEndpointConnectionsCreateWithResponseMo
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"fz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"x\",\"actionsRequired\":\"czheyd\"},\"provisioningState\":\"Creating\",\"groupIds\":[\"m\",\"xmaehvbbxu\",\"iplt\"]},\"etag\":\"htba\",\"id\":\"gx\",\"name\":\"wrck\",\"type\":\"yklyhpluodpvruud\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"wyawbzasqbuc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"yexaoguy\",\"actionsRequired\":\"p\"},\"provisioningState\":\"Deleting\",\"groupIds\":[\"ultxijjumfq\"]},\"etag\":\"z\",\"id\":\"qnmcjngzqdqx\",\"name\":\"bjwgnyfus\",\"type\":\"zsvtuikzhajqgl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,20 +36,20 @@ public final class CloudHsmClusterPrivateEndpointConnectionsCreateWithResponseMo
 
         PrivateEndpointConnection response
             = manager.cloudHsmClusterPrivateEndpointConnections()
-                .define("ykqgaifmvik")
-                .withExistingCloudHsmCluster("fmznba", "qphchqnrnrpxehuw")
+                .define("tmzlbiojlv")
+                .withExistingCloudHsmCluster("sbostzel", "dlat")
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                        .withDescription("rhnj")
-                        .withActionsRequired("olvtnovqfzge")))
-                .withEtag("m")
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                        .withDescription("prprsnmokay")
+                        .withActionsRequired("jnhlbkpbzpcpiljh")))
+                .withEtag("tf")
                 .create();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("x", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("czheyd", response.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("htba", response.etag());
+        Assertions.assertEquals("yexaoguy", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("p", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("z", response.etag());
     }
 }

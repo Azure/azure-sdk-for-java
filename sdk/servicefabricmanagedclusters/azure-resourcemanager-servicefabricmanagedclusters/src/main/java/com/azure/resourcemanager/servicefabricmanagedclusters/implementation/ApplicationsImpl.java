@@ -11,9 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ApplicationsClient;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ApplicationResourceInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationFetchHealthRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationResource;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.Applications;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartDeployedCodePackageRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeResumeApplicationUpgradeParameters;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RuntimeUpdateApplicationUpgradeParameters;
 
 public final class ApplicationsImpl implements Applications {
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationsImpl.class);
@@ -32,12 +35,8 @@ public final class ApplicationsImpl implements Applications {
         String applicationName, Context context) {
         Response<ApplicationResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, applicationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApplicationResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApplicationResourceImpl(inner.getValue(), this.manager()));
     }
 
     public ApplicationResource get(String resourceGroupName, String clusterName, String applicationName) {
@@ -94,18 +93,55 @@ public final class ApplicationsImpl implements Applications {
         this.serviceClient().startRollback(resourceGroupName, clusterName, applicationName, context);
     }
 
+    public void updateUpgrade(String resourceGroupName, String clusterName, String applicationName,
+        RuntimeUpdateApplicationUpgradeParameters parameters) {
+        this.serviceClient().updateUpgrade(resourceGroupName, clusterName, applicationName, parameters);
+    }
+
+    public void updateUpgrade(String resourceGroupName, String clusterName, String applicationName,
+        RuntimeUpdateApplicationUpgradeParameters parameters, Context context) {
+        this.serviceClient().updateUpgrade(resourceGroupName, clusterName, applicationName, parameters, context);
+    }
+
+    public void fetchHealth(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationFetchHealthRequest parameters) {
+        this.serviceClient().fetchHealth(resourceGroupName, clusterName, applicationName, parameters);
+    }
+
+    public void fetchHealth(String resourceGroupName, String clusterName, String applicationName,
+        ApplicationFetchHealthRequest parameters, Context context) {
+        this.serviceClient().fetchHealth(resourceGroupName, clusterName, applicationName, parameters, context);
+    }
+
+    public void restartDeployedCodePackage(String resourceGroupName, String clusterName, String applicationName,
+        RestartDeployedCodePackageRequest parameters) {
+        this.serviceClient().restartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters);
+    }
+
+    public void restartDeployedCodePackage(String resourceGroupName, String clusterName, String applicationName,
+        RestartDeployedCodePackageRequest parameters, Context context) {
+        this.serviceClient()
+            .restartDeployedCodePackage(resourceGroupName, clusterName, applicationName, parameters, context);
+    }
+
     public ApplicationResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "managedClusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "clusterName");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'managedClusters'.", id)));
         }
-        String applicationName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
+        String applicationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "applicationName");
         if (applicationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -114,17 +150,23 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public Response<ApplicationResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "managedClusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "clusterName");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'managedClusters'.", id)));
         }
-        String applicationName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
+        String applicationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "applicationName");
         if (applicationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -133,17 +175,23 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "managedClusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "clusterName");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'managedClusters'.", id)));
         }
-        String applicationName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
+        String applicationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "applicationName");
         if (applicationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
@@ -152,17 +200,23 @@ public final class ApplicationsImpl implements Applications {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "resourceGroupName");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "managedClusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "clusterName");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'managedClusters'.", id)));
         }
-        String applicationName = ResourceManagerUtils.getValueFromIdByName(id, "applications");
+        String applicationName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}",
+            "applicationName");
         if (applicationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));

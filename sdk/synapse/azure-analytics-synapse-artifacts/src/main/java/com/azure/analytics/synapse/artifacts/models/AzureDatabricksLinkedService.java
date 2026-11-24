@@ -158,6 +158,12 @@ public class AzureDatabricksLinkedService extends LinkedService {
     @Generated
     private CredentialReference credential;
 
+    /*
+     * The data security mode for the Databricks Cluster. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object dataSecurityMode;
+
     /**
      * Creates an instance of AzureDatabricksLinkedService class.
      */
@@ -643,6 +649,30 @@ public class AzureDatabricksLinkedService extends LinkedService {
     }
 
     /**
+     * Get the dataSecurityMode property: The data security mode for the Databricks Cluster. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @return the dataSecurityMode value.
+     */
+    @Generated
+    public Object getDataSecurityMode() {
+        return this.dataSecurityMode;
+    }
+
+    /**
+     * Set the dataSecurityMode property: The data security mode for the Databricks Cluster. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @param dataSecurityMode the dataSecurityMode value to set.
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    @Generated
+    public AzureDatabricksLinkedService setDataSecurityMode(Object dataSecurityMode) {
+        this.dataSecurityMode = dataSecurityMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -723,7 +753,8 @@ public class AzureDatabricksLinkedService extends LinkedService {
             || newClusterEnableElasticDisk != null
             || encryptedCredential != null
             || policyId != null
-            || credential != null) {
+            || credential != null
+            || dataSecurityMode != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("domain", this.domain);
             jsonWriter.writeJsonField("accessToken", this.accessToken);
@@ -773,6 +804,9 @@ public class AzureDatabricksLinkedService extends LinkedService {
                 jsonWriter.writeUntypedField("policyId", this.policyId);
             }
             jsonWriter.writeJsonField("credential", this.credential);
+            if (this.dataSecurityMode != null) {
+                jsonWriter.writeUntypedField("dataSecurityMode", this.dataSecurityMode);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -864,6 +898,8 @@ public class AzureDatabricksLinkedService extends LinkedService {
                             deserializedAzureDatabricksLinkedService.policyId = reader.readUntyped();
                         } else if ("credential".equals(fieldName)) {
                             deserializedAzureDatabricksLinkedService.credential = CredentialReference.fromJson(reader);
+                        } else if ("dataSecurityMode".equals(fieldName)) {
+                            deserializedAzureDatabricksLinkedService.dataSecurityMode = reader.readUntyped();
                         } else {
                             reader.skipChildren();
                         }

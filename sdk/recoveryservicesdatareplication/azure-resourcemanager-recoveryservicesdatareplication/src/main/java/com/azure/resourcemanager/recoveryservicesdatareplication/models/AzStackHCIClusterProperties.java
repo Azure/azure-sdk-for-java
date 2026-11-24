@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -123,38 +122,6 @@ public final class AzStackHCIClusterProperties implements JsonSerializable<AzSta
         this.storageContainers = storageContainers;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (clusterName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property clusterName in model AzStackHCIClusterProperties"));
-        }
-        if (resourceName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property resourceName in model AzStackHCIClusterProperties"));
-        }
-        if (storageAccountName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property storageAccountName in model AzStackHCIClusterProperties"));
-        }
-        if (storageContainers() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property storageContainers in model AzStackHCIClusterProperties"));
-        } else {
-            storageContainers().forEach(e -> e.validate());
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzStackHCIClusterProperties.class);
 
     /**
      * {@inheritDoc}

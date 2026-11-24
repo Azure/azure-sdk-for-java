@@ -14,7 +14,7 @@ import com.azure.resourcemanager.mongocluster.models.UserProperties;
 import java.io.IOException;
 
 /**
- * Represents a Mongo cluster user.
+ * Represents a DocumentDB cluster user.
  */
 @Fluent
 public final class UserInner extends ProxyResource {
@@ -106,17 +106,6 @@ public final class UserInner extends ProxyResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
     }
 
     /**

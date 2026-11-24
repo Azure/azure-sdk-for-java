@@ -92,6 +92,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"long-emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControl_requestOptions(OperationType operationType) {
+        logger.info("Starting test throughputLocalControl_requestOptions with operationType: {}", operationType);
         this.ensureContainer();
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
         ThroughputControlGroupConfig groupConfig =
@@ -962,6 +963,29 @@ public class ThroughputControlTests extends TestSuiteBase {
                 () ->container.enableServerThroughputControlGroup(serverGroupConfig))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("A default group already exists");
+    }
+
+    @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)
+    public void throughputControl_server_enableMultipleTimes() {
+        this.ensureContainer();
+
+        // This test is verify that same throughput control group can be enabled multiple times
+
+        ThroughputControlGroupConfig serverGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-server" + UUID.randomUUID())
+                .throughputBucket(3)
+                .build();
+        container.enableServerThroughputControlGroup(serverGroupConfig);
+
+        CosmosAsyncContainer sameContainer =
+            client.getDatabase(container.getDatabase().getId()).getContainer(container.getId());
+        ThroughputControlGroupConfig sameServerGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName(serverGroupConfig.getGroupName())
+                .throughputBucket(serverGroupConfig.getThroughputBucket())
+                .build();
+        sameContainer.enableServerThroughputControlGroup(sameServerGroupConfig);
     }
 
     @Test(groups = {"long-emulator"}, timeOut = TIMEOUT)

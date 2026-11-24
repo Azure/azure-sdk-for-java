@@ -18,8 +18,9 @@ public class ReturnsAListOfSupportedDocumentFormats {
                 .endpoint("{endpoint}")
                 .buildClient();
         // BEGIN:com.azure.ai.translation.document.generated.get-supported-formats.returns-a-list-of-supported-document-formats
-        RequestOptions requestOptions = new RequestOptions().addQueryParam("type", "document");
-        Response<BinaryData> response = documentTranslationClient.getSupportedFormatsWithResponse(requestOptions);
+        RequestOptions requestOptions = new RequestOptions();
+        Response<BinaryData> response
+            = documentTranslationClient.getSupportedFormatsWithResponse("Document", requestOptions);
         // END:com.azure.ai.translation.document.generated.get-supported-formats.returns-a-list-of-supported-document-formats
     }
 }

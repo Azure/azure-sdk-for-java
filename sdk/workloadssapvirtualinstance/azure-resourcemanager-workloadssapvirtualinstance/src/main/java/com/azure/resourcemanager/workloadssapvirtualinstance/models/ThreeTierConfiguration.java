@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -223,55 +222,6 @@ public final class ThreeTierConfiguration extends InfrastructureConfiguration {
         super.withAppResourceGroup(appResourceGroup);
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (networkConfiguration() != null) {
-            networkConfiguration().validate();
-        }
-        if (centralServer() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property centralServer in model ThreeTierConfiguration"));
-        } else {
-            centralServer().validate();
-        }
-        if (applicationServer() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property applicationServer in model ThreeTierConfiguration"));
-        } else {
-            applicationServer().validate();
-        }
-        if (databaseServer() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property databaseServer in model ThreeTierConfiguration"));
-        } else {
-            databaseServer().validate();
-        }
-        if (highAvailabilityConfig() != null) {
-            highAvailabilityConfig().validate();
-        }
-        if (storageConfiguration() != null) {
-            storageConfiguration().validate();
-        }
-        if (customResourceNames() != null) {
-            customResourceNames().validate();
-        }
-        if (appResourceGroup() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property appResourceGroup in model ThreeTierConfiguration"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ThreeTierConfiguration.class);
 
     /**
      * {@inheritDoc}

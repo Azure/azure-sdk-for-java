@@ -11,7 +11,7 @@ public final class DatabaseTableTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseTable model
-            = BinaryData.fromString("{\"hasRows\":false,\"name\":\"fyaqitm\"}").toObject(DatabaseTable.class);
+            = BinaryData.fromString("{\"hasRows\":false,\"name\":\"mwmdxmebwjscjpa\"}").toObject(DatabaseTable.class);
     }
 
     @org.junit.jupiter.api.Test

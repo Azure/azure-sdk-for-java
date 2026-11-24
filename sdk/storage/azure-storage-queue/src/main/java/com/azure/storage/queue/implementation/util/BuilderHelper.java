@@ -31,6 +31,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -107,16 +108,8 @@ public final class BuilderHelper {
             } else {
                 // URL is using a pattern of http://accountName.queue.core.windows.net/queueName
                 String host = url.getHost();
-
-                String accountName = null;
-                if (!CoreUtils.isNullOrEmpty(host)) {
-                    int accountNameIndex = host.indexOf('.');
-                    if (accountNameIndex == -1) {
-                        accountName = host;
-                    } else {
-                        accountName = host.substring(0, accountNameIndex);
-                    }
-                }
+                String accountName
+                    = StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.QUEUE_URI_SUBDOMAIN);
 
                 parts.setAccountName(accountName);
 
@@ -169,7 +162,7 @@ public final class BuilderHelper {
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, QueueAudience audience,
         ClientLogger logger) {
 
-        CredentialValidator.validateSingleCredentialIsPresent(storageSharedKeyCredential, tokenCredential,
+        CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, sasToken, logger);
 
         // Closest to API goes first, closest to wire goes last.
@@ -192,25 +185,20 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
-        HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {
-            credentialPolicy = new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-        } else if (tokenCredential != null) {
+            policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
+        }
+        if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             String scope = audience != null
                 ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
                 : Constants.STORAGE_SCOPE;
-            credentialPolicy = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
-        } else if (azureSasCredential != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
-        } else if (sasToken != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
-        } else {
-            credentialPolicy = null;
+            policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
         }
-
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
+        if (azureSasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
+        } else if (sasToken != null) {
+            policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
         }
 
         policies.addAll(perRetryPolicies);
@@ -339,5 +327,15 @@ public final class BuilderHelper {
             this.sasToken = sasToken;
             return this;
         }
+    }
+
+    /**
+     * Logs information about credential changes in builders.
+     *
+     * @param logger The logger to use.
+     * @param newCredentialType The credential type being set.
+     */
+    public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
+        logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
     }
 }

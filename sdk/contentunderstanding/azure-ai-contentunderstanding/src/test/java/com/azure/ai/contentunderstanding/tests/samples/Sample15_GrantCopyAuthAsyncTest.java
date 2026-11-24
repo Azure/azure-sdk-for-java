@@ -1,0 +1,246 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.tests.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerConfig;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentFieldDefinition;
+import com.azure.ai.contentunderstanding.models.CopyAuthorization;
+import com.azure.ai.contentunderstanding.models.ContentFieldSchema;
+import com.azure.ai.contentunderstanding.models.ContentFieldType;
+import com.azure.ai.contentunderstanding.models.GenerationMethod;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * Async sample demonstrates how to grant copy authorization and copy an analyzer from a source
+ * Microsoft Foundry resource to a target Microsoft Foundry resource (cross-resource copying).
+ *
+ * <p>For same-resource copying, see Sample14_CopyAnalyzerAsync.</p>
+ *
+ * <p>Required environment variables for cross-resource copying:</p>
+ * <ul>
+ *   <li>CONTENTUNDERSTANDING_SOURCE_RESOURCE_ID: Azure resource ID of the source resource</li>
+ *   <li>CONTENTUNDERSTANDING_SOURCE_REGION: Region of the source resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_ENDPOINT: Endpoint of the target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_KEY (optional): API key for target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_RESOURCE_ID: Azure resource ID of the target resource</li>
+ *   <li>CONTENTUNDERSTANDING_TARGET_REGION: Region of the target resource</li>
+ * </ul>
+ *
+ * <p>Note: If API key is not provided, DefaultAzureCredential will be used.
+ * Cross-resource copying with DefaultAzureCredential requires 'Cognitive Services User' role
+ * on both source and target resources.</p>
+ */
+public class Sample15_GrantCopyAuthAsyncTest extends ContentUnderstandingClientTestBase {
+    @Override
+    protected void beforeTest() {
+        if (getTestMode() != TestMode.PLAYBACK) {
+            CrossResourceCopyTestConfiguration.assumeLiveEnvironmentIsConfigured(System::getenv);
+        }
+        super.beforeTest();
+    }
+
+    /**
+     * Demonstrates cross-resource copying with actual resource information.
+     *
+         * Missing source or target resource settings skip this test.
+     */
+    @Test
+    public void testCrossResourceCopyAsync() {
+        CrossResourceCopyTestConfiguration configuration
+            = CrossResourceCopyTestConfiguration.load(getTestMode(), System::getenv);
+        String sourceResourceId = configuration.getSourceResourceId();
+        String sourceRegion = configuration.getSourceRegion();
+        String targetResourceId = configuration.getTargetResourceId();
+        String targetRegion = configuration.getTargetRegion();
+
+        // Build target client with appropriate authentication
+        ContentUnderstandingClientBuilder targetBuilder
+            = new ContentUnderstandingClientBuilder().endpoint(configuration.getTargetEndpoint())
+                .serviceVersion(getServiceVersion())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)));
+        ContentUnderstandingAsyncClient targetAsyncClient;
+        if (getTestMode() == TestMode.PLAYBACK) {
+            targetAsyncClient = targetBuilder.credential(new MockTokenCredential()).buildAsyncClient();
+        } else {
+            if (getTestMode() == TestMode.RECORD) {
+                targetBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            }
+            String targetKey = configuration.getTargetKey();
+            if (targetKey != null && !targetKey.trim().isEmpty()) {
+                targetAsyncClient = targetBuilder.credential(new AzureKeyCredential(targetKey)).buildAsyncClient();
+            } else {
+                targetAsyncClient
+                    = targetBuilder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+            }
+        }
+
+        String sourceAnalyzerId = testResourceNamer.randomName("test_cross_resource_source_", 50);
+        String targetAnalyzerId = testResourceNamer.randomName("test_cross_resource_target_", 50);
+
+        try {
+            // Step 1: Create source analyzer
+            ContentAnalyzerConfig config = new ContentAnalyzerConfig();
+            config.setFormulaEnabled(false);
+            config.setLayoutEnabled(true);
+            config.setOcrEnabled(true);
+            config.setEstimateFieldSourceAndConfidence(true);
+            config.setReturnDetails(true);
+
+            Map<String, ContentFieldDefinition> fields = new HashMap<>();
+            ContentFieldDefinition companyNameField = new ContentFieldDefinition();
+            companyNameField.setType(ContentFieldType.STRING);
+            companyNameField.setMethod(GenerationMethod.EXTRACT);
+            companyNameField.setDescription("Name of the company");
+            fields.put("company_name", companyNameField);
+
+            ContentFieldDefinition totalAmountField = new ContentFieldDefinition();
+            totalAmountField.setType(ContentFieldType.NUMBER);
+            totalAmountField.setMethod(GenerationMethod.EXTRACT);
+            totalAmountField.setDescription("Total amount on the document");
+            fields.put("total_amount", totalAmountField);
+
+            ContentFieldSchema fieldSchema = new ContentFieldSchema();
+            fieldSchema.setName("company_schema");
+            fieldSchema.setDescription("Schema for extracting company information");
+            fieldSchema.setFields(fields);
+
+            ContentAnalyzer sourceAnalyzer = new ContentAnalyzer();
+            sourceAnalyzer.setBaseAnalyzerId("prebuilt-document");
+            sourceAnalyzer.setDescription("Source analyzer for cross-resource copying");
+            sourceAnalyzer.setConfig(config);
+            sourceAnalyzer.setFieldSchema(fieldSchema);
+
+            Map<String, String> models = new HashMap<>();
+            models.put("completion", getModelProfile().getCompletionModel());
+            sourceAnalyzer.setModels(models);
+
+            PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
+                = contentUnderstandingAsyncClient.beginCreateAnalyzer(sourceAnalyzerId, sourceAnalyzer);
+            setPlaybackPollerFluxPollInterval(createPoller);
+
+            ContentAnalyzer sourceResult = createPoller.last()
+                .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                    pollResponse.getFinalResult(), "Source analyzer creation"))
+                .block();
+            assertNotNull(sourceResult, "Source analyzer creation should return a result");
+
+            System.out.println("Source analyzer '" + sourceAnalyzerId + "' created successfully!");
+
+            // Step 2: Grant copy authorization using convenience method
+            CopyAuthorization copyAuth = contentUnderstandingAsyncClient
+                .grantCopyAuthorization(sourceAnalyzerId, targetResourceId, targetRegion)
+                .block();
+
+            assertNotNull(copyAuth, "Copy authorization should not be null");
+            assertEquals(targetResourceId, copyAuth.getTargetAzureResourceId(),
+                "Copy authorization should target the configured resource");
+            assertNotNull(copyAuth.getExpiresAt(), "Copy authorization should have an expiration time");
+            if (getTestMode() != TestMode.PLAYBACK) {
+                assertTrue(copyAuth.getExpiresAt().isAfter(OffsetDateTime.now()),
+                    "Copy authorization should not already be expired");
+            }
+            System.out.println("Copy authorization granted!");
+            System.out.println("  Target Azure Resource ID: " + copyAuth.getTargetAzureResourceId());
+            System.out.println("  Expires at: " + copyAuth.getExpiresAt());
+
+            // Step 3: Copy analyzer to target resource using convenience method
+            PollerFlux<ContentAnalyzerOperationStatus, ContentAnalyzer> copyPoller = targetAsyncClient
+                .beginCopyAnalyzer(targetAnalyzerId, sourceAnalyzerId, false, sourceResourceId, sourceRegion);
+            setPlaybackPollerFluxPollInterval(copyPoller);
+
+            ContentAnalyzer targetResult = copyPoller.last()
+                .flatMap(pollResponse -> requireSuccessfulResult(pollResponse.getStatus(),
+                    pollResponse.getFinalResult(), "Cross-resource analyzer copy"))
+                .block();
+            assertNotNull(targetResult, "Cross-resource analyzer copy should return a result");
+
+            System.out.println("Target analyzer '" + targetAnalyzerId + "' copied successfully!");
+            System.out.println("  Description: " + targetResult.getDescription());
+
+            // Verify copied analyzer
+            ContentAnalyzer copiedAnalyzer = targetAsyncClient.getAnalyzer(targetAnalyzerId).block();
+            assertNotNull(copiedAnalyzer, "Copied analyzer should not be null");
+            assertEquals(sourceResult.getBaseAnalyzerId(), copiedAnalyzer.getBaseAnalyzerId());
+            assertEquals(sourceResult.getDescription(), copiedAnalyzer.getDescription());
+            assertNotNull(sourceResult.getFieldSchema(), "Source field schema should not be null");
+            assertNotNull(copiedAnalyzer.getFieldSchema(), "Copied field schema should not be null");
+            assertEquals(sourceResult.getFieldSchema().getName(), copiedAnalyzer.getFieldSchema().getName(),
+                "Field schema name should be preserved");
+            assertEquals(sourceResult.getFieldSchema().getDescription(),
+                copiedAnalyzer.getFieldSchema().getDescription(), "Field schema description should be preserved");
+            assertEquals(sourceResult.getFieldSchema().getFields().size(),
+                copiedAnalyzer.getFieldSchema().getFields().size(), "Field count should be preserved");
+            assertTrue(copiedAnalyzer.getFieldSchema().getFields().containsKey("company_name"),
+                "company_name should be preserved");
+            assertTrue(copiedAnalyzer.getFieldSchema().getFields().containsKey("total_amount"),
+                "total_amount should be preserved");
+            assertNotNull(sourceResult.getConfig(), "Source config should not be null");
+            assertNotNull(copiedAnalyzer.getConfig(), "Copied config should not be null");
+            assertEquals(sourceResult.getConfig().isFormulaEnabled(), copiedAnalyzer.getConfig().isFormulaEnabled(),
+                "EnableFormula should be preserved");
+            assertEquals(sourceResult.getConfig().isLayoutEnabled(), copiedAnalyzer.getConfig().isLayoutEnabled(),
+                "EnableLayout should be preserved");
+            assertEquals(sourceResult.getConfig().isOcrEnabled(), copiedAnalyzer.getConfig().isOcrEnabled(),
+                "EnableOcr should be preserved");
+            assertEquals(sourceResult.getConfig().isEstimateFieldSourceAndConfidence(),
+                copiedAnalyzer.getConfig().isEstimateFieldSourceAndConfidence(),
+                "EstimateFieldSourceAndConfidence should be preserved");
+            assertEquals(sourceResult.getConfig().isReturnDetails(), copiedAnalyzer.getConfig().isReturnDetails(),
+                "ReturnDetails should be preserved");
+            assertNotNull(sourceResult.getModels(), "Source models should not be null");
+            assertNotNull(copiedAnalyzer.getModels(), "Copied models should not be null");
+            for (Map.Entry<String, String> sourceModel : sourceResult.getModels().entrySet()) {
+                assertEquals(sourceModel.getValue(), copiedAnalyzer.getModels().get(sourceModel.getKey()),
+                    sourceModel.getKey() + " model should be preserved");
+            }
+            System.out.println("Cross-resource copy verification completed");
+
+        } finally {
+            // Cleanup: delete both analyzers
+            try {
+                contentUnderstandingAsyncClient.deleteAnalyzer(sourceAnalyzerId).block();
+                System.out.println("Source analyzer '" + sourceAnalyzerId + "' deleted.");
+            } catch (RuntimeException e) {
+                System.out.println("Note: Failed to delete source analyzer (may not exist): " + e.getMessage());
+            }
+
+            try {
+                targetAsyncClient.deleteAnalyzer(targetAnalyzerId).block();
+                System.out.println("Target analyzer '" + targetAnalyzerId + "' deleted.");
+            } catch (RuntimeException e) {
+                System.out.println("Note: Failed to delete target analyzer (may not exist): " + e.getMessage());
+            }
+        }
+    }
+
+    private static <T> Mono<T> requireSuccessfulResult(LongRunningOperationStatus status, Mono<T> finalResult,
+        String operationName) {
+        if (status != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            return Mono
+                .error(new IllegalStateException(operationName + " completed unsuccessfully with status: " + status));
+        }
+        return finalResult
+            .switchIfEmpty(Mono.error(new IllegalStateException(operationName + " completed without a final result.")));
+    }
+
+}

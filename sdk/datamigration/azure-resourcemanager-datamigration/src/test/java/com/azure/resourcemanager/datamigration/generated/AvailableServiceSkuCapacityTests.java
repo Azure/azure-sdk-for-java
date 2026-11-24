@@ -13,24 +13,25 @@ public final class AvailableServiceSkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableServiceSkuCapacity model = BinaryData
-            .fromString("{\"minimum\":1479821561,\"maximum\":911796600,\"default\":1206519159,\"scaleType\":\"none\"}")
+            .fromString(
+                "{\"minimum\":291919724,\"maximum\":754615325,\"default\":881453963,\"scaleType\":\"automatic\"}")
             .toObject(AvailableServiceSkuCapacity.class);
-        Assertions.assertEquals(1479821561, model.minimum());
-        Assertions.assertEquals(911796600, model.maximum());
-        Assertions.assertEquals(1206519159, model.defaultProperty());
-        Assertions.assertEquals(ServiceScalability.NONE, model.scaleType());
+        Assertions.assertEquals(291919724, model.minimum());
+        Assertions.assertEquals(754615325, model.maximum());
+        Assertions.assertEquals(881453963, model.defaultProperty());
+        Assertions.assertEquals(ServiceScalability.AUTOMATIC, model.scaleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableServiceSkuCapacity model = new AvailableServiceSkuCapacity().withMinimum(1479821561)
-            .withMaximum(911796600)
-            .withDefaultProperty(1206519159)
-            .withScaleType(ServiceScalability.NONE);
+        AvailableServiceSkuCapacity model = new AvailableServiceSkuCapacity().withMinimum(291919724)
+            .withMaximum(754615325)
+            .withDefaultProperty(881453963)
+            .withScaleType(ServiceScalability.AUTOMATIC);
         model = BinaryData.fromObject(model).toObject(AvailableServiceSkuCapacity.class);
-        Assertions.assertEquals(1479821561, model.minimum());
-        Assertions.assertEquals(911796600, model.maximum());
-        Assertions.assertEquals(1206519159, model.defaultProperty());
-        Assertions.assertEquals(ServiceScalability.NONE, model.scaleType());
+        Assertions.assertEquals(291919724, model.minimum());
+        Assertions.assertEquals(754615325, model.maximum());
+        Assertions.assertEquals(881453963, model.defaultProperty());
+        Assertions.assertEquals(ServiceScalability.AUTOMATIC, model.scaleType());
     }
 }

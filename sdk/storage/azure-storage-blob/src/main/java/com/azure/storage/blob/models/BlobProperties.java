@@ -23,13 +23,7 @@ public final class BlobProperties {
     private final BlobPropertiesInternal internalProperties;
 
     static {
-        BlobPropertiesConstructorProxy
-            .setAccessor(new BlobPropertiesConstructorProxy.BlobPropertiesConstructorAccessor() {
-                @Override
-                public BlobProperties create(BlobPropertiesInternal internalProperties) {
-                    return new BlobProperties(internalProperties);
-                }
-            });
+        BlobPropertiesConstructorProxy.setAccessor(BlobProperties::new);
     }
 
     private BlobProperties(BlobPropertiesInternal internalProperties) {
@@ -446,10 +440,10 @@ public final class BlobProperties {
             contentMd5, contentEncoding, contentDisposition, contentLanguage, cacheControl, blobSequenceNumber,
             blobType, leaseStatus, leaseState, leaseDuration, copyId, copyStatus, copySource, copyProgress,
             copyCompletionTime, copyStatusDescription, isServerEncrypted, isIncrementalCopy, copyDestinationSnapshot,
-            accessTier, isAccessTierInferred, archiveStatus, encryptionKeySha256, encryptionScope, accessTierChangeTime,
-            metadata, committedBlockCount, tagCount, versionId, isCurrentVersion, objectReplicationSourcePolicies,
-            objectReplicationDestinationPolicyId, rehydratePriority, isSealed, lastAccessedTime, expiresOn,
-            immutabilityPolicy, hasLegalHold, requestId));
+            accessTier, null, isAccessTierInferred, archiveStatus, encryptionKeySha256, encryptionScope,
+            accessTierChangeTime, metadata, committedBlockCount, tagCount, versionId, isCurrentVersion,
+            objectReplicationSourcePolicies, objectReplicationDestinationPolicyId, rehydratePriority, isSealed,
+            lastAccessedTime, expiresOn, immutabilityPolicy, hasLegalHold, requestId));
     }
 
     /**
@@ -695,6 +689,21 @@ public final class BlobProperties {
      */
     public Boolean isAccessTierInferred() {
         return internalProperties.isAccessTierInferred();
+    }
+
+    /**
+     * Gets the underlying access tier of the blob when its access tier is {@link AccessTier#SMART}.
+     * <p>
+     * This value is only populated when {@link #getAccessTier()} returns {@link AccessTier#SMART}. In that case, it
+     * represents the concrete access tier (for example {@link AccessTier#HOT} or {@link AccessTier#COOL}) that the
+     * service has selected for the blob. For all other access tiers, this property is {@code null} and should be
+     * ignored.
+     *
+     * @return the underlying access tier chosen by the service when the blob's access tier is
+     * {@link AccessTier#SMART}, or {@code null} if the blob is not using the smart access tier.
+     */
+    public AccessTier getSmartAccessTier() {
+        return internalProperties.getSmartAccessTier();
     }
 
     /**

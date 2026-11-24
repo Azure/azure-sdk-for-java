@@ -27,6 +27,7 @@ import org.springframework.lang.Nullable;
 @EnableConfigurationProperties(CosmosProperties.class)
 @EnableReactiveCosmosRepositories
 @PropertySource("classpath:application.properties")
+@SuppressWarnings("deprecation")
 public class UserRepositoryConfiguration extends AbstractCosmosConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryConfiguration.class);
 

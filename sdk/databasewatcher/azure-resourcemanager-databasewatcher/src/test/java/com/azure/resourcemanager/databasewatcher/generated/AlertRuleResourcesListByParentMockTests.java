@@ -23,7 +23,7 @@ public final class AlertRuleResourcesListByParentMockTests {
     @Test
     public void testListByParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"alertRuleResourceId\":\"bsrfbj\",\"createdWithProperties\":\"CreatedWithActionGroup\",\"creationTime\":\"2021-07-26T21:20:39Z\",\"provisioningState\":\"Canceled\",\"alertRuleTemplateId\":\"sotftpvj\",\"alertRuleTemplateVersion\":\"bexilzznfqqnv\"},\"id\":\"mqtaruoujmkcjh\",\"name\":\"qytjrybnwjewgd\",\"type\":\"jervnaenqpehi\"}]}";
+            = "{\"value\":[{\"properties\":{\"alertRuleResourceId\":\"upjm\",\"createdWithProperties\":\"None\",\"creationTime\":\"2021-08-12T08:43:21Z\",\"provisioningState\":\"Failed\",\"alertRuleTemplateId\":\"bbcswsrtjri\",\"alertRuleTemplateVersion\":\"lrbpbewtghfgbl\"},\"id\":\"wxzvlvqhjkb\",\"name\":\"gibtnm\",\"type\":\"iebwwaloayqcgwrt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class AlertRuleResourcesListByParentMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<AlertRuleResource> response = manager.alertRuleResources()
-            .listByParent("vasrruvwb", "sqfsubcgjbirxb", com.azure.core.util.Context.NONE);
+        PagedIterable<AlertRuleResource> response
+            = manager.alertRuleResources().listByParent("xujznbmpowu", "przqlveu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bsrfbj", response.iterator().next().properties().alertRuleResourceId());
-        Assertions.assertEquals(AlertRuleCreationProperties.CREATED_WITH_ACTION_GROUP,
+        Assertions.assertEquals("upjm", response.iterator().next().properties().alertRuleResourceId());
+        Assertions.assertEquals(AlertRuleCreationProperties.NONE,
             response.iterator().next().properties().createdWithProperties());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T21:20:39Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-12T08:43:21Z"),
             response.iterator().next().properties().creationTime());
-        Assertions.assertEquals("sotftpvj", response.iterator().next().properties().alertRuleTemplateId());
-        Assertions.assertEquals("bexilzznfqqnv", response.iterator().next().properties().alertRuleTemplateVersion());
+        Assertions.assertEquals("bbcswsrtjri", response.iterator().next().properties().alertRuleTemplateId());
+        Assertions.assertEquals("lrbpbewtghfgbl", response.iterator().next().properties().alertRuleTemplateVersion());
     }
 }

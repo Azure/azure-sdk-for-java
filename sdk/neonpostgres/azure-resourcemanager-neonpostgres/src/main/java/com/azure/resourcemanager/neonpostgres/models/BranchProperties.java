@@ -77,6 +77,41 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
      */
     private List<EndpointProperties> endpoints;
 
+    /*
+     * Unique identifier for the branch
+     */
+    private String branchId;
+
+    /*
+     * Name of the branch
+     */
+    private String branch;
+
+    /*
+     * Total data size in MB for the branch
+     */
+    private String dataSize;
+
+    /*
+     * Last active compute for the branch
+     */
+    private String lastActive;
+
+    /*
+     * Compute hours for the branch
+     */
+    private String computeHours;
+
+    /*
+     * Branch protected status
+     */
+    private Boolean protectedProperty;
+
+    /*
+     * Branch default status
+     */
+    private Boolean isDefault;
+
     /**
      * Creates an instance of BranchProperties class.
      */
@@ -291,23 +326,88 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
     }
 
     /**
-     * Validates the instance.
+     * Get the branchId property: Unique identifier for the branch.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the branchId value.
      */
-    public void validate() {
-        if (attributes() != null) {
-            attributes().forEach(e -> e.validate());
-        }
-        if (roles() != null) {
-            roles().forEach(e -> e.validate());
-        }
-        if (databases() != null) {
-            databases().forEach(e -> e.validate());
-        }
-        if (endpoints() != null) {
-            endpoints().forEach(e -> e.validate());
-        }
+    public String branchId() {
+        return this.branchId;
+    }
+
+    /**
+     * Set the branchId property: Unique identifier for the branch.
+     * 
+     * @param branchId the branchId value to set.
+     * @return the BranchProperties object itself.
+     */
+    public BranchProperties withBranchId(String branchId) {
+        this.branchId = branchId;
+        return this;
+    }
+
+    /**
+     * Get the branch property: Name of the branch.
+     * 
+     * @return the branch value.
+     */
+    public String branch() {
+        return this.branch;
+    }
+
+    /**
+     * Set the branch property: Name of the branch.
+     * 
+     * @param branch the branch value to set.
+     * @return the BranchProperties object itself.
+     */
+    public BranchProperties withBranch(String branch) {
+        this.branch = branch;
+        return this;
+    }
+
+    /**
+     * Get the dataSize property: Total data size in MB for the branch.
+     * 
+     * @return the dataSize value.
+     */
+    public String dataSize() {
+        return this.dataSize;
+    }
+
+    /**
+     * Get the lastActive property: Last active compute for the branch.
+     * 
+     * @return the lastActive value.
+     */
+    public String lastActive() {
+        return this.lastActive;
+    }
+
+    /**
+     * Get the computeHours property: Compute hours for the branch.
+     * 
+     * @return the computeHours value.
+     */
+    public String computeHours() {
+        return this.computeHours;
+    }
+
+    /**
+     * Get the protectedProperty property: Branch protected status.
+     * 
+     * @return the protectedProperty value.
+     */
+    public Boolean protectedProperty() {
+        return this.protectedProperty;
+    }
+
+    /**
+     * Get the isDefault property: Branch default status.
+     * 
+     * @return the isDefault value.
+     */
+    public Boolean isDefault() {
+        return this.isDefault;
     }
 
     /**
@@ -325,6 +425,8 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
         jsonWriter.writeArrayField("roles", this.roles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("databases", this.databases, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("branchId", this.branchId);
+        jsonWriter.writeStringField("branch", this.branch);
         return jsonWriter.writeEndObject();
     }
 
@@ -374,6 +476,20 @@ public final class BranchProperties implements JsonSerializable<BranchProperties
                     List<EndpointProperties> endpoints
                         = reader.readArray(reader1 -> EndpointProperties.fromJson(reader1));
                     deserializedBranchProperties.endpoints = endpoints;
+                } else if ("branchId".equals(fieldName)) {
+                    deserializedBranchProperties.branchId = reader.getString();
+                } else if ("branch".equals(fieldName)) {
+                    deserializedBranchProperties.branch = reader.getString();
+                } else if ("dataSize".equals(fieldName)) {
+                    deserializedBranchProperties.dataSize = reader.getString();
+                } else if ("lastActive".equals(fieldName)) {
+                    deserializedBranchProperties.lastActive = reader.getString();
+                } else if ("computeHours".equals(fieldName)) {
+                    deserializedBranchProperties.computeHours = reader.getString();
+                } else if ("protected".equals(fieldName)) {
+                    deserializedBranchProperties.protectedProperty = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedBranchProperties.isDefault = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

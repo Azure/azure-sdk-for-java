@@ -33,7 +33,7 @@ import org.springframework.util.Assert;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventProcessorClientBuilder.class)
-@ConditionalOnBean({ MessageListener.class, CheckpointStore.class, EventHubsErrorHandler.class })
+@ConditionalOnBean({ MessageListener.class, CheckpointStore.class, EventHubsErrorHandler.class, AzureEventHubsProperties.class })
 @Conditional(AzureEventHubsProcessorClientConfiguration.ProcessorAvailableCondition.class)
 class AzureEventHubsProcessorClientConfiguration {
 
@@ -118,13 +118,6 @@ class AzureEventHubsProcessorClientConfiguration {
         static class ConsumerGroup {
             ConsumerGroup() {
             }
-        }
-
-        @ConditionalOnAnyProperty(
-            prefix = "spring.cloud.azure.eventhubs",
-            name = { "namespace", "connection-string", "processor.namespace", "processor.connection-string" })
-        static class ConnectionInfo {
-
         }
     }
 }

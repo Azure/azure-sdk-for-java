@@ -11,7 +11,7 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel model = BinaryData.fromString(
-            "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"opwndyqleallk\",\"startedOn\":\"2021-10-09T13:48:10Z\",\"endedOn\":\"2021-01-27T09:55:50Z\",\"migrationState\":\"STARTING\",\"incomingChanges\":8591529760112835276,\"appliedChanges\":3619915272367973119,\"cdcInsertCounter\":6416569328763529019,\"cdcDeleteCounter\":9054823478144085075,\"cdcUpdateCounter\":8923279298199070517,\"fullLoadCompletedTables\":4430470950083658594,\"fullLoadLoadingTables\":4218059828246905287,\"fullLoadQueuedTables\":6325029145185020149,\"fullLoadErroredTables\":3548346880056528509,\"initializationCompleted\":false,\"latency\":1655044742724101731,\"id\":\"lpjrtwsz\"}")
+            "{\"resultType\":\"DatabaseLevelOutput\",\"databaseName\":\"whhmemhooc\",\"startedOn\":\"2021-05-19T03:48:26Z\",\"endedOn\":\"2021-08-23T19:22:29Z\",\"migrationState\":\"VALIDATION_COMPLETE\",\"incomingChanges\":6782325678224210492,\"appliedChanges\":1458732087320397006,\"cdcInsertCounter\":3715800342725839908,\"cdcDeleteCounter\":5378769700957452972,\"cdcUpdateCounter\":5730609138969710138,\"fullLoadCompletedTables\":6923391966547934986,\"fullLoadLoadingTables\":1364047532458007846,\"fullLoadQueuedTables\":8785140247919393289,\"fullLoadErroredTables\":1426304240552784756,\"initializationCompleted\":true,\"latency\":2482367211897566519,\"id\":\"nigrfihotjewl\"}")
             .toObject(MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.class);
     }
 

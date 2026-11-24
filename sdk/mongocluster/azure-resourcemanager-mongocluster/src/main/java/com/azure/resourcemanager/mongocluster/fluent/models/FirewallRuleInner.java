@@ -14,7 +14,7 @@ import com.azure.resourcemanager.mongocluster.models.FirewallRuleProperties;
 import java.io.IOException;
 
 /**
- * Represents a mongo cluster firewall rule.
+ * Represents a DocumentDB cluster firewall rule.
  */
 @Fluent
 public final class FirewallRuleInner extends ProxyResource {
@@ -106,17 +106,6 @@ public final class FirewallRuleInner extends ProxyResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
     }
 
     /**

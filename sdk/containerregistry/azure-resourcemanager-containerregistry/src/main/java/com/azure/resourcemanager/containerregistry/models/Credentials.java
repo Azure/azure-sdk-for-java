@@ -1,0 +1,142 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.resourcemanager.containerregistry.models;
+
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
+
+/**
+ * The parameters that describes a set of credentials that will be used when a run is invoked.
+ */
+@Fluent
+public final class Credentials implements JsonSerializable<Credentials> {
+    /*
+     * Describes the credential parameters for accessing the source registry.
+     */
+    private SourceRegistryCredentials sourceRegistry;
+
+    /*
+     * Describes the credential parameters for accessing other custom registries. The key
+     * for the dictionary item will be the registry login server (myregistry.azurecr.io) and
+     * the value of the item will be the registry credentials for accessing the registry.
+     */
+    private Map<String, CustomRegistryCredentials> customRegistries;
+
+    /**
+     * Creates an instance of Credentials class.
+     */
+    public Credentials() {
+    }
+
+    /**
+     * Get the sourceRegistry property: Describes the credential parameters for accessing the source registry.
+     * 
+     * @return the sourceRegistry value.
+     */
+    public SourceRegistryCredentials sourceRegistry() {
+        return this.sourceRegistry;
+    }
+
+    /**
+     * Set the sourceRegistry property: Describes the credential parameters for accessing the source registry.
+     * 
+     * @param sourceRegistry the sourceRegistry value to set.
+     * @return the Credentials object itself.
+     */
+    public Credentials withSourceRegistry(SourceRegistryCredentials sourceRegistry) {
+        this.sourceRegistry = sourceRegistry;
+        return this;
+    }
+
+    /**
+     * Get the customRegistries property: Describes the credential parameters for accessing other custom registries. The
+     * key
+     * for the dictionary item will be the registry login server (myregistry.azurecr.io) and
+     * the value of the item will be the registry credentials for accessing the registry.
+     * 
+     * @return the customRegistries value.
+     */
+    public Map<String, CustomRegistryCredentials> customRegistries() {
+        return this.customRegistries;
+    }
+
+    /**
+     * Set the customRegistries property: Describes the credential parameters for accessing other custom registries. The
+     * key
+     * for the dictionary item will be the registry login server (myregistry.azurecr.io) and
+     * the value of the item will be the registry credentials for accessing the registry.
+     * 
+     * @param customRegistries the customRegistries value to set.
+     * @return the Credentials object itself.
+     */
+    public Credentials withCustomRegistries(Map<String, CustomRegistryCredentials> customRegistries) {
+        this.customRegistries = customRegistries;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sourceRegistry() != null) {
+            sourceRegistry().validate();
+        }
+        if (customRegistries() != null) {
+            customRegistries().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceRegistry", this.sourceRegistry);
+        jsonWriter.writeMapField("customRegistries", this.customRegistries,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Credentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Credentials if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Credentials.
+     */
+    public static Credentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Credentials deserializedCredentials = new Credentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRegistry".equals(fieldName)) {
+                    deserializedCredentials.sourceRegistry = SourceRegistryCredentials.fromJson(reader);
+                } else if ("customRegistries".equals(fieldName)) {
+                    Map<String, CustomRegistryCredentials> customRegistries
+                        = reader.readMap(reader1 -> CustomRegistryCredentials.fromJson(reader1));
+                    deserializedCredentials.customRegistries = customRegistries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentials;
+        });
+    }
+}

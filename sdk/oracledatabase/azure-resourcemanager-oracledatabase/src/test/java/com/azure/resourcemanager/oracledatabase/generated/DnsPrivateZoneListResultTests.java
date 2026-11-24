@@ -15,19 +15,19 @@ public final class DnsPrivateZoneListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"dn\",\"isProtected\":true,\"lifecycleState\":\"Updating\",\"self\":\"vgbmhr\",\"serial\":731430664,\"version\":\"kw\",\"viewId\":\"ijejvegrhbpn\",\"zoneType\":\"Primary\",\"timeCreated\":\"2020-12-21T03:38:52Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"cbdreaxhcexd\",\"name\":\"rvqahqkghtpwi\",\"type\":\"nhyjsv\"}],\"nextLink\":\"cxzbfvoowvr\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"qioknssxmojm\",\"isProtected\":false,\"lifecycleState\":\"Updating\",\"self\":\"kjprvk\",\"serial\":955806064,\"version\":\"fz\",\"viewId\":\"jyxgtczh\",\"zoneType\":\"Primary\",\"timeCreated\":\"2020-12-22T20:00:46Z\",\"provisioningState\":\"Failed\"},\"id\":\"shmkxmaehvbbxur\",\"name\":\"pltfnhtba\",\"type\":\"kgxywr\"}],\"nextLink\":\"pyklyhpluodpvru\"}")
             .toObject(DnsPrivateZoneListResult.class);
-        Assertions.assertEquals("dn", model.value().get(0).properties().ocid());
-        Assertions.assertTrue(model.value().get(0).properties().isProtected());
+        Assertions.assertEquals("qioknssxmojm", model.value().get(0).properties().ocid());
+        Assertions.assertFalse(model.value().get(0).properties().isProtected());
         Assertions.assertEquals(DnsPrivateZonesLifecycleState.UPDATING,
             model.value().get(0).properties().lifecycleState());
-        Assertions.assertEquals("vgbmhr", model.value().get(0).properties().self());
-        Assertions.assertEquals(731430664, model.value().get(0).properties().serial());
-        Assertions.assertEquals("kw", model.value().get(0).properties().version());
-        Assertions.assertEquals("ijejvegrhbpn", model.value().get(0).properties().viewId());
+        Assertions.assertEquals("kjprvk", model.value().get(0).properties().self());
+        Assertions.assertEquals(955806064, model.value().get(0).properties().serial());
+        Assertions.assertEquals("fz", model.value().get(0).properties().version());
+        Assertions.assertEquals("jyxgtczh", model.value().get(0).properties().viewId());
         Assertions.assertEquals(ZoneType.PRIMARY, model.value().get(0).properties().zoneType());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T03:38:52Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T20:00:46Z"),
             model.value().get(0).properties().timeCreated());
-        Assertions.assertEquals("cxzbfvoowvr", model.nextLink());
+        Assertions.assertEquals("pyklyhpluodpvru", model.nextLink());
     }
 }

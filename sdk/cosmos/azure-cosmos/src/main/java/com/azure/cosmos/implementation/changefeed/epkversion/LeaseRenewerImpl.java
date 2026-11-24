@@ -65,9 +65,9 @@ class LeaseRenewerImpl implements LeaseRenewer {
             .then()
             .doOnError(throwable -> {
                 if (throwable instanceof LeaseLostException) {
-                    logger.info("Lease with token {}: renew lease loop failed.", this.lease.getLeaseToken(), throwable);
+                    logger.info("Lease with token " + this.lease.getLeaseToken() + ": renew lease loop failed.", throwable);
                 } else {
-                    logger.error("Lease with token {}: renew lease loop failed.", this.lease.getLeaseToken(), throwable);
+                    logger.error("Lease with token " + this.lease.getLeaseToken() + ": renew lease loop failed.", throwable);
                 }
             });
     }
@@ -75,6 +75,11 @@ class LeaseRenewerImpl implements LeaseRenewer {
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
+    }
+
+    @Override
+    public Duration getLeaseRenewInterval() {
+        return this.leaseRenewInterval;
     }
 
     private Mono<Lease> renew(CancellationToken cancellationToken) {
@@ -94,11 +99,11 @@ class LeaseRenewerImpl implements LeaseRenewer {
                 if (throwable instanceof LeaseLostException) {
                     LeaseLostException lle = (LeaseLostException) throwable;
                     this.resultException = lle;
-                    logger.error("Lease with token {} with lease token{}: lost lease on renew.", this.lease.getLeaseToken(), lle);
+                    logger.error("Lease with token " + this.lease.getLeaseToken() + ": lost lease on renew.", lle);
                     return Mono.error(lle);
                 }
 
-                logger.error("Lease with token {}: failed to renew lease.", this.lease.getLeaseToken(), throwable);
+                logger.error("Lease with token " + this.lease.getLeaseToken() + ": failed to renew lease.", throwable);
                 return Mono.empty();
             });
     }

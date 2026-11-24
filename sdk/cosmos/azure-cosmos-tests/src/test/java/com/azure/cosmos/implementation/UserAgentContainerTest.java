@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -107,7 +108,7 @@ public class UserAgentContainerTest {
             RxDocumentClientImpl documentClient =
                 (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(gatewayClient);
             UserAgentContainer userAgentContainer = ReflectionUtils.getUserAgentContainer(documentClient);
-            String expectedString = getUserAgentFixedPart() + SPACE + userProvidedSuffix;
+            String expectedString = getUserAgentFixedPart() + SPACE + userProvidedSuffix + expectedFeatureFlagSuffix();
             assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
 
             directClient = new CosmosClientBuilder()
@@ -132,6 +133,46 @@ public class UserAgentContainerTest {
 
     }
 
+    @Test(groups = {"unit"})
+    public void appendUserAgentSuffix() {
+        String expectedStringFixedPart = getUserAgentFixedPart();
+
+        // Append to empty suffix
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        String suffix = "azure-cosmos-encryption/2.28.0";
+        userAgentContainer.setSuffix(suffix);
+        String expectedString = expectedStringFixedPart + SPACE + suffix;
+        assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
+
+        // Append to existing suffix (simulating appendUserAgentSuffix behavior)
+        userAgentContainer = new UserAgentContainer();
+        String customerSuffix = "my-app";
+        userAgentContainer.setSuffix(customerSuffix);
+        String combinedSuffix = customerSuffix + " " + suffix;
+        userAgentContainer.setSuffix(combinedSuffix);
+        expectedString = expectedStringFixedPart + SPACE + combinedSuffix;
+        assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
+        assertThat(userAgentContainer.getUserAgent()).contains("my-app");
+        assertThat(userAgentContainer.getUserAgent()).contains("azure-cosmos-encryption/2.28.0");
+
+        // Feature flags are preserved after setSuffix + setFeatureEnabledFlagsAsSuffix
+        userAgentContainer = new UserAgentContainer();
+        userAgentContainer.setSuffix(customerSuffix);
+        Set<UserAgentFeatureFlags> flags = new HashSet<>(Arrays.asList(
+            UserAgentFeatureFlags.PerPartitionAutomaticFailover,
+            UserAgentFeatureFlags.PerPartitionCircuitBreaker));
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(flags);
+        assertThat(userAgentContainer.getUserAgent()).contains("|F3");
+        // After setSuffix, feature flags are cleared
+        userAgentContainer.setSuffix(combinedSuffix);
+        assertThat(userAgentContainer.getUserAgent()).doesNotContain("|F3");
+        // Re-applying feature flags restores them
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(flags);
+        assertThat(userAgentContainer.getUserAgent()).contains("|F3");
+        assertThat(userAgentContainer.getUserAgent()).contains("my-app");
+        assertThat(userAgentContainer.getUserAgent()).contains("azure-cosmos-encryption/2.28.0");
+    }
+
     private String getUserAgentFixedPart() {
         String osName = System.getProperty("os.name");
         if (osName == null) {
@@ -150,5 +191,27 @@ public class UserAgentContainerTest {
             "JRE/" +
             System.getProperty("java.version");
         return geteUserAgentFixedPart;
+    }
+
+    // Mirrors RxDocumentClientImpl.addUserAgentSuffix + UserAgentContainer.setFeatureEnabledFlagsAsSuffix.
+    // Computes the feature-flag suffix (|F<hex>) advertised by the clients built in this test.
+    private static String expectedFeatureFlagSuffix() {
+        int featureValue = 0;
+
+        // ThinClient is advertised unless it is explicitly disabled (default null => enabled).
+        if (!Boolean.FALSE.equals(Configs.isThinClientEnabled())) {
+            featureValue |= UserAgentFeatureFlags.ThinClient.getValue();
+        }
+
+        // When HTTP/2 is enabled, the Http2 bit is set; when PING keepalive is also effectively enabled
+        // (kill-switch on AND positive interval), the Http2PingHealth bit is OR'd in.
+        if (Configs.isHttp2Enabled()) {
+            featureValue |= UserAgentFeatureFlags.Http2.getValue();
+            if (Configs.isHttp2PingHealthEnabled() && Configs.getHttp2PingIntervalInSeconds() > 0) {
+                featureValue |= UserAgentFeatureFlags.Http2PingHealth.getValue();
+            }
+        }
+
+        return featureValue != 0 ? "|F" + Integer.toHexString(featureValue).toUpperCase(Locale.ROOT) : "";
     }
 }

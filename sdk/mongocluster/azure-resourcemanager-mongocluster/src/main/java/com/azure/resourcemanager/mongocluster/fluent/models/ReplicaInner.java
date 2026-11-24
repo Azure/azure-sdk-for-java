@@ -14,7 +14,7 @@ import com.azure.resourcemanager.mongocluster.models.MongoClusterProperties;
 import java.io.IOException;
 
 /**
- * Represents a mongo cluster replica.
+ * Represents a DocumentDB cluster replica.
  */
 @Immutable
 public final class ReplicaInner extends ProxyResource {
@@ -95,17 +95,6 @@ public final class ReplicaInner extends ProxyResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.samples;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplate;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateAsync;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateWithDeploymentOperations;
@@ -13,6 +14,7 @@ import com.azure.resourcemanager.resources.samples.ManageLocks;
 import com.azure.resourcemanager.resources.samples.ManageResource;
 import com.azure.resourcemanager.resources.samples.ManageResourceGroup;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -46,6 +48,7 @@ public class ResourceSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @Disabled("TODO: restore the test after resources lib release. Playback URI casing changed from resourceGroups to resourcegroups.")
     public void testDeployUsingARMTemplateWithTags() throws IOException, IllegalAccessException {
         Assertions.assertTrue(DeployUsingARMTemplateWithTags.runSample(azureResourceManager));
     }
@@ -66,6 +69,7 @@ public class ResourceSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testManageLocks() {
         Assertions.assertTrue(ManageLocks.runSample(azureResourceManager));
     }

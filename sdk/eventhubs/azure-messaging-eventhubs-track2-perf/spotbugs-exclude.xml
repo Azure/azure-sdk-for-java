@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter
+    xmlns="https://github.com/spotbugs/filter/4.10.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://github.com/spotbugs/filter/4.10.0 https://raw.githubusercontent.com/spotbugs/spotbugs/4.10.0/spotbugs/etc/findbugsfilter.xsd">
+  <!-- This is a false positive. The type of TOptions is known because it is set
+       in the constructor of the concrete class. -->
+  <Match>
+    <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+</FindBugsFilter>

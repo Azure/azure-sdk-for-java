@@ -141,7 +141,9 @@ public final class ClusterDefinition implements JsonSerializable<ClusterDefiniti
         jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeMapField("componentVersion", this.componentVersion,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeUntypedField("configurations", this.configurations);
+        if (this.configurations != null) {
+            jsonWriter.writeUntypedField("configurations", this.configurations);
+        }
         return jsonWriter.writeEndObject();
     }
 

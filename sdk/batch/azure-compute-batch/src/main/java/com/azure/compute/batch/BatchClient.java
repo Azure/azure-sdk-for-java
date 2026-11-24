@@ -4,128 +4,123 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
-import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
+import com.azure.compute.batch.implementation.task.SyncClientTaskSubmitter;
 import com.azure.compute.batch.implementation.task.TaskManager;
 import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
-import com.azure.compute.batch.models.BatchCertificate;
-import com.azure.compute.batch.models.BatchClientParallelOptions;
+import com.azure.compute.batch.models.BatchApplicationGetOptions;
+import com.azure.compute.batch.models.BatchApplicationsListOptions;
+import com.azure.compute.batch.models.BatchCreateTaskCollectionResult;
+import com.azure.compute.batch.models.BatchErrorException;
+import com.azure.compute.batch.models.BatchFileProperties;
 import com.azure.compute.batch.models.BatchJob;
-import com.azure.compute.batch.models.BatchJobCreateContent;
-import com.azure.compute.batch.models.BatchJobDisableContent;
+import com.azure.compute.batch.models.BatchJobCreateOptions;
+import com.azure.compute.batch.models.BatchJobCreateParameters;
+import com.azure.compute.batch.models.BatchJobDeleteOptions;
+import com.azure.compute.batch.models.BatchJobDisableOptions;
+import com.azure.compute.batch.models.BatchJobDisableParameters;
+import com.azure.compute.batch.models.BatchJobEnableOptions;
+import com.azure.compute.batch.models.BatchJobGetOptions;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatus;
+import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatusListOptions;
+import com.azure.compute.batch.models.BatchJobReplaceOptions;
 import com.azure.compute.batch.models.BatchJobSchedule;
-import com.azure.compute.batch.models.BatchJobScheduleCreateContent;
+import com.azure.compute.batch.models.BatchJobScheduleCreateOptions;
+import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
+import com.azure.compute.batch.models.BatchJobScheduleDeleteOptions;
+import com.azure.compute.batch.models.BatchJobScheduleDisableOptions;
+import com.azure.compute.batch.models.BatchJobScheduleEnableOptions;
 import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
-import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
-import com.azure.compute.batch.models.BatchJobTerminateContent;
-import com.azure.compute.batch.models.BatchJobUpdateContent;
+import com.azure.compute.batch.models.BatchJobScheduleGetOptions;
+import com.azure.compute.batch.models.BatchJobScheduleReplaceOptions;
+import com.azure.compute.batch.models.BatchJobScheduleTerminateOptions;
+import com.azure.compute.batch.models.BatchJobScheduleUpdateOptions;
+import com.azure.compute.batch.models.BatchJobScheduleUpdateParameters;
+import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
+import com.azure.compute.batch.models.BatchJobTaskCountsGetOptions;
+import com.azure.compute.batch.models.BatchJobTerminateOptions;
+import com.azure.compute.batch.models.BatchJobTerminateParameters;
+import com.azure.compute.batch.models.BatchJobUpdateOptions;
+import com.azure.compute.batch.models.BatchJobUpdateParameters;
+import com.azure.compute.batch.models.BatchJobsFromScheduleListOptions;
+import com.azure.compute.batch.models.BatchJobsListOptions;
 import com.azure.compute.batch.models.BatchNode;
-import com.azure.compute.batch.models.BatchNodeDeallocateContent;
-import com.azure.compute.batch.models.BatchNodeDisableSchedulingContent;
+import com.azure.compute.batch.models.BatchNodeDeallocateOptions;
+import com.azure.compute.batch.models.BatchNodeDeallocateParameters;
+import com.azure.compute.batch.models.BatchNodeExtensionGetOptions;
+import com.azure.compute.batch.models.BatchNodeExtensionsListOptions;
 import com.azure.compute.batch.models.BatchNodeFile;
-import com.azure.compute.batch.models.BatchNodeRebootContent;
-import com.azure.compute.batch.models.BatchNodeReimageContent;
+import com.azure.compute.batch.models.BatchNodeFileDeleteOptions;
+import com.azure.compute.batch.models.BatchNodeFileGetOptions;
+import com.azure.compute.batch.models.BatchNodeFilePropertiesGetOptions;
+import com.azure.compute.batch.models.BatchNodeFilesListOptions;
+import com.azure.compute.batch.models.BatchNodeGetOptions;
+import com.azure.compute.batch.models.BatchNodeLogsUploadOptions;
+import com.azure.compute.batch.models.BatchNodeRebootOptions;
+import com.azure.compute.batch.models.BatchNodeRebootParameters;
+import com.azure.compute.batch.models.BatchNodeReimageOptions;
+import com.azure.compute.batch.models.BatchNodeReimageParameters;
 import com.azure.compute.batch.models.BatchNodeRemoteLoginSettings;
-import com.azure.compute.batch.models.BatchNodeRemoveContent;
-import com.azure.compute.batch.models.BatchNodeUserCreateContent;
-import com.azure.compute.batch.models.BatchNodeUserUpdateContent;
+import com.azure.compute.batch.models.BatchNodeRemoteLoginSettingsGetOptions;
+import com.azure.compute.batch.models.BatchNodeRemoveParameters;
+import com.azure.compute.batch.models.BatchNodeSchedulingDisableOptions;
+import com.azure.compute.batch.models.BatchNodeSchedulingDisableParameters;
+import com.azure.compute.batch.models.BatchNodeSchedulingEnableOptions;
+import com.azure.compute.batch.models.BatchNodeStartOptions;
+import com.azure.compute.batch.models.BatchNodeUserCreateOptions;
+import com.azure.compute.batch.models.BatchNodeUserCreateParameters;
+import com.azure.compute.batch.models.BatchNodeUserDeleteOptions;
+import com.azure.compute.batch.models.BatchNodeUserReplaceOptions;
+import com.azure.compute.batch.models.BatchNodeUserUpdateParameters;
 import com.azure.compute.batch.models.BatchNodeVMExtension;
+import com.azure.compute.batch.models.BatchNodesListOptions;
+import com.azure.compute.batch.models.BatchNodesRemoveOptions;
 import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.BatchPoolCreateContent;
-import com.azure.compute.batch.models.BatchPoolEnableAutoScaleContent;
-import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleContent;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableOptions;
+import com.azure.compute.batch.models.BatchPoolAutoScaleEnableParameters;
+import com.azure.compute.batch.models.BatchPoolCreateOptions;
+import com.azure.compute.batch.models.BatchPoolCreateParameters;
+import com.azure.compute.batch.models.BatchPoolDeleteOptions;
+import com.azure.compute.batch.models.BatchPoolDisableAutoScaleOptions;
+import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleOptions;
+import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleParameters;
 import com.azure.compute.batch.models.BatchPoolExistsOptions;
+import com.azure.compute.batch.models.BatchPoolGetOptions;
 import com.azure.compute.batch.models.BatchPoolNodeCounts;
-import com.azure.compute.batch.models.BatchPoolReplaceContent;
-import com.azure.compute.batch.models.BatchPoolResizeContent;
-import com.azure.compute.batch.models.BatchPoolUpdateContent;
+import com.azure.compute.batch.models.BatchPoolNodeCountsListOptions;
+import com.azure.compute.batch.models.BatchPoolPropertiesReplaceOptions;
+import com.azure.compute.batch.models.BatchPoolReplaceParameters;
+import com.azure.compute.batch.models.BatchPoolResizeOptions;
+import com.azure.compute.batch.models.BatchPoolResizeParameters;
+import com.azure.compute.batch.models.BatchPoolResizeStopOptions;
+import com.azure.compute.batch.models.BatchPoolUpdateOptions;
+import com.azure.compute.batch.models.BatchPoolUpdateParameters;
 import com.azure.compute.batch.models.BatchPoolUsageMetrics;
+import com.azure.compute.batch.models.BatchPoolUsageMetricsListOptions;
+import com.azure.compute.batch.models.BatchPoolsListOptions;
+import com.azure.compute.batch.models.BatchSubTasksListOptions;
 import com.azure.compute.batch.models.BatchSubtask;
 import com.azure.compute.batch.models.BatchSupportedImage;
 import com.azure.compute.batch.models.BatchTask;
-import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
+import com.azure.compute.batch.models.BatchTaskBulkCreateOptions;
+import com.azure.compute.batch.models.BatchTaskCollectionCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
-import com.azure.compute.batch.models.BatchTaskCreateContent;
+import com.azure.compute.batch.models.BatchTaskCreateOptions;
+import com.azure.compute.batch.models.BatchTaskCreateParameters;
+import com.azure.compute.batch.models.BatchTaskDeleteOptions;
+import com.azure.compute.batch.models.BatchTaskFileDeleteOptions;
+import com.azure.compute.batch.models.BatchTaskFileGetOptions;
+import com.azure.compute.batch.models.BatchTaskFilePropertiesGetOptions;
+import com.azure.compute.batch.models.BatchTaskFilesListOptions;
+import com.azure.compute.batch.models.BatchTaskGetOptions;
 import com.azure.compute.batch.models.BatchTaskGroup;
-import com.azure.compute.batch.models.CancelBatchCertificateDeletionOptions;
-import com.azure.compute.batch.models.CreateBatchCertificateOptions;
-import com.azure.compute.batch.models.CreateBatchJobOptions;
-import com.azure.compute.batch.models.CreateBatchJobScheduleOptions;
-import com.azure.compute.batch.models.CreateBatchNodeUserOptions;
-import com.azure.compute.batch.models.CreateBatchPoolOptions;
-import com.azure.compute.batch.models.CreateBatchTaskCollectionOptions;
-import com.azure.compute.batch.models.CreateBatchTaskOptions;
-import com.azure.compute.batch.models.DeallocateBatchNodeOptions;
-import com.azure.compute.batch.models.DeleteBatchCertificateOptions;
-import com.azure.compute.batch.models.DeleteBatchJobOptions;
-import com.azure.compute.batch.models.DeleteBatchJobScheduleOptions;
-import com.azure.compute.batch.models.DeleteBatchNodeFileOptions;
-import com.azure.compute.batch.models.DeleteBatchNodeUserOptions;
-import com.azure.compute.batch.models.DeleteBatchPoolOptions;
-import com.azure.compute.batch.models.DeleteBatchTaskFileOptions;
-import com.azure.compute.batch.models.DeleteBatchTaskOptions;
-import com.azure.compute.batch.models.DisableBatchJobOptions;
-import com.azure.compute.batch.models.DisableBatchJobScheduleOptions;
-import com.azure.compute.batch.models.DisableBatchNodeSchedulingOptions;
-import com.azure.compute.batch.models.DisableBatchPoolAutoScaleOptions;
-import com.azure.compute.batch.models.EnableBatchJobOptions;
-import com.azure.compute.batch.models.EnableBatchJobScheduleOptions;
-import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
-import com.azure.compute.batch.models.EnableBatchPoolAutoScaleOptions;
-import com.azure.compute.batch.models.EvaluateBatchPoolAutoScaleOptions;
-import com.azure.compute.batch.models.FileResponseHeaderProperties;
-import com.azure.compute.batch.models.GetBatchApplicationOptions;
-import com.azure.compute.batch.models.GetBatchCertificateOptions;
-import com.azure.compute.batch.models.GetBatchJobOptions;
-import com.azure.compute.batch.models.GetBatchJobScheduleOptions;
-import com.azure.compute.batch.models.GetBatchJobTaskCountsOptions;
-import com.azure.compute.batch.models.GetBatchNodeExtensionOptions;
-import com.azure.compute.batch.models.GetBatchNodeFileOptions;
-import com.azure.compute.batch.models.GetBatchNodeFilePropertiesOptions;
-import com.azure.compute.batch.models.GetBatchNodeOptions;
-import com.azure.compute.batch.models.GetBatchNodeRemoteLoginSettingsOptions;
-import com.azure.compute.batch.models.GetBatchPoolOptions;
-import com.azure.compute.batch.models.GetBatchTaskFileOptions;
-import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
-import com.azure.compute.batch.models.GetBatchTaskOptions;
-import com.azure.compute.batch.models.ListBatchApplicationsOptions;
-import com.azure.compute.batch.models.ListBatchCertificatesOptions;
-import com.azure.compute.batch.models.ListBatchJobPreparationAndReleaseTaskStatusOptions;
-import com.azure.compute.batch.models.ListBatchJobSchedulesOptions;
-import com.azure.compute.batch.models.ListBatchJobsFromScheduleOptions;
-import com.azure.compute.batch.models.ListBatchJobsOptions;
-import com.azure.compute.batch.models.ListBatchNodeExtensionsOptions;
-import com.azure.compute.batch.models.ListBatchNodeFilesOptions;
-import com.azure.compute.batch.models.ListBatchNodesOptions;
-import com.azure.compute.batch.models.ListBatchPoolNodeCountsOptions;
-import com.azure.compute.batch.models.ListBatchPoolUsageMetricsOptions;
-import com.azure.compute.batch.models.ListBatchPoolsOptions;
-import com.azure.compute.batch.models.ListBatchSubTasksOptions;
-import com.azure.compute.batch.models.ListBatchTaskFilesOptions;
-import com.azure.compute.batch.models.ListBatchTasksOptions;
-import com.azure.compute.batch.models.ListSupportedBatchImagesOptions;
-import com.azure.compute.batch.models.ReactivateBatchTaskOptions;
-import com.azure.compute.batch.models.RebootBatchNodeOptions;
-import com.azure.compute.batch.models.ReimageBatchNodeOptions;
-import com.azure.compute.batch.models.RemoveBatchNodesOptions;
-import com.azure.compute.batch.models.ReplaceBatchJobOptions;
-import com.azure.compute.batch.models.ReplaceBatchJobScheduleOptions;
-import com.azure.compute.batch.models.ReplaceBatchNodeUserOptions;
-import com.azure.compute.batch.models.ReplaceBatchPoolPropertiesOptions;
-import com.azure.compute.batch.models.ReplaceBatchTaskOptions;
-import com.azure.compute.batch.models.ResizeBatchPoolOptions;
-import com.azure.compute.batch.models.StartBatchNodeOptions;
-import com.azure.compute.batch.models.StopBatchPoolResizeOptions;
-import com.azure.compute.batch.models.TerminateBatchJobOptions;
-import com.azure.compute.batch.models.TerminateBatchJobScheduleOptions;
-import com.azure.compute.batch.models.TerminateBatchTaskOptions;
-import com.azure.compute.batch.models.UpdateBatchJobOptions;
-import com.azure.compute.batch.models.UpdateBatchJobScheduleOptions;
-import com.azure.compute.batch.models.UpdateBatchPoolOptions;
-import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
-import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
+import com.azure.compute.batch.models.BatchTaskReactivateOptions;
+import com.azure.compute.batch.models.BatchTaskReplaceOptions;
+import com.azure.compute.batch.models.BatchTaskTerminateOptions;
+import com.azure.compute.batch.models.BatchTasksListOptions;
+import com.azure.compute.batch.models.SupportedBatchImagesListOptions;
+import com.azure.compute.batch.models.UploadBatchServiceLogsParameters;
 import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -142,6 +137,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -156,24 +154,26 @@ public final class BatchClient {
     @Generated
     private final BatchClientImpl serviceClient;
 
+    private final BatchAsyncClient asyncClient;
+
     /**
      * Initializes an instance of BatchClient class.
      *
      * @param serviceClient the service client implementation.
      */
-    @Generated
     BatchClient(BatchClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+        this.asyncClient = new BatchAsyncClient(this.serviceClient);
     }
 
     /**
      * Adds multiple tasks to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
+     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTasks(String jobId, List<BatchTaskCreateContent> taskList) {
+    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList) {
         createTasks(jobId, taskList, null);
     }
 
@@ -193,14 +193,14 @@ public final class BatchClient {
      * was in at that time.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A list of {@link BatchTaskCreateContent tasks} to add.
-     * @param batchClientParallelOptions Option that configure the parallelization of the method.
+     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
+     * @param batchTaskBulkCreateOptions Optional parameters for Create Tasks operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTasks(String jobId, List<BatchTaskCreateContent> taskList,
-        BatchClientParallelOptions batchClientParallelOptions) {
-        TaskSubmitter taskSubmitter = new SyncTaskSubmitter(this);
-        TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions).block();
+    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList,
+        BatchTaskBulkCreateOptions batchTaskBulkCreateOptions) {
+        TaskSubmitter taskSubmitter = new SyncClientTaskSubmitter(this);
+        TaskManager.createTasks(taskSubmitter, jobId, taskList, batchTaskBulkCreateOptions);
     }
 
     /**
@@ -215,7 +215,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -238,10 +238,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the applications available in an Account as paginated response with
      * {@link PagedIterable}.
      */
@@ -263,7 +260,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -281,13 +278,27 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Application.
      *
      * This operation returns only Applications and versions that are available for
@@ -313,7 +324,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -347,10 +358,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of a listing the usage metrics for an Account as paginated response with
      * {@link PagedIterable}.
      */
@@ -370,7 +378,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -403,7 +411,15 @@ public final class BatchClient {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -424,6 +440,13 @@ public final class BatchClient {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -456,18 +479,21 @@ public final class BatchClient {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -477,9 +503,6 @@ public final class BatchClient {
      *         }
      *     }
      *     resizeTimeout: Duration (Optional)
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -512,8 +535,17 @@ public final class BatchClient {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -559,17 +591,6 @@ public final class BatchClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -578,6 +599,7 @@ public final class BatchClient {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -626,14 +648,13 @@ public final class BatchClient {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
      *         }
      *     ]
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -655,13 +676,28 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -671,12 +707,12 @@ public final class BatchClient {
     }
 
     /**
-     * Lists all of the Pools which be mounted.
+     * Lists all of the Pools in the specified Account.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -696,17 +732,17 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -727,7 +763,15 @@ public final class BatchClient {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -748,6 +792,13 @@ public final class BatchClient {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -780,18 +831,21 @@ public final class BatchClient {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -813,11 +867,8 @@ public final class BatchClient {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -861,8 +912,17 @@ public final class BatchClient {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -908,17 +968,6 @@ public final class BatchClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -927,6 +976,7 @@ public final class BatchClient {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -1000,8 +1050,8 @@ public final class BatchClient {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -1017,8 +1067,6 @@ public final class BatchClient {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -1042,10 +1090,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -1073,7 +1118,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -1100,18 +1145,27 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
+    Response<Void> deletePoolWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.deletePoolWithResponse(poolId, requestOptions);
     }
 
@@ -1121,7 +1175,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -1155,12 +1209,27 @@ public final class BatchClient {
      * boolean
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return basic properties of a Pool along with {@link Response}.
      */
     @Generated
@@ -1175,7 +1244,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -1211,17 +1280,17 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     allocationState: String(steady/resizing/stopping) (Optional)
      *     allocationStateTransitionTime: OffsetDateTime (Optional)
-     *     vmSize: String (Optional)
+     *     vmSize: String (Required)
      *     virtualMachineConfiguration (Optional): {
      *         imageReference (Required): {
      *             publisher: String (Optional)
@@ -1242,7 +1311,15 @@ public final class BatchClient {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -1263,6 +1340,13 @@ public final class BatchClient {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -1295,18 +1379,21 @@ public final class BatchClient {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -1328,11 +1415,8 @@ public final class BatchClient {
      *             ]
      *         }
      *     ]
-     *     resourceTags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     currentDedicatedNodes: Integer (Optional)
-     *     currentLowPriorityNodes: Integer (Optional)
+     *     currentDedicatedNodes: int (Required)
+     *     currentLowPriorityNodes: int (Required)
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     enableAutoScale: Boolean (Optional)
@@ -1376,8 +1460,17 @@ public final class BatchClient {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
+     *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
      *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
@@ -1423,17 +1516,6 @@ public final class BatchClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -1442,6 +1524,7 @@ public final class BatchClient {
      *     ]
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     userAccounts (Optional): [
@@ -1515,8 +1598,8 @@ public final class BatchClient {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -1532,8 +1615,6 @@ public final class BatchClient {
      *             }
      *         ]
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
-     *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     upgradePolicy (Optional): {
      *         mode: String(automatic/manual/rolling) (Required)
      *         automaticOSUpgradePolicy (Optional): {
@@ -1555,13 +1636,27 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Pool along with {@link Response}.
      */
     @Generated
@@ -1580,7 +1675,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -1663,17 +1758,6 @@ public final class BatchClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Optional): [
      *          (Optional){
      *             applicationId: String (Required)
@@ -1706,7 +1790,15 @@ public final class BatchClient {
      *                 lun: int (Required)
      *                 caching: String(none/readonly/readwrite) (Optional)
      *                 diskSizeGB: int (Required)
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                 managedDisk (Optional): {
+     *                     diskEncryptionSet (Optional): {
+     *                         id: String (Optional)
+     *                     }
+     *                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                     securityProfile (Optional): {
+     *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                     }
+     *                 }
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -1720,6 +1812,13 @@ public final class BatchClient {
      *             ]
      *         }
      *         diskEncryptionConfiguration (Optional): {
+     *             customerManagedKey (Optional): {
+     *                 identityReference (Optional): {
+     *                     resourceId: String (Optional)
+     *                 }
+     *                 keyUrl: String (Optional)
+     *                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *             }
      *             targets (Optional): [
      *                 String(osdisk/temporarydisk) (Optional)
      *             ]
@@ -1752,18 +1851,21 @@ public final class BatchClient {
      *             }
      *             caching: String(none/readonly/readwrite) (Optional)
      *             diskSizeGB: Integer (Optional)
-     *             managedDisk (Optional): {
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                 securityProfile (Optional): {
-     *                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                 }
-     *             }
+     *             managedDisk (Optional): (recursive schema, see managedDisk above)
      *             writeAcceleratorEnabled: Boolean (Optional)
      *         }
      *         securityProfile (Optional): {
-     *             encryptionAtHost: boolean (Required)
-     *             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *             uefiSettings (Required): {
+     *             encryptionAtHost: Boolean (Optional)
+     *             proxyAgentSettings (Optional): {
+     *                 enabled: Boolean (Optional)
+     *                 imds (Optional): {
+     *                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                     mode: String(Audit/Enforce) (Optional)
+     *                 }
+     *                 wireServer (Optional): (recursive schema, see wireServer above)
+     *             }
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
      *             }
@@ -1772,9 +1874,9 @@ public final class BatchClient {
      *             id: String (Required)
      *         }
      *     }
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     taskSlotsPerNode: Integer (Optional)
      *     taskSchedulingPolicy (Optional): {
+     *         jobDefaultOrder: String(none/creationtime) (Optional)
      *         nodeFillType: String(spread/pack) (Required)
      *     }
      *     networkConfiguration (Optional): {
@@ -1803,14 +1905,20 @@ public final class BatchClient {
      *         }
      *         publicIPAddressConfiguration (Optional): {
      *             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *             ipFamilies (Optional): [
+     *                 String(IPv4/IPv6) (Optional)
+     *             ]
      *             ipAddressIds (Optional): [
      *                 String (Optional)
      *             ]
+     *             ipTags (Optional): [
+     *                  (Optional){
+     *                     ipTagType: String (Optional)
+     *                     tag: String (Optional)
+     *                 }
+     *             ]
      *         }
      *         enableAcceleratedNetworking: Boolean (Optional)
-     *     }
-     *     resourceTags (Optional): {
-     *         String: String (Required)
      *     }
      *     userAccounts (Optional): [
      *          (Optional){
@@ -1852,8 +1960,8 @@ public final class BatchClient {
      *             }
      *             azureFileShareConfiguration (Optional): {
      *                 accountName: String (Required)
-     *                 azureFileUrl: String (Required)
      *                 accountKey: String (Required)
+     *                 azureFileUrl: String (Required)
      *                 relativeMountPath: String (Required)
      *                 mountOptions: String (Optional)
      *             }
@@ -1880,14 +1988,29 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1902,18 +2025,32 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -1935,7 +2072,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -1972,21 +2109,36 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
+     * @param parameters The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData content,
+    public Response<Void> enablePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.enablePoolAutoScaleWithResponse(poolId, content, requestOptions);
+        return this.serviceClient.enablePoolAutoScaleWithResponse(poolId, parameters, requestOptions);
     }
 
     /**
@@ -1999,7 +2151,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2034,14 +2186,29 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of evaluating an automatic scaling formula on the Pool.
      *
      * This API is primarily for validating an autoscale formula, as it simply returns
@@ -2049,9 +2216,9 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData content,
+    public Response<BinaryData> evaluatePoolAutoScaleWithResponse(String poolId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.evaluatePoolAutoScaleWithResponse(poolId, content, requestOptions);
+        return this.serviceClient.evaluatePoolAutoScaleWithResponse(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2068,7 +2235,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2107,20 +2274,35 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
+     * @param parameters The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizePoolWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
-        return this.serviceClient.resizePoolWithResponse(poolId, content, requestOptions);
+    Response<Void> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.resizePoolWithResponse(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2137,7 +2319,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2164,18 +2346,32 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
+    Response<Void> stopPoolResizeWithResponse(String poolId, RequestOptions requestOptions) {
         return this.serviceClient.stopPoolResizeWithResponse(poolId, requestOptions);
     }
 
@@ -2189,7 +2385,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2247,17 +2443,6 @@ public final class BatchClient {
      *         maxTaskRetryCount: Integer (Optional)
      *         waitForSuccess: Boolean (Optional)
      *     }
-     *     certificateReferences (Required): [
-     *          (Required){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     applicationPackageReferences (Required): [
      *          (Required){
      *             applicationId: String (Required)
@@ -2270,18 +2455,32 @@ public final class BatchClient {
      *             value: String (Required)
      *         }
      *     ]
-     *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -2301,7 +2500,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2341,20 +2540,35 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
+     * @param parameters The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeNodesWithResponse(String poolId, BinaryData content, RequestOptions requestOptions) {
-        return this.serviceClient.removeNodesWithResponse(poolId, content, requestOptions);
+    Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.removeNodesWithResponse(poolId, parameters, requestOptions);
     }
 
     /**
@@ -2363,7 +2577,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2401,10 +2615,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the supported Virtual Machine Images as paginated response with
      * {@link PagedIterable}.
      */
@@ -2422,7 +2633,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2464,10 +2675,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
      * {@link PagedIterable}.
      */
@@ -2492,7 +2700,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
@@ -2521,18 +2729,27 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Response<Void> deleteJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobWithResponse(jobId, requestOptions);
     }
 
@@ -2542,7 +2759,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -2578,15 +2795,15 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -2678,11 +2895,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -2746,7 +2958,15 @@ public final class BatchClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -2760,6 +2980,13 @@ public final class BatchClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -2792,18 +3019,21 @@ public final class BatchClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -2814,10 +3044,10 @@ public final class BatchClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -2850,8 +3080,17 @@ public final class BatchClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -2869,17 +3108,6 @@ public final class BatchClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -2929,14 +3157,13 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -2962,7 +3189,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -3003,13 +3230,27 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Job along with {@link Response}.
      */
     @Generated
@@ -3028,7 +3269,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3096,7 +3337,15 @@ public final class BatchClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -3117,6 +3366,13 @@ public final class BatchClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -3149,18 +3405,21 @@ public final class BatchClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -3171,10 +3430,10 @@ public final class BatchClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -3207,8 +3466,17 @@ public final class BatchClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -3254,17 +3522,6 @@ public final class BatchClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                      (Optional){
      *                         applicationId: String (Required)
@@ -3317,14 +3574,13 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -3352,19 +3608,34 @@ public final class BatchClient {
      *     ]
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -3383,7 +3654,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3415,15 +3686,15 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -3515,11 +3786,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -3583,7 +3849,15 @@ public final class BatchClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -3597,6 +3871,13 @@ public final class BatchClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -3629,18 +3910,21 @@ public final class BatchClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -3651,10 +3935,10 @@ public final class BatchClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -3687,8 +3971,17 @@ public final class BatchClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -3706,17 +3999,6 @@ public final class BatchClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -3766,14 +4048,13 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -3799,7 +4080,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -3840,14 +4121,29 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -3871,7 +4167,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3907,20 +4203,35 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
+     * @param parameters The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableJobWithResponse(String jobId, BinaryData content, RequestOptions requestOptions) {
-        return this.serviceClient.disableJobWithResponse(jobId, content, requestOptions);
+    Response<Void> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.disableJobWithResponse(jobId, parameters, requestOptions);
     }
 
     /**
@@ -3936,7 +4247,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3963,18 +4274,32 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Response<Void> enableJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.enableJobWithResponse(jobId, requestOptions);
     }
 
@@ -3991,7 +4316,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
@@ -4031,18 +4356,33 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
+    Response<Void> terminateJobWithResponse(String jobId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobWithResponse(jobId, requestOptions);
     }
 
@@ -4062,7 +4402,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -4164,11 +4504,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -4232,7 +4567,15 @@ public final class BatchClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -4246,6 +4589,13 @@ public final class BatchClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -4278,18 +4628,21 @@ public final class BatchClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -4300,10 +4653,10 @@ public final class BatchClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -4336,8 +4689,17 @@ public final class BatchClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -4355,17 +4717,6 @@ public final class BatchClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -4415,14 +4766,13 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -4448,7 +4798,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -4456,13 +4806,28 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -4477,7 +4842,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -4497,15 +4862,15 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -4597,11 +4962,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -4665,7 +5025,15 @@ public final class BatchClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -4679,6 +5047,13 @@ public final class BatchClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -4711,18 +5086,21 @@ public final class BatchClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -4733,10 +5111,10 @@ public final class BatchClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -4769,8 +5147,17 @@ public final class BatchClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -4788,17 +5175,6 @@ public final class BatchClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -4848,14 +5224,13 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -4881,7 +5256,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -4924,10 +5299,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -4942,7 +5314,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -4962,15 +5334,15 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
      *     usesTaskDependencies: Boolean (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/disabling/disabled/enabling/terminating/completed/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     priority: Integer (Optional)
@@ -5062,11 +5434,6 @@ public final class BatchClient {
      *                 version: String (Optional)
      *             }
      *         ]
-     *         authenticationTokenSettings (Optional): {
-     *             access (Optional): [
-     *                 String(job) (Optional)
-     *             ]
-     *         }
      *         allowLowPriorityNode: Boolean (Optional)
      *     }
      *     jobPreparationTask (Optional): {
@@ -5130,7 +5497,15 @@ public final class BatchClient {
      *                             lun: int (Required)
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: int (Required)
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                             managedDisk (Optional): {
+     *                                 diskEncryptionSet (Optional): {
+     *                                     id: String (Optional)
+     *                                 }
+     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 securityProfile (Optional): {
+     *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                 }
+     *                             }
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -5144,6 +5519,13 @@ public final class BatchClient {
      *                         ]
      *                     }
      *                     diskEncryptionConfiguration (Optional): {
+     *                         customerManagedKey (Optional): {
+     *                             identityReference (Optional): {
+     *                                 resourceId: String (Optional)
+     *                             }
+     *                             keyUrl: String (Optional)
+     *                             rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                         }
      *                         targets (Optional): [
      *                             String(osdisk/temporarydisk) (Optional)
      *                         ]
@@ -5176,18 +5558,21 @@ public final class BatchClient {
      *                         }
      *                         caching: String(none/readonly/readwrite) (Optional)
      *                         diskSizeGB: Integer (Optional)
-     *                         managedDisk (Optional): {
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                             securityProfile (Optional): {
-     *                                 securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                             }
-     *                         }
+     *                         managedDisk (Optional): (recursive schema, see managedDisk above)
      *                         writeAcceleratorEnabled: Boolean (Optional)
      *                     }
      *                     securityProfile (Optional): {
-     *                         encryptionAtHost: boolean (Required)
-     *                         securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                         uefiSettings (Required): {
+     *                         encryptionAtHost: Boolean (Optional)
+     *                         proxyAgentSettings (Optional): {
+     *                             enabled: Boolean (Optional)
+     *                             imds (Optional): {
+     *                                 inVMAccessControlProfileReferenceId: String (Optional)
+     *                                 mode: String(Audit/Enforce) (Optional)
+     *                             }
+     *                             wireServer (Optional): (recursive schema, see wireServer above)
+     *                         }
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
      *                         }
@@ -5198,10 +5583,10 @@ public final class BatchClient {
      *                 }
      *                 taskSlotsPerNode: Integer (Optional)
      *                 taskSchedulingPolicy (Optional): {
+     *                     jobDefaultOrder: String(none/creationtime) (Optional)
      *                     nodeFillType: String(spread/pack) (Required)
      *                 }
      *                 resizeTimeout: Duration (Optional)
-     *                 resourceTags: String (Optional)
      *                 targetDedicatedNodes: Integer (Optional)
      *                 targetLowPriorityNodes: Integer (Optional)
      *                 enableAutoScale: Boolean (Optional)
@@ -5234,8 +5619,17 @@ public final class BatchClient {
      *                     }
      *                     publicIPAddressConfiguration (Optional): {
      *                         provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                         ipFamilies (Optional): [
+     *                             String(IPv4/IPv6) (Optional)
+     *                         ]
      *                         ipAddressIds (Optional): [
      *                             String (Optional)
+     *                         ]
+     *                         ipTags (Optional): [
+     *                              (Optional){
+     *                                 ipTagType: String (Optional)
+     *                                 tag: String (Optional)
+     *                             }
      *                         ]
      *                     }
      *                     enableAcceleratedNetworking: Boolean (Optional)
@@ -5253,17 +5647,6 @@ public final class BatchClient {
      *                     maxTaskRetryCount: Integer (Optional)
      *                     waitForSuccess: Boolean (Optional)
      *                 }
-     *                 certificateReferences (Optional): [
-     *                      (Optional){
-     *                         thumbprint: String (Required)
-     *                         thumbprintAlgorithm: String (Required)
-     *                         storeLocation: String(currentuser/localmachine) (Optional)
-     *                         storeName: String (Optional)
-     *                         visibility (Optional): [
-     *                             String(starttask/task/remoteuser) (Optional)
-     *                         ]
-     *                     }
-     *                 ]
      *                 applicationPackageReferences (Optional): [
      *                     (recursive schema, see above)
      *                 ]
@@ -5313,14 +5696,13 @@ public final class BatchClient {
      *                         }
      *                         azureFileShareConfiguration (Optional): {
      *                             accountName: String (Required)
-     *                             azureFileUrl: String (Required)
      *                             accountKey: String (Required)
+     *                             azureFileUrl: String (Required)
      *                             relativeMountPath: String (Required)
      *                             mountOptions: String (Optional)
      *                         }
      *                     }
      *                 ]
-     *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                 upgradePolicy (Optional): {
      *                     mode: String(automatic/manual/rolling) (Required)
      *                     automaticOSUpgradePolicy (Optional): {
@@ -5346,7 +5728,7 @@ public final class BatchClient {
      *     onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *     networkConfiguration (Optional): {
      *         subnetId: String (Required)
-     *         skipWithdrawFromVNet: boolean (Required)
+     *         skipWithdrawFromVNet: Boolean (Optional)
      *     }
      *     metadata (Optional): [
      *         (recursive schema, see above)
@@ -5390,10 +5772,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -5416,7 +5795,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -5481,10 +5860,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job as paginated response with {@link PagedIterable}.
      */
@@ -5506,7 +5882,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5533,13 +5909,27 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the Task counts for the specified Job.
      *
      * Task counts provide a count of the Tasks by active, running or completed Task
@@ -5552,263 +5942,12 @@ public final class BatchClient {
     }
 
     /**
-     * Creates a Certificate to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: String (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param certificate The Certificate to be created.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions) {
-        return this.serviceClient.createCertificateWithResponse(certificate, requestOptions);
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
-     * maximum of 1000
-     * applications can be returned.</td></tr>
-     * <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing
-     * this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-certificates.</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: String (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCertificates(RequestOptions requestOptions) {
-        return this.serviceClient.listCertificates(requestOptions);
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * If you try to delete a Certificate that is being used by a Pool or Compute
-     * Node, the status of the Certificate changes to deleteFailed. If you decide that
-     * you want to continue using the Certificate, you can use this operation to set
-     * the status of the Certificate back to active. If you intend to delete the
-     * Certificate, you do not need to run this operation after the deletion failed.
-     * You must make sure that the Certificate is not being used by any resources, and
-     * then you can try again to delete the Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelCertificateDeletionWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        return this.serviceClient.cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint,
-            requestOptions);
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        return this.serviceClient.deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
-     * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
-     * instead.".</td></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
-     * separated string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     thumbprint: String (Required)
-     *     thumbprintAlgorithm: String (Required)
-     *     url: String (Optional)
-     *     state: String(active/deleting/deletefailed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     previousState: String(active/deleting/deletefailed) (Optional)
-     *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     publicData: String (Optional)
-     *     deleteCertificateError (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         values (Optional): [
-     *              (Optional){
-     *                 name: String (Optional)
-     *                 value: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     data: String (Required)
-     *     certificateFormat: String(pfx/cer) (Optional)
-     *     password: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about the specified Certificate along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCertificateWithResponse(String thumbprintAlgorithm, String thumbprint,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
-    }
-
-    /**
      * Checks the specified Job Schedule exists.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5842,12 +5981,27 @@ public final class BatchClient {
      * boolean
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return whether resource exists along with {@link Response}.
      */
     @Generated
@@ -5868,7 +6022,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
@@ -5897,18 +6051,27 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    Response<Void> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.deleteJobScheduleWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -5918,7 +6081,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -5954,14 +6117,14 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -5980,7 +6143,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -6068,11 +6231,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6136,7 +6294,15 @@ public final class BatchClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -6150,6 +6316,13 @@ public final class BatchClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -6182,18 +6355,21 @@ public final class BatchClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -6204,10 +6380,10 @@ public final class BatchClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -6240,8 +6416,17 @@ public final class BatchClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -6259,17 +6444,6 @@ public final class BatchClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -6319,14 +6493,13 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -6352,7 +6525,7 @@ public final class BatchClient {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -6382,13 +6555,27 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Job Schedule along with {@link Response}.
      */
     @Generated
@@ -6409,7 +6596,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6457,7 +6644,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -6545,11 +6732,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -6613,7 +6795,15 @@ public final class BatchClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -6627,6 +6817,13 @@ public final class BatchClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -6659,18 +6856,21 @@ public final class BatchClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -6681,10 +6881,10 @@ public final class BatchClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -6717,8 +6917,17 @@ public final class BatchClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -6736,17 +6945,6 @@ public final class BatchClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -6796,14 +6994,13 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -6835,14 +7032,29 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -6864,7 +7076,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6896,14 +7108,14 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -6922,7 +7134,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -7010,11 +7222,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -7078,7 +7285,15 @@ public final class BatchClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -7092,6 +7307,13 @@ public final class BatchClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -7124,18 +7346,21 @@ public final class BatchClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -7146,10 +7371,10 @@ public final class BatchClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -7182,8 +7407,17 @@ public final class BatchClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -7201,17 +7435,6 @@ public final class BatchClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -7261,14 +7484,13 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -7294,7 +7516,7 @@ public final class BatchClient {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -7324,14 +7546,29 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7349,7 +7586,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7376,13 +7613,27 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to disable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7397,7 +7648,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7424,13 +7675,27 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7445,7 +7710,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
@@ -7474,18 +7739,32 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.serviceClient.terminateJobScheduleWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -7495,7 +7774,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7523,7 +7802,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -7611,11 +7890,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -7679,7 +7953,15 @@ public final class BatchClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -7693,6 +7975,13 @@ public final class BatchClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -7725,18 +8014,21 @@ public final class BatchClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -7747,10 +8039,10 @@ public final class BatchClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -7783,8 +8075,17 @@ public final class BatchClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -7802,17 +8103,6 @@ public final class BatchClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -7862,14 +8152,13 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -7901,13 +8190,28 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -7922,7 +8226,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7942,14 +8246,14 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
-     *     state: String(active/completed/disabled/terminating/deleting) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
+     *     state: String(active/completed/disabled/terminating/deleting) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/completed/disabled/terminating/deleting) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     schedule (Optional): {
@@ -7968,7 +8272,7 @@ public final class BatchClient {
      *         onTaskFailure: String(noaction/performexitoptionsjobaction) (Optional)
      *         networkConfiguration (Optional): {
      *             subnetId: String (Required)
-     *             skipWithdrawFromVNet: boolean (Required)
+     *             skipWithdrawFromVNet: Boolean (Optional)
      *         }
      *         constraints (Optional): {
      *             maxWallClockTime: Duration (Optional)
@@ -8056,11 +8360,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *             allowLowPriorityNode: Boolean (Optional)
      *         }
      *         jobPreparationTask (Optional): {
@@ -8124,7 +8423,15 @@ public final class BatchClient {
      *                                 lun: int (Required)
      *                                 caching: String(none/readonly/readwrite) (Optional)
      *                                 diskSizeGB: int (Required)
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                 managedDisk (Optional): {
+     *                                     diskEncryptionSet (Optional): {
+     *                                         id: String (Optional)
+     *                                     }
+     *                                     storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
+     *                                     securityProfile (Optional): {
+     *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
+     *                                     }
+     *                                 }
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -8138,6 +8445,13 @@ public final class BatchClient {
      *                             ]
      *                         }
      *                         diskEncryptionConfiguration (Optional): {
+     *                             customerManagedKey (Optional): {
+     *                                 identityReference (Optional): {
+     *                                     resourceId: String (Optional)
+     *                                 }
+     *                                 keyUrl: String (Optional)
+     *                                 rotationToLatestKeyVersionEnabled: Boolean (Optional)
+     *                             }
      *                             targets (Optional): [
      *                                 String(osdisk/temporarydisk) (Optional)
      *                             ]
@@ -8170,18 +8484,21 @@ public final class BatchClient {
      *                             }
      *                             caching: String(none/readonly/readwrite) (Optional)
      *                             diskSizeGB: Integer (Optional)
-     *                             managedDisk (Optional): {
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
-     *                                 securityProfile (Optional): {
-     *                                     securityEncryptionType: String(NonPersistedTPM/VMGuestStateOnly) (Optional)
-     *                                 }
-     *                             }
+     *                             managedDisk (Optional): (recursive schema, see managedDisk above)
      *                             writeAcceleratorEnabled: Boolean (Optional)
      *                         }
      *                         securityProfile (Optional): {
-     *                             encryptionAtHost: boolean (Required)
-     *                             securityType: String(trustedLaunch/confidentialVM) (Required)
-     *                             uefiSettings (Required): {
+     *                             encryptionAtHost: Boolean (Optional)
+     *                             proxyAgentSettings (Optional): {
+     *                                 enabled: Boolean (Optional)
+     *                                 imds (Optional): {
+     *                                     inVMAccessControlProfileReferenceId: String (Optional)
+     *                                     mode: String(Audit/Enforce) (Optional)
+     *                                 }
+     *                                 wireServer (Optional): (recursive schema, see wireServer above)
+     *                             }
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
+     *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
      *                             }
@@ -8192,10 +8509,10 @@ public final class BatchClient {
      *                     }
      *                     taskSlotsPerNode: Integer (Optional)
      *                     taskSchedulingPolicy (Optional): {
+     *                         jobDefaultOrder: String(none/creationtime) (Optional)
      *                         nodeFillType: String(spread/pack) (Required)
      *                     }
      *                     resizeTimeout: Duration (Optional)
-     *                     resourceTags: String (Optional)
      *                     targetDedicatedNodes: Integer (Optional)
      *                     targetLowPriorityNodes: Integer (Optional)
      *                     enableAutoScale: Boolean (Optional)
@@ -8228,8 +8545,17 @@ public final class BatchClient {
      *                         }
      *                         publicIPAddressConfiguration (Optional): {
      *                             provision: String(batchmanaged/usermanaged/nopublicipaddresses) (Optional)
+     *                             ipFamilies (Optional): [
+     *                                 String(IPv4/IPv6) (Optional)
+     *                             ]
      *                             ipAddressIds (Optional): [
      *                                 String (Optional)
+     *                             ]
+     *                             ipTags (Optional): [
+     *                                  (Optional){
+     *                                     ipTagType: String (Optional)
+     *                                     tag: String (Optional)
+     *                                 }
      *                             ]
      *                         }
      *                         enableAcceleratedNetworking: Boolean (Optional)
@@ -8247,17 +8573,6 @@ public final class BatchClient {
      *                         maxTaskRetryCount: Integer (Optional)
      *                         waitForSuccess: Boolean (Optional)
      *                     }
-     *                     certificateReferences (Optional): [
-     *                          (Optional){
-     *                             thumbprint: String (Required)
-     *                             thumbprintAlgorithm: String (Required)
-     *                             storeLocation: String(currentuser/localmachine) (Optional)
-     *                             storeName: String (Optional)
-     *                             visibility (Optional): [
-     *                                 String(starttask/task/remoteuser) (Optional)
-     *                             ]
-     *                         }
-     *                     ]
      *                     applicationPackageReferences (Optional): [
      *                         (recursive schema, see above)
      *                     ]
@@ -8307,14 +8622,13 @@ public final class BatchClient {
      *                             }
      *                             azureFileShareConfiguration (Optional): {
      *                                 accountName: String (Required)
-     *                                 azureFileUrl: String (Required)
      *                                 accountKey: String (Required)
+     *                                 azureFileUrl: String (Required)
      *                                 relativeMountPath: String (Required)
      *                                 mountOptions: String (Optional)
      *                             }
      *                         }
      *                     ]
-     *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *                     upgradePolicy (Optional): {
      *                         mode: String(automatic/manual/rolling) (Required)
      *                         automaticOSUpgradePolicy (Optional): {
@@ -8340,7 +8654,7 @@ public final class BatchClient {
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     executionInfo (Optional): {
+     *     executionInfo (Required): {
      *         nextRunTime: OffsetDateTime (Optional)
      *         recentJob (Optional): {
      *             id: String (Optional)
@@ -8372,10 +8686,7 @@ public final class BatchClient {
      * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -8394,7 +8705,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -8525,22 +8836,32 @@ public final class BatchClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -8559,7 +8880,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8579,12 +8900,12 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -8606,11 +8927,11 @@ public final class BatchClient {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -8755,21 +9076,13 @@ public final class BatchClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -8799,7 +9112,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -8932,11 +9245,6 @@ public final class BatchClient {
      *                     version: String (Optional)
      *                 }
      *             ]
-     *             authenticationTokenSettings (Optional): {
-     *                 access (Optional): [
-     *                     String(job) (Optional)
-     *                 ]
-     *             }
      *         }
      *     ]
      * }
@@ -8956,7 +9264,7 @@ public final class BatchClient {
      *             lastModified: OffsetDateTime (Optional)
      *             location: String (Optional)
      *             error (Optional): {
-     *                 code: String (Required)
+     *                 code: String (Optional)
      *                 message (Optional): {
      *                     lang: String (Optional)
      *                     value: String (Optional)
@@ -8973,15 +9281,29 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of adding a collection of Tasks to a Job along with {@link Response}.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @return the result of creating a collection of Tasks to a Job along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -9002,7 +9324,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9029,14 +9351,23 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job from which to delete the Task.
      * @param taskId The ID of the Task to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9055,7 +9386,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -9091,12 +9422,12 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -9118,11 +9449,11 @@ public final class BatchClient {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -9267,22 +9598,32 @@ public final class BatchClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Task.
      *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
@@ -9300,7 +9641,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9332,12 +9673,12 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     displayName: String (Optional)
-     *     url: String (Optional)
-     *     eTag: String (Optional)
-     *     lastModified: OffsetDateTime (Optional)
-     *     creationTime: OffsetDateTime (Optional)
+     *     url: String (Required)
+     *     eTag: String (Required)
+     *     lastModified: OffsetDateTime (Required)
+     *     creationTime: OffsetDateTime (Required)
      *     exitConditions (Optional): {
      *         exitCodes (Optional): [
      *              (Optional){
@@ -9359,11 +9700,11 @@ public final class BatchClient {
      *         fileUploadError (Optional): (recursive schema, see fileUploadError above)
      *         default (Optional): (recursive schema, see default above)
      *     }
-     *     state: String(active/preparing/running/completed) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
+     *     state: String(active/preparing/running/completed) (Required)
+     *     stateTransitionTime: OffsetDateTime (Required)
      *     previousState: String(active/preparing/running/completed) (Optional)
      *     previousStateTransitionTime: OffsetDateTime (Optional)
-     *     commandLine: String (Optional)
+     *     commandLine: String (Required)
      *     containerSettings (Optional): {
      *         containerRunOptions: String (Optional)
      *         imageName: String (Required)
@@ -9508,23 +9849,33 @@ public final class BatchClient {
      *             version: String (Optional)
      *         }
      *     ]
-     *     authenticationTokenSettings (Optional): {
-     *         access (Optional): [
-     *             String(job) (Optional)
-     *         ]
-     *     }
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
      * @param task The Task to update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9543,7 +9894,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -9595,10 +9946,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -9617,7 +9965,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9644,14 +9992,28 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9675,7 +10037,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9702,14 +10064,28 @@ public final class BatchClient {
      * service does not match the value specified by the client.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to reactivate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9724,7 +10100,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -9734,15 +10110,24 @@ public final class BatchClient {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9758,7 +10143,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9787,15 +10172,34 @@ public final class BatchClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response}.
      */
     @Generated
@@ -9811,7 +10215,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9830,15 +10234,33 @@ public final class BatchClient {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the properties of the specified Task file along with {@link Response}.
      */
     @Generated
@@ -9854,7 +10276,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -9890,10 +10312,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
@@ -9907,12 +10326,13 @@ public final class BatchClient {
      * Adds a user Account to the specified Compute Node.
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9930,15 +10350,30 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
      * @param user The options to use for creating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -9952,32 +10387,43 @@ public final class BatchClient {
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String userName,
+    public Response<Void> deleteNodeUserWithResponse(String poolId, String nodeId, String username,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions);
+        return this.serviceClient.deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions);
     }
 
     /**
@@ -9991,7 +10437,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10007,23 +10453,38 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
+     * @param username The name of the user Account to update.
+     * @param parameters The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String userName, BinaryData content,
-        RequestOptions requestOptions) {
-        return this.serviceClient.replaceNodeUserWithResponse(poolId, nodeId, userName, content, requestOptions);
+    public Response<Void> replaceNodeUserWithResponse(String poolId, String nodeId, String username,
+        BinaryData parameters, RequestOptions requestOptions) {
+        return this.serviceClient.replaceNodeUserWithResponse(poolId, nodeId, username, parameters, requestOptions);
     }
 
     /**
@@ -10032,7 +10493,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -10044,17 +10505,18 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -10152,17 +10614,6 @@ public final class BatchClient {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -10189,7 +10640,7 @@ public final class BatchClient {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -10205,14 +10656,28 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Compute Node along with {@link Response}.
      */
     @Generated
@@ -10229,7 +10694,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10251,19 +10716,34 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Response<Void> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.rebootNodeWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -10275,24 +10755,38 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Response<Void> startNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.startNodeWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -10306,7 +10800,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10328,19 +10822,34 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Response<Void> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.reimageNodeWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -10352,7 +10861,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10374,19 +10883,34 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+    Response<Void> deallocateNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.serviceClient.deallocateNodeWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -10399,7 +10923,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10421,14 +10945,29 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10447,19 +10986,33 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>DataServiceId</td><td>String</td><td>The OData ID of the resource to which the request applied.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10472,13 +11025,14 @@ public final class BatchClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10488,23 +11042,39 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
+     *     ipv6RemoteLoginIPAddress: String (Optional)
+     *     ipv6RemoteLoginPort: Integer (Optional)
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node along with {@link Response}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10525,7 +11095,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10555,23 +11125,37 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
-     * @param content The Azure Batch service log files upload options.
+     * @param parameters The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData content,
+    public Response<BinaryData> uploadNodeLogsWithResponse(String poolId, String nodeId, BinaryData parameters,
         RequestOptions requestOptions) {
-        return this.serviceClient.uploadNodeLogsWithResponse(poolId, nodeId, content, requestOptions);
+        return this.serviceClient.uploadNodeLogsWithResponse(poolId, nodeId, parameters, requestOptions);
     }
 
     /**
@@ -10580,7 +11164,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -10598,17 +11182,18 @@ public final class BatchClient {
      * <pre>
      * {@code
      * {
-     *     id: String (Optional)
-     *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Optional)
+     *     id: String (Required)
+     *     url: String (Required)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos/deallocated/deallocating) (Required)
      *     schedulingState: String(enabled/disabled) (Optional)
-     *     stateTransitionTime: OffsetDateTime (Optional)
-     *     lastBootTime: OffsetDateTime (Optional)
-     *     allocationTime: OffsetDateTime (Optional)
-     *     ipAddress: String (Optional)
-     *     affinityId: String (Optional)
-     *     vmSize: String (Optional)
-     *     totalTasksRun: Integer (Optional)
+     *     stateTransitionTime: OffsetDateTime (Required)
+     *     lastBootTime: OffsetDateTime (Required)
+     *     allocationTime: OffsetDateTime (Required)
+     *     ipAddress: String (Required)
+     *     ipv6Address: String (Required)
+     *     affinityId: String (Required)
+     *     vmSize: String (Required)
+     *     totalTasksRun: int (Required)
      *     runningTasksCount: Integer (Optional)
      *     runningTaskSlotsCount: Integer (Optional)
      *     totalTasksSucceeded: Integer (Optional)
@@ -10706,17 +11291,6 @@ public final class BatchClient {
      *         lastRetryTime: OffsetDateTime (Optional)
      *         result: String(success/failure) (Optional)
      *     }
-     *     certificateReferences (Optional): [
-     *          (Optional){
-     *             thumbprint: String (Required)
-     *             thumbprintAlgorithm: String (Required)
-     *             storeLocation: String(currentuser/localmachine) (Optional)
-     *             storeName: String (Optional)
-     *             visibility (Optional): [
-     *                 String(starttask/task/remoteuser) (Optional)
-     *             ]
-     *         }
-     *     ]
      *     errors (Optional): [
      *          (Optional){
      *             code: String (Optional)
@@ -10743,7 +11317,7 @@ public final class BatchClient {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
-     *     virtualMachineInfo (Optional): {
+     *     virtualMachineInfo (Required): {
      *         imageReference (Optional): {
      *             publisher: String (Optional)
      *             offer: String (Optional)
@@ -10762,10 +11336,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
     @Generated
@@ -10780,7 +11351,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -10828,15 +11399,29 @@ public final class BatchClient {
      * }
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return information about the specified Compute Node Extension along with {@link Response}.
      */
     @Generated
@@ -10852,7 +11437,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -10907,10 +11492,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with
      * {@link PagedIterable}.
      */
@@ -10926,7 +11508,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -10936,15 +11518,24 @@ public final class BatchClient {
      * then the directory must be empty or deletion will fail.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the {@link Response}.
      */
     @Generated
@@ -10960,7 +11551,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10989,15 +11580,34 @@ public final class BatchClient {
      * BinaryData
      * }
      * </pre>
+     * 
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the response body along with {@link Response}.
      */
     @Generated
@@ -11013,7 +11623,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11032,15 +11642,33 @@ public final class BatchClient {
      * not been modified since the specified time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Headers</strong></p>
+     * <table border="1">
+     * <caption>Response Headers</caption>
+     * <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+     * <tr><td>Content-Length</td><td>long</td><td>The length of the file.</td></tr>
+     * <tr><td>ETag</td><td>String</td><td>The ETag HTTP response header. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. In particular, you can pass the ETag to one of the
+     * If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match headers.</td></tr>
+     * <tr><td>Last-Modified</td><td>OffsetDateTime</td><td>The time at which the resource was last modified.</td></tr>
+     * <tr><td>client-request-id</td><td>String</td><td>The client-request-id provided by the client during the request.
+     * This will be returned only if the return-client-request-id parameter was set to true.</td></tr>
+     * <tr><td>ocp-batch-file-isdirectory</td><td>boolean</td><td>Whether the object represents a directory.</td></tr>
+     * <tr><td>ocp-batch-file-mode</td><td>String</td><td>The file mode attribute in octal format.</td></tr>
+     * <tr><td>ocp-batch-file-url</td><td>String</td><td>The URL of the file.</td></tr>
+     * <tr><td>ocp-creation-time</td><td>OffsetDateTime</td><td>The file creation time.</td></tr>
+     * <tr><td>request-id</td><td>String</td><td>A unique identifier for the request that was made to the Batch service.
+     * If a request is consistently failing and you have verified that the request is properly formulated, you may use
+     * this value to report the error to Microsoft. In your report, include the value of this request ID, the
+     * approximate time that the request was made, the Batch Account against which the request was made, and the region
+     * that Account resides in.</td></tr>
+     * </table>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
      * @param filePath The path to the file or directory.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the properties of the specified Compute Node file along with {@link Response}.
      */
     @Generated
@@ -11056,7 +11684,7 @@ public final class BatchClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -11090,10 +11718,7 @@ public final class BatchClient {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
@@ -11112,46 +11737,7 @@ public final class BatchClient {
      * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
      * API.
      *
-     * @param options Optional parameters for List Applications operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the applications available in an Account as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchApplication> listApplications(ListBatchApplicationsOptions options) {
-        // Generated convenience method for listApplications
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        return serviceClient.listApplications(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchApplication.class));
-    }
-
-    /**
-     * Lists all of the applications available in the specified Account.
-     *
-     * This operation returns only Applications and versions that are available for
-     * use on Compute Nodes; that is, that can be used in an Package reference. For
-     * administrator information about applications and versions that are not yet
-     * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
-     * API.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the applications available in an Account as paginated response with
      * {@link PagedIterable}.
@@ -11175,45 +11761,8 @@ public final class BatchClient {
      * API.
      *
      * @param applicationId The ID of the Application.
-     * @param options Optional parameters for Get Application operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Application.
-     *
-     * This operation returns only Applications and versions that are available for
-     * use on Compute Nodes; that is, that can be used in an Package reference.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchApplication getApplication(String applicationId, GetBatchApplicationOptions options) {
-        // Generated convenience method for getApplicationWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        return getApplicationWithResponse(applicationId, requestOptions).getValue().toObject(BatchApplication.class);
-    }
-
-    /**
-     * Gets information about the specified Application.
-     *
-     * This operation returns only Applications and versions that are available for
-     * use on Compute Nodes; that is, that can be used in an Package reference. For
-     * administrator information about Applications and versions that are not yet
-     * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
-     * API.
-     *
-     * @param applicationId The ID of the Application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Application.
      *
@@ -11239,60 +11788,7 @@ public final class BatchClient {
      * times of the last aggregation interval currently available; that is, only the
      * last aggregation interval is returned.
      *
-     * @param options Optional parameters for List Pool Usage Metrics operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a listing the usage metrics for an Account as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics(ListBatchPoolUsageMetricsOptions options) {
-        // Generated convenience method for listPoolUsageMetrics
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        OffsetDateTime startTime = options == null ? null : options.getStartTime();
-        OffsetDateTime endtime = options == null ? null : options.getEndtime();
-        String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (startTime != null) {
-            requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
-        }
-        if (endtime != null) {
-            requestOptions.addQueryParam("endtime", String.valueOf(endtime), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        return serviceClient.listPoolUsageMetrics(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolUsageMetrics.class));
-    }
-
-    /**
-     * Lists the usage metrics, aggregated by Pool across individual time intervals,
-     * for the specified Account.
-     *
-     * If you do not specify a $filter clause including a poolId, the response
-     * includes all Pools that existed in the Account in the time range of the
-     * returned aggregation intervals. If you do not specify a $filter clause
-     * including a startTime or endTime these filters default to the start and end
-     * times of the last aggregation interval currently available; that is, only the
-     * last aggregation interval is returned.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a listing the usage metrics for an Account as paginated response with
      * {@link PagedIterable}.
@@ -11307,112 +11803,9 @@ public final class BatchClient {
     }
 
     /**
-     * Creates a Pool to the specified Account.
+     * Lists all of the Pools in the specified Account.
      *
-     * When naming Pools, avoid including sensitive information such as user names or
-     * secret project names. This information may appear in telemetry logs accessible
-     * to Microsoft Support engineers.
-     *
-     * @param pool The Pool to be created.
-     * @param options Optional parameters for Create Pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createPool(BatchPoolCreateContent pool, CreateBatchPoolOptions options) {
-        // Generated convenience method for createPoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).getValue();
-    }
-
-    /**
-     * Creates a Pool to the specified Account.
-     *
-     * When naming Pools, avoid including sensitive information such as user names or
-     * secret project names. This information may appear in telemetry logs accessible
-     * to Microsoft Support engineers.
-     *
-     * @param pool The Pool to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createPool(BatchPoolCreateContent pool) {
-        // Generated convenience method for createPoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the Pools which be mounted.
-     *
-     * @param options Optional parameters for List Pools operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchPool> listPools(ListBatchPoolsOptions options) {
-        // Generated convenience method for listPools
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        List<String> select = options == null ? null : options.getSelect();
-        List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand",
-                expand.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listPools(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPool.class));
-    }
-
-    /**
-     * Lists all of the Pools which be mounted.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
      */
@@ -11442,42 +11835,15 @@ public final class BatchClient {
      * error code PoolBeingDeleted.
      *
      * @param poolId The ID of the Pool to get.
-     * @param options Optional parameters for Delete Pool operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deletePool(String poolId, DeleteBatchPoolOptions options, RequestConditions requestConditions) {
+    void deletePool(String poolId) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
         deletePoolWithResponse(poolId, requestOptions).getValue();
     }
 
@@ -11499,18 +11865,16 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Pool. The poller provides
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deletePool(String poolId) {
-        // Generated convenience method for deletePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deletePoolWithResponse(poolId, requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginDeletePool(String poolId) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginDeletePool(poolId);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -11520,9 +11884,7 @@ public final class BatchClient {
      * @param options Optional parameters for Pool Exists operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool.
      */
@@ -11531,13 +11893,13 @@ public final class BatchClient {
     public boolean poolExists(String poolId, BatchPoolExistsOptions options, RequestConditions requestConditions) {
         // Generated convenience method for poolExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11561,9 +11923,7 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return basic properties of a Pool.
      */
@@ -11579,71 +11939,8 @@ public final class BatchClient {
      * Gets information about the specified Pool.
      *
      * @param poolId The ID of the Pool to get.
-     * @param options Optional parameters for Get Pool operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Pool.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchPool getPool(String poolId, GetBatchPoolOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for getPoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        List<String> select = options == null ? null : options.getSelect();
-        List<String> expand = options == null ? null : options.getExpand();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand",
-                expand.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return getPoolWithResponse(poolId, requestOptions).getValue().toObject(BatchPool.class);
-    }
-
-    /**
-     * Gets information about the specified Pool.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Pool.
      */
@@ -11656,111 +11953,11 @@ public final class BatchClient {
     }
 
     /**
-     * Updates the properties of the specified Pool.
-     *
-     * This only replaces the Pool properties specified in the request. For example,
-     * if the Pool has a StartTask associated with it, and a request does not specify
-     * a StartTask element, then the Pool keeps the existing StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param pool The pool properties to update.
-     * @param options Optional parameters for Update Pool operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePool(String poolId, BatchPoolUpdateContent pool, UpdateBatchPoolOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for updatePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        updatePoolWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * This only replaces the Pool properties specified in the request. For example,
-     * if the Pool has a StartTask associated with it, and a request does not specify
-     * a StartTask element, then the Pool keeps the existing StartTask.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param pool The pool properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePool(String poolId, BatchPoolUpdateContent pool) {
-        // Generated convenience method for updatePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        updatePoolWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
-    }
-
-    /**
-     * Disables automatic scaling for a Pool.
-     *
-     * @param poolId The ID of the Pool on which to disable automatic scaling.
-     * @param options Optional parameters for Disable Pool AutoScale operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disablePoolAutoScale(String poolId, DisableBatchPoolAutoScaleOptions options) {
-        // Generated convenience method for disablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        disablePoolAutoScaleWithResponse(poolId, requestOptions).getValue();
-    }
-
-    /**
      * Disables automatic scaling for a Pool.
      *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -11772,230 +11969,6 @@ public final class BatchClient {
     }
 
     /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
-     * @param options Optional parameters for Enable Pool AutoScale operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleContent content,
-        EnableBatchPoolAutoScaleOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(content), requestOptions).getValue();
-    }
-
-    /**
-     * Enables automatic scaling for a Pool.
-     *
-     * You cannot enable automatic scaling on a Pool if a resize operation is in
-     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
-     * you must specify a valid autoscale formula as part of the request. If automatic
-     * scaling of the Pool is already enabled, you may specify a new autoscale formula
-     * and/or a new evaluation interval. You cannot call this API for the same Pool
-     * more than once every 30 seconds.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for enabling automatic scaling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleContent content) {
-        // Generated convenience method for enablePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(content), requestOptions).getValue();
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool. The Pool must have auto
-     * scaling enabled in order to evaluate a formula.
-     *
-     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
-     * @param options Optional parameters for Evaluate Pool AutoScale operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleContent content,
-        EvaluateBatchPoolAutoScaleOptions options) {
-        // Generated convenience method for evaluatePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(content), requestOptions).getValue()
-            .toObject(AutoScaleRun.class);
-    }
-
-    /**
-     * Gets the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool. The Pool must have auto
-     * scaling enabled in order to evaluate a formula.
-     *
-     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param content The options to use for evaluating the automatic scaling formula.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of evaluating an automatic scaling formula on the Pool.
-     *
-     * This API is primarily for validating an autoscale formula, as it simply returns
-     * the result without applying the formula to the Pool.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleContent content) {
-        // Generated convenience method for evaluatePoolAutoScaleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(content), requestOptions).getValue()
-            .toObject(AutoScaleRun.class);
-    }
-
-    /**
-     * Changes the number of Compute Nodes that are assigned to a Pool.
-     *
-     * You can only resize a Pool when its allocation state is steady. If the Pool is
-     * already resizing, the request fails with status code 409. When you resize a
-     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
-     * resize Pools which are configured for automatic scaling. If you try to do this,
-     * the Batch service returns an error 409. If you resize a Pool downwards, the
-     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
-     * Nodes, use the Pool remove Compute Nodes API instead.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
-     * @param options Optional parameters for Resize Pool operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resizePool(String poolId, BatchPoolResizeContent content, ResizeBatchPoolOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for resizePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        resizePoolWithResponse(poolId, BinaryData.fromObject(content), requestOptions).getValue();
-    }
-
-    /**
-     * Changes the number of Compute Nodes that are assigned to a Pool.
-     *
-     * You can only resize a Pool when its allocation state is steady. If the Pool is
-     * already resizing, the request fails with status code 409. When you resize a
-     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
-     * resize Pools which are configured for automatic scaling. If you try to do this,
-     * the Batch service returns an error 409. If you resize a Pool downwards, the
-     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
-     * Nodes, use the Pool remove Compute Nodes API instead.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for resizing the pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resizePool(String poolId, BatchPoolResizeContent content) {
-        // Generated convenience method for resizePoolWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        resizePoolWithResponse(poolId, BinaryData.fromObject(content), requestOptions).getValue();
-    }
-
-    /**
      * Stops an ongoing resize operation on the Pool.
      *
      * This does not restore the Pool to its previous state before the resize
@@ -12007,42 +11980,15 @@ public final class BatchClient {
      * be used to halt the initial sizing of the Pool when it is created.
      *
      * @param poolId The ID of the Pool to get.
-     * @param options Optional parameters for Stop Pool Resize operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopPoolResize(String poolId, StopBatchPoolResizeOptions options, RequestConditions requestConditions) {
+    void stopPoolResize(String poolId) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
         stopPoolResizeWithResponse(poolId, requestOptions).getValue();
     }
 
@@ -12059,188 +12005,21 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the stop-resize operation, providing
+     * {@link BatchPool} instances during polling and the final snapshot on completion.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopPoolResize(String poolId) {
-        // Generated convenience method for stopPoolResizeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        stopPoolResizeWithResponse(poolId, requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * This fully replaces all the updatable properties of the Pool. For example, if
-     * the Pool has a StartTask associated with it and if StartTask is not specified
-     * with this request, then the Batch service will remove the existing StartTask.
-     *
-     * @param poolId The ID of the Pool to update.
-     * @param pool The options to use for replacing properties on the pool.
-     * @param options Optional parameters for Replace Pool Properties operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replacePoolProperties(String poolId, BatchPoolReplaceContent pool,
-        ReplaceBatchPoolPropertiesOptions options) {
-        // Generated convenience method for replacePoolPropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Pool.
-     *
-     * This fully replaces all the updatable properties of the Pool. For example, if
-     * the Pool has a StartTask associated with it and if StartTask is not specified
-     * with this request, then the Batch service will remove the existing StartTask.
-     *
-     * @param poolId The ID of the Pool to update.
-     * @param pool The options to use for replacing properties on the pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replacePoolProperties(String poolId, BatchPoolReplaceContent pool) {
-        // Generated convenience method for replacePoolPropertiesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
-    }
-
-    /**
-     * Removes Compute Nodes from the specified Pool.
-     *
-     * This operation can only run when the allocation state of the Pool is steady.
-     * When this operation runs, the allocation state changes from steady to resizing.
-     * Each request may remove up to 100 nodes.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
-     * @param options Optional parameters for Remove Nodes operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeNodes(String poolId, BatchNodeRemoveContent content, RemoveBatchNodesOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for removeNodesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        removeNodesWithResponse(poolId, BinaryData.fromObject(content), requestOptions).getValue();
-    }
-
-    /**
-     * Removes Compute Nodes from the specified Pool.
-     *
-     * This operation can only run when the allocation state of the Pool is steady.
-     * When this operation runs, the allocation state changes from steady to resizing.
-     * Each request may remove up to 100 nodes.
-     *
-     * @param poolId The ID of the Pool to get.
-     * @param content The options to use for removing the node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeNodes(String poolId, BatchNodeRemoveContent content) {
-        // Generated convenience method for removeNodesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        removeNodesWithResponse(poolId, BinaryData.fromObject(content), requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginStopPoolResize(String poolId) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginStopPoolResize(poolId);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
      *
-     * @param options Optional parameters for List Supported Images operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the supported Virtual Machine Images as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchSupportedImage> listSupportedImages(ListSupportedBatchImagesOptions options) {
-        // Generated convenience method for listSupportedImages
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        return serviceClient.listSupportedImages(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchSupportedImage.class));
-    }
-
-    /**
-     * Lists all Virtual Machine Images supported by the Azure Batch service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the supported Virtual Machine Images as paginated response with
      * {@link PagedIterable}.
@@ -12259,46 +12038,7 @@ public final class BatchClient {
      * numbers returned may not always be up to date. If you need exact node counts,
      * use a list query.
      *
-     * @param options Optional parameters for List Pool Node Counts operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchPoolNodeCounts> listPoolNodeCounts(ListBatchPoolNodeCountsOptions options) {
-        // Generated convenience method for listPoolNodeCounts
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        return serviceClient.listPoolNodeCounts(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolNodeCounts.class));
-    }
-
-    /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
-     * numbers returned may not always be up to date. If you need exact node counts,
-     * use a list query.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
      * {@link PagedIterable}.
@@ -12325,46 +12065,15 @@ public final class BatchClient {
      * that the Job is being deleted.
      *
      * @param jobId The ID of the Job to delete.
-     * @param options Optional parameters for Delete Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJob(String jobId, DeleteBatchJobOptions options, RequestConditions requestConditions) {
+    void deleteJob(String jobId) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Boolean force = options == null ? null : options.isForce();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (force != null) {
-            requestOptions.addQueryParam("force", String.valueOf(force), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
         deleteJobWithResponse(jobId, requestOptions).getValue();
     }
 
@@ -12382,78 +12091,15 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Job. The poller provides
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJob(String jobId) {
-        // Generated convenience method for deleteJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteJobWithResponse(jobId, requestOptions).getValue();
-    }
-
-    /**
-     * Gets information about the specified Job.
-     *
-     * @param jobId The ID of the Job.
-     * @param options Optional parameters for Get Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchJob getJob(String jobId, GetBatchJobOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for getJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        List<String> select = options == null ? null : options.getSelect();
-        List<String> expand = options == null ? null : options.getExpand();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand",
-                expand.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return getJobWithResponse(jobId, requestOptions).getValue().toObject(BatchJob.class);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginDeleteJob(String jobId) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginDeleteJob(jobId);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -12461,10 +12107,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job.
      */
@@ -12479,128 +12122,6 @@ public final class BatchClient {
     /**
      * Updates the properties of the specified Job.
      *
-     * This replaces only the Job properties specified in the request. For example, if
-     * the Job has constraints, and a request does not specify the constraints
-     * element, then the Job keeps the existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param job The options to use for updating the Job.
-     * @param options Optional parameters for Update Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateJob(String jobId, BatchJobUpdateContent job, UpdateBatchJobOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for updateJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
-     * This replaces only the Job properties specified in the request. For example, if
-     * the Job has constraints, and a request does not specify the constraints
-     * element, then the Job keeps the existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param job The options to use for updating the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateJob(String jobId, BatchJobUpdateContent job) {
-        // Generated convenience method for updateJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
-     * This fully replaces all the updatable properties of the Job. For example, if
-     * the Job has constraints associated with it and if constraints is not specified
-     * with this request, then the Batch service will remove the existing constraints.
-     *
-     * @param jobId The ID of the Job whose properties you want to update.
-     * @param job A job with updated properties.
-     * @param options Optional parameters for Replace Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replaceJob(String jobId, BatchJob job, ReplaceBatchJobOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for replaceJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        replaceJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job.
-     *
      * This fully replaces all the updatable properties of the Job. For example, if
      * the Job has constraints associated with it and if constraints is not specified
      * with this request, then the Batch service will remove the existing constraints.
@@ -12608,10 +12129,7 @@ public final class BatchClient {
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -12623,139 +12141,6 @@ public final class BatchClient {
     }
 
     /**
-     * Disables the specified Job, preventing new Tasks from running.
-     *
-     * The Batch Service immediately moves the Job to the disabling state. Batch then
-     * uses the disableTasks parameter to determine what to do with the currently
-     * running Tasks of the Job. The Job remains in the disabling state until the
-     * disable operation is completed and all Tasks have been dealt with according to
-     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
-     * are started under the Job until it moves back to active state. If you try to
-     * disable a Job that is in any state other than active, disabling, or disabled,
-     * the request fails with status code 409.
-     *
-     * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
-     * @param options Optional parameters for Disable Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableJob(String jobId, BatchJobDisableContent content, DisableBatchJobOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for disableJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        disableJobWithResponse(jobId, BinaryData.fromObject(content), requestOptions).getValue();
-    }
-
-    /**
-     * Disables the specified Job, preventing new Tasks from running.
-     *
-     * The Batch Service immediately moves the Job to the disabling state. Batch then
-     * uses the disableTasks parameter to determine what to do with the currently
-     * running Tasks of the Job. The Job remains in the disabling state until the
-     * disable operation is completed and all Tasks have been dealt with according to
-     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
-     * are started under the Job until it moves back to active state. If you try to
-     * disable a Job that is in any state other than active, disabling, or disabled,
-     * the request fails with status code 409.
-     *
-     * @param jobId The ID of the Job to disable.
-     * @param content The options to use for disabling the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableJob(String jobId, BatchJobDisableContent content) {
-        // Generated convenience method for disableJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        disableJobWithResponse(jobId, BinaryData.fromObject(content), requestOptions).getValue();
-    }
-
-    /**
-     * Enables the specified Job, allowing new Tasks to run.
-     *
-     * When you call this API, the Batch service sets a disabled Job to the enabling
-     * state. After the this operation is completed, the Job moves to the active
-     * state, and scheduling of new Tasks under the Job resumes. The Batch service
-     * does not allow a Task to remain in the active state for more than 180 days.
-     * Therefore, if you enable a Job containing active Tasks which were added more
-     * than 180 days ago, those Tasks will not run.
-     *
-     * @param jobId The ID of the Job to enable.
-     * @param options Optional parameters for Enable Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableJob(String jobId, EnableBatchJobOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for enableJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        enableJobWithResponse(jobId, requestOptions).getValue();
-    }
-
-    /**
      * Enables the specified Job, allowing new Tasks to run.
      *
      * When you call this API, the Batch service sets a disabled Job to the enabling
@@ -12767,18 +12152,39 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableJob(String jobId) {
+    void enableJob(String jobId) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
         enableJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * When you call this API, the Batch service sets a disabled Job to the enabling
+     * state. After this operation is completed, the Job moves to the active
+     * state, and scheduling of new Tasks under the Job resumes. The Batch service
+     * does not allow a Task to remain in the active state for more than 180 days.
+     * Therefore, if you enable a Job containing active Tasks which were added more
+     * than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the enabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginEnableJob(String jobId) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginEnableJob(jobId);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -12792,50 +12198,15 @@ public final class BatchClient {
      * Tasks cannot be added and any remaining active Tasks will not be scheduled.
      *
      * @param jobId The ID of the Job to terminate.
-     * @param options Optional parameters for Terminate Job operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateJob(String jobId, TerminateBatchJobOptions options, RequestConditions requestConditions) {
+    void terminateJob(String jobId) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchJobTerminateContent parameters = options == null ? null : options.getParameters();
-        Boolean force = options == null ? null : options.isForce();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (parameters != null) {
-            requestOptions.setBody(BinaryData.fromObject(parameters));
-        }
-        if (force != null) {
-            requestOptions.addQueryParam("force", String.valueOf(force), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
         terminateJobWithResponse(jobId, requestOptions).getValue();
     }
 
@@ -12851,138 +12222,22 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to terminate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the termination of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateJob(String jobId) {
-        // Generated convenience method for terminateJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        terminateJobWithResponse(jobId, requestOptions).getValue();
-    }
-
-    /**
-     * Creates a Job to the specified Account.
-     *
-     * The Batch service supports two ways to control the work done as part of a Job.
-     * In the first approach, the user specifies a Job Manager Task. The Batch service
-     * launches this Task when it is ready to start the Job. The Job Manager Task
-     * controls all other Tasks that run under this Job, by using the Task APIs. In
-     * the second approach, the user directly controls the execution of Tasks under an
-     * active Job, by using the Task APIs. Also note: when naming Jobs, avoid
-     * including sensitive information such as user names or secret project names.
-     * This information may appear in telemetry logs accessible to Microsoft Support
-     * engineers.
-     *
-     * @param job The Job to be created.
-     * @param options Optional parameters for Create Job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createJob(BatchJobCreateContent job, CreateBatchJobOptions options) {
-        // Generated convenience method for createJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        createJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue();
-    }
-
-    /**
-     * Creates a Job to the specified Account.
-     *
-     * The Batch service supports two ways to control the work done as part of a Job.
-     * In the first approach, the user specifies a Job Manager Task. The Batch service
-     * launches this Task when it is ready to start the Job. The Job Manager Task
-     * controls all other Tasks that run under this Job, by using the Task APIs. In
-     * the second approach, the user directly controls the execution of Tasks under an
-     * active Job, by using the Task APIs. Also note: when naming Jobs, avoid
-     * including sensitive information such as user names or secret project names.
-     * This information may appear in telemetry logs accessible to Microsoft Support
-     * engineers.
-     *
-     * @param job The Job to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createJob(BatchJobCreateContent job) {
-        // Generated convenience method for createJobWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        createJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginTerminateJob(String jobId) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginTerminateJob(jobId);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
      * Lists all of the Jobs in the specified Account.
      *
-     * @param options Optional parameters for List Jobs operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchJob> listJobs(ListBatchJobsOptions options) {
-        // Generated convenience method for listJobs
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        List<String> select = options == null ? null : options.getSelect();
-        List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand",
-                expand.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listJobs(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
-    }
-
-    /**
-     * Lists all of the Jobs in the specified Account.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
@@ -12998,62 +12253,8 @@ public final class BatchClient {
      * Lists the Jobs that have been created under the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
-     * @param options Optional parameters for List Jobs From Schedule operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchJob> listJobsFromSchedule(String jobScheduleId,
-        ListBatchJobsFromScheduleOptions options) {
-        // Generated convenience method for listJobsFromSchedule
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        List<String> select = options == null ? null : options.getSelect();
-        List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand",
-                expand.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listJobsFromSchedule(jobScheduleId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
-    }
-
-    /**
-     * Lists the Jobs that have been created under the specified Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
@@ -13078,63 +12279,8 @@ public final class BatchClient {
      * JobPreparationTaskNotSpecified.
      *
      * @param jobId The ID of the Job.
-     * @param options Optional parameters for List Jobs Preparation and Release Task Status operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the status of the Job Preparation and Job Release Tasks
-     * for a Job as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId,
-        ListBatchJobPreparationAndReleaseTaskStatusOptions options) {
-        // Generated convenience method for listJobPreparationAndReleaseTaskStatus
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listJobPreparationAndReleaseTaskStatus(jobId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobPreparationAndReleaseTaskStatus.class));
-    }
-
-    /**
-     * Lists the execution status of the Job Preparation and Job Release Task for the
-     * specified Job across the Compute Nodes where the Job has run.
-     *
-     * This API returns the Job Preparation and Job Release Task status on all Compute
-     * Nodes that have run the Job Preparation or Job Release Task. This includes
-     * Compute Nodes which have since been removed from the Pool. If this API is
-     * invoked on a Job which has no Job Preparation or Job Release Task, the Batch
-     * service returns HTTP status code 409 (Conflict) with an error code of
-     * JobPreparationTaskNotSpecified.
-     *
-     * @param jobId The ID of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the status of the Job Preparation and Job Release Tasks
      * for a Job as paginated response with {@link PagedIterable}.
@@ -13157,44 +12303,8 @@ public final class BatchClient {
      * up to date. If you need exact task counts, use a list query.
      *
      * @param jobId The ID of the Job.
-     * @param options Optional parameters for Get Job Task Counts operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Task counts for the specified Job.
-     *
-     * Task counts provide a count of the Tasks by active, running or completed Task
-     * state, and a count of Tasks which succeeded or failed.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskCountsResult getJobTaskCounts(String jobId, GetBatchJobTaskCountsOptions options) {
-        // Generated convenience method for getJobTaskCountsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        return getJobTaskCountsWithResponse(jobId, requestOptions).getValue().toObject(BatchTaskCountsResult.class);
-    }
-
-    /**
-     * Gets the Task counts for the specified Job.
-     *
-     * Task counts provide a count of the Tasks by active, running or completed Task
-     * state, and a count of Tasks which succeeded or failed. Tasks in the preparing
-     * state are counted as running. Note that the numbers returned may not always be
-     * up to date. If you need exact task counts, use a list query.
-     *
-     * @param jobId The ID of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Task counts for the specified Job.
      *
@@ -13210,304 +12320,13 @@ public final class BatchClient {
     }
 
     /**
-     * Creates a Certificate to the specified Account.
-     *
-     * @param certificate The Certificate to be created.
-     * @param options Optional parameters for Create Certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createCertificate(BatchCertificate certificate, CreateBatchCertificateOptions options) {
-        // Generated convenience method for createCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        createCertificateWithResponse(BinaryData.fromObject(certificate), requestOptions).getValue();
-    }
-
-    /**
-     * Creates a Certificate to the specified Account.
-     *
-     * @param certificate The Certificate to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createCertificate(BatchCertificate certificate) {
-        // Generated convenience method for createCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        createCertificateWithResponse(BinaryData.fromObject(certificate), requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     *
-     * @param options Optional parameters for List Certificates operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchCertificate> listCertificates(ListBatchCertificatesOptions options) {
-        // Generated convenience method for listCertificates
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listCertificates(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchCertificate.class));
-    }
-
-    /**
-     * Lists all of the Certificates that have been added to the specified Account.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Certificates in the Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchCertificate> listCertificates() {
-        // Generated convenience method for listCertificates
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listCertificates(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchCertificate.class));
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * If you try to delete a Certificate that is being used by a Pool or Compute
-     * Node, the status of the Certificate changes to deleteFailed. If you decide that
-     * you want to continue using the Certificate, you can use this operation to set
-     * the status of the Certificate back to active. If you intend to delete the
-     * Certificate, you do not need to run this operation after the deletion failed.
-     * You must make sure that the Certificate is not being used by any resources, and
-     * then you can try again to delete the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @param options Optional parameters for Cancel Certificate Deletion operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint,
-        CancelBatchCertificateDeletionOptions options) {
-        // Generated convenience method for cancelCertificateDeletionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue();
-    }
-
-    /**
-     * Cancels a failed deletion of a Certificate from the specified Account.
-     *
-     * If you try to delete a Certificate that is being used by a Pool or Compute
-     * Node, the status of the Certificate changes to deleteFailed. If you decide that
-     * you want to continue using the Certificate, you can use this operation to set
-     * the status of the Certificate back to active. If you intend to delete the
-     * Certificate, you do not need to run this operation after the deletion failed.
-     * You must make sure that the Certificate is not being used by any resources, and
-     * then you can try again to delete the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate being deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint) {
-        // Generated convenience method for cancelCertificateDeletionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @param options Optional parameters for Delete Certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteCertificate(String thumbprintAlgorithm, String thumbprint,
-        DeleteBatchCertificateOptions options) {
-        // Generated convenience method for deleteCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a Certificate from the specified Account.
-     *
-     * You cannot delete a Certificate if a resource (Pool or Compute Node) is using
-     * it. Before you can delete a Certificate, you must therefore make sure that the
-     * Certificate is not associated with any existing Pools, the Certificate is not
-     * installed on any Nodes (even if you remove a Certificate from a Pool, it is not
-     * removed from existing Compute Nodes in that Pool until they restart), and no
-     * running Tasks depend on the Certificate. If you try to delete a Certificate
-     * that is in use, the deletion fails. The Certificate status changes to
-     * deleteFailed. You can use Cancel Delete Certificate to set the status back to
-     * active if you decide that you want to continue using the Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteCertificate(String thumbprintAlgorithm, String thumbprint) {
-        // Generated convenience method for deleteCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue();
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
-     * @param options Optional parameters for Get Certificate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Certificate.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint,
-        GetBatchCertificateOptions options) {
-        // Generated convenience method for getCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue()
-            .toObject(BatchCertificate.class);
-    }
-
-    /**
-     * Gets information about the specified Certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the Certificate to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Certificate.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint) {
-        // Generated convenience method for getCertificateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).getValue()
-            .toObject(BatchCertificate.class);
-    }
-
-    /**
      * Checks the specified Job Schedule exists.
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param options Optional parameters for Job Schedule Exists operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -13517,13 +12336,13 @@ public final class BatchClient {
         RequestConditions requestConditions) {
         // Generated convenience method for jobScheduleExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13547,9 +12366,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -13571,47 +12388,15 @@ public final class BatchClient {
      * though they are still counted towards Account lifetime statistics.
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
-     * @param options Optional parameters for Delete Job Schedule operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJobSchedule(String jobScheduleId, DeleteBatchJobScheduleOptions options,
-        RequestConditions requestConditions) {
+    void deleteJobSchedule(String jobScheduleId) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Boolean force = options == null ? null : options.isForce();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (force != null) {
-            requestOptions.addQueryParam("force", String.valueOf(force), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
         deleteJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
     }
 
@@ -13626,79 +12411,16 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Job Schedule. The poller provides
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJobSchedule(String jobScheduleId) {
-        // Generated convenience method for deleteJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Gets information about the specified Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to get.
-     * @param options Optional parameters for Get Job Schedule operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Job Schedule.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchJobSchedule getJobSchedule(String jobScheduleId, GetBatchJobScheduleOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for getJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        List<String> select = options == null ? null : options.getSelect();
-        List<String> expand = options == null ? null : options.getExpand();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand",
-                expand.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return getJobScheduleWithResponse(jobScheduleId, requestOptions).getValue().toObject(BatchJobSchedule.class);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId) {
+        PollerFlux<BatchJobSchedule, BatchJobSchedule> asyncPoller = asyncClient.beginDeleteJobSchedule(jobScheduleId);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -13706,10 +12428,7 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Job Schedule.
      */
@@ -13724,134 +12443,6 @@ public final class BatchClient {
     /**
      * Updates the properties of the specified Job Schedule.
      *
-     * This replaces only the Job Schedule properties specified in the request. For
-     * example, if the schedule property is not specified with this request, then the
-     * Batch service will keep the existing schedule. Changes to a Job Schedule only
-     * impact Jobs created by the schedule after the update has taken place; currently
-     * running Jobs are unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobSchedule The options to use for updating the Job Schedule.
-     * @param options Optional parameters for Update Job Schedule operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateContent jobSchedule,
-        UpdateBatchJobScheduleOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for updateJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
-     * This replaces only the Job Schedule properties specified in the request. For
-     * example, if the schedule property is not specified with this request, then the
-     * Batch service will keep the existing schedule. Changes to a Job Schedule only
-     * impact Jobs created by the schedule after the update has taken place; currently
-     * running Jobs are unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobSchedule The options to use for updating the Job Schedule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateContent jobSchedule) {
-        // Generated convenience method for updateJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
-     * This fully replaces all the updatable properties of the Job Schedule. For
-     * example, if the schedule property is not specified with this request, then the
-     * Batch service will remove the existing schedule. Changes to a Job Schedule only
-     * impact Jobs created by the schedule after the update has taken place; currently
-     * running Jobs are unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobSchedule A Job Schedule with updated properties.
-     * @param options Optional parameters for Replace Job Schedule operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replaceJobSchedule(String jobScheduleId, BatchJobSchedule jobSchedule,
-        ReplaceBatchJobScheduleOptions options, RequestConditions requestConditions) {
-        // Generated convenience method for replaceJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        replaceJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
      * This fully replaces all the updatable properties of the Job Schedule. For
      * example, if the schedule property is not specified with this request, then the
      * Batch service will remove the existing schedule. Changes to a Job Schedule only
@@ -13861,10 +12452,7 @@ public final class BatchClient {
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13881,57 +12469,8 @@ public final class BatchClient {
      * No new Jobs will be created until the Job Schedule is enabled again.
      *
      * @param jobScheduleId The ID of the Job Schedule to disable.
-     * @param options Optional parameters for Disable Job Schedule operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableJobSchedule(String jobScheduleId, DisableBatchJobScheduleOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for disableJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        disableJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Disables a Job Schedule.
-     *
-     * No new Jobs will be created until the Job Schedule is enabled again.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to disable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -13946,55 +12485,8 @@ public final class BatchClient {
      * Enables a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to enable.
-     * @param options Optional parameters for Enable Job Schedule operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableJobSchedule(String jobScheduleId, EnableBatchJobScheduleOptions options,
-        RequestConditions requestConditions) {
-        // Generated convenience method for enableJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        enableJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Enables a Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to enable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
@@ -14009,47 +12501,15 @@ public final class BatchClient {
      * Terminates a Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
-     * @param options Optional parameters for Terminate Job Schedule operation.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateJobSchedule(String jobScheduleId, TerminateBatchJobScheduleOptions options,
-        RequestConditions requestConditions) {
+    void terminateJobSchedule(String jobScheduleId) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Boolean force = options == null ? null : options.isForce();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (force != null) {
-            requestOptions.addQueryParam("force", String.valueOf(force), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
         terminateJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
     }
 
@@ -14058,119 +12518,23 @@ public final class BatchClient {
      *
      * @param jobScheduleId The ID of the Job Schedule to terminates.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the termination of the Job Schedule.
+     * The poller provides {@link BatchJobSchedule} instances during polling and returns the last known
+     * {@link BatchJobSchedule} on completion.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateJobSchedule(String jobScheduleId) {
-        // Generated convenience method for terminateJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        terminateJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Creates a Job Schedule to the specified Account.
-     *
-     * @param jobSchedule The Job Schedule to be created.
-     * @param options Optional parameters for Create Job Schedule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createJobSchedule(BatchJobScheduleCreateContent jobSchedule, CreateBatchJobScheduleOptions options) {
-        // Generated convenience method for createJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions).getValue();
-    }
-
-    /**
-     * Creates a Job Schedule to the specified Account.
-     *
-     * @param jobSchedule The Job Schedule to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createJobSchedule(BatchJobScheduleCreateContent jobSchedule) {
-        // Generated convenience method for createJobScheduleWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId) {
+        PollerFlux<BatchJobSchedule, BatchJobSchedule> asyncPoller
+            = asyncClient.beginTerminateJobSchedule(jobScheduleId);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
      * Lists all of the Job Schedules in the specified Account.
      *
-     * @param options Optional parameters for List Job Schedules operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchJobSchedule> listJobSchedules(ListBatchJobSchedulesOptions options) {
-        // Generated convenience method for listJobSchedules
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        List<String> select = options == null ? null : options.getSelect();
-        List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand",
-                expand.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listJobSchedules(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobSchedule.class));
-    }
-
-    /**
-     * Lists all of the Job Schedules in the specified Account.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
      */
@@ -14184,113 +12548,6 @@ public final class BatchClient {
     }
 
     /**
-     * Creates a Task to the specified Job.
-     *
-     * The maximum lifetime of a Task from addition to completion is 180 days. If a
-     * Task has not completed within 180 days of being added it will be terminated by
-     * the Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task is to be created.
-     * @param task The Task to be created.
-     * @param options Optional parameters for Create Task operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTask(String jobId, BatchTaskCreateContent task, CreateBatchTaskOptions options) {
-        // Generated convenience method for createTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
-    }
-
-    /**
-     * Creates a Task to the specified Job.
-     *
-     * The maximum lifetime of a Task from addition to completion is 180 days. If a
-     * Task has not completed within 180 days of being added it will be terminated by
-     * the Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task is to be created.
-     * @param task The Task to be created.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createTask(String jobId, BatchTaskCreateContent task) {
-        // Generated convenience method for createTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the Tasks that are associated with the specified Job.
-     *
-     * For multi-instance Tasks, information such as affinityId, executionInfo and
-     * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
-     * information about subtasks.
-     *
-     * @param jobId The ID of the Job.
-     * @param options Optional parameters for List Tasks operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchTask> listTasks(String jobId, ListBatchTasksOptions options) {
-        // Generated convenience method for listTasks
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
-        String filter = options == null ? null : options.getFilter();
-        List<String> select = options == null ? null : options.getSelect();
-        List<String> expand = options == null ? null : options.getExpand();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand",
-                expand.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listTasks(jobId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchTask.class));
-    }
-
-    /**
      * Lists all of the Tasks that are associated with the specified Job.
      *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
@@ -14299,10 +12556,7 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
      */
@@ -14335,27 +12589,2097 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
-     * @param options Optional parameters for Create Task Collection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of creating a collection of Tasks to a Job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchCreateTaskCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection) {
+        // Generated convenience method for createTaskCollectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions).getValue()
+            .toObject(BatchCreateTaskCollectionResult.class);
+    }
+
+    /**
+     * Deletes a Task from the specified Job.
+     *
+     * When a Task is deleted, all of the files in its directory on the Compute Node
+     * where it ran are also deleted (regardless of the retention time). For
+     * multi-instance Tasks, the delete Task operation applies synchronously to the
+     * primary task; subtasks and their files are then deleted asynchronously in the
+     * background.
+     *
+     * @param jobId The ID of the Job from which to delete the Task.
+     * @param taskId The ID of the Task to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteTask(String jobId, String taskId) {
+        // Generated convenience method for deleteTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteTaskWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets information about the specified Task.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
+     * information about subtasks.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task to get information about.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Task.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchTask getTask(String jobId, String taskId) {
+        // Generated convenience method for getTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTaskWithResponse(jobId, taskId, requestOptions).getValue().toObject(BatchTask.class);
+    }
+
+    /**
+     * Updates the properties of the specified Task.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to update.
+     * @param task The Task to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void replaceTask(String jobId, String taskId, BatchTask task) {
+        // Generated convenience method for replaceTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        replaceTaskWithResponse(jobId, taskId, BinaryData.fromObject(task), requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance
+     * Task.
+     *
+     * If the Task is not a multi-instance Task then this returns an empty collection.
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId) {
+        // Generated convenience method for listSubTasks
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listSubTasks(jobId, taskId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchSubtask.class));
+    }
+
+    /**
+     * Terminates the specified Task.
+     *
+     * When the Task has been terminated, it moves to the completed state. For
+     * multi-instance Tasks, the terminate Task operation applies synchronously to the
+     * primary task; subtasks are then terminated asynchronously in the background.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void terminateTask(String jobId, String taskId) {
+        // Generated convenience method for terminateTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        terminateTaskWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Reactivates a Task, allowing it to run again even if its retry count has been
+     * exhausted.
+     *
+     * Reactivation makes a Task eligible to be retried again up to its maximum retry
+     * count. The Task's state is changed to active. As the Task is no longer in the
+     * completed state, any previous exit code or failure information is no longer
+     * available after reactivation. Each time a Task is reactivated, its retry count
+     * is reset to 0. Reactivation will fail for Tasks that are not completed or that
+     * previously completed successfully (with an exit code of 0). Additionally, it
+     * will fail if the Job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to reactivate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reactivateTask(String jobId, String taskId) {
+        // Generated convenience method for reactivateTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        reactivateTaskWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteTaskFile(String jobId, String taskId, String filePath) {
+        // Generated convenience method for deleteTaskFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteTaskFileWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getTaskFile(String jobId, String taskId, String filePath) {
+        // Generated convenience method for getTaskFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getTaskFileWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param options Optional parameters for Get Task File Properties operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job.
+     * @return The {@link BatchFileProperties} object containing the properties retrieved from the response
+     * headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchFileProperties getTaskFileProperties(String jobId, String taskId, String filePath,
+        BatchTaskFilePropertiesGetOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        // Retrieve response from getTaskFilePropertiesWithResponse and construct BatchFileProperties from its
+        // headers
+        Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions);
+        return BatchFileProperties.fromHeaders(response.getHeaders());
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link BatchFileProperties} object containing the properties retrieved from the response
+     * headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchFileProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
+        Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with
+     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId) {
+        // Generated convenience method for listTaskFiles
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listTaskFiles(jobId, taskId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeFile.class));
+    }
+
+    /**
+     * Deletes a user Account from the specified Compute Node.
+     *
+     * You can delete a user Account to a Compute Node only when it is in the idle or
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to delete a user Account.
+     * @param username The name of the user Account to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskAddCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection,
-        CreateBatchTaskCollectionOptions options) {
-        // Generated convenience method for createTaskCollectionWithResponse
+    public void deleteNodeUser(String poolId, String nodeId, String username) {
+        // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions).getValue();
+    }
+
+    /**
+     * Gets information about the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to get information about.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Compute Node.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchNode getNode(String poolId, String nodeId) {
+        // Generated convenience method for getNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getNodeWithResponse(poolId, nodeId, requestOptions).getValue().toObject(BatchNode.class);
+    }
+
+    /**
+     * Restarts the specified Compute Node.
+     *
+     * You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void rebootNode(String poolId, String nodeId) {
+        // Generated convenience method for rebootNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        rebootNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Restarts the specified Compute Node.
+     *
+     * You can restart a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the rebooting of the Node.
+     * The poller provides {@link BatchNode} instances during polling and returns the last known
+     * {@link BatchNode} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginRebootNode(String poolId, String nodeId) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginRebootNode(poolId, nodeId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void startNode(String poolId, String nodeId) {
+        // Generated convenience method for startNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        startNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Starts the specified Compute Node.
+     *
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the starting of the Node.
+     * The poller provides {@link BatchNode} instances during polling and returns the last known
+     * {@link BatchNode} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginStartNode(String poolId, String nodeId) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginStartNode(poolId, nodeId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reimageNode(String poolId, String nodeId) {
+        // Generated convenience method for reimageNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        reimageNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Reinstalls the operating system on the specified Compute Node.
+     *
+     * You can reinstall the operating system on a Compute Node only if it is in an
+     * idle or running state. This API can be invoked only on Pools created with the
+     * cloud service configuration property.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that emits {@link BatchNode} snapshots during polling
+     * and the final {@link BatchNode} when reimaging finishes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginReimageNode(String poolId, String nodeId) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginReimageNode(poolId, nodeId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deallocateNode(String poolId, String nodeId) {
+        // Generated convenience method for deallocateNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deallocateNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Deallocates the specified Compute Node.
+     *
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to restart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that emits {@link BatchNode} snapshots during polling
+     * and the final {@link BatchNode} when deallocation finishes.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginDeallocateNode(poolId, nodeId);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Disables Task scheduling on the specified Compute Node.
+     *
+     * You can disable Task scheduling on a Compute Node only if its current
+     * scheduling state is enabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disableNodeScheduling(String poolId, String nodeId) {
+        // Generated convenience method for disableNodeSchedulingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        disableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables Task scheduling on the specified Compute Node.
+     *
+     * You can enable Task scheduling on a Compute Node only if its current scheduling
+     * state is disabled.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enableNodeScheduling(String poolId, String nodeId) {
+        // Generated convenience method for enableNodeSchedulingWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the settings required for remote login to a Compute Node.
+     *
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the settings required for remote login to a Compute Node.
+     *
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchNodeRemoteLoginSettings getNodeRemoteLoginSettings(String poolId, String nodeId) {
+        // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).getValue()
+            .toObject(BatchNodeRemoteLoginSettings.class);
+    }
+
+    /**
+     * Lists the Compute Nodes in the specified Pool.
+     *
+     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchNode> listNodes(String poolId) {
+        // Generated convenience method for listNodes
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listNodes(poolId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNode.class));
+    }
+
+    /**
+     * Gets information about the specified Compute Node Extension.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that contains the extensions.
+     * @param extensionName The name of the Compute Node Extension that you want to get information about.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Compute Node Extension.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchNodeVMExtension getNodeExtension(String poolId, String nodeId, String extensionName) {
+        // Generated convenience method for getNodeExtensionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getNodeExtensionWithResponse(poolId, nodeId, extensionName, requestOptions).getValue()
+            .toObject(BatchNodeVMExtension.class);
+    }
+
+    /**
+     * Lists the Compute Nodes Extensions in the specified Pool.
+     *
+     * @param poolId The ID of the Pool that contains Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to list extensions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Compute Node extensions in a Node as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId) {
+        // Generated convenience method for listNodeExtensions
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listNodeExtensions(poolId, nodeId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeVMExtension.class));
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteNodeFile(String poolId, String nodeId, String filePath) {
+        // Generated convenience method for deleteNodeFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getNodeFile(String poolId, String nodeId, String filePath) {
+        // Generated convenience method for getNodeFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
+     * @param options Optional parameters for Get Node File Properties operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link BatchFileProperties} object containing the properties retrieved from the response
+     * headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
+        BatchNodeFilePropertiesGetOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeout", String.valueOf(timeout), false);
         }
-        return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions).getValue()
-            .toObject(BatchTaskAddCollectionResult.class);
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        // Retrieve response from getNodeFilePropertiesWithResponse and construct BatchFileProperties from its headers
+        Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions);
+        return BatchFileProperties.fromHeaders(response.getHeaders());
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node.
+     * @param filePath The path to the file or directory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return The {@link BatchFileProperties} object containing the properties retrieved from the response
+     * headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchFileProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
+        Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions());
+        return BatchFileProperties.fromHeaders(response.getHeaders());
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with
+     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId) {
+        // Generated convenience method for listNodeFiles
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listNodeFiles(poolId, nodeId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeFile.class));
+    }
+
+    /**
+     * Lists all of the applications available in the specified Account.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference. For
+     * administrator information about applications and versions that are not yet
+     * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
+     * API.
+     *
+     * @param options Optional parameters for List Applications operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the applications available in an Account as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchApplication> listApplications(BatchApplicationsListOptions options) {
+        // Generated convenience method for listApplications
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        return serviceClient.listApplications(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchApplication.class));
+    }
+
+    /**
+     * Gets information about the specified Application.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference. For
+     * administrator information about Applications and versions that are not yet
+     * available to Compute Nodes, use the Azure portal or the Azure Resource Manager
+     * API.
+     *
+     * @param applicationId The ID of the Application.
+     * @param options Optional parameters for Get Application operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Application.
+     *
+     * This operation returns only Applications and versions that are available for
+     * use on Compute Nodes; that is, that can be used in an Package reference.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchApplication getApplication(String applicationId, BatchApplicationGetOptions options) {
+        // Generated convenience method for getApplicationWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        return getApplicationWithResponse(applicationId, requestOptions).getValue().toObject(BatchApplication.class);
+    }
+
+    /**
+     * Lists the usage metrics, aggregated by Pool across individual time intervals,
+     * for the specified Account.
+     *
+     * If you do not specify a $filter clause including a poolId, the response
+     * includes all Pools that existed in the Account in the time range of the
+     * returned aggregation intervals. If you do not specify a $filter clause
+     * including a startTime or endTime these filters default to the start and end
+     * times of the last aggregation interval currently available; that is, only the
+     * last aggregation interval is returned.
+     *
+     * @param options Optional parameters for List Pool Usage Metrics operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a listing the usage metrics for an Account as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics(BatchPoolUsageMetricsListOptions options) {
+        // Generated convenience method for listPoolUsageMetrics
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        OffsetDateTime startTime = options == null ? null : options.getStartTime();
+        OffsetDateTime endTime = options == null ? null : options.getEndTime();
+        String filter = options == null ? null : options.getFilter();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (startTime != null) {
+            requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
+        }
+        if (endTime != null) {
+            requestOptions.addQueryParam("endtime", String.valueOf(endTime), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        return serviceClient.listPoolUsageMetrics(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolUsageMetrics.class));
+    }
+
+    /**
+     * Lists all of the Pools in the specified Account.
+     *
+     * @param options Optional parameters for List Pools operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Pools in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchPool> listPools(BatchPoolsListOptions options) {
+        // Generated convenience method for listPools
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        String filter = options == null ? null : options.getFilter();
+        List<String> select = options == null ? null : options.getSelect();
+        List<String> expand = options == null ? null : options.getExpand();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listPools(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPool.class));
+    }
+
+    /**
+     * Deletes a Pool from the specified Account.
+     *
+     * When you request that a Pool be deleted, the following actions occur: the Pool
+     * state is set to deleting; any ongoing resize operation on the Pool are stopped;
+     * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
+     * running on existing Compute Nodes are terminated and requeued (as if a resize
+     * Pool operation had been requested with the default requeue option); finally,
+     * the Pool is removed from the system. Because running Tasks are requeued, the
+     * user can rerun these Tasks by updating their Job to target a different Pool.
+     * The Tasks can then run on the new Pool. If you want to override the requeue
+     * behavior, then you should call resize Pool explicitly to shrink the Pool to
+     * zero size before deleting the Pool. If you call an Update, Patch or Delete API
+     * on a Pool in the deleting state, it will fail with HTTP status code 409 with
+     * error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Delete Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for deletePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deletePoolWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Pool from the specified Account.
+     *
+     * When you request that a Pool be deleted, the following actions occur: the Pool
+     * state is set to deleting; any ongoing resize operation on the Pool are stopped;
+     * the Batch service starts resizing the Pool to zero Compute Nodes; any Tasks
+     * running on existing Compute Nodes are terminated and requeued (as if a resize
+     * Pool operation had been requested with the default requeue option); finally,
+     * the Pool is removed from the system. Because running Tasks are requeued, the
+     * user can rerun these Tasks by updating their Job to target a different Pool.
+     * The Tasks can then run on the new Pool. If you want to override the requeue
+     * behavior, then you should call resize Pool explicitly to shrink the Pool to
+     * zero size before deleting the Pool. If you call an Update, Patch or Delete API
+     * on a Pool in the deleting state, it will fail with HTTP status code 409 with
+     * error code PoolBeingDeleted.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Delete Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Pool. The poller provides
+     * {@link BatchPool} instances during polling and returns the final {@link BatchPool} state upon successful
+     * deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginDeletePool(String poolId, BatchPoolDeleteOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginDeletePool(poolId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Gets information about the specified Pool.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Get Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Pool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchPool getPool(String poolId, BatchPoolGetOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for getPoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        List<String> select = options == null ? null : options.getSelect();
+        List<String> expand = options == null ? null : options.getExpand();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return getPoolWithResponse(poolId, requestOptions).getValue().toObject(BatchPool.class);
+    }
+
+    /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * This does not restore the Pool to its previous state before the resize
+     * operation: it only stops any further changes being made, and the Pool maintains
+     * its current state. After stopping, the Pool stabilizes at the number of Compute
+     * Nodes it was at when the stop operation was done. During the stop operation,
+     * the Pool allocation state changes first to stopping and then to steady. A
+     * resize operation need not be an explicit resize Pool request; this API can also
+     * be used to halt the initial sizing of the Pool when it is created.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Stop Pool Resize operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void stopPoolResize(String poolId, BatchPoolResizeStopOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for stopPoolResizeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        stopPoolResizeWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Stops an ongoing resize operation on the Pool.
+     *
+     * This does not restore the Pool to its previous state before the resize
+     * operation: it only stops any further changes being made, and the Pool maintains
+     * its current state. After stopping, the Pool stabilizes at the number of Compute
+     * Nodes it was at when the stop operation was done. During the stop operation,
+     * the Pool allocation state changes first to stopping and then to steady. A
+     * resize operation need not be an explicit resize Pool request; this API can also
+     * be used to halt the initial sizing of the Pool when it is created.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param options Optional parameters for Stop Pool Resize operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the stop-resize operation, providing
+     * {@link BatchPool} instances during polling and the final snapshot on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginStopPoolResize(String poolId, BatchPoolResizeStopOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller
+            = asyncClient.beginStopPoolResize(poolId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Lists all Virtual Machine Images supported by the Azure Batch service.
+     *
+     * @param options Optional parameters for List Supported Images operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the supported Virtual Machine Images as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchSupportedImage> listSupportedImages(SupportedBatchImagesListOptions options) {
+        // Generated convenience method for listSupportedImages
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        String filter = options == null ? null : options.getFilter();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        return serviceClient.listSupportedImages(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchSupportedImage.class));
+    }
+
+    /**
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the
+     * numbers returned may not always be up to date. If you need exact node counts,
+     * use a list query.
+     *
+     * @param options Optional parameters for List Pool Node Counts operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchPoolNodeCounts> listPoolNodeCounts(BatchPoolNodeCountsListOptions options) {
+        // Generated convenience method for listPoolNodeCounts
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        String filter = options == null ? null : options.getFilter();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        return serviceClient.listPoolNodeCounts(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchPoolNodeCounts.class));
+    }
+
+    /**
+     * Deletes a Job.
+     *
+     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
+     * statistics. This also overrides the retention period for Task data; that is, if
+     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
+     * services deletes those Tasks' working directories and all their contents. When
+     * a Delete Job request is received, the Batch service sets the Job to the
+     * deleting state. All update operations on a Job that is in deleting state will
+     * fail with status code 409 (Conflict), with additional information indicating
+     * that the Job is being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param options Optional parameters for Delete Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for deleteJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Boolean force = options == null ? null : options.isForce();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Job.
+     *
+     * Deleting a Job also deletes all Tasks that are part of that Job, and all Job
+     * statistics. This also overrides the retention period for Task data; that is, if
+     * the Job contains Tasks which are still retained on Compute Nodes, the Batch
+     * services deletes those Tasks' working directories and all their contents. When
+     * a Delete Job request is received, the Batch service sets the Job to the
+     * deleting state. All update operations on a Job that is in deleting state will
+     * fail with status code 409 (Conflict), with additional information indicating
+     * that the Job is being deleted.
+     *
+     * @param jobId The ID of the Job to delete.
+     * @param options Optional parameters for Delete Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Job. The poller provides
+     * {@link BatchJob} instances during polling and returns the final {@link BatchJob} state upon successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginDeleteJob(String jobId, BatchJobDeleteOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginDeleteJob(jobId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Gets information about the specified Job.
+     *
+     * @param jobId The ID of the Job.
+     * @param options Optional parameters for Get Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchJob getJob(String jobId, BatchJobGetOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for getJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        List<String> select = options == null ? null : options.getSelect();
+        List<String> expand = options == null ? null : options.getExpand();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return getJobWithResponse(jobId, requestOptions).getValue().toObject(BatchJob.class);
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * This fully replaces all the updatable properties of the Job. For example, if
+     * the Job has constraints associated with it and if constraints is not specified
+     * with this request, then the Batch service will remove the existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param job A job with updated properties.
+     * @param options Optional parameters for Replace Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void replaceJob(String jobId, BatchJob job, BatchJobReplaceOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for replaceJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        replaceJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).getValue();
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * When you call this API, the Batch service sets a disabled Job to the enabling
+     * state. After the this operation is completed, the Job moves to the active
+     * state, and scheduling of new Tasks under the Job resumes. The Batch service
+     * does not allow a Task to remain in the active state for more than 180 days.
+     * Therefore, if you enable a Job containing active Tasks which were added more
+     * than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @param options Optional parameters for Enable Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for enableJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        enableJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables the specified Job, allowing new Tasks to run.
+     *
+     * When you call this API, the Batch service sets a disabled Job to the enabling
+     * state. After this operation is completed, the Job moves to the active
+     * state, and scheduling of new Tasks under the Job resumes. The Batch service
+     * does not allow a Task to remain in the active state for more than 180 days.
+     * Therefore, if you enable a Job containing active Tasks which were added more
+     * than 180 days ago, those Tasks will not run.
+     *
+     * @param jobId The ID of the Job to enable.
+     * @param options Optional parameters for Enable Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the enabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginEnableJob(String jobId, BatchJobEnableOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginEnableJob(jobId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Terminates the specified Job, marking it as completed.
+     *
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param options Optional parameters for Terminate Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void terminateJob(String jobId, BatchJobTerminateOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for terminateJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        BatchJobTerminateParameters parameters = options == null ? null : options.getParameters();
+        Boolean force = options == null ? null : options.isForce();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (parameters != null) {
+            requestOptions.setBody(BinaryData.fromObject(parameters));
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        terminateJobWithResponse(jobId, requestOptions).getValue();
+    }
+
+    /**
+     * Begins terminating the specified Job, marking it as completed.
+     *
+     * When a Terminate Job request is received, the Batch service sets the Job to the
+     * terminating state. The Batch service then terminates any running Tasks
+     * associated with the Job and runs any required Job release Tasks. Then the Job
+     * moves into the completed state. If there are any Tasks in the Job in the active
+     * state, they will remain in the active state. Once a Job is terminated, new
+     * Tasks cannot be added and any remaining active Tasks will not be scheduled.
+     *
+     * @param jobId The ID of the Job to terminate.
+     * @param options Optional parameters for Terminate Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the termination of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginTerminateJob(String jobId, BatchJobTerminateOptions options,
+        RequestConditions requestConditions) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginTerminateJob(jobId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Lists all of the Jobs in the specified Account.
+     *
+     * @param options Optional parameters for List Jobs operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchJob> listJobs(BatchJobsListOptions options) {
+        // Generated convenience method for listJobs
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        String filter = options == null ? null : options.getFilter();
+        List<String> select = options == null ? null : options.getSelect();
+        List<String> expand = options == null ? null : options.getExpand();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listJobs(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
+    }
+
+    /**
+     * Lists the Jobs that have been created under the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
+     * @param options Optional parameters for List Jobs From Schedule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchJob> listJobsFromSchedule(String jobScheduleId,
+        BatchJobsFromScheduleListOptions options) {
+        // Generated convenience method for listJobsFromSchedule
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        String filter = options == null ? null : options.getFilter();
+        List<String> select = options == null ? null : options.getSelect();
+        List<String> expand = options == null ? null : options.getExpand();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listJobsFromSchedule(jobScheduleId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJob.class));
+    }
+
+    /**
+     * Lists the execution status of the Job Preparation and Job Release Task for the
+     * specified Job across the Compute Nodes where the Job has run.
+     *
+     * This API returns the Job Preparation and Job Release Task status on all Compute
+     * Nodes that have run the Job Preparation or Job Release Task. This includes
+     * Compute Nodes which have since been removed from the Pool. If this API is
+     * invoked on a Job which has no Job Preparation or Job Release Task, the Batch
+     * service returns HTTP status code 409 (Conflict) with an error code of
+     * JobPreparationTaskNotSpecified.
+     *
+     * @param jobId The ID of the Job.
+     * @param options Optional parameters for List Jobs Preparation and Release Task Status operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the status of the Job Preparation and Job Release Tasks
+     * for a Job as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(String jobId,
+        BatchJobPreparationAndReleaseTaskStatusListOptions options) {
+        // Generated convenience method for listJobPreparationAndReleaseTaskStatus
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        String filter = options == null ? null : options.getFilter();
+        List<String> select = options == null ? null : options.getSelect();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listJobPreparationAndReleaseTaskStatus(jobId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobPreparationAndReleaseTaskStatus.class));
+    }
+
+    /**
+     * Gets the Task counts for the specified Job.
+     *
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed. Tasks in the preparing
+     * state are counted as running. Note that the numbers returned may not always be
+     * up to date. If you need exact task counts, use a list query.
+     *
+     * @param jobId The ID of the Job.
+     * @param options Optional parameters for Get Job Task Counts operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Task counts for the specified Job.
+     *
+     * Task counts provide a count of the Tasks by active, running or completed Task
+     * state, and a count of Tasks which succeeded or failed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchTaskCountsResult getJobTaskCounts(String jobId, BatchJobTaskCountsGetOptions options) {
+        // Generated convenience method for getJobTaskCountsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        return getJobTaskCountsWithResponse(jobId, requestOptions).getValue().toObject(BatchTaskCountsResult.class);
+    }
+
+    /**
+     * Deletes a Job Schedule from the specified Account.
+     *
+     * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
+     * schedule. When Tasks are deleted, all the files in their working directories on
+     * the Compute Nodes are also deleted (the retention period is ignored). The Job
+     * Schedule statistics are no longer accessible once the Job Schedule is deleted,
+     * though they are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @param options Optional parameters for Delete Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteJobSchedule(String jobScheduleId, BatchJobScheduleDeleteOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for deleteJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Boolean force = options == null ? null : options.isForce();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Job Schedule from the specified Account.
+     *
+     * When you delete a Job Schedule, this also deletes all Jobs and Tasks under that
+     * schedule. When Tasks are deleted, all the files in their working directories on
+     * the Compute Nodes are also deleted (the retention period is ignored). The Job
+     * Schedule statistics are no longer accessible once the Job Schedule is deleted,
+     * though they are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @param options Optional parameters for Delete Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the deletion of the Job Schedule. The poller provides
+     * {@link BatchJobSchedule} instances during polling and returns the final {@link BatchJobSchedule} state upon
+     * successful deletion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginDeleteJobSchedule(String jobScheduleId,
+        BatchJobScheduleDeleteOptions options, RequestConditions requestConditions) {
+        PollerFlux<BatchJobSchedule, BatchJobSchedule> asyncPoller
+            = asyncClient.beginDeleteJobSchedule(jobScheduleId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Gets information about the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to get.
+     * @param options Optional parameters for Get Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Job Schedule.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchJobSchedule getJobSchedule(String jobScheduleId, BatchJobScheduleGetOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for getJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        List<String> select = options == null ? null : options.getSelect();
+        List<String> expand = options == null ? null : options.getExpand();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return getJobScheduleWithResponse(jobScheduleId, requestOptions).getValue().toObject(BatchJobSchedule.class);
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * This fully replaces all the updatable properties of the Job Schedule. For
+     * example, if the schedule property is not specified with this request, then the
+     * Batch service will remove the existing schedule. Changes to a Job Schedule only
+     * impact Jobs created by the schedule after the update has taken place; currently
+     * running Jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param jobSchedule A Job Schedule with updated properties.
+     * @param options Optional parameters for Replace Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void replaceJobSchedule(String jobScheduleId, BatchJobSchedule jobSchedule,
+        BatchJobScheduleReplaceOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for replaceJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        replaceJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions).getValue();
+    }
+
+    /**
+     * Disables a Job Schedule.
+     *
+     * No new Jobs will be created until the Job Schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to disable.
+     * @param options Optional parameters for Disable Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disableJobSchedule(String jobScheduleId, BatchJobScheduleDisableOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for disableJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        disableJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to enable.
+     * @param options Optional parameters for Enable Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enableJobSchedule(String jobScheduleId, BatchJobScheduleEnableOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for enableJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        enableJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Terminates a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminates.
+     * @param options Optional parameters for Terminate Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void terminateJobSchedule(String jobScheduleId, BatchJobScheduleTerminateOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for terminateJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Boolean force = options == null ? null : options.isForce();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (force != null) {
+            requestOptions.addQueryParam("force", String.valueOf(force), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        terminateJobScheduleWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Terminates a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminates.
+     * @param options Optional parameters for Terminate Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the termination of the Job Schedule. The poller provides
+     * {@link BatchJobSchedule} instances during polling and returns the last known {@link BatchJobSchedule} on
+     * completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJobSchedule, BatchJobSchedule> beginTerminateJobSchedule(String jobScheduleId,
+        BatchJobScheduleTerminateOptions options, RequestConditions requestConditions) {
+        PollerFlux<BatchJobSchedule, BatchJobSchedule> asyncPoller
+            = asyncClient.beginTerminateJobSchedule(jobScheduleId, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Lists all of the Job Schedules in the specified Account.
+     *
+     * @param options Optional parameters for List Job Schedules operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchJobSchedule> listJobSchedules(BatchJobSchedulesListOptions options) {
+        // Generated convenience method for listJobSchedules
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        String filter = options == null ? null : options.getFilter();
+        List<String> select = options == null ? null : options.getSelect();
+        List<String> expand = options == null ? null : options.getExpand();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listJobSchedules(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchJobSchedule.class));
+    }
+
+    /**
+     * Lists all of the Tasks that are associated with the specified Job.
+     *
+     * For multi-instance Tasks, information such as affinityId, executionInfo and
+     * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
+     * information about subtasks.
+     *
+     * @param jobId The ID of the Job.
+     * @param options Optional parameters for List Tasks operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchTask> listTasks(String jobId, BatchTasksListOptions options) {
+        // Generated convenience method for listTasks
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        String filter = options == null ? null : options.getFilter();
+        List<String> select = options == null ? null : options.getSelect();
+        List<String> expand = options == null ? null : options.getExpand();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (maxPageSize != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand",
+                expand.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listTasks(jobId, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchTask.class));
     }
 
     /**
@@ -14378,21 +14702,24 @@ public final class BatchClient {
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
+     * @param options Optional parameters for Create Task Collection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job.
+     * @return the result of creating a collection of Tasks to a Job.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskAddCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection) {
+    public BatchCreateTaskCollectionResult createTaskCollection(String jobId, BatchTaskGroup taskCollection,
+        BatchTaskCollectionCreateOptions options) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions).getValue()
-            .toObject(BatchTaskAddCollectionResult.class);
+            .toObject(BatchCreateTaskCollectionResult.class);
     }
 
     /**
@@ -14409,25 +14736,22 @@ public final class BatchClient {
      * @param options Optional parameters for Delete Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTask(String jobId, String taskId, DeleteBatchTaskOptions options,
+    public void deleteTask(String jobId, String taskId, BatchTaskDeleteOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for deleteTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14447,32 +14771,6 @@ public final class BatchClient {
     }
 
     /**
-     * Deletes a Task from the specified Job.
-     *
-     * When a Task is deleted, all of the files in its directory on the Compute Node
-     * where it ran are also deleted (regardless of the retention time). For
-     * multi-instance Tasks, the delete Task operation applies synchronously to the
-     * primary task; subtasks and their files are then deleted asynchronously in the
-     * background.
-     *
-     * @param jobId The ID of the Job from which to delete the Task.
-     * @param taskId The ID of the Task to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTask(String jobId, String taskId) {
-        // Generated convenience method for deleteTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteTaskWithResponse(jobId, taskId, requestOptions).getValue();
-    }
-
-    /**
      * Gets information about the specified Task.
      *
      * For multi-instance Tasks, information such as affinityId, executionInfo and
@@ -14484,10 +14782,7 @@ public final class BatchClient {
      * @param options Optional parameters for Get Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Task.
      *
@@ -14496,19 +14791,19 @@ public final class BatchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTask getTask(String jobId, String taskId, GetBatchTaskOptions options,
+    public BatchTask getTask(String jobId, String taskId, BatchTaskGetOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14542,34 +14837,6 @@ public final class BatchClient {
     }
 
     /**
-     * Gets information about the specified Task.
-     *
-     * For multi-instance Tasks, information such as affinityId, executionInfo and
-     * nodeInfo refer to the primary Task. Use the list subtasks API to retrieve
-     * information about subtasks.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task to get information about.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Task.
-     *
-     * For multi-instance Tasks, information such as affinityId, executionInfo and
-     * nodeInfo refer to the primary Task.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTask getTask(String jobId, String taskId) {
-        // Generated convenience method for getTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTaskWithResponse(jobId, taskId, requestOptions).getValue().toObject(BatchTask.class);
-    }
-
-    /**
      * Updates the properties of the specified Task.
      *
      * @param jobId The ID of the Job containing the Task.
@@ -14578,25 +14845,22 @@ public final class BatchClient {
      * @param options Optional parameters for Replace Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replaceTask(String jobId, String taskId, BatchTask task, ReplaceBatchTaskOptions options,
+    public void replaceTask(String jobId, String taskId, BatchTask task, BatchTaskReplaceOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for replaceTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14616,27 +14880,6 @@ public final class BatchClient {
     }
 
     /**
-     * Updates the properties of the specified Task.
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to update.
-     * @param task The Task to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replaceTask(String jobId, String taskId, BatchTask task) {
-        // Generated convenience method for replaceTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        replaceTaskWithResponse(jobId, taskId, BinaryData.fromObject(task), requestOptions).getValue();
-    }
-
-    /**
      * Lists all of the subtasks that are associated with the specified multi-instance
      * Task.
      *
@@ -14646,22 +14889,19 @@ public final class BatchClient {
      * @param taskId The ID of the Task.
      * @param options Optional parameters for List SubTasks operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId, ListBatchSubTasksOptions options) {
+    public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId, BatchSubTasksListOptions options) {
         // Generated convenience method for listSubTasks
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14670,31 +14910,6 @@ public final class BatchClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return serviceClient.listSubTasks(jobId, taskId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchSubtask.class));
-    }
-
-    /**
-     * Lists all of the subtasks that are associated with the specified multi-instance
-     * Task.
-     *
-     * If the Task is not a multi-instance Task then this returns an empty collection.
-     *
-     * @param jobId The ID of the Job.
-     * @param taskId The ID of the Task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the subtasks of a Task as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchSubtask> listSubTasks(String jobId, String taskId) {
-        // Generated convenience method for listSubTasks
-        RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listSubTasks(jobId, taskId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchSubtask.class));
     }
@@ -14711,25 +14926,22 @@ public final class BatchClient {
      * @param options Optional parameters for Terminate Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateTask(String jobId, String taskId, TerminateBatchTaskOptions options,
+    public void terminateTask(String jobId, String taskId, BatchTaskTerminateOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for terminateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14745,30 +14957,6 @@ public final class BatchClient {
         if (ifNoneMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
         }
-        terminateTaskWithResponse(jobId, taskId, requestOptions).getValue();
-    }
-
-    /**
-     * Terminates the specified Task.
-     *
-     * When the Task has been terminated, it moves to the completed state. For
-     * multi-instance Tasks, the terminate Task operation applies synchronously to the
-     * primary task; subtasks are then terminated asynchronously in the background.
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to terminate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminateTask(String jobId, String taskId) {
-        // Generated convenience method for terminateTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         terminateTaskWithResponse(jobId, taskId, requestOptions).getValue();
     }
 
@@ -14789,25 +14977,22 @@ public final class BatchClient {
      * @param options Optional parameters for Reactivate Task operation.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reactivateTask(String jobId, String taskId, ReactivateBatchTaskOptions options,
+    public void reactivateTask(String jobId, String taskId, BatchTaskReactivateOptions options,
         RequestConditions requestConditions) {
         // Generated convenience method for reactivateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14827,35 +15012,6 @@ public final class BatchClient {
     }
 
     /**
-     * Reactivates a Task, allowing it to run again even if its retry count has been
-     * exhausted.
-     *
-     * Reactivation makes a Task eligible to be retried again up to its maximum retry
-     * count. The Task's state is changed to active. As the Task is no longer in the
-     * completed state, any previous exit code or failure information is no longer
-     * available after reactivation. Each time a Task is reactivated, its retry count
-     * is reset to 0. Reactivation will fail for Tasks that are not completed or that
-     * previously completed successfully (with an exit code of 0). Additionally, it
-     * will fail if the Job has completed (or is terminating or deleting).
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to reactivate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reactivateTask(String jobId, String taskId) {
-        // Generated convenience method for reactivateTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        reactivateTaskWithResponse(jobId, taskId, requestOptions).getValue();
-    }
-
-    /**
      * Deletes the specified Task file from the Compute Node where the Task ran.
      *
      * @param jobId The ID of the Job that contains the Task.
@@ -14863,46 +15019,22 @@ public final class BatchClient {
      * @param filePath The path to the Task file that you want to get the content of.
      * @param options Optional parameters for Delete Task File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTaskFile(String jobId, String taskId, String filePath, DeleteBatchTaskFileOptions options) {
+    public void deleteTaskFile(String jobId, String taskId, String filePath, BatchTaskFileDeleteOptions options) {
         // Generated convenience method for deleteTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        deleteTaskFileWithResponse(jobId, taskId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes the specified Task file from the Compute Node where the Task ran.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteTaskFile(String jobId, String taskId, String filePath) {
-        // Generated convenience method for deleteTaskFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         deleteTaskFileWithResponse(jobId, taskId, filePath, requestOptions).getValue();
     }
 
@@ -14914,24 +15046,21 @@ public final class BatchClient {
      * @param filePath The path to the Task file that you want to get the content of.
      * @param options Optional parameters for Get Task File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getTaskFile(String jobId, String taskId, String filePath, GetBatchTaskFileOptions options) {
+    public BinaryData getTaskFile(String jobId, String taskId, String filePath, BatchTaskFileGetOptions options) {
         // Generated convenience method for getTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14948,114 +15077,28 @@ public final class BatchClient {
     }
 
     /**
-     * Returns the content of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getTaskFile(String jobId, String taskId, String filePath) {
-        // Generated convenience method for getTaskFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getTaskFileWithResponse(jobId, taskId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Gets the properties of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @param options Optional parameters for Get Task File Properties operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
-     * headers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath,
-        GetBatchTaskFilePropertiesOptions options) {
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        // Retrieve response from getTaskFilePropertiesWithResponse and construct FileResponseHeaderProperties from its
-        // headers
-        Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions);
-        return new FileResponseHeaderProperties(response.getHeaders());
-    }
-
-    /**
-     * Gets the properties of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
-     * headers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileResponseHeaderProperties getTaskFileProperties(String jobId, String taskId, String filePath) {
-        Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, new RequestOptions());
-        return new FileResponseHeaderProperties(response.getHeaders());
-    }
-
-    /**
      * Lists the files in a Task's directory on its Compute Node.
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
      * @param options Optional parameters for List Task Files operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
+    public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId, BatchTaskFilesListOptions options) {
         // Generated convenience method for listTaskFiles
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15071,195 +15114,31 @@ public final class BatchClient {
     }
 
     /**
-     * Lists the files in a Task's directory on its Compute Node.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose files you want to list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with
-     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId) {
-        // Generated convenience method for listTaskFiles
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTaskFiles(jobId, taskId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeFile.class));
-    }
-
-    /**
-     * Adds a user Account to the specified Compute Node.
-     *
-     * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to create a user Account.
-     * @param user The options to use for creating the user.
-     * @param options Optional parameters for Create Node User operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createNodeUser(String poolId, String nodeId, BatchNodeUserCreateContent user,
-        CreateBatchNodeUserOptions options) {
-        // Generated convenience method for createNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions).getValue();
-    }
-
-    /**
-     * Adds a user Account to the specified Compute Node.
-     *
-     * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to create a user Account.
-     * @param user The options to use for creating the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createNodeUser(String poolId, String nodeId, BatchNodeUserCreateContent user) {
-        // Generated convenience method for createNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions).getValue();
-    }
-
-    /**
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
+     * @param username The name of the user Account to delete.
      * @param options Optional parameters for Delete Node User operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNodeUser(String poolId, String nodeId, String userName, DeleteBatchNodeUserOptions options) {
+    public void deleteNodeUser(String poolId, String nodeId, String username, BatchNodeUserDeleteOptions options) {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
-        deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a user Account from the specified Compute Node.
-     *
-     * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to delete a user Account.
-     * @param userName The name of the user Account to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNodeUser(String poolId, String nodeId, String userName) {
-        // Generated convenience method for deleteNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).getValue();
-    }
-
-    /**
-     * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
-     * This operation replaces of all the updatable properties of the Account. For
-     * example, if the expiryTime element is not specified, the current value is
-     * replaced with the default value, not left unmodified. You can update a user
-     * Account on a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
-     * @param options Optional parameters for Replace Node User operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateContent content,
-        ReplaceBatchNodeUserOptions options) {
-        // Generated convenience method for replaceNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(content), requestOptions)
-            .getValue();
-    }
-
-    /**
-     * Updates the password and expiration time of a user Account on the specified Compute Node.
-     *
-     * This operation replaces of all the updatable properties of the Account. For
-     * example, if the expiryTime element is not specified, the current value is
-     * replaced with the default value, not left unmodified. You can update a user
-     * Account on a Compute Node only when it is in the idle or running state.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the machine on which you want to update a user Account.
-     * @param userName The name of the user Account to update.
-     * @param content The options to use for updating the user.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateContent content) {
-        // Generated convenience method for replaceNodeUserWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(content), requestOptions)
-            .getValue();
+        deleteNodeUserWithResponse(poolId, nodeId, username, requestOptions).getValue();
     }
 
     /**
@@ -15269,22 +15148,19 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to get information about.
      * @param options Optional parameters for Get Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchNode getNode(String poolId, String nodeId, GetBatchNodeOptions options) {
+    public BatchNode getNode(String poolId, String nodeId, BatchNodeGetOptions options) {
         // Generated convenience method for getNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -15297,27 +15173,6 @@ public final class BatchClient {
     }
 
     /**
-     * Gets information about the specified Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to get information about.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Compute Node.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchNode getNode(String poolId, String nodeId) {
-        // Generated convenience method for getNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getNodeWithResponse(poolId, nodeId, requestOptions).getValue().toObject(BatchNode.class);
-    }
-
-    /**
      * Restarts the specified Compute Node.
      *
      * You can restart a Compute Node only if it is in an idle or running state.
@@ -15326,21 +15181,18 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param options Optional parameters for Reboot Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rebootNode(String poolId, String nodeId, RebootBatchNodeOptions options) {
+    void rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeRebootContent parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        BatchNodeRebootParameters parameters = options == null ? null : options.getParameters();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15355,19 +15207,19 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Reboot Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the rebooting of the Node.
+     * The poller provides {@link BatchNode} instances during polling and returns the last known
+     * {@link BatchNode} on completion.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rebootNode(String poolId, String nodeId) {
-        // Generated convenience method for rebootNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        rebootNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginRebootNode(String poolId, String nodeId,
+        BatchNodeRebootOptions options) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginRebootNode(poolId, nodeId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -15379,20 +15231,17 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param options Optional parameters for Start Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startNode(String poolId, String nodeId, StartBatchNodeOptions options) {
+    void startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         startNodeWithResponse(poolId, nodeId, requestOptions).getValue();
     }
@@ -15404,19 +15253,19 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Start Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the starting of the Node.
+     * The poller provides {@link BatchNode} instances during polling and returns the last known
+     * {@link BatchNode} on completion.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startNode(String poolId, String nodeId) {
-        // Generated convenience method for startNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        startNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginStartNode(String poolId, String nodeId,
+        BatchNodeStartOptions options) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginStartNode(poolId, nodeId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -15430,21 +15279,18 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param options Optional parameters for Reimage Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimageNode(String poolId, String nodeId, ReimageBatchNodeOptions options) {
+    void reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeReimageContent parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        BatchNodeReimageParameters parameters = options == null ? null : options.getParameters();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15461,19 +15307,18 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Reimage Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that emits {@link BatchNode} snapshots during polling
+     * and the final {@link BatchNode} when reimaging finishes.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimageNode(String poolId, String nodeId) {
-        // Generated convenience method for reimageNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        reimageNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginReimageNode(String poolId, String nodeId,
+        BatchNodeReimageOptions options) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginReimageNode(poolId, nodeId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -15485,21 +15330,18 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node that you want to restart.
      * @param options Optional parameters for Deallocate Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deallocateNode(String poolId, String nodeId, DeallocateBatchNodeOptions options) {
+    void deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeDeallocateContent parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        BatchNodeDeallocateParameters parameters = options == null ? null : options.getParameters();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15514,19 +15356,18 @@ public final class BatchClient {
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
+     * @param options Optional parameters for Deallocate Node operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that emits {@link BatchNode} snapshots during polling
+     * and the final {@link BatchNode} when deallocation finishes.
      */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deallocateNode(String poolId, String nodeId) {
-        // Generated convenience method for deallocateNodeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deallocateNodeWithResponse(poolId, nodeId, requestOptions).getValue();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchNode, BatchNode> beginDeallocateNode(String poolId, String nodeId,
+        BatchNodeDeallocateOptions options) {
+        PollerFlux<BatchNode, BatchNode> asyncPoller = asyncClient.beginDeallocateNode(poolId, nodeId, options);
+        return asyncPoller.getSyncPoller();
     }
 
     /**
@@ -15539,48 +15380,22 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
      * @param options Optional parameters for Disable Node Scheduling operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableNodeScheduling(String poolId, String nodeId, DisableBatchNodeSchedulingOptions options) {
+    public void disableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingDisableOptions options) {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        BatchNodeDisableSchedulingContent parameters = options == null ? null : options.getParameters();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        BatchNodeSchedulingDisableParameters parameters = options == null ? null : options.getParameters();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
         }
-        disableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
-    }
-
-    /**
-     * Disables Task scheduling on the specified Compute Node.
-     *
-     * You can disable Task scheduling on a Compute Node only if its current
-     * scheduling state is enabled.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableNodeScheduling(String poolId, String nodeId) {
-        // Generated convenience method for disableNodeSchedulingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         disableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
     }
 
@@ -15594,174 +15409,51 @@ public final class BatchClient {
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param options Optional parameters for Enable Node Scheduling operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableNodeScheduling(String poolId, String nodeId, EnableBatchNodeSchedulingOptions options) {
+    public void enableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingEnableOptions options) {
         // Generated convenience method for enableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
-        enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
-    }
-
-    /**
-     * Enables Task scheduling on the specified Compute Node.
-     *
-     * You can enable Task scheduling on a Compute Node only if its current scheduling
-     * state is disabled.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableNodeScheduling(String poolId, String nodeId) {
-        // Generated convenience method for enableNodeSchedulingWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).getValue();
     }
 
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
      * @param options Optional parameters for Get Node Remote Login Settings operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchNodeRemoteLoginSettings getNodeRemoteLoginSettings(String poolId, String nodeId,
-        GetBatchNodeRemoteLoginSettingsOptions options) {
+        BatchNodeRemoteLoginSettingsGetOptions options) {
         // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).getValue()
             .toObject(BatchNodeRemoteLoginSettings.class);
-    }
-
-    /**
-     * Gets the settings required for remote login to a Compute Node.
-     *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the settings required for remote login to a Compute Node.
-     *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchNodeRemoteLoginSettings getNodeRemoteLoginSettings(String poolId, String nodeId) {
-        // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).getValue()
-            .toObject(BatchNodeRemoteLoginSettings.class);
-    }
-
-    /**
-     * Upload Azure Batch service log files from the specified Compute Node to Azure
-     * Blob Storage.
-     *
-     * This is for gathering Azure Batch service log files in an automated fashion
-     * from Compute Nodes if you are experiencing an error and wish to escalate to
-     * Azure support. The Azure Batch service log files should be shared with Azure
-     * support to aid in debugging issues with the Batch service.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
-     * Protocol file.
-     * @param content The Azure Batch service log files upload options.
-     * @param options Optional parameters for Upload Node Logs operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of uploading Batch service log files from a specific Compute Node.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadBatchServiceLogsResult uploadNodeLogs(String poolId, String nodeId,
-        UploadBatchServiceLogsContent content, UploadBatchNodeLogsOptions options) {
-        // Generated convenience method for uploadNodeLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(content), requestOptions).getValue()
-            .toObject(UploadBatchServiceLogsResult.class);
-    }
-
-    /**
-     * Upload Azure Batch service log files from the specified Compute Node to Azure
-     * Blob Storage.
-     *
-     * This is for gathering Azure Batch service log files in an automated fashion
-     * from Compute Nodes if you are experiencing an error and wish to escalate to
-     * Azure support. The Azure Batch service log files should be shared with Azure
-     * support to aid in debugging issues with the Batch service.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
-     * Protocol file.
-     * @param content The Azure Batch service log files upload options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of uploading Batch service log files from a specific Compute Node.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UploadBatchServiceLogsResult uploadNodeLogs(String poolId, String nodeId,
-        UploadBatchServiceLogsContent content) {
-        // Generated convenience method for uploadNodeLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(content), requestOptions).getValue()
-            .toObject(UploadBatchServiceLogsResult.class);
     }
 
     /**
@@ -15770,24 +15462,21 @@ public final class BatchClient {
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param options Optional parameters for List Nodes operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchNode> listNodes(String poolId, ListBatchNodesOptions options) {
+    public PagedIterable<BatchNode> listNodes(String poolId, BatchNodesListOptions options) {
         // Generated convenience method for listNodes
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15807,27 +15496,6 @@ public final class BatchClient {
     }
 
     /**
-     * Lists the Compute Nodes in the specified Pool.
-     *
-     * @param poolId The ID of the Pool from which you want to list Compute Nodes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Compute Nodes in a Pool as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchNode> listNodes(String poolId) {
-        // Generated convenience method for listNodes
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listNodes(poolId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNode.class));
-    }
-
-    /**
      * Gets information about the specified Compute Node Extension.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -15835,23 +15503,20 @@ public final class BatchClient {
      * @param extensionName The name of the Compute Node Extension that you want to get information about.
      * @param options Optional parameters for Get Node Extension operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Compute Node Extension.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchNodeVMExtension getNodeExtension(String poolId, String nodeId, String extensionName,
-        GetBatchNodeExtensionOptions options) {
+        BatchNodeExtensionGetOptions options) {
         // Generated convenience method for getNodeExtensionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -15865,39 +15530,13 @@ public final class BatchClient {
     }
 
     /**
-     * Gets information about the specified Compute Node Extension.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node that contains the extensions.
-     * @param extensionName The name of the Compute Node Extension that you want to get information about.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Compute Node Extension.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchNodeVMExtension getNodeExtension(String poolId, String nodeId, String extensionName) {
-        // Generated convenience method for getNodeExtensionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getNodeExtensionWithResponse(poolId, nodeId, extensionName, requestOptions).getValue()
-            .toObject(BatchNodeVMExtension.class);
-    }
-
-    /**
      * Lists the Compute Nodes Extensions in the specified Pool.
      *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
      * @param options Optional parameters for List Node Extensions operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with
      * {@link PagedIterable}.
@@ -15905,14 +15544,14 @@ public final class BatchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId,
-        ListBatchNodeExtensionsOptions options) {
+        BatchNodeExtensionsListOptions options) {
         // Generated convenience method for listNodeExtensions
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         List<String> select = options == null ? null : options.getSelect();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -15929,29 +15568,6 @@ public final class BatchClient {
     }
 
     /**
-     * Lists the Compute Nodes Extensions in the specified Pool.
-     *
-     * @param poolId The ID of the Pool that contains Compute Node.
-     * @param nodeId The ID of the Compute Node that you want to list extensions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Compute Node extensions in a Node as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId) {
-        // Generated convenience method for listNodeExtensions
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listNodeExtensions(poolId, nodeId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeVMExtension.class));
-    }
-
-    /**
      * Deletes the specified file from the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -15959,46 +15575,22 @@ public final class BatchClient {
      * @param filePath The path to the file or directory.
      * @param options Optional parameters for Delete Node File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNodeFile(String poolId, String nodeId, String filePath, DeleteBatchNodeFileOptions options) {
+    public void deleteNodeFile(String poolId, String nodeId, String filePath, BatchNodeFileDeleteOptions options) {
         // Generated convenience method for deleteNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        deleteNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes the specified file from the Compute Node.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node.
-     * @param filePath The path to the file or directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteNodeFile(String poolId, String nodeId, String filePath) {
-        // Generated convenience method for deleteNodeFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         deleteNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
     }
 
@@ -16010,24 +15602,21 @@ public final class BatchClient {
      * @param filePath The path to the file or directory.
      * @param options Optional parameters for Get Node File operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getNodeFile(String poolId, String nodeId, String filePath, GetBatchNodeFileOptions options) {
+    public BinaryData getNodeFile(String poolId, String nodeId, String filePath, BatchNodeFileGetOptions options) {
         // Generated convenience method for getNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16044,113 +15633,28 @@ public final class BatchClient {
     }
 
     /**
-     * Returns the content of the specified Compute Node file.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node.
-     * @param filePath The path to the file or directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getNodeFile(String poolId, String nodeId, String filePath) {
-        // Generated convenience method for getNodeFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getNodeFileWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Gets the properties of the specified Compute Node file.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node.
-     * @param filePath The path to the file or directory.
-     * @param options Optional parameters for Get Node File Properties operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
-     * headers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath,
-        GetBatchNodeFilePropertiesOptions options) {
-        RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
-                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        // Retrieve response from getNodeFilePropertiesWithResponse and construct NodeFileProperties from its headers
-        Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, requestOptions);
-        return new FileResponseHeaderProperties(response.getHeaders());
-    }
-
-    /**
-     * Gets the properties of the specified Compute Node file.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node.
-     * @param filePath The path to the file or directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return The {@link FileResponseHeaderProperties} object containing the properties retrieved from the response
-     * headers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileResponseHeaderProperties getNodeFileProperties(String poolId, String nodeId, String filePath) {
-        Response<Void> response = getNodeFilePropertiesWithResponse(poolId, nodeId, filePath, new RequestOptions());
-        return new FileResponseHeaderProperties(response.getHeaders());
-    }
-
-    /**
      * Lists all of the files in Task directories on the specified Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
      * @param options Optional parameters for List Node Files operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the files on a Compute Node, or the files associated with
      * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
+    public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId, BatchNodeFilesListOptions options) {
         // Generated convenience method for listNodeFiles
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeout = options == null ? null : options.getTimeout();
         Integer maxPageSize = options == null ? null : options.getMaxPageSize();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
-        if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
         }
         if (maxPageSize != null) {
             requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
@@ -16166,25 +15670,1142 @@ public final class BatchClient {
     }
 
     /**
-     * Lists all of the files in Task directories on the specified Compute Node.
+     * Creates a Pool to the specified Account.
      *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * When naming Pools, avoid including sensitive information such as user names or
+     * secret project names. This information may appear in telemetry logs accessible
+     * to Microsoft Support engineers.
+     *
+     * @param pool The Pool to be created.
+     * @param options Optional parameters for Create Pool operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws BatchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with
-     * a Task on a Compute Node as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId) {
-        // Generated convenience method for listNodeFiles
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createPool(BatchPoolCreateParameters pool, BatchPoolCreateOptions options) {
+        // Generated convenience method for createPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listNodeFiles(poolId, nodeId, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchNodeFile.class));
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Pool to the specified Account.
+     *
+     * When naming Pools, avoid including sensitive information such as user names or
+     * secret project names. This information may appear in telemetry logs accessible
+     * to Microsoft Support engineers.
+     *
+     * @param pool The Pool to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createPool(BatchPoolCreateParameters pool) {
+        // Generated convenience method for createPoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * This only replaces the Pool properties specified in the request. For example,
+     * if the Pool has a StartTask associated with it, and a request does not specify
+     * a StartTask element, then the Pool keeps the existing StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param pool The pool properties to update.
+     * @param options Optional parameters for Update Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updatePool(String poolId, BatchPoolUpdateParameters pool, BatchPoolUpdateOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for updatePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        updatePoolWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * This only replaces the Pool properties specified in the request. For example,
+     * if the Pool has a StartTask associated with it, and a request does not specify
+     * a StartTask element, then the Pool keeps the existing StartTask.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param pool The pool properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updatePool(String poolId, BatchPoolUpdateParameters pool) {
+        // Generated convenience method for updatePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        updatePoolWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
+     * @param options Optional parameters for Resize Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resizePool(String poolId, BatchPoolResizeParameters parameters, BatchPoolResizeOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for resizePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        resizePoolWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
+     * @param options Optional parameters for Resize Pool operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the resizing of the Pool.
+     * The poller provides {@link BatchPool} instances during polling and returns the last known
+     * {@link BatchPool} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginResizePool(String poolId, BatchPoolResizeParameters parameters,
+        BatchPoolResizeOptions options, RequestConditions requestConditions) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller
+            = asyncClient.beginResizePool(poolId, parameters, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void resizePool(String poolId, BatchPoolResizeParameters parameters) {
+        // Generated convenience method for resizePoolWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        resizePoolWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Changes the number of Compute Nodes that are assigned to a Pool.
+     *
+     * You can only resize a Pool when its allocation state is steady. If the Pool is
+     * already resizing, the request fails with status code 409. When you resize a
+     * Pool, the Pool's allocation state changes from steady to resizing. You cannot
+     * resize Pools which are configured for automatic scaling. If you try to do this,
+     * the Batch service returns an error 409. If you resize a Pool downwards, the
+     * Batch service chooses which Compute Nodes to remove. To remove specific Compute
+     * Nodes, use the Pool remove Compute Nodes API instead.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for resizing the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the resizing of the Pool.
+     * The poller provides {@link BatchPool} instances during polling and returns the last known
+     * {@link BatchPool} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginResizePool(String poolId, BatchPoolResizeParameters parameters) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginResizePool(poolId, parameters);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * This fully replaces all the updatable properties of the Pool. For example, if
+     * the Pool has a StartTask associated with it and if StartTask is not specified
+     * with this request, then the Batch service will remove the existing StartTask.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param pool The options to use for replacing properties on the pool.
+     * @param options Optional parameters for Replace Pool Properties operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void replacePoolProperties(String poolId, BatchPoolReplaceParameters pool,
+        BatchPoolPropertiesReplaceOptions options) {
+        // Generated convenience method for replacePoolPropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Pool.
+     *
+     * This fully replaces all the updatable properties of the Pool. For example, if
+     * the Pool has a StartTask associated with it and if StartTask is not specified
+     * with this request, then the Batch service will remove the existing StartTask.
+     *
+     * @param poolId The ID of the Pool to update.
+     * @param pool The options to use for replacing properties on the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void replacePoolProperties(String poolId, BatchPoolReplaceParameters pool) {
+        // Generated convenience method for replacePoolPropertiesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions).getValue();
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
+     * @param options Optional parameters for Remove Nodes operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void removeNodes(String poolId, BatchNodeRemoveParameters parameters, BatchNodesRemoveOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for removeNodesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
+     * @param options Optional parameters for Remove Nodes operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the removal of nodes.
+     * The poller provides {@link BatchPool} instances during polling and returns the last
+     * known {@link BatchPool} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<BatchPool, BatchPool> beginRemoveNodes(String poolId, BatchNodeRemoveParameters parameters,
+        BatchNodesRemoveOptions options, RequestConditions requestConditions) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller
+            = asyncClient.beginRemoveNodes(poolId, parameters, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void removeNodes(String poolId, BatchNodeRemoveParameters parameters) {
+        // Generated convenience method for removeNodesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        removeNodesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Removes Compute Nodes from the specified Pool.
+     *
+     * This operation can only run when the allocation state of the Pool is steady.
+     * When this operation runs, the allocation state changes from steady to resizing.
+     * Each request may remove up to 100 nodes.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for removing the node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the removal of nodes.
+     * The poller provides {@link BatchPool} instances during polling and returns the last
+     * known {@link BatchPool} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchPool, BatchPool> beginRemoveNodes(String poolId, BatchNodeRemoveParameters parameters) {
+        PollerFlux<BatchPool, BatchPool> asyncPoller = asyncClient.beginRemoveNodes(poolId, parameters);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * This replaces only the Job properties specified in the request. For example, if
+     * the Job has constraints, and a request does not specify the constraints
+     * element, then the Job keeps the existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param job The options to use for updating the Job.
+     * @param options Optional parameters for Update Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateJob(String jobId, BatchJobUpdateParameters job, BatchJobUpdateOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for updateJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Job.
+     *
+     * This replaces only the Job properties specified in the request. For example, if
+     * the Job has constraints, and a request does not specify the constraints
+     * element, then the Job keeps the existing constraints.
+     *
+     * @param jobId The ID of the Job whose properties you want to update.
+     * @param job The options to use for updating the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateJob(String jobId, BatchJobUpdateParameters job) {
+        // Generated convenience method for updateJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        updateJobWithResponse(jobId, BinaryData.fromObject(job), requestOptions).getValue();
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * The Batch Service immediately moves the Job to the disabling state. Batch then
+     * uses the disableTasks parameter to determine what to do with the currently
+     * running Tasks of the Job. The Job remains in the disabling state until the
+     * disable operation is completed and all Tasks have been dealt with according to
+     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
+     * are started under the Job until it moves back to active state. If you try to
+     * disable a Job that is in any state other than active, disabling, or disabled,
+     * the request fails with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param parameters The options to use for disabling the Job.
+     * @param options Optional parameters for Disable Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableJob(String jobId, BatchJobDisableParameters parameters, BatchJobDisableOptions options,
+        RequestConditions requestConditions) {
+        // Generated convenience method for disableJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        disableJobWithResponse(jobId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * The Batch Service immediately moves the Job to the disabling state. Batch then
+     * uses the disableTasks parameter to determine what to do with the currently
+     * running Tasks of the Job. The Job remains in the disabling state until the
+     * disable operation is completed and all Tasks have been dealt with according to
+     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
+     * are started under the Job until it moves back to active state. If you try to
+     * disable a Job that is in any state other than active, disabling, or disabled,
+     * the request fails with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param parameters The options to use for disabling the Job.
+     * @param options Optional parameters for Disable Job operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the disabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters,
+        BatchJobDisableOptions options, RequestConditions requestConditions) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller
+            = asyncClient.beginDisableJob(jobId, parameters, options, requestConditions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * The Batch Service immediately moves the Job to the disabling state. Batch then
+     * uses the disableTasks parameter to determine what to do with the currently
+     * running Tasks of the Job. The Job remains in the disabling state until the
+     * disable operation is completed and all Tasks have been dealt with according to
+     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
+     * are started under the Job until it moves back to active state. If you try to
+     * disable a Job that is in any state other than active, disabling, or disabled,
+     * the request fails with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param parameters The options to use for disabling the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disableJob(String jobId, BatchJobDisableParameters parameters) {
+        // Generated convenience method for disableJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        disableJobWithResponse(jobId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Disables the specified Job, preventing new Tasks from running.
+     *
+     * The Batch Service immediately moves the Job to the disabling state. Batch then
+     * uses the disableTasks parameter to determine what to do with the currently
+     * running Tasks of the Job. The Job remains in the disabling state until the
+     * disable operation is completed and all Tasks have been dealt with according to
+     * the disableTasks option; the Job then moves to the disabled state. No new Tasks
+     * are started under the Job until it moves back to active state. If you try to
+     * disable a Job that is in any state other than active, disabling, or disabled,
+     * the request fails with status code 409.
+     *
+     * @param jobId The ID of the Job to disable.
+     * @param parameters The options to use for disabling the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link SyncPoller} that polls the disabling of the Job.
+     * The poller provides {@link BatchJob} instances during polling and returns the last known
+     * {@link BatchJob} on completion.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BatchJob, BatchJob> beginDisableJob(String jobId, BatchJobDisableParameters parameters) {
+        PollerFlux<BatchJob, BatchJob> asyncPoller = asyncClient.beginDisableJob(jobId, parameters);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Creates a Job to the specified Account.
+     *
+     * The Batch service supports two ways to control the work done as part of a Job.
+     * In the first approach, the user specifies a Job Manager Task. The Batch service
+     * launches this Task when it is ready to start the Job. The Job Manager Task
+     * controls all other Tasks that run under this Job, by using the Task APIs. In
+     * the second approach, the user directly controls the execution of Tasks under an
+     * active Job, by using the Task APIs. Also note: when naming Jobs, avoid
+     * including sensitive information such as user names or secret project names.
+     * This information may appear in telemetry logs accessible to Microsoft Support
+     * engineers.
+     *
+     * @param job The Job to be created.
+     * @param options Optional parameters for Create Job operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createJob(BatchJobCreateParameters job, BatchJobCreateOptions options) {
+        // Generated convenience method for createJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        createJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Job to the specified Account.
+     *
+     * The Batch service supports two ways to control the work done as part of a Job.
+     * In the first approach, the user specifies a Job Manager Task. The Batch service
+     * launches this Task when it is ready to start the Job. The Job Manager Task
+     * controls all other Tasks that run under this Job, by using the Task APIs. In
+     * the second approach, the user directly controls the execution of Tasks under an
+     * active Job, by using the Task APIs. Also note: when naming Jobs, avoid
+     * including sensitive information such as user names or secret project names.
+     * This information may appear in telemetry logs accessible to Microsoft Support
+     * engineers.
+     *
+     * @param job The Job to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createJob(BatchJobCreateParameters job) {
+        // Generated convenience method for createJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        createJobWithResponse(BinaryData.fromObject(job), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * This replaces only the Job Schedule properties specified in the request. For
+     * example, if the schedule property is not specified with this request, then the
+     * Batch service will keep the existing schedule. Changes to a Job Schedule only
+     * impact Jobs created by the schedule after the update has taken place; currently
+     * running Jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param jobSchedule The options to use for updating the Job Schedule.
+     * @param options Optional parameters for Update Job Schedule operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateParameters jobSchedule,
+        BatchJobScheduleUpdateOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for updateJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * This replaces only the Job Schedule properties specified in the request. For
+     * example, if the schedule property is not specified with this request, then the
+     * Batch service will keep the existing schedule. Changes to a Job Schedule only
+     * impact Jobs created by the schedule after the update has taken place; currently
+     * running Jobs are unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param jobSchedule The options to use for updating the Job Schedule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateParameters jobSchedule) {
+        // Generated convenience method for updateJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        updateJobScheduleWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedule), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Job Schedule to the specified Account.
+     *
+     * @param jobSchedule The Job Schedule to be created.
+     * @param options Optional parameters for Create Job Schedule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createJobSchedule(BatchJobScheduleCreateParameters jobSchedule, BatchJobScheduleCreateOptions options) {
+        // Generated convenience method for createJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Job Schedule to the specified Account.
+     *
+     * @param jobSchedule The Job Schedule to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createJobSchedule(BatchJobScheduleCreateParameters jobSchedule) {
+        // Generated convenience method for createJobScheduleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Task to the specified Job.
+     *
+     * The maximum lifetime of a Task from addition to completion is 180 days. If a
+     * Task has not completed within 180 days of being added it will be terminated by
+     * the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param task The Task to be created.
+     * @param options Optional parameters for Create Task operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createTask(String jobId, BatchTaskCreateParameters task, BatchTaskCreateOptions options) {
+        // Generated convenience method for createTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
+    }
+
+    /**
+     * Creates a Task to the specified Job.
+     *
+     * The maximum lifetime of a Task from addition to completion is 180 days. If a
+     * Task has not completed within 180 days of being added it will be terminated by
+     * the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param task The Task to be created.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createTask(String jobId, BatchTaskCreateParameters task) {
+        // Generated convenience method for createTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
+    }
+
+    /**
+     * Adds a user Account to the specified Compute Node.
+     *
+     * You can add a user Account to a Compute Node only when it is in the idle or
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to create a user Account.
+     * @param user The options to use for creating the user.
+     * @param options Optional parameters for Create Node User operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createNodeUser(String poolId, String nodeId, BatchNodeUserCreateParameters user,
+        BatchNodeUserCreateOptions options) {
+        // Generated convenience method for createNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions).getValue();
+    }
+
+    /**
+     * Adds a user Account to the specified Compute Node.
+     *
+     * You can add a user Account to a Compute Node only when it is in the idle or
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to create a user Account.
+     * @param user The options to use for creating the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createNodeUser(String poolId, String nodeId, BatchNodeUserCreateParameters user) {
+        // Generated convenience method for createNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the password and expiration time of a user Account on the specified Compute Node.
+     *
+     * This operation replaces of all the updatable properties of the Account. For
+     * example, if the expiryTime element is not specified, the current value is
+     * replaced with the default value, not left unmodified. You can update a user
+     * Account on a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to update a user Account.
+     * @param username The name of the user Account to update.
+     * @param parameters The options to use for updating the user.
+     * @param options Optional parameters for Replace Node User operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void replaceNodeUser(String poolId, String nodeId, String username, BatchNodeUserUpdateParameters parameters,
+        BatchNodeUserReplaceOptions options) {
+        // Generated convenience method for replaceNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        replaceNodeUserWithResponse(poolId, nodeId, username, BinaryData.fromObject(parameters), requestOptions)
+            .getValue();
+    }
+
+    /**
+     * Updates the password and expiration time of a user Account on the specified Compute Node.
+     *
+     * This operation replaces of all the updatable properties of the Account. For
+     * example, if the expiryTime element is not specified, the current value is
+     * replaced with the default value, not left unmodified. You can update a user
+     * Account on a Compute Node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the machine on which you want to update a user Account.
+     * @param username The name of the user Account to update.
+     * @param parameters The options to use for updating the user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void replaceNodeUser(String poolId, String nodeId, String username,
+        BatchNodeUserUpdateParameters parameters) {
+        // Generated convenience method for replaceNodeUserWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        replaceNodeUserWithResponse(poolId, nodeId, username, BinaryData.fromObject(parameters), requestOptions)
+            .getValue();
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified Compute Node to Azure
+     * Blob Storage.
+     *
+     * This is for gathering Azure Batch service log files in an automated fashion
+     * from Compute Nodes if you are experiencing an error and wish to escalate to
+     * Azure support. The Azure Batch service log files should be shared with Azure
+     * support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
+     * Protocol file.
+     * @param parameters The Azure Batch service log files upload options.
+     * @param options Optional parameters for Upload Node Logs operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of uploading Batch service log files from a specific Compute Node.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UploadBatchServiceLogsResult uploadNodeLogs(String poolId, String nodeId,
+        UploadBatchServiceLogsParameters parameters, BatchNodeLogsUploadOptions options) {
+        // Generated convenience method for uploadNodeLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions).getValue()
+            .toObject(UploadBatchServiceLogsResult.class);
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified Compute Node to Azure
+     * Blob Storage.
+     *
+     * This is for gathering Azure Batch service log files in an automated fashion
+     * from Compute Nodes if you are experiencing an error and wish to escalate to
+     * Azure support. The Azure Batch service log files should be shared with Azure
+     * support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
+     * Protocol file.
+     * @param parameters The Azure Batch service log files upload options.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of uploading Batch service log files from a specific Compute Node.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UploadBatchServiceLogsResult uploadNodeLogs(String poolId, String nodeId,
+        UploadBatchServiceLogsParameters parameters) {
+        // Generated convenience method for uploadNodeLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(parameters), requestOptions).getValue()
+            .toObject(UploadBatchServiceLogsResult.class);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool. The Pool must have auto
+     * scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters) {
+        // Generated convenience method for evaluatePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue()
+            .toObject(AutoScaleRun.class);
+    }
+
+    /**
+     * Gets the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool. The Pool must have auto
+     * scaling enabled in order to evaluate a formula.
+     *
+     * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
+     * @param parameters The options to use for evaluating the automatic scaling formula.
+     * @param options Optional parameters for Evaluate Pool AutoScale operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of evaluating an automatic scaling formula on the Pool.
+     *
+     * This API is primarily for validating an autoscale formula, as it simply returns
+     * the result without applying the formula to the Pool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters parameters,
+        BatchPoolEvaluateAutoScaleOptions options) {
+        // Generated convenience method for evaluatePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue()
+            .toObject(AutoScaleRun.class);
+    }
+
+    /**
+     * Disables automatic scaling for a Pool.
+     *
+     * @param poolId The ID of the Pool on which to disable automatic scaling.
+     * @param options Optional parameters for Disable Pool AutoScale operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disablePoolAutoScale(String poolId, BatchPoolDisableAutoScaleOptions options) {
+        // Generated convenience method for disablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        disablePoolAutoScaleWithResponse(poolId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @param options Optional parameters for Enable Pool AutoScale operation.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters,
+        BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        Duration timeout = options == null ? null : options.getTimeout();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        if (timeout != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeout.getSeconds()), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Enables automatic scaling for a Pool.
+     *
+     * You cannot enable automatic scaling on a Pool if a resize operation is in
+     * progress on the Pool. If automatic scaling of the Pool is currently disabled,
+     * you must specify a valid autoscale formula as part of the request. If automatic
+     * scaling of the Pool is already enabled, you may specify a new autoscale formula
+     * and/or a new evaluation interval. You cannot call this API for the same Pool
+     * more than once every 30 seconds.
+     *
+     * @param poolId The ID of the Pool to get.
+     * @param parameters The options to use for enabling automatic scaling.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BatchErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enablePoolAutoScale(String poolId, BatchPoolAutoScaleEnableParameters parameters) {
+        // Generated convenience method for enablePoolAutoScaleWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        enablePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions).getValue();
     }
 }

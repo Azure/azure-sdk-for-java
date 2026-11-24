@@ -1,14 +1,52 @@
 # Release History
 
-## 5.24.0-beta.1 (Unreleased)
+## 7.5.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added support for Snapshot References in App Configuration stores. Snapshot reference settings are now automatically resolved, loading the referenced snapshot's configuration settings as properties.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed configuration refresh blocking the calling thread by running refresh checks asynchronously on subscription.
+- Fixed an issue where startup retries could report success without loading configuration when all clients were in backoff. Startup now waits for client availability until the startup timeout and preserves the last load failure. Refresh also reports failure when no clients are available.
+- Fixed an issue where a refresh, when using multiple stores, could result in a partially loaded store failed to load across retries and all available replicas.
+
 ### Other Changes
+
+## 7.4.0 (2026-07-24)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#740-2026-07-24) for more details.
+
+## 7.3.0 (2026-05-27)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#730-2026-05-27) for more details.
+
+## 7.2.0 (2026-04-17)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#720-2026-04-17) for more details.
+
+## 7.1.0 (2026-03-11)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#710-2026-03-11) for more details.
+
+## 7.0.0 (2026-02-03)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#700-2026-02-03) for more details.
+
+## 7.0.0-beta.1 (2025-12-23)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#700-beta1-2025-12-23) for more details.
+
+## 6.1.0 (2025-12-16)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#610-2025-12-16) for more details.
+
+## 6.0.0 (2025-09-22)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#600-2025-09-22) for more details.
 
 ## 5.23.0 (2025-08-05)
 

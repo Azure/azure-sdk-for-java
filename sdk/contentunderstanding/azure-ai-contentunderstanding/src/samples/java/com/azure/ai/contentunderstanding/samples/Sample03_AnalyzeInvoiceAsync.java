@@ -1,0 +1,295 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.contentunderstanding.samples;
+
+import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
+import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
+import com.azure.ai.contentunderstanding.models.AnalysisInput;
+import com.azure.ai.contentunderstanding.models.AnalysisResult;
+import com.azure.ai.contentunderstanding.models.ContentArrayField;
+import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentField;
+import com.azure.ai.contentunderstanding.models.ContentSource;
+import com.azure.ai.contentunderstanding.LlmInputHelper;
+import com.azure.ai.contentunderstanding.models.ContentSpan;
+import com.azure.ai.contentunderstanding.models.DocumentContent;
+import com.azure.ai.contentunderstanding.models.DocumentPage;
+import com.azure.ai.contentunderstanding.models.DocumentSource;
+import com.azure.ai.contentunderstanding.models.AnalysisContent;
+import com.azure.ai.contentunderstanding.models.ContentObjectField;
+import com.azure.ai.contentunderstanding.models.UsageDetails;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Sample demonstrating how to analyze invoices using Content Understanding service.
+ * This sample shows:
+ * 1. Analyzing an invoice document
+ * 2. Extracting structured invoice fields
+ * 3. Accessing nested object fields (TotalAmount)
+ * 4. Accessing array fields (LineItems)
+ * 5. Working with field confidence and source information
+ *
+ * <p>{@code prebuilt-invoice} is a ready-to-use financial document analyzer for invoices and related documents such
+ * as utility bills, sales orders, and purchase orders. The fields shown here are examples; use
+ * {@link Sample06_GetAnalyzerAsync} to inspect the complete analyzer schema.</p>
+ *
+ * <p>Confidence indicates extraction certainty, sources identify locations in the original document, and spans
+ * identify values by offset and length in the returned Markdown. The document unit defines the coordinate system for
+ * source polygons and bounding boxes; for many US documents it is inches.</p>
+ */
+public class Sample03_AnalyzeInvoiceAsync {
+
+    public static void main(String[] args) {
+        // BEGIN: com.azure.ai.contentunderstanding.sample03Async.buildClient
+        String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
+        String key = System.getenv("CONTENTUNDERSTANDING_KEY");
+
+        // Build the client with appropriate authentication
+        ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
+
+        ContentUnderstandingAsyncClient client;
+        if (key != null && !key.trim().isEmpty()) {
+            // Use API key authentication
+            client = builder.credential(new AzureKeyCredential(key)).buildAsyncClient();
+        } else {
+            // Use default Azure credential (for managed identity, Azure CLI, etc.)
+            client = builder.credential(new DefaultAzureCredentialBuilder().build()).buildAsyncClient();
+        }
+        // END: com.azure.ai.contentunderstanding.sample03Async.buildClient
+
+        // BEGIN:ContentUnderstandingAnalyzeInvoiceAsync
+        // Using a publicly accessible sample file from Azure-Samples GitHub repository
+        String invoiceUrl
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
+
+        ContentAnalyzerAnalyzeOperationStatus operationStatus = analyzeInvoice(client, invoiceUrl);
+        UsageDetails usage = operationStatus.getUsage();
+        if (usage != null) {
+            System.out.println("\nUsage Details:");
+            if (usage.getDocumentPagesMinimal() != null) {
+                System.out.println("  Document pages (minimal): " + usage.getDocumentPagesMinimal());
+            }
+            if (usage.getDocumentPagesBasic() != null) {
+                System.out.println("  Document pages (basic): " + usage.getDocumentPagesBasic());
+            }
+            if (usage.getDocumentPagesStandard() != null) {
+                System.out.println("  Document pages (standard): " + usage.getDocumentPagesStandard());
+            }
+            if (usage.getContextualizationTokens() != null) {
+                System.out.println("  Contextualization tokens: " + usage.getContextualizationTokens());
+            }
+            Map<String, Integer> tokens = usage.getTokens();
+            if (tokens != null && !tokens.isEmpty()) {
+                System.out.println("  Model tokens:");
+                for (Map.Entry<String, Integer> entry : tokens.entrySet()) {
+                    System.out.println("    " + entry.getKey() + ": " + entry.getValue());
+                }
+            }
+        }
+
+        AnalysisResult result = operationStatus.getResult();
+        System.out.println("Analysis operation completed");
+        System.out.println("Analysis result contains " + result.getContents().size() + " content(s)");
+
+        // BEGIN:ContentUnderstandingExtractInvoiceFieldsAsync
+                // Get the document content (invoices are documents)
+                AnalysisContent firstContent = result.getContents().get(0);
+                if (firstContent instanceof DocumentContent) {
+                    DocumentContent documentContent = (DocumentContent) firstContent;
+
+                    // Print document unit information
+                    System.out.println("Document unit: "
+                        + (documentContent.getUnit() != null ? documentContent.getUnit().toString() : "unknown"));
+                    System.out.println("Pages: " + documentContent.getStartPageNumber() + " to "
+                        + documentContent.getEndPageNumber());
+                    if (documentContent.getPages() != null && !documentContent.getPages().isEmpty()) {
+                        DocumentPage page = documentContent.getPages().get(0);
+                        String unit
+                            = documentContent.getUnit() != null ? documentContent.getUnit().toString() : "units";
+                        System.out
+                            .println("Page dimensions: " + page.getWidth() + " x " + page.getHeight() + " " + unit);
+                    }
+                    System.out.println();
+
+                    // Extract simple string fields using getValue() convenience method
+                    // getValue() returns the typed value regardless of field type
+                    // (ContentStringField, ContentNumberField, ContentDateField, etc.)
+                    ContentField customerNameField
+                        = documentContent.getFields() != null ? documentContent.getFields().get("CustomerName") : null;
+                    ContentField invoiceDateField
+                        = documentContent.getFields() != null ? documentContent.getFields().get("InvoiceDate") : null;
+
+                    // Use getValue() instead of casting to specific types
+                    // Note: getValue() returns the actual typed value - String, Number, LocalDate, etc.
+                    String customerName = customerNameField != null ? (String) customerNameField.getValue() : null;
+                    // InvoiceDate is a ContentDateField, so getValue() returns LocalDate - convert to String for display
+                    Object invoiceDateValue = invoiceDateField != null ? invoiceDateField.getValue() : null;
+                    String invoiceDate = invoiceDateValue != null ? invoiceDateValue.toString() : null;
+
+                    System.out.println("Customer Name: " + (customerName != null ? customerName : "(None)"));
+                    if (customerNameField != null) {
+                        System.out.println("  Confidence: " + (customerNameField.getConfidence() != null
+                            ? String.format("%.2f", customerNameField.getConfidence())
+                            : "N/A"));
+                        List<ContentSource> sources = customerNameField.getSources();
+                        if (sources != null) {
+                            for (ContentSource source : sources) {
+                                if (source instanceof DocumentSource) {
+                                    DocumentSource documentSource = (DocumentSource) source;
+                                    System.out.println("  Source: page " + documentSource.getPageNumber() + ", polygon "
+                                        + documentSource.getPolygon() + ", bounding box "
+                                        + documentSource.getBoundingBox());
+                                }
+                            }
+                        }
+                        List<ContentSpan> spans = customerNameField.getSpans();
+                        if (spans != null && !spans.isEmpty()) {
+                            ContentSpan span = spans.get(0);
+                            System.out.println("  Position in markdown: offset=" + span.getOffset() + ", length="
+                                + span.getLength());
+                        }
+                    }
+
+                    System.out.println("Invoice Date: " + (invoiceDate != null ? invoiceDate : "(None)"));
+                    if (invoiceDateField != null) {
+                        System.out.println("  Confidence: " + (invoiceDateField.getConfidence() != null
+                            ? String.format("%.2f", invoiceDateField.getConfidence())
+                            : "N/A"));
+                        List<ContentSource> sources = invoiceDateField.getSources();
+                        if (sources != null) {
+                            for (ContentSource source : sources) {
+                                if (source instanceof DocumentSource) {
+                                    DocumentSource documentSource = (DocumentSource) source;
+                                    System.out.println("  Source: page " + documentSource.getPageNumber()
+                                        + ", bounding box " + documentSource.getBoundingBox());
+                                }
+                            }
+                        }
+                        List<ContentSpan> spans = invoiceDateField.getSpans();
+                        if (spans != null && !spans.isEmpty()) {
+                            ContentSpan span = spans.get(0);
+                            System.out.println("  Position in markdown: offset=" + span.getOffset() + ", length="
+                                + span.getLength());
+                        }
+                    }
+
+                    // Extract object fields (nested structures) using getFieldOrDefault() convenience method
+                    // getFieldOrDefault() returns null if the field doesn't exist (safe access pattern)
+                    ContentField totalAmountField
+                        = documentContent.getFields() != null ? documentContent.getFields().get("TotalAmount") : null;
+                    if (totalAmountField instanceof ContentObjectField) {
+                        ContentObjectField totalAmountObj = (ContentObjectField) totalAmountField;
+
+                        // Use getFieldOrDefault() for safe nested field access
+                        ContentField amountField = totalAmountObj.getFieldOrDefault("Amount");
+                        ContentField currencyField = totalAmountObj.getFieldOrDefault("CurrencyCode");
+
+                        // Use getValue() instead of type-specific getters
+                        Double amount = amountField != null ? (Double) amountField.getValue() : null;
+                        String currency = currencyField != null ? (String) currencyField.getValue() : null;
+
+                        System.out.println("Total: " + (currency != null ? currency : "")
+                            + (amount != null ? String.format("%.2f", amount) : "(None)"));
+                        if (totalAmountObj.getConfidence() != null) {
+                            System.out.println("  Confidence: " + String.format("%.2f", totalAmountObj.getConfidence()));
+                        }
+                        List<ContentSource> sources = totalAmountObj.getSources();
+                        if (sources != null) {
+                            for (ContentSource source : sources) {
+                                if (source instanceof DocumentSource) {
+                                    DocumentSource documentSource = (DocumentSource) source;
+                                    System.out.println("  Source: page " + documentSource.getPageNumber()
+                                        + ", bounding box " + documentSource.getBoundingBox());
+                                }
+                            }
+                        }
+                    }
+
+                    // Extract array fields using size() and get() convenience methods
+                    // size() returns the number of elements, get(index) returns the element at the index
+                    ContentField lineItemsField
+                        = documentContent.getFields() != null ? documentContent.getFields().get("LineItems") : null;
+                    if (lineItemsField instanceof ContentArrayField) {
+                        ContentArrayField lineItems = (ContentArrayField) lineItemsField;
+
+                        // Use size() instead of getValueArray().size()
+                        System.out.println("Line Items (" + lineItems.size() + "):");
+
+                        // Use get(i) instead of getValueArray().get(i)
+                        for (int i = 0; i < lineItems.size(); i++) {
+                            ContentField itemField = lineItems.get(i);
+                            if (itemField instanceof ContentObjectField) {
+                                ContentObjectField item = (ContentObjectField) itemField;
+
+                                // Use getFieldOrDefault() and getValue() for cleaner access
+                                ContentField descField = item.getFieldOrDefault("Description");
+                                ContentField qtyField = item.getFieldOrDefault("Quantity");
+
+                                String description = descField != null ? (String) descField.getValue() : null;
+                                Double quantity = qtyField != null ? (Double) qtyField.getValue() : null;
+
+                                System.out.println("  Item " + (i + 1) + ": " + (description != null ? description : "N/A"));
+                                System.out.println("    Quantity: " + (quantity != null ? quantity : "N/A"));
+                                System.out.println("    Confidence: " + (item.getConfidence() != null
+                                    ? String.format("%.2f", item.getConfidence())
+                                    : "N/A"));
+                            }
+                        }
+                    }
+                }
+        // END:ContentUnderstandingExtractInvoiceFieldsAsync
+
+        // BEGIN:ContentUnderstandingInvoiceToLlmInputAsync
+        String llmText = LlmInputHelper.toLlmInput(result);
+        System.out.println("\n============================================================");
+        System.out.println("LLM-READY OUTPUT (fields + markdown)");
+        System.out.println("============================================================");
+        System.out.println(llmText);
+        // END:ContentUnderstandingInvoiceToLlmInputAsync
+
+        System.out.println("\nInvoice analysis completed successfully");
+        // END:ContentUnderstandingAnalyzeInvoiceAsync
+    }
+
+    public static ContentAnalyzerAnalyzeOperationStatus analyzeInvoice(ContentUnderstandingAsyncClient client,
+        String invoiceUrl) {
+        AnalysisInput input = new AnalysisInput().setUrl(invoiceUrl);
+        return analyzeInvoice(client.beginAnalyze("prebuilt-invoice", Arrays.asList(input)));
+    }
+
+    /**
+     * Completes invoice analysis using an existing poller.
+     *
+     * @param operation the invoice analysis poller.
+     * @return the completed operation status, including its analysis result and usage details.
+     */
+    public static ContentAnalyzerAnalyzeOperationStatus analyzeInvoice(
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation) {
+        ContentAnalyzerAnalyzeOperationStatus operationStatus = operation.last().map(pollResponse -> {
+            if (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                throw new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus());
+            }
+            System.out.println("Polling completed successfully");
+            ContentAnalyzerAnalyzeOperationStatus status = pollResponse.getValue();
+            if (status == null) {
+                throw new IllegalStateException("Analyze operation completed without an operation status.");
+            }
+            return status;
+        }).block();
+        if (operationStatus == null) {
+            throw new IllegalStateException("Analyze operation completed without a poll response.");
+        }
+        if (operationStatus.getResult() == null) {
+            throw new IllegalStateException("Analyze operation completed without a result.");
+        }
+        return operationStatus;
+    }
+}

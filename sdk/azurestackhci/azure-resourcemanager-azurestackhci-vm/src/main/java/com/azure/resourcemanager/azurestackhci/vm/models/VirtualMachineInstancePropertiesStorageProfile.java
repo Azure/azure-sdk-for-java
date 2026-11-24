@@ -126,23 +126,6 @@ public final class VirtualMachineInstancePropertiesStorageProfile
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (dataDisks() != null) {
-            dataDisks().forEach(e -> e.validate());
-        }
-        if (imageReference() != null) {
-            imageReference().validate();
-        }
-        if (osDisk() != null) {
-            osDisk().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.2 (2026-03-17)
+
+### Features Added
+
+- Added `SerializableMethodsCheck` to validate that `JsonSerializable` and `XmlSerializable` implementations have the required methods for serialization and deserialization.
 
 ## 1.0.0-beta.1 (2025-07-22)
 

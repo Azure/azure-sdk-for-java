@@ -1,0 +1,57 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.appconfiguration.config;
+
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.bootstrap.BootstrapContext;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.endpoint.RefreshEndpoint;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationPullRefresh;
+import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil;
+import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientFactory;
+import com.azure.spring.cloud.appconfiguration.config.implementation.StateHolder;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
+
+/**
+ * Setup AppConfigurationRefresh when <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
+ */
+@EnableAsync
+@ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
+@EnableConfigurationProperties({ AppConfigurationProperties.class })
+@AutoConfiguration
+@ConditionalOnClass(RefreshEndpoint.class)
+public class AppConfigurationWatchAutoConfiguration {
+
+    /**
+     * Creates an instance of {@link AppConfigurationWatchAutoConfiguration}
+     */
+    public AppConfigurationWatchAutoConfiguration() {
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties, BootstrapContext context) {
+        AppConfigurationReplicaClientFactory clientFactory = context.getOrElse(AppConfigurationReplicaClientFactory.class, null);
+        ReplicaLookUp replicaLookUp = context.getOrElse(ReplicaLookUp.class, null);
+
+        StateHolder stateHolder = context.getOrElse(StateHolder.class, null);
+
+        if (clientFactory == null || replicaLookUp == null) {
+            return null;
+        }
+        
+        if (stateHolder == null) {
+            stateHolder = new StateHolder();
+        }
+
+        return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(), replicaLookUp,
+            stateHolder, new AppConfigurationRefreshUtil(stateHolder));
+    }
+}

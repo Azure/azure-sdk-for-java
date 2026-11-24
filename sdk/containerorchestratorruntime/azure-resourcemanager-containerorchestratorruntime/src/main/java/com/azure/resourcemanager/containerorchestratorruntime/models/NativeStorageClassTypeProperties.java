@@ -37,15 +37,6 @@ public final class NativeStorageClassTypeProperties extends StorageClassTypeProp
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.Strings;
@@ -58,6 +59,11 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.getClientTelemetryConfig());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
+        }
+
+        AsyncDocumentClient realAsyncClient = ReflectionUtils.getAsyncDocumentClient(cosmosAsyncClient);
+        if (realAsyncClient != null) {
+            realAsyncClient.close();
         }
         ReflectionUtils.setAsyncDocumentClient(cosmosAsyncClient, rxClient);
         return cosmosAsyncClient;

@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
  * an incoming message for this endpoint.
  *
  */
+@SuppressWarnings("deprecation")
 public class MethodServiceBusListenerEndpoint extends AbstractAzureListenerEndpoint
     implements MethodAzureListenerEndpoint {
 

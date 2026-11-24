@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.hdinsight.implementation;
 
 import com.azure.resourcemanager.hdinsight.fluent.models.GatewaySettingsInner;
+import com.azure.resourcemanager.hdinsight.models.EntraUserInfo;
 import com.azure.resourcemanager.hdinsight.models.GatewaySettings;
+import java.util.Collections;
+import java.util.List;
 
 public final class GatewaySettingsImpl implements GatewaySettings {
     private GatewaySettingsInner innerObject;
@@ -28,6 +31,15 @@ public final class GatewaySettingsImpl implements GatewaySettings {
 
     public String password() {
         return this.innerModel().password();
+    }
+
+    public List<EntraUserInfo> restAuthEntraUsers() {
+        List<EntraUserInfo> inner = this.innerModel().restAuthEntraUsers();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public GatewaySettingsInner innerModel() {

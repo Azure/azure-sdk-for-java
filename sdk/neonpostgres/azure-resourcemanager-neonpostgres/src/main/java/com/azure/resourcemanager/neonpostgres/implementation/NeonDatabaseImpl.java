@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.neonpostgres.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.neonpostgres.fluent.models.NeonDatabaseInner;
 import com.azure.resourcemanager.neonpostgres.models.NeonDatabase;
 import com.azure.resourcemanager.neonpostgres.models.NeonDatabaseProperties;
 
-public final class NeonDatabaseImpl implements NeonDatabase {
+public final class NeonDatabaseImpl implements NeonDatabase, NeonDatabase.Definition, NeonDatabase.Update {
     private NeonDatabaseInner innerObject;
 
     private final com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager;
-
-    NeonDatabaseImpl(NeonDatabaseInner innerObject,
-        com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -40,11 +35,102 @@ public final class NeonDatabaseImpl implements NeonDatabase {
         return this.innerModel().systemData();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NeonDatabaseInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String organizationName;
+
+    private String projectName;
+
+    private String branchName;
+
+    private String neonDatabaseName;
+
+    public NeonDatabaseImpl withExistingBranch(String resourceGroupName, String organizationName, String projectName,
+        String branchName) {
+        this.resourceGroupName = resourceGroupName;
+        this.organizationName = organizationName;
+        this.projectName = projectName;
+        this.branchName = branchName;
+        return this;
+    }
+
+    public NeonDatabase create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getNeonDatabases()
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
+                this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public NeonDatabase create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getNeonDatabases()
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
+                this.innerModel(), context);
+        return this;
+    }
+
+    NeonDatabaseImpl(String name, com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
+        this.innerObject = new NeonDatabaseInner();
+        this.serviceManager = serviceManager;
+        this.neonDatabaseName = name;
+    }
+
+    public NeonDatabaseImpl update() {
+        return this;
+    }
+
+    public NeonDatabase apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getNeonDatabases()
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
+                this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public NeonDatabase apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getNeonDatabases()
+            .createOrUpdate(resourceGroupName, organizationName, projectName, branchName, neonDatabaseName,
+                this.innerModel(), context);
+        return this;
+    }
+
+    NeonDatabaseImpl(NeonDatabaseInner innerObject,
+        com.azure.resourcemanager.neonpostgres.NeonPostgresManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}",
+            "resourceGroupName");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}",
+            "organizationName");
+        this.projectName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}",
+            "projectName");
+        this.branchName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}",
+            "branchName");
+        this.neonDatabaseName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Neon.Postgres/organizations/{organizationName}/projects/{projectName}/branches/{branchName}/neonDatabases/{neonDatabaseName}",
+            "neonDatabaseName");
+    }
+
+    public NeonDatabaseImpl withProperties(NeonDatabaseProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 }

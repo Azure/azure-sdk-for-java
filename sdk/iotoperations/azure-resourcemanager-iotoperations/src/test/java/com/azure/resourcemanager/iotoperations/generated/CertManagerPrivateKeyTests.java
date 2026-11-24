@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CertManagerPrivateKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertManagerPrivateKey model = BinaryData.fromString("{\"algorithm\":\"Ec384\",\"rotationPolicy\":\"Always\"}")
+        CertManagerPrivateKey model = BinaryData.fromString("{\"algorithm\":\"Ed25519\",\"rotationPolicy\":\"Never\"}")
             .toObject(CertManagerPrivateKey.class);
-        Assertions.assertEquals(PrivateKeyAlgorithm.EC384, model.algorithm());
-        Assertions.assertEquals(PrivateKeyRotationPolicy.ALWAYS, model.rotationPolicy());
+        Assertions.assertEquals(PrivateKeyAlgorithm.ED25519, model.algorithm());
+        Assertions.assertEquals(PrivateKeyRotationPolicy.NEVER, model.rotationPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertManagerPrivateKey model = new CertManagerPrivateKey().withAlgorithm(PrivateKeyAlgorithm.EC384)
-            .withRotationPolicy(PrivateKeyRotationPolicy.ALWAYS);
+        CertManagerPrivateKey model = new CertManagerPrivateKey().withAlgorithm(PrivateKeyAlgorithm.ED25519)
+            .withRotationPolicy(PrivateKeyRotationPolicy.NEVER);
         model = BinaryData.fromObject(model).toObject(CertManagerPrivateKey.class);
-        Assertions.assertEquals(PrivateKeyAlgorithm.EC384, model.algorithm());
-        Assertions.assertEquals(PrivateKeyRotationPolicy.ALWAYS, model.rotationPolicy());
+        Assertions.assertEquals(PrivateKeyAlgorithm.ED25519, model.algorithm());
+        Assertions.assertEquals(PrivateKeyRotationPolicy.NEVER, model.rotationPolicy());
     }
 }

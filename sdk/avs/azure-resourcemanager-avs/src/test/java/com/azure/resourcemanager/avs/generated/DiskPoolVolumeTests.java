@@ -13,20 +13,22 @@ public final class DiskPoolVolumeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskPoolVolume model = BinaryData
-            .fromString("{\"targetId\":\"mwzn\",\"lunName\":\"abikns\",\"mountOption\":\"MOUNT\",\"path\":\"hxbld\"}")
+            .fromString(
+                "{\"targetId\":\"hjybigehoqfbo\",\"lunName\":\"skanyk\",\"mountOption\":\"ATTACH\",\"path\":\"u\"}")
             .toObject(DiskPoolVolume.class);
-        Assertions.assertEquals("mwzn", model.targetId());
-        Assertions.assertEquals("abikns", model.lunName());
-        Assertions.assertEquals(MountOptionEnum.MOUNT, model.mountOption());
+        Assertions.assertEquals("hjybigehoqfbo", model.targetId());
+        Assertions.assertEquals("skanyk", model.lunName());
+        Assertions.assertEquals(MountOptionEnum.ATTACH, model.mountOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskPoolVolume model
-            = new DiskPoolVolume().withTargetId("mwzn").withLunName("abikns").withMountOption(MountOptionEnum.MOUNT);
+        DiskPoolVolume model = new DiskPoolVolume().withTargetId("hjybigehoqfbo")
+            .withLunName("skanyk")
+            .withMountOption(MountOptionEnum.ATTACH);
         model = BinaryData.fromObject(model).toObject(DiskPoolVolume.class);
-        Assertions.assertEquals("mwzn", model.targetId());
-        Assertions.assertEquals("abikns", model.lunName());
-        Assertions.assertEquals(MountOptionEnum.MOUNT, model.mountOption());
+        Assertions.assertEquals("hjybigehoqfbo", model.targetId());
+        Assertions.assertEquals("skanyk", model.lunName());
+        Assertions.assertEquals(MountOptionEnum.ATTACH, model.mountOption());
     }
 }

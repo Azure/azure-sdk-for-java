@@ -10,7 +10,9 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.pro
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.proc.BadJOSEException;
+import com.nimbusds.jose.util.ResourceRetriever;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,14 +20,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
+import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.restclient.autoconfigure.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -144,6 +147,65 @@ class AadAuthenticationFilterTests {
 
         filter.doFilterInternal(request, response, filterChain);
         verify(userPrincipalManager, times(0)).buildUserPrincipal(TOKEN);
+    }
+
+    @Test
+    void testConstructorEnableExplicitAudienceCheck() {
+        AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
+        AadCredentialProperties credentialProperties = new AadCredentialProperties();
+        credentialProperties.setClientId("fake-client-id");
+        credentialProperties.setClientSecret("fake-client-secret");
+        when(properties.getCredential()).thenReturn(credentialProperties);
+        AadProfileProperties profileProperties = new AadProfileProperties();
+        profileProperties.setTenantId("fake-tenant-id");
+        when(properties.getProfile()).thenReturn(profileProperties);
+
+        AadAuthorizationServerEndpoints endpoints = mock(AadAuthorizationServerEndpoints.class);
+        when(endpoints.getJwkSetEndpoint()).thenReturn("file://dummy");
+        ResourceRetriever resourceRetriever = url -> null;
+
+        AadAuthenticationFilter testFilter = new AadAuthenticationFilter(
+            properties,
+            endpoints,
+            resourceRetriever,
+            new RestTemplateBuilder()
+        );
+
+        UserPrincipalManager principalManager = (UserPrincipalManager) ReflectionTestUtils.getField(testFilter,
+            "userPrincipalManager");
+        assertThat(principalManager).isNotNull();
+        assertThat(ReflectionTestUtils.getField(principalManager, "explicitAudienceCheck")).isEqualTo(true);
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    void testConstructorWithJwkSetCacheEnableExplicitAudienceCheck() {
+        AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
+        AadCredentialProperties credentialProperties = new AadCredentialProperties();
+        credentialProperties.setClientId("fake-client-id");
+        credentialProperties.setClientSecret("fake-client-secret");
+        when(properties.getCredential()).thenReturn(credentialProperties);
+        AadProfileProperties profileProperties = new AadProfileProperties();
+        profileProperties.setTenantId("fake-tenant-id");
+        when(properties.getProfile()).thenReturn(profileProperties);
+
+        AadAuthorizationServerEndpoints endpoints = mock(AadAuthorizationServerEndpoints.class);
+        when(endpoints.getJwkSetEndpoint()).thenReturn("file://dummy");
+        ResourceRetriever resourceRetriever = url -> null;
+        JWKSetCache jwkSetCache = mock(JWKSetCache.class);
+
+        AadAuthenticationFilter testFilter = new AadAuthenticationFilter(
+            properties,
+            endpoints,
+            resourceRetriever,
+            jwkSetCache,
+            new RestTemplateBuilder()
+        );
+
+        UserPrincipalManager principalManager = (UserPrincipalManager) ReflectionTestUtils.getField(testFilter,
+            "userPrincipalManager");
+        assertThat(principalManager).isNotNull();
+        assertThat(ReflectionTestUtils.getField(principalManager, "explicitAudienceCheck")).isEqualTo(true);
     }
 
 }

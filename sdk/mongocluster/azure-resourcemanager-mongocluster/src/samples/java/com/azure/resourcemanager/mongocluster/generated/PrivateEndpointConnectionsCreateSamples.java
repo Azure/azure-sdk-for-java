@@ -13,14 +13,14 @@ import com.azure.resourcemanager.mongocluster.models.PrivateLinkServiceConnectio
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/MongoClusters_PrivateEndpointConnectionPut.json
+     * x-ms-original-file: 2026-09-01/MongoClusters_PrivateEndpointConnectionPut.json
      */
     /**
-     * Sample code: Approves a private endpoint connection on a Mongo Cluster resource.
+     * Sample code: Approves a private endpoint connection on a DocumentDB cluster resource.
      * 
      * @param manager Entry point to MongoClusterManager.
      */
-    public static void approvesAPrivateEndpointConnectionOnAMongoClusterResource(
+    public static void approvesAPrivateEndpointConnectionOnADocumentDBClusterResource(
         com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
         manager.privateEndpointConnections()
             .define("pecTest")

@@ -13,21 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BrokerAuthenticatorMethodX509AttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BrokerAuthenticatorMethodX509Attributes model
-            = BinaryData.fromString("{\"attributes\":{\"dhbt\":\"cn\"},\"subject\":\"kphywpnvjto\"}")
-                .toObject(BrokerAuthenticatorMethodX509Attributes.class);
-        Assertions.assertEquals("cn", model.attributes().get("dhbt"));
-        Assertions.assertEquals("kphywpnvjto", model.subject());
+        BrokerAuthenticatorMethodX509Attributes model = BinaryData.fromString(
+            "{\"attributes\":{\"yaxuconuqszfkb\":\"onocukok\",\"xsenhwlr\":\"ypewrmjmwvvjekt\"},\"subject\":\"ffrzpwvlqdqgbiqy\"}")
+            .toObject(BrokerAuthenticatorMethodX509Attributes.class);
+        Assertions.assertEquals("onocukok", model.attributes().get("yaxuconuqszfkb"));
+        Assertions.assertEquals("ffrzpwvlqdqgbiqy", model.subject());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BrokerAuthenticatorMethodX509Attributes model
-            = new BrokerAuthenticatorMethodX509Attributes().withAttributes(mapOf("dhbt", "cn"))
-                .withSubject("kphywpnvjto");
+        BrokerAuthenticatorMethodX509Attributes model = new BrokerAuthenticatorMethodX509Attributes()
+            .withAttributes(mapOf("yaxuconuqszfkb", "onocukok", "xsenhwlr", "ypewrmjmwvvjekt"))
+            .withSubject("ffrzpwvlqdqgbiqy");
         model = BinaryData.fromObject(model).toObject(BrokerAuthenticatorMethodX509Attributes.class);
-        Assertions.assertEquals("cn", model.attributes().get("dhbt"));
-        Assertions.assertEquals("kphywpnvjto", model.subject());
+        Assertions.assertEquals("onocukok", model.attributes().get("yaxuconuqszfkb"));
+        Assertions.assertEquals("ffrzpwvlqdqgbiqy", model.subject());
     }
 
     // Use "Map.of" if available

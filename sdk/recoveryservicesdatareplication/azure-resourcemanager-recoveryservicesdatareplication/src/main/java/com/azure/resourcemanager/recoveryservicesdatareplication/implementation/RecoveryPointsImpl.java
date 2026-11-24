@@ -31,12 +31,8 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         String protectedItemName, String recoveryPointName, Context context) {
         Response<RecoveryPointModelInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, vaultName, protectedItemName, recoveryPointName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecoveryPointModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RecoveryPointModelImpl(inner.getValue(), this.manager()));
     }
 
     public RecoveryPointModel get(String resourceGroupName, String vaultName, String protectedItemName,

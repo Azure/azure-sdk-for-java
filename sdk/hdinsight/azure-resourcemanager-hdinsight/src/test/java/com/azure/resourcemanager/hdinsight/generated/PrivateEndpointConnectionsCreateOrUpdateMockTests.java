@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.PrivateEndpointConnection;
@@ -23,27 +23,27 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"sjybvitv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"y\",\"actionsRequired\":\"nu\"},\"linkIdentifier\":\"ggmuwdcho\",\"provisioningState\":\"Succeeded\"},\"id\":\"fexl\",\"name\":\"xn\",\"type\":\"akizvoaikna\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"iswskuk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"sbvw\",\"actionsRequired\":\"pkxkdtxfk\"},\"linkIdentifier\":\"lq\",\"provisioningState\":\"Succeeded\"},\"id\":\"nvgmmbugtywa\",\"name\":\"mqaqkueatgroes\",\"type\":\"oygzcbyfqxkfao\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("selpkpbaf")
-            .withExistingCluster("fbzkk", "tnhqsycl")
+            .define("gkzz")
+            .withExistingCluster("uusioycblev", "mclujyxkyxlzgs")
             .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
-                    .withDescription("d")
-                    .withActionsRequired("rsofpltdbmairrh"))
+                new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.REMOVED)
+                    .withDescription("pgvdwnapfdqw")
+                    .withActionsRequired("ftptnuwj"))
             .create();
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("y", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("nu", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("sbvw", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("pkxkdtxfk", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

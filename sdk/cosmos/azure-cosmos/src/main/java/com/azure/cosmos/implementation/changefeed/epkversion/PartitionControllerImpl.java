@@ -78,7 +78,7 @@ class PartitionControllerImpl implements PartitionController {
                 return updatedLease;
             })
             .onErrorResume(throwable -> {
-                logger.warn("Lease with token {}: unexpected error; removing lease from current cache.", lease.getLeaseToken(), throwable);
+                logger.warn("Lease with token " + lease.getLeaseToken() + ": unexpected error; removing lease from current cache.", throwable);
                 return this.removeLease(lease).then(Mono.error(throwable));
             });
     }
@@ -117,7 +117,7 @@ class PartitionControllerImpl implements PartitionController {
                 if (e instanceof LeaseLostException) {
                     logger.warn("Lease with token {}: lease already removed.", lease.getLeaseToken());
                 } else {
-                    logger.warn("Lease with token {}: failed to remove lease.", lease.getLeaseToken(), e);
+                    logger.warn("Lease with token " + lease.getLeaseToken() + ": failed to remove lease.", e);
                 }
 
                 return Mono.empty();
@@ -153,7 +153,7 @@ class PartitionControllerImpl implements PartitionController {
                 } else if (throwable instanceof TaskCancelledException) {
                     logger.debug("Lease with token {}: processing canceled.", lease.getLeaseToken());
                 } else {
-                    logger.warn("Lease with token {}: processing failed.", lease.getLeaseToken(), throwable);
+                    logger.warn("Lease with token " + lease.getLeaseToken() + ": processing failed.", throwable);
                 }
 
                 return Mono.empty();
@@ -188,7 +188,7 @@ class PartitionControllerImpl implements PartitionController {
                             .then(this.tryDeleteGoneLease(lease, partitionGoneHandler.shouldDeleteCurrentLease()));
                 })
                 .onErrorResume(throwable -> {
-                    logger.warn("Lease with token {}: failed to handle partition gone", lease.getLeaseToken(), throwable);
+                    logger.warn("Lease with token " + lease.getLeaseToken() + ": failed to handle partition gone", throwable);
                     return  Mono.empty();
                 });
     }

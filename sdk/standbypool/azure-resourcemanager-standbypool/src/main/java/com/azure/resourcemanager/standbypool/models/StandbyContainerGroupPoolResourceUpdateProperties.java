@@ -102,20 +102,6 @@ public final class StandbyContainerGroupPoolResourceUpdateProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (elasticityProfile() != null) {
-            elasticityProfile().validate();
-        }
-        if (containerGroupProperties() != null) {
-            containerGroupProperties().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -29,7 +29,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.oracledatabase.fluent.DbNodesClient;
@@ -162,25 +161,6 @@ public final class DbNodesClientImpl implements DbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DbNodeInner>> getWithResponseAsync(String resourceGroupName, String cloudvmclustername,
         String dbnodeocid) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudvmclustername == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudvmclustername is required and cannot be null."));
-        }
-        if (dbnodeocid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dbnodeocid is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -220,28 +200,6 @@ public final class DbNodesClientImpl implements DbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DbNodeInner> getWithResponse(String resourceGroupName, String cloudvmclustername, String dbnodeocid,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudvmclustername == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudvmclustername is required and cannot be null."));
-        }
-        if (dbnodeocid == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dbnodeocid is required and cannot be null."));
-        }
         final String accept = "application/json";
         return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
             resourceGroupName, cloudvmclustername, dbnodeocid, accept, context);
@@ -277,22 +235,6 @@ public final class DbNodesClientImpl implements DbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DbNodeInner>> listByCloudVmClusterSinglePageAsync(String resourceGroupName,
         String cloudvmclustername) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudvmclustername == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudvmclustername is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByCloudVmCluster(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -331,24 +273,6 @@ public final class DbNodesClientImpl implements DbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbNodeInner> listByCloudVmClusterSinglePage(String resourceGroupName,
         String cloudvmclustername) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudvmclustername == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudvmclustername is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DbNodeListResult> res
             = service.listByCloudVmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -371,24 +295,6 @@ public final class DbNodesClientImpl implements DbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbNodeInner> listByCloudVmClusterSinglePage(String resourceGroupName,
         String cloudvmclustername, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudvmclustername == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudvmclustername is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DbNodeListResult> res
             = service.listByCloudVmClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -441,35 +347,12 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the DbNode resource belonging to vmCluster along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> actionWithResponseAsync(String resourceGroupName,
         String cloudvmclustername, String dbnodeocid, DbNodeAction body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudvmclustername == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter cloudvmclustername is required and cannot be null."));
-        }
-        if (dbnodeocid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter dbnodeocid is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -489,38 +372,11 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the DbNode resource belonging to vmCluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String cloudvmclustername,
         String dbnodeocid, DbNodeAction body) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudvmclustername == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudvmclustername is required and cannot be null."));
-        }
-        if (dbnodeocid == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dbnodeocid is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -539,38 +395,11 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the DbNode resource belonging to vmCluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String cloudvmclustername,
         String dbnodeocid, DbNodeAction body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (cloudvmclustername == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter cloudvmclustername is required and cannot be null."));
-        }
-        if (dbnodeocid == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter dbnodeocid is required and cannot be null."));
-        }
-        if (body == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -588,7 +417,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DbNodeInner>, DbNodeInner> beginActionAsync(String resourceGroupName,
@@ -609,7 +438,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbNodeInner>, DbNodeInner> beginAction(String resourceGroupName,
@@ -630,7 +459,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbNodeInner>, DbNodeInner> beginAction(String resourceGroupName,
@@ -651,7 +480,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the DbNode resource belonging to vmCluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DbNodeInner> actionAsync(String resourceGroupName, String cloudvmclustername, String dbnodeocid,
@@ -670,7 +499,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbNodeInner action(String resourceGroupName, String cloudvmclustername, String dbnodeocid,
@@ -689,7 +518,7 @@ public final class DbNodesClientImpl implements DbNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the DbNode resource belonging to vmCluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbNodeInner action(String resourceGroupName, String cloudvmclustername, String dbnodeocid, DbNodeAction body,
@@ -709,13 +538,6 @@ public final class DbNodesClientImpl implements DbNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DbNodeInner>> listByCloudVmClusterNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -736,15 +558,6 @@ public final class DbNodesClientImpl implements DbNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbNodeInner> listByCloudVmClusterNextSinglePage(String nextLink) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DbNodeListResult> res
             = service.listByCloudVmClusterNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -764,21 +577,10 @@ public final class DbNodesClientImpl implements DbNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DbNodeInner> listByCloudVmClusterNextSinglePage(String nextLink, Context context) {
-        if (nextLink == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         Response<DbNodeListResult> res
             = service.listByCloudVmClusterNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DbNodesClientImpl.class);
 }

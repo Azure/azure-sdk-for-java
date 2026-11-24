@@ -25,7 +25,7 @@ public final class SolutionConfigurationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"solutionType\":\"mbzonokix\",\"solutionSettings\":{\"\":{\"rlazszrnw\":\"irgzp\",\"fpwpjylwbt\":\"iin\"}},\"status\":\"InProgress\",\"statusDetails\":\"sj\",\"lastSyncTime\":\"2021-10-21T17:47:33Z\"},\"id\":\"zfjvfbgofe\",\"name\":\"jagrqmqhldvr\",\"type\":\"iiojnal\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"solutionType\":\"epttwqmsniff\",\"solutionSettings\":{\"frddhcrati\":\"nrojlpijnkr\",\"zq\":\"zronasxift\",\"tw\":\"zh\",\"lgnyhmo\":\"sgogczhonnxk\"},\"status\":\"New\",\"statusDetails\":\"kgthrrghxjbd\",\"lastSyncTime\":\"2021-11-06T08:53:41Z\"},\"id\":\"xgfrpdsofbshrnsv\",\"name\":\"uswdv\",\"type\":\"yybyc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,15 @@ public final class SolutionConfigurationsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SolutionConfiguration response = manager.solutionConfigurations()
-            .define("jabudurgkakmo")
-            .withExistingResourceUri("jxbkzbzkdvn")
-            .withProperties(new SolutionConfigurationProperties().withSolutionType("jk")
-                .withSolutionSettings(new SolutionSettings().withAdditionalProperties(mapOf())))
+            .define("ttpkiwkkbnujrywv")
+            .withExistingResourceUri("xyfwnylrcool")
+            .withProperties(new SolutionConfigurationProperties().withSolutionType("fpncurdo")
+                .withSolutionSettings(new SolutionSettings()
+                    .withAdditionalProperties(mapOf("umwctondz", "fdntwjchrdgoih", "cbihwqk", "thtywub"))))
             .create();
 
-        Assertions.assertEquals("mbzonokix", response.properties().solutionType());
+        Assertions.assertEquals("epttwqmsniff", response.properties().solutionType());
+        Assertions.assertEquals("zh", response.properties().solutionSettings().additionalProperties().get("tw"));
     }
 
     // Use "Map.of" if available

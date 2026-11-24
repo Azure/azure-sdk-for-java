@@ -12,9 +12,9 @@ public final class AutonomousDatabaseCharacterSetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseCharacterSetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"characterSet\":\"oqytibyowbblgy\"},\"id\":\"utp\",\"name\":\"hjoxo\",\"type\":\"smsks\"},{\"properties\":{\"characterSet\":\"iml\"},\"id\":\"ljxkcgxxlx\",\"name\":\"ffgcvizqz\",\"type\":\"wlvwlyoupf\"}],\"nextLink\":\"bkjubdyhgkfmins\"}")
+            "{\"value\":[{\"properties\":{\"characterSet\":\"plcplcwkhi\"},\"id\":\"hlhzdsqtzbsrgno\",\"name\":\"cjhfgmvecactxmw\",\"type\":\"teyowclu\"},{\"properties\":{\"characterSet\":\"vekqvgqo\"},\"id\":\"ifzmpjwyivqi\",\"name\":\"f\",\"type\":\"cvhrfsp\"},{\"properties\":{\"characterSet\":\"agr\"},\"id\":\"ikteusqczkvyk\",\"name\":\"xubyjaffmmfblcqc\",\"type\":\"ubgq\"},{\"properties\":{\"characterSet\":\"rtalmet\"},\"id\":\"wgdsl\",\"name\":\"xih\",\"type\":\"rmooizqse\"}],\"nextLink\":\"xiutcx\"}")
             .toObject(AutonomousDatabaseCharacterSetListResult.class);
-        Assertions.assertEquals("oqytibyowbblgy", model.value().get(0).properties().characterSet());
-        Assertions.assertEquals("bkjubdyhgkfmins", model.nextLink());
+        Assertions.assertEquals("plcplcwkhi", model.value().get(0).properties().characterSet());
+        Assertions.assertEquals("xiutcx", model.nextLink());
     }
 }

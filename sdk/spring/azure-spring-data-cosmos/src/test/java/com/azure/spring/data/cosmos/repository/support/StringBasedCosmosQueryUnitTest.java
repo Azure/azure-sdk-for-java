@@ -4,17 +4,17 @@ package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.repository.query.CosmosQueryMethod;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class StringBasedCosmosQueryUnitTest {
     @Mock
     CosmosQueryMethod cosmosQueryMethod;
@@ -47,5 +47,29 @@ public class StringBasedCosmosQueryUnitTest {
         args3[0] = query3;
         String result3 = (String) method.invoke(sbcq, args3);
         assertThat(result3).isEqualTo(expectedResult);
+    }
+
+    @Test
+    public void testTextBlockCountQuery() {
+        String countQuery = """
+                    SELECT VALUE COUNT(1)
+                    FROM a
+                    WHERE a.city = @city
+                    AND a.state = @state
+            """;
+        boolean result = StringBasedCosmosQuery.isCountQuery(countQuery, long.class);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void testTextBlockSumQuery() {
+        String sumQuery = """
+                    SELECT VALUE SUM(a.population)
+                    FROM a
+                    WHERE a.city = @city
+                    AND a.state = @state
+            """;
+        boolean result = StringBasedCosmosQuery.isSumQuery(sumQuery, long.class);
+        assertThat(result).isTrue();
     }
 }

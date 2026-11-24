@@ -21,10 +21,12 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.ShareErrors;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -34,6 +36,7 @@ import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
@@ -173,6 +176,27 @@ public class ShareAsyncClient {
     }
 
     /**
+     * Creates a directory client that addresses a directory by its file ID.
+     *
+     * <p>Call {@link ShareDirectoryAsyncClient#getProperties()} on the returned client to retrieve properties without
+     * knowing the directory path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties
+     * response. Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * Mono<ShareDirectoryProperties> properties = shareAsyncClient.getDirectoryClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
+     * @param fileId The file ID of the directory.
+     * @return A client for interacting with the directory by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareDirectoryAsyncClient getDirectoryClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    /**
      * Constructs a {@link ShareFileAsyncClient} that interacts with the specified file.
      *
      * <p>If the file doesn't exist in the share {@link ShareFileAsyncClient#create(long)} ) create} in the client will
@@ -183,6 +207,28 @@ public class ShareAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String filePath) {
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, snapshot, accountName,
+            serviceVersion, sasToken);
+    }
+
+    /**
+     * Creates a file client that addresses a file by its file ID.
+     *
+     * <p>Call {@link ShareFileAsyncClient#getProperties()} on the returned client to retrieve properties without knowing
+     * the file path. Obtain the ID from {@link FileSmbProperties#getFileId()} in a path-based properties response.
+     * The returned client supports property retrieval and {@link ShareFileAsyncClient#getFileLinks()} (SMB only).
+     * Other service operations require a path-addressed client.</p>
+     *
+     * <pre>{@code
+     * Mono<ShareFileProperties> properties = shareAsyncClient.getFileClientByFileId(fileId).getProperties();
+     * }</pre>
+     *
+     * @param fileId The file ID of the file.
+     * @return A client for interacting with the file by ID.
+     * @throws IllegalArgumentException If {@code fileId} is null or blank.
+     */
+    public ShareFileAsyncClient getFileClientByFileId(String fileId) {
+        ShareErrors.validateFileId(fileId);
+        return new ShareFileAsyncClient(azureFileStorageClient, shareName, "", fileId, snapshot, accountName,
             serviceVersion, sasToken);
     }
 
@@ -370,7 +416,8 @@ public class ShareAsyncClient {
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null,
+                options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -392,7 +439,9 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
      * @return A reactive response {@link Mono} signaling completion. {@link ShareInfo} contains information about the
-     * created share.
+     * created share. Errors with a {@link ShareStorageException} if the share could not be created for any other reason
+     * than that it already exists, for example when a share with the same name is still being deleted (status code 409,
+     * error code ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareInfo> createIfNotExists() {
@@ -425,8 +474,11 @@ public class ShareAsyncClient {
      *
      * @param options {@link ShareCreateOptions}
      * @return A {@link Mono} containing {@link Response} signaling completion, whose {@link Response#getValue() value}
-     * contains a {@link ShareInfo} containing information about the share. If {@link Response}'s status code is
-     * 201, a new share was successfully created. If status code is 409, a share already existed at this location.
+     * contains a {@link ShareInfo} containing information about the share. If {@link Response}'s status code is 201, a
+     * new share was successfully created. If status code is 409, a share already existed at this location. Errors with
+     * a {@link ShareStorageException} if the share could not be created for any other reason than that it already
+     * exists, for example when a share with the same name is still being deleted (status code 409, error code
+     * ShareBeingDeleted).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options) {
@@ -440,8 +492,8 @@ public class ShareAsyncClient {
     Mono<Response<ShareInfo>> createIfNotExistsWithResponse(ShareCreateOptions options, Context context) {
         try {
             options = options == null ? new ShareCreateOptions() : options;
-            return createWithResponse(options, context).onErrorResume(
-                t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409, t -> {
+            return createWithResponse(options, context)
+                .onErrorResume(t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.SHARE_ALREADY_EXISTS), t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null));
@@ -939,7 +991,8 @@ public class ShareAsyncClient {
                 options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
                 options.isSnapshotVirtualDirectoryAccessEnabled(), options.isPaidBurstingEnabled(),
                 options.getPaidBurstingMaxBandwidthMibps(), options.getPaidBurstingMaxIops(),
-                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), context)
+                options.getProvisionedMaxIops(), options.getProvisionedMaxBandwidthMibps(), null,
+                options.isChangeFeedEnabled(), options.getChangeFeedRetentionInDays(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1087,7 +1140,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
-     * @return The stored access policies specified on the queue.
+     * @return The stored access policies specified on the share.
      * @throws ShareStorageException If the share doesn't exist
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1116,7 +1169,7 @@ public class ShareAsyncClient {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-share-acl">Azure Docs</a>.</p>
      *
      * @param options {@link ShareGetAccessPolicyOptions}
-     * @return The stored access policies specified on the queue.
+     * @return The stored access policies specified on the share.
      * @throws ShareStorageException If the share doesn't exist
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1160,7 +1213,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
-     * @param permissions Access policies to set on the queue
+     * @param permissions Access policies to set on the share.
      * @return The {@link ShareInfo information about the share}
      * @throws ShareStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the share will have more than five policies.
@@ -1193,7 +1246,7 @@ public class ShareAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-share-acl">Azure Docs</a>.</p>
      *
-     * @param permissions Access policies to set on the queue
+     * @param permissions Access policies to set on the share.
      * @return A response containing the {@link ShareInfo information about the share} with headers and response status
      * code
      * @throws ShareStorageException If the share doesn't exist, a stored access policy doesn't have all fields filled
@@ -1451,7 +1504,9 @@ public class ShareAsyncClient {
      *
      * @param directoryName Name of the directory
      * @return A {@link Mono} containing a {@link ShareDirectoryAsyncClient} used to interact with the directory
-     * created.
+     * created. Errors with a {@link ShareStorageException} if the directory could not be created for any other reason
+     * than that it already exists, for example when a file with the same name already exists at this location (status
+     * code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareDirectoryAsyncClient> createDirectoryIfNotExists(String directoryName) {
@@ -1491,9 +1546,11 @@ public class ShareAsyncClient {
      * @param directoryName Name of the directory
      * @param options {@link ShareDirectoryCreateOptions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link ShareDirectoryAsyncClient} used to interact with the directory created. If {@link Response}'s status
-     * code is 201, a new directory was successfully created. If status code is 409, a directory with the same name
-     * already existed at this location.
+     * {@link ShareDirectoryAsyncClient} used to interact with the directory created. If {@link Response}'s status code
+     * is 201, a new directory was successfully created. If status code is 409, a directory with the same name already
+     * existed at this location. Errors with a {@link ShareStorageException} if the directory could not be created for
+     * any other reason than that it already exists, for example when a file with the same name already exists at this
+     * location (status code 409, error code ResourceTypeMismatch).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryAsyncClient>> createDirectoryIfNotExistsWithResponse(String directoryName,
@@ -1511,8 +1568,7 @@ public class ShareAsyncClient {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createDirectoryWithResponse(directoryName, options.getSmbProperties(), options.getFilePermission(),
                 options.getMetadata(), context).onErrorResume(
-                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                    t -> {
+                    t -> ModelHelper.isConflictWithErrorCode(t, ShareErrorCode.RESOURCE_ALREADY_EXISTS), t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                             response.getHeaders(), getDirectoryClient(directoryName)));
@@ -1691,7 +1747,7 @@ public class ShareAsyncClient {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
             .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
-                requestConditions, context)
+                requestConditions, null, null, context)
             .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
@@ -2313,7 +2369,7 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2340,7 +2396,7 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2369,7 +2425,7 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * Generates a service sas for the share using the specified {@link ShareServiceSasSignatureValues}
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
@@ -2384,5 +2440,37 @@ public class ShareAsyncClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    /**
+     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(shareServiceSasSignatureValues, userDelegationKey, null, Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the share using the specified {@link ShareServiceSasSignatureValues}.
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, Consumer<String> stringToSignHandler, Context context) {
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
+            .generateUserDelegationSas(userDelegationKey, accountName, stringToSignHandler, context);
     }
 }

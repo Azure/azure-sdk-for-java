@@ -18,17 +18,27 @@ import java.io.IOException;
 public final class PlaywrightWorkspaceUpdateProperties
     implements JsonSerializable<PlaywrightWorkspaceUpdateProperties> {
     /*
-     * This property sets the connection region for client workers to cloud-hosted browsers. If enabled, workers connect
-     * to browsers in the closest Azure region, ensuring lower latency. If disabled, workers connect to browsers in the
-     * Azure region in which the workspace was initially created.
+     * Controls the connection region for client workers to cloud-hosted browsers. When enabled, workers connect to
+     * browsers in the closest Azure region for lower latency. When disabled, workers connect to browsers in the Azure
+     * region where the workspace was created.
      */
     private EnablementStatus regionalAffinity;
 
     /*
-     * When enabled, this feature allows the workspace to use local auth (through service access token) for executing
-     * operations.
+     * Enables the workspace to use local authentication through service access tokens for operations.
      */
     private EnablementStatus localAuth;
+
+    /*
+     * Indicates whether reporting is enabled for the workspace. When set to true, reports will be generated and
+     * available for the workspace.
+     */
+    private EnablementStatus reporting;
+
+    /*
+     * The URI of the Azure storage account used to store workspace artifacts, test results, and reports.
+     */
+    private String storageUri;
 
     /**
      * Creates an instance of PlaywrightWorkspaceUpdateProperties class.
@@ -37,9 +47,9 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Get the regionalAffinity property: This property sets the connection region for client workers to cloud-hosted
-     * browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower latency. If
-     * disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
+     * Get the regionalAffinity property: Controls the connection region for client workers to cloud-hosted browsers.
+     * When enabled, workers connect to browsers in the closest Azure region for lower latency. When disabled, workers
+     * connect to browsers in the Azure region where the workspace was created.
      * 
      * @return the regionalAffinity value.
      */
@@ -48,9 +58,9 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Set the regionalAffinity property: This property sets the connection region for client workers to cloud-hosted
-     * browsers. If enabled, workers connect to browsers in the closest Azure region, ensuring lower latency. If
-     * disabled, workers connect to browsers in the Azure region in which the workspace was initially created.
+     * Set the regionalAffinity property: Controls the connection region for client workers to cloud-hosted browsers.
+     * When enabled, workers connect to browsers in the closest Azure region for lower latency. When disabled, workers
+     * connect to browsers in the Azure region where the workspace was created.
      * 
      * @param regionalAffinity the regionalAffinity value to set.
      * @return the PlaywrightWorkspaceUpdateProperties object itself.
@@ -61,8 +71,8 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Get the localAuth property: When enabled, this feature allows the workspace to use local auth (through service
-     * access token) for executing operations.
+     * Get the localAuth property: Enables the workspace to use local authentication through service access tokens for
+     * operations.
      * 
      * @return the localAuth value.
      */
@@ -71,8 +81,8 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Set the localAuth property: When enabled, this feature allows the workspace to use local auth (through service
-     * access token) for executing operations.
+     * Set the localAuth property: Enables the workspace to use local authentication through service access tokens for
+     * operations.
      * 
      * @param localAuth the localAuth value to set.
      * @return the PlaywrightWorkspaceUpdateProperties object itself.
@@ -83,11 +93,47 @@ public final class PlaywrightWorkspaceUpdateProperties
     }
 
     /**
-     * Validates the instance.
+     * Get the reporting property: Indicates whether reporting is enabled for the workspace. When set to true, reports
+     * will be generated and available for the workspace.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the reporting value.
      */
-    public void validate() {
+    public EnablementStatus reporting() {
+        return this.reporting;
+    }
+
+    /**
+     * Set the reporting property: Indicates whether reporting is enabled for the workspace. When set to true, reports
+     * will be generated and available for the workspace.
+     * 
+     * @param reporting the reporting value to set.
+     * @return the PlaywrightWorkspaceUpdateProperties object itself.
+     */
+    public PlaywrightWorkspaceUpdateProperties withReporting(EnablementStatus reporting) {
+        this.reporting = reporting;
+        return this;
+    }
+
+    /**
+     * Get the storageUri property: The URI of the Azure storage account used to store workspace artifacts, test
+     * results, and reports.
+     * 
+     * @return the storageUri value.
+     */
+    public String storageUri() {
+        return this.storageUri;
+    }
+
+    /**
+     * Set the storageUri property: The URI of the Azure storage account used to store workspace artifacts, test
+     * results, and reports.
+     * 
+     * @param storageUri the storageUri value to set.
+     * @return the PlaywrightWorkspaceUpdateProperties object itself.
+     */
+    public PlaywrightWorkspaceUpdateProperties withStorageUri(String storageUri) {
+        this.storageUri = storageUri;
+        return this;
     }
 
     /**
@@ -99,6 +145,8 @@ public final class PlaywrightWorkspaceUpdateProperties
         jsonWriter.writeStringField("regionalAffinity",
             this.regionalAffinity == null ? null : this.regionalAffinity.toString());
         jsonWriter.writeStringField("localAuth", this.localAuth == null ? null : this.localAuth.toString());
+        jsonWriter.writeStringField("reporting", this.reporting == null ? null : this.reporting.toString());
+        jsonWriter.writeStringField("storageUri", this.storageUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -124,6 +172,11 @@ public final class PlaywrightWorkspaceUpdateProperties
                 } else if ("localAuth".equals(fieldName)) {
                     deserializedPlaywrightWorkspaceUpdateProperties.localAuth
                         = EnablementStatus.fromString(reader.getString());
+                } else if ("reporting".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceUpdateProperties.reporting
+                        = EnablementStatus.fromString(reader.getString());
+                } else if ("storageUri".equals(fieldName)) {
+                    deserializedPlaywrightWorkspaceUpdateProperties.storageUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

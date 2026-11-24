@@ -2,23 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_RECURRENCE;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
+
+import java.time.ZonedDateTime;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.time.ZonedDateTime;
-import java.util.Map;
-
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_RECURRENCE;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * A feature filter that can be used at activate a feature based on a time window.
@@ -54,7 +56,17 @@ public final class TimeWindowFilter implements FeatureFilter {
             }
         }
 
-        final TimeWindowFilterSettings settings = OBJECT_MAPPER.convertValue(context.getParameters(), TimeWindowFilterSettings.class);
+        final TimeWindowFilterSettings settings;
+        try {
+            settings = OBJECT_MAPPER.convertValue(context.getParameters(), TimeWindowFilterSettings.class);
+        } catch (final DatabindException e) {
+            // Jackson 3 wraps exceptions thrown by setters (such as IllegalArgumentException raised during
+            // recurrence validation) in DatabindException. Preserve the original IllegalArgumentException contract.
+            if (e.getCause() instanceof IllegalArgumentException) {
+                throw (IllegalArgumentException) e.getCause();
+            }
+            throw new IllegalArgumentException(e.getMessage(), e);
+        }
         final ZonedDateTime now = ZonedDateTime.now();
 
         if (settings.getStart() == null && settings.getEnd() == null) {

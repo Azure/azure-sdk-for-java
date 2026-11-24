@@ -6,7 +6,6 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -391,8 +390,8 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
      */
     @Override
     public AutonomousDatabaseCrossRegionDisasterRecoveryProperties
-        withScheduledOperations(ScheduledOperationsType scheduledOperations) {
-        super.withScheduledOperations(scheduledOperations);
+        withScheduledOperationsList(List<ScheduledOperationsType> scheduledOperationsList) {
+        super.withScheduledOperationsList(scheduledOperationsList);
         return this;
     }
 
@@ -521,50 +520,61 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
     @Override
-    public void validate() {
-        if (sourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sourceId in model AutonomousDatabaseCrossRegionDisasterRecoveryProperties"));
-        }
-        if (remoteDisasterRecoveryType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property remoteDisasterRecoveryType in model AutonomousDatabaseCrossRegionDisasterRecoveryProperties"));
-        }
-        if (customerContacts() != null) {
-            customerContacts().forEach(e -> e.validate());
-        }
-        if (remoteDisasterRecoveryConfiguration() != null) {
-            remoteDisasterRecoveryConfiguration().validate();
-        }
-        if (localStandbyDb() != null) {
-            localStandbyDb().validate();
-        }
-        if (scheduledOperations() != null) {
-            scheduledOperations().validate();
-        }
-        if (apexDetails() != null) {
-            apexDetails().validate();
-        }
-        if (connectionStrings() != null) {
-            connectionStrings().validate();
-        }
-        if (connectionUrls() != null) {
-            connectionUrls().validate();
-        }
-        if (longTermBackupSchedule() != null) {
-            longTermBackupSchedule().validate();
-        }
+    public AutonomousDatabaseCrossRegionDisasterRecoveryProperties
+        withIsScheduleAzUpdateToEarliest(Boolean isScheduleAzUpdateToEarliest) {
+        super.withIsScheduleAzUpdateToEarliest(isScheduleAzUpdateToEarliest);
+        return this;
     }
 
-    private static final ClientLogger LOGGER
-        = new ClientLogger(AutonomousDatabaseCrossRegionDisasterRecoveryProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseCrossRegionDisasterRecoveryProperties
+        withTimeScheduledAzUpdate(String timeScheduledAzUpdate) {
+        super.withTimeScheduledAzUpdate(timeScheduledAzUpdate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseCrossRegionDisasterRecoveryProperties withZone(String zone) {
+        super.withZone(zone);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseCrossRegionDisasterRecoveryProperties
+        withBackupDestination(BackupDestinationType backupDestination) {
+        super.withBackupDestination(backupDestination);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseCrossRegionDisasterRecoveryProperties withResourceAnchorId(String resourceAnchorId) {
+        super.withResourceAnchorId(resourceAnchorId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseCrossRegionDisasterRecoveryProperties withNetworkAnchorId(String networkAnchorId) {
+        super.withNetworkAnchorId(networkAnchorId);
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -595,7 +605,8 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
             isPreviewVersionWithServiceTermsAccepted());
         jsonWriter.writeStringField("licenseModel", licenseModel() == null ? null : licenseModel().toString());
         jsonWriter.writeStringField("ncharacterSet", ncharacterSet());
-        jsonWriter.writeJsonField("scheduledOperations", scheduledOperations());
+        jsonWriter.writeArrayField("scheduledOperationsList", scheduledOperationsList(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointIp", privateEndpointIp());
         jsonWriter.writeStringField("privateEndpointLabel", privateEndpointLabel());
         jsonWriter.writeStringField("subnetId", subnetId());
@@ -610,6 +621,13 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
         jsonWriter.writeNumberField("backupRetentionPeriodInDays", backupRetentionPeriodInDays());
         jsonWriter.writeArrayField("whitelistedIps", whitelistedIps(),
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isScheduleAzUpdateToEarliest", isScheduleAzUpdateToEarliest());
+        jsonWriter.writeStringField("timeScheduledAzUpdate", timeScheduledAzUpdate());
+        jsonWriter.writeStringField("zone", zone());
+        jsonWriter.writeStringField("backupDestination",
+            backupDestination() == null ? null : backupDestination().toString());
+        jsonWriter.writeStringField("resourceAnchorId", resourceAnchorId());
+        jsonWriter.writeStringField("networkAnchorId", networkAnchorId());
         jsonWriter.writeStringField("source", this.source == null ? null : this.source.toString());
         jsonWriter.writeStringField("sourceId", this.sourceId);
         jsonWriter.writeStringField("remoteDisasterRecoveryType",
@@ -733,9 +751,11 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
                         .withLifecycleState(AutonomousDatabaseLifecycleState.fromString(reader.getString()));
-                } else if ("scheduledOperations".equals(fieldName)) {
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsType> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsType.fromJson(reader1));
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
-                        .withScheduledOperations(ScheduledOperationsType.fromJson(reader));
+                        .withScheduledOperationsList(scheduledOperationsList);
                 } else if ("privateEndpointIp".equals(fieldName)) {
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
                         .withPrivateEndpointIp(reader.getString());
@@ -873,6 +893,23 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
                     List<String> whitelistedIps = reader.readArray(reader1 -> reader1.getString());
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
                         .withWhitelistedIps(whitelistedIps);
+                } else if ("isScheduleAzUpdateToEarliest".equals(fieldName)) {
+                    deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
+                        .withIsScheduleAzUpdateToEarliest(reader.getNullable(JsonReader::getBoolean));
+                } else if ("timeScheduledAzUpdate".equals(fieldName)) {
+                    deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
+                        .withTimeScheduledAzUpdate(reader.getString());
+                } else if ("zone".equals(fieldName)) {
+                    deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties.withZone(reader.getString());
+                } else if ("backupDestination".equals(fieldName)) {
+                    deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
+                        .withBackupDestination(BackupDestinationType.fromString(reader.getString()));
+                } else if ("resourceAnchorId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
+                        .withResourceAnchorId(reader.getString());
+                } else if ("networkAnchorId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
+                        .withNetworkAnchorId(reader.getString());
                 } else if ("sourceId".equals(fieldName)) {
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties.sourceId = reader.getString();
                 } else if ("remoteDisasterRecoveryType".equals(fieldName)) {
