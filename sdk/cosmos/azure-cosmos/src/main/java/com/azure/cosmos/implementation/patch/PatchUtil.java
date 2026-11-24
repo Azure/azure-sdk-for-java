@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.implementation.patch;
 
+import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
@@ -14,12 +17,25 @@ import java.util.List;
 
 public final class PatchUtil {
 
+    private static CosmosItemSerializerAccessor cosmosItemSerializerAccessor() {
+        return ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    }
+
     public static JsonSerializable serializableBatchPatchOperation(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
-        return cosmosPatchToJsonSerializable(patchOperations, requestOptions);
+        return cosmosPatchToJsonSerializable(patchOperations, requestOptions, resolveEffectiveItemSerializer(requestOptions));
+    }
+
+    public static JsonSerializable serializableBatchPatchOperation(
+        CosmosPatchOperations patchOperations,
+        RequestOptions requestOptions,
+        CosmosItemSerializer effectiveItemSerializer) {
+
+        return cosmosPatchToJsonSerializable(patchOperations, requestOptions, resolveEffectiveItemSerializer(effectiveItemSerializer));
     }
 
     public static byte[] serializeCosmosPatchToByteArray(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
-        JsonSerializable jsonSerializable = cosmosPatchToJsonSerializable(patchOperations, requestOptions);
+        JsonSerializable jsonSerializable =
+            cosmosPatchToJsonSerializable(patchOperations, requestOptions, resolveEffectiveItemSerializer(requestOptions));
 
         byte[] serializedBody;
         try {
@@ -32,7 +48,11 @@ public final class PatchUtil {
         return serializedBody;
     }
 
-    private static JsonSerializable cosmosPatchToJsonSerializable(CosmosPatchOperations patchOperations, RequestOptions requestOptions) {
+    private static JsonSerializable cosmosPatchToJsonSerializable(
+        CosmosPatchOperations patchOperations,
+        RequestOptions requestOptions,
+        CosmosItemSerializer effectiveItemSerializer) {
+
         JsonSerializable jsonSerializable = new JsonSerializable();
         ArrayNode operations = Utils.getSimpleObjectMapper().createArrayNode();
         List<PatchOperation> patchOperationList = ModelBridgeInternal.getPatchOperationsFromCosmosPatch(patchOperations);
@@ -63,7 +83,9 @@ public final class PatchUtil {
                     );
                     operationJsonSerializable.set(
                         PatchConstants.PropertyNames_Value,
-                        ((PatchOperationCore)patchOperation).getResource()
+                        ((PatchOperationCore)patchOperation).getResource(),
+                        effectiveItemSerializer,
+                        true
                     );
                 }
             } else {
@@ -91,5 +113,26 @@ public final class PatchUtil {
         }
 
         return jsonSerializable;
+    }
+
+    private static CosmosItemSerializer resolveEffectiveItemSerializer(RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            return CosmosItemSerializer.DEFAULT_SERIALIZER;
+        }
+
+        return resolveEffectiveItemSerializer(requestOptions.getEffectiveItemSerializer());
+    }
+
+    private static CosmosItemSerializer resolveEffectiveItemSerializer(CosmosItemSerializer candidateSerializer) {
+        if (candidateSerializer == null) {
+            return CosmosItemSerializer.DEFAULT_SERIALIZER;
+        }
+
+        if (candidateSerializer != CosmosItemSerializer.DEFAULT_SERIALIZER
+            && cosmosItemSerializerAccessor().canSerialize(candidateSerializer)) {
+            return candidateSerializer;
+        }
+
+        return CosmosItemSerializer.DEFAULT_SERIALIZER;
     }
 }

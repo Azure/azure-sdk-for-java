@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -80,7 +79,10 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
             if (this.getOperationType() == CosmosItemOperationType.PATCH) {
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations) this.getItemInternal(), this.getRequestOptions())
+                    getSerializedPatchOperationBody(
+                        (CosmosPatchOperations) this.getItemInternal(),
+                        this.getRequestOptions(),
+                        effectiveItemSerializer)
                 );
             } else {
                 jsonSerializable.set(
