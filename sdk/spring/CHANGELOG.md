@@ -1,9 +1,39 @@
 # Release History
-## 7.5.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 4.1.2 and Spring Cloud dependencies version to 2025.1.4
-Upgrade Spring Boot dependencies version to 4.1.1 and Spring Cloud dependencies version to 2025.1.3
+
+## 7.5.0 (2026-11-24)
+- This release is compatible with Spring Boot 4.0.0-4.1.2. (Note: 4.1.x (x>2) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0-2025.1.3. (Note: 2025.1.x (x>3) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.3.10.
+
+### Spring Cloud Azure App Configuration Config
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config` module.
+
+#### Features Added
+
+- Added support for Snapshot References in App Configuration stores. Snapshot reference settings are now automatically resolved, loading the referenced snapshot's configuration settings as properties.
+
+#### Bugs Fixed
+
+- Fixed configuration refresh blocking the calling thread by running refresh checks asynchronously on subscription.
+- Fixed an issue where startup retries could report success without loading configuration when all clients were in backoff. Startup now waits for client availability until the startup timeout and preserves the last load failure. Refresh also reports failure when no clients are available.
+- Fixed an issue where a refresh, when using multiple stores, could result in a partially loaded store failed to load across retries and all available replicas.
+
+### Spring Cloud Azure App Configuration Config Web
+
+This section includes changes in `spring-cloud-azure-appconfiguration-config-web` module.
+
+#### Bugs Fixed
+
+- Fixed request-triggered configuration refresh blocking servlet request threads and ensured asynchronous refresh failures are logged.
 
 ### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 
@@ -28,12 +58,20 @@ Upgrade Spring Boot dependencies version to 4.1.1 and Spring Cloud dependencies 
 - Fixed Service Bus JMS listener containers using `JmsPoolConnectionFactory` when both `spring.jms.servicebus.pool.enabled=true` and `spring.jms.cache.enabled=false`. The sender continues to use `JmsPoolConnectionFactory`, while listener containers now use a dedicated `ServiceBusJmsConnectionFactory`, enabling topic subscriptions on the Standard tier. ([#49308](https://github.com/Azure/azure-sdk-for-java/issues/49308))
 - Fixed missing user flow validation in Azure AD B2C resource servers by checking `tfp` or fallback `acr` against configured names. ([#51030](https://github.com/Azure/azure-sdk-for-java/pull/51030))
 
+#### Other Changes
+
+- Aligned Reactor version resolution and test HTTP transport dependencies with Netty 4.2, and added offline transport compatibility tests.
+
 ### Spring Cloud Azure Starter Monitor
 This section includes changes in `spring-cloud-azure-starter-monitor` module.
 
 #### Dependency Updates
 
 - Upgraded OpenTelemetry SDK dependencies from `1.58.0` to `1.65.0` and `opentelemetry-spring-boot-starter` from `2.24.0` to `2.31.1`. ([#50543](https://github.com/Azure/azure-sdk-for-java/pull/50543))
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#750-2026-11-24) for more details.
 
 ## 6.5.0 (2026-07-29)
 - This release is compatible with Spring Boot 3.5.0-3.5.14. (Note: 3.5.x (x>14) should be supported, but they aren't tested with this release.)
