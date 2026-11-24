@@ -16,9 +16,8 @@ import zipfile
 
 MODULE = Path(__file__).resolve().parent
 ROOT = MODULE.parents[2]
-BUILD = MODULE / "sdk-build.xml"
-REACTOR = MODULE.parent / "reactor.xml"
-LOCAL_EXTERNAL_VERSIONS = MODULE.parent / "external_dependencies.txt"
+BUILD = MODULE / "pom.xml"
+REACTOR = MODULE.parent / "pom.xml"
 NS = {"m": "http://maven.apache.org/POM/4.0.0"}
 
 
@@ -28,19 +27,14 @@ def require(condition, message):
 
 
 def verify_version_configuration():
-    # Reuse the repository updater without modifying sources or the shared v4 registration.
+    # Check the standard version markers without rewriting sources.
     sys.path.insert(0, str(ROOT / "eng" / "versioning"))
     from update_versions import exception_list, update_versions
     from utils import load_version_map_from_file
 
-    versions, external, local = {}, {}, {}
+    versions, external = {}, {}
     load_version_map_from_file(str(ROOT / "eng/versioning/version_client.txt"), versions)
     load_version_map_from_file(str(ROOT / "eng/versioning/external_dependencies.txt"), external)
-    load_version_map_from_file(str(LOCAL_EXTERNAL_VERSIONS), external)
-    load_version_map_from_file(str(MODULE.parent / "versions.txt"), local)
-    require(set(local) == {"com.azure:azure-cosmos"}, "Only Cosmos may override the shared versions")
-    require(local["com.azure:azure-cosmos"].current.startswith("5."), "Expected an isolated v5 version")
-    versions.update(local)
     with tempfile.TemporaryDirectory() as directory:
         candidate = Path(directory) / BUILD.name
         shutil.copyfile(BUILD, candidate)
@@ -48,7 +42,7 @@ def verify_version_configuration():
         update_versions(versions, external, str(candidate), True, False, [])
         require(not exception_list, f"Version validation failed: {exception_list}")
         require(candidate.read_bytes() == BUILD.read_bytes(),
-                "sdk-build.xml differs from versions.txt or the local/shared dependency/plugin versions")
+                "pom.xml differs from the shared version manifests")
 
 
 def verify_effective_pom(path):
@@ -71,6 +65,9 @@ def verify_effective_pom(path):
                     f"{name} must compile tests with --release 17")
     require(plugins["maven-deploy-plugin"].findtext("m:configuration/m:skip", namespaces=NS) == "true",
             "The foundation must not enable Maven deployment")
+    checkstyle = plugins["maven-checkstyle-plugin"].findtext("m:configuration/m:configLocation", namespaces=NS)
+    require(checkstyle.replace("\\", "/").endswith("/checkstyle/vnext/checkstyle.xml"),
+            "Cosmos must inherit the Core v2 namespace-compatible Checkstyle rules")
     arg_line = plugins["maven-surefire-plugin"].findtext("m:configuration/m:argLine", namespaces=NS)
     require("@{jacocoUnitTestAgent}" in arg_line, "Inherited JaCoCo test hook was lost")
 
@@ -88,12 +85,15 @@ def verify_artifacts():
                 "The foundation must not contain legacy implementation or placeholder public clients")
         require(not any(name.endswith((".dll", ".so", ".dylib")) for name in jar.namelist()),
                 "Native binaries belong to a later migration slice")
+        require("com.azure.v2.cosmos.properties" in jar.namelist(),
+                "Missing v2-qualified SDK metadata")
+        require("azure-cosmos.properties" not in jar.namelist(), "SDK metadata must not shadow v4 on the classpath")
         for name in classes:
             require(struct.unpack(">H", jar.read(name)[6:8])[0] == 61,
                     f"{name} does not have the Java 17 class-file baseline")
     with zipfile.ZipFile(str(base) + "-sources.jar") as jar:
         require("module-info.java" in jar.namelist(), "Missing module source")
-        require("com/azure/cosmos/package-info.java" in jar.namelist(), "Missing package documentation")
+        require("com/azure/v2/cosmos/package-info.java" in jar.namelist(), "Missing package documentation")
     with zipfile.ZipFile(str(base) + "-javadoc.jar") as jar:
         require(any(name.endswith("module-summary.html") for name in jar.namelist()),
                 "Missing module Javadoc")
@@ -105,7 +105,7 @@ def verify_artifacts():
         require(all(int(suite.get(key, "0")) == 0 for key in ("errors", "failures", "skipped")),
                 f"Failed or skipped build metadata tests: {report}")
         executed += int(suite.get("tests", "0"))
-    require(executed >= 4, "Expected all four build metadata tests to execute")
+    require(executed >= 6, "Expected metadata and v4/v5 coexistence tests to execute")
 
 
 def main():
@@ -130,7 +130,7 @@ def main():
     run("-f", str(REACTOR), "-pl", "com.azure.v2:azure-core", "-am", "clean", "install",
         "-Dmaven.test.skip=true", "-Dcheckstyle.skip", "-Dmaven.javadoc.skip", "-Drevapi.skip",
         "-Dspotbugs.skip", "-Djacoco.skip", "-Dspotless.skip")
-    run("-f", str(REACTOR), "-pl", "com.azure:azure-cosmos", "clean", "verify", "-Dspotless.apply.skip=true")
+    run("-f", str(REACTOR), "-pl", "com.azure.v2:azure-cosmos", "clean", "verify", "-Dspotless.apply.skip=true")
     effective = MODULE / "target" / "cosmos-v5-effective-pom.xml"
     run("-f", str(BUILD), "help:effective-pom", f"-Doutput={effective}")
     verify_effective_pom(effective)
