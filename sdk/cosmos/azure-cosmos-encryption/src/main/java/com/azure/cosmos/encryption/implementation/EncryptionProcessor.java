@@ -368,17 +368,7 @@ public class EncryptionProcessor {
         else if (propertyValueHolder.isArray()) {
             assert propertyValueHolder instanceof ArrayNode;
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
-            boolean traverseContainers = shouldTraverseArrayContainers(arrayNode);
-            boolean processScalars = this.mixedArrayEncryptionEnabled || !traverseContainers;
-            for (int i = 0; i < arrayNode.size(); i++) {
-                JsonNode nodeInArray = arrayNode.get(i);
-                if (traverseContainers && (nodeInArray.isObject() || nodeInArray.isArray())) {
-                    arrayNode.set(i, encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
-                } else if (processScalars && (!this.mixedArrayEncryptionEnabled || !nodeInArray.isNull())) {
-                    arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
-                        nodeInArray, StringUtils.EMPTY)));
-                }
-            }
+            encryptPatchArray(encryptionSettings, arrayNode, propertyName);
             return arrayNode;
         } else if (!propertyValueHolder.isNull()) {
             return BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder,
@@ -402,28 +392,86 @@ public class EncryptionProcessor {
                 }
             }
         } else if (propertyValueHolder.isArray()) {
-            ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
-            boolean traverseContainers = shouldTraverseArrayContainers(arrayNode);
-            boolean processScalars = this.mixedArrayEncryptionEnabled || !traverseContainers;
-            for (int i = 0; i < arrayNode.size(); i++) {
-                JsonNode nodeInArray = arrayNode.get(i);
-                if (traverseContainers && (nodeInArray.isObject() || nodeInArray.isArray())) {
-                    encryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray,
-                        StringUtils.EMPTY);
-                } else if (processScalars && (!this.mixedArrayEncryptionEnabled || !nodeInArray.isNull())) {
-                    arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
-                        nodeInArray, StringUtils.EMPTY)));
-                }
-            }
+            encryptArray(encryptionSettings, (ArrayNode) propertyValueHolder);
         } else {
             encryptAndSerializeValue(encryptionSettings, (ObjectNode) objectNode, propertyValueHolder, propertyName);
         }
     }
 
-    private boolean shouldTraverseArrayContainers(ArrayNode arrayNode) {
-        // Legacy traversal chooses one strategy for the entire array from its first element.
-        return this.mixedArrayEncryptionEnabled || (arrayNode.size() > 0
-            && (arrayNode.get(0).isObject() || arrayNode.get(0).isArray()));
+    private static boolean isLegacyContainerArray(ArrayNode arrayNode) {
+        return arrayNode.size() > 0 && (arrayNode.get(0).isObject() || arrayNode.get(0).isArray());
+    }
+
+    private void encryptPatchArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
+                                   String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
+        if (this.mixedArrayEncryptionEnabled) {
+            encryptMixedPatchArray(encryptionSettings, arrayNode, propertyName);
+        } else {
+            encryptLegacyPatchArray(encryptionSettings, arrayNode, propertyName);
+        }
+    }
+
+    private void encryptMixedPatchArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
+                                        String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
+        for (int i = 0; i < arrayNode.size(); i++) {
+            JsonNode nodeInArray = arrayNode.get(i);
+            if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                arrayNode.set(i, encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
+            } else if (!nodeInArray.isNull()) {
+                arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
+                    nodeInArray, StringUtils.EMPTY)));
+            }
+        }
+    }
+
+    private void encryptLegacyPatchArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
+                                         String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
+        boolean containerArray = isLegacyContainerArray(arrayNode);
+        for (int i = 0; i < arrayNode.size(); i++) {
+            JsonNode nodeInArray = arrayNode.get(i);
+            if (!containerArray) {
+                arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
+                    nodeInArray, StringUtils.EMPTY)));
+            } else if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                arrayNode.set(i, encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
+            }
+        }
+    }
+
+    private void encryptLegacyArray(EncryptionSettings encryptionSettings,
+                                    ArrayNode arrayNode) throws MicrosoftDataEncryptionException, JsonProcessingException {
+        boolean containerArray = isLegacyContainerArray(arrayNode);
+        for (int i = 0; i < arrayNode.size(); i++) {
+            JsonNode nodeInArray = arrayNode.get(i);
+            if (!containerArray) {
+                arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
+                    nodeInArray, StringUtils.EMPTY)));
+            } else if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                encryptAndSerializeProperty(encryptionSettings, null, nodeInArray, StringUtils.EMPTY);
+            }
+        }
+    }
+
+    private void encryptArray(EncryptionSettings encryptionSettings,
+                              ArrayNode arrayNode) throws MicrosoftDataEncryptionException, JsonProcessingException {
+        if (this.mixedArrayEncryptionEnabled) {
+            encryptMixedArray(encryptionSettings, arrayNode);
+        } else {
+            encryptLegacyArray(encryptionSettings, arrayNode);
+        }
+    }
+
+    private void encryptMixedArray(EncryptionSettings encryptionSettings,
+                                   ArrayNode arrayNode) throws MicrosoftDataEncryptionException, JsonProcessingException {
+        for (int i = 0; i < arrayNode.size(); i++) {
+            JsonNode nodeInArray = arrayNode.get(i);
+            if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                encryptAndSerializeProperty(encryptionSettings, null, nodeInArray, StringUtils.EMPTY);
+            } else if (!nodeInArray.isNull()) {
+                arrayNode.set(i, BinaryNode.valueOf(encryptAndSerializeValue(encryptionSettings, null,
+                    nodeInArray, StringUtils.EMPTY)));
+            }
+        }
     }
 
     public String encryptAndSerializeValue(EncryptionSettings encryptionSettings, String propertyValue, String propertyName) throws MicrosoftDataEncryptionException {
@@ -541,34 +589,61 @@ public class EncryptionProcessor {
                 }
             }
         } else if (propertyValueHolder.isArray()) {
-            ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
-            boolean traverseContainers = shouldTraverseArrayContainers(arrayNode);
-            boolean processScalars = this.mixedArrayEncryptionEnabled || !traverseContainers;
-            for (int i = 0; i < arrayNode.size(); i++) {
-                JsonNode nodeInArray = arrayNode.get(i);
-                if (traverseContainers && (nodeInArray.isObject() || nodeInArray.isArray())) {
-                    decryptAndSerializeProperty(encryptionSettings, (ObjectNode) null, nodeInArray,
-                        propertyName);
-                } else if (processScalars && (!this.mixedArrayEncryptionEnabled || !nodeInArray.isNull())) {
-                    try {
-                        arrayNode.set(i, decryptAndSerializeValue(encryptionSettings, null, nodeInArray,
-                            StringUtils.EMPTY));
-                    } catch (MicrosoftDataEncryptionException | IOException | IllegalArgumentException ex) {
-                        throw new IllegalStateException("Unable to decrypt array element at index " + i
-                            + " in encrypted property '/" + propertyName + "'. Mixed-type arrays written by previous "
-                            + "SDK versions may contain unencrypted scalar values. If this is legacy data, read the "
-                            + "item using the SDK version that wrote it and rewrite the decrypted item using the "
-                            + "current SDK. Alternatively, temporarily restore legacy reads AND writes by setting "
-                            + "-D" + EncryptionConfigs.MIXED_ARRAYS_ENABLED + "=false or "
-                            + EncryptionConfigs.MIXED_ARRAYS_ENABLED_VARIABLE + "=false before creating clients. "
-                            + "Legacy mode can leave scalar array elements unencrypted and cannot correctly read "
-                            + "mixed arrays written with the fix enabled. Otherwise, check the encryption key and "
-                            + "ciphertext integrity.", ex);
-                    }
-                }
-            }
+            decryptArray(encryptionSettings, (ArrayNode) propertyValueHolder, propertyName);
         } else {
             decryptAndSerializeValue(encryptionSettings, (ObjectNode) objectNode, propertyValueHolder, propertyName);
+        }
+    }
+
+    private void decryptArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
+                              String propertyName) throws MicrosoftDataEncryptionException, IOException {
+        if (this.mixedArrayEncryptionEnabled) {
+            decryptMixedArray(encryptionSettings, arrayNode, propertyName);
+        } else {
+            decryptLegacyArray(encryptionSettings, arrayNode, propertyName);
+        }
+    }
+
+    private void decryptMixedArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
+                                   String propertyName) throws MicrosoftDataEncryptionException, IOException {
+        for (int i = 0; i < arrayNode.size(); i++) {
+            JsonNode nodeInArray = arrayNode.get(i);
+            if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                decryptAndSerializeProperty(encryptionSettings, null, nodeInArray, propertyName);
+            } else if (!nodeInArray.isNull()) {
+                arrayNode.set(i, decryptArrayValue(encryptionSettings, nodeInArray, propertyName, i));
+            }
+        }
+    }
+
+    private void decryptLegacyArray(EncryptionSettings encryptionSettings, ArrayNode arrayNode,
+                                    String propertyName) throws MicrosoftDataEncryptionException, IOException {
+        boolean containerArray = isLegacyContainerArray(arrayNode);
+        for (int i = 0; i < arrayNode.size(); i++) {
+            JsonNode nodeInArray = arrayNode.get(i);
+            if (!containerArray) {
+                arrayNode.set(i, decryptArrayValue(encryptionSettings, nodeInArray, propertyName, i));
+            } else if (nodeInArray.isObject() || nodeInArray.isArray()) {
+                decryptAndSerializeProperty(encryptionSettings, null, nodeInArray, propertyName);
+            }
+        }
+    }
+
+    private JsonNode decryptArrayValue(EncryptionSettings encryptionSettings, JsonNode nodeInArray,
+                                       String propertyName, int index) {
+        try {
+            return decryptAndSerializeValue(encryptionSettings, null, nodeInArray, StringUtils.EMPTY);
+        } catch (MicrosoftDataEncryptionException | IOException | IllegalArgumentException ex) {
+            throw new IllegalStateException("Unable to decrypt array element at index " + index
+                + " in encrypted property '/" + propertyName + "'. Mixed-type arrays written by previous "
+                + "SDK versions may contain unencrypted scalar values. If this is legacy data, read the "
+                + "item using the SDK version that wrote it and rewrite the decrypted item using the "
+                + "current SDK. Alternatively, temporarily restore legacy reads AND writes by setting "
+                + "-D" + EncryptionConfigs.MIXED_ARRAYS_ENABLED + "=false or "
+                + EncryptionConfigs.MIXED_ARRAYS_ENABLED_VARIABLE + "=false before creating clients. "
+                + "Legacy mode can leave scalar array elements unencrypted and cannot correctly read "
+                + "mixed arrays written with the fix enabled. Otherwise, check the encryption key and "
+                + "ciphertext integrity.", ex);
         }
     }
 
