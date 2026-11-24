@@ -1,0 +1,72 @@
+[
+  {
+    "extension": "revapi.differences",
+    "id": "sdk-suppressions",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.network.models.ProxyResourceVirtualNetworkApplianceCapabilityProperties",
+          "justification": "Change base class to standard ProxyResource."
+        },
+        {
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.network.models.Nat64Capability",
+          "new": "class com.azure.resourcemanager.network.models.Nat64Capability",
+          "superClass": "com.azure.core.management.ProxyResource",
+          "justification": "Revapi cannot resolve ProxyResource while analyzing this capability."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old": "class com.azure.resourcemanager.network.models.Nat64Capability",
+          "new": "class com.azure.resourcemanager.network.models.Nat64Capability",
+          "superClass": "com.azure.core.management.ProxyResource",
+          "justification": "Revapi cannot resolve ProxyResource while analyzing this capability."
+        },
+        {
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.network.models.PLGatewayCapability",
+          "new": "class com.azure.resourcemanager.network.models.PLGatewayCapability",
+          "superClass": "com.azure.core.management.ProxyResource",
+          "justification": "Revapi cannot resolve ProxyResource while analyzing this capability."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old": "class com.azure.resourcemanager.network.models.PLGatewayCapability",
+          "new": "class com.azure.resourcemanager.network.models.PLGatewayCapability",
+          "superClass": "com.azure.core.management.ProxyResource",
+          "justification": "Revapi cannot resolve ProxyResource while analyzing this capability."
+        },
+        {
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.network.models.PLGatewayFastpathCapability",
+          "new": "class com.azure.resourcemanager.network.models.PLGatewayFastpathCapability",
+          "superClass": "com.azure.core.management.ProxyResource",
+          "justification": "Revapi cannot resolve ProxyResource while analyzing this capability."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old": "class com.azure.resourcemanager.network.models.PLGatewayFastpathCapability",
+          "new": "class com.azure.resourcemanager.network.models.PLGatewayFastpathCapability",
+          "superClass": "com.azure.core.management.ProxyResource",
+          "justification": "Revapi cannot resolve ProxyResource while analyzing this capability."
+        },
+        {
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.network.models.PLIPForwardersCapability",
+          "new": "class com.azure.resourcemanager.network.models.PLIPForwardersCapability",
+          "superClass": "com.azure.core.management.ProxyResource",
+          "justification": "Revapi cannot resolve ProxyResource while analyzing this capability."
+        },
+        {
+          "code": "java.missing.newSuperType",
+          "old": "class com.azure.resourcemanager.network.models.PLIPForwardersCapability",
+          "new": "class com.azure.resourcemanager.network.models.PLIPForwardersCapability",
+          "superClass": "com.azure.core.management.ProxyResource",
+          "justification": "Revapi cannot resolve ProxyResource while analyzing this capability."
+        }
+      ]
+    }
+  }
+]
