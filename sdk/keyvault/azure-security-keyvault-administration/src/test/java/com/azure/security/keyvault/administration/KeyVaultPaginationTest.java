@@ -10,6 +10,8 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.SyncAsyncExtension;
@@ -23,6 +25,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -112,6 +115,97 @@ public class KeyVaultPaginationTest {
         }
     }
 
+    @SyncAsyncTest
+    public void validCloudAndCustomChallengesWorkWithVerificationEnabled() {
+        // DNS routing does not change the logical URL origin.
+        String[][] endpoints = {
+            { "https://paging.managedhsm.azure.net", "https://managedhsm.azure.net" },
+            { "https://paging.region.managedhsm.azure.net", "https://managedhsm.azure.net" },
+            { "https://paging.managedhsm.azure.cn", "https://managedhsm.azure.cn" },
+            { "https://paging.managedhsm.usgovcloudapi.net", "https://managedhsm.usgovcloudapi.net" },
+            { "https://hsm.arbitrary.example:8443", "https://arbitrary.example" },
+            { "HTTPS://HSM.XN--BCHER-KVA.EXAMPLE:443", "https://xn--bcher-kva.example" } };
+        for (boolean disableVerification : new boolean[] { false, true }) {
+            for (String[] endpoint : endpoints) {
+                KeyVaultCredentialPolicy.clearCache();
+                KeyVaultAccessControlClientBuilder builder
+                    = builder(endpoint[0], endpoint[1], false, disableVerification);
+                assertEquals(1,
+                    readPages(builder.buildClient().listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+                        builder.buildAsyncClient().listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+                        endpoint[0] + "/roles?skip=1"));
+            }
+        }
+    }
+
+    @SyncAsyncTest
+    public void defaultResourceVerificationDoesNotAuthorizeForeignContinuation() {
+        assertValidChallengeCannotAuthorizeForeignContinuation(false);
+    }
+
+    @SyncAsyncTest
+    public void verificationOptOutDoesNotAuthorizeForeignContinuation() {
+        assertValidChallengeCannotAuthorizeForeignContinuation(true);
+    }
+
+    private void assertValidChallengeCannotAuthorizeForeignContinuation(boolean disableVerification) {
+        KeyVaultAccessControlClientBuilder original = builder(false, disableVerification);
+        KeyVaultAccessControlClient client = original.buildClient();
+        KeyVaultAccessControlAsyncClient asyncClient = original.buildAsyncClient();
+        assertEquals(1, readPages(client.listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+            asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL), null));
+        String otherOrigin = "https://other.managedhsm.azure.net";
+        KeyVaultAccessControlClientBuilder other
+            = builder(otherOrigin, "https://managedhsm.azure.net", false, disableVerification);
+        assertEquals(1, readPages(other.buildClient().listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+            other.buildAsyncClient().listRoleDefinitions(KeyVaultRoleScope.GLOBAL), null));
+        int previousTokens = tokenRequests.get();
+        int previousSends = sends.get();
+        assertThrows(IllegalArgumentException.class,
+            () -> readPages(client.listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+                asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL), otherOrigin + "/roles?skip=1"));
+        assertEquals(previousTokens, tokenRequests.get());
+        assertEquals(previousSends, sends.get());
+    }
+
+    @SyncAsyncTest
+    public void verificationOptOutChangesOnlyChallengeResourceValidation() {
+        String endpoint = "https://hsm.example:8443";
+        String resource = "https://managedhsm.azure.net";
+        KeyVaultAccessControlClientBuilder verified = builder(endpoint, resource, false, false);
+        RuntimeException rejected = assertThrows(RuntimeException.class,
+            () -> readPages(verified.buildClient().listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+                verified.buildAsyncClient().listRoleDefinitions(KeyVaultRoleScope.GLOBAL), endpoint + "/roles"));
+        assertTrue(rejected.getMessage().contains("challenge resource"));
+        assertEquals(0, tokenRequests.get());
+        assertEquals(1, sends.get());
+
+        KeyVaultAccessControlClientBuilder optedOut = builder(endpoint, resource, false, true);
+        KeyVaultAccessControlClient client = optedOut.buildClient();
+        KeyVaultAccessControlAsyncClient asyncClient = optedOut.buildAsyncClient();
+        assertEquals(1, readPages(client.listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+            asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL), endpoint + "/roles"));
+        assertEquals(1, tokenRequests.get());
+        int previousSends = sends.get();
+        for (boolean disableVerification : new boolean[] { false, true }) {
+            String insecureEndpoint = "http://hsm.example:8443";
+            KeyVaultAccessControlClientBuilder insecure
+                = builder(insecureEndpoint, resource, false, disableVerification);
+            RuntimeException insecureRejected = assertThrows(RuntimeException.class,
+                () -> readPages(insecure.buildClient().listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+                    insecure.buildAsyncClient().listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+                    insecureEndpoint + "/roles"));
+            assertTrue(insecureRejected.getMessage().contains("HTTPS"));
+            assertEquals(1, tokenRequests.get());
+            assertEquals(previousSends, sends.get());
+        }
+        assertThrows(IllegalArgumentException.class,
+            () -> readPages(client.listRoleDefinitions(KeyVaultRoleScope.GLOBAL),
+                asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL), "https://other.example:8443/roles"));
+        assertEquals(1, tokenRequests.get());
+        assertEquals(previousSends, sends.get());
+    }
+
     private static int readPages(PagedIterable<?> sync, PagedFlux<?> async, String nextLink) {
         AtomicInteger pages = new AtomicInteger();
         SyncAsyncExtension.execute(() -> sync.iterableByPage(nextLink).forEach(page -> pages.incrementAndGet()),
@@ -121,6 +215,11 @@ public class KeyVaultPaginationTest {
     }
 
     private KeyVaultAccessControlClientBuilder builder(boolean customPipeline, boolean disableVerification) {
+        return builder(ENDPOINT, "https://managedhsm.azure.net", customPipeline, disableVerification);
+    }
+
+    private KeyVaultAccessControlClientBuilder builder(String endpoint, String resource, boolean customPipeline,
+        boolean disableVerification) {
         TokenCredential credential = context -> {
             tokenRequests.incrementAndGet();
             return Mono.just(new AccessToken("fake-key-vault-token", OffsetDateTime.now().plusHours(1)));
@@ -130,7 +229,7 @@ public class KeyVaultPaginationTest {
             String authorization = request.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             if (authorization == null) {
                 return new MockHttpResponse(request, 401, new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE,
-                    "Bearer authorization=\"https://login.example/tenant\", resource=\"https://managedhsm.azure.net\""));
+                    "Bearer authorization=\"https://login.example/tenant\", resource=\"" + resource + "\""));
             }
             assertEquals("Bearer fake-key-vault-token", authorization);
             authorizedSends.incrementAndGet();
@@ -140,8 +239,10 @@ public class KeyVaultPaginationTest {
                 new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"),
                 body.getBytes(StandardCharsets.UTF_8));
         });
-        KeyVaultAccessControlClientBuilder builder
-            = new KeyVaultAccessControlClientBuilder().vaultUrl(ENDPOINT).credential(credential).httpClient(httpClient);
+        KeyVaultAccessControlClientBuilder builder = new KeyVaultAccessControlClientBuilder().vaultUrl(endpoint)
+            .credential(credential)
+            .httpClient(httpClient)
+            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))));
         if (disableVerification) {
             builder.disableChallengeResourceVerification();
         }

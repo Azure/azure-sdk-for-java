@@ -48,6 +48,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final String KEY_VAULT_STASHED_CONTENT_KEY = "KeyVaultCredentialPolicyStashedBody";
     private static final String KEY_VAULT_STASHED_CONTENT_LENGTH_KEY = "KeyVaultCredentialPolicyStashedContentLength";
     private static final String KEY_VAULT_REQUEST_ORIGIN_KEY = "KeyVaultCredentialPolicyRequestOrigin";
+    private static final String KEY_VAULT_REQUEST_CHALLENGE_KEY = "KeyVaultCredentialPolicyRequestChallenge";
     private static final ConcurrentMap<String, ChallengeParameters> CHALLENGE_CACHE = new ConcurrentHashMap<>();
     private volatile ChallengeParameters challenge;
     private final boolean disableChallengeResourceVerification;
@@ -94,12 +95,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             ChallengeParameters challenge = getChallenge(context);
 
             if (challenge != null) {
-                // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
-                TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(challenge.getScopes())
-                    .setTenantId(challenge.getTenantId())
-                    .setCaeEnabled(true);
-
-                return setAuthorizationHeader(context, tokenRequestContext);
+                return setAuthorizationHeader(context, challenge.toTokenRequestContext());
             }
 
             // The body is removed from the initial request because Key Vault supports other authentication schemes
@@ -185,26 +181,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             }
             this.challenge = challenge;
 
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(challenge.getScopes())
-                .setTenantId(challenge.getTenantId())
-                .setCaeEnabled(true);
-
-            String error = challengeAttributes.get("error");
-
-            if (error != null) {
-                LOGGER.verbose("The challenge response contained an error: {}", error);
-
-                if ("insufficient_claims".equalsIgnoreCase(error)) {
-                    String claims = challengeAttributes.get("claims");
-
-                    if (claims != null) {
-                        tokenRequestContext
-                            .setClaims(new String(Base64Util.decodeString(claims), StandardCharsets.UTF_8));
-                    }
-                }
-            }
-
-            return setAuthorizationHeader(context, tokenRequestContext).then(Mono.just(true));
+            return setAuthorizationHeader(context, saveRequestChallenge(context, challenge, challengeAttributes))
+                .then(Mono.just(true));
         });
     }
 
@@ -215,12 +193,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         ChallengeParameters challenge = getChallenge(context);
 
         if (challenge != null) {
-            // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
-            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(challenge.getScopes())
-                .setTenantId(challenge.getTenantId())
-                .setCaeEnabled(true);
-
-            setAuthorizationHeaderSync(context, tokenRequestContext);
+            setAuthorizationHeaderSync(context, challenge.toTokenRequestContext());
 
             return;
         }
@@ -302,25 +275,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
         this.challenge = challenge;
 
-        TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(challenge.getScopes())
-            .setTenantId(challenge.getTenantId())
-            .setCaeEnabled(true);
-
-        String error = challengeAttributes.get("error");
-
-        if (error != null) {
-            LOGGER.verbose("The challenge response contained an error: {}", error);
-
-            if ("insufficient_claims".equalsIgnoreCase(error)) {
-                String claims = challengeAttributes.get("claims");
-
-                if (claims != null) {
-                    tokenRequestContext.setClaims(new String(Base64Util.decodeString(claims)));
-                }
-            }
-        }
-
-        setAuthorizationHeaderSync(context, tokenRequestContext);
+        setAuthorizationHeaderSync(context, saveRequestChallenge(context, challenge, challengeAttributes));
 
         return true;
     }
@@ -454,6 +409,23 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         return false;
     }
 
+    private static TokenRequestContext saveRequestChallenge(HttpPipelineCallContext context,
+        ChallengeParameters challenge, Map<String, String> attributes) {
+        String claims = null;
+        String error = attributes.get("error");
+        if (error != null) {
+            LOGGER.verbose("The challenge response contained an error: {}", error);
+            if ("insufficient_claims".equalsIgnoreCase(error) && attributes.get("claims") != null) {
+                claims = new String(Base64Util.decodeString(attributes.get("claims")), StandardCharsets.UTF_8);
+            }
+        }
+        ChallengeParameters requestChallenge
+            = new ChallengeParameters(challenge.authority, challenge.authorizationUri, challenge.scopes, claims);
+        // Persist an immutable, request-local snapshot before acquisition, including when acquisition fails.
+        context.setData(KEY_VAULT_REQUEST_CHALLENGE_KEY, requestChallenge);
+        return requestChallenge.toTokenRequestContext();
+    }
+
     private AccessTokenCache getAccessTokenCache(String authority, TokenRequestContext context) {
         if (context == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tokenRequestContext' cannot be null."));
@@ -493,12 +465,25 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         private final URI authorizationUri;
         private final String tenantId;
         private final String[] scopes;
+        private final String claims;
 
         ChallengeParameters(String authority, URI authorizationUri, String[] scopes) {
+            this(authority, authorizationUri, scopes, null);
+        }
+
+        private ChallengeParameters(String authority, URI authorizationUri, String[] scopes, String claims) {
             this.authority = authority;
             this.authorizationUri = authorizationUri;
             tenantId = authorizationUri.getPath().split("/")[1];
-            this.scopes = scopes;
+            this.scopes = scopes.clone();
+            this.claims = claims;
+        }
+
+        private TokenRequestContext toTokenRequestContext() {
+            return new TokenRequestContext().addScopes(scopes)
+                .setTenantId(tenantId)
+                .setClaims(claims)
+                .setCaeEnabled(true);
         }
 
         /**
@@ -530,6 +515,11 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
     private ChallengeParameters getChallenge(HttpPipelineCallContext context) {
         String authority = getRequestAuthority(context);
+        ChallengeParameters requestChallenge
+            = (ChallengeParameters) context.getData(KEY_VAULT_REQUEST_CHALLENGE_KEY).orElse(null);
+        if (requestChallenge != null) {
+            return requestChallenge;
+        }
         // Use one immutable snapshot so concurrent requests cannot mix origins, scopes, or tenants.
         ChallengeParameters cachedChallenge = this.challenge;
         if (cachedChallenge == null || !authority.equals(cachedChallenge.authority)) {

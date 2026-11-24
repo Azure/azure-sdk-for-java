@@ -46,6 +46,7 @@ import com.azure.json.JsonWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
@@ -130,6 +131,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addSanitizers(Collections.singletonList(playbackNextLinkSanitizer(endpoint)));
             return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
         } else {
             builder.retryOptions(LIVE_RETRY_OPTIONS);
@@ -138,6 +140,12 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
                 ? builder.addPolicy(interceptorManager.getRecordPolicy())
                 : builder;
         }
+    }
+
+    static TestProxySanitizer playbackNextLinkSanitizer(String endpoint) {
+        // Only the origin used in the pinned recordings is translated; retain the complete path and query.
+        return new TestProxySanitizer("$.nextLink", "(?i)^https://REDACTED(?::443)?/",
+            URI.create(endpoint).resolve("/").toString(), TestProxySanitizerType.BODY_KEY);
     }
 
     @Test

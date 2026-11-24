@@ -9,7 +9,10 @@
 ### Bugs Fixed
 
 - Validate pagination destinations against the configured endpoint and bind cached authentication challenges to their origin, including during token acquisition.
+  Continuation validation now requires absolute HTTP(S) URIs with ASCII (including punycode) hosts and no user information
+  or fragment; relative continuations and URL-permissive non-URI forms are no longer accepted.
 - Isolate cached access tokens by endpoint origin and authentication context when acquisitions fail or are retried.
+- Preserve request-local challenge claims when retrying failed token acquisitions.
 
 ### Other Changes
 

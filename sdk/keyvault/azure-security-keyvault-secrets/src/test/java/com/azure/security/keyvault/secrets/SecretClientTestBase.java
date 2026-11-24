@@ -13,6 +13,8 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -24,6 +26,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -88,6 +91,7 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
             .httpClient(httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
+            interceptorManager.addSanitizers(Collections.singletonList(playbackNextLinkSanitizer(endpoint)));
             return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
         } else {
             builder.retryOptions(LIVE_RETRY_OPTIONS);
@@ -96,6 +100,12 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
                 ? builder.addPolicy(interceptorManager.getRecordPolicy())
                 : builder;
         }
+    }
+
+    static TestProxySanitizer playbackNextLinkSanitizer(String endpoint) {
+        // Only the origin used in the pinned recordings is translated; retain the complete path and query.
+        return new TestProxySanitizer("$.nextLink", "(?i)^https://REDACTED(?::443)?/",
+            URI.create(endpoint).resolve("/").toString(), TestProxySanitizerType.BODY_KEY);
     }
 
     @Test
