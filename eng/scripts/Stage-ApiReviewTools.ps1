@@ -21,7 +21,8 @@ if ($ExpandSparseCheckout -and -not $WhatIfPreference) {
     if ($LASTEXITCODE -gt 1) {
         throw 'Unable to determine whether the tooling checkout is sparse.'
     }
-    if ($sparseCheckout -eq 'true') {
+    if ($sparseCheckout -eq 'true' -and
+        $PSCmdlet.ShouldProcess($root, 'Include Java API review tools in sparse checkout')) {
         & git -C $root sparse-checkout add sdk/tools/api-review-maven-plugin sdk/tools/apiview-java-processor .vscode
         if ($LASTEXITCODE -ne 0) {
             throw 'Unable to include Java API review tooling in the sparse checkout.'

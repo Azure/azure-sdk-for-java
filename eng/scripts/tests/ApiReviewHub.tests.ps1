@@ -83,6 +83,31 @@ Describe 'Java API review hub tooling' {
         Should -Invoke mvn -Times 0
     }
 
+    It 'requires confirmation before changing sparse checkout' {
+        $marker = Join-Path $TestDrive 'sparse-checkout-mutated'
+        $command = @"
+function git {
+    `$global:LASTEXITCODE = 0
+    if (`$args -contains 'config') { return 'true' }
+    Set-Content -LiteralPath '$($marker.Replace("'", "''"))' -Value 'expanded'
+}
+function mvn { throw 'Unexpected Maven invocation.' }
+try {
+    & '$($stage.Replace("'", "''"))' -BinOutputDirectory '$($script:Output.Replace("'", "''"))' -ExpandSparseCheckout -Confirm
+}
+catch {
+    `$_.Exception.Message
+    exit 0
+}
+exit 1
+"@
+        $output = & (Get-Process -Id $PID).Path -NoLogo -NoProfile -NonInteractive -Command $command
+
+        $LASTEXITCODE | Should -Be 0
+        $output | Should -Match 'NonInteractive'
+        Test-Path -LiteralPath $marker | Should -BeFalse
+    }
+
     It 'runs the staged generator against a source checkout without engineering files' {
         Mock mvn { $global:LASTEXITCODE = 0 }
         $bin = Join-Path $TestDrive 'staged'
