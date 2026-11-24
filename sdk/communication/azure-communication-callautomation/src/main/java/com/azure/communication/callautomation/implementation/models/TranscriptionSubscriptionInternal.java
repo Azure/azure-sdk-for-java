@@ -25,7 +25,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     private String id;
 
     /*
-     * Current state of transcription session
+     * Transcription subscription state.
      */
     @Generated
     private TranscriptionSubscriptionStateInternal state;
@@ -72,7 +72,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     }
 
     /**
-     * Get the state property: Current state of transcription session.
+     * Get the state property: Transcription subscription state.
      * 
      * @return the state value.
      */
@@ -82,7 +82,7 @@ public final class TranscriptionSubscriptionInternal implements JsonSerializable
     }
 
     /**
-     * Set the state property: Current state of transcription session.
+     * Set the state property: Transcription subscription state.
      * 
      * @param state the state value to set.
      * @return the TranscriptionSubscriptionInternal object itself.

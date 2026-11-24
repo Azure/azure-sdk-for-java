@@ -19,9 +19,7 @@ import java.io.IOException;
 public final class ContinuousDtmfRecognitionRequestInternal
     implements JsonSerializable<ContinuousDtmfRecognitionRequestInternal> {
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
-     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
-     * be set which must match the kind enum value.
+     * Defines options for recognition.
      */
     @Generated
     private CommunicationIdentifierModel targetParticipant;
@@ -47,9 +45,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
     }
 
     /**
-     * Get the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
-     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
-     * at most one further property may be set which must match the kind enum value.
+     * Get the targetParticipant property: Defines options for recognition.
      * 
      * @return the targetParticipant value.
      */
@@ -59,9 +55,7 @@ public final class ContinuousDtmfRecognitionRequestInternal
     }
 
     /**
-     * Set the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
-     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
-     * at most one further property may be set which must match the kind enum value.
+     * Set the targetParticipant property: Defines options for recognition.
      * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.

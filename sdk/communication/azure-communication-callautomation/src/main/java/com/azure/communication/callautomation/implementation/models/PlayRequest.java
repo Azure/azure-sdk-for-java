@@ -38,7 +38,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     private Boolean interruptCallMediaOperation;
 
     /*
-     * The playOptions property.
+     * Defines options for playing the audio.
      */
     @Generated
     private PlayOptionsInternal playOptions;
@@ -134,7 +134,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     }
 
     /**
-     * Get the playOptions property: The playOptions property.
+     * Get the playOptions property: Defines options for playing the audio.
      * 
      * @return the playOptions value.
      */
@@ -144,7 +144,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     }
 
     /**
-     * Set the playOptions property: The playOptions property.
+     * Set the playOptions property: Defines options for playing the audio.
      * 
      * @param playOptions the playOptions value to set.
      * @return the PlayRequest object itself.

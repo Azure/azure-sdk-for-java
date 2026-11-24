@@ -24,9 +24,7 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
     private String incomingCallContext;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
-     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
-     * be set which must match the kind enum value.
+     * The target identity to redirect the call to.
      */
     @Generated
     private CommunicationIdentifierModel target;
@@ -61,9 +59,7 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
     }
 
     /**
-     * Get the target property: Identifies a participant in Azure Communication services. A participant is, for example,
-     * a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one
-     * further property may be set which must match the kind enum value.
+     * Get the target property: The target identity to redirect the call to.
      * 
      * @return the target value.
      */
@@ -73,9 +69,7 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
     }
 
     /**
-     * Set the target property: Identifies a participant in Azure Communication services. A participant is, for example,
-     * a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one
-     * further property may be set which must match the kind enum value.
+     * Set the target property: The target identity to redirect the call to.
      * 
      * @param target the target value to set.
      * @return the RedirectCallRequestInternal object itself.

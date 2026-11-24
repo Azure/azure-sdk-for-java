@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class AddParticipantResponseInternal implements JsonSerializable<AddParticipantResponseInternal> {
     /*
-     * A call participant.
+     * List of current participants in the call.
      */
     @Generated
     private CallParticipantInternal participant;
@@ -43,7 +43,7 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
     }
 
     /**
-     * Get the participant property: A call participant.
+     * Get the participant property: List of current participants in the call.
      * 
      * @return the participant value.
      */
@@ -53,7 +53,7 @@ public final class AddParticipantResponseInternal implements JsonSerializable<Ad
     }
 
     /**
-     * Set the participant property: A call participant.
+     * Set the participant property: List of current participants in the call.
      * 
      * @param participant the participant value to set.
      * @return the AddParticipantResponseInternal object itself.

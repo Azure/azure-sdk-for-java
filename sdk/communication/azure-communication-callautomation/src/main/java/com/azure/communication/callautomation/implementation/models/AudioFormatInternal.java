@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The format of the audio received from the audio subscription option.
+ * The audio format used for encoding, including sample rate and channel type. The default is Pcm16KMono.
  */
 public final class AudioFormatInternal extends ExpandableStringEnum<AudioFormatInternal> {
 

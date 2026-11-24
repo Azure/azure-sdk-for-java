@@ -30,7 +30,7 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     private String transportUrl;
 
     /*
-     * Type of content in Media streaming.
+     * The contentType property.
      */
     @Generated
     private MediaStreamingContentTypeInternal contentType;
@@ -48,7 +48,7 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     private Boolean enableBidirectional;
 
     /*
-     * The format of the audio received from the audio subscription option.
+     * The audio format used for encoding, including sample rate and channel type. The default is Pcm16KMono.
      */
     @Generated
     private AudioFormatInternal audioFormat;
@@ -101,7 +101,7 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     }
 
     /**
-     * Get the contentType property: Type of content in Media streaming.
+     * Get the contentType property: The contentType property.
      * 
      * @return the contentType value.
      */
@@ -111,7 +111,7 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     }
 
     /**
-     * Set the contentType property: Type of content in Media streaming.
+     * Set the contentType property: The contentType property.
      * 
      * @param contentType the contentType value to set.
      * @return the WebSocketMediaStreamingOptionsInternal object itself.
@@ -169,7 +169,8 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     }
 
     /**
-     * Get the audioFormat property: The format of the audio received from the audio subscription option.
+     * Get the audioFormat property: The audio format used for encoding, including sample rate and channel type. The
+     * default is Pcm16KMono.
      * 
      * @return the audioFormat value.
      */
@@ -179,7 +180,8 @@ public final class WebSocketMediaStreamingOptionsInternal extends MediaStreaming
     }
 
     /**
-     * Set the audioFormat property: The format of the audio received from the audio subscription option.
+     * Set the audioFormat property: The audio format used for encoding, including sample rate and channel type. The
+     * default is Pcm16KMono.
      * 
      * @param audioFormat the audioFormat value to set.
      * @return the WebSocketMediaStreamingOptionsInternal object itself.

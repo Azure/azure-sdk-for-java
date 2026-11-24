@@ -31,9 +31,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     private Integer initialSilenceTimeoutInSeconds;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
-     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
-     * be set which must match the kind enum value.
+     * Target participant of DTMF tone recognition.
      */
     @Generated
     private CommunicationIdentifierModel targetParticipant;
@@ -63,7 +61,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     private String speechRecognitionModelEndpointId;
 
     /*
-     * Options for DTMF recognition
+     * Defines configurations for DTMF.
      */
     @Generated
     private DtmfOptionsInternal dtmfOptions;
@@ -75,7 +73,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     private List<RecognitionChoiceInternal> choices;
 
     /*
-     * Options for continuous speech recognition
+     * Defines continuous speech recognition option.
      */
     @Generated
     private SpeechOptionsInternal speechOptions;
@@ -132,9 +130,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Get the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
-     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
-     * at most one further property may be set which must match the kind enum value.
+     * Get the targetParticipant property: Target participant of DTMF tone recognition.
      * 
      * @return the targetParticipant value.
      */
@@ -144,9 +140,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Set the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
-     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
-     * at most one further property may be set which must match the kind enum value.
+     * Set the targetParticipant property: Target participant of DTMF tone recognition.
      * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the RecognizeOptionsInternal object itself.
@@ -248,7 +242,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Get the dtmfOptions property: Options for DTMF recognition.
+     * Get the dtmfOptions property: Defines configurations for DTMF.
      * 
      * @return the dtmfOptions value.
      */
@@ -258,7 +252,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Set the dtmfOptions property: Options for DTMF recognition.
+     * Set the dtmfOptions property: Defines configurations for DTMF.
      * 
      * @param dtmfOptions the dtmfOptions value to set.
      * @return the RecognizeOptionsInternal object itself.
@@ -292,7 +286,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Get the speechOptions property: Options for continuous speech recognition.
+     * Get the speechOptions property: Defines continuous speech recognition option.
      * 
      * @return the speechOptions value.
      */
@@ -302,7 +296,7 @@ public final class RecognizeOptionsInternal implements JsonSerializable<Recogniz
     }
 
     /**
-     * Set the speechOptions property: Options for continuous speech recognition.
+     * Set the speechOptions property: Defines continuous speech recognition option.
      * 
      * @param speechOptions the speechOptions value to set.
      * @return the RecognizeOptionsInternal object itself.

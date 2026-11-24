@@ -19,9 +19,7 @@ import java.io.IOException;
 public final class TransferToParticipantRequestInternal
     implements JsonSerializable<TransferToParticipantRequestInternal> {
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
-     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
-     * be set which must match the kind enum value.
+     * The identity of the target where call should be transferred to.
      */
     @Generated
     private CommunicationIdentifierModel targetParticipant;
@@ -33,9 +31,7 @@ public final class TransferToParticipantRequestInternal
     private String operationContext;
 
     /*
-     * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an
-     * Azure communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may
-     * be set which must match the kind enum value.
+     * Transferee is the participant who is transferred away.
      */
     @Generated
     private CommunicationIdentifierModel transferee;
@@ -48,13 +44,14 @@ public final class TransferToParticipantRequestInternal
     private String operationCallbackUri;
 
     /*
-     * The custom calling context which will be sent to the target
+     * Used by customer to send custom calling context to targets
      */
     @Generated
     private CustomCallingContext customCallingContext;
 
     /*
-     * A phone number.
+     * The source caller Id, a phone number, that will be used as the transferor's caller Id when transferring a call to
+     * a Pstn target.
      */
     @Generated
     private PhoneNumberIdentifierModel sourceCallerIdNumber;
@@ -67,9 +64,7 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Get the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
-     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
-     * at most one further property may be set which must match the kind enum value.
+     * Get the targetParticipant property: The identity of the target where call should be transferred to.
      * 
      * @return the targetParticipant value.
      */
@@ -79,9 +74,7 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Set the targetParticipant property: Identifies a participant in Azure Communication services. A participant is,
-     * for example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId,
-     * at most one further property may be set which must match the kind enum value.
+     * Set the targetParticipant property: The identity of the target where call should be transferred to.
      * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the TransferToParticipantRequestInternal object itself.
@@ -117,9 +110,7 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Get the transferee property: Identifies a participant in Azure Communication services. A participant is, for
-     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
-     * most one further property may be set which must match the kind enum value.
+     * Get the transferee property: Transferee is the participant who is transferred away.
      * 
      * @return the transferee value.
      */
@@ -129,9 +120,7 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Set the transferee property: Identifies a participant in Azure Communication services. A participant is, for
-     * example, a phone number or an Azure communication user. This model is polymorphic: Apart from kind and rawId, at
-     * most one further property may be set which must match the kind enum value.
+     * Set the transferee property: Transferee is the participant who is transferred away.
      * 
      * @param transferee the transferee value to set.
      * @return the TransferToParticipantRequestInternal object itself.
@@ -169,7 +158,7 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Get the customCallingContext property: The custom calling context which will be sent to the target.
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
      * 
      * @return the customCallingContext value.
      */
@@ -179,7 +168,7 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Set the customCallingContext property: The custom calling context which will be sent to the target.
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
      * 
      * @param customCallingContext the customCallingContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
@@ -191,7 +180,8 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Get the sourceCallerIdNumber property: A phone number.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that will be used as the
+     * transferor's caller Id when transferring a call to a Pstn target.
      * 
      * @return the sourceCallerIdNumber value.
      */
@@ -201,7 +191,8 @@ public final class TransferToParticipantRequestInternal
     }
 
     /**
-     * Set the sourceCallerIdNumber property: A phone number.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that will be used as the
+     * transferor's caller Id when transferring a call to a Pstn target.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the TransferToParticipantRequestInternal object itself.

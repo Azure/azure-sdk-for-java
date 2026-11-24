@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Reason of rejecting a call.
+ * The rejection reason.
  */
 public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRejectReasonInternal> {
     /**

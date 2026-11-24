@@ -19,13 +19,13 @@ import java.util.List;
 @Fluent
 public final class RecognizeRequest implements JsonSerializable<RecognizeRequest> {
     /*
-     * Defines the type of the recognize input
+     * Determines the type of the recognition.
      */
     @Generated
     private RecognizeInputTypeInternal recognizeInputType;
 
     /*
-     * The playPrompt property.
+     * The source of the audio to be played for recognition.
      */
     @Generated
     private PlaySourceInternal playPrompt;
@@ -43,7 +43,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     private Boolean interruptCallMediaOperation;
 
     /*
-     * The recognizeOptions property.
+     * Defines options for recognition.
      */
     @Generated
     private RecognizeOptionsInternal recognizeOptions;
@@ -69,7 +69,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     }
 
     /**
-     * Get the recognizeInputType property: Defines the type of the recognize input.
+     * Get the recognizeInputType property: Determines the type of the recognition.
      * 
      * @return the recognizeInputType value.
      */
@@ -79,7 +79,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     }
 
     /**
-     * Set the recognizeInputType property: Defines the type of the recognize input.
+     * Set the recognizeInputType property: Determines the type of the recognition.
      * 
      * @param recognizeInputType the recognizeInputType value to set.
      * @return the RecognizeRequest object itself.
@@ -91,7 +91,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     }
 
     /**
-     * Get the playPrompt property: The playPrompt property.
+     * Get the playPrompt property: The source of the audio to be played for recognition.
      * 
      * @return the playPrompt value.
      */
@@ -101,7 +101,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     }
 
     /**
-     * Set the playPrompt property: The playPrompt property.
+     * Set the playPrompt property: The source of the audio to be played for recognition.
      * 
      * @param playPrompt the playPrompt value to set.
      * @return the RecognizeRequest object itself.
@@ -159,7 +159,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     }
 
     /**
-     * Get the recognizeOptions property: The recognizeOptions property.
+     * Get the recognizeOptions property: Defines options for recognition.
      * 
      * @return the recognizeOptions value.
      */
@@ -169,7 +169,7 @@ public final class RecognizeRequest implements JsonSerializable<RecognizeRequest
     }
 
     /**
-     * Set the recognizeOptions property: The recognizeOptions property.
+     * Set the recognizeOptions property: Defines options for recognition.
      * 
      * @param recognizeOptions the recognizeOptions value to set.
      * @return the RecognizeRequest object itself.

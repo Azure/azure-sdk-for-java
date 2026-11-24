@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class PlaySourceInternal implements JsonSerializable<PlaySourceInternal> {
     /*
-     * Defines the types of play source
+     * Defines the type of the play source
      */
     @Generated
     private PlaySourceTypeInternal kind;
@@ -30,19 +30,19 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     private String playSourceCacheId;
 
     /*
-     * The file property.
+     * Defines the file source info to be used for play
      */
     @Generated
     private FileSourceInternal file;
 
     /*
-     * The text property.
+     * Defines the text source info to be used for play
      */
     @Generated
     private TextSourceInternal text;
 
     /*
-     * The ssml property.
+     * Defines the ssml(Speech Synthesis Markup Language) source info to be used for play
      */
     @Generated
     private SsmlSourceInternal ssml;
@@ -55,7 +55,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     }
 
     /**
-     * Get the kind property: Defines the types of play source.
+     * Get the kind property: Defines the type of the play source.
      * 
      * @return the kind value.
      */
@@ -65,7 +65,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     }
 
     /**
-     * Set the kind property: Defines the types of play source.
+     * Set the kind property: Defines the type of the play source.
      * 
      * @param kind the kind value to set.
      * @return the PlaySourceInternal object itself.
@@ -99,7 +99,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     }
 
     /**
-     * Get the file property: The file property.
+     * Get the file property: Defines the file source info to be used for play.
      * 
      * @return the file value.
      */
@@ -109,7 +109,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     }
 
     /**
-     * Set the file property: The file property.
+     * Set the file property: Defines the file source info to be used for play.
      * 
      * @param file the file value to set.
      * @return the PlaySourceInternal object itself.
@@ -121,7 +121,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     }
 
     /**
-     * Get the text property: The text property.
+     * Get the text property: Defines the text source info to be used for play.
      * 
      * @return the text value.
      */
@@ -131,7 +131,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     }
 
     /**
-     * Set the text property: The text property.
+     * Set the text property: Defines the text source info to be used for play.
      * 
      * @param text the text value to set.
      * @return the PlaySourceInternal object itself.
@@ -143,7 +143,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     }
 
     /**
-     * Get the ssml property: The ssml property.
+     * Get the ssml property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
      * 
      * @return the ssml value.
      */
@@ -153,7 +153,7 @@ public final class PlaySourceInternal implements JsonSerializable<PlaySourceInte
     }
 
     /**
-     * Set the ssml property: The ssml property.
+     * Set the ssml property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
      * 
      * @param ssml the ssml value to set.
      * @return the PlaySourceInternal object itself.

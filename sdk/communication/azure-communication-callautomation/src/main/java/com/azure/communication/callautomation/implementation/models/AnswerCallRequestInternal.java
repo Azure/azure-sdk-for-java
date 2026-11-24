@@ -42,19 +42,19 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
-     * A user that got created with an Azure Communication Services resource.
+     * The identifier of the call automation entity which answers the call
      */
     @Generated
     private CommunicationUserIdentifierModel answeredBy;
 
     /*
-     * Options for media streaming.
+     * Media Streaming Options.
      */
     @Generated
     private MediaStreamingOptionsInternal mediaStreamingOptions;
 
     /*
-     * Options for live transcription.
+     * Transcription Options.
      */
     @Generated
     private TranscriptionOptionsInternal transcriptionOptions;
@@ -162,7 +162,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Get the answeredBy property: A user that got created with an Azure Communication Services resource.
+     * Get the answeredBy property: The identifier of the call automation entity which answers the call.
      * 
      * @return the answeredBy value.
      */
@@ -172,7 +172,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Set the answeredBy property: A user that got created with an Azure Communication Services resource.
+     * Set the answeredBy property: The identifier of the call automation entity which answers the call.
      * 
      * @param answeredBy the answeredBy value to set.
      * @return the AnswerCallRequestInternal object itself.
@@ -184,7 +184,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Get the mediaStreamingOptions property: Options for media streaming.
+     * Get the mediaStreamingOptions property: Media Streaming Options.
      * 
      * @return the mediaStreamingOptions value.
      */
@@ -194,7 +194,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Set the mediaStreamingOptions property: Options for media streaming.
+     * Set the mediaStreamingOptions property: Media Streaming Options.
      * 
      * @param mediaStreamingOptions the mediaStreamingOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
@@ -206,7 +206,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Get the transcriptionOptions property: Options for live transcription.
+     * Get the transcriptionOptions property: Transcription Options.
      * 
      * @return the transcriptionOptions value.
      */
@@ -216,7 +216,7 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Set the transcriptionOptions property: Options for live transcription.
+     * Set the transcriptionOptions property: Transcription Options.
      * 
      * @param transcriptionOptions the transcriptionOptions value to set.
      * @return the AnswerCallRequestInternal object itself.

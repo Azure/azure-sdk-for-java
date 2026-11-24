@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public final class StartCallRecordingRequestInternal implements JsonSerializable<StartCallRecordingRequestInternal> {
     /*
-     * The locator used for joining or taking action on a call
+     * The call locator. (Only one of callLocator or callConnectionId to be used)
      */
     @Generated
     private CallLocatorInternal callLocator;
@@ -43,13 +43,13 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     private RecordingContentInternal recordingContentType;
 
     /*
-     * Defines the channel type of call recording.
+     * The channel type of call recording.
      */
     @Generated
     private RecordingChannelInternal recordingChannelType;
 
     /*
-     * Defines the format type of call recording.
+     * The format type of call recording.
      */
     @Generated
     private RecordingFormatInternal recordingFormatType;
@@ -80,7 +80,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     private Boolean pauseOnStart;
 
     /*
-     * The externalStorage property.
+     * Optional property to specify location where recording will be stored
      */
     @Generated
     private RecordingStorageInternal externalStorage;
@@ -93,7 +93,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the callLocator property: The locator used for joining or taking action on a call.
+     * Get the callLocator property: The call locator. (Only one of callLocator or callConnectionId to be used).
      * 
      * @return the callLocator value.
      */
@@ -103,7 +103,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the callLocator property: The locator used for joining or taking action on a call.
+     * Set the callLocator property: The call locator. (Only one of callLocator or callConnectionId to be used).
      * 
      * @param callLocator the callLocator value to set.
      * @return the StartCallRecordingRequestInternal object itself.
@@ -183,7 +183,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the recordingChannelType property: Defines the channel type of call recording.
+     * Get the recordingChannelType property: The channel type of call recording.
      * 
      * @return the recordingChannelType value.
      */
@@ -193,7 +193,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the recordingChannelType property: Defines the channel type of call recording.
+     * Set the recordingChannelType property: The channel type of call recording.
      * 
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the StartCallRecordingRequestInternal object itself.
@@ -205,7 +205,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the recordingFormatType property: Defines the format type of call recording.
+     * Get the recordingFormatType property: The format type of call recording.
      * 
      * @return the recordingFormatType value.
      */
@@ -215,7 +215,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the recordingFormatType property: Defines the format type of call recording.
+     * Set the recordingFormatType property: The format type of call recording.
      * 
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the StartCallRecordingRequestInternal object itself.
@@ -310,7 +310,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Get the externalStorage property: The externalStorage property.
+     * Get the externalStorage property: Optional property to specify location where recording will be stored.
      * 
      * @return the externalStorage value.
      */
@@ -320,7 +320,7 @@ public final class StartCallRecordingRequestInternal implements JsonSerializable
     }
 
     /**
-     * Set the externalStorage property: The externalStorage property.
+     * Set the externalStorage property: Optional property to specify location where recording will be stored.
      * 
      * @param externalStorage the externalStorage value to set.
      * @return the StartCallRecordingRequestInternal object itself.

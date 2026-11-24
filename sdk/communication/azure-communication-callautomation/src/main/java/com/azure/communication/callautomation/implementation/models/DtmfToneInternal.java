@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * List of valid stop tones.
+ * Defines values for DtmfToneInternal.
  */
 public final class DtmfToneInternal extends ExpandableStringEnum<DtmfToneInternal> {
     /**

@@ -13,22 +13,22 @@ import java.util.Collection;
  */
 public final class RecordingKindInternal extends ExpandableStringEnum<RecordingKindInternal> {
     /**
-     * Static value azureCommunicationServices for RecordingKindInternal.
+     * Recording initiated by Azure Communication Services.
      */
     @Generated
-    public static final RecordingKindInternal AZURE_COMMUNICATION_SERVICES = fromString("azureCommunicationServices");
+    public static final RecordingKindInternal AZURE_COMMUNICATION_SERVICES = fromString("AzureCommunicationServices");
 
     /**
-     * Static value teams for RecordingKindInternal.
+     * Recording initiated by Teams user.
      */
     @Generated
-    public static final RecordingKindInternal TEAMS = fromString("teams");
+    public static final RecordingKindInternal TEAMS = fromString("Teams");
 
     /**
-     * Static value teamsCompliance for RecordingKindInternal.
+     * Recording initiated by Teams compliance policy.
      */
     @Generated
-    public static final RecordingKindInternal TEAMS_COMPLIANCE = fromString("teamsCompliance");
+    public static final RecordingKindInternal TEAMS_COMPLIANCE = fromString("TeamsCompliance");
 
     /**
      * Creates a new instance of RecordingKindInternal value.

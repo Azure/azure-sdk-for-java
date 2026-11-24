@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines the type of the recognize input.
+ * Determines the type of the recognition.
  */
 public final class RecognizeInputTypeInternal extends ExpandableStringEnum<RecognizeInputTypeInternal> {
     /**

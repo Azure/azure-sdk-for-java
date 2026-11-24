@@ -9,7 +9,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines the types of play source.
+ * Defines the type of the play source.
  */
 public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourceTypeInternal> {
     /**
