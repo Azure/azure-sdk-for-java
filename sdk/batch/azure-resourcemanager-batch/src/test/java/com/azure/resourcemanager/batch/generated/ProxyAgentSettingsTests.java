@@ -14,27 +14,27 @@ public final class ProxyAgentSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProxyAgentSettings model = BinaryData.fromString(
-            "{\"enabled\":true,\"imds\":{\"mode\":\"Audit\",\"inVMAccessControlProfileReferenceId\":\"atrwyhqmibzyh\"},\"wireServer\":{\"mode\":\"Enforce\",\"inVMAccessControlProfileReferenceId\":\"ypyynpcdpumnzg\"}}")
+            "{\"enabled\":false,\"imds\":{\"mode\":\"Audit\",\"inVMAccessControlProfileReferenceId\":\"queziky\"},\"wireServer\":{\"mode\":\"Audit\",\"inVMAccessControlProfileReferenceId\":\"allatmelwuipic\"}}")
             .toObject(ProxyAgentSettings.class);
-        Assertions.assertTrue(model.enabled());
+        Assertions.assertFalse(model.enabled());
         Assertions.assertEquals(HostEndpointSettingsModeTypes.AUDIT, model.imds().mode());
-        Assertions.assertEquals("atrwyhqmibzyh", model.imds().inVMAccessControlProfileReferenceId());
-        Assertions.assertEquals(HostEndpointSettingsModeTypes.ENFORCE, model.wireServer().mode());
-        Assertions.assertEquals("ypyynpcdpumnzg", model.wireServer().inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals("queziky", model.imds().inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals(HostEndpointSettingsModeTypes.AUDIT, model.wireServer().mode());
+        Assertions.assertEquals("allatmelwuipic", model.wireServer().inVMAccessControlProfileReferenceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProxyAgentSettings model = new ProxyAgentSettings().withEnabled(true)
+        ProxyAgentSettings model = new ProxyAgentSettings().withEnabled(false)
             .withImds(new HostEndpointSettings().withMode(HostEndpointSettingsModeTypes.AUDIT)
-                .withInVMAccessControlProfileReferenceId("atrwyhqmibzyh"))
-            .withWireServer(new HostEndpointSettings().withMode(HostEndpointSettingsModeTypes.ENFORCE)
-                .withInVMAccessControlProfileReferenceId("ypyynpcdpumnzg"));
+                .withInVMAccessControlProfileReferenceId("queziky"))
+            .withWireServer(new HostEndpointSettings().withMode(HostEndpointSettingsModeTypes.AUDIT)
+                .withInVMAccessControlProfileReferenceId("allatmelwuipic"));
         model = BinaryData.fromObject(model).toObject(ProxyAgentSettings.class);
-        Assertions.assertTrue(model.enabled());
+        Assertions.assertFalse(model.enabled());
         Assertions.assertEquals(HostEndpointSettingsModeTypes.AUDIT, model.imds().mode());
-        Assertions.assertEquals("atrwyhqmibzyh", model.imds().inVMAccessControlProfileReferenceId());
-        Assertions.assertEquals(HostEndpointSettingsModeTypes.ENFORCE, model.wireServer().mode());
-        Assertions.assertEquals("ypyynpcdpumnzg", model.wireServer().inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals("queziky", model.imds().inVMAccessControlProfileReferenceId());
+        Assertions.assertEquals(HostEndpointSettingsModeTypes.AUDIT, model.wireServer().mode());
+        Assertions.assertEquals("allatmelwuipic", model.wireServer().inVMAccessControlProfileReferenceId());
     }
 }

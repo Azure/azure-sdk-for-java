@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public final class BatchAccountCreateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountCreate_BYOS.json
+     * x-ms-original-file: 2026-10-01/BatchAccountCreate_BYOS.json
      */
     /**
      * Sample code: BatchAccountCreate_BYOS.
@@ -41,7 +41,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountCreate_UserAssignedIdentity.json
+     * x-ms-original-file: 2026-10-01/BatchAccountCreate_UserAssignedIdentity.json
      */
     /**
      * Sample code: BatchAccountCreate_UserAssignedIdentity.
@@ -63,7 +63,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/PrivateBatchAccountCreate.json
+     * x-ms-original-file: 2026-10-01/PrivateBatchAccountCreate.json
      */
     /**
      * Sample code: PrivateBatchAccountCreate.
@@ -85,7 +85,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountCreate_SystemAssignedIdentity.json
+     * x-ms-original-file: 2026-10-01/BatchAccountCreate_SystemAssignedIdentity.json
      */
     /**
      * Sample code: BatchAccountCreate_SystemAssignedIdentity.
@@ -104,7 +104,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountCreate_Default.json
+     * x-ms-original-file: 2026-10-01/BatchAccountCreate_Default.json
      */
     /**
      * Sample code: BatchAccountCreate_Default.

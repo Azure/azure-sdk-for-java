@@ -22,7 +22,7 @@ public final class ApplicationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"u\",\"allowUpdates\":true,\"defaultVersion\":\"wfmvigorqjbt\"},\"etag\":\"h\",\"tags\":{\"ckpzvcpopmxeln\":\"lkafhonqjuje\"},\"id\":\"ltyjedexxmlfmk\",\"name\":\"scazuawxtzxpu\",\"type\":\"mwabzxrvxc\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"rytfmpcycil\",\"allowUpdates\":true,\"defaultVersion\":\"ykggnoxuztrksx\"},\"etag\":\"ndfcpfn\",\"tags\":{\"zvoamktc\":\"hjtwkjaosrx\",\"tlt\":\"iosmgbzahgxqdly\"},\"id\":\"prltzkatbhjmz\",\"name\":\"nbsoqeqalarv\",\"type\":\"agunbtgfebw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class ApplicationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Application> response = manager.applications()
-            .list("lhslnelxieixyn", "lxecwcrojphslh", 1950919365, com.azure.core.util.Context.NONE);
+        PagedIterable<Application> response
+            = manager.applications().list("g", "wtxxpkyjcx", 13818616, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lkafhonqjuje", response.iterator().next().tags().get("ckpzvcpopmxeln"));
-        Assertions.assertEquals("u", response.iterator().next().displayName());
+        Assertions.assertEquals("hjtwkjaosrx", response.iterator().next().tags().get("zvoamktc"));
+        Assertions.assertEquals("rytfmpcycil", response.iterator().next().displayName());
         Assertions.assertTrue(response.iterator().next().allowUpdates());
-        Assertions.assertEquals("wfmvigorqjbt", response.iterator().next().defaultVersion());
+        Assertions.assertEquals("ykggnoxuztrksx", response.iterator().next().defaultVersion());
     }
 }

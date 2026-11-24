@@ -14,24 +14,24 @@ public final class NetworkSecurityGroupRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityGroupRule model = BinaryData.fromString(
-            "{\"priority\":830439521,\"access\":\"Deny\",\"sourceAddressPrefix\":\"uwjuetaeburuvdmo\",\"sourcePortRanges\":[\"zlxwabmqoefkifr\"]}")
+            "{\"priority\":991988200,\"access\":\"Deny\",\"sourceAddressPrefix\":\"frao\",\"sourcePortRanges\":[\"oowtlmngu\",\"aw\"]}")
             .toObject(NetworkSecurityGroupRule.class);
-        Assertions.assertEquals(830439521, model.priority());
+        Assertions.assertEquals(991988200, model.priority());
         Assertions.assertEquals(NetworkSecurityGroupRuleAccess.DENY, model.access());
-        Assertions.assertEquals("uwjuetaeburuvdmo", model.sourceAddressPrefix());
-        Assertions.assertEquals("zlxwabmqoefkifr", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("frao", model.sourceAddressPrefix());
+        Assertions.assertEquals("oowtlmngu", model.sourcePortRanges().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityGroupRule model = new NetworkSecurityGroupRule().withPriority(830439521)
+        NetworkSecurityGroupRule model = new NetworkSecurityGroupRule().withPriority(991988200)
             .withAccess(NetworkSecurityGroupRuleAccess.DENY)
-            .withSourceAddressPrefix("uwjuetaeburuvdmo")
-            .withSourcePortRanges(Arrays.asList("zlxwabmqoefkifr"));
+            .withSourceAddressPrefix("frao")
+            .withSourcePortRanges(Arrays.asList("oowtlmngu", "aw"));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityGroupRule.class);
-        Assertions.assertEquals(830439521, model.priority());
+        Assertions.assertEquals(991988200, model.priority());
         Assertions.assertEquals(NetworkSecurityGroupRuleAccess.DENY, model.access());
-        Assertions.assertEquals("uwjuetaeburuvdmo", model.sourceAddressPrefix());
-        Assertions.assertEquals("zlxwabmqoefkifr", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("frao", model.sourceAddressPrefix());
+        Assertions.assertEquals("oowtlmngu", model.sourcePortRanges().get(0));
     }
 }

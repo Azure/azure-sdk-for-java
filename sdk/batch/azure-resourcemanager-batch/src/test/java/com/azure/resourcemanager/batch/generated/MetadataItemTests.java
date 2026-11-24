@@ -12,16 +12,16 @@ public final class MetadataItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetadataItem model
-            = BinaryData.fromString("{\"name\":\"rvexztvb\",\"value\":\"qgsfraoyzkoow\"}").toObject(MetadataItem.class);
-        Assertions.assertEquals("rvexztvb", model.name());
-        Assertions.assertEquals("qgsfraoyzkoow", model.value());
+            = BinaryData.fromString("{\"name\":\"z\",\"value\":\"iyylhalnswhccsp\"}").toObject(MetadataItem.class);
+        Assertions.assertEquals("z", model.name());
+        Assertions.assertEquals("iyylhalnswhccsp", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataItem model = new MetadataItem().withName("rvexztvb").withValue("qgsfraoyzkoow");
+        MetadataItem model = new MetadataItem().withName("z").withValue("iyylhalnswhccsp");
         model = BinaryData.fromObject(model).toObject(MetadataItem.class);
-        Assertions.assertEquals("rvexztvb", model.name());
-        Assertions.assertEquals("qgsfraoyzkoow", model.value());
+        Assertions.assertEquals("z", model.name());
+        Assertions.assertEquals("iyylhalnswhccsp", model.value());
     }
 }

@@ -23,7 +23,7 @@ public final class ApplicationPackagesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Pending\",\"format\":\"dbn\",\"storageUrl\":\"ehol\",\"storageUrlExpiry\":\"2021-06-22T19:10:38Z\",\"lastActivationTime\":\"2021-04-16T07:06:36Z\"},\"etag\":\"ubwefqs\",\"tags\":{\"wexjkmfxapjwogq\":\"aqtferr\"},\"id\":\"o\",\"name\":\"pud\",\"type\":\"dabtqwp\"}";
+            = "{\"properties\":{\"state\":\"Pending\",\"format\":\"jgicgaao\",\"storageUrl\":\"ttaqutdew\",\"storageUrlExpiry\":\"2021-07-03T15:55:20Z\",\"lastActivationTime\":\"2021-07-24T12:22:08Z\"},\"etag\":\"ruunzzjgehkf\",\"tags\":{\"yinljqe\":\"rtixokff\"},\"id\":\"whixmonstsh\",\"name\":\"yxgvelfcld\",\"type\":\"ccbi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class ApplicationPackagesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationPackage response = manager.applicationPackages()
-            .define("gnzvdfbzdixzm")
-            .withExistingApplication("eokbze", "ezrxcczurtleipqx", "kwv")
-            .withTags(mapOf("hppr", "neqvcwwyyurmo"))
+            .define("bmikost")
+            .withExistingApplication("st", "vnlvxbcuiiznktwf", "nsnvpd")
+            .withTags(mapOf("fzvaylptr", "etnpsihcl", "mwqkchcxwaxf", "qqwzt", "jkjexf", "w"))
             .create();
 
-        Assertions.assertEquals("aqtferr", response.tags().get("wexjkmfxapjwogq"));
+        Assertions.assertEquals("rtixokff", response.tags().get("yinljqe"));
     }
 
     // Use "Map.of" if available

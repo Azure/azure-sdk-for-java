@@ -12,8 +12,8 @@ public final class SupportedSkusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedSkusResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"bn\",\"familyName\":\"pxynenlsvxeizzg\",\"capabilities\":[{\"name\":\"srmffeycxcktpiym\",\"value\":\"teeammxqiekkkzd\"},{\"name\":\"tkgdojbmxva\",\"value\":\"efdeesve\"}],\"batchSupportEndOfLife\":\"2021-01-09T13:30:56Z\"},{\"name\":\"pxtxsuwp\",\"familyName\":\"ujwsawddjibabxvi\",\"capabilities\":[{\"name\":\"tzeexav\",\"value\":\"tfgle\"},{\"name\":\"m\",\"value\":\"bwpypqtgsfjacb\"},{\"name\":\"hhxud\",\"value\":\"vodhtn\"},{\"name\":\"rudhzmmesckdl\",\"value\":\"gzrcxfailcfxwmdb\"}],\"batchSupportEndOfLife\":\"2021-05-01T00:13:45Z\"}],\"nextLink\":\"gsftufqobrjlnacg\"}")
+            "{\"value\":[{\"name\":\"qjctzenkeif\",\"familyName\":\"hmkdasvfl\",\"capabilities\":[{\"name\":\"cu\",\"value\":\"hxgsrboldfor\"},{\"name\":\"wjlvizbfhfov\",\"value\":\"cqpbtuo\"}],\"batchSupportEndOfLife\":\"2021-01-13T00:41:11Z\"}],\"nextLink\":\"zab\"}")
             .toObject(SupportedSkusResult.class);
-        Assertions.assertEquals("gsftufqobrjlnacg", model.nextLink());
+        Assertions.assertEquals("zab", model.nextLink());
     }
 }

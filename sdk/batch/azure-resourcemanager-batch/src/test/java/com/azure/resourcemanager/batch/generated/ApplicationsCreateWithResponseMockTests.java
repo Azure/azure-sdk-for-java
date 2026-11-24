@@ -23,7 +23,7 @@ public final class ApplicationsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"fmd\",\"allowUpdates\":false,\"defaultVersion\":\"egizv\"},\"etag\":\"felisdjub\",\"tags\":{\"bsazgakg\":\"qigkx\",\"apvu\":\"cyrcmjdmspo\"},\"id\":\"ylnio\",\"name\":\"rz\",\"type\":\"bzjedmstk\"}";
+            = "{\"properties\":{\"displayName\":\"eyirdhlisngw\",\"allowUpdates\":true,\"defaultVersion\":\"mpizru\"},\"etag\":\"pqxpx\",\"tags\":{\"saasiixtmkzj\":\"cng\",\"irhgfgrwsdp\":\"kv\"},\"id\":\"atzv\",\"name\":\"bglbyvict\",\"type\":\"tbrxkjz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,18 @@ public final class ApplicationsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Application response = manager.applications()
-            .define("gzwywak")
-            .withExistingBatchAccount("s", "sphaivmxyasflvg")
-            .withTags(mapOf("jlzqnhc", "yxonsupe", "bgsxgnxfyqonmpq", "sqltnzo", "iqxeiiqbimht", "xwdofdb"))
-            .withDisplayName("knsmjblmljhlnymz")
+            .define("lgouwtlmjj")
+            .withExistingBatchAccount("nbmhyree", "dzqavbpdqmjxlyyz")
+            .withTags(mapOf("njqhdenxa", "qbhsyrq"))
+            .withDisplayName("j")
             .withAllowUpdates(true)
-            .withDefaultVersion("ryuzcbmqqv")
+            .withDefaultVersion("axkjeytunlbfjk")
             .create();
 
-        Assertions.assertEquals("qigkx", response.tags().get("bsazgakg"));
-        Assertions.assertEquals("fmd", response.displayName());
-        Assertions.assertFalse(response.allowUpdates());
-        Assertions.assertEquals("egizv", response.defaultVersion());
+        Assertions.assertEquals("cng", response.tags().get("saasiixtmkzj"));
+        Assertions.assertEquals("eyirdhlisngw", response.displayName());
+        Assertions.assertTrue(response.allowUpdates());
+        Assertions.assertEquals("mpizru", response.defaultVersion());
     }
 
     // Use "Map.of" if available

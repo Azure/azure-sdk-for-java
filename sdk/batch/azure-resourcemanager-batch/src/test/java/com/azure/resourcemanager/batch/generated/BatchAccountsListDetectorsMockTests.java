@@ -22,7 +22,7 @@ public final class BatchAccountsListDetectorsMockTests {
     @Test
     public void testListDetectors() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"value\":\"mkdasv\"},\"etag\":\"yhbxcudchxgs\",\"tags\":{\"vizbfhfo\":\"ldforobwj\",\"bbelawumuaslzk\":\"vacqpbtuodxesz\",\"mdr\":\"rrwoycqucwyhahn\"},\"id\":\"wuhpsvfuur\",\"name\":\"tlwexxwlalniexz\",\"type\":\"rzpgep\"}]}";
+            = "{\"value\":[{\"properties\":{\"value\":\"okbzef\"},\"etag\":\"rx\",\"tags\":{\"wvz\":\"urtleipqxb\",\"noda\":\"nzvdfbzdixzmq\",\"sbostzel\":\"opqhewjptmc\",\"tmzlbiojlv\":\"dlat\"},\"id\":\"rbbpneqvcwwyy\",\"name\":\"r\",\"type\":\"ochpprpr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class BatchAccountsListDetectorsMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DetectorResponse> response
-            = manager.batchAccounts().listDetectors("tzenk", "if", com.azure.core.util.Context.NONE);
+            = manager.batchAccounts().listDetectors("owxeqocljmy", "vkzqk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ldforobwj", response.iterator().next().tags().get("vizbfhfo"));
-        Assertions.assertEquals("mkdasv", response.iterator().next().value());
+        Assertions.assertEquals("urtleipqxb", response.iterator().next().tags().get("wvz"));
+        Assertions.assertEquals("okbzef", response.iterator().next().value());
     }
 }

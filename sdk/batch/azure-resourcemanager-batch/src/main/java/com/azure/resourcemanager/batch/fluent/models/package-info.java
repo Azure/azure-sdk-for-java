@@ -4,6 +4,5 @@
 
 /**
  * Package containing the inner data models for Batch.
- * The Batch Management Client.
  */
 package com.azure.resourcemanager.batch.fluent.models;

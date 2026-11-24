@@ -25,6 +25,7 @@ import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
 import com.azure.resourcemanager.batch.models.UpgradePolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
+import com.azure.resourcemanager.batch.models.VirtualMachineSkuProfile;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -82,6 +83,13 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
     private String vmSize;
+
+    /*
+     * Specifies the profile of VM sizes and the allocation strategy used to allocate compute nodes for an Instance Mix
+     * pool. When specified, vmSize must be "Mix". This property can only be changed while the pool has no compute
+     * nodes.
+     */
+    private VirtualMachineSkuProfile vmSkuProfile;
 
     /*
      * This property describes the virtual machines that the pool nodes will be deployed on.
@@ -310,6 +318,30 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      */
     public PoolProperties withVmSize(String vmSize) {
         this.vmSize = vmSize;
+        return this;
+    }
+
+    /**
+     * Get the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * compute nodes for an Instance Mix pool. When specified, vmSize must be "Mix". This property can only be changed
+     * while the pool has no compute nodes.
+     * 
+     * @return the vmSkuProfile value.
+     */
+    public VirtualMachineSkuProfile vmSkuProfile() {
+        return this.vmSkuProfile;
+    }
+
+    /**
+     * Set the vmSkuProfile property: Specifies the profile of VM sizes and the allocation strategy used to allocate
+     * compute nodes for an Instance Mix pool. When specified, vmSize must be "Mix". This property can only be changed
+     * while the pool has no compute nodes.
+     * 
+     * @param vmSkuProfile the vmSkuProfile value to set.
+     * @return the PoolProperties object itself.
+     */
+    public PoolProperties withVmSkuProfile(VirtualMachineSkuProfile vmSkuProfile) {
+        this.vmSkuProfile = vmSkuProfile;
         return this;
     }
 
@@ -666,6 +698,9 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (vmSkuProfile() != null) {
+            vmSkuProfile().validate();
+        }
         if (deploymentConfiguration() != null) {
             deploymentConfiguration().validate();
         }
@@ -712,6 +747,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("vmSize", this.vmSize);
+        jsonWriter.writeJsonField("vmSkuProfile", this.vmSkuProfile);
         jsonWriter.writeJsonField("deploymentConfiguration", this.deploymentConfiguration);
         jsonWriter.writeJsonField("scaleSettings", this.scaleSettings);
         jsonWriter.writeStringField("interNodeCommunication",
@@ -765,6 +801,8 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("vmSize".equals(fieldName)) {
                     deserializedPoolProperties.vmSize = reader.getString();
+                } else if ("vmSkuProfile".equals(fieldName)) {
+                    deserializedPoolProperties.vmSkuProfile = VirtualMachineSkuProfile.fromJson(reader);
                 } else if ("deploymentConfiguration".equals(fieldName)) {
                     deserializedPoolProperties.deploymentConfiguration = DeploymentConfiguration.fromJson(reader);
                 } else if ("currentDedicatedNodes".equals(fieldName)) {

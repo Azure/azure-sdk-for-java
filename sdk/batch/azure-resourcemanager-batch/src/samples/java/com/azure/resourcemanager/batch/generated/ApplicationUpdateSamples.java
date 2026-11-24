@@ -11,7 +11,7 @@ import com.azure.resourcemanager.batch.models.Application;
  */
 public final class ApplicationUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/ApplicationUpdate.json
+     * x-ms-original-file: 2026-10-01/ApplicationUpdate.json
      */
     /**
      * Sample code: ApplicationUpdate.

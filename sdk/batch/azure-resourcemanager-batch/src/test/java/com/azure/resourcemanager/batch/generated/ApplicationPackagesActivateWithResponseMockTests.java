@@ -22,7 +22,7 @@ public final class ApplicationPackagesActivateWithResponseMockTests {
     @Test
     public void testActivateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Pending\",\"format\":\"mjkavlgorbmft\",\"storageUrl\":\"dtzfjltfvnzcy\",\"storageUrlExpiry\":\"2021-04-05T23:27:31Z\",\"lastActivationTime\":\"2021-04-05T22:22:59Z\"},\"etag\":\"opv\",\"tags\":{\"edsvqwthmk\":\"bzqgqqi\",\"dhohsdtmcdzsuf\":\"ibcysihsgqc\",\"pcvhdbevwqqxeys\":\"ohdxbzlmcmu\"},\"id\":\"nqzi\",\"name\":\"kfkbgbzbowxeqocl\",\"type\":\"mygvkzqkj\"}";
+            = "{\"properties\":{\"state\":\"Active\",\"format\":\"sxgnx\",\"storageUrl\":\"qonmpqoxwdof\",\"storageUrlExpiry\":\"2021-04-15T20:45:57Z\",\"lastActivationTime\":\"2020-12-26T13:10:46Z\"},\"etag\":\"eiiqbim\",\"tags\":{\"pofvwb\":\"wwinhehf\",\"vqihebwtswbzuwf\":\"blembnkbwvqvxkd\",\"felisdjub\":\"duragegizvc\",\"kxkbsazgakgacyr\":\"gbqi\"},\"id\":\"jdmspofapvuhryln\",\"name\":\"ofrzgb\",\"type\":\"jed\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,11 @@ public final class ApplicationPackagesActivateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationPackage response = manager.applicationPackages()
-            .activateWithResponse("nlj", "nmgixh", "mavmq", "oudorhcgyyp",
-                new ActivateApplicationPackageParameters().withFormat("otwypundmb"), com.azure.core.util.Context.NONE)
+            .activateWithResponse("ljhlnymzotq", "ryuzcbmqqv", "mv", "fgtayxonsup",
+                new ActivateApplicationPackageParameters().withFormat("ujlzqnhcvsqltn"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bzqgqqi", response.tags().get("edsvqwthmk"));
+        Assertions.assertEquals("wwinhehf", response.tags().get("pofvwb"));
     }
 }

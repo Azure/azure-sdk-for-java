@@ -19,7 +19,8 @@ import reactor.core.publisher.Mono;
 public final class BatchAccountsGetKeysWithResponseMockTests {
     @Test
     public void testGetKeysWithResponse() throws Exception {
-        String responseStr = "{\"accountName\":\"bpmzzn\",\"primary\":\"ff\",\"secondary\":\"qitmhheioqaqhv\"}";
+        String responseStr
+            = "{\"accountName\":\"r\",\"primary\":\"hriypoqeyhlqhy\",\"secondary\":\"rlpyznuciqdsmexi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -28,9 +29,8 @@ public final class BatchAccountsGetKeysWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        BatchAccountKeys response = manager.batchAccounts()
-            .getKeysWithResponse("udqmeqwigpibudq", "yxeb", com.azure.core.util.Context.NONE)
-            .getValue();
+        BatchAccountKeys response
+            = manager.batchAccounts().getKeysWithResponse("nm", "gv", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

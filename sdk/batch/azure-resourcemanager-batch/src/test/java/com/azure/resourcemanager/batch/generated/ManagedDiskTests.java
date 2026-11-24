@@ -16,27 +16,27 @@ public final class ManagedDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedDisk model = BinaryData.fromString(
-            "{\"storageAccountType\":\"Premium_LRS\",\"securityProfile\":{\"securityEncryptionType\":\"NonPersistedTPM\",\"diskEncryptionSet\":{\"id\":\"lxprglyatddckcbc\"}},\"diskEncryptionSet\":{\"id\":\"jrjxgciqibrhosx\"}}")
+            "{\"storageAccountType\":\"Standard_LRS\",\"securityProfile\":{\"securityEncryptionType\":\"VMGuestStateOnly\",\"diskEncryptionSet\":{\"id\":\"ipqiiobyuqerpq\"}},\"diskEncryptionSet\":{\"id\":\"qwcciuqg\"}}")
             .toObject(ManagedDisk.class);
-        Assertions.assertEquals(StorageAccountType.PREMIUM_LRS, model.storageAccountType());
-        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
+        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
             model.securityProfile().securityEncryptionType());
-        Assertions.assertEquals("lxprglyatddckcbc", model.securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals("jrjxgciqibrhosx", model.diskEncryptionSet().id());
+        Assertions.assertEquals("ipqiiobyuqerpq", model.securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("qwcciuqg", model.diskEncryptionSet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedDisk model = new ManagedDisk().withStorageAccountType(StorageAccountType.PREMIUM_LRS)
+        ManagedDisk model = new ManagedDisk().withStorageAccountType(StorageAccountType.STANDARD_LRS)
             .withSecurityProfile(
-                new VMDiskSecurityProfile().withSecurityEncryptionType(SecurityEncryptionTypes.NON_PERSISTED_TPM)
-                    .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("lxprglyatddckcbc")))
-            .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("jrjxgciqibrhosx"));
+                new VMDiskSecurityProfile().withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY)
+                    .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("ipqiiobyuqerpq")))
+            .withDiskEncryptionSet(new DiskEncryptionSetParameters().withId("qwcciuqg"));
         model = BinaryData.fromObject(model).toObject(ManagedDisk.class);
-        Assertions.assertEquals(StorageAccountType.PREMIUM_LRS, model.storageAccountType());
-        Assertions.assertEquals(SecurityEncryptionTypes.NON_PERSISTED_TPM,
+        Assertions.assertEquals(StorageAccountType.STANDARD_LRS, model.storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
             model.securityProfile().securityEncryptionType());
-        Assertions.assertEquals("lxprglyatddckcbc", model.securityProfile().diskEncryptionSet().id());
-        Assertions.assertEquals("jrjxgciqibrhosx", model.diskEncryptionSet().id());
+        Assertions.assertEquals("ipqiiobyuqerpq", model.securityProfile().diskEncryptionSet().id());
+        Assertions.assertEquals("qwcciuqg", model.diskEncryptionSet().id());
     }
 }

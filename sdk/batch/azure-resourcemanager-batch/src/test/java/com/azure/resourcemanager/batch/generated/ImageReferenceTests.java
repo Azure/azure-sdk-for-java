@@ -12,33 +12,33 @@ public final class ImageReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageReference model = BinaryData.fromString(
-            "{\"publisher\":\"kzzlvmbmpaxmodf\",\"offer\":\"efyw\",\"sku\":\"pfvmwyhrfou\",\"version\":\"taakc\",\"id\":\"iyzvqtmnub\",\"sharedGalleryImageId\":\"kpzksmondjmq\",\"communityGalleryImageId\":\"vypomgkopkwho\"}")
+            "{\"publisher\":\"vhelxprglyatdd\",\"offer\":\"cbcuejrjxgciqi\",\"sku\":\"hos\",\"version\":\"dqrhzoymib\",\"id\":\"qyib\",\"sharedGalleryImageId\":\"wfluszdt\",\"communityGalleryImageId\":\"rkwofyyvoqa\"}")
             .toObject(ImageReference.class);
-        Assertions.assertEquals("kzzlvmbmpaxmodf", model.publisher());
-        Assertions.assertEquals("efyw", model.offer());
-        Assertions.assertEquals("pfvmwyhrfou", model.sku());
-        Assertions.assertEquals("taakc", model.version());
-        Assertions.assertEquals("iyzvqtmnub", model.id());
-        Assertions.assertEquals("kpzksmondjmq", model.sharedGalleryImageId());
-        Assertions.assertEquals("vypomgkopkwho", model.communityGalleryImageId());
+        Assertions.assertEquals("vhelxprglyatdd", model.publisher());
+        Assertions.assertEquals("cbcuejrjxgciqi", model.offer());
+        Assertions.assertEquals("hos", model.sku());
+        Assertions.assertEquals("dqrhzoymib", model.version());
+        Assertions.assertEquals("qyib", model.id());
+        Assertions.assertEquals("wfluszdt", model.sharedGalleryImageId());
+        Assertions.assertEquals("rkwofyyvoqa", model.communityGalleryImageId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageReference model = new ImageReference().withPublisher("kzzlvmbmpaxmodf")
-            .withOffer("efyw")
-            .withSku("pfvmwyhrfou")
-            .withVersion("taakc")
-            .withId("iyzvqtmnub")
-            .withSharedGalleryImageId("kpzksmondjmq")
-            .withCommunityGalleryImageId("vypomgkopkwho");
+        ImageReference model = new ImageReference().withPublisher("vhelxprglyatdd")
+            .withOffer("cbcuejrjxgciqi")
+            .withSku("hos")
+            .withVersion("dqrhzoymib")
+            .withId("qyib")
+            .withSharedGalleryImageId("wfluszdt")
+            .withCommunityGalleryImageId("rkwofyyvoqa");
         model = BinaryData.fromObject(model).toObject(ImageReference.class);
-        Assertions.assertEquals("kzzlvmbmpaxmodf", model.publisher());
-        Assertions.assertEquals("efyw", model.offer());
-        Assertions.assertEquals("pfvmwyhrfou", model.sku());
-        Assertions.assertEquals("taakc", model.version());
-        Assertions.assertEquals("iyzvqtmnub", model.id());
-        Assertions.assertEquals("kpzksmondjmq", model.sharedGalleryImageId());
-        Assertions.assertEquals("vypomgkopkwho", model.communityGalleryImageId());
+        Assertions.assertEquals("vhelxprglyatdd", model.publisher());
+        Assertions.assertEquals("cbcuejrjxgciqi", model.offer());
+        Assertions.assertEquals("hos", model.sku());
+        Assertions.assertEquals("dqrhzoymib", model.version());
+        Assertions.assertEquals("qyib", model.id());
+        Assertions.assertEquals("wfluszdt", model.sharedGalleryImageId());
+        Assertions.assertEquals("rkwofyyvoqa", model.communityGalleryImageId());
     }
 }

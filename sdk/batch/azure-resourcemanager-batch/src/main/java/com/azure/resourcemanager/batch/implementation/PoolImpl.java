@@ -18,6 +18,8 @@ import com.azure.resourcemanager.batch.models.MetadataItem;
 import com.azure.resourcemanager.batch.models.MountConfiguration;
 import com.azure.resourcemanager.batch.models.NetworkConfiguration;
 import com.azure.resourcemanager.batch.models.Pool;
+import com.azure.resourcemanager.batch.models.PoolPatch;
+import com.azure.resourcemanager.batch.models.PoolPatchProperties;
 import com.azure.resourcemanager.batch.models.PoolProvisioningState;
 import com.azure.resourcemanager.batch.models.ResizeOperationStatus;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
@@ -25,6 +27,7 @@ import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
 import com.azure.resourcemanager.batch.models.UpgradePolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
+import com.azure.resourcemanager.batch.models.VirtualMachineSkuProfile;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -98,6 +101,10 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public String vmSize() {
         return this.innerModel().vmSize();
+    }
+
+    public VirtualMachineSkuProfile vmSkuProfile() {
+        return this.innerModel().vmSkuProfile();
     }
 
     public DeploymentConfiguration deploymentConfiguration() {
@@ -208,6 +215,8 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     private String updateIfMatch;
 
+    private PoolPatch updateParameters;
+
     public PoolImpl withExistingBatchAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
@@ -242,14 +251,14 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public PoolImpl update() {
         this.updateIfMatch = null;
+        this.updateParameters = new PoolPatch();
         return this;
     }
 
     public Pool apply() {
         this.innerObject = serviceManager.serviceClient()
             .getPools()
-            .updateWithResponse(resourceGroupName, accountName, poolName, this.innerModel(), updateIfMatch,
-                Context.NONE)
+            .updateWithResponse(resourceGroupName, accountName, poolName, updateParameters, updateIfMatch, Context.NONE)
             .getValue();
         return this;
     }
@@ -257,7 +266,7 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     public Pool apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getPools()
-            .updateWithResponse(resourceGroupName, accountName, poolName, this.innerModel(), updateIfMatch, context)
+            .updateWithResponse(resourceGroupName, accountName, poolName, updateParameters, updateIfMatch, context)
             .getValue();
         return this;
     }
@@ -309,13 +318,23 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public PoolImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
     }
 
     public PoolImpl withIdentity(BatchPoolIdentity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
     }
 
     public PoolImpl withDisplayName(String displayName) {
@@ -325,6 +344,11 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public PoolImpl withVmSize(String vmSize) {
         this.innerModel().withVmSize(vmSize);
+        return this;
+    }
+
+    public PoolImpl withVmSkuProfile(VirtualMachineSkuProfile vmSkuProfile) {
+        this.innerModel().withVmSkuProfile(vmSkuProfile);
         return this;
     }
 
@@ -400,6 +424,11 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public PoolImpl withIfNoneMatch(String ifNoneMatch) {
         this.createIfNoneMatch = ifNoneMatch;
+        return this;
+    }
+
+    public PoolImpl withProperties(PoolPatchProperties properties) {
+        this.updateParameters.withProperties(properties);
         return this;
     }
 

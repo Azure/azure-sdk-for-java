@@ -28,10 +28,9 @@ public final class ResourceFile implements JsonSerializable<ResourceFile> {
      * The URL of the blob container within Azure Blob Storage.
      * 
      * The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them
-     * must be specified. This URL must be readable and listable from compute nodes. There are three ways to get such a
-     * URL for a container in Azure storage: include a Shared Access Signature (SAS) granting read and list permissions
-     * on the container, use a managed identity with read and list permissions, or set the ACL for the container to
-     * allow public access.
+     * must be specified. This URL must be readable and listable from compute nodes. Do not embed credentials in the
+     * URL. For Azure Blob Storage, use a managed identity with read and list permissions on the container and specify
+     * it using identityReference.
      */
     private String storageContainerUrl;
 
@@ -39,10 +38,9 @@ public final class ResourceFile implements JsonSerializable<ResourceFile> {
      * The URL of the file to download.
      * 
      * The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them
-     * must be specified. If the URL points to Azure Blob Storage, it must be readable from compute nodes. There are
-     * three ways to get such a URL for a blob in Azure storage: include a Shared Access Signature (SAS) granting read
-     * permissions on the blob, use a managed identity with read permission, or set the ACL for the blob or its
-     * container to allow public access.
+     * must be specified. If the URL points to Azure Blob Storage, it must be readable from compute nodes. Do not embed
+     * credentials in the URL. For Azure Blob Storage, use a managed identity with read permission on the blob and
+     * specify it using identityReference.
      */
     private String httpUrl;
 
@@ -121,10 +119,9 @@ public final class ResourceFile implements JsonSerializable<ResourceFile> {
      * Get the storageContainerUrl property: The URL of the blob container within Azure Blob Storage.
      * 
      * The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them
-     * must be specified. This URL must be readable and listable from compute nodes. There are three ways to get such a
-     * URL for a container in Azure storage: include a Shared Access Signature (SAS) granting read and list permissions
-     * on the container, use a managed identity with read and list permissions, or set the ACL for the container to
-     * allow public access.
+     * must be specified. This URL must be readable and listable from compute nodes. Do not embed credentials in the
+     * URL. For Azure Blob Storage, use a managed identity with read and list permissions on the container and specify
+     * it using identityReference.
      * 
      * @return the storageContainerUrl value.
      */
@@ -136,10 +133,9 @@ public final class ResourceFile implements JsonSerializable<ResourceFile> {
      * Set the storageContainerUrl property: The URL of the blob container within Azure Blob Storage.
      * 
      * The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them
-     * must be specified. This URL must be readable and listable from compute nodes. There are three ways to get such a
-     * URL for a container in Azure storage: include a Shared Access Signature (SAS) granting read and list permissions
-     * on the container, use a managed identity with read and list permissions, or set the ACL for the container to
-     * allow public access.
+     * must be specified. This URL must be readable and listable from compute nodes. Do not embed credentials in the
+     * URL. For Azure Blob Storage, use a managed identity with read and list permissions on the container and specify
+     * it using identityReference.
      * 
      * @param storageContainerUrl the storageContainerUrl value to set.
      * @return the ResourceFile object itself.
@@ -153,10 +149,9 @@ public final class ResourceFile implements JsonSerializable<ResourceFile> {
      * Get the httpUrl property: The URL of the file to download.
      * 
      * The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them
-     * must be specified. If the URL points to Azure Blob Storage, it must be readable from compute nodes. There are
-     * three ways to get such a URL for a blob in Azure storage: include a Shared Access Signature (SAS) granting read
-     * permissions on the blob, use a managed identity with read permission, or set the ACL for the blob or its
-     * container to allow public access.
+     * must be specified. If the URL points to Azure Blob Storage, it must be readable from compute nodes. Do not embed
+     * credentials in the URL. For Azure Blob Storage, use a managed identity with read permission on the blob and
+     * specify it using identityReference.
      * 
      * @return the httpUrl value.
      */
@@ -168,10 +163,9 @@ public final class ResourceFile implements JsonSerializable<ResourceFile> {
      * Set the httpUrl property: The URL of the file to download.
      * 
      * The autoStorageContainerName, storageContainerUrl and httpUrl properties are mutually exclusive and one of them
-     * must be specified. If the URL points to Azure Blob Storage, it must be readable from compute nodes. There are
-     * three ways to get such a URL for a blob in Azure storage: include a Shared Access Signature (SAS) granting read
-     * permissions on the blob, use a managed identity with read permission, or set the ACL for the blob or its
-     * container to allow public access.
+     * must be specified. If the URL points to Azure Blob Storage, it must be readable from compute nodes. Do not embed
+     * credentials in the URL. For Azure Blob Storage, use a managed identity with read permission on the blob and
+     * specify it using identityReference.
      * 
      * @param httpUrl the httpUrl value to set.
      * @return the ResourceFile object itself.

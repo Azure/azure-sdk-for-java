@@ -21,7 +21,7 @@ public final class BatchAccountsGetDetectorWithResponseMockTests {
     @Test
     public void testGetDetectorWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"jtszcof\"},\"etag\":\"e\",\"tags\":{\"murvzm\":\"hgbjkvrelje\",\"anashc\":\"ov\",\"kelvidizozsdb\":\"lpmjerb\"},\"id\":\"xjmonf\",\"name\":\"gnwncypuuwwlt\",\"type\":\"uqj\"}";
+            = "{\"properties\":{\"value\":\"qqihedsvqwthmk\"},\"etag\":\"bcysih\",\"tags\":{\"hohsd\":\"cw\",\"mcmuapc\":\"mcdzsufcohdxbz\"},\"id\":\"dbevwqqxeysko\",\"name\":\"qzinkfkbg\",\"type\":\"z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class BatchAccountsGetDetectorWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DetectorResponse response = manager.batchAccounts()
-            .getDetectorWithResponse("h", "nlnzonzlrpi", "yw", com.azure.core.util.Context.NONE)
+            .getDetectorWithResponse("nzcyjtotp", "opv", "bdb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hgbjkvrelje", response.tags().get("murvzm"));
-        Assertions.assertEquals("jtszcof", response.value());
+        Assertions.assertEquals("cw", response.tags().get("hohsd"));
+        Assertions.assertEquals("qqihedsvqwthmk", response.value());
     }
 }

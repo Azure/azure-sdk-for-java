@@ -12,7 +12,7 @@ import com.azure.resourcemanager.batch.models.BatchAccount;
  */
 public final class BatchAccountUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01/BatchAccountUpdate.json
+     * x-ms-original-file: 2026-10-01/BatchAccountUpdate.json
      */
     /**
      * Sample code: BatchAccountUpdate.

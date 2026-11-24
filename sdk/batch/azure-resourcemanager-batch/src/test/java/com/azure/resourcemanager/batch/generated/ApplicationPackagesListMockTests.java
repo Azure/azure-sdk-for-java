@@ -22,7 +22,7 @@ public final class ApplicationPackagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Active\",\"format\":\"veh\",\"storageUrl\":\"uyxoaf\",\"storageUrlExpiry\":\"2021-03-08T11:58:40Z\",\"lastActivationTime\":\"2021-05-13T08:39:20Z\"},\"etag\":\"faey\",\"tags\":{\"eyhlqhykprl\":\"mfgvxirpghriypo\"},\"id\":\"znuciqdsm\",\"name\":\"xiitdfuxt\",\"type\":\"asiibmiybnnust\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Pending\",\"format\":\"ckpzvcpopmxeln\",\"storageUrl\":\"ltyjedexxmlfmk\",\"storageUrlExpiry\":\"2021-02-02T19:02:50Z\",\"lastActivationTime\":\"2021-07-22T22:43:06Z\"},\"etag\":\"awx\",\"tags\":{\"xcushs\":\"puamwabzxr\"},\"id\":\"aivmxyasflvgs\",\"name\":\"zwywako\",\"type\":\"hknsmjbl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class ApplicationPackagesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ApplicationPackage> response = manager.applicationPackages()
-            .list("rfxeeebtij", "acvbmqz", "qqxlajr", 99469711, com.azure.core.util.Context.NONE);
+            .list("awjutifd", "fmvigorqjbttzh", "aglkafhon", 710596828, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mfgvxirpghriypo", response.iterator().next().tags().get("eyhlqhykprl"));
+        Assertions.assertEquals("puamwabzxr", response.iterator().next().tags().get("xcushs"));
     }
 }

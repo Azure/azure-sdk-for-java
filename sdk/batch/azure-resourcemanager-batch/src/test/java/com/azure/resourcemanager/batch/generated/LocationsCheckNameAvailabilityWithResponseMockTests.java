@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public final class LocationsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"kydiwf\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"tefjoknssqyzq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResult response = manager.locations()
-            .checkNameAvailabilityWithResponse("otjewlpxuzzjgnre",
-                new CheckNameAvailabilityParameters().withName("qyhqo")
+            .checkNameAvailabilityWithResponse("foxx",
+                new CheckNameAvailabilityParameters().withName("ubvphavpmhbrbqgv")
                     .withType(ResourceType.MICROSOFT_BATCH_BATCH_ACCOUNTS),
                 com.azure.core.util.Context.NONE)
             .getValue();
