@@ -137,27 +137,13 @@ public final class SensitivitySettingsClientImpl implements SensitivitySettingsC
         return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets data sensitivity settings for sensitive data discovery.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data sensitivity settings for sensitive data discovery along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetSensitivitySettingsResponseInner> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
     }
 
-    /**
-     * Gets data sensitivity settings for sensitive data discovery.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data sensitivity settings for sensitive data discovery.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetSensitivitySettingsResponseInner get() {
         return getWithResponse(Context.NONE).getValue();
@@ -242,31 +228,14 @@ public final class SensitivitySettingsClientImpl implements SensitivitySettingsC
         return createOrUpdateWithResponseAsync(sensitivitySettings).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update data sensitivity settings for sensitive data discovery.
-     * 
-     * @param sensitivitySettings The data sensitivity settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data sensitivity settings for sensitive data discovery along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetSensitivitySettingsResponseInner>
         createOrUpdateWithResponse(UpdateSensitivitySettingsRequest sensitivitySettings, Context context) {
         return createOrUpdateWithResponseAsync(sensitivitySettings, context).block();
     }
 
-    /**
-     * Create or update data sensitivity settings for sensitive data discovery.
-     * 
-     * @param sensitivitySettings The data sensitivity settings to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data sensitivity settings for sensitive data discovery.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetSensitivitySettingsResponseInner createOrUpdate(UpdateSensitivitySettingsRequest sensitivitySettings) {
         return createOrUpdateWithResponse(sensitivitySettings, Context.NONE).getValue();
@@ -326,27 +295,13 @@ public final class SensitivitySettingsClientImpl implements SensitivitySettingsC
         return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list with a single sensitivity settings resource.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list with a single sensitivity settings resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetSensitivitySettingsListResponseInner> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
     }
 
-    /**
-     * Gets a list with a single sensitivity settings resource.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list with a single sensitivity settings resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetSensitivitySettingsListResponseInner list() {
         return listWithResponse(Context.NONE).getValue();

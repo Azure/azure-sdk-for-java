@@ -54,8 +54,7 @@ public final class DrillRunsImpl implements DrillRuns {
     }
 
     public PagedIterable<DrillRun> list(String serviceGroupName, String drillName) {
-        PagedIterable<DrillRunInner> inner = this.serviceClient().list(serviceGroupName, drillName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new DrillRunImpl(inner1, this.manager()));
+        return this.list(serviceGroupName, drillName, Context.NONE);
     }
 
     public PagedIterable<DrillRun> list(String serviceGroupName, String drillName, Context context) {
@@ -83,7 +82,7 @@ public final class DrillRunsImpl implements DrillRuns {
 
     public void addNotes(String serviceGroupName, String operationId, String drillName, String drillRunName,
         DrillRunAddNotesRequest body) {
-        this.serviceClient().addNotes(serviceGroupName, operationId, drillName, drillRunName, body);
+        this.addNotes(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
     public void addNotes(String serviceGroupName, String operationId, String drillName, String drillRunName,
@@ -92,7 +91,7 @@ public final class DrillRunsImpl implements DrillRuns {
     }
 
     public void resume(String serviceGroupName, String operationId, String drillName, String drillRunName) {
-        this.serviceClient().resume(serviceGroupName, operationId, drillName, drillRunName);
+        this.resume(serviceGroupName, operationId, drillName, drillRunName, Context.NONE);
     }
 
     public void resume(String serviceGroupName, String operationId, String drillName, String drillRunName,
@@ -102,7 +101,7 @@ public final class DrillRunsImpl implements DrillRuns {
 
     public void markAsComplete(String serviceGroupName, String operationId, String drillName, String drillRunName,
         MarkAsCompleteRequest body) {
-        this.serviceClient().markAsComplete(serviceGroupName, operationId, drillName, drillRunName, body);
+        this.markAsComplete(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
     public void markAsComplete(String serviceGroupName, String operationId, String drillName, String drillRunName,
@@ -112,13 +111,7 @@ public final class DrillRunsImpl implements DrillRuns {
 
     public DrillReportSummary generateReport(String serviceGroupName, String operationId, String drillName,
         String drillRunName) {
-        DrillReportSummaryInner inner
-            = this.serviceClient().generateReport(serviceGroupName, operationId, drillName, drillRunName);
-        if (inner != null) {
-            return new DrillReportSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.generateReport(serviceGroupName, operationId, drillName, drillRunName, Context.NONE);
     }
 
     public DrillReportSummary generateReport(String serviceGroupName, String operationId, String drillName,
@@ -134,13 +127,7 @@ public final class DrillRunsImpl implements DrillRuns {
 
     public ListReportDownloadUrlResponse listReportDownloadUrl(String serviceGroupName, String operationId,
         String drillName, String drillRunName, ListReportDownloadUrlRequest body) {
-        ListReportDownloadUrlResponseInner inner
-            = this.serviceClient().listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body);
-        if (inner != null) {
-            return new ListReportDownloadUrlResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.listReportDownloadUrl(serviceGroupName, operationId, drillName, drillRunName, body, Context.NONE);
     }
 
     public ListReportDownloadUrlResponse listReportDownloadUrl(String serviceGroupName, String operationId,

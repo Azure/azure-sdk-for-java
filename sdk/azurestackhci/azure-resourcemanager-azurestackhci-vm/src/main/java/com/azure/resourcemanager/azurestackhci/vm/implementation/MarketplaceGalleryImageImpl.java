@@ -90,10 +90,7 @@ public final class MarketplaceGalleryImageImpl
     }
 
     public MarketplaceGalleryImage create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMarketplaceGalleryImages()
-            .createOrUpdate(resourceGroupName, marketplaceGalleryImageName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MarketplaceGalleryImage create(Context context) {
@@ -116,10 +113,7 @@ public final class MarketplaceGalleryImageImpl
     }
 
     public MarketplaceGalleryImage apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMarketplaceGalleryImages()
-            .update(resourceGroupName, marketplaceGalleryImageName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MarketplaceGalleryImage apply(Context context) {
@@ -142,11 +136,7 @@ public final class MarketplaceGalleryImageImpl
     }
 
     public MarketplaceGalleryImage refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMarketplaceGalleryImages()
-            .getByResourceGroupWithResponse(resourceGroupName, marketplaceGalleryImageName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MarketplaceGalleryImage refresh(Context context) {

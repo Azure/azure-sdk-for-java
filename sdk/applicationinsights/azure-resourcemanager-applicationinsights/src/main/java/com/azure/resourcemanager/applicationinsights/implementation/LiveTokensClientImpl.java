@@ -108,16 +108,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
         return getWithResponseAsync(resourceUri).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * **Gets an access token for live metrics stream data.**.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a live token query along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LiveTokenResponseInner> getWithResponse(String resourceUri, Context context) {
         final String apiVersion = "2021-10-14";
@@ -125,15 +116,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
         return service.getSync(this.client.getEndpoint(), apiVersion, resourceUri, accept, context);
     }
 
-    /**
-     * **Gets an access token for live metrics stream data.**.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a live token query.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LiveTokenResponseInner get(String resourceUri) {
         return getWithResponse(resourceUri, Context.NONE).getValue();

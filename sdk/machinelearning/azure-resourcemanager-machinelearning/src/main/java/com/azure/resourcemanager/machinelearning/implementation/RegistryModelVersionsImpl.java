@@ -50,13 +50,7 @@ public final class RegistryModelVersionsImpl implements RegistryModelVersions {
 
     public ModelVersion createOrUpdate(String resourceGroupName, String registryName, String modelName, String version,
         ModelVersionInner body) {
-        ModelVersionInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, registryName, modelName, version, body);
-        if (inner != null) {
-            return new ModelVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, modelName, version, body, Context.NONE);
     }
 
     public ModelVersion createOrUpdate(String resourceGroupName, String registryName, String modelName, String version,
@@ -71,7 +65,7 @@ public final class RegistryModelVersionsImpl implements RegistryModelVersions {
     }
 
     public void delete(String resourceGroupName, String registryName, String modelName, String version) {
-        this.serviceClient().delete(resourceGroupName, registryName, modelName, version);
+        this.delete(resourceGroupName, registryName, modelName, version, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String modelName, String version,

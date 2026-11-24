@@ -72,10 +72,7 @@ public final class NginxDeploymentWafPolicyImpl
     }
 
     public NginxDeploymentWafPolicy create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWafPolicies()
-            .create(resourceGroupName, deploymentName, wafPolicyName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NginxDeploymentWafPolicy create(Context context) {
@@ -92,11 +89,7 @@ public final class NginxDeploymentWafPolicyImpl
     }
 
     public NginxDeploymentWafPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWafPolicies()
-            .getWithResponse(resourceGroupName, deploymentName, wafPolicyName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NginxDeploymentWafPolicy refresh(Context context) {

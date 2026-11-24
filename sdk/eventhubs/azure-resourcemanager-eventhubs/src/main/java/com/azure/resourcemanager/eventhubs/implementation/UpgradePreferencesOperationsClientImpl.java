@@ -88,17 +88,7 @@ public final class UpgradePreferencesOperationsClientImpl implements UpgradePref
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the upgrade preferences for an Event Hubs Dedicated cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade preferences for an Event Hubs Dedicated cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpgradePreferencesInner>> getWithResponseAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
@@ -159,65 +149,26 @@ public final class UpgradePreferencesOperationsClientImpl implements UpgradePref
             resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Gets the upgrade preferences for an Event Hubs Dedicated cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade preferences for an Event Hubs Dedicated cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpgradePreferencesInner> getAsync(String resourceGroupName, String clusterName) {
         return getWithResponseAsync(resourceGroupName, clusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the upgrade preferences for an Event Hubs Dedicated cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade preferences for an Event Hubs Dedicated cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpgradePreferencesInner> getWithResponse(String resourceGroupName, String clusterName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
-    /**
-     * Gets the upgrade preferences for an Event Hubs Dedicated cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade preferences for an Event Hubs Dedicated cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpgradePreferencesInner get(String resourceGroupName, String clusterName) {
         return getWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates the upgrade preferences for an Event Hubs Dedicated cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param resource The upgrade preferences.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upgrade preferences for an Event Hubs Dedicated cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpgradePreferencesInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String clusterName, UpgradePreferencesInner resource) {
@@ -293,17 +244,7 @@ public final class UpgradePreferencesOperationsClientImpl implements UpgradePref
             this.client.getSubscriptionId(), resourceGroupName, clusterName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates the upgrade preferences for an Event Hubs Dedicated cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param resource The upgrade preferences.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upgrade preferences for an Event Hubs Dedicated cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpgradePreferencesInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
         UpgradePreferencesInner resource) {
@@ -311,52 +252,21 @@ public final class UpgradePreferencesOperationsClientImpl implements UpgradePref
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates the upgrade preferences for an Event Hubs Dedicated cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param resource The upgrade preferences.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upgrade preferences for an Event Hubs Dedicated cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpgradePreferencesInner> createOrUpdateWithResponse(String resourceGroupName, String clusterName,
         UpgradePreferencesInner resource, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, clusterName, resource, context).block();
     }
 
-    /**
-     * Creates or updates the upgrade preferences for an Event Hubs Dedicated cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param resource The upgrade preferences.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upgrade preferences for an Event Hubs Dedicated cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpgradePreferencesInner createOrUpdate(String resourceGroupName, String clusterName,
         UpgradePreferencesInner resource) {
         return createOrUpdateWithResponse(resourceGroupName, clusterName, resource, Context.NONE).getValue();
     }
 
-    /**
-     * Starts an immediate eight-hour upgrade override when an upgrade is pending.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upgrade preferences for an Event Hubs Dedicated cluster along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UpgradePreferencesInner>> upgradeNowWithResponseAsync(String resourceGroupName,
         String clusterName) {
@@ -418,49 +328,21 @@ public final class UpgradePreferencesOperationsClientImpl implements UpgradePref
             this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context);
     }
 
-    /**
-     * Starts an immediate eight-hour upgrade override when an upgrade is pending.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upgrade preferences for an Event Hubs Dedicated cluster on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UpgradePreferencesInner> upgradeNowAsync(String resourceGroupName, String clusterName) {
         return upgradeNowWithResponseAsync(resourceGroupName, clusterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Starts an immediate eight-hour upgrade override when an upgrade is pending.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upgrade preferences for an Event Hubs Dedicated cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpgradePreferencesInner> upgradeNowWithResponse(String resourceGroupName, String clusterName,
         Context context) {
         return upgradeNowWithResponseAsync(resourceGroupName, clusterName, context).block();
     }
 
-    /**
-     * Starts an immediate eight-hour upgrade override when an upgrade is pending.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Event Hubs Cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return upgrade preferences for an Event Hubs Dedicated cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpgradePreferencesInner upgradeNow(String resourceGroupName, String clusterName) {
         return upgradeNowWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();

@@ -68,7 +68,7 @@ public final class EvidencesImpl implements Evidences {
     }
 
     public void deleteByResourceGroup(String reportName, String evidenceName) {
-        this.serviceClient().delete(reportName, evidenceName);
+        this.deleteByResourceGroupWithResponse(reportName, evidenceName, Context.NONE);
     }
 
     public PagedIterable<EvidenceResource> listByReport(String reportName) {

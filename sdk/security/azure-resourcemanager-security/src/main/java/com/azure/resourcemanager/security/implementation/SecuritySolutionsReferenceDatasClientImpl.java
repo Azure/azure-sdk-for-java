@@ -138,27 +138,13 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
         return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a list of all supported Security Solutions for the subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported Security Solutions for the subscription along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySolutionsReferenceDataListInner> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
     }
 
-    /**
-     * Gets a list of all supported Security Solutions for the subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all supported Security Solutions for the subscription.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecuritySolutionsReferenceDataListInner list() {
         return listWithResponse(Context.NONE).getValue();
@@ -246,33 +232,14 @@ public final class SecuritySolutionsReferenceDatasClientImpl implements Security
         return listByHomeRegionWithResponseAsync(ascLocation).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets list of all supported Security Solutions for subscription and location.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all supported Security Solutions for subscription and location along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySolutionsReferenceDataListInner> listByHomeRegionWithResponse(String ascLocation,
         Context context) {
         return listByHomeRegionWithResponseAsync(ascLocation, context).block();
     }
 
-    /**
-     * Gets list of all supported Security Solutions for subscription and location.
-     * 
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     * locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all supported Security Solutions for subscription and location.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecuritySolutionsReferenceDataListInner listByHomeRegion(String ascLocation) {
         return listByHomeRegionWithResponse(ascLocation, Context.NONE).getValue();

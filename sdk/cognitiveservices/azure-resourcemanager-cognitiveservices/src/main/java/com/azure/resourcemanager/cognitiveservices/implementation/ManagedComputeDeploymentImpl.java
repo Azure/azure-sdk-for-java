@@ -73,10 +73,7 @@ public final class ManagedComputeDeploymentImpl
     }
 
     public ManagedComputeDeployment create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedComputeDeployments()
-            .createOrUpdate(resourceGroupName, accountName, deploymentName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ManagedComputeDeployment create(Context context) {
@@ -99,10 +96,7 @@ public final class ManagedComputeDeploymentImpl
     }
 
     public ManagedComputeDeployment apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedComputeDeployments()
-            .update(resourceGroupName, accountName, deploymentName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ManagedComputeDeployment apply(Context context) {
@@ -128,11 +122,7 @@ public final class ManagedComputeDeploymentImpl
     }
 
     public ManagedComputeDeployment refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getManagedComputeDeployments()
-            .getWithResponse(resourceGroupName, accountName, deploymentName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ManagedComputeDeployment refresh(Context context) {

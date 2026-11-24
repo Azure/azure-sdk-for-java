@@ -209,17 +209,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture destination along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChangeDataCaptureDestinationInner>> getWithResponseAsync(String resourceGroupName,
         String clusterName, String destinationName) {
@@ -230,17 +220,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets a change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture destination on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureDestinationInner> getAsync(String resourceGroupName, String clusterName,
         String destinationName) {
@@ -248,18 +228,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture destination along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ChangeDataCaptureDestinationInner> getWithResponse(String resourceGroupName, String clusterName,
         String destinationName, Context context) {
@@ -268,35 +237,13 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             resourceGroupName, clusterName, destinationName, accept, context);
     }
 
-    /**
-     * Gets a change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a change data capture destination.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureDestinationInner get(String resourceGroupName, String clusterName, String destinationName) {
         return getWithResponse(resourceGroupName, clusterName, destinationName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or replaces a Microsoft Fabric change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable Microsoft Fabric destination for HorizonDB change data capture configurations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrReplaceWithResponseAsync(String resourceGroupName,
         String clusterName, String destinationName, ChangeDataCaptureDestinationInner resource) {
@@ -325,11 +272,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrReplaceWithResponse(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrReplaceSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, destinationName, contentType, accept,
-            resource, Context.NONE);
+        return createOrReplaceWithResponse(resourceGroupName, clusterName, destinationName, resource, Context.NONE);
     }
 
     /**
@@ -356,19 +299,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             resource, context);
     }
 
-    /**
-     * Creates or replaces a Microsoft Fabric change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a reusable Microsoft Fabric destination for HorizonDB change data
-     * capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ChangeDataCaptureDestinationInner>, ChangeDataCaptureDestinationInner>
         beginCreateOrReplaceAsync(String resourceGroupName, String clusterName, String destinationName,
@@ -380,43 +311,15 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             ChangeDataCaptureDestinationInner.class, this.client.getContext());
     }
 
-    /**
-     * Creates or replaces a Microsoft Fabric change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a reusable Microsoft Fabric destination for HorizonDB change data
-     * capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureDestinationInner>, ChangeDataCaptureDestinationInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, String destinationName,
             ChangeDataCaptureDestinationInner resource) {
-        Response<BinaryData> response
-            = createOrReplaceWithResponse(resourceGroupName, clusterName, destinationName, resource);
-        return this.client.<ChangeDataCaptureDestinationInner, ChangeDataCaptureDestinationInner>getLroResult(response,
-            ChangeDataCaptureDestinationInner.class, ChangeDataCaptureDestinationInner.class, Context.NONE);
+        return beginCreateOrReplace(resourceGroupName, clusterName, destinationName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a Microsoft Fabric change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a reusable Microsoft Fabric destination for HorizonDB change data
-     * capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureDestinationInner>, ChangeDataCaptureDestinationInner>
         beginCreateOrReplace(String resourceGroupName, String clusterName, String destinationName,
@@ -427,19 +330,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             ChangeDataCaptureDestinationInner.class, ChangeDataCaptureDestinationInner.class, context);
     }
 
-    /**
-     * Creates or replaces a Microsoft Fabric change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable Microsoft Fabric destination for HorizonDB change data capture configurations on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureDestinationInner> createOrReplaceAsync(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationInner resource) {
@@ -447,57 +338,22 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or replaces a Microsoft Fabric change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable Microsoft Fabric destination for HorizonDB change data capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureDestinationInner createOrReplace(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationInner resource) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, destinationName, resource).getFinalResult();
+        return createOrReplace(resourceGroupName, clusterName, destinationName, resource, Context.NONE);
     }
 
-    /**
-     * Creates or replaces a Microsoft Fabric change data capture destination.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable Microsoft Fabric destination for HorizonDB change data capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureDestinationInner createOrReplace(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationInner resource, Context context) {
-        return beginCreateOrReplace(resourceGroupName, clusterName, destinationName, resource, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrReplace(resourceGroupName, clusterName, destinationName, resource, context));
     }
 
-    /**
-     * Updates mutable change data capture destination properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable Microsoft Fabric destination for HorizonDB change data capture configurations along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationForPatchUpdate properties) {
@@ -526,11 +382,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationForPatchUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, destinationName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, clusterName, destinationName, properties, Context.NONE);
     }
 
     /**
@@ -557,19 +409,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             properties, context);
     }
 
-    /**
-     * Updates mutable change data capture destination properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a reusable Microsoft Fabric destination for HorizonDB change data
-     * capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ChangeDataCaptureDestinationInner>, ChangeDataCaptureDestinationInner>
         beginUpdateAsync(String resourceGroupName, String clusterName, String destinationName,
@@ -581,42 +421,15 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             ChangeDataCaptureDestinationInner.class, this.client.getContext());
     }
 
-    /**
-     * Updates mutable change data capture destination properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a reusable Microsoft Fabric destination for HorizonDB change data
-     * capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureDestinationInner>, ChangeDataCaptureDestinationInner> beginUpdate(
         String resourceGroupName, String clusterName, String destinationName,
         ChangeDataCaptureDestinationForPatchUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, destinationName, properties);
-        return this.client.<ChangeDataCaptureDestinationInner, ChangeDataCaptureDestinationInner>getLroResult(response,
-            ChangeDataCaptureDestinationInner.class, ChangeDataCaptureDestinationInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, clusterName, destinationName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable change data capture destination properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a reusable Microsoft Fabric destination for HorizonDB change data
-     * capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ChangeDataCaptureDestinationInner>, ChangeDataCaptureDestinationInner> beginUpdate(
         String resourceGroupName, String clusterName, String destinationName,
@@ -627,19 +440,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             ChangeDataCaptureDestinationInner.class, ChangeDataCaptureDestinationInner.class, context);
     }
 
-    /**
-     * Updates mutable change data capture destination properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable Microsoft Fabric destination for HorizonDB change data capture configurations on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangeDataCaptureDestinationInner> updateAsync(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationForPatchUpdate properties) {
@@ -647,55 +448,22 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Updates mutable change data capture destination properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable Microsoft Fabric destination for HorizonDB change data capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureDestinationInner update(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationForPatchUpdate properties) {
-        return beginUpdate(resourceGroupName, clusterName, destinationName, properties).getFinalResult();
+        return update(resourceGroupName, clusterName, destinationName, properties, Context.NONE);
     }
 
-    /**
-     * Updates mutable change data capture destination properties. Omitted properties preserve their current values.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reusable Microsoft Fabric destination for HorizonDB change data capture configurations.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChangeDataCaptureDestinationInner update(String resourceGroupName, String clusterName,
         String destinationName, ChangeDataCaptureDestinationForPatchUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, clusterName, destinationName, properties, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, clusterName, destinationName, properties, context));
     }
 
-    /**
-     * Deletes a change data capture destination after all referencing configurations and identity assignments have been
-     * removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
         String destinationName) {
@@ -720,8 +488,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String clusterName,
         String destinationName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, clusterName, destinationName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, clusterName, destinationName, Context.NONE);
     }
 
     /**
@@ -744,18 +511,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             this.client.getSubscriptionId(), resourceGroupName, clusterName, destinationName, context);
     }
 
-    /**
-     * Deletes a change data capture destination after all referencing configurations and identity assignments have been
-     * removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
         String destinationName) {
@@ -765,38 +521,14 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             this.client.getContext());
     }
 
-    /**
-     * Deletes a change data capture destination after all referencing configurations and identity assignments have been
-     * removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String destinationName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, clusterName, destinationName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, clusterName, destinationName, Context.NONE);
     }
 
-    /**
-     * Deletes a change data capture destination after all referencing configurations and identity assignments have been
-     * removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
         String destinationName, Context context) {
@@ -804,55 +536,23 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
         return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
-    /**
-     * Deletes a change data capture destination after all referencing configurations and identity assignments have been
-     * removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String destinationName) {
         return beginDeleteAsync(resourceGroupName, clusterName, destinationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a change data capture destination after all referencing configurations and identity assignments have been
-     * removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String destinationName) {
-        beginDelete(resourceGroupName, clusterName, destinationName).getFinalResult();
+        delete(resourceGroupName, clusterName, destinationName, Context.NONE);
     }
 
-    /**
-     * Deletes a change data capture destination after all referencing configurations and identity assignments have been
-     * removed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String clusterName, String destinationName, Context context) {
-        beginDelete(resourceGroupName, clusterName, destinationName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, clusterName, destinationName, context));
     }
 
     /**
@@ -878,17 +578,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists change data capture destinations in a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureDestination list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChangeDataCaptureDestinationInner> listAsync(String resourceGroupName, String clusterName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
@@ -908,12 +598,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChangeDataCaptureDestinationInner> listSinglePage(String resourceGroupName,
         String clusterName) {
-        final String accept = "application/json";
-        Response<ChangeDataCaptureDestinationListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, clusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, clusterName, Context.NONE);
     }
 
     /**
@@ -938,35 +623,13 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists change data capture destinations in a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureDestination list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeDataCaptureDestinationInner> list(String resourceGroupName, String clusterName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, clusterName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, clusterName, Context.NONE);
     }
 
-    /**
-     * Lists change data capture destinations in a HorizonDB cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ChangeDataCaptureDestination list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChangeDataCaptureDestinationInner> list(String resourceGroupName, String clusterName,
         Context context) {
@@ -974,22 +637,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             nextLink -> listNextSinglePage(nextLink, context));
     }
 
-    /**
-     * Atomically activates a validated identity assignment for this destination. If-Match is evaluated against the
-     * destination entity tag. Activating the already-active assignment succeeds idempotently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch The destination entity tag. The action proceeds only when this value matches the destination's
-     * current entity tag.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completed result of activating a change data capture destination identity along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> activateIdentityWithResponseAsync(String resourceGroupName, String ifMatch,
         String clusterName, String destinationName, ActivateChangeDataCaptureIdentityRequest body) {
@@ -1021,11 +669,8 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> activateIdentityWithResponse(String resourceGroupName, String ifMatch,
         String clusterName, String destinationName, ActivateChangeDataCaptureIdentityRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.activateIdentitySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, clusterName, destinationName, contentType,
-            accept, body, Context.NONE);
+        return activateIdentityWithResponse(resourceGroupName, ifMatch, clusterName, destinationName, body,
+            Context.NONE);
     }
 
     /**
@@ -1055,22 +700,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             accept, body, context);
     }
 
-    /**
-     * Atomically activates a validated identity assignment for this destination. If-Match is evaluated against the
-     * destination entity tag. Activating the already-active assignment succeeds idempotently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch The destination entity tag. The action proceeds only when this value matches the destination's
-     * current entity tag.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the completed result of activating a change data capture
-     * destination identity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         PollerFlux<PollResult<ActivateChangeDataCaptureIdentityResultInner>, ActivateChangeDataCaptureIdentityResultInner>
@@ -1084,52 +714,16 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
                 ActivateChangeDataCaptureIdentityResultInner.class, this.client.getContext());
     }
 
-    /**
-     * Atomically activates a validated identity assignment for this destination. If-Match is evaluated against the
-     * destination entity tag. Activating the already-active assignment succeeds idempotently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch The destination entity tag. The action proceeds only when this value matches the destination's
-     * current entity tag.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the completed result of activating a change data capture
-     * destination identity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ActivateChangeDataCaptureIdentityResultInner>, ActivateChangeDataCaptureIdentityResultInner>
         beginActivateIdentity(String resourceGroupName, String ifMatch, String clusterName, String destinationName,
             ActivateChangeDataCaptureIdentityRequest body) {
-        Response<BinaryData> response
-            = activateIdentityWithResponse(resourceGroupName, ifMatch, clusterName, destinationName, body);
-        return this.client
-            .<ActivateChangeDataCaptureIdentityResultInner, ActivateChangeDataCaptureIdentityResultInner>getLroResult(
-                response, ActivateChangeDataCaptureIdentityResultInner.class,
-                ActivateChangeDataCaptureIdentityResultInner.class, Context.NONE);
+        return beginActivateIdentity(resourceGroupName, ifMatch, clusterName, destinationName, body, Context.NONE);
     }
 
-    /**
-     * Atomically activates a validated identity assignment for this destination. If-Match is evaluated against the
-     * destination entity tag. Activating the already-active assignment succeeds idempotently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch The destination entity tag. The action proceeds only when this value matches the destination's
-     * current entity tag.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the completed result of activating a change data capture
-     * destination identity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public
         SyncPoller<PollResult<ActivateChangeDataCaptureIdentityResultInner>, ActivateChangeDataCaptureIdentityResultInner>
@@ -1143,22 +737,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
                 ActivateChangeDataCaptureIdentityResultInner.class, context);
     }
 
-    /**
-     * Atomically activates a validated identity assignment for this destination. If-Match is evaluated against the
-     * destination entity tag. Activating the already-active assignment succeeds idempotently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch The destination entity tag. The action proceeds only when this value matches the destination's
-     * current entity tag.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completed result of activating a change data capture destination identity on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ActivateChangeDataCaptureIdentityResultInner> activateIdentityAsync(String resourceGroupName,
         String ifMatch, String clusterName, String destinationName, ActivateChangeDataCaptureIdentityRequest body) {
@@ -1166,48 +745,19 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Atomically activates a validated identity assignment for this destination. If-Match is evaluated against the
-     * destination entity tag. Activating the already-active assignment succeeds idempotently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch The destination entity tag. The action proceeds only when this value matches the destination's
-     * current entity tag.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completed result of activating a change data capture destination identity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivateChangeDataCaptureIdentityResultInner activateIdentity(String resourceGroupName, String ifMatch,
         String clusterName, String destinationName, ActivateChangeDataCaptureIdentityRequest body) {
-        return beginActivateIdentity(resourceGroupName, ifMatch, clusterName, destinationName, body).getFinalResult();
+        return activateIdentity(resourceGroupName, ifMatch, clusterName, destinationName, body, Context.NONE);
     }
 
-    /**
-     * Atomically activates a validated identity assignment for this destination. If-Match is evaluated against the
-     * destination entity tag. Activating the already-active assignment succeeds idempotently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param ifMatch The destination entity tag. The action proceeds only when this value matches the destination's
-     * current entity tag.
-     * @param clusterName The name of the HorizonDB cluster.
-     * @param destinationName The caller-selected name of the change data capture destination.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completed result of activating a change data capture destination identity.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ActivateChangeDataCaptureIdentityResultInner activateIdentity(String resourceGroupName, String ifMatch,
         String clusterName, String destinationName, ActivateChangeDataCaptureIdentityRequest body, Context context) {
-        return beginActivateIdentity(resourceGroupName, ifMatch, clusterName, destinationName, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginActivateIdentity(resourceGroupName, ifMatch, clusterName, destinationName, body, context));
     }
 
     /**
@@ -1240,11 +790,7 @@ public final class ChangeDataCaptureDestinationsClientImpl implements ChangeData
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ChangeDataCaptureDestinationInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ChangeDataCaptureDestinationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

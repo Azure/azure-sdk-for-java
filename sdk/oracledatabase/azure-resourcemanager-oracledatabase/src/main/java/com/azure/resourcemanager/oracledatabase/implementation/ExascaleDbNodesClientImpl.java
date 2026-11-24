@@ -191,18 +191,7 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a ExascaleDbNode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param exascaleDbNodeName The name of the ExascaleDbNode.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExascaleDbNode along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExascaleDbNodeInner> getWithResponse(String resourceGroupName, String exadbVmClusterName,
         String exascaleDbNodeName, Context context) {
@@ -211,17 +200,7 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
             resourceGroupName, exadbVmClusterName, exascaleDbNodeName, accept, context);
     }
 
-    /**
-     * Get a ExascaleDbNode.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param exascaleDbNodeName The name of the ExascaleDbNode.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ExascaleDbNode.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExascaleDbNodeInner get(String resourceGroupName, String exadbVmClusterName, String exascaleDbNodeName) {
         return getWithResponse(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, Context.NONE).getValue();
@@ -279,12 +258,7 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbNodeInner> listByParentSinglePage(String resourceGroupName,
         String exadbVmClusterName) {
-        final String accept = "application/json";
-        Response<ExascaleDbNodeListResult> res
-            = service.listByParentSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, exadbVmClusterName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentSinglePage(resourceGroupName, exadbVmClusterName, Context.NONE);
     }
 
     /**
@@ -309,33 +283,13 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List ExascaleDbNode resources by ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExascaleDbNode list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExascaleDbNodeInner> listByParent(String resourceGroupName, String exadbVmClusterName) {
-        return new PagedIterable<>(() -> listByParentSinglePage(resourceGroupName, exadbVmClusterName),
-            nextLink -> listByParentNextSinglePage(nextLink));
+        return listByParent(resourceGroupName, exadbVmClusterName, Context.NONE);
     }
 
-    /**
-     * List ExascaleDbNode resources by ExadbVmCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ExascaleDbNode list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExascaleDbNodeInner> listByParent(String resourceGroupName, String exadbVmClusterName,
         Context context) {
@@ -382,11 +336,7 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> actionWithResponse(String resourceGroupName, String exadbVmClusterName,
         String exascaleDbNodeName, DbNodeAction body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.actionSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, exadbVmClusterName, exascaleDbNodeName, contentType,
-            accept, body, Context.NONE);
+        return actionWithResponse(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body, Context.NONE);
     }
 
     /**
@@ -434,40 +384,14 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
             this.client.getContext());
     }
 
-    /**
-     * VM actions on DbNode of ExadbVmCluster by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param exascaleDbNodeName The name of the ExascaleDbNode.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exascaleDbNode action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbActionResponseInner>, DbActionResponseInner> beginAction(String resourceGroupName,
         String exadbVmClusterName, String exascaleDbNodeName, DbNodeAction body) {
-        Response<BinaryData> response
-            = actionWithResponse(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body);
-        return this.client.<DbActionResponseInner, DbActionResponseInner>getLroResult(response,
-            DbActionResponseInner.class, DbActionResponseInner.class, Context.NONE);
+        return beginAction(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body, Context.NONE);
     }
 
-    /**
-     * VM actions on DbNode of ExadbVmCluster by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param exascaleDbNodeName The name of the ExascaleDbNode.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of exascaleDbNode action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DbActionResponseInner>, DbActionResponseInner> beginAction(String resourceGroupName,
         String exadbVmClusterName, String exascaleDbNodeName, DbNodeAction body, Context context) {
@@ -496,41 +420,19 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * VM actions on DbNode of ExadbVmCluster by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param exascaleDbNodeName The name of the ExascaleDbNode.
-     * @param body The content of the action request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exascaleDbNode action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbActionResponseInner action(String resourceGroupName, String exadbVmClusterName, String exascaleDbNodeName,
         DbNodeAction body) {
-        return beginAction(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body).getFinalResult();
+        return action(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body, Context.NONE);
     }
 
-    /**
-     * VM actions on DbNode of ExadbVmCluster by the provided filter.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param exadbVmClusterName The name of the ExadbVmCluster.
-     * @param exascaleDbNodeName The name of the ExascaleDbNode.
-     * @param body The content of the action request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return exascaleDbNode action response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DbActionResponseInner action(String resourceGroupName, String exadbVmClusterName, String exascaleDbNodeName,
         DbNodeAction body, Context context) {
-        return beginAction(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginAction(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, body, context));
     }
 
     /**
@@ -564,11 +466,7 @@ public final class ExascaleDbNodesClientImpl implements ExascaleDbNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ExascaleDbNodeInner> listByParentNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ExascaleDbNodeListResult> res
-            = service.listByParentNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByParentNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

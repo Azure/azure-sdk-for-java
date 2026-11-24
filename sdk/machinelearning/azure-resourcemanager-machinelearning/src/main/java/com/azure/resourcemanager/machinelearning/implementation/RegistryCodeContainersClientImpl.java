@@ -200,18 +200,7 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return code container along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CodeContainerInner> getWithResponse(String resourceGroupName, String registryName, String codeName,
         Context context) {
@@ -220,17 +209,7 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
             resourceGroupName, registryName, codeName, accept, context);
     }
 
-    /**
-     * Get Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return code container.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeContainerInner get(String resourceGroupName, String registryName, String codeName) {
         return getWithResponse(resourceGroupName, registryName, codeName, Context.NONE).getValue();
@@ -276,11 +255,7 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String registryName,
         String codeName, CodeContainerInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, codeName, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, registryName, codeName, body, Context.NONE);
     }
 
     /**
@@ -327,39 +302,14 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
             CodeContainerInner.class, CodeContainerInner.class, this.client.getContext());
     }
 
-    /**
-     * Create or update Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param body Container entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CodeContainerInner>, CodeContainerInner> beginCreateOrUpdate(String resourceGroupName,
         String registryName, String codeName, CodeContainerInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, registryName, codeName, body);
-        return this.client.<CodeContainerInner, CodeContainerInner>getLroResult(response, CodeContainerInner.class,
-            CodeContainerInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, registryName, codeName, body, Context.NONE);
     }
 
-    /**
-     * Create or update Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param body Container entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CodeContainerInner>, CodeContainerInner> beginCreateOrUpdate(String resourceGroupName,
         String registryName, String codeName, CodeContainerInner body, Context context) {
@@ -388,41 +338,19 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param body Container entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeContainerInner createOrUpdate(String resourceGroupName, String registryName, String codeName,
         CodeContainerInner body) {
-        return beginCreateOrUpdate(resourceGroupName, registryName, codeName, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, registryName, codeName, body, Context.NONE);
     }
 
-    /**
-     * Create or update Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param body Container entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CodeContainerInner createOrUpdate(String resourceGroupName, String registryName, String codeName,
         CodeContainerInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, registryName, codeName, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, registryName, codeName, body, context));
     }
 
     /**
@@ -458,8 +386,7 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String registryName, String codeName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, codeName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, registryName, codeName, Context.NONE);
     }
 
     /**
@@ -500,36 +427,14 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
             this.client.getContext());
     }
 
-    /**
-     * Delete Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String codeName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, registryName, codeName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, registryName, codeName, Context.NONE);
     }
 
-    /**
-     * Delete Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String codeName, Context context) {
@@ -554,35 +459,16 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String codeName) {
-        beginDelete(resourceGroupName, registryName, codeName).getFinalResult();
+        delete(resourceGroupName, registryName, codeName, Context.NONE);
     }
 
-    /**
-     * Delete Code container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param codeName Container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String codeName, Context context) {
-        beginDelete(resourceGroupName, registryName, codeName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, registryName, codeName, context));
     }
 
     /**
@@ -657,12 +543,7 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeContainerInner> listSinglePage(String resourceGroupName, String registryName,
         String skip) {
-        final String accept = "application/json";
-        Response<CodeContainerResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, registryName, skip, Context.NONE);
     }
 
     /**
@@ -688,35 +569,14 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List containers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeContainerInner> list(String resourceGroupName, String registryName) {
         final String skip = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, registryName, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, registryName, skip, Context.NONE);
     }
 
-    /**
-     * List containers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CodeContainerInner> list(String resourceGroupName, String registryName, String skip,
         Context context) {
@@ -758,11 +618,7 @@ public final class RegistryCodeContainersClientImpl implements RegistryCodeConta
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CodeContainerInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CodeContainerResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

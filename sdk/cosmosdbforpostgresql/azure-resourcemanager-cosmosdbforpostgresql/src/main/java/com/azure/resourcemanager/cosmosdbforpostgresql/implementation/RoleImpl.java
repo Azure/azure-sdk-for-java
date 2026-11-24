@@ -93,10 +93,7 @@ public final class RoleImpl implements Role, Role.Definition {
     }
 
     public Role create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRoles()
-            .create(resourceGroupName, clusterName, roleName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Role create(Context context) {
@@ -113,11 +110,7 @@ public final class RoleImpl implements Role, Role.Definition {
     }
 
     public Role refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRoles()
-            .getWithResponse(resourceGroupName, clusterName, roleName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Role refresh(Context context) {

@@ -159,11 +159,7 @@ public final class PlansClientImpl implements PlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlanDataResourceInner> listSinglePage(String accountId, String organizationId) {
-        final String accept = "application/json";
-        Response<PlanDataListResponse> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accountId, organizationId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(accountId, organizationId, Context.NONE);
     }
 
     /**
@@ -187,32 +183,15 @@ public final class PlansClientImpl implements PlansClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the plans data linked to your organization, providing an overview of the available plans.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all plan data Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlanDataResourceInner> list() {
         final String accountId = null;
         final String organizationId = null;
-        return new PagedIterable<>(() -> listSinglePage(accountId, organizationId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(accountId, organizationId, Context.NONE);
     }
 
-    /**
-     * Lists the plans data linked to your organization, providing an overview of the available plans.
-     * 
-     * @param accountId Account Id.
-     * @param organizationId Organization Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all plan data Operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlanDataResourceInner> list(String accountId, String organizationId, Context context) {
         return new PagedIterable<>(() -> listSinglePage(accountId, organizationId, context),
@@ -249,11 +228,7 @@ public final class PlansClientImpl implements PlansClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<PlanDataResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<PlanDataListResponse> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

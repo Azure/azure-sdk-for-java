@@ -208,19 +208,7 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ComponentVersionInner> getWithResponse(String resourceGroupName, String registryName,
         String componentName, String version, Context context) {
@@ -229,18 +217,7 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
             resourceGroupName, registryName, componentName, version, accept, context);
     }
 
-    /**
-     * Get version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComponentVersionInner get(String resourceGroupName, String registryName, String componentName,
         String version) {
@@ -289,11 +266,7 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String registryName,
         String componentName, String version, ComponentVersionInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, componentName, version, contentType,
-            accept, body, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, registryName, componentName, version, body, Context.NONE);
     }
 
     /**
@@ -344,43 +317,15 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
             this.client.getContext());
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComponentVersionInner>, ComponentVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String registryName, String componentName, String version,
         ComponentVersionInner body) {
-        Response<BinaryData> response
-            = createOrUpdateWithResponse(resourceGroupName, registryName, componentName, version, body);
-        return this.client.<ComponentVersionInner, ComponentVersionInner>getLroResult(response,
-            ComponentVersionInner.class, ComponentVersionInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, registryName, componentName, version, body, Context.NONE);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @param body Version entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ComponentVersionInner>, ComponentVersionInner> beginCreateOrUpdate(
         String resourceGroupName, String registryName, String componentName, String version, ComponentVersionInner body,
@@ -411,44 +356,19 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @param body Version entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComponentVersionInner createOrUpdate(String resourceGroupName, String registryName, String componentName,
         String version, ComponentVersionInner body) {
-        return beginCreateOrUpdate(resourceGroupName, registryName, componentName, version, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, registryName, componentName, version, body, Context.NONE);
     }
 
-    /**
-     * Create or update version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @param body Version entity to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ComponentVersionInner createOrUpdate(String resourceGroupName, String registryName, String componentName,
         String version, ComponentVersionInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, registryName, componentName, version, body, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdate(resourceGroupName, registryName, componentName, version, body, context));
     }
 
     /**
@@ -487,8 +407,7 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String registryName, String componentName,
         String version) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, registryName, componentName, version, Context.NONE);
+        return deleteWithResponse(resourceGroupName, registryName, componentName, version, Context.NONE);
     }
 
     /**
@@ -532,38 +451,14 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
             this.client.getContext());
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String componentName, String version) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, registryName, componentName, version);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, registryName, componentName, version, Context.NONE);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
         String componentName, String version, Context context) {
@@ -591,38 +486,18 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String componentName, String version) {
-        beginDelete(resourceGroupName, registryName, componentName, version).getFinalResult();
+        delete(resourceGroupName, registryName, componentName, version, Context.NONE);
     }
 
-    /**
-     * Delete version.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param version Version identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String componentName, String version,
         Context context) {
-        beginDelete(resourceGroupName, registryName, componentName, version, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, registryName, componentName, version, context));
     }
 
     /**
@@ -714,12 +589,7 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ComponentVersionInner> listSinglePage(String resourceGroupName, String registryName,
         String componentName, String orderBy, Integer top, String skip) {
-        final String accept = "application/json";
-        Response<ComponentVersionResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, componentName, orderBy, top, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, registryName, componentName, orderBy, top, skip, Context.NONE);
     }
 
     /**
@@ -748,43 +618,17 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComponentVersionInner> list(String resourceGroupName, String registryName,
         String componentName) {
         final String orderBy = null;
         final Integer top = null;
         final String skip = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, registryName, componentName, orderBy, top, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, registryName, componentName, orderBy, top, skip, Context.NONE);
     }
 
-    /**
-     * List versions.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName Name of Azure Machine Learning registry. This is case-insensitive.
-     * @param componentName Container name.
-     * @param orderBy Ordering of list.
-     * @param top Maximum number of records to return.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of ComponentVersion entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ComponentVersionInner> list(String resourceGroupName, String registryName,
         String componentName, String orderBy, Integer top, String skip, Context context) {
@@ -827,11 +671,7 @@ public final class RegistryComponentVersionsClientImpl implements RegistryCompon
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ComponentVersionInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ComponentVersionResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

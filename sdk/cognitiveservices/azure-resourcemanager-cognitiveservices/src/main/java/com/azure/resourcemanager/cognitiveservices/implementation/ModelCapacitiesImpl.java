@@ -27,10 +27,7 @@ public final class ModelCapacitiesImpl implements ModelCapacities {
 
     public PagedIterable<ModelCapacityListResultValueItem> list(String modelFormat, String modelName,
         String modelVersion) {
-        PagedIterable<ModelCapacityListResultValueItemInner> inner
-            = this.serviceClient().list(modelFormat, modelName, modelVersion);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ModelCapacityListResultValueItemImpl(inner1, this.manager()));
+        return this.list(modelFormat, modelName, modelVersion, Context.NONE);
     }
 
     public PagedIterable<ModelCapacityListResultValueItem> list(String modelFormat, String modelName,

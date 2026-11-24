@@ -238,33 +238,14 @@ public final class AutomationsClientImpl implements AutomationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieves information about the model of a security automation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutomationInner> getByResourceGroupWithResponse(String resourceGroupName, String automationName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, automationName, context).block();
     }
 
-    /**
-     * Retrieves information about the model of a security automation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutomationInner getByResourceGroup(String resourceGroupName, String automationName) {
         return getByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE).getValue();
@@ -378,37 +359,14 @@ public final class AutomationsClientImpl implements AutomationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a security automation. If a security automation is already created and a subsequent request is
-     * issued for the same automation id, then it will be updated.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutomationInner> createOrUpdateWithResponse(String resourceGroupName, String automationName,
         AutomationInner automation, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
     }
 
-    /**
-     * Creates or updates a security automation. If a security automation is already created and a subsequent request is
-     * issued for the same automation id, then it will be updated.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutomationInner createOrUpdate(String resourceGroupName, String automationName, AutomationInner automation) {
         return createOrUpdateWithResponse(resourceGroupName, automationName, automation, Context.NONE).getValue();
@@ -519,35 +477,14 @@ public final class AutomationsClientImpl implements AutomationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a security automation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @param automation The update model of security automation resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutomationInner> updateWithResponse(String resourceGroupName, String automationName,
         AutomationUpdateModel automation, Context context) {
         return updateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
     }
 
-    /**
-     * Updates a security automation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @param automation The update model of security automation resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutomationInner update(String resourceGroupName, String automationName, AutomationUpdateModel automation) {
         return updateWithResponse(resourceGroupName, automationName, automation, Context.NONE).getValue();
@@ -637,31 +574,13 @@ public final class AutomationsClientImpl implements AutomationsClient {
         return deleteWithResponseAsync(resourceGroupName, automationName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a security automation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String automationName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationName, context).block();
     }
 
-    /**
-     * Deletes a security automation.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String automationName) {
         deleteWithResponse(resourceGroupName, automationName, Context.NONE);
@@ -772,32 +691,13 @@ public final class AutomationsClientImpl implements AutomationsClient {
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the security automations in the specified resource group. Use the 'nextLink' property in the response
-     * to get the next page of security automations for the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all the security automations in the specified resource group. Use the 'nextLink' property in the response
-     * to get the next page of security automations for the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -890,29 +790,13 @@ public final class AutomationsClientImpl implements AutomationsClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response to
-     * get the next page of security automations for the specified subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response to
-     * get the next page of security automations for the specified subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security automations response as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
@@ -1028,37 +912,14 @@ public final class AutomationsClientImpl implements AutomationsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Validates the security automation model before create or update. Any validation errors are returned to the
-     * client.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutomationValidationStatusInner> validateWithResponse(String resourceGroupName,
         String automationName, AutomationInner automation, Context context) {
         return validateWithResponseAsync(resourceGroupName, automationName, automation, context).block();
     }
 
-    /**
-     * Validates the security automation model before create or update. Any validation errors are returned to the
-     * client.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param automationName The security automation name.
-     * @param automation The security automation resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AutomationValidationStatusInner validate(String resourceGroupName, String automationName,
         AutomationInner automation) {

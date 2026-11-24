@@ -255,17 +255,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Operator API Connection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperatorApiConnectionInner> getByResourceGroupWithResponse(String resourceGroupName,
         String operatorApiConnectionName, Context context) {
@@ -274,16 +264,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             this.client.getSubscriptionId(), resourceGroupName, operatorApiConnectionName, accept, context);
     }
 
-    /**
-     * Get an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Operator API Connection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorApiConnectionInner getByResourceGroup(String resourceGroupName, String operatorApiConnectionName) {
         return getByResourceGroupWithResponse(resourceGroupName, operatorApiConnectionName, Context.NONE).getValue();
@@ -327,11 +308,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createWithResponse(String resourceGroupName, String operatorApiConnectionName,
         OperatorApiConnectionInner resource) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, operatorApiConnectionName, contentType, accept,
-            resource, Context.NONE);
+        return createWithResponse(resourceGroupName, operatorApiConnectionName, resource, Context.NONE);
     }
 
     /**
@@ -377,37 +354,14 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             this.client.getContext());
     }
 
-    /**
-     * Create an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Programmable Connectivity Operator API Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperatorApiConnectionInner>, OperatorApiConnectionInner>
         beginCreate(String resourceGroupName, String operatorApiConnectionName, OperatorApiConnectionInner resource) {
-        Response<BinaryData> response = createWithResponse(resourceGroupName, operatorApiConnectionName, resource);
-        return this.client.<OperatorApiConnectionInner, OperatorApiConnectionInner>getLroResult(response,
-            OperatorApiConnectionInner.class, OperatorApiConnectionInner.class, Context.NONE);
+        return beginCreate(resourceGroupName, operatorApiConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Create an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Programmable Connectivity Operator API Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperatorApiConnectionInner>, OperatorApiConnectionInner> beginCreate(
         String resourceGroupName, String operatorApiConnectionName, OperatorApiConnectionInner resource,
@@ -436,39 +390,19 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Programmable Connectivity Operator API Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorApiConnectionInner create(String resourceGroupName, String operatorApiConnectionName,
         OperatorApiConnectionInner resource) {
-        return beginCreate(resourceGroupName, operatorApiConnectionName, resource).getFinalResult();
+        return create(resourceGroupName, operatorApiConnectionName, resource, Context.NONE);
     }
 
-    /**
-     * Create an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Programmable Connectivity Operator API Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorApiConnectionInner create(String resourceGroupName, String operatorApiConnectionName,
         OperatorApiConnectionInner resource, Context context) {
-        return beginCreate(resourceGroupName, operatorApiConnectionName, resource, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreate(resourceGroupName, operatorApiConnectionName, resource, context));
     }
 
     /**
@@ -509,11 +443,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String operatorApiConnectionName,
         OperatorApiConnectionUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, operatorApiConnectionName, contentType, accept,
-            properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, operatorApiConnectionName, properties, Context.NONE);
     }
 
     /**
@@ -559,37 +489,14 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             this.client.getContext());
     }
 
-    /**
-     * Update an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Programmable Connectivity Operator API Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperatorApiConnectionInner>, OperatorApiConnectionInner> beginUpdate(
         String resourceGroupName, String operatorApiConnectionName, OperatorApiConnectionUpdate properties) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, operatorApiConnectionName, properties);
-        return this.client.<OperatorApiConnectionInner, OperatorApiConnectionInner>getLroResult(response,
-            OperatorApiConnectionInner.class, OperatorApiConnectionInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, operatorApiConnectionName, properties, Context.NONE);
     }
 
-    /**
-     * Update an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a Programmable Connectivity Operator API Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperatorApiConnectionInner>, OperatorApiConnectionInner> beginUpdate(
         String resourceGroupName, String operatorApiConnectionName, OperatorApiConnectionUpdate properties,
@@ -618,39 +525,19 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Programmable Connectivity Operator API Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorApiConnectionInner update(String resourceGroupName, String operatorApiConnectionName,
         OperatorApiConnectionUpdate properties) {
-        return beginUpdate(resourceGroupName, operatorApiConnectionName, properties).getFinalResult();
+        return update(resourceGroupName, operatorApiConnectionName, properties, Context.NONE);
     }
 
-    /**
-     * Update an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Programmable Connectivity Operator API Connection resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperatorApiConnectionInner update(String resourceGroupName, String operatorApiConnectionName,
         OperatorApiConnectionUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, operatorApiConnectionName, properties, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginUpdate(resourceGroupName, operatorApiConnectionName, properties, context));
     }
 
     /**
@@ -684,8 +571,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String operatorApiConnectionName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, operatorApiConnectionName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, operatorApiConnectionName, Context.NONE);
     }
 
     /**
@@ -724,33 +610,13 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             this.client.getContext());
     }
 
-    /**
-     * Delete an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String operatorApiConnectionName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, operatorApiConnectionName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, operatorApiConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String operatorApiConnectionName,
         Context context) {
@@ -774,33 +640,16 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String operatorApiConnectionName) {
-        beginDelete(resourceGroupName, operatorApiConnectionName).getFinalResult();
+        delete(resourceGroupName, operatorApiConnectionName, Context.NONE);
     }
 
-    /**
-     * Delete an Operator API Connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param operatorApiConnectionName Azure Programmable Connectivity (APC) Operator API Connection Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String operatorApiConnectionName, Context context) {
-        beginDelete(resourceGroupName, operatorApiConnectionName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, operatorApiConnectionName, context));
     }
 
     /**
@@ -851,11 +700,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiConnectionInner> listByResourceGroupSinglePage(String resourceGroupName) {
-        final String accept = "application/json";
-        Response<OperatorApiConnectionListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, Context.NONE);
     }
 
     /**
@@ -878,31 +723,13 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List OperatorApiConnection resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OperatorApiConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperatorApiConnectionInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, Context.NONE);
     }
 
-    /**
-     * List OperatorApiConnection resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OperatorApiConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperatorApiConnectionInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
@@ -950,11 +777,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiConnectionInner> listSinglePage() {
-        final String accept = "application/json";
-        Response<OperatorApiConnectionListResult> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(Context.NONE);
     }
 
     /**
@@ -975,27 +798,13 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List OperatorApiConnection resources by subscription ID.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OperatorApiConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperatorApiConnectionInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        return list(Context.NONE);
     }
 
-    /**
-     * List OperatorApiConnection resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a OperatorApiConnection list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperatorApiConnectionInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context),
@@ -1034,11 +843,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiConnectionInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OperatorApiConnectionListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -1093,11 +898,7 @@ public final class OperatorApiConnectionsClientImpl implements OperatorApiConnec
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperatorApiConnectionInner> listBySubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<OperatorApiConnectionListResult> res
-            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listBySubscriptionNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

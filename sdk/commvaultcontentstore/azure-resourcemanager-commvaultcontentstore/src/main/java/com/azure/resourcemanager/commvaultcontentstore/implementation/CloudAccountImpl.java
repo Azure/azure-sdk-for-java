@@ -94,10 +94,7 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
     }
 
     public CloudAccount create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudAccounts()
-            .createOrUpdate(resourceGroupName, cloudAccountName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CloudAccount create(Context context) {
@@ -120,10 +117,7 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
     }
 
     public CloudAccount apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudAccounts()
-            .update(resourceGroupName, cloudAccountName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CloudAccount apply(Context context) {
@@ -146,11 +140,7 @@ public final class CloudAccountImpl implements CloudAccount, CloudAccount.Defini
     }
 
     public CloudAccount refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCloudAccounts()
-            .getByResourceGroupWithResponse(resourceGroupName, cloudAccountName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CloudAccount refresh(Context context) {

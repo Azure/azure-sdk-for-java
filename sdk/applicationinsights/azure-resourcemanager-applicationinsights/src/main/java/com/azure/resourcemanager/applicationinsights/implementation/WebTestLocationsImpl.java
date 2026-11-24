@@ -27,10 +27,7 @@ public final class WebTestLocationsImpl implements WebTestLocations {
 
     public PagedIterable<ApplicationInsightsComponentWebTestLocation> list(String resourceGroupName,
         String resourceName) {
-        PagedIterable<ApplicationInsightsComponentWebTestLocationInner> inner
-            = this.serviceClient().list(resourceGroupName, resourceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new ApplicationInsightsComponentWebTestLocationImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, resourceName, Context.NONE);
     }
 
     public PagedIterable<ApplicationInsightsComponentWebTestLocation> list(String resourceGroupName,

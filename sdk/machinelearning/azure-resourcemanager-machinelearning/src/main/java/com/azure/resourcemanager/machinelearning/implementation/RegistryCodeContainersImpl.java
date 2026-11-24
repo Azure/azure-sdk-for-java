@@ -46,12 +46,7 @@ public final class RegistryCodeContainersImpl implements RegistryCodeContainers 
 
     public CodeContainer createOrUpdate(String resourceGroupName, String registryName, String codeName,
         CodeContainerInner body) {
-        CodeContainerInner inner = this.serviceClient().createOrUpdate(resourceGroupName, registryName, codeName, body);
-        if (inner != null) {
-            return new CodeContainerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, codeName, body, Context.NONE);
     }
 
     public CodeContainer createOrUpdate(String resourceGroupName, String registryName, String codeName,
@@ -66,7 +61,7 @@ public final class RegistryCodeContainersImpl implements RegistryCodeContainers 
     }
 
     public void delete(String resourceGroupName, String registryName, String codeName) {
-        this.serviceClient().delete(resourceGroupName, registryName, codeName);
+        this.delete(resourceGroupName, registryName, codeName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String codeName, Context context) {

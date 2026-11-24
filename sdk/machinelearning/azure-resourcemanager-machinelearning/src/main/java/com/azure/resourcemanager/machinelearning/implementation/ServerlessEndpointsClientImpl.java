@@ -263,18 +263,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get Serverless Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serverless Endpoint along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerlessEndpointInner> getWithResponse(String resourceGroupName, String workspaceName,
         String name, Context context) {
@@ -283,17 +272,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             resourceGroupName, workspaceName, name, accept, context);
     }
 
-    /**
-     * Get Serverless Endpoint.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return serverless Endpoint.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerlessEndpointInner get(String resourceGroupName, String workspaceName, String name) {
         return getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
@@ -340,11 +319,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String name,
         ServerlessEndpointInner body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, contentType, accept, body,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
     /**
@@ -394,41 +369,14 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             this.client.getContext());
     }
 
-    /**
-     * Create or update Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body Serverless Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerlessEndpointInner>, ServerlessEndpointInner>
         beginCreateOrUpdate(String resourceGroupName, String workspaceName, String name, ServerlessEndpointInner body) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body);
-        return this.client.<ServerlessEndpointInner, ServerlessEndpointInner>getLroResult(response,
-            ServerlessEndpointInner.class, ServerlessEndpointInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Create or update Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body Serverless Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerlessEndpointInner>, ServerlessEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String name, ServerlessEndpointInner body, Context context) {
@@ -458,41 +406,19 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create or update Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body Serverless Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerlessEndpointInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         ServerlessEndpointInner body) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body).getFinalResult();
+        return createOrUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Create or update Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body Serverless Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerlessEndpointInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
         ServerlessEndpointInner body, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, workspaceName, name, body, context));
     }
 
     /**
@@ -536,11 +462,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String workspaceName, String name,
         PartialMinimalTrackedResourceWithSkuAndIdentity body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, contentType, accept, body,
-            Context.NONE);
+        return updateWithResponse(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
     /**
@@ -590,42 +512,15 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             this.client.getContext());
     }
 
-    /**
-     * Update Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body Serverless Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerlessEndpointInner>, ServerlessEndpointInner> beginUpdate(
         String resourceGroupName, String workspaceName, String name,
         PartialMinimalTrackedResourceWithSkuAndIdentity body) {
-        Response<BinaryData> response = updateWithResponse(resourceGroupName, workspaceName, name, body);
-        return this.client.<ServerlessEndpointInner, ServerlessEndpointInner>getLroResult(response,
-            ServerlessEndpointInner.class, ServerlessEndpointInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Update Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body Serverless Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of concrete tracked resource types can be created by aliasing this
-     * type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerlessEndpointInner>, ServerlessEndpointInner> beginUpdate(
         String resourceGroupName, String workspaceName, String name,
@@ -655,41 +550,18 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body Serverless Endpoint entity to apply during operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerlessEndpointInner update(String resourceGroupName, String workspaceName, String name,
         PartialMinimalTrackedResourceWithSkuAndIdentity body) {
-        return beginUpdate(resourceGroupName, workspaceName, name, body).getFinalResult();
+        return update(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Update Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body Serverless Endpoint entity to apply during operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return concrete tracked resource types can be created by aliasing this type using a specific property type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerlessEndpointInner update(String resourceGroupName, String workspaceName, String name,
         PartialMinimalTrackedResourceWithSkuAndIdentity body, Context context) {
-        return beginUpdate(resourceGroupName, workspaceName, name, body, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginUpdate(resourceGroupName, workspaceName, name, body, context));
     }
 
     /**
@@ -725,8 +597,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String workspaceName, String name) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, Context.NONE);
+        return deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
     /**
@@ -767,35 +638,13 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             this.client.getContext());
     }
 
-    /**
-     * Delete Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, workspaceName, name);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
-    /**
-     * Delete Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String name,
         Context context) {
@@ -820,35 +669,16 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name) {
-        beginDelete(resourceGroupName, workspaceName, name).getFinalResult();
+        delete(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
-    /**
-     * Delete Serverless Endpoint (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String workspaceName, String name, Context context) {
-        beginDelete(resourceGroupName, workspaceName, name, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, workspaceName, name, context));
     }
 
     /**
@@ -923,12 +753,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServerlessEndpointInner> listSinglePage(String resourceGroupName, String workspaceName,
         String skip) {
-        final String accept = "application/json";
-        Response<ServerlessEndpointTrackedResourceArmPaginatedResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, skip, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, workspaceName, skip, Context.NONE);
     }
 
     /**
@@ -954,35 +779,14 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List Serverless Endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of ServerlessEndpoint entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerlessEndpointInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, workspaceName, skip),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, workspaceName, skip, Context.NONE);
     }
 
-    /**
-     * List Serverless Endpoints.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param skip Continuation token for pagination.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paginated list of ServerlessEndpoint entities as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerlessEndpointInner> list(String resourceGroupName, String workspaceName, String skip,
         Context context) {
@@ -1028,18 +832,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EndpointAuthKeysInner> listKeysWithResponse(String resourceGroupName, String workspaceName,
         String name, Context context) {
@@ -1048,17 +841,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, accept, context);
     }
 
-    /**
-     * List EndpointAuthKeys for an Endpoint using Key-based authentication.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointAuthKeysInner listKeys(String resourceGroupName, String workspaceName, String name) {
         return listKeysWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
@@ -1103,11 +886,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> regenerateKeysWithResponse(String resourceGroupName, String workspaceName, String name,
         RegenerateEndpointKeysRequest body) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.regenerateKeysSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, workspaceName, name, contentType, accept, body,
-            Context.NONE);
+        return regenerateKeysWithResponse(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
     /**
@@ -1155,39 +934,14 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             this.client.getContext());
     }
 
-    /**
-     * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body RegenerateKeys request .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of keys for endpoint authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointAuthKeysInner>, EndpointAuthKeysInner> beginRegenerateKeys(
         String resourceGroupName, String workspaceName, String name, RegenerateEndpointKeysRequest body) {
-        Response<BinaryData> response = regenerateKeysWithResponse(resourceGroupName, workspaceName, name, body);
-        return this.client.<EndpointAuthKeysInner, EndpointAuthKeysInner>getLroResult(response,
-            EndpointAuthKeysInner.class, EndpointAuthKeysInner.class, Context.NONE);
+        return beginRegenerateKeys(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body RegenerateKeys request .
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of keys for endpoint authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EndpointAuthKeysInner>, EndpointAuthKeysInner> beginRegenerateKeys(
         String resourceGroupName, String workspaceName, String name, RegenerateEndpointKeysRequest body,
@@ -1217,41 +971,19 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body RegenerateKeys request .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointAuthKeysInner regenerateKeys(String resourceGroupName, String workspaceName, String name,
         RegenerateEndpointKeysRequest body) {
-        return beginRegenerateKeys(resourceGroupName, workspaceName, name, body).getFinalResult();
+        return regenerateKeys(resourceGroupName, workspaceName, name, body, Context.NONE);
     }
 
-    /**
-     * Regenerate EndpointAuthKeys for an Endpoint using Key-based authentication (asynchronous).
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Azure Machine Learning Workspace Name.
-     * @param name Serverless Endpoint name.
-     * @param body RegenerateKeys request .
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keys for endpoint authentication.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EndpointAuthKeysInner regenerateKeys(String resourceGroupName, String workspaceName, String name,
         RegenerateEndpointKeysRequest body, Context context) {
-        return beginRegenerateKeys(resourceGroupName, workspaceName, name, body, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginRegenerateKeys(resourceGroupName, workspaceName, name, body, context));
     }
 
     /**
@@ -1288,11 +1020,7 @@ public final class ServerlessEndpointsClientImpl implements ServerlessEndpointsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ServerlessEndpointInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ServerlessEndpointTrackedResourceArmPaginatedResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

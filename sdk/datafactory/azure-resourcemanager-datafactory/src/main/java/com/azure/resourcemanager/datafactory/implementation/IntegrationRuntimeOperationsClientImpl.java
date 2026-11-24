@@ -148,11 +148,8 @@ public final class IntegrationRuntimeOperationsClientImpl implements Integration
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> enableInteractiveQueryWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName, EnableInteractiveQueryRequest enableInteractiveQueryRequest) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.enableInteractiveQuerySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, contentType,
-            accept, enableInteractiveQueryRequest, Context.NONE);
+        return enableInteractiveQueryWithResponse(resourceGroupName, factoryName, integrationRuntimeName,
+            enableInteractiveQueryRequest, Context.NONE);
     }
 
     /**
@@ -201,41 +198,16 @@ public final class IntegrationRuntimeOperationsClientImpl implements Integration
             this.client.getContext());
     }
 
-    /**
-     * Enable interactive authoring of Managed Virtual Network integration runtime.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param enableInteractiveQueryRequest The enable interactive authoring integration runtime properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner>
         beginEnableInteractiveQuery(String resourceGroupName, String factoryName, String integrationRuntimeName,
             EnableInteractiveQueryRequest enableInteractiveQueryRequest) {
-        Response<BinaryData> response = enableInteractiveQueryWithResponse(resourceGroupName, factoryName,
-            integrationRuntimeName, enableInteractiveQueryRequest);
-        return this.client.<IntegrationRuntimeResourceInner, IntegrationRuntimeResourceInner>getLroResult(response,
-            IntegrationRuntimeResourceInner.class, IntegrationRuntimeResourceInner.class, Context.NONE);
+        return beginEnableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName,
+            enableInteractiveQueryRequest, Context.NONE);
     }
 
-    /**
-     * Enable interactive authoring of Managed Virtual Network integration runtime.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param enableInteractiveQueryRequest The enable interactive authoring integration runtime properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner>
         beginEnableInteractiveQuery(String resourceGroupName, String factoryName, String integrationRuntimeName,
@@ -266,43 +238,20 @@ public final class IntegrationRuntimeOperationsClientImpl implements Integration
             enableInteractiveQueryRequest).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Enable interactive authoring of Managed Virtual Network integration runtime.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param enableInteractiveQueryRequest The enable interactive authoring integration runtime properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeResourceInner enableInteractiveQuery(String resourceGroupName, String factoryName,
         String integrationRuntimeName, EnableInteractiveQueryRequest enableInteractiveQueryRequest) {
-        return beginEnableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName,
-            enableInteractiveQueryRequest).getFinalResult();
+        return enableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName,
+            enableInteractiveQueryRequest, Context.NONE);
     }
 
-    /**
-     * Enable interactive authoring of Managed Virtual Network integration runtime.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param enableInteractiveQueryRequest The enable interactive authoring integration runtime properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeResourceInner enableInteractiveQuery(String resourceGroupName, String factoryName,
         String integrationRuntimeName, EnableInteractiveQueryRequest enableInteractiveQueryRequest, Context context) {
-        return beginEnableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName,
-            enableInteractiveQueryRequest, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginEnableInteractiveQuery(resourceGroupName, factoryName,
+            integrationRuntimeName, enableInteractiveQueryRequest, context));
     }
 
     /**
@@ -341,9 +290,7 @@ public final class IntegrationRuntimeOperationsClientImpl implements Integration
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> disableInteractiveQueryWithResponse(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {
-        final String accept = "application/json";
-        return service.disableInteractiveQuerySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, accept,
+        return disableInteractiveQueryWithResponse(resourceGroupName, factoryName, integrationRuntimeName,
             Context.NONE);
     }
 
@@ -388,38 +335,14 @@ public final class IntegrationRuntimeOperationsClientImpl implements Integration
             this.client.getContext());
     }
 
-    /**
-     * Disable interactive authoring of Managed Virtual Network integration runtime.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner>
         beginDisableInteractiveQuery(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        Response<BinaryData> response
-            = disableInteractiveQueryWithResponse(resourceGroupName, factoryName, integrationRuntimeName);
-        return this.client.<IntegrationRuntimeResourceInner, IntegrationRuntimeResourceInner>getLroResult(response,
-            IntegrationRuntimeResourceInner.class, IntegrationRuntimeResourceInner.class, Context.NONE);
+        return beginDisableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
-    /**
-     * Disable interactive authoring of Managed Virtual Network integration runtime.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner>
         beginDisableInteractiveQuery(String resourceGroupName, String factoryName, String integrationRuntimeName,
@@ -448,39 +371,18 @@ public final class IntegrationRuntimeOperationsClientImpl implements Integration
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Disable interactive authoring of Managed Virtual Network integration runtime.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeResourceInner disableInteractiveQuery(String resourceGroupName, String factoryName,
         String integrationRuntimeName) {
-        return beginDisableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName).getFinalResult();
+        return disableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName, Context.NONE);
     }
 
-    /**
-     * Disable interactive authoring of Managed Virtual Network integration runtime.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IntegrationRuntimeResourceInner disableInteractiveQuery(String resourceGroupName, String factoryName,
         String integrationRuntimeName, Context context) {
-        return beginDisableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginDisableInteractiveQuery(resourceGroupName, factoryName, integrationRuntimeName, context));
     }
 }

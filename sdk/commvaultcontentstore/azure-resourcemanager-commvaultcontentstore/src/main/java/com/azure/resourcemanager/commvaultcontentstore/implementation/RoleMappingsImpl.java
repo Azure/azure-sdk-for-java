@@ -66,12 +66,11 @@ public final class RoleMappingsImpl implements RoleMappings {
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String cloudAccountName) {
-        this.serviceClient().delete(resourceGroupName, cloudAccountName);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     public PagedIterable<RoleMapping> list(String resourceGroupName, String cloudAccountName) {
-        PagedIterable<RoleMappingInner> inner = this.serviceClient().list(resourceGroupName, cloudAccountName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new RoleMappingImpl(inner1, this.manager()));
+        return this.list(resourceGroupName, cloudAccountName, Context.NONE);
     }
 
     public PagedIterable<RoleMapping> list(String resourceGroupName, String cloudAccountName, Context context) {

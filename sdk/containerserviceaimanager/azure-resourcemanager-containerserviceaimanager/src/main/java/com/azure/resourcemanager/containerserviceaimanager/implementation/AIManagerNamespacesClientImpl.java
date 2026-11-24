@@ -262,18 +262,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AIManagerNamespace along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AIManagerNamespaceInner> getWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, Context context) {
@@ -282,17 +271,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             resourceGroupName, aiManagerName, namespaceName, accept, context);
     }
 
-    /**
-     * Get a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a AIManagerNamespace.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AIManagerNamespaceInner get(String resourceGroupName, String aiManagerName, String namespaceName) {
         return getWithResponse(resourceGroupName, aiManagerName, namespaceName, Context.NONE).getValue();
@@ -342,11 +321,8 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, AIManagerNamespaceInner resource, String ifMatch, String ifNoneMatch) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, aiManagerName, namespaceName,
-            contentType, accept, resource, Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, aiManagerName, namespaceName, resource, ifMatch,
+            ifNoneMatch, Context.NONE);
     }
 
     /**
@@ -441,50 +417,21 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
     private SyncPoller<PollResult<AIManagerNamespaceInner>, AIManagerNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String aiManagerName, String namespaceName, AIManagerNamespaceInner resource,
         String ifMatch, String ifNoneMatch) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, namespaceName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<AIManagerNamespaceInner, AIManagerNamespaceInner>getLroResult(response,
-            AIManagerNamespaceInner.class, AIManagerNamespaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the AI Manager namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AIManagerNamespaceInner>, AIManagerNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String aiManagerName, String namespaceName, AIManagerNamespaceInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, aiManagerName, namespaceName,
-            resource, ifMatch, ifNoneMatch);
-        return this.client.<AIManagerNamespaceInner, AIManagerNamespaceInner>getLroResult(response,
-            AIManagerNamespaceInner.class, AIManagerNamespaceInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the AI Manager namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AIManagerNamespaceInner>, AIManagerNamespaceInner> beginCreateOrUpdate(
         String resourceGroupName, String aiManagerName, String namespaceName, AIManagerNamespaceInner resource,
@@ -539,47 +486,22 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Create a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AI Manager namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AIManagerNamespaceInner createOrUpdate(String resourceGroupName, String aiManagerName, String namespaceName,
         AIManagerNamespaceInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName, resource, ifMatch, ifNoneMatch)
-            .getFinalResult();
+        return createOrUpdate(resourceGroupName, aiManagerName, namespaceName, resource, ifMatch, ifNoneMatch,
+            Context.NONE);
     }
 
-    /**
-     * Create a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param resource Resource create parameters.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param ifNoneMatch The request should only proceed if no entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AI Manager namespace resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AIManagerNamespaceInner createOrUpdate(String resourceGroupName, String aiManagerName, String namespaceName,
         AIManagerNamespaceInner resource, String ifMatch, String ifNoneMatch, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName, resource, ifMatch, ifNoneMatch,
-            context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, aiManagerName, namespaceName,
+            resource, ifMatch, ifNoneMatch, context));
     }
 
     /**
@@ -618,8 +540,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, String ifMatch) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, ifMatch, aiManagerName, namespaceName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, aiManagerName, namespaceName, ifMatch, Context.NONE);
     }
 
     /**
@@ -699,42 +620,18 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String namespaceName, String ifMatch) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, namespaceName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, namespaceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String namespaceName) {
         final String ifMatch = null;
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, aiManagerName, namespaceName, ifMatch);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, aiManagerName, namespaceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String aiManagerName,
         String namespaceName, String ifMatch, Context context) {
@@ -780,38 +677,19 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Delete a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String namespaceName) {
         final String ifMatch = null;
-        beginDelete(resourceGroupName, aiManagerName, namespaceName, ifMatch).getFinalResult();
+        delete(resourceGroupName, aiManagerName, namespaceName, ifMatch, Context.NONE);
     }
 
-    /**
-     * Delete a AIManagerNamespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param ifMatch The request should only proceed if an entity matches this string.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String aiManagerName, String namespaceName, String ifMatch,
         Context context) {
-        beginDelete(resourceGroupName, aiManagerName, namespaceName, ifMatch, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, aiManagerName, namespaceName, ifMatch, context));
     }
 
     /**
@@ -866,12 +744,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AIManagerNamespaceInner> listByAIManagerSinglePage(String resourceGroupName,
         String aiManagerName) {
-        final String accept = "application/json";
-        Response<AIManagerNamespaceListResult> res
-            = service.listByAIManagerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, aiManagerName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAIManagerSinglePage(resourceGroupName, aiManagerName, Context.NONE);
     }
 
     /**
@@ -896,33 +769,13 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List AIManagerNamespace resources by AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AIManagerNamespace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AIManagerNamespaceInner> listByAIManager(String resourceGroupName, String aiManagerName) {
-        return new PagedIterable<>(() -> listByAIManagerSinglePage(resourceGroupName, aiManagerName),
-            nextLink -> listByAIManagerNextSinglePage(nextLink));
+        return listByAIManager(resourceGroupName, aiManagerName, Context.NONE);
     }
 
-    /**
-     * List AIManagerNamespace resources by AIManager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AIManagerNamespace list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AIManagerNamespaceInner> listByAIManager(String resourceGroupName, String aiManagerName,
         Context context) {
@@ -969,18 +822,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Lists the credentials of an AI Manager namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CredentialResultsInner> listCredentialWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, Context context) {
@@ -989,17 +831,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             this.client.getSubscriptionId(), resourceGroupName, aiManagerName, namespaceName, accept, context);
     }
 
-    /**
-     * Lists the credentials of an AI Manager namespace.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list credential result response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialResultsInner listCredential(String resourceGroupName, String aiManagerName, String namespaceName) {
         return listCredentialWithResponse(resourceGroupName, aiManagerName, namespaceName, Context.NONE).getValue();
@@ -1046,19 +878,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns the namespace-scoped LLM gateway endpoint and the current API keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access information for an AI Manager namespace, including the OpenAI-compatible gateway endpoint and the
-     * API keys used to authenticate against it along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceAccessInfoInner> listAccessKeysWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, Context context) {
@@ -1067,18 +887,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             this.client.getSubscriptionId(), resourceGroupName, aiManagerName, namespaceName, accept, context);
     }
 
-    /**
-     * Returns the namespace-scoped LLM gateway endpoint and the current API keys.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access information for an AI Manager namespace, including the OpenAI-compatible gateway endpoint and the
-     * API keys used to authenticate against it.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceAccessInfoInner listAccessKeys(String resourceGroupName, String aiManagerName,
         String namespaceName) {
@@ -1130,21 +939,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Rotates the namespace-scoped LLM gateway API keys. A new key is generated and installed as `primaryKey`, and the
-     * previous `primaryKey` overwrites `secondaryKey` so clients can roll over without downtime. Returns the updated
-     * access info.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access information for an AI Manager namespace, including the OpenAI-compatible gateway endpoint and the
-     * API keys used to authenticate against it along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NamespaceAccessInfoInner> rotateKeysWithResponse(String resourceGroupName, String aiManagerName,
         String namespaceName, Context context) {
@@ -1153,20 +948,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
             this.client.getSubscriptionId(), resourceGroupName, aiManagerName, namespaceName, accept, context);
     }
 
-    /**
-     * Rotates the namespace-scoped LLM gateway API keys. A new key is generated and installed as `primaryKey`, and the
-     * previous `primaryKey` overwrites `secondaryKey` so clients can roll over without downtime. Returns the updated
-     * access info.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param aiManagerName The name of the AI Manager resource.
-     * @param namespaceName The name of the AI Manager namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access information for an AI Manager namespace, including the OpenAI-compatible gateway endpoint and the
-     * API keys used to authenticate against it.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NamespaceAccessInfoInner rotateKeys(String resourceGroupName, String aiManagerName, String namespaceName) {
         return rotateKeysWithResponse(resourceGroupName, aiManagerName, namespaceName, Context.NONE).getValue();
@@ -1203,11 +985,7 @@ public final class AIManagerNamespacesClientImpl implements AIManagerNamespacesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<AIManagerNamespaceInner> listByAIManagerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AIManagerNamespaceListResult> res
-            = service.listByAIManagerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAIManagerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

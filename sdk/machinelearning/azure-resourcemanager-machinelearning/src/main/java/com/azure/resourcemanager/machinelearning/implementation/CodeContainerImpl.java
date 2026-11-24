@@ -60,11 +60,7 @@ public final class CodeContainerImpl implements CodeContainer, CodeContainer.Def
     }
 
     public CodeContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCodeContainers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public CodeContainer create(Context context) {
@@ -86,11 +82,7 @@ public final class CodeContainerImpl implements CodeContainer, CodeContainer.Def
     }
 
     public CodeContainer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCodeContainers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public CodeContainer apply(Context context) {
@@ -127,11 +119,7 @@ public final class CodeContainerImpl implements CodeContainer, CodeContainer.Def
     }
 
     public CodeContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getCodeContainers()
-            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public CodeContainer refresh(Context context) {

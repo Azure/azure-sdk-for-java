@@ -88,10 +88,7 @@ public final class RuntimeLinkImpl implements RuntimeLink, RuntimeLink.Definitio
     }
 
     public RuntimeLink create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRuntimeLinks()
-            .createOrUpdate(resourceGroupName, spaceName, linkName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public RuntimeLink create(Context context) {
@@ -114,10 +111,7 @@ public final class RuntimeLinkImpl implements RuntimeLink, RuntimeLink.Definitio
     }
 
     public RuntimeLink apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRuntimeLinks()
-            .update(resourceGroupName, spaceName, linkName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public RuntimeLink apply(Context context) {
@@ -143,11 +137,7 @@ public final class RuntimeLinkImpl implements RuntimeLink, RuntimeLink.Definitio
     }
 
     public RuntimeLink refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getRuntimeLinks()
-            .getWithResponse(resourceGroupName, spaceName, linkName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public RuntimeLink refresh(Context context) {

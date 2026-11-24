@@ -97,10 +97,7 @@ public final class SecretImpl implements Secret, Secret.Definition, Secret.Updat
     }
 
     public Secret create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecrets()
-            .createOrUpdate(resourceGroupName, labName, userName, name, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public Secret create(Context context) {
@@ -122,11 +119,7 @@ public final class SecretImpl implements Secret, Secret.Definition, Secret.Updat
     }
 
     public Secret apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getSecrets()
-            .updateWithResponse(resourceGroupName, labName, userName, name, updateSecret, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public Secret apply(Context context) {
@@ -155,12 +148,7 @@ public final class SecretImpl implements Secret, Secret.Definition, Secret.Updat
     }
 
     public Secret refresh() {
-        String localExpand = null;
-        this.innerObject = serviceManager.serviceClient()
-            .getSecrets()
-            .getWithResponse(resourceGroupName, labName, userName, name, localExpand, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public Secret refresh(Context context) {

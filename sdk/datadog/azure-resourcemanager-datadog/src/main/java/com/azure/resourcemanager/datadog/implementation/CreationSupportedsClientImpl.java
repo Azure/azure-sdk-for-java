@@ -163,11 +163,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CreateResourceSupportedResponseInner> listSinglePage(String datadogOrganizationId) {
-        final String accept = "application/json";
-        Response<CreateResourceSupportedResponseList> res = service.listSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), datadogOrganizationId, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(datadogOrganizationId, Context.NONE);
     }
 
     /**
@@ -190,33 +186,13 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Informs if the current subscription is being already monitored for selected Datadog organization.
-     * 
-     * @param datadogOrganizationId Datadog Organization Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of CreateResourceSupportedResponse items as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CreateResourceSupportedResponseInner> list(String datadogOrganizationId) {
-        return new PagedIterable<>(() -> listSinglePage(datadogOrganizationId),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(datadogOrganizationId, Context.NONE);
     }
 
-    /**
-     * Informs if the current subscription is being already monitored for selected Datadog organization.
-     * 
-     * @param datadogOrganizationId Datadog Organization Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of CreateResourceSupportedResponse items as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CreateResourceSupportedResponseInner> list(String datadogOrganizationId, Context context) {
         return new PagedIterable<>(() -> listSinglePage(datadogOrganizationId, context),
@@ -256,16 +232,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
         return getWithResponseAsync(datadogOrganizationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Informs if the current subscription is being already monitored for selected Datadog organization.
-     * 
-     * @param datadogOrganizationId Datadog Organization Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datadog resource can be created or not along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateResourceSupportedResponseInner> getWithResponse(String datadogOrganizationId,
         Context context) {
@@ -274,15 +241,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
             datadogOrganizationId, accept, context);
     }
 
-    /**
-     * Informs if the current subscription is being already monitored for selected Datadog organization.
-     * 
-     * @param datadogOrganizationId Datadog Organization Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datadog resource can be created or not.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateResourceSupportedResponseInner get(String datadogOrganizationId) {
         return getWithResponse(datadogOrganizationId, Context.NONE).getValue();
@@ -322,11 +281,7 @@ public final class CreationSupportedsClientImpl implements CreationSupportedsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<CreateResourceSupportedResponseInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<CreateResourceSupportedResponseList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

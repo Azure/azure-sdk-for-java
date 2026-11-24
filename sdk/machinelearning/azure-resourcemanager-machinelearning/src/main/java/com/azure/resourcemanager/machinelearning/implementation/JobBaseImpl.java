@@ -60,11 +60,7 @@ public final class JobBaseImpl implements JobBase, JobBase.Definition, JobBase.U
     }
 
     public JobBase create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public JobBase create(Context context) {
@@ -86,11 +82,7 @@ public final class JobBaseImpl implements JobBase, JobBase.Definition, JobBase.U
     }
 
     public JobBase apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, id, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public JobBase apply(Context context) {
@@ -117,11 +109,7 @@ public final class JobBaseImpl implements JobBase, JobBase.Definition, JobBase.U
     }
 
     public JobBase refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getJobs()
-            .getWithResponse(resourceGroupName, workspaceName, id, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public JobBase refresh(Context context) {

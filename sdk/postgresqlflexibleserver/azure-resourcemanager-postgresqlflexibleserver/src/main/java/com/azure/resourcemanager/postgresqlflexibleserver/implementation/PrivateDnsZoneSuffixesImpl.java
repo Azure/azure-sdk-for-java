@@ -28,7 +28,7 @@ public final class PrivateDnsZoneSuffixesImpl implements PrivateDnsZoneSuffixes 
     }
 
     public String get() {
-        return this.serviceClient().get();
+        return this.getWithResponse(Context.NONE).getValue();
     }
 
     private PrivateDnsZoneSuffixesClient serviceClient() {

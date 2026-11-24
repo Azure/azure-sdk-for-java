@@ -155,18 +155,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Query trigger runs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the pipeline run.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger runs along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TriggerRunsQueryResponseInner> queryByFactoryWithResponse(String resourceGroupName,
         String factoryName, RunFilterParameters filterParameters, Context context) {
@@ -177,17 +166,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
             context);
     }
 
-    /**
-     * Query trigger runs.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the pipeline run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger runs.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TriggerRunsQueryResponseInner queryByFactory(String resourceGroupName, String factoryName,
         RunFilterParameters filterParameters) {
@@ -233,19 +212,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Rerun single trigger instance by runId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param triggerName The triggerName parameter.
-     * @param runId The pipeline run identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rerunWithResponse(String resourceGroupName, String factoryName, String triggerName,
         String runId, Context context) {
@@ -253,17 +220,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
             this.client.getSubscriptionId(), resourceGroupName, factoryName, triggerName, runId, context);
     }
 
-    /**
-     * Rerun single trigger instance by runId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param triggerName The triggerName parameter.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
         rerunWithResponse(resourceGroupName, factoryName, triggerName, runId, Context.NONE);
@@ -308,19 +265,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancel a single trigger instance by runId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param triggerName The triggerName parameter.
-     * @param runId The pipeline run identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String resourceGroupName, String factoryName, String triggerName,
         String runId, Context context) {
@@ -328,17 +273,7 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
             this.client.getSubscriptionId(), resourceGroupName, factoryName, triggerName, runId, context);
     }
 
-    /**
-     * Cancel a single trigger instance by runId.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factoryName parameter.
-     * @param triggerName The triggerName parameter.
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
         cancelWithResponse(resourceGroupName, factoryName, triggerName, runId, Context.NONE);

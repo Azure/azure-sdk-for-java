@@ -60,11 +60,7 @@ public final class DataContainerImpl implements DataContainer, DataContainer.Def
     }
 
     public DataContainer create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataContainers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public DataContainer create(Context context) {
@@ -86,11 +82,7 @@ public final class DataContainerImpl implements DataContainer, DataContainer.Def
     }
 
     public DataContainer apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataContainers()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public DataContainer apply(Context context) {
@@ -127,11 +119,7 @@ public final class DataContainerImpl implements DataContainer, DataContainer.Def
     }
 
     public DataContainer refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getDataContainers()
-            .getWithResponse(resourceGroupName, workspaceName, name, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public DataContainer refresh(Context context) {

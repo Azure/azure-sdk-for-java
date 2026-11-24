@@ -26,8 +26,7 @@ public final class UsagesImpl implements Usages {
     }
 
     public PagedIterable<VaultUsage> listByVaults(String resourceGroupName, String vaultName) {
-        PagedIterable<VaultUsageInner> inner = this.serviceClient().listByVaults(resourceGroupName, vaultName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new VaultUsageImpl(inner1, this.manager()));
+        return this.listByVaults(resourceGroupName, vaultName, Context.NONE);
     }
 
     public PagedIterable<VaultUsage> listByVaults(String resourceGroupName, String vaultName, Context context) {

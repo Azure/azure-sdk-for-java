@@ -127,9 +127,7 @@ public final class IotHubsClientImpl implements IotHubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> manualFailoverWithResponse(String iotHubName, String resourceGroupName,
         FailoverInput failoverInput) {
-        final String contentType = "application/json";
-        return service.manualFailoverSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, iotHubName, contentType, failoverInput, Context.NONE);
+        return manualFailoverWithResponse(iotHubName, resourceGroupName, failoverInput, Context.NONE);
     }
 
     /**
@@ -180,44 +178,14 @@ public final class IotHubsClientImpl implements IotHubsClient {
             this.client.getContext());
     }
 
-    /**
-     * Manually initiate a failover for the IoT Hub to its secondary region
-     * 
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
-     * https://aka.ms/manualfailover.
-     * 
-     * @param iotHubName The iotHubName parameter.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary
-     * location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginManualFailover(String iotHubName, String resourceGroupName,
         FailoverInput failoverInput) {
-        Response<BinaryData> response = manualFailoverWithResponse(iotHubName, resourceGroupName, failoverInput);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginManualFailover(iotHubName, resourceGroupName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Manually initiate a failover for the IoT Hub to its secondary region
-     * 
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
-     * https://aka.ms/manualfailover.
-     * 
-     * @param iotHubName The iotHubName parameter.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary
-     * location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginManualFailover(String iotHubName, String resourceGroupName,
         FailoverInput failoverInput, Context context) {
@@ -247,43 +215,17 @@ public final class IotHubsClientImpl implements IotHubsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Manually initiate a failover for the IoT Hub to its secondary region
-     * 
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
-     * https://aka.ms/manualfailover.
-     * 
-     * @param iotHubName The iotHubName parameter.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary
-     * location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void manualFailover(String iotHubName, String resourceGroupName, FailoverInput failoverInput) {
-        beginManualFailover(iotHubName, resourceGroupName, failoverInput).getFinalResult();
+        manualFailover(iotHubName, resourceGroupName, failoverInput, Context.NONE);
     }
 
-    /**
-     * Manually initiate a failover for the IoT Hub to its secondary region
-     * 
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
-     * https://aka.ms/manualfailover.
-     * 
-     * @param iotHubName The iotHubName parameter.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param failoverInput Region to failover to. Must be the Azure paired region. Get the value from the secondary
-     * location in the locations property. To learn more, see https://aka.ms/manualfailover/region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void manualFailover(String iotHubName, String resourceGroupName, FailoverInput failoverInput,
         Context context) {
-        beginManualFailover(iotHubName, resourceGroupName, failoverInput, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginManualFailover(iotHubName, resourceGroupName, failoverInput, context));
     }
 }

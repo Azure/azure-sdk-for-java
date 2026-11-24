@@ -46,7 +46,7 @@ public final class ExternalAuthsImpl implements ExternalAuths {
     }
 
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, String externalAuthName) {
-        this.serviceClient().delete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName);
+        this.delete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String hcpOpenShiftClusterName, String externalAuthName,
@@ -55,9 +55,7 @@ public final class ExternalAuthsImpl implements ExternalAuths {
     }
 
     public PagedIterable<ExternalAuth> listByParent(String resourceGroupName, String hcpOpenShiftClusterName) {
-        PagedIterable<ExternalAuthInner> inner
-            = this.serviceClient().listByParent(resourceGroupName, hcpOpenShiftClusterName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExternalAuthImpl(inner1, this.manager()));
+        return this.listByParent(resourceGroupName, hcpOpenShiftClusterName, Context.NONE);
     }
 
     public PagedIterable<ExternalAuth> listByParent(String resourceGroupName, String hcpOpenShiftClusterName,
@@ -68,103 +66,36 @@ public final class ExternalAuthsImpl implements ExternalAuths {
     }
 
     public ExternalAuth getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "hcpOpenShiftClusterName");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        String externalAuthName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "externalAuthName");
-        if (externalAuthName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'externalAuths'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<ExternalAuth> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String hcpOpenShiftClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "hcpOpenShiftClusterName");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        String externalAuthName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "hcpOpenShiftClusterName", "hcpOpenShiftClusters", LOGGER);
+        String externalAuthName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "externalAuthName");
-        if (externalAuthName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'externalAuths'.", id)));
-        }
+            "externalAuthName", "externalAuths", LOGGER);
         return this.getWithResponse(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "hcpOpenShiftClusterName");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        String externalAuthName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "externalAuthName");
-        if (externalAuthName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'externalAuths'.", id)));
-        }
-        this.delete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String hcpOpenShiftClusterName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String hcpOpenShiftClusterName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "hcpOpenShiftClusterName");
-        if (hcpOpenShiftClusterName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'hcpOpenShiftClusters'.", id)));
-        }
-        String externalAuthName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "hcpOpenShiftClusterName", "hcpOpenShiftClusters", LOGGER);
+        String externalAuthName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/externalAuths/{externalAuthName}",
-            "externalAuthName");
-        if (externalAuthName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'externalAuths'.", id)));
-        }
+            "externalAuthName", "externalAuths", LOGGER);
         this.delete(resourceGroupName, hcpOpenShiftClusterName, externalAuthName, context);
     }
 

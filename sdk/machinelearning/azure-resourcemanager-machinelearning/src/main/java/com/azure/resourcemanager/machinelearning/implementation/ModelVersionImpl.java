@@ -64,12 +64,7 @@ public final class ModelVersionImpl implements ModelVersion, ModelVersion.Defini
     }
 
     public ModelVersion create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelVersions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ModelVersion create(Context context) {
@@ -91,12 +86,7 @@ public final class ModelVersionImpl implements ModelVersion, ModelVersion.Defini
     }
 
     public ModelVersion apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelVersions()
-            .createOrUpdateWithResponse(resourceGroupName, workspaceName, name, version, this.innerModel(),
-                Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ModelVersion apply(Context context) {
@@ -141,11 +131,7 @@ public final class ModelVersionImpl implements ModelVersion, ModelVersion.Defini
     }
 
     public ModelVersion refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getModelVersions()
-            .getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ModelVersion refresh(Context context) {

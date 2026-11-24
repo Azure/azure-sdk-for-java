@@ -126,19 +126,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets a network manager security user configuration rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security user configuration rule collection along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecurityUserRuleCollectionInner>> getWithResponseAsync(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName) {
@@ -222,18 +210,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             networkManagerName, configurationName, ruleCollectionName, accept, context);
     }
 
-    /**
-     * Gets a network manager security user configuration rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security user configuration rule collection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityUserRuleCollectionInner> getAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -241,19 +218,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a network manager security user configuration rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security user configuration rule collection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityUserRuleCollectionInner> getWithResponse(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName, Context context) {
@@ -261,18 +226,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             context).block();
     }
 
-    /**
-     * Gets a network manager security user configuration rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network manager security user configuration rule collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityUserRuleCollectionInner get(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -280,20 +234,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates a security user rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param securityUserRuleCollection The Security User Rule Collection to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security user rule collection along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SecurityUserRuleCollectionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName,
@@ -396,19 +337,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             securityUserRuleCollection, context);
     }
 
-    /**
-     * Creates or updates a security user rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param securityUserRuleCollection The Security User Rule Collection to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security user rule collection on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecurityUserRuleCollectionInner> createOrUpdateAsync(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName,
@@ -417,20 +346,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             ruleCollectionName, securityUserRuleCollection).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a security user rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param securityUserRuleCollection The Security User Rule Collection to create or update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security user rule collection along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityUserRuleCollectionInner> createOrUpdateWithResponse(String resourceGroupName,
         String networkManagerName, String configurationName, String ruleCollectionName,
@@ -439,19 +355,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             ruleCollectionName, securityUserRuleCollection, context).block();
     }
 
-    /**
-     * Creates or updates a security user rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param securityUserRuleCollection The Security User Rule Collection to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the security user rule collection.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityUserRuleCollectionInner createOrUpdate(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName,
@@ -460,20 +364,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             securityUserRuleCollection, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Boolean force) {
@@ -558,20 +449,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             networkManagerName, configurationName, ruleCollectionName, force, context);
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Boolean force) {
@@ -581,18 +459,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             this.client.getContext());
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -628,18 +495,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             context);
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName) {
@@ -649,21 +505,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
         String configurationName, String ruleCollectionName, Boolean force, Context context) {
@@ -673,20 +515,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             .getSyncPoller();
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, Boolean force) {
@@ -695,18 +524,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName) {
@@ -738,17 +556,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName) {
@@ -756,20 +564,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
         deleteAsync(resourceGroupName, networkManagerName, configurationName, ruleCollectionName, force).block();
     }
 
-    /**
-     * Deletes a Security User Rule collection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param ruleCollectionName The name of the network manager security Configuration rule collection.
-     * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String networkManagerName, String configurationName,
         String ruleCollectionName, Boolean force, Context context) {
@@ -878,22 +673,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the security user rule collections in a security configuration, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityUserRuleCollection list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityUserRuleCollectionInner> listAsync(String resourceGroupName, String networkManagerName,
         String configurationName, Integer top, String skipToken) {
@@ -902,17 +682,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Lists all the security user rule collections in a security configuration, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityUserRuleCollection list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecurityUserRuleCollectionInner> listAsync(String resourceGroupName, String networkManagerName,
         String configurationName) {
@@ -947,18 +717,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
             skipToken, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the security user rule collections in a security configuration, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityUserRuleCollection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityUserRuleCollectionInner> list(String resourceGroupName, String networkManagerName,
         String configurationName) {
@@ -967,24 +726,7 @@ public final class SecurityUserRuleCollectionsClientImpl implements SecurityUser
         return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, configurationName, top, skipToken));
     }
 
-    /**
-     * Lists all the security user rule collections in a security configuration, in a paginated format.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param configurationName The name of the network manager Security Configuration.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
-     * a starting point to use for subsequent calls.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a SecurityUserRuleCollection list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityUserRuleCollectionInner> list(String resourceGroupName, String networkManagerName,
         String configurationName, Integer top, String skipToken, Context context) {

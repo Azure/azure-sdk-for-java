@@ -47,7 +47,7 @@ public final class SharedPrivateLinkResourcesImpl implements SharedPrivateLinkRe
     }
 
     public void delete(String resourceGroupName, String watcherName, String sharedPrivateLinkResourceName) {
-        this.serviceClient().delete(resourceGroupName, watcherName, sharedPrivateLinkResourceName);
+        this.delete(resourceGroupName, watcherName, sharedPrivateLinkResourceName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String watcherName, String sharedPrivateLinkResourceName,
@@ -56,9 +56,7 @@ public final class SharedPrivateLinkResourcesImpl implements SharedPrivateLinkRe
     }
 
     public PagedIterable<SharedPrivateLinkResource> listByWatcher(String resourceGroupName, String watcherName) {
-        PagedIterable<SharedPrivateLinkResourceInner> inner
-            = this.serviceClient().listByWatcher(resourceGroupName, watcherName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()));
+        return this.listByWatcher(resourceGroupName, watcherName, Context.NONE);
     }
 
     public PagedIterable<SharedPrivateLinkResource> listByWatcher(String resourceGroupName, String watcherName,
@@ -69,103 +67,36 @@ public final class SharedPrivateLinkResourcesImpl implements SharedPrivateLinkRe
     }
 
     public SharedPrivateLinkResource getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String watcherName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "watcherName");
-        if (watcherName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
-        }
-        String sharedPrivateLinkResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "sharedPrivateLinkResourceName");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, watcherName, sharedPrivateLinkResourceName, Context.NONE)
-            .getValue();
+        return this.getByIdWithResponse(id, Context.NONE).getValue();
     }
 
     public Response<SharedPrivateLinkResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String watcherName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String watcherName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "watcherName");
-        if (watcherName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
-        }
-        String sharedPrivateLinkResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "watcherName", "watchers", LOGGER);
+        String sharedPrivateLinkResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "sharedPrivateLinkResourceName");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.", id)));
-        }
+            "sharedPrivateLinkResourceName", "sharedPrivateLinkResources", LOGGER);
         return this.getWithResponse(resourceGroupName, watcherName, sharedPrivateLinkResourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String watcherName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "watcherName");
-        if (watcherName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
-        }
-        String sharedPrivateLinkResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "sharedPrivateLinkResourceName");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.", id)));
-        }
-        this.delete(resourceGroupName, watcherName, sharedPrivateLinkResourceName, Context.NONE);
+        this.deleteByIdWithResponse(id, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+        String resourceGroupName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "resourceGroupName");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String watcherName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "resourceGroupName", "resourceGroups", LOGGER);
+        String watcherName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "watcherName");
-        if (watcherName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
-        }
-        String sharedPrivateLinkResourceName = ResourceManagerUtils.getValueFromIdByParameterName(id,
+            "watcherName", "watchers", LOGGER);
+        String sharedPrivateLinkResourceName = ResourceManagerUtils.getRequiredValueFromIdByParameterName(id,
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}",
-            "sharedPrivateLinkResourceName");
-        if (sharedPrivateLinkResourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
-                .format("The resource ID '%s' is not valid. Missing path segment 'sharedPrivateLinkResources'.", id)));
-        }
+            "sharedPrivateLinkResourceName", "sharedPrivateLinkResources", LOGGER);
         this.delete(resourceGroupName, watcherName, sharedPrivateLinkResourceName, context);
     }
 

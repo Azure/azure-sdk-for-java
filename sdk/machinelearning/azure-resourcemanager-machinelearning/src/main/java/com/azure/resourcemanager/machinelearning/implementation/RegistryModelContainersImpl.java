@@ -47,13 +47,7 @@ public final class RegistryModelContainersImpl implements RegistryModelContainer
 
     public ModelContainer createOrUpdate(String resourceGroupName, String registryName, String modelName,
         ModelContainerInner body) {
-        ModelContainerInner inner
-            = this.serviceClient().createOrUpdate(resourceGroupName, registryName, modelName, body);
-        if (inner != null) {
-            return new ModelContainerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.createOrUpdate(resourceGroupName, registryName, modelName, body, Context.NONE);
     }
 
     public ModelContainer createOrUpdate(String resourceGroupName, String registryName, String modelName,
@@ -68,7 +62,7 @@ public final class RegistryModelContainersImpl implements RegistryModelContainer
     }
 
     public void delete(String resourceGroupName, String registryName, String modelName) {
-        this.serviceClient().delete(resourceGroupName, registryName, modelName);
+        this.delete(resourceGroupName, registryName, modelName, Context.NONE);
     }
 
     public void delete(String resourceGroupName, String registryName, String modelName, Context context) {

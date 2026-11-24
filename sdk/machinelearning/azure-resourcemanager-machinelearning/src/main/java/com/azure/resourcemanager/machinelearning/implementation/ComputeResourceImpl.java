@@ -102,10 +102,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public ComputeResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .createOrUpdate(resourceGroupName, workspaceName, computeName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ComputeResource create(Context context) {
@@ -127,10 +124,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public ComputeResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .update(resourceGroupName, workspaceName, computeName, updateParameters, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public ComputeResource apply(Context context) {
@@ -156,11 +150,7 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
     }
 
     public ComputeResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getComputes()
-            .getWithResponse(resourceGroupName, workspaceName, computeName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ComputeResource refresh(Context context) {

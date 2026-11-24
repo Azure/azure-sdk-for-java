@@ -43,8 +43,7 @@ public final class NetworkFabricSkusImpl implements NetworkFabricSkus {
     }
 
     public PagedIterable<NetworkFabricSku> list() {
-        PagedIterable<NetworkFabricSkuInner> inner = this.serviceClient().list();
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NetworkFabricSkuImpl(inner1, this.manager()));
+        return this.list(Context.NONE);
     }
 
     public PagedIterable<NetworkFabricSku> list(Context context) {

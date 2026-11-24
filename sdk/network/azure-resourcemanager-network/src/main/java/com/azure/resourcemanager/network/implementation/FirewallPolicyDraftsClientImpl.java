@@ -91,16 +91,7 @@ public final class FirewallPolicyDraftsClientImpl implements InnerSupportsDelete
             @PathParam("firewallPolicyName") String firewallPolicyName, Context context);
     }
 
-    /**
-     * Get a draft Firewall Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a draft Firewall Policy along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FirewallPolicyDraftInner>> getWithResponseAsync(String resourceGroupName,
         String firewallPolicyName) {
@@ -165,65 +156,27 @@ public final class FirewallPolicyDraftsClientImpl implements InnerSupportsDelete
             firewallPolicyName, accept, context);
     }
 
-    /**
-     * Get a draft Firewall Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a draft Firewall Policy on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyDraftInner> getAsync(String resourceGroupName, String firewallPolicyName) {
         return getWithResponseAsync(resourceGroupName, firewallPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a draft Firewall Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a draft Firewall Policy along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallPolicyDraftInner> getWithResponse(String resourceGroupName, String firewallPolicyName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, firewallPolicyName, context).block();
     }
 
-    /**
-     * Get a draft Firewall Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a draft Firewall Policy.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyDraftInner get(String resourceGroupName, String firewallPolicyName) {
         return getWithResponse(resourceGroupName, firewallPolicyName, Context.NONE).getValue();
     }
 
-    /**
-     * Create or update a draft Firewall Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Parameters supplied to the create or update Firewall Policy Draft operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FirewallPolicyDraftInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String firewallPolicyName, FirewallPolicyDraftInner parameters) {
@@ -302,17 +255,7 @@ public final class FirewallPolicyDraftsClientImpl implements InnerSupportsDelete
             resourceGroupName, firewallPolicyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Create or update a draft Firewall Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Parameters supplied to the create or update Firewall Policy Draft operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FirewallPolicyDraftInner> createOrUpdateAsync(String resourceGroupName, String firewallPolicyName,
         FirewallPolicyDraftInner parameters) {
@@ -320,51 +263,21 @@ public final class FirewallPolicyDraftsClientImpl implements InnerSupportsDelete
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Create or update a draft Firewall Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Parameters supplied to the create or update Firewall Policy Draft operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FirewallPolicyDraftInner> createOrUpdateWithResponse(String resourceGroupName,
         String firewallPolicyName, FirewallPolicyDraftInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context).block();
     }
 
-    /**
-     * Create or update a draft Firewall Policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Parameters supplied to the create or update Firewall Policy Draft operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return firewallPolicy Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FirewallPolicyDraftInner createOrUpdate(String resourceGroupName, String firewallPolicyName,
         FirewallPolicyDraftInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, firewallPolicyName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Delete a draft policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String firewallPolicyName) {
         if (this.client.getEndpoint() == null) {
@@ -426,46 +339,19 @@ public final class FirewallPolicyDraftsClientImpl implements InnerSupportsDelete
             firewallPolicyName, context);
     }
 
-    /**
-     * Delete a draft policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String firewallPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, firewallPolicyName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Delete a draft policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String firewallPolicyName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, firewallPolicyName, context).block();
     }
 
-    /**
-     * Delete a draft policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String firewallPolicyName) {
         deleteWithResponse(resourceGroupName, firewallPolicyName, Context.NONE);

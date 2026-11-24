@@ -84,10 +84,7 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
     }
 
     public FabricModel create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFabrics()
-            .create(resourceGroupName, fabricName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public FabricModel create(Context context) {
@@ -110,10 +107,7 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
     }
 
     public FabricModel apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFabrics()
-            .update(resourceGroupName, fabricName, updateProperties, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public FabricModel apply(Context context) {
@@ -136,11 +130,7 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
     }
 
     public FabricModel refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getFabrics()
-            .getByResourceGroupWithResponse(resourceGroupName, fabricName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public FabricModel refresh(Context context) {

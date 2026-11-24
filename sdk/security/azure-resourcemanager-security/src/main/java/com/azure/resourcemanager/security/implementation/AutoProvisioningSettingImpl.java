@@ -55,11 +55,7 @@ public final class AutoProvisioningSettingImpl implements AutoProvisioningSettin
     private String settingName;
 
     public AutoProvisioningSetting create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoProvisioningSettings()
-            .createWithResponse(settingName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public AutoProvisioningSetting create(Context context) {
@@ -77,11 +73,7 @@ public final class AutoProvisioningSettingImpl implements AutoProvisioningSettin
     }
 
     public AutoProvisioningSetting refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getAutoProvisioningSettings()
-            .getWithResponse(settingName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public AutoProvisioningSetting refresh(Context context) {

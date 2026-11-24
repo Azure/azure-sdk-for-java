@@ -71,10 +71,7 @@ public final class ReplicationExtensionImpl implements ReplicationExtension, Rep
     }
 
     public ReplicationExtension create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationExtensions()
-            .create(resourceGroupName, vaultName, replicationExtensionName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public ReplicationExtension create(Context context) {
@@ -92,11 +89,7 @@ public final class ReplicationExtensionImpl implements ReplicationExtension, Rep
     }
 
     public ReplicationExtension refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getReplicationExtensions()
-            .getWithResponse(resourceGroupName, vaultName, replicationExtensionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public ReplicationExtension refresh(Context context) {

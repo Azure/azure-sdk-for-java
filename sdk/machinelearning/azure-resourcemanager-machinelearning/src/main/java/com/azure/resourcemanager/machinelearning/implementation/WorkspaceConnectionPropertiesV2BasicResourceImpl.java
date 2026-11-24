@@ -67,11 +67,7 @@ public final class WorkspaceConnectionPropertiesV2BasicResourceImpl
     }
 
     public WorkspaceConnectionPropertiesV2BasicResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceConnections()
-            .createWithResponse(resourceGroupName, workspaceName, connectionName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public WorkspaceConnectionPropertiesV2BasicResource create(Context context) {
@@ -95,11 +91,7 @@ public final class WorkspaceConnectionPropertiesV2BasicResourceImpl
     }
 
     public WorkspaceConnectionPropertiesV2BasicResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceConnections()
-            .updateWithResponse(resourceGroupName, workspaceName, connectionName, updateBody, Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public WorkspaceConnectionPropertiesV2BasicResource apply(Context context) {
@@ -126,11 +118,7 @@ public final class WorkspaceConnectionPropertiesV2BasicResourceImpl
     }
 
     public WorkspaceConnectionPropertiesV2BasicResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getWorkspaceConnections()
-            .getWithResponse(resourceGroupName, workspaceName, connectionName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public WorkspaceConnectionPropertiesV2BasicResource refresh(Context context) {

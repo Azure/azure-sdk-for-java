@@ -106,10 +106,7 @@ public final class OnlineEndpointImpl implements OnlineEndpoint, OnlineEndpoint.
     }
 
     public OnlineEndpoint create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineEndpoints()
-            .createOrUpdate(resourceGroupName, workspaceName, endpointName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public OnlineEndpoint create(Context context) {
@@ -131,10 +128,7 @@ public final class OnlineEndpointImpl implements OnlineEndpoint, OnlineEndpoint.
     }
 
     public OnlineEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineEndpoints()
-            .update(resourceGroupName, workspaceName, endpointName, updateBody, Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public OnlineEndpoint apply(Context context) {
@@ -160,11 +154,7 @@ public final class OnlineEndpointImpl implements OnlineEndpoint, OnlineEndpoint.
     }
 
     public OnlineEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getOnlineEndpoints()
-            .getWithResponse(resourceGroupName, workspaceName, endpointName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public OnlineEndpoint refresh(Context context) {

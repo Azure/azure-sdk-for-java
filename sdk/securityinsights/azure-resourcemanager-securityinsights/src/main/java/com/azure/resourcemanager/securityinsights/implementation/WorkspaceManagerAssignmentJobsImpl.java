@@ -71,7 +71,8 @@ public final class WorkspaceManagerAssignmentJobsImpl implements WorkspaceManage
 
     public void delete(String resourceGroupName, String workspaceName, String workspaceManagerAssignmentName,
         String jobName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, workspaceManagerAssignmentName, jobName);
+        this.deleteWithResponse(resourceGroupName, workspaceName, workspaceManagerAssignmentName, jobName,
+            Context.NONE);
     }
 
     public PagedIterable<Job> list(String resourceGroupName, String workspaceName,

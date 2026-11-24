@@ -119,7 +119,7 @@ public final class FavoritesImpl implements Favorites {
     }
 
     public void delete(String resourceGroupName, String resourceName, String favoriteId) {
-        this.serviceClient().delete(resourceGroupName, resourceName, favoriteId);
+        this.deleteWithResponse(resourceGroupName, resourceName, favoriteId, Context.NONE);
     }
 
     private FavoritesClient serviceClient() {

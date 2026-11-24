@@ -197,20 +197,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a dataset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatasetResourceInner> getWithResponse(String resourceGroupName, String factoryName,
         String datasetName, String ifNoneMatch, Context context) {
@@ -219,17 +206,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
             resourceGroupName, factoryName, datasetName, ifNoneMatch, accept, context);
     }
 
-    /**
-     * Gets a dataset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasetResourceInner get(String resourceGroupName, String factoryName, String datasetName) {
         final String ifNoneMatch = null;
@@ -282,21 +259,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or updates a dataset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @param dataset Dataset resource definition.
-     * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatasetResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
         String datasetName, DatasetResourceInner dataset, String ifMatch, Context context) {
@@ -307,18 +270,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
             dataset, context);
     }
 
-    /**
-     * Creates or updates a dataset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @param dataset Dataset resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatasetResourceInner createOrUpdate(String resourceGroupName, String factoryName, String datasetName,
         DatasetResourceInner dataset) {
@@ -363,18 +315,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
         return deleteWithResponseAsync(resourceGroupName, factoryName, datasetName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a dataset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String datasetName,
         Context context) {
@@ -382,16 +323,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
             this.client.getSubscriptionId(), resourceGroupName, factoryName, datasetName, context);
     }
 
-    /**
-     * Deletes a dataset.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param datasetName The dataset name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String factoryName, String datasetName) {
         deleteWithResponse(resourceGroupName, factoryName, datasetName, Context.NONE);
@@ -447,12 +379,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatasetResourceInner> listByFactorySinglePage(String resourceGroupName, String factoryName) {
-        final String accept = "application/json";
-        Response<DatasetListResponse> res
-            = service.listByFactorySync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, factoryName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactorySinglePage(resourceGroupName, factoryName, Context.NONE);
     }
 
     /**
@@ -477,33 +404,13 @@ public final class DatasetsClientImpl implements DatasetsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists datasets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatasetResourceInner> listByFactory(String resourceGroupName, String factoryName) {
-        return new PagedIterable<>(() -> listByFactorySinglePage(resourceGroupName, factoryName),
-            nextLink -> listByFactoryNextSinglePage(nextLink));
+        return listByFactory(resourceGroupName, factoryName, Context.NONE);
     }
 
-    /**
-     * Lists datasets.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param factoryName The factory name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatasetResourceInner> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
@@ -541,11 +448,7 @@ public final class DatasetsClientImpl implements DatasetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DatasetResourceInner> listByFactoryNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DatasetListResponse> res
-            = service.listByFactoryNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByFactoryNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

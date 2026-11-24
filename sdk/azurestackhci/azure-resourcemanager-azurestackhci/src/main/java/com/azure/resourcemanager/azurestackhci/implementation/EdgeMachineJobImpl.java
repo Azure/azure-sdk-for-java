@@ -60,10 +60,7 @@ public final class EdgeMachineJobImpl implements EdgeMachineJob, EdgeMachineJob.
     }
 
     public EdgeMachineJob create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineJobs()
-            .createOrUpdate(resourceGroupName, edgeMachineName, jobsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public EdgeMachineJob create(Context context) {
@@ -84,10 +81,7 @@ public final class EdgeMachineJobImpl implements EdgeMachineJob, EdgeMachineJob.
     }
 
     public EdgeMachineJob apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineJobs()
-            .createOrUpdate(resourceGroupName, edgeMachineName, jobsName, this.innerModel(), Context.NONE);
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public EdgeMachineJob apply(Context context) {
@@ -113,11 +107,7 @@ public final class EdgeMachineJobImpl implements EdgeMachineJob, EdgeMachineJob.
     }
 
     public EdgeMachineJob refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getEdgeMachineJobs()
-            .getWithResponse(resourceGroupName, edgeMachineName, jobsName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public EdgeMachineJob refresh(Context context) {

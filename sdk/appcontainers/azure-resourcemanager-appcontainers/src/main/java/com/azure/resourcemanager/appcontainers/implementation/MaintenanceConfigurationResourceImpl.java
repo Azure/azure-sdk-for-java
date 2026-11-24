@@ -69,11 +69,7 @@ public final class MaintenanceConfigurationResourceImpl implements MaintenanceCo
     }
 
     public MaintenanceConfigurationResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .createOrUpdateWithResponse(resourceGroupName, environmentName, configName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.create(Context.NONE);
     }
 
     public MaintenanceConfigurationResource create(Context context) {
@@ -96,11 +92,7 @@ public final class MaintenanceConfigurationResourceImpl implements MaintenanceCo
     }
 
     public MaintenanceConfigurationResource apply() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .createOrUpdateWithResponse(resourceGroupName, environmentName, configName, this.innerModel(), Context.NONE)
-            .getValue();
-        return this;
+        return this.apply(Context.NONE);
     }
 
     public MaintenanceConfigurationResource apply(Context context) {
@@ -127,11 +119,7 @@ public final class MaintenanceConfigurationResourceImpl implements MaintenanceCo
     }
 
     public MaintenanceConfigurationResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getMaintenanceConfigurations()
-            .getWithResponse(resourceGroupName, environmentName, configName, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public MaintenanceConfigurationResource refresh(Context context) {

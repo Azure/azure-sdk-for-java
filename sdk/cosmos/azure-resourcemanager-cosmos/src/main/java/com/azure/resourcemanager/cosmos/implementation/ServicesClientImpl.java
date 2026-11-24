@@ -117,17 +117,7 @@ public final class ServicesClientImpl implements ServicesClient {
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the status of service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceResourceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
         String serviceName) {
@@ -195,69 +185,27 @@ public final class ServicesClientImpl implements ServicesClient {
             resourceGroupName, accountName, serviceName, accept, context);
     }
 
-    /**
-     * Gets the status of service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceResourceInner> getAsync(String resourceGroupName, String accountName, String serviceName) {
         return getWithResponseAsync(resourceGroupName, accountName, serviceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the status of service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceResourceInner> getWithResponse(String resourceGroupName, String accountName,
         String serviceName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, serviceName, context).block();
     }
 
-    /**
-     * Gets the status of service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner get(String resourceGroupName, String accountName, String serviceName) {
         return getWithResponse(resourceGroupName, accountName, serviceName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates a service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param createUpdateParameters The Service resource parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties for the database account along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
         String serviceName, ServiceResourceCreateUpdateParameters createUpdateParameters) {
@@ -341,18 +289,7 @@ public final class ServicesClientImpl implements ServicesClient {
             resourceGroupName, accountName, serviceName, contentType, accept, createUpdateParameters, context);
     }
 
-    /**
-     * Creates a service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param createUpdateParameters The Service resource parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of properties for the database account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateAsync(String resourceGroupName,
         String accountName, String serviceName, ServiceResourceCreateUpdateParameters createUpdateParameters) {
@@ -386,18 +323,7 @@ public final class ServicesClientImpl implements ServicesClient {
             ServiceResourceInner.class, ServiceResourceInner.class, context);
     }
 
-    /**
-     * Creates a service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param createUpdateParameters The Service resource parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of properties for the database account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreate(String resourceGroupName,
         String accountName, String serviceName, ServiceResourceCreateUpdateParameters createUpdateParameters) {
@@ -405,19 +331,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param createUpdateParameters The Service resource parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of properties for the database account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreate(String resourceGroupName,
         String accountName, String serviceName, ServiceResourceCreateUpdateParameters createUpdateParameters,
@@ -426,18 +340,7 @@ public final class ServicesClientImpl implements ServicesClient {
             .getSyncPoller();
     }
 
-    /**
-     * Creates a service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param createUpdateParameters The Service resource parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties for the database account on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceResourceInner> createAsync(String resourceGroupName, String accountName, String serviceName,
         ServiceResourceCreateUpdateParameters createUpdateParameters) {
@@ -465,54 +368,21 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates a service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param createUpdateParameters The Service resource parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties for the database account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner create(String resourceGroupName, String accountName, String serviceName,
         ServiceResourceCreateUpdateParameters createUpdateParameters) {
         return createAsync(resourceGroupName, accountName, serviceName, createUpdateParameters).block();
     }
 
-    /**
-     * Creates a service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param createUpdateParameters The Service resource parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties for the database account.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceResourceInner create(String resourceGroupName, String accountName, String serviceName,
         ServiceResourceCreateUpdateParameters createUpdateParameters, Context context) {
         return createAsync(resourceGroupName, accountName, serviceName, createUpdateParameters, context).block();
     }
 
-    /**
-     * Deletes service with the given serviceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
         String serviceName) {
@@ -578,17 +448,7 @@ public final class ServicesClientImpl implements ServicesClient {
             resourceGroupName, accountName, serviceName, context);
     }
 
-    /**
-     * Deletes service with the given serviceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
         String serviceName) {
@@ -619,52 +479,21 @@ public final class ServicesClientImpl implements ServicesClient {
             context);
     }
 
-    /**
-     * Deletes service with the given serviceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String serviceName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, serviceName).getSyncPoller();
     }
 
-    /**
-     * Deletes service with the given serviceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
         String serviceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, serviceName, context).getSyncPoller();
     }
 
-    /**
-     * Deletes service with the given serviceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String serviceName) {
         return beginDeleteAsync(resourceGroupName, accountName, serviceName).last()
@@ -689,32 +518,13 @@ public final class ServicesClientImpl implements ServicesClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes service with the given serviceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String serviceName) {
         deleteAsync(resourceGroupName, accountName, serviceName).block();
     }
 
-    /**
-     * Deletes service with the given serviceName.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param serviceName Cosmos DB service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String serviceName, Context context) {
         deleteAsync(resourceGroupName, accountName, serviceName, context).block();
@@ -795,16 +605,7 @@ public final class ServicesClientImpl implements ServicesClient {
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets the status of service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceResourceInner> listAsync(String resourceGroupName, String accountName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName),
@@ -828,32 +629,13 @@ public final class ServicesClientImpl implements ServicesClient {
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets the status of service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceResourceInner> list(String resourceGroupName, String accountName) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName));
     }
 
-    /**
-     * Gets the status of service.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of service as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceResourceInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, context));

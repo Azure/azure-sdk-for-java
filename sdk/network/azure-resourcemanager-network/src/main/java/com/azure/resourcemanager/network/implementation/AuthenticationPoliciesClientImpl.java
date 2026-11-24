@@ -149,17 +149,7 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Retrieve the authentication policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AuthenticationPolicyInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String authenticationPolicyName) {
@@ -225,16 +215,7 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             resourceGroupName, authenticationPolicyName, accept, context);
     }
 
-    /**
-     * Retrieve the authentication policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AuthenticationPolicyInner> getByResourceGroupAsync(String resourceGroupName,
         String authenticationPolicyName) {
@@ -242,50 +223,20 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Retrieve the authentication policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthenticationPolicyInner> getByResourceGroupWithResponse(String resourceGroupName,
         String authenticationPolicyName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, authenticationPolicyName, context).block();
     }
 
-    /**
-     * Retrieve the authentication policy with specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthenticationPolicyInner getByResourceGroup(String resourceGroupName, String authenticationPolicyName) {
         return getByResourceGroupWithResponse(resourceGroupName, authenticationPolicyName, Context.NONE).getValue();
     }
 
-    /**
-     * Creates or updates an authentication policy with the specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param resource Authentication policy to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String authenticationPolicyName, AuthenticationPolicyInner resource) {
@@ -365,17 +316,7 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             resourceGroupName, authenticationPolicyName, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or updates an authentication policy with the specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param resource Authentication policy to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of authentication policy resource for identity integration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AuthenticationPolicyInner>, AuthenticationPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String authenticationPolicyName, AuthenticationPolicyInner resource) {
@@ -409,35 +350,14 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             this.client.getHttpPipeline(), AuthenticationPolicyInner.class, AuthenticationPolicyInner.class, context);
     }
 
-    /**
-     * Creates or updates an authentication policy with the specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param resource Authentication policy to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of authentication policy resource for identity integration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AuthenticationPolicyInner>, AuthenticationPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String authenticationPolicyName, AuthenticationPolicyInner resource) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, authenticationPolicyName, resource).getSyncPoller();
     }
 
-    /**
-     * Creates or updates an authentication policy with the specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param resource Authentication policy to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of authentication policy resource for identity integration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AuthenticationPolicyInner>, AuthenticationPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String authenticationPolicyName, AuthenticationPolicyInner resource,
@@ -446,17 +366,7 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             .getSyncPoller();
     }
 
-    /**
-     * Creates or updates an authentication policy with the specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param resource Authentication policy to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AuthenticationPolicyInner> createOrUpdateAsync(String resourceGroupName,
         String authenticationPolicyName, AuthenticationPolicyInner resource) {
@@ -483,53 +393,21 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Creates or updates an authentication policy with the specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param resource Authentication policy to be created or updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthenticationPolicyInner createOrUpdate(String resourceGroupName, String authenticationPolicyName,
         AuthenticationPolicyInner resource) {
         return createOrUpdateAsync(resourceGroupName, authenticationPolicyName, resource).block();
     }
 
-    /**
-     * Creates or updates an authentication policy with the specified name within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param resource Authentication policy to be created or updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthenticationPolicyInner createOrUpdate(String resourceGroupName, String authenticationPolicyName,
         AuthenticationPolicyInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, authenticationPolicyName, resource, context).block();
     }
 
-    /**
-     * Updates the tags and identity of an authentication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param parameters Parameters supplied to update the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AuthenticationPolicyInner>> updateWithResponseAsync(String resourceGroupName,
         String authenticationPolicyName, AuthenticationPolicyUpdateParameters parameters) {
@@ -609,17 +487,7 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             authenticationPolicyName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Updates the tags and identity of an authentication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param parameters Parameters supplied to update the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AuthenticationPolicyInner> updateAsync(String resourceGroupName, String authenticationPolicyName,
         AuthenticationPolicyUpdateParameters parameters) {
@@ -627,51 +495,21 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates the tags and identity of an authentication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param parameters Parameters supplied to update the authentication policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AuthenticationPolicyInner> updateWithResponse(String resourceGroupName,
         String authenticationPolicyName, AuthenticationPolicyUpdateParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, authenticationPolicyName, parameters, context).block();
     }
 
-    /**
-     * Updates the tags and identity of an authentication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param parameters Parameters supplied to update the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authentication policy resource for identity integration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthenticationPolicyInner update(String resourceGroupName, String authenticationPolicyName,
         AuthenticationPolicyUpdateParameters parameters) {
         return updateWithResponse(resourceGroupName, authenticationPolicyName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Deletes the specified authentication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String authenticationPolicyName) {
         if (this.client.getEndpoint() == null) {
@@ -733,47 +571,20 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             authenticationPolicyName, context);
     }
 
-    /**
-     * Deletes the specified authentication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String authenticationPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, authenticationPolicyName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes the specified authentication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String authenticationPolicyName,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, authenticationPolicyName, context).block();
     }
 
-    /**
-     * Deletes the specified authentication policy.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param authenticationPolicyName The name of the authentication policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String authenticationPolicyName) {
         deleteWithResponse(resourceGroupName, authenticationPolicyName, Context.NONE);
@@ -850,15 +661,7 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all of the authentication policies within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthenticationPolicy list operation as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AuthenticationPolicyInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
@@ -881,30 +684,13 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all of the authentication policies within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthenticationPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthenticationPolicyInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
-    /**
-     * Lists all of the authentication policies within a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a AuthenticationPolicy list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthenticationPolicyInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
@@ -966,13 +752,7 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets all the authentication policies in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authentication policies in a subscription as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AuthenticationPolicyInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
@@ -993,27 +773,13 @@ public final class AuthenticationPoliciesClientImpl implements InnerSupportsGet<
             nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets all the authentication policies in a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authentication policies in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthenticationPolicyInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
-    /**
-     * Gets all the authentication policies in a subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the authentication policies in a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AuthenticationPolicyInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));

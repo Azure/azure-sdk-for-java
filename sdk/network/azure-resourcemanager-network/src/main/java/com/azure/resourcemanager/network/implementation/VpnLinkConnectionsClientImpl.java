@@ -164,19 +164,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Gets the shared key of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared key of VpnLink connection specified along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConnectionSharedKeyResultInner>> getDefaultSharedKeyWithResponseAsync(String resourceGroupName,
         String gatewayName, String connectionName, String linkConnectionName) {
@@ -258,18 +246,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             resourceGroupName, gatewayName, connectionName, linkConnectionName, accept, context);
     }
 
-    /**
-     * Gets the shared key of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared key of VpnLink connection specified on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionSharedKeyResultInner> getDefaultSharedKeyAsync(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -277,19 +254,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the shared key of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared key of VpnLink connection specified along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionSharedKeyResultInner> getDefaultSharedKeyWithResponse(String resourceGroupName,
         String gatewayName, String connectionName, String linkConnectionName, Context context) {
@@ -297,18 +262,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             context).block();
     }
 
-    /**
-     * Gets the shared key of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared key of VpnLink connection specified.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionSharedKeyResultInner getDefaultSharedKey(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -316,21 +270,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             Context.NONE).getValue();
     }
 
-    /**
-     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
-     * operation. If key length is given, the operation creates a random key of the pre-defined length.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sharedKey Resource along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> setOrInitDefaultSharedKeyWithResponseAsync(String resourceGroupName,
         String gatewayName, String connectionName, String linkConnectionName,
@@ -430,21 +370,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             connectionSharedKeyParameters, context);
     }
 
-    /**
-     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
-     * operation. If key length is given, the operation creates a random key of the pre-defined length.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of sharedKey Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
         beginSetOrInitDefaultSharedKeyAsync(String resourceGroupName, String gatewayName, String connectionName,
@@ -484,21 +410,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             context);
     }
 
-    /**
-     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
-     * operation. If key length is given, the operation creates a random key of the pre-defined length.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sharedKey Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
         beginSetOrInitDefaultSharedKey(String resourceGroupName, String gatewayName, String connectionName,
@@ -509,22 +421,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .getSyncPoller();
     }
 
-    /**
-     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
-     * operation. If key length is given, the operation creates a random key of the pre-defined length.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
-     * connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of sharedKey Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
         beginSetOrInitDefaultSharedKey(String resourceGroupName, String gatewayName, String connectionName,
@@ -535,21 +432,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .getSyncPoller();
     }
 
-    /**
-     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
-     * operation. If key length is given, the operation creates a random key of the pre-defined length.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sharedKey Resource on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionSharedKeyResultInner> setOrInitDefaultSharedKeyAsync(String resourceGroupName,
         String gatewayName, String connectionName, String linkConnectionName,
@@ -582,21 +465,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             connectionSharedKeyParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
-     * operation. If key length is given, the operation creates a random key of the pre-defined length.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
-     * connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sharedKey Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionSharedKeyResultInner setOrInitDefaultSharedKey(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName,
@@ -605,22 +474,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             connectionSharedKeyParameters).block();
     }
 
-    /**
-     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
-     * operation. If key length is given, the operation creates a random key of the pre-defined length.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
-     * connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sharedKey Resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionSharedKeyResultInner setOrInitDefaultSharedKey(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters,
@@ -728,18 +582,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all shared keys of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConnectionSharedKeyResultInner> getAllSharedKeysAsync(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -768,18 +611,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             linkConnectionName, context), nextLink -> getAllSharedKeysNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all shared keys of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionSharedKeyResultInner> getAllSharedKeys(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -787,19 +619,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             getAllSharedKeysAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName));
     }
 
-    /**
-     * Lists all shared keys of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectionSharedKeyResultInner> getAllSharedKeys(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName, Context context) {
@@ -807,19 +627,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             getAllSharedKeysAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName, context));
     }
 
-    /**
-     * Gets the value of the shared key of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the value of the shared key of VpnLink connection specified along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConnectionSharedKeyResultInner>> listDefaultSharedKeyWithResponseAsync(
         String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName) {
@@ -901,18 +709,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             resourceGroupName, gatewayName, connectionName, linkConnectionName, accept, context);
     }
 
-    /**
-     * Gets the value of the shared key of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the value of the shared key of VpnLink connection specified on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConnectionSharedKeyResultInner> listDefaultSharedKeyAsync(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -920,19 +717,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the value of the shared key of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the value of the shared key of VpnLink connection specified along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionSharedKeyResultInner> listDefaultSharedKeyWithResponse(String resourceGroupName,
         String gatewayName, String connectionName, String linkConnectionName, Context context) {
@@ -940,18 +725,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             context).block();
     }
 
-    /**
-     * Gets the value of the shared key of VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the value of the shared key of VpnLink connection specified.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectionSharedKeyResultInner listDefaultSharedKey(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -1046,18 +820,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the vpn connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all vpn connections to a virtual wan vpn gateway as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnSiteLinkConnectionInner> listByVpnConnectionAsync(String resourceGroupName, String gatewayName,
         String connectionName) {
@@ -1086,55 +849,21 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             nextLink -> listByVpnConnectionNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the vpn connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all vpn connections to a virtual wan vpn gateway as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnSiteLinkConnectionInner> listByVpnConnection(String resourceGroupName, String gatewayName,
         String connectionName) {
         return new PagedIterable<>(listByVpnConnectionAsync(resourceGroupName, gatewayName, connectionName));
     }
 
-    /**
-     * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list all vpn connections to a virtual wan vpn gateway as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VpnSiteLinkConnectionInner> listByVpnConnection(String resourceGroupName, String gatewayName,
         String connectionName, Context context) {
         return new PagedIterable<>(listByVpnConnectionAsync(resourceGroupName, gatewayName, connectionName, context));
     }
 
-    /**
-     * Resets the VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> resetConnectionWithResponseAsync(String resourceGroupName,
         String gatewayName, String connectionName, String linkConnectionName) {
@@ -1212,18 +941,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             resourceGroupName, gatewayName, connectionName, linkConnectionName, context);
     }
 
-    /**
-     * Resets the VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginResetConnectionAsync(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -1256,18 +974,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             context);
     }
 
-    /**
-     * Resets the VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetConnection(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -1275,19 +982,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .getSyncPoller();
     }
 
-    /**
-     * Resets the VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResetConnection(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName, Context context) {
@@ -1296,18 +991,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .getSyncPoller();
     }
 
-    /**
-     * Resets the VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetConnectionAsync(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName) {
@@ -1336,53 +1020,21 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Resets the VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetConnection(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName) {
         resetConnectionAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName).block();
     }
 
-    /**
-     * Resets the VpnLink connection specified.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetConnection(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName, Context context) {
         resetConnectionAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName, context).block();
     }
 
-    /**
-     * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getIkeSasWithResponseAsync(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -1462,18 +1114,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             resourceGroupName, gatewayName, connectionName, linkConnectionName, accept, context);
     }
 
-    /**
-     * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -1506,18 +1147,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             context);
     }
 
-    /**
-     * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginGetIkeSas(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName) {
@@ -1525,19 +1155,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .getSyncPoller();
     }
 
-    /**
-     * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginGetIkeSas(String resourceGroupName, String gatewayName,
         String connectionName, String linkConnectionName, Context context) {
@@ -1545,18 +1163,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .getSyncPoller();
     }
 
-    /**
-     * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getIkeSasAsync(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName) {
@@ -1584,37 +1191,14 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName) {
         return getIkeSasAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName).block();
     }
 
-    /**
-     * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param gatewayName The name of the vpn gateway.
-     * @param connectionName The name of the vpn connection.
-     * @param linkConnectionName The name of the vpn link connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getIkeSas(String resourceGroupName, String gatewayName, String connectionName,
         String linkConnectionName, Context context) {

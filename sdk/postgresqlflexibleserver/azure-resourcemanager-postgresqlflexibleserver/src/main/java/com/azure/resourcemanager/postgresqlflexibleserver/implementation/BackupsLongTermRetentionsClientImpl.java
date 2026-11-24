@@ -166,17 +166,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             @HeaderParam("Accept") String accept, Context context);
     }
 
-    /**
-     * Performs all checks required for a long term retention backup operation to succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR pre-backup API call on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupsLongTermRetentionsCheckPrerequisitesResponse> checkPrerequisitesWithResponseAsync(
         String resourceGroupName, String serverName, LtrPreBackupRequest parameters) {
@@ -189,17 +179,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Performs all checks required for a long term retention backup operation to succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR pre-backup API call on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LtrPreBackupResponseInner> checkPrerequisitesAsync(String resourceGroupName, String serverName,
         LtrPreBackupRequest parameters) {
@@ -207,18 +187,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Performs all checks required for a long term retention backup operation to succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR pre-backup API call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupsLongTermRetentionsCheckPrerequisitesResponse checkPrerequisitesWithResponse(String resourceGroupName,
         String serverName, LtrPreBackupRequest parameters, Context context) {
@@ -228,35 +197,14 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             this.client.getSubscriptionId(), resourceGroupName, serverName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Performs all checks required for a long term retention backup operation to succeed.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR pre-backup API call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LtrPreBackupResponseInner checkPrerequisites(String resourceGroupName, String serverName,
         LtrPreBackupRequest parameters) {
         return checkPrerequisitesWithResponse(resourceGroupName, serverName, parameters, Context.NONE).getValue();
     }
 
-    /**
-     * Initiates a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR backup API call along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String serverName,
         BackupsLongTermRetentionRequest parameters) {
@@ -281,11 +229,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> startWithResponse(String resourceGroupName, String serverName,
         BackupsLongTermRetentionRequest parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.startSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, serverName, contentType, accept, parameters,
-            Context.NONE);
+        return startWithResponse(resourceGroupName, serverName, parameters, Context.NONE);
     }
 
     /**
@@ -309,17 +253,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             this.client.getSubscriptionId(), resourceGroupName, serverName, contentType, accept, parameters, context);
     }
 
-    /**
-     * Initiates a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for the LTR backup API call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackupsLongTermRetentionResponseInner>, BackupsLongTermRetentionResponseInner>
         beginStartAsync(String resourceGroupName, String serverName, BackupsLongTermRetentionRequest parameters) {
@@ -329,38 +263,14 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             BackupsLongTermRetentionResponseInner.class, this.client.getContext());
     }
 
-    /**
-     * Initiates a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for the LTR backup API call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupsLongTermRetentionResponseInner>, BackupsLongTermRetentionResponseInner>
         beginStart(String resourceGroupName, String serverName, BackupsLongTermRetentionRequest parameters) {
-        Response<BinaryData> response = startWithResponse(resourceGroupName, serverName, parameters);
-        return this.client.<BackupsLongTermRetentionResponseInner, BackupsLongTermRetentionResponseInner>getLroResult(
-            response, BackupsLongTermRetentionResponseInner.class, BackupsLongTermRetentionResponseInner.class,
-            Context.NONE);
+        return beginStart(resourceGroupName, serverName, parameters, Context.NONE);
     }
 
-    /**
-     * Initiates a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for the LTR backup API call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupsLongTermRetentionResponseInner>, BackupsLongTermRetentionResponseInner>
         beginStart(String resourceGroupName, String serverName, BackupsLongTermRetentionRequest parameters,
@@ -371,17 +281,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             context);
     }
 
-    /**
-     * Initiates a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR backup API call on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupsLongTermRetentionResponseInner> startAsync(String resourceGroupName, String serverName,
         BackupsLongTermRetentionRequest parameters) {
@@ -389,53 +289,21 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Initiates a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR backup API call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupsLongTermRetentionResponseInner start(String resourceGroupName, String serverName,
         BackupsLongTermRetentionRequest parameters) {
-        return beginStart(resourceGroupName, serverName, parameters).getFinalResult();
+        return start(resourceGroupName, serverName, parameters, Context.NONE);
     }
 
-    /**
-     * Initiates a long term retention backup.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters Request body for operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the LTR backup API call.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupsLongTermRetentionResponseInner start(String resourceGroupName, String serverName,
         BackupsLongTermRetentionRequest parameters, Context context) {
-        return beginStart(resourceGroupName, serverName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginStart(resourceGroupName, serverName, parameters, context));
     }
 
-    /**
-     * Gets the results of a long retention backup operation for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a long retention backup operation for a server along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BackupsLongTermRetentionOperationInner>> getWithResponseAsync(String resourceGroupName,
         String serverName, String backupName) {
@@ -446,17 +314,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Gets the results of a long retention backup operation for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a long retention backup operation for a server on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupsLongTermRetentionOperationInner> getAsync(String resourceGroupName, String serverName,
         String backupName) {
@@ -464,18 +322,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets the results of a long retention backup operation for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName The name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a long retention backup operation for a server along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupsLongTermRetentionOperationInner> getWithResponse(String resourceGroupName, String serverName,
         String backupName, Context context) {
@@ -484,17 +331,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             resourceGroupName, serverName, backupName, accept, context);
     }
 
-    /**
-     * Gets the results of a long retention backup operation for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the results of a long retention backup operation for a server.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupsLongTermRetentionOperationInner get(String resourceGroupName, String serverName, String backupName) {
         return getWithResponse(resourceGroupName, serverName, backupName, Context.NONE).getValue();
@@ -523,16 +360,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
-    /**
-     * Lists the results of the long term retention backup operations for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backup operations for server as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BackupsLongTermRetentionOperationInner> listByServerAsync(String resourceGroupName,
         String serverName) {
@@ -553,12 +381,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupsLongTermRetentionOperationInner> listByServerSinglePage(String resourceGroupName,
         String serverName) {
-        final String accept = "application/json";
-        Response<LtrServerBackupOperationList> res
-            = service.listByServerSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerSinglePage(resourceGroupName, serverName, Context.NONE);
     }
 
     /**
@@ -583,36 +406,14 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists the results of the long term retention backup operations for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backup operations for server as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupsLongTermRetentionOperationInner> listByServer(String resourceGroupName,
         String serverName) {
-        return new PagedIterable<>(() -> listByServerSinglePage(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePage(nextLink));
+        return listByServer(resourceGroupName, serverName, Context.NONE);
     }
 
-    /**
-     * Lists the results of the long term retention backup operations for a server.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backup operations for server as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupsLongTermRetentionOperationInner> listByServer(String resourceGroupName,
         String serverName, Context context) {
@@ -652,11 +453,7 @@ public final class BackupsLongTermRetentionsClientImpl implements BackupsLongTer
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BackupsLongTermRetentionOperationInner> listByServerNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<LtrServerBackupOperationList> res
-            = service.listByServerNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByServerNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

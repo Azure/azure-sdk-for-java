@@ -256,23 +256,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get a finding
-     * 
-     * Gets a finding under a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param findingId The system-generated identifier of the finding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a finding
-     * 
-     * Gets a finding under a protected resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldFindingsGetResponse getWithResponse(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String findingId, Context context) {
@@ -282,22 +266,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
             resourceGroupName, neuroShieldName, protectedResourceName, findingId, accept, context);
     }
 
-    /**
-     * Get a finding
-     * 
-     * Gets a finding under a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param findingId The system-generated identifier of the finding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a finding
-     * 
-     * Gets a finding under a protected resource.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldFindingInner get(String resourceGroupName, String neuroShieldName, String protectedResourceName,
         String findingId) {
@@ -398,13 +367,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldFindingInner> listSinglePage(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Integer top, String skipToken) {
-        final String apiVersion = "2026-10-01-preview";
-        final String accept = "application/json";
-        Response<NeuroShieldFindingListResult> res
-            = service.listSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -435,45 +398,16 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List findings
-     * 
-     * Lists findings under a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldFinding list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldFindingInner> list(String resourceGroupName, String neuroShieldName,
         String protectedResourceName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listSinglePage(resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, neuroShieldName, protectedResourceName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List findings
-     * 
-     * Lists findings under a protected resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param top The maximum number of items to return.
-     * @param skipToken The continuation token used to retrieve the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldFinding list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldFindingInner> list(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, Integer top, String skipToken, Context context) {
@@ -571,13 +505,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldFindingInner> listByNeuroShieldSinglePage(String resourceGroupName,
         String neuroShieldName, Integer top, String skipToken) {
-        final String apiVersion = "2026-10-01-preview";
-        final String accept = "application/json";
-        Response<NeuroShieldFindingListResult> res
-            = service.listByNeuroShieldSync(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, neuroShieldName, top, skipToken, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNeuroShieldSinglePage(resourceGroupName, neuroShieldName, top, skipToken, Context.NONE);
     }
 
     /**
@@ -607,42 +535,15 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * List findings by NeuroShield
-     * 
-     * Lists findings across all protected resources under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldFinding list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldFindingInner> listByNeuroShield(String resourceGroupName, String neuroShieldName) {
         final Integer top = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            () -> listByNeuroShieldSinglePage(resourceGroupName, neuroShieldName, top, skipToken),
-            nextLink -> listByNeuroShieldNextSinglePage(nextLink));
+        return listByNeuroShield(resourceGroupName, neuroShieldName, top, skipToken, Context.NONE);
     }
 
-    /**
-     * List findings by NeuroShield
-     * 
-     * Lists findings across all protected resources under a NeuroShield resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param top The maximum number of items to return.
-     * @param skipToken The continuation token used to retrieve the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NeuroShieldFinding list operation as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NeuroShieldFindingInner> listByNeuroShield(String resourceGroupName, String neuroShieldName,
         Integer top, String skipToken, Context context) {
@@ -699,21 +600,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Mitigate a finding
-     * 
-     * Triggers mitigation for all awaiting-approval mitigations under a finding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param findingId The system-generated identifier of the finding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mitigations updated by a Finding action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldMitigationActionResultInner> mitigateWithResponse(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, String findingId, Context context) {
@@ -723,20 +610,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
             resourceGroupName, neuroShieldName, protectedResourceName, findingId, accept, context);
     }
 
-    /**
-     * Mitigate a finding
-     * 
-     * Triggers mitigation for all awaiting-approval mitigations under a finding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param findingId The system-generated identifier of the finding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mitigations updated by a Finding action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldMitigationActionResultInner mitigate(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String findingId) {
@@ -792,21 +666,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Roll back mitigations for a finding
-     * 
-     * Rolls back succeeded rollbackable mitigations under a finding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param findingId The system-generated identifier of the finding.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mitigations updated by a Finding action along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NeuroShieldMitigationActionResultInner> rollbackWithResponse(String resourceGroupName,
         String neuroShieldName, String protectedResourceName, String findingId, Context context) {
@@ -816,20 +676,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
             resourceGroupName, neuroShieldName, protectedResourceName, findingId, accept, context);
     }
 
-    /**
-     * Roll back mitigations for a finding
-     * 
-     * Rolls back succeeded rollbackable mitigations under a finding.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param neuroShieldName The name of the NeuroShield resource.
-     * @param protectedResourceName The name of the protected resource.
-     * @param findingId The system-generated identifier of the finding.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mitigations updated by a Finding action.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NeuroShieldMitigationActionResultInner rollback(String resourceGroupName, String neuroShieldName,
         String protectedResourceName, String findingId) {
@@ -871,11 +718,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldFindingInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeuroShieldFindingListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -934,11 +777,7 @@ public final class NeuroShieldFindingsClientImpl implements NeuroShieldFindingsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<NeuroShieldFindingInner> listByNeuroShieldNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<NeuroShieldFindingListResult> res
-            = service.listByNeuroShieldNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByNeuroShieldNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

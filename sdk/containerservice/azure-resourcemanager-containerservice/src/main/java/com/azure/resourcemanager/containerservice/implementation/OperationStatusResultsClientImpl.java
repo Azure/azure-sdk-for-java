@@ -205,18 +205,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of operations in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param activeOnly If true, only return operations that are currently active (not terminal).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations in the specified agent pool as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationStatusResultInner> listByAgentPoolAsync(String resourceGroupName, String resourceName,
         String agentPoolName, Boolean activeOnly) {
@@ -225,17 +214,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             nextLink -> listByAgentPoolNextSinglePageAsync(nextLink));
     }
 
-    /**
-     * Gets a list of operations in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations in the specified agent pool as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationStatusResultInner> listByAgentPoolAsync(String resourceGroupName, String resourceName,
         String agentPoolName) {
@@ -266,17 +245,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             nextLink -> listByAgentPoolNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of operations in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations in the specified agent pool as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationStatusResultInner> listByAgentPool(String resourceGroupName, String resourceName,
         String agentPoolName) {
@@ -284,19 +253,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
         return new PagedIterable<>(listByAgentPoolAsync(resourceGroupName, resourceName, agentPoolName, activeOnly));
     }
 
-    /**
-     * Gets a list of operations in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param activeOnly If true, only return operations that are currently active (not terminal).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations in the specified agent pool as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationStatusResultInner> listByAgentPool(String resourceGroupName, String resourceName,
         String agentPoolName, Boolean activeOnly, Context context) {
@@ -304,19 +261,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             listByAgentPoolAsync(resourceGroupName, resourceName, agentPoolName, activeOnly, context));
     }
 
-    /**
-     * Get the status of a specific operation in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a specific operation in the specified agent pool along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationStatusResultInner>> getByAgentPoolWithResponseAsync(String resourceGroupName,
         String resourceName, String agentPoolName, String operationId) {
@@ -394,18 +339,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             context);
     }
 
-    /**
-     * Get the status of a specific operation in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a specific operation in the specified agent pool on successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperationStatusResultInner> getByAgentPoolAsync(String resourceGroupName, String resourceName,
         String agentPoolName, String operationId) {
@@ -413,19 +347,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the status of a specific operation in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a specific operation in the specified agent pool along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getByAgentPoolWithResponse(String resourceGroupName,
         String resourceName, String agentPoolName, String operationId, Context context) {
@@ -433,18 +355,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             .block();
     }
 
-    /**
-     * Get the status of a specific operation in the specified agent pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a specific operation in the specified agent pool.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner getByAgentPool(String resourceGroupName, String resourceName,
         String agentPoolName, String operationId) {
@@ -529,16 +440,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Gets a list of operations in the specified managedCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations in the specified managedCluster as paginated response with {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationStatusResultInner> listAsync(String resourceGroupName, String resourceName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
@@ -563,50 +465,20 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Gets a list of operations in the specified managedCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations in the specified managedCluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationStatusResultInner> list(String resourceGroupName, String resourceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName));
     }
 
-    /**
-     * Gets a list of operations in the specified managedCluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations in the specified managedCluster as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationStatusResultInner> list(String resourceGroupName, String resourceName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
-    /**
-     * Get the status of a specific operation in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a specific operation in the specified managed cluster along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String resourceGroupName,
         String resourceName, String operationId) {
@@ -675,18 +547,7 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             resourceGroupName, resourceName, operationId, accept, context);
     }
 
-    /**
-     * Get the status of a specific operation in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a specific operation in the specified managed cluster on successful completion of
-     * {@link Mono}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperationStatusResultInner> getAsync(String resourceGroupName, String resourceName,
         String operationId) {
@@ -694,35 +555,14 @@ public final class OperationStatusResultsClientImpl implements OperationStatusRe
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Get the status of a specific operation in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param operationId The ID of an ongoing async operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a specific operation in the specified managed cluster along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationStatusResultInner> getWithResponse(String resourceGroupName, String resourceName,
         String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, operationId, context).block();
     }
 
-    /**
-     * Get the status of a specific operation in the specified managed cluster.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the managed cluster resource.
-     * @param operationId The ID of an ongoing async operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a specific operation in the specified managed cluster.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner get(String resourceGroupName, String resourceName, String operationId) {
         return getWithResponse(resourceGroupName, resourceName, operationId, Context.NONE).getValue();

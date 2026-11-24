@@ -215,20 +215,7 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Returns a rebalance job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rebalance job instance along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RebalanceJobInner> getWithResponse(String resourceGroupName, String amlFilesystemName,
         String rebalanceJobName, Context context) {
@@ -237,19 +224,7 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
             resourceGroupName, amlFilesystemName, rebalanceJobName, accept, context);
     }
 
-    /**
-     * Returns a rebalance job.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rebalance job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RebalanceJobInner get(String resourceGroupName, String amlFilesystemName, String rebalanceJobName) {
         return getWithResponse(resourceGroupName, amlFilesystemName, rebalanceJobName, Context.NONE).getValue();
@@ -300,11 +275,7 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> updateWithResponse(String resourceGroupName, String amlFilesystemName,
         String rebalanceJobName, RebalanceJobUpdate properties) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, rebalanceJobName, contentType,
-            accept, properties, Context.NONE);
+        return updateWithResponse(resourceGroupName, amlFilesystemName, rebalanceJobName, properties, Context.NONE);
     }
 
     /**
@@ -357,46 +328,14 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
             RebalanceJobInner.class, RebalanceJobInner.class, this.client.getContext());
     }
 
-    /**
-     * Update a rebalance job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param properties Object containing the user-selectable properties of the rebalance job. If read-only properties
-     * are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a rebalance job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RebalanceJobInner>, RebalanceJobInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, String rebalanceJobName, RebalanceJobUpdate properties) {
-        Response<BinaryData> response
-            = updateWithResponse(resourceGroupName, amlFilesystemName, rebalanceJobName, properties);
-        return this.client.<RebalanceJobInner, RebalanceJobInner>getLroResult(response, RebalanceJobInner.class,
-            RebalanceJobInner.class, Context.NONE);
+        return beginUpdate(resourceGroupName, amlFilesystemName, rebalanceJobName, properties, Context.NONE);
     }
 
-    /**
-     * Update a rebalance job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param properties Object containing the user-selectable properties of the rebalance job. If read-only properties
-     * are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a rebalance job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RebalanceJobInner>, RebalanceJobInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, String rebalanceJobName, RebalanceJobUpdate properties, Context context) {
@@ -428,48 +367,19 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Update a rebalance job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param properties Object containing the user-selectable properties of the rebalance job. If read-only properties
-     * are included, they must match the existing values of those properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rebalance job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RebalanceJobInner update(String resourceGroupName, String amlFilesystemName, String rebalanceJobName,
         RebalanceJobUpdate properties) {
-        return beginUpdate(resourceGroupName, amlFilesystemName, rebalanceJobName, properties).getFinalResult();
+        return update(resourceGroupName, amlFilesystemName, rebalanceJobName, properties, Context.NONE);
     }
 
-    /**
-     * Update a rebalance job instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param properties Object containing the user-selectable properties of the rebalance job. If read-only properties
-     * are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rebalance job instance.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RebalanceJobInner update(String resourceGroupName, String amlFilesystemName, String rebalanceJobName,
         RebalanceJobUpdate properties, Context context) {
-        return beginUpdate(resourceGroupName, amlFilesystemName, rebalanceJobName, properties, context)
-            .getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginUpdate(resourceGroupName, amlFilesystemName, rebalanceJobName, properties, context));
     }
 
     /**
@@ -510,8 +420,7 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String amlFilesystemName,
         String rebalanceJobName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, rebalanceJobName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, amlFilesystemName, rebalanceJobName, Context.NONE);
     }
 
     /**
@@ -557,40 +466,14 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
             this.client.getContext());
     }
 
-    /**
-     * Schedules a rebalance job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         String rebalanceJobName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, amlFilesystemName, rebalanceJobName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, amlFilesystemName, rebalanceJobName, Context.NONE);
     }
 
-    /**
-     * Schedules a rebalance job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         String rebalanceJobName, Context context) {
@@ -618,39 +501,17 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Schedules a rebalance job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, String rebalanceJobName) {
-        beginDelete(resourceGroupName, amlFilesystemName, rebalanceJobName).getFinalResult();
+        delete(resourceGroupName, amlFilesystemName, rebalanceJobName, Context.NONE);
     }
 
-    /**
-     * Schedules a rebalance job for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param rebalanceJobName Name for the rebalance job. Allows alphanumerics, underscores, and hyphens. Start and end
-     * with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, String rebalanceJobName, Context context) {
-        beginDelete(resourceGroupName, amlFilesystemName, rebalanceJobName, context).getFinalResult();
+        this.client
+            .getLroFinalResultOrError(beginDelete(resourceGroupName, amlFilesystemName, rebalanceJobName, context));
     }
 
     /**
@@ -708,12 +569,7 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RebalanceJobInner> listByAmlFilesystemSinglePage(String resourceGroupName,
         String amlFilesystemName) {
-        final String accept = "application/json";
-        Response<RebalanceJobsListResult> res
-            = service.listByAmlFilesystemSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, amlFilesystemName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAmlFilesystemSinglePage(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
     /**
@@ -739,35 +595,13 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Returns all the rebalance jobs the user has access to under an AML File System.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rebalance jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RebalanceJobInner> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName) {
-        return new PagedIterable<>(() -> listByAmlFilesystemSinglePage(resourceGroupName, amlFilesystemName),
-            nextLink -> listByAmlFilesystemNextSinglePage(nextLink));
+        return listByAmlFilesystem(resourceGroupName, amlFilesystemName, Context.NONE);
     }
 
-    /**
-     * Returns all the rebalance jobs the user has access to under an AML File System.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list rebalance jobs as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RebalanceJobInner> listByAmlFilesystem(String resourceGroupName, String amlFilesystemName,
         Context context) {
@@ -807,11 +641,7 @@ public final class RebalanceJobsClientImpl implements RebalanceJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<RebalanceJobInner> listByAmlFilesystemNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RebalanceJobsListResult> res
-            = service.listByAmlFilesystemNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByAmlFilesystemNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

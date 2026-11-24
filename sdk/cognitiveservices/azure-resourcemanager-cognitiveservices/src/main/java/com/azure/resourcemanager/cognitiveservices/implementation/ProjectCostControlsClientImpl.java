@@ -255,20 +255,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a project-owned cost control and its representation entity tag.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project-owned cost control and its representation entity tag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCostControlsGetResponse getWithResponse(String resourceGroupName, String accountName,
         String projectName, String costControlName, Context context) {
@@ -277,19 +264,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             resourceGroupName, accountName, projectName, costControlName, accept, context);
     }
 
-    /**
-     * Gets a project-owned cost control and its representation entity tag.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project-owned cost control and its representation entity tag.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCostControlInner get(String resourceGroupName, String accountName, String projectName,
         String costControlName) {
@@ -338,20 +313,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Checks whether a project-owned cost control exists without returning its body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCostControlsCheckExistenceResponse checkExistenceWithResponse(String resourceGroupName,
         String accountName, String projectName, String costControlName, Context context) {
@@ -359,18 +321,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             this.client.getSubscriptionId(), resourceGroupName, accountName, projectName, costControlName, context);
     }
 
-    /**
-     * Checks whether a project-owned cost control exists without returning its body.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkExistence(String resourceGroupName, String accountName, String projectName,
         String costControlName) {
@@ -440,29 +391,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             ifMatch, ifNoneMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Creates or replaces a project-owned cost control.
-     * The definition may contain at most one notification, including disabled notifications, and one Block action.
-     * Exceeding either limit returns HTTP 400 without persisting the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @param resource Resource create parameters.
-     * @param ifMatch Proceeds only if the current entity tag matches this value.
-     * @param ifNoneMatch Proceeds only if the current entity tag does not match this value. Use * to create only if
-     * absent.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a budget that measures consumption and optionally alerts or blocks requests within its owning Foundry
-     * project.
-     * Reading, deleting, and enforcing stored identity selections requires
-     * Microsoft.CognitiveServices/CostControlsByIdentity registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCostControlsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
         String accountName, String projectName, String costControlName, ProjectCostControlInner resource,
@@ -474,25 +403,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             ifNoneMatch, contentType, accept, resource, context);
     }
 
-    /**
-     * Creates or replaces a project-owned cost control.
-     * The definition may contain at most one notification, including disabled notifications, and one Block action.
-     * Exceeding either limit returns HTTP 400 without persisting the request.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a budget that measures consumption and optionally alerts or blocks requests within its owning Foundry
-     * project.
-     * Reading, deleting, and enforcing stored identity selections requires
-     * Microsoft.CognitiveServices/CostControlsByIdentity registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCostControlInner createOrUpdate(String resourceGroupName, String accountName, String projectName,
         String costControlName, ProjectCostControlInner resource) {
@@ -569,31 +480,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Updates a Foundry project cost control. Omitting properties preserves all existing cost control properties;
-     * setting properties to null or an empty object ({}) clears them all.
-     * A non-empty properties object updates selected fields, preserving omitted fields; a successful update that leaves
-     * the cost control unchanged retains its entity tag.
-     * The complete merged result may contain at most one notification, including disabled notifications, and one Block
-     * action.
-     * Exceeding either limit returns HTTP 400 without changing the stored definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @param properties The resource properties to be updated.
-     * @param ifMatch Proceeds only if the current entity tag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a budget that measures consumption and optionally alerts or blocks requests within its owning Foundry
-     * project.
-     * Reading, deleting, and enforcing stored identity selections requires
-     * Microsoft.CognitiveServices/CostControlsByIdentity registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCostControlsUpdateResponse updateWithResponse(String resourceGroupName, String accountName,
         String projectName, String costControlName, CostControlPatch properties, String ifMatch, Context context) {
@@ -604,29 +491,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             contentType, accept, properties, context);
     }
 
-    /**
-     * Updates a Foundry project cost control. Omitting properties preserves all existing cost control properties;
-     * setting properties to null or an empty object ({}) clears them all.
-     * A non-empty properties object updates selected fields, preserving omitted fields; a successful update that leaves
-     * the cost control unchanged retains its entity tag.
-     * The complete merged result may contain at most one notification, including disabled notifications, and one Block
-     * action.
-     * Exceeding either limit returns HTTP 400 without changing the stored definition.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @param properties The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a budget that measures consumption and optionally alerts or blocks requests within its owning Foundry
-     * project.
-     * Reading, deleting, and enforcing stored identity selections requires
-     * Microsoft.CognitiveServices/CostControlsByIdentity registration.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProjectCostControlInner update(String resourceGroupName, String accountName, String projectName,
         String costControlName, CostControlPatch properties) {
@@ -680,21 +545,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             .flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Deletes a project-owned cost control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @param ifMatch Proceeds only if the current entity tag matches this value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String projectName,
         String costControlName, String ifMatch, Context context) {
@@ -703,18 +554,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             context);
     }
 
-    /**
-     * Deletes a project-owned cost control.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param costControlName The cost-control name. Names contain 1-63 ASCII letters, numbers, underscores, or hyphens,
-     * including a leading underscore or hyphen.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String accountName, String projectName, String costControlName) {
         final String ifMatch = null;
@@ -777,12 +617,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectCostControlInner> listSinglePage(String resourceGroupName, String accountName,
         String projectName) {
-        final String accept = "application/json";
-        Response<ProjectCostControlListResult> res
-            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, projectName, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
     /**
@@ -808,36 +643,14 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Lists project-owned cost controls.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of cost controls owned by a Foundry project as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectCostControlInner> list(String resourceGroupName, String accountName,
         String projectName) {
-        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, accountName, projectName),
-            nextLink -> listNextSinglePage(nextLink));
+        return list(resourceGroupName, accountName, projectName, Context.NONE);
     }
 
-    /**
-     * Lists project-owned cost controls.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param projectName The name of Cognitive Services account's project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a page of cost controls owned by a Foundry project as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProjectCostControlInner> list(String resourceGroupName, String accountName, String projectName,
         Context context) {
@@ -875,11 +688,7 @@ public final class ProjectCostControlsClientImpl implements ProjectCostControlsC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ProjectCostControlInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProjectCostControlListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listNextSinglePage(nextLink, Context.NONE);
     }
 
     /**

@@ -160,17 +160,7 @@ public final class ThroughputPoolAccountsOperationsClientImpl implements Through
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
 
-    /**
-     * Lists all the Azure Cosmos DB accounts available under the subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ThroughputPoolAccountResource list operation as paginated response with
-     * {@link PagedFlux}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ThroughputPoolAccountResourceInner> listAsync(String resourceGroupName,
         String throughputPoolName) {
@@ -197,34 +187,13 @@ public final class ThroughputPoolAccountsOperationsClientImpl implements Through
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
-    /**
-     * Lists all the Azure Cosmos DB accounts available under the subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ThroughputPoolAccountResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ThroughputPoolAccountResourceInner> list(String resourceGroupName, String throughputPoolName) {
         return new PagedIterable<>(listAsync(resourceGroupName, throughputPoolName));
     }
 
-    /**
-     * Lists all the Azure Cosmos DB accounts available under the subscription.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param throughputPoolName Cosmos DB Throughput Pool name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ThroughputPoolAccountResource list operation as paginated response with
-     * {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ThroughputPoolAccountResourceInner> list(String resourceGroupName, String throughputPoolName,
         Context context) {

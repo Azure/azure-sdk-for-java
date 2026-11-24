@@ -78,11 +78,7 @@ public final class NetworkGatewayResourceImpl implements NetworkGatewayResource,
     }
 
     public NetworkGatewayResource create() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkGatewayResources()
-            .createOrReplace(resourceGroupName, organizationName, environmentId, networkGatewayId, this.innerModel(),
-                Context.NONE);
-        return this;
+        return this.create(Context.NONE);
     }
 
     public NetworkGatewayResource create(Context context) {
@@ -100,11 +96,7 @@ public final class NetworkGatewayResourceImpl implements NetworkGatewayResource,
     }
 
     public NetworkGatewayResource refresh() {
-        this.innerObject = serviceManager.serviceClient()
-            .getNetworkGatewayResources()
-            .getWithResponse(resourceGroupName, organizationName, environmentId, networkGatewayId, Context.NONE)
-            .getValue();
-        return this;
+        return this.refresh(Context.NONE);
     }
 
     public NetworkGatewayResource refresh(Context context) {

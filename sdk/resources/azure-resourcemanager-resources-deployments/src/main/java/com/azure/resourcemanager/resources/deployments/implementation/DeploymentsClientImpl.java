@@ -964,17 +964,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return getAtScopeWithResponseAsync(scope, deploymentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExtendedInner> getAtScopeWithResponse(String scope, String deploymentName,
         Context context) {
@@ -983,16 +973,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             accept, context);
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner getAtScope(String scope, String deploymentName) {
         return getAtScopeWithResponse(scope, deploymentName, Context.NONE).getValue();
@@ -1032,33 +1013,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceAtScopeWithResponse(String scope, String deploymentName, Context context) {
         return service.checkExistenceAtScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), scope,
             deploymentName, context);
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtScope(String scope, String deploymentName) {
         return checkExistenceAtScopeWithResponse(scope, deploymentName, Context.NONE).getValue();
@@ -1104,10 +1066,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateAtScopeWithResponse(String scope, String deploymentName,
         Deployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateAtScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), scope,
-            deploymentName, contentType, accept, parameters, Context.NONE);
+        return createOrUpdateAtScopeWithResponse(scope, deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -1156,41 +1115,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deploys resources at a given scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtScope(String scope, String deploymentName, Deployment parameters) {
-        Response<BinaryData> response = createOrUpdateAtScopeWithResponse(scope, deploymentName, parameters);
-        return this.client.<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(response,
-            DeploymentExtendedInner.class, DeploymentExtendedInner.class, Context.NONE);
+        return beginCreateOrUpdateAtScope(scope, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources at a given scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtScope(String scope, String deploymentName, Deployment parameters, Context context) {
@@ -1219,42 +1151,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deploys resources at a given scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdateAtScope(String scope, String deploymentName, Deployment parameters) {
-        return beginCreateOrUpdateAtScope(scope, deploymentName, parameters).getFinalResult();
+        return createOrUpdateAtScope(scope, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources at a given scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdateAtScope(String scope, String deploymentName, Deployment parameters,
         Context context) {
-        return beginCreateOrUpdateAtScope(scope, deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdateAtScope(scope, deploymentName, parameters, context));
     }
 
     /**
@@ -1301,8 +1209,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteAtScopeWithResponse(String scope, String deploymentName) {
-        return service.deleteAtScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, deploymentName,
-            Context.NONE);
+        return deleteAtScopeWithResponse(scope, deploymentName, Context.NONE);
     }
 
     /**
@@ -1353,47 +1260,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName) {
-        Response<BinaryData> response = deleteAtScopeWithResponse(scope, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteAtScope(scope, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName, Context context) {
         Response<BinaryData> response = deleteAtScopeWithResponse(scope, deploymentName, context);
@@ -1422,47 +1295,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return beginDeleteAtScopeAsync(scope, deploymentName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtScope(String scope, String deploymentName) {
-        beginDeleteAtScope(scope, deploymentName).getFinalResult();
+        deleteAtScope(scope, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtScope(String scope, String deploymentName, Context context) {
-        beginDeleteAtScope(scope, deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeleteAtScope(scope, deploymentName, context));
     }
 
     /**
@@ -1539,11 +1381,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listAtScopeSinglePage(String scope, String filter, Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res = service.listAtScopeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), scope, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtScopeSinglePage(scope, filter, top, Context.NONE);
     }
 
     /**
@@ -1569,36 +1407,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all the deployments at the given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments at the given scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> listAtScope(String scope) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listAtScopeSinglePage(scope, filter, top),
-            nextLink -> listAtScopeNextSinglePage(nextLink));
+        return listAtScope(scope, filter, top, Context.NONE);
     }
 
-    /**
-     * Get all the deployments at the given scope.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     * '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments at the given scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> listAtScope(String scope, String filter, Integer top,
         Context context) {
@@ -1647,40 +1464,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return cancelAtScopeWithResponseAsync(scope, deploymentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelAtScopeWithResponse(String scope, String deploymentName, Context context) {
         return service.cancelAtScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), scope, deploymentName,
             context);
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelAtScope(String scope, String deploymentName) {
         cancelAtScopeWithResponse(scope, deploymentName, Context.NONE);
@@ -1725,10 +1516,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateAtScopeWithResponse(String scope, String deploymentName,
         Deployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateAtScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), scope,
-            deploymentName, contentType, accept, parameters, Context.NONE);
+        return validateAtScopeWithResponse(scope, deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -1774,39 +1562,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtScope(String scope, String deploymentName, Deployment parameters) {
-        Response<BinaryData> response = validateAtScopeWithResponse(scope, deploymentName, parameters);
-        return this.client.<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(response,
-            DeploymentValidateResultInner.class, DeploymentValidateResultInner.class, Context.NONE);
+        return beginValidateAtScope(scope, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtScope(String scope, String deploymentName, Deployment parameters, Context context) {
@@ -1834,40 +1597,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validateAtScope(String scope, String deploymentName, Deployment parameters) {
-        return beginValidateAtScope(scope, deploymentName, parameters).getFinalResult();
+        return validateAtScope(scope, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validateAtScope(String scope, String deploymentName, Deployment parameters,
         Context context) {
-        return beginValidateAtScope(scope, deploymentName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginValidateAtScope(scope, deploymentName, parameters, context));
     }
 
     /**
@@ -1906,17 +1646,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExportResultInner> exportTemplateAtScopeWithResponse(String scope, String deploymentName,
         Context context) {
@@ -1925,16 +1655,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             deploymentName, accept, context);
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param scope The fully qualified Azure Resource manager identifier of the resource.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExportResultInner exportTemplateAtScope(String scope, String deploymentName) {
         return exportTemplateAtScopeWithResponse(scope, deploymentName, Context.NONE).getValue();
@@ -1972,16 +1693,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return getAtTenantScopeWithResponseAsync(deploymentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExtendedInner> getAtTenantScopeWithResponse(String deploymentName, Context context) {
         final String accept = "application/json";
@@ -1989,15 +1701,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             accept, context);
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner getAtTenantScope(String deploymentName) {
         return getAtTenantScopeWithResponse(deploymentName, Context.NONE).getValue();
@@ -2035,31 +1739,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceAtTenantScopeWithResponse(String deploymentName, Context context) {
         return service.checkExistenceAtTenantScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
             deploymentName, context);
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtTenantScope(String deploymentName) {
         return checkExistenceAtTenantScopeWithResponse(deploymentName, Context.NONE).getValue();
@@ -2103,10 +1790,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateAtTenantScopeWithResponse(String deploymentName,
         ScopedDeployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateAtTenantScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            deploymentName, contentType, accept, parameters, Context.NONE);
+        return createOrUpdateAtTenantScopeWithResponse(deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -2153,39 +1837,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deploys resources at tenant scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtTenantScope(String deploymentName, ScopedDeployment parameters) {
-        Response<BinaryData> response = createOrUpdateAtTenantScopeWithResponse(deploymentName, parameters);
-        return this.client.<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(response,
-            DeploymentExtendedInner.class, DeploymentExtendedInner.class, Context.NONE);
+        return beginCreateOrUpdateAtTenantScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources at tenant scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtTenantScope(String deploymentName, ScopedDeployment parameters, Context context) {
@@ -2213,40 +1872,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deploys resources at tenant scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdateAtTenantScope(String deploymentName, ScopedDeployment parameters) {
-        return beginCreateOrUpdateAtTenantScope(deploymentName, parameters).getFinalResult();
+        return createOrUpdateAtTenantScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources at tenant scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdateAtTenantScope(String deploymentName, ScopedDeployment parameters,
         Context context) {
-        return beginCreateOrUpdateAtTenantScope(deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdateAtTenantScope(deploymentName, parameters, context));
     }
 
     /**
@@ -2291,8 +1928,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteAtTenantScopeWithResponse(String deploymentName) {
-        return service.deleteAtTenantScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), deploymentName,
-            Context.NONE);
+        return deleteAtTenantScopeWithResponse(deploymentName, Context.NONE);
     }
 
     /**
@@ -2341,45 +1977,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName) {
-        Response<BinaryData> response = deleteAtTenantScopeWithResponse(deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteAtTenantScope(deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName, Context context) {
         Response<BinaryData> response = deleteAtTenantScopeWithResponse(deploymentName, context);
@@ -2407,45 +2011,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return beginDeleteAtTenantScopeAsync(deploymentName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtTenantScope(String deploymentName) {
-        beginDeleteAtTenantScope(deploymentName).getFinalResult();
+        deleteAtTenantScope(deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtTenantScope(String deploymentName, Context context) {
-        beginDeleteAtTenantScope(deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeleteAtTenantScope(deploymentName, context));
     }
 
     /**
@@ -2487,38 +2062,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return cancelAtTenantScopeWithResponseAsync(deploymentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelAtTenantScopeWithResponse(String deploymentName, Context context) {
         return service.cancelAtTenantScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), deploymentName,
             context);
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelAtTenantScope(String deploymentName) {
         cancelAtTenantScopeWithResponse(deploymentName, Context.NONE);
@@ -2560,10 +2111,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateAtTenantScopeWithResponse(String deploymentName, ScopedDeployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateAtTenantScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), deploymentName,
-            contentType, accept, parameters, Context.NONE);
+        return validateAtTenantScopeWithResponse(deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -2607,37 +2155,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtTenantScope(String deploymentName, ScopedDeployment parameters) {
-        Response<BinaryData> response = validateAtTenantScopeWithResponse(deploymentName, parameters);
-        return this.client.<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(response,
-            DeploymentValidateResultInner.class, DeploymentValidateResultInner.class, Context.NONE);
+        return beginValidateAtTenantScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtTenantScope(String deploymentName, ScopedDeployment parameters, Context context) {
@@ -2664,38 +2189,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validateAtTenantScope(String deploymentName, ScopedDeployment parameters) {
-        return beginValidateAtTenantScope(deploymentName, parameters).getFinalResult();
+        return validateAtTenantScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validateAtTenantScope(String deploymentName, ScopedDeployment parameters,
         Context context) {
-        return beginValidateAtTenantScope(deploymentName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginValidateAtTenantScope(deploymentName, parameters, context));
     }
 
     /**
@@ -2732,10 +2236,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> whatIfAtTenantScopeWithResponse(String deploymentName,
         ScopedDeploymentWhatIf parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.whatIfAtTenantScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), deploymentName,
-            contentType, accept, parameters, Context.NONE);
+        return whatIfAtTenantScopeWithResponse(deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -2777,35 +2278,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtTenantScope(String deploymentName, ScopedDeploymentWhatIf parameters) {
-        Response<BinaryData> response = whatIfAtTenantScopeWithResponse(deploymentName, parameters);
-        return this.client.<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(response,
-            WhatIfOperationResultInner.class, WhatIfOperationResultInner.class, Context.NONE);
+        return beginWhatIfAtTenantScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtTenantScope(String deploymentName, ScopedDeploymentWhatIf parameters, Context context) {
@@ -2831,36 +2311,17 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WhatIfOperationResultInner whatIfAtTenantScope(String deploymentName, ScopedDeploymentWhatIf parameters) {
-        return beginWhatIfAtTenantScope(deploymentName, parameters).getFinalResult();
+        return whatIfAtTenantScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WhatIfOperationResultInner whatIfAtTenantScope(String deploymentName, ScopedDeploymentWhatIf parameters,
         Context context) {
-        return beginWhatIfAtTenantScope(deploymentName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(beginWhatIfAtTenantScope(deploymentName, parameters, context));
     }
 
     /**
@@ -2897,16 +2358,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExportResultInner> exportTemplateAtTenantScopeWithResponse(String deploymentName,
         Context context) {
@@ -2915,15 +2367,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             deploymentName, accept, context);
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExportResultInner exportTemplateAtTenantScope(String deploymentName) {
         return exportTemplateAtTenantScopeWithResponse(deploymentName, Context.NONE).getValue();
@@ -2997,11 +2441,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listAtTenantScopeSinglePage(String filter, Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res = service.listAtTenantScopeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtTenantScopeSinglePage(filter, top, Context.NONE);
     }
 
     /**
@@ -3026,33 +2466,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all the deployments at the tenant scope.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments at the tenant scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> listAtTenantScope() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listAtTenantScopeSinglePage(filter, top),
-            nextLink -> listAtTenantScopeNextSinglePage(nextLink));
+        return listAtTenantScope(filter, top, Context.NONE);
     }
 
-    /**
-     * Get all the deployments at the tenant scope.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     * '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments at the tenant scope as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> listAtTenantScope(String filter, Integer top, Context context) {
         return new PagedIterable<>(() -> listAtTenantScopeSinglePage(filter, top, context),
@@ -3095,17 +2517,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExtendedInner> getAtManagementGroupScopeWithResponse(String groupId,
         String deploymentName, Context context) {
@@ -3114,16 +2526,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             deploymentName, accept, context);
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner getAtManagementGroupScope(String groupId, String deploymentName) {
         return getAtManagementGroupScopeWithResponse(groupId, deploymentName, Context.NONE).getValue();
@@ -3164,17 +2567,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceAtManagementGroupScopeWithResponse(String groupId, String deploymentName,
         Context context) {
@@ -3182,16 +2575,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             groupId, deploymentName, context);
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtManagementGroupScope(String groupId, String deploymentName) {
         return checkExistenceAtManagementGroupScopeWithResponse(groupId, deploymentName, Context.NONE).getValue();
@@ -3237,10 +2621,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateAtManagementGroupScopeWithResponse(String groupId, String deploymentName,
         ScopedDeployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateAtManagementGroupScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            groupId, deploymentName, contentType, accept, parameters, Context.NONE);
+        return createOrUpdateAtManagementGroupScopeWithResponse(groupId, deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -3290,42 +2671,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deploys resources at management group scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters) {
-        Response<BinaryData> response
-            = createOrUpdateAtManagementGroupScopeWithResponse(groupId, deploymentName, parameters);
-        return this.client.<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(response,
-            DeploymentExtendedInner.class, DeploymentExtendedInner.class, Context.NONE);
+        return beginCreateOrUpdateAtManagementGroupScope(groupId, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources at management group scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters,
@@ -3356,43 +2709,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deploys resources at management group scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdateAtManagementGroupScope(String groupId, String deploymentName,
         ScopedDeployment parameters) {
-        return beginCreateOrUpdateAtManagementGroupScope(groupId, deploymentName, parameters).getFinalResult();
+        return createOrUpdateAtManagementGroupScope(groupId, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources at management group scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdateAtManagementGroupScope(String groupId, String deploymentName,
         ScopedDeployment parameters, Context context) {
-        return beginCreateOrUpdateAtManagementGroupScope(groupId, deploymentName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginCreateOrUpdateAtManagementGroupScope(groupId, deploymentName, parameters, context));
     }
 
     /**
@@ -3440,8 +2769,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteAtManagementGroupScopeWithResponse(String groupId, String deploymentName) {
-        return service.deleteAtManagementGroupScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), groupId,
-            deploymentName, Context.NONE);
+        return deleteAtManagementGroupScopeWithResponse(groupId, deploymentName, Context.NONE);
     }
 
     /**
@@ -3494,47 +2822,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(String groupId, String deploymentName) {
-        Response<BinaryData> response = deleteAtManagementGroupScopeWithResponse(groupId, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteAtManagementGroupScope(groupId, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(String groupId, String deploymentName,
         Context context) {
@@ -3565,47 +2859,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroupScope(String groupId, String deploymentName) {
-        beginDeleteAtManagementGroupScope(groupId, deploymentName).getFinalResult();
+        deleteAtManagementGroupScope(groupId, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroupScope(String groupId, String deploymentName, Context context) {
-        beginDeleteAtManagementGroupScope(groupId, deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeleteAtManagementGroupScope(groupId, deploymentName, context));
     }
 
     /**
@@ -3684,11 +2947,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listAtManagementGroupScopeSinglePage(String groupId, String filter,
         Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res = service.listAtManagementGroupScopeSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), groupId, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtManagementGroupScopeSinglePage(groupId, filter, top, Context.NONE);
     }
 
     /**
@@ -3714,36 +2973,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all the deployments for a management group.
-     * 
-     * @param groupId The management group ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a management group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(String groupId) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listAtManagementGroupScopeSinglePage(groupId, filter, top),
-            nextLink -> listAtManagementGroupScopeNextSinglePage(nextLink));
+        return listAtManagementGroupScope(groupId, filter, top, Context.NONE);
     }
 
-    /**
-     * Get all the deployments for a management group.
-     * 
-     * @param groupId The management group ID.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     * '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a management group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(String groupId, String filter, Integer top,
         Context context) {
@@ -3792,21 +3030,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return cancelAtManagementGroupScopeWithResponseAsync(groupId, deploymentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelAtManagementGroupScopeWithResponse(String groupId, String deploymentName,
         Context context) {
@@ -3814,19 +3038,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             deploymentName, context);
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelAtManagementGroupScope(String groupId, String deploymentName) {
         cancelAtManagementGroupScopeWithResponse(groupId, deploymentName, Context.NONE);
@@ -3871,10 +3083,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateAtManagementGroupScopeWithResponse(String groupId, String deploymentName,
         ScopedDeployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateAtManagementGroupScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            groupId, deploymentName, contentType, accept, parameters, Context.NONE);
+        return validateAtManagementGroupScopeWithResponse(groupId, deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -3921,39 +3130,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters) {
-        Response<BinaryData> response = validateAtManagementGroupScopeWithResponse(groupId, deploymentName, parameters);
-        return this.client.<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(response,
-            DeploymentValidateResultInner.class, DeploymentValidateResultInner.class, Context.NONE);
+        return beginValidateAtManagementGroupScope(groupId, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters,
@@ -3983,41 +3167,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validateAtManagementGroupScope(String groupId, String deploymentName,
         ScopedDeployment parameters) {
-        return beginValidateAtManagementGroupScope(groupId, deploymentName, parameters).getFinalResult();
+        return validateAtManagementGroupScope(groupId, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validateAtManagementGroupScope(String groupId, String deploymentName,
         ScopedDeployment parameters, Context context) {
-        return beginValidateAtManagementGroupScope(groupId, deploymentName, parameters, context).getFinalResult();
+        return this.client.getLroFinalResultOrError(
+            beginValidateAtManagementGroupScope(groupId, deploymentName, parameters, context));
     }
 
     /**
@@ -4056,10 +3218,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> whatIfAtManagementGroupScopeWithResponse(String groupId, String deploymentName,
         ScopedDeploymentWhatIf parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.whatIfAtManagementGroupScopeSync(this.client.getEndpoint(), this.client.getApiVersion(), groupId,
-            deploymentName, contentType, accept, parameters, Context.NONE);
+        return whatIfAtManagementGroupScopeWithResponse(groupId, deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -4105,37 +3264,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtManagementGroupScope(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters) {
-        Response<BinaryData> response = whatIfAtManagementGroupScopeWithResponse(groupId, deploymentName, parameters);
-        return this.client.<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(response,
-            WhatIfOperationResultInner.class, WhatIfOperationResultInner.class, Context.NONE);
+        return beginWhatIfAtManagementGroupScope(groupId, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtManagementGroupScope(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters,
@@ -4164,39 +3300,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WhatIfOperationResultInner whatIfAtManagementGroupScope(String groupId, String deploymentName,
         ScopedDeploymentWhatIf parameters) {
-        return beginWhatIfAtManagementGroupScope(groupId, deploymentName, parameters).getFinalResult();
+        return whatIfAtManagementGroupScope(groupId, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WhatIfOperationResultInner whatIfAtManagementGroupScope(String groupId, String deploymentName,
         ScopedDeploymentWhatIf parameters, Context context) {
-        return beginWhatIfAtManagementGroupScope(groupId, deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginWhatIfAtManagementGroupScope(groupId, deploymentName, parameters, context));
     }
 
     /**
@@ -4236,17 +3352,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExportResultInner> exportTemplateAtManagementGroupScopeWithResponse(String groupId,
         String deploymentName, Context context) {
@@ -4255,16 +3361,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             groupId, deploymentName, accept, context);
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExportResultInner exportTemplateAtManagementGroupScope(String groupId, String deploymentName) {
         return exportTemplateAtManagementGroupScopeWithResponse(groupId, deploymentName, Context.NONE).getValue();
@@ -4302,16 +3399,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return getAtSubscriptionScopeWithResponseAsync(deploymentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExtendedInner> getAtSubscriptionScopeWithResponse(String deploymentName,
         Context context) {
@@ -4320,15 +3408,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getSubscriptionId(), deploymentName, accept, context);
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner getAtSubscriptionScope(String deploymentName) {
         return getAtSubscriptionScopeWithResponse(deploymentName, Context.NONE).getValue();
@@ -4366,31 +3446,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceAtSubscriptionScopeWithResponse(String deploymentName, Context context) {
         return service.checkExistenceAtSubscriptionScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), deploymentName, context);
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceAtSubscriptionScope(String deploymentName) {
         return checkExistenceAtSubscriptionScopeWithResponse(deploymentName, Context.NONE).getValue();
@@ -4435,10 +3498,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateAtSubscriptionScopeWithResponse(String deploymentName,
         Deployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateAtSubscriptionScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), deploymentName, contentType, accept, parameters, Context.NONE);
+        return createOrUpdateAtSubscriptionScopeWithResponse(deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -4485,39 +3545,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deploys resources at subscription scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtSubscriptionScope(String deploymentName, Deployment parameters) {
-        Response<BinaryData> response = createOrUpdateAtSubscriptionScopeWithResponse(deploymentName, parameters);
-        return this.client.<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(response,
-            DeploymentExtendedInner.class, DeploymentExtendedInner.class, Context.NONE);
+        return beginCreateOrUpdateAtSubscriptionScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources at subscription scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdateAtSubscriptionScope(String deploymentName, Deployment parameters, Context context) {
@@ -4546,40 +3581,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deploys resources at subscription scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdateAtSubscriptionScope(String deploymentName, Deployment parameters) {
-        return beginCreateOrUpdateAtSubscriptionScope(deploymentName, parameters).getFinalResult();
+        return createOrUpdateAtSubscriptionScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources at subscription scope.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdateAtSubscriptionScope(String deploymentName, Deployment parameters,
         Context context) {
-        return beginCreateOrUpdateAtSubscriptionScope(deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdateAtSubscriptionScope(deploymentName, parameters, context));
     }
 
     /**
@@ -4624,8 +3637,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteAtSubscriptionScopeWithResponse(String deploymentName) {
-        return service.deleteAtSubscriptionScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), deploymentName, Context.NONE);
+        return deleteAtSubscriptionScopeWithResponse(deploymentName, Context.NONE);
     }
 
     /**
@@ -4674,45 +3686,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName) {
-        Response<BinaryData> response = deleteAtSubscriptionScopeWithResponse(deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDeleteAtSubscriptionScope(deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName, Context context) {
         Response<BinaryData> response = deleteAtSubscriptionScopeWithResponse(deploymentName, context);
@@ -4741,45 +3721,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtSubscriptionScope(String deploymentName) {
-        beginDeleteAtSubscriptionScope(deploymentName).getFinalResult();
+        deleteAtSubscriptionScope(deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
-     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
-     * the status of the process. While the process is running, a call to the URI in the Location header returns a
-     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
-     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtSubscriptionScope(String deploymentName, Context context) {
-        beginDeleteAtSubscriptionScope(deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDeleteAtSubscriptionScope(deploymentName, context));
     }
 
     /**
@@ -4850,11 +3801,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listSinglePage(String filter, Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listSinglePage(filter, top, Context.NONE);
     }
 
     /**
@@ -4878,33 +3825,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all the deployments for a subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listSinglePage(filter, top),
-            nextLink -> listAtSubscriptionScopeNextSinglePage(nextLink));
+        return list(filter, top, Context.NONE);
     }
 
-    /**
-     * Get all the deployments for a subscription.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     * '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a subscription as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> list(String filter, Integer top, Context context) {
         return new PagedIterable<>(() -> listSinglePage(filter, top, context),
@@ -4950,38 +3879,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return cancelAtSubscriptionScopeWithResponseAsync(deploymentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelAtSubscriptionScopeWithResponse(String deploymentName, Context context) {
         return service.cancelAtSubscriptionScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), deploymentName, context);
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resources partially deployed.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelAtSubscriptionScope(String deploymentName) {
         cancelAtSubscriptionScopeWithResponse(deploymentName, Context.NONE);
@@ -5024,10 +3929,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateAtSubscriptionScopeWithResponse(String deploymentName, Deployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateAtSubscriptionScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), deploymentName, contentType, accept, parameters, Context.NONE);
+        return validateAtSubscriptionScopeWithResponse(deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -5072,37 +3974,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtSubscriptionScope(String deploymentName, Deployment parameters) {
-        Response<BinaryData> response = validateAtSubscriptionScopeWithResponse(deploymentName, parameters);
-        return this.client.<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(response,
-            DeploymentValidateResultInner.class, DeploymentValidateResultInner.class, Context.NONE);
+        return beginValidateAtSubscriptionScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidateAtSubscriptionScope(String deploymentName, Deployment parameters, Context context) {
@@ -5129,38 +4008,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validateAtSubscriptionScope(String deploymentName, Deployment parameters) {
-        return beginValidateAtSubscriptionScope(deploymentName, parameters).getFinalResult();
+        return validateAtSubscriptionScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validateAtSubscriptionScope(String deploymentName, Deployment parameters,
         Context context) {
-        return beginValidateAtSubscriptionScope(deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginValidateAtSubscriptionScope(deploymentName, parameters, context));
     }
 
     /**
@@ -5198,10 +4057,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> whatIfAtSubscriptionScopeWithResponse(String deploymentName,
         DeploymentWhatIf parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.whatIfAtSubscriptionScopeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), deploymentName, contentType, accept, parameters, Context.NONE);
+        return whatIfAtSubscriptionScopeWithResponse(deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -5243,35 +4099,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to What If.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters) {
-        Response<BinaryData> response = whatIfAtSubscriptionScopeWithResponse(deploymentName, parameters);
-        return this.client.<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(response,
-            WhatIfOperationResultInner.class, WhatIfOperationResultInner.class, Context.NONE);
+        return beginWhatIfAtSubscriptionScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to What If.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters, Context context) {
@@ -5297,36 +4132,18 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to What If.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WhatIfOperationResultInner whatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters) {
-        return beginWhatIfAtSubscriptionScope(deploymentName, parameters).getFinalResult();
+        return whatIfAtSubscriptionScope(deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to What If.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WhatIfOperationResultInner whatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters,
         Context context) {
-        return beginWhatIfAtSubscriptionScope(deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginWhatIfAtSubscriptionScope(deploymentName, parameters, context));
     }
 
     /**
@@ -5363,16 +4180,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeWithResponse(String deploymentName,
         Context context) {
@@ -5381,15 +4189,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getSubscriptionId(), deploymentName, accept, context);
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExportResultInner exportTemplateAtSubscriptionScope(String deploymentName) {
         return exportTemplateAtSubscriptionScopeWithResponse(deploymentName, Context.NONE).getValue();
@@ -5431,17 +4231,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExtendedInner> getByResourceGroupWithResponse(String resourceGroupName,
         String deploymentName, Context context) {
@@ -5450,16 +4240,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getSubscriptionId(), resourceGroupName, deploymentName, accept, context);
     }
 
-    /**
-     * Gets a deployment.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deployment.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner getByResourceGroup(String resourceGroupName, String deploymentName) {
         return getByResourceGroupWithResponse(resourceGroupName, deploymentName, Context.NONE).getValue();
@@ -5499,17 +4280,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceWithResponse(String resourceGroupName, String deploymentName,
         Context context) {
@@ -5517,16 +4288,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getSubscriptionId(), resourceGroupName, deploymentName, context);
     }
 
-    /**
-     * Checks whether the deployment exists.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistence(String resourceGroupName, String deploymentName) {
         return checkExistenceWithResponse(resourceGroupName, deploymentName, Context.NONE).getValue();
@@ -5573,11 +4335,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String deploymentName,
         Deployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, contentType, accept, parameters,
-            Context.NONE);
+        return createOrUpdateWithResponse(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -5627,41 +4385,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deploys resources to a resource group.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName, Deployment parameters) {
-        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, deploymentName, parameters);
-        return this.client.<DeploymentExtendedInner, DeploymentExtendedInner>getLroResult(response,
-            DeploymentExtendedInner.class, DeploymentExtendedInner.class, Context.NONE);
+        return beginCreateOrUpdate(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources to a resource group.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName, Deployment parameters, Context context) {
@@ -5691,43 +4422,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deploys resources to a resource group.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName,
         Deployment parameters) {
-        return beginCreateOrUpdate(resourceGroupName, deploymentName, parameters).getFinalResult();
+        return createOrUpdate(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Deploys resources to a resource group.
-     * 
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName,
         Deployment parameters, Context context) {
-        return beginCreateOrUpdate(resourceGroupName, deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginCreateOrUpdate(resourceGroupName, deploymentName, parameters, context));
     }
 
     /**
@@ -5776,8 +4483,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deploymentName) {
-        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, Context.NONE);
+        return deleteWithResponse(resourceGroupName, deploymentName, Context.NONE);
     }
 
     /**
@@ -5830,49 +4536,13 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName) {
-        Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentName);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return beginDelete(resourceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName,
         Context context) {
@@ -5904,49 +4574,16 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName) {
-        beginDelete(resourceGroupName, deploymentName).getFinalResult();
+        delete(resourceGroupName, deploymentName, Context.NONE);
     }
 
-    /**
-     * Deletes a deployment from the deployment history.
-     * 
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
-     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
-     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
-     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
-     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
-     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
-     * the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentName, Context context) {
-        beginDelete(resourceGroupName, deploymentName, context).getFinalResult();
+        this.client.getLroFinalResultOrError(beginDelete(resourceGroupName, deploymentName, context));
     }
 
     /**
@@ -6025,12 +4662,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listByResourceGroupSinglePage(String resourceGroupName,
         String filter, Integer top) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, filter, top, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupSinglePage(resourceGroupName, filter, top, Context.NONE);
     }
 
     /**
@@ -6057,36 +4689,15 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             res.getValue().nextLink(), null);
     }
 
-    /**
-     * Get all the deployments for a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, top),
-            nextLink -> listByResourceGroupNextSinglePage(nextLink));
+        return listByResourceGroup(resourceGroupName, filter, top, Context.NONE);
     }
 
-    /**
-     * Get all the deployments for a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
-     * '{state}'.
-     * @param top The number of results to get. If null is passed, returns all deployments.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the deployments for a resource group as paginated response with {@link PagedIterable}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentExtendedInner> listByResourceGroup(String resourceGroupName, String filter,
         Integer top, Context context) {
@@ -6135,40 +4746,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return cancelWithResponseAsync(resourceGroupName, deploymentName).flatMap(ignored -> Mono.empty());
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resource group partially deployed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelWithResponse(String resourceGroupName, String deploymentName, Context context) {
         return service.cancelSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, deploymentName, context);
     }
 
-    /**
-     * Cancels a currently running template deployment.
-     * 
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
-     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
-     * template deployment and leaves the resource group partially deployed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancel(String resourceGroupName, String deploymentName) {
         cancelWithResponse(resourceGroupName, deploymentName, Context.NONE);
@@ -6214,11 +4799,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> validateWithResponse(String resourceGroupName, String deploymentName,
         Deployment parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.validateSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, contentType, accept, parameters,
-            Context.NONE);
+        return validateWithResponse(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -6266,39 +4847,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidate(String resourceGroupName, String deploymentName, Deployment parameters) {
-        Response<BinaryData> response = validateWithResponse(resourceGroupName, deploymentName, parameters);
-        return this.client.<DeploymentValidateResultInner, DeploymentValidateResultInner>getLroResult(response,
-            DeploymentValidateResultInner.class, DeploymentValidateResultInner.class, Context.NONE);
+        return beginValidate(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
         beginValidate(String resourceGroupName, String deploymentName, Deployment parameters, Context context) {
@@ -6326,41 +4882,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName,
         Deployment parameters) {
-        return beginValidate(resourceGroupName, deploymentName, parameters).getFinalResult();
+        return validate(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
-     * Manager..
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information from validate template deployment response.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName,
         Deployment parameters, Context context) {
-        return beginValidate(resourceGroupName, deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginValidate(resourceGroupName, deploymentName, parameters, context));
     }
 
     /**
@@ -6400,11 +4934,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> whatIfWithResponse(String resourceGroupName, String deploymentName,
         DeploymentWhatIf parameters) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.whatIfSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, deploymentName, contentType, accept, parameters,
-            Context.NONE);
+        return whatIfWithResponse(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
     /**
@@ -6449,37 +4979,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getContext());
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIf(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
-        Response<BinaryData> response = whatIfWithResponse(resourceGroupName, deploymentName, parameters);
-        return this.client.<WhatIfOperationResultInner, WhatIfOperationResultInner>getLroResult(response,
-            WhatIfOperationResultInner.class, WhatIfOperationResultInner.class, Context.NONE);
+        return beginWhatIf(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
         beginWhatIf(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context) {
@@ -6506,39 +5013,19 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WhatIfOperationResultInner whatIf(String resourceGroupName, String deploymentName,
         DeploymentWhatIf parameters) {
-        return beginWhatIf(resourceGroupName, deploymentName, parameters).getFinalResult();
+        return whatIf(resourceGroupName, deploymentName, parameters, Context.NONE);
     }
 
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WhatIfOperationResultInner whatIf(String resourceGroupName, String deploymentName,
         DeploymentWhatIf parameters, Context context) {
-        return beginWhatIf(resourceGroupName, deploymentName, parameters, context).getFinalResult();
+        return this.client
+            .getLroFinalResultOrError(beginWhatIf(resourceGroupName, deploymentName, parameters, context));
     }
 
     /**
@@ -6577,17 +5064,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeploymentExportResultInner> exportTemplateWithResponse(String resourceGroupName,
         String deploymentName, Context context) {
@@ -6596,16 +5073,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             this.client.getSubscriptionId(), resourceGroupName, deploymentName, accept, context);
     }
 
-    /**
-     * Exports the template used for specified deployment.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param deploymentName The name of the deployment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployment export result.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentExportResultInner exportTemplate(String resourceGroupName, String deploymentName) {
         return exportTemplateWithResponse(resourceGroupName, deploymentName, Context.NONE).getValue();
@@ -6645,16 +5113,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         return calculateTemplateHashWithResponseAsync(template).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
-    /**
-     * Calculate the hash of the given template.
-     * 
-     * @param template The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to calculate template hash along with {@link Response}.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TemplateHashResultInner> calculateTemplateHashWithResponse(BinaryData template, Context context) {
         final String contentType = "application/json";
@@ -6663,15 +5122,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             accept, template, context);
     }
 
-    /**
-     * Calculate the hash of the given template.
-     * 
-     * @param template The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to calculate template hash.
-     */
+    @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TemplateHashResultInner calculateTemplateHash(BinaryData template) {
         return calculateTemplateHashWithResponse(template, Context.NONE).getValue();
@@ -6708,11 +5159,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listAtScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listAtScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -6765,11 +5212,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listAtTenantScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listAtTenantScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtTenantScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -6824,11 +5267,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listAtManagementGroupScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listAtManagementGroupScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtManagementGroupScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -6883,11 +5322,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listAtSubscriptionScopeNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listAtSubscriptionScopeNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listAtSubscriptionScopeNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
@@ -6942,11 +5377,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<DeploymentExtendedInner> listByResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DeploymentListResult> res
-            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return listByResourceGroupNextSinglePage(nextLink, Context.NONE);
     }
 
     /**
