@@ -1,5 +1,7 @@
 # Azure Core shared library for Java
 
+<!-- Temporary CI validation across module types. -->
+
 [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java)
 
 Azure Core provides shared primitives, abstractions, and helpers for modern Java Azure SDK client libraries.

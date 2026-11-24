@@ -1,5 +1,7 @@
 # Java API Review Maven Plugin
 
+<!-- Temporary CI validation across module types. -->
+
 Generates `api.md` and `api.metadata.yml` from a built Java sources JAR. The same artifact works as a Maven plugin or a standalone executable JAR.
 
 ## Standalone execution and API Review Hub

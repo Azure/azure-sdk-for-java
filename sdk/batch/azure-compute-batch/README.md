@@ -1,5 +1,7 @@
 # Azure Batch client library for Java
 
+<!-- Temporary CI validation across module types. -->
+
 This README is based on the latest released version of the Azure Compute Batch SDK, which allows users to run large-scale parallel and high-performance computing (HPC) batch jobs efficiently in Azure. To view the latest version of the package, [visit this link](https://central.sonatype.com/artifact/com.azure/azure-compute-batch/overview)
 
 > The SDK supports features of the Azure Batch service starting from API version **2023-05-01.16.0**. We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
